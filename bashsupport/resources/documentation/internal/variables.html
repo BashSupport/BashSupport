@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: variables.html, Class: variables.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>variables: variables - Names and meanings of some shell variables
+</p>
+
+<p> Common shell variable names and usage.
+
+</p><pre>
+    BASH_VERSION        Version information for this Bash.
+    CDPATH      A colon-separated list of directories to search
+                for directories given as arguments to `cd'.
+    GLOBIGNORE  A colon-separated list of patterns describing filenames to
+                be ignored by pathname expansion.
+    HISTFILE    The name of the file where your command history is stored.
+    HISTFILESIZE        The maximum number of lines this file can contain.
+    HISTSIZE    The maximum number of history lines that a running
+                shell can access.
+    HOME        The complete pathname to your login directory.
+</pre>
+<p> HOSTNAME The name of the current host.
+    HOSTTYPE The type of CPU this version of Bash is running under.
+    IGNOREEOF Controls the action of the shell on receipt of an EOF
+</p><pre>
+                character as the sole input.  If set, then the value
+                of it is the number of EOF characters that can be seen
+                in a row on an empty line before the shell will exit
+                (default 10).  When unset, EOF signifies the end of input.
+</pre>
+<p> MACHTYPE A string describing the current system Bash is running on.
+    MAILCHECK How often, in seconds, Bash checks for new mail.
+    MAILPATH A colon-separated list of filenames which Bash checks
+</p><pre>
+                for new mail.
+    OSTYPE      The version of Unix this version of Bash is running on.
+    PATH        A colon-separated list of directories to search when
+                looking for commands.
+    PROMPT_COMMAND      A command to be executed before the printing of each
+                primary prompt.
+    PS1         The primary prompt string.
+    PS2         The secondary prompt string.
+    PWD         The full pathname of the current directory.
+    SHELLOPTS   A colon-separated list of enabled shell options.
+    TERM        The name of the current terminal type.
+    TIMEFORMAT  The output format for timing statistics displayed by the
+                `time' reserved word.
+    auto_resume Non-null means a command word appearing on a line by
+                itself is first looked for in the list of currently
+                stopped jobs.  If found there, that job is foregrounded.
+                A value of `exact' means that the command word must
+                exactly match a command in the list of stopped jobs.  A
+                value of `substring' means that the command word must
+                match a substring of the job.  Any other value means that
+                the command must be a prefix of a stopped job.
+    histchars   Characters controlling history expansion and quick
+                substitution.  The first character is the history
+                substitution character, usually `!'.  The second is
+                the `quick substitution' character, usually `^'.  The
+                third is the `history comment' character, usually `#'.
+    HISTIGNORE  A colon-separated list of patterns used to decide which
+                commands should be saved on the history list.
+</pre>
+</body>
+</html>

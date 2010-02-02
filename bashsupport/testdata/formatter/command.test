@@ -1,0 +1,13 @@
+a
+    b
+    c
+        d
+echo hey;
+        echo hu;
+-----
+a
+b
+c
+d
+echo hey;
+echo hu;

@@ -1,0 +1,40 @@
+#!/bin/sh
+function startup() {
+
+        while $(a); do echo $(a); done;
+            if [[ -f test ]]; then echo $((1+2+3+4)); else
+echo "Something else" a{1..2}d;
+    fi
+}
+
+for f in $(seq 1 10); do echo "Hello work, how are you?"; ${   A}; done;
+
+echo if=123
+
+case a in a) startup
+esac
+-----
+#!/bin/sh
+
+function startup() {
+
+  while $(a); do
+    echo $(a);
+  done;
+  if [[ -f test ]]; then
+    echo $((1 + 2 + 3 + 4));
+  else
+    echo "Something else" a{1..2}d;
+  fi
+}
+
+for f in $(seq 1 10); do
+  echo "Hello work, how are you?";
+  ${A};
+done;
+
+echo if=123
+
+case a in
+  a) startup
+esac

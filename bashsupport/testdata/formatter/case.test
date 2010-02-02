@@ -1,0 +1,19 @@
+case a in
+(A) ;;
+    X | B | C)
+        echo X
+;;
+     (*)
+            echo all
+;;
+esac
+-----
+case a in
+  (A) ;;
+  X | B | C)
+    echo X
+  ;;
+  (*)
+    echo all
+  ;;
+esac

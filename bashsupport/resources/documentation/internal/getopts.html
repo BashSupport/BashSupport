@@ -1,0 +1,83 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: getopts.html, Class: getopts.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>getopts: getopts optstring name [arg]
+</p>
+
+<p> Parse option arguments.
+
+</p>
+
+<p> Getopts is used by shell procedures to parse positional parameters
+    as options.
+
+</p>
+
+<p> OPTSTRING contains the option letters to be recognized; if a letter
+    is followed by a colon, the option is expected to have an argument,
+    which should be separated from it by white space.
+
+</p>
+
+<p> Each time it is invoked, getopts will place the next option in the
+    shell variable $name, initializing name if it does not exist, and
+    the index of the next argument to be processed into the shell
+    variable OPTIND. OPTIND is initialized to 1 each time the shell or
+    a shell script is invoked. When an option requires an argument,
+    getopts places that argument into the shell variable OPTARG.
+
+</p>
+
+<p> getopts reports errors in one of two ways. If the first character
+    of OPTSTRING is a colon, getopts uses silent error reporting. In
+    this mode, no error messages are printed. If an invalid option is
+    seen, getopts places the option character found into OPTARG. If a
+    required argument is not found, getopts places a ':' into NAME and
+    sets OPTARG to the option character found. If getopts is not in
+    silent mode, and an invalid option is seen, getopts places '?' into
+    NAME and unsets OPTARG. If a required argument is not found, a '?'
+    is placed in NAME, OPTARG is unset, and a diagnostic message is
+    printed.
+
+</p>
+
+<p> If the shell variable OPTERR has the value 0, getopts disables the
+    printing of error messages, even if the first character of
+    OPTSTRING is not a colon. OPTERR has the value 1 by default.
+
+</p>
+
+<p> Getopts normally parses the positional parameters ($0 - $9), but if
+    more arguments are given, they are parsed instead.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success if an option is found; fails if the end of options is
+    encountered or an error occurs.</p>
+
+</body>
+</html>
