@@ -1,0 +1,73 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: history.html, Class: history.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>history: history [-c] [-d offset] [n] or history -anrw [filename] or history -ps arg [arg...]
+</p>
+
+<p> Display or manipulate the history list.
+
+</p>
+
+<p> Display the history list with line numbers, prefixing each modified
+    entry with a `*'. An argument of N lists only the last N entries.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -c clear the history list by deleting all of the entries
+        -d offset delete the history entry at offset OFFSET.
+
+    </dd>
+</dl>
+<pre>
+      -a        append history lines from this session to the history file
+      -n        read all history lines not already read from the history file
+      -r        read the history file and append the contents to the history
+        list
+      -w        write the current history to the history file
+        and append them to the history list
+    
+      -p        perform history expansion on each ARG and display the result
+        without storing it in the history list
+      -s        append the ARGs to the history list as a single entry
+</pre>
+
+<p> If FILENAME is given, it is used as the history file. Otherwise,
+    if $HISTFILE has a value, that is used, else ~/.bash_history.
+
+</p>
+
+<p> If the $HISTTIMEFORMAT variable is set and not null, its value is used
+    as a format string for strftime(3) to print the time stamp associated
+    with each displayed history entry. No time stamps are printed otherwise.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success unless an invalid option is given or an error occurs.</p>
+
+</body>
+</html>

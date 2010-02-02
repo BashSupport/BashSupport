@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: declare.html, Class: declare.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>declare: declare [-aAfFilrtux] [-p] [name[=value] ...]
+</p>
+
+<p> Set variable values and attributes.
+
+</p>
+
+<p> Declare variables and give them attributes. If no NAMEs are given,
+    display the attributes and values of all variables.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -f restrict action or display to function names and definitions
+        -F restrict display to function names only (plus line number and
+        source file when debugging)
+        -p display the attributes and value of each NAME
+
+    </dd>
+</dl>
+<p> Options which set attributes:
+</p><pre>
+      -a        to make NAMEs indexed arrays (if supported)
+      -A        to make NAMEs associative arrays (if supported)
+      -i        to make NAMEs have the `integer' attribute
+      -l        to convert NAMEs to lower case on assignment
+      -r        to make NAMEs readonly
+      -t        to make NAMEs have the `trace' attribute
+      -u        to convert NAMEs to upper case on assignment
+      -x        to make NAMEs export
+</pre>
+
+<p> Using `+' instead of `-' turns off the given attribute.
+
+</p>
+
+<p> Variables with the integer attribute have arithmetic evaluation (see
+    the `let' command) performed when the variable is assigned a value.
+
+</p>
+
+<p> When used in a function, `declare' makes NAMEs local, as with the `local'
+    command.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success unless an invalid option is supplied or an error occurs.</p>
+
+</body>
+</html>

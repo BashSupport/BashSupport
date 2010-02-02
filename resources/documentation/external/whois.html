@@ -1,0 +1,163 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: whois.html, Class: whois.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>WHOIS(1) Debian GNU/Linux WHOIS(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> whois - client for the whois directory service
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       whois   [   -h   HOST   ]   [   -p      PORT   ]   [  -aCFHlLMmrRSVx  ]
+       [ -g SOURCE:FIRST-LAST ] [ -i ATTR ] [ -S SOURCE ] [ -T TYPE ] object
+
+       whois [ -t ] [ -v ] template whois [ -q ] keyword
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> whois searches for an object in a <a href="http://www.cis.ohio-state.edu/rfc/rfc3912.txt">RFC 3912</a> database.
+</p>
+<pre>
+       This version of the whois client tries to guess the right server to ask
+       for  the  specified  object. If no guess can be made it will connect to
+       whois.networksolutions.com for NIC handles or whois.arin.net  for  IPv4
+       addresses and network names.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> -h HOST Connect to HOST.
+</p>
+<pre>
+       -H      Do  not  display  the legal disclaimers some registries like to
+               show you.
+
+       -p PORT Connect to PORT.
+
+       --verbose
+               Be verbose.
+
+       --help  Display online help.
+
+       Other options are flags understood by RIPE-like servers.
+</pre>
+<p><strong>NOTES</strong>
+</p><pre>
+       Please remember that whois.networksolutions.com by  default  will  only
+       search  in  the domains database. If you want to search for NIC handles
+       you have to prepend a ! character. When you do this, the default server
+       becomes whois.networksolutions.com.
+
+       When  querying whois.nic.mil for AS numbers, the program will automati‐
+       cally convert the request in the appropriate format, inserting a  space
+       after the string AS.
+
+       If   the   program   is   compiled  with  IDN  support,  when  querying
+       whois.denic.de for domain names it will automatically add the flags  -T
+       dn,ace  -C  US-ASCII  if no flags have been specified by the user.  The
+       domain name will always be IDN-encoded.
+
+       When querying whois.corenic.net, the program will automatically request
+       machine-readable output.
+
+       RIPE-specific  command  line options are ignored when querying non-RIPE
+       servers. This may or may not be the behaviour  intended  by  the  user.
+       When querying a non-standard server, command line options which are not
+       to be interpreted by the client should always follow the  --  separator
+       (which marks the beginning of the query string).
+
+       If the /etc/whois.conf config file exists, it will be consulted to find
+       a server before applying the normal rules. Each line of the file should
+       contain  a  regular expression to be matched against the query text and
+       the whois server to use, separated by white space.
+
+       Command line arguments will always be interpreted  accordingly  to  the
+       current  system locale and converted to the IDN ASCII Compatible Encod‐
+       ing.
+</pre>
+<p>Files
+</p>
+
+<p> /etc/whois.conf
+</p>
+
+<p><strong>ENVIRONMENT</strong>
+</p><pre>
+       LANG   When querying whois.nic.ad.jp and whois.jprs.jp english text  is
+              requested  unless  the  LANG  environment  variable  specifies a
+              Japanese locale.
+
+       WHOIS_OPTIONS
+              A list of options which will be evalued before the  ones  speci‐
+              fied on the command line.
+
+       WHOIS_SERVER
+              This  server  will  be queried if the program cannot guess where
+              some kind of objects are located. If the variable does not exist
+              then whois.arin.net will be queried.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p><a href="http://www.cis.ohio-state.edu/rfc/rfc3912.txt">RFC 3912</a>: WHOIS Protocol Specification
+</p>
+
+<p> RIPE-223: RIPE NCC Database Documentation
+</p>
+<pre>
+       Detailed  help  on  available  flags can be found in RIPE-223 or in the
+       help file which can be obtained with the command:
+
+              whois -h whois.ripe.net HELP
+</pre>
+<p><strong>BUGS</strong>
+</p><pre>
+       The program has many buffer overflows when  parsing  the  command  line
+       parameters:  be  sure  to  not  pass  untrusted data to it.  It will be
+       rewritten to use a dynamic strings library.
+</pre>
+<p><strong>HISTORY</strong>
+</p><pre>
+       This program closely tracks the user  interface  of  the  whois  client
+       developed at RIPE by Ambrose Magee and others on the base of the origi‐
+       nal BSD client.  I also  added  support  for  the  protocol  extensions
+       developed by David Kessens of QWest for the 6bone server.
+</pre>
+<p><strong>AUTHOR</strong>
+</p><pre>
+       Whois  and this man page were written by Marco d'Itri &lt;<a href="mailto:md@linux.it">md@linux.it</a>&gt; and
+       are licensed under the terms of the GNU General Public License, version
+       2 or higher.
+
+Marco d'Itri                     4 March 2005                         WHOIS(1)
+</pre>
+</body>
+</html>

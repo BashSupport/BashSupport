@@ -1,0 +1,15 @@
+COMMAND       <<      END
+Dear Mr. Nobody,
+    how are you doing these days?
+    I hope you are doing well.
+Sincerely yours,
+Mr. X
+END
+-----
+COMMAND << END
+Dear Mr. Nobody,
+    how are you doing these days?
+    I hope you are doing well.
+Sincerely yours,
+Mr. X
+END
