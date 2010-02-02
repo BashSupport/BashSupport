@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: enable.html, Class: enable.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>enable: enable [-a] [-dnps] [-f filename] [name ...]
+</p>
+
+<p> Enable and disable shell builtins.
+
+</p>
+
+<p> Enables and disables builtin shell commands. Disabling allows you to
+    execute a disk command which has the same name as a shell builtin
+    without using a full pathname.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -a print a list of builtins showing whether or not each is enabled
+        -n disable each NAME or display a list of disabled builtins
+        -p print the list of builtins in a reusable format
+        -s print only the names of Posix `special' builtins
+
+    </dd>
+</dl>
+<p> Options controlling dynamic loading:
+</p><pre>
+      -f        Load builtin NAME from shared object FILENAME
+      -d        Remove a builtin loaded with -f
+</pre>
+
+<p> Without options, each NAME is enabled.
+
+</p>
+
+<p> To use the `test' found in $PATH instead of the shell builtin
+    version, type `enable -n test'.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success unless NAME is not a shell builtin or an error occurs.</p>
+
+</body>
+</html>

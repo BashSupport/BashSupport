@@ -1,0 +1,182 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: su.html, Class: su.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>SU(1) User Commands SU(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> su - change user ID or become superuser
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> su [options] [username]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       The su command is used to become another user during a login session.
+       Invoked without a username, su defaults to becoming the superuser. The
+       optional argument - may be used to provide an environment similar to
+       what the user would expect had the user logged in directly.
+
+       Additional arguments may be provided after the username, in which case
+       they are supplied to the user´s login shell. In particular, an argument
+       of -c will cause the next argument to be treated as a command by most
+       command interpreters. The command will be executed by the shell
+       specified in /etc/passwd for the target user.
+
+       You can use the -- argument to separate su options from the arguments
+       supplied to the shell.
+
+       The user will be prompted for a password, if appropriate. Invalid
+       passwords will produce an error message. All attempts, both valid and
+       invalid, are logged to detect abuse of the system.
+
+       The current environment is passed to the new shell. The value of $PATH
+       is reset to /bin:/usr/bin for normal users, or
+       /sbin:/bin:/usr/sbin:/usr/bin for the superuser. This may be changed
+       with the ENV_PATH and ENV_SUPATH definitions in /etc/login.defs.
+
+       A subsystem login is indicated by the presence of a "*" as the first
+       character of the login shell. The given home directory will be used as
+       the root of a new file system which the user is actually logged into.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> The options which apply to the su command are:
+</p>
+<pre>
+       -c, --command COMMAND
+           Specify a command that will be invoked by the shell using its -c.
+
+       -, -l, --login
+           Provide an environment similar to what the user would expect had
+           the user logged in directly.
+
+           When - is used, it must be specified as the last su option. The
+           other forms (-l and --login) do not have this restriction.
+
+       -s, --shell SHELL
+           The shell that will be invoked.
+
+           The invoked shell is chosen from (highest priority first):
+
+           ·   The shell specified with --shell.
+
+           ·   If --preserve-environment is used, the shell specified by the
+               $SHELL environment variable.
+
+           ·   The shell indicated in the /etc/passwd entry for the target
+               user.
+
+           ·    /bin/sh if a shell could not be found by any above method.
+
+               If the target user has a restricted shell (i.e. the shell field
+               of this user´s entry in /etc/passwd is not listed in
+               /etc/shell), then the --shell option or the $SHELL environment
+               variable won´t be taken into account, unless su is called by
+               root.
+
+           -m, -p, --preserve-environment
+               Preserve the current environment.
+
+               If the target user has a restricted shell, this option has no
+               effect (unless su is called by root).
+</pre>
+<p><strong>CAVEATS</strong>
+</p><pre>
+       This version of su has many compilation options, only some of which may
+       be in use at any particular site.
+</pre>
+<p><strong>CONFIGURATION</strong>
+</p><pre>
+       The following configuration variables in /etc/login.defs change the
+       behavior of this tool:
+
+       CONSOLE_GROUPS (string)
+           List of groups to add to the user´s supplementary groups set when
+           logging in on the console (as determined by the CONSOLE setting).
+           Default is none.
+
+           Use with caution - it is possible for users to gain permanent
+           access to these groups, even when not logged in on the console.
+
+       DEFAULT_HOME (boolean)
+           Indicate if login is allowed if we can´t cd to the home directory.
+           Default in no.
+
+           If set to yes, the user will login in the root (/) directory if it
+           is not possible to cd to her home directory.
+
+       ENV_PATH (string)
+           If set, it will be used to define the PATH environment variable
+           when a regular user login. The value can be preceded by PATH=, or a
+           colon separated list of paths (for example /bin:/usr/bin). The
+           default value is PATH=/bin:/usr/bin.
+
+       ENV_SUPATH (string)
+           If set, it will be used to define the PATH environment variable
+           when the superuser login. The value can be preceded by PATH=, or a
+           colon separated list of paths (for example
+           /sbin:/bin:/usr/sbin:/usr/bin). The default value is
+           PATH=/bin:/usr/bin.
+
+       SULOG_FILE (string)
+           If defined, all su activity is logged to this file.
+
+       SU_NAME (string)
+           If defined, the command name to display when running "su -". For
+           example, if this is defined as "su" then a "ps" will display the
+           command is "-su". If not defined, then "ps" would display the name
+           of the shell actually being run, e.g. something like "-sh".
+
+       SYSLOG_SU_ENAB (boolean)
+           Enable "syslog" logging of su activity - in addition to sulog file
+           logging.
+</pre>
+<p><strong>FILES</strong>
+</p><pre>
+       /etc/passwd
+           User account information.
+
+       /etc/shadow
+           Secure user account information.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> login(1), login.defs(5), sg(1), sh(1)
+</p>
+
+<p>User Commands 07/31/2009 SU(1)</p>
+
+</body>
+</html>

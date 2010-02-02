@@ -1,0 +1,19 @@
+if $(echo   a);     then
+ echo one;
+else echo two; fi
+
+if [ test -f test.txt  ];       then         echo ok; elif a; then echo elifhere; else echo notOk; fi
+-----
+if $(echo a); then
+  echo one;
+else
+  echo two;
+fi
+
+if [ test -f test.txt ]; then
+  echo ok;
+elif a; then
+  echo elifhere;
+else
+  echo notOk;
+fi

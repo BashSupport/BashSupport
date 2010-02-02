@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: let.html, Class: let.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>let: let arg [arg ...]
+</p>
+
+<p> Evaluate arithmetic expressions.
+
+</p>
+
+<p> Evaluate each ARG as an arithmetic expression. Evaluation is done in
+    fixed-width integers with no check for overflow, though division by 0
+    is trapped and flagged as an error. The following list of operators is
+    grouped into levels of equal-precedence operators. The levels are listed
+    in order of decreasing precedence.
+
+</p><pre>
+        id++, id--      variable post-increment, post-decrement
+        ++id, --id      variable pre-increment, pre-decrement
+        -, +            unary minus, plus
+        !, ~            logical and bitwise negation
+        **              exponentiation
+        *, /, %         multiplication, division, remainder
+        +, -            addition, subtraction
+        &lt;&lt;, &gt;&gt;          left and right bitwise shifts
+        &lt;=, &gt;=, &lt;, &gt;    comparison
+        ==, !=          equality, inequality
+        &amp;               bitwise AND
+        ^               bitwise XOR
+        |               bitwise OR
+        &amp;&amp;              logical AND
+        ||              logical OR
+        expr ? expr : expr
+                        conditional operator
+        =, *=, /=, %=,
+        +=, -=, &lt;&lt;=, &gt;&gt;=,
+        &amp;=, ^=, |=      assignment
+</pre>
+
+<p> Shell variables are allowed as operands. The name of the variable
+    is replaced by its value (coerced to a fixed-width integer) within
+    an expression. The variable need not have its integer attribute
+    turned on to be used in an expression.
+
+</p>
+
+<p> Operators are evaluated in order of precedence. Sub-expressions in
+    parentheses are evaluated first and may override the precedence
+    rules above.
+
+</p>
+
+<p> Exit Status:<br/>
+    If the last ARG evaluates to 0, let returns 1; let returns 0 otherwise..</p>
+
+</body>
+</html>

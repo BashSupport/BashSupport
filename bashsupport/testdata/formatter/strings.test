@@ -1,0 +1,7 @@
+"abcde"
+    "abcde$efgh"
+    "${abcde} abcd"
+-----
+"abcde"
+"abcde$efgh"
+"${abcde} abcd"
