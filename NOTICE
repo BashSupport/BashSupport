@@ -1,0 +1,10 @@
+
+Thanks to:
+----------
+    o The arc plugin. It gave me the first ideas how to create a custom language plugin
+    o The Clojure plugin. Very clean and crisp :) Gave me good directions how to proceed with the custom language
+      implementation.
+    o The Groovy plugin. Good source to start the formatter.
+    o The JavaScript plugin. Ideas for the more complex things.
+    o The IntelliJ batch custom language plugin. It provided me with the base for the run configuration setup.
+    o The KDE project. I got the icons from there :)

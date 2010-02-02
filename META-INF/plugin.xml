@@ -1,0 +1,176 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: plugin.xml, Class: plugin.xml
+  ~ Last modified: 2010-01-25
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
+    <name>BashSupport</name>
+    <category>Custom Languages</category>
+    <version>0.9.7-maia</version>
+    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg IT-Services</vendor>
+    <idea-version since-build="91.15"/>
+
+    <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
+    <depends>com.intellij.modules.lang</depends>
+
+    <description><![CDATA[
+  <html>
+    <h3>Bash support for IntelliJ 9</h3>
+    <br>
+            <b>Features:</b><br>
+            <ul>
+            <li> Support for Bash 3.2 and 4.0</li>
+            <li> Advanced syntax highlighting and configuration</li>
+            <li> Run Bash scripts within IDEA</li>
+            <li> Autocompletion for variables, functions and file paths</li>
+            <li> Inspections for common problems</li>
+            <li> Basic refactorings (rename of variables and funtions)</li>
+            <li> Advanced navigation (structure view, go to declaration, ...)</li>
+            <li> Ctrl+Q (Quick documentation lookup) for internal and external commands and functions</li>
+            <li> Highlight usages in file for functions and variables</li>
+            <li> Code folding, line commenting / uncommenting, brace matching</li>
+            <li> Supports file extensions .sh, .bash and files without extension (configurable)</li>
+            </ul>
+
+            <br>
+            <b>Experimental features:</b>
+            <ul>
+            <li> Code formatter</li>
+            </ul>
+         <br>
+        <b>This is an early release of this plugin. Please vote and provide feedback to help!</b>
+  </html>
+  ]]></description>
+
+    <change-notes><![CDATA[
+    <html>
+        <b>Changes in version 0.9.6-maia:</b>
+        <ul>
+         <li> Path/file completion paths./</li>
+         <li> Configurable support for Bash version 4.0.</li>
+         <li> Expansions now can be replaced with the evaluated result.</li>
+         <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
+         <li> Improved parser.</li>
+        </ul>
+
+        <b>Latest major changes:</b>
+        <ul>
+          <li> Run configuration for Bash scripts. You can now run the scripts from within IntelliJ.</li>
+          <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
+          <li> Several new inspections.</li>
+          <li> Added GUI setting to manage global variables.</li>
+        </ul>
+    </html>
+    ]]>
+    </change-notes>
+
+    <application-components>
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.lang.BashLoader</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>
+                com.ansorgit.plugins.bash.settings.BashSettingsConfigurable
+            </implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.settings.BashSettingsComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <component>
+            <implementation-class>
+                com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable
+            </implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.lang.BashLanguage$BashHighlighterFactory
+            </implementation-class>
+        </component>
+    </project-components>
+
+    <!-- Plugin's module components -->
+    <module-components>
+        <!--
+            <component>
+                <interface-class>com.foo.Component3</interface-class>
+            </component>
+        -->
+    </module-components>
+
+    <actions>
+        <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
+                text="Bash Script" description="Create new Bash script file">
+            <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
+        </action>
+    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.ansorgit.plugins.bash.file.BashFileTypeLoader"/>
+
+        <!--Syntax highlighting-->
+        <syntaxHighlighter key="Bash"
+                           implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>
+        <colorSettingsPage
+                implementation="com.ansorgit.plugins.bash.editor.highlighting.BashColorsAndFontsPage"/>
+
+        <!--Language extensions -->
+        <lang.braceMatcher language="Bash"
+                           implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashBraceMatcher"/>
+        <lang.commenter language="Bash"
+                        implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashCommenter"/>
+        <lang.parserDefinition language="Bash"
+                               implementationClass="com.ansorgit.plugins.bash.lang.parser.BashParserDefinition"/>
+        <lang.foldingBuilder language="Bash"
+                             implementationClass="com.ansorgit.plugins.bash.editor.codefolding.BashFoldingBuilder"/>
+        <lang.psiStructureViewFactory language="Bash"
+                                      implementationClass="com.ansorgit.plugins.bash.structureview.BashStructureViewFactory"/>
+        <lang.refactoringSupport language="Bash"
+                                 implementationClass="com.ansorgit.plugins.bash.refactoring.BashRefactoringSupport"/>
+        <lang.documentationProvider language="Bash"
+                                    implementationClass="com.ansorgit.plugins.bash.documentation.BashDocumentationProvider"/>
+        <lang.findUsagesProvider language="Bash"
+                                 implementationClass="com.ansorgit.plugins.bash.editor.usages.BashFindUsagesProvider"/>
+
+        <completion.contributor language="Bash"
+                                implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
+
+        <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
+
+        <lang.formatter language="Bash"
+                        implementationClass="com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder"/>
+
+        <!--
+        <codeStyleSettingsProvider implementation="org.jetbrains.plugins.clojure.formatter.codeStyle.ClojureCodeStyleSettingsProvider"/>
+        -->
+
+        <annotator language="Bash"
+                   implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
+
+
+        <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
+        <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
+        <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>
+    </extensions>
+</idea-plugin>
