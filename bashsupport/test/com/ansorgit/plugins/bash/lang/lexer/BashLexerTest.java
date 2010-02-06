@@ -89,6 +89,8 @@ public class BashLexerTest {
         testTokenization("$((a--))", DOLLAR, EXPR_ARITH, WORD, ARITH_MINUS_MINUS, _EXPR_ARITH);
 
         testTokenization("$((--a))", DOLLAR, EXPR_ARITH, ARITH_MINUS_MINUS, WORD, _EXPR_ARITH);
+
+        testTokenization("$((a,2))", DOLLAR, EXPR_ARITH, WORD, COMMA, NUMBER, _EXPR_ARITH);
     }
 
     @Test
