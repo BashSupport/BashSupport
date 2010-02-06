@@ -85,6 +85,9 @@ public interface BashElementTypes {
     public final IElementType ARITH_SIMPLE = new BashElementType("arithmetic simple expr");
     public final IElementType ARITH_PARENS = new BashElementType("arithmetic parenthesis expr");
 
+    public final IElementType ARITH_POST_INCR = new BashElementType("arithmetic post increment");
+    public final IElementType ARITH_POST_DECR = new BashElementType("arithmetic post decrement");
+
 
     public final IElementType CASE_COMMAND = new BashElementType("case pattern");
     public final IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");
