@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class NegationExpr extends AbstractRepeatedExpr {
     NegationExpr() {
-        super(new PreIncrementExpr(), arithmeticNegationOps);//fixme marker
+        super(new PreIncrementExpr(), arithmeticNegationOps, ARITH_NEGATION_ELEMENT);//fixme marker
     }
 }

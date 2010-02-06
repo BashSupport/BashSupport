@@ -117,11 +117,11 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == HEREDOC_START_MARKER_ELEMENT) return new BashHereDocStartMarkerImpl(node);
         if (elementType == HEREDOC_END_MARKER_ELEMENT) return new BashHereDocEndMarkerImpl(node);
 
-        if (elementType == ARITH_ASSIGNMENT) return new AssignmentExpressionsImpl(node);
-        if (elementType == ARITH_MUL) return new ProductExpressionsImpl(node);
-        if (elementType == ARITH_SUM) return new SumExpressionsImpl(node);
-        if (elementType == ARITH_SIMPLE) return new SimpleExpressionsImpl(node);
-        if (elementType == ARITH_PARENS) return new ParenthesesExpressionsImpl(node);
+        if (elementType == ARITH_ASSIGNMENT_ELEMENT) return new AssignmentExpressionsImpl(node);
+        if (elementType == ARITH_MULTIPLICACTION_ELEMENT) return new ProductExpressionsImpl(node);
+        if (elementType == ARITH_SUM_ELEMENT) return new SumExpressionsImpl(node);
+        if (elementType == ARITH_SIMPLE_ELEMENT) return new SimpleExpressionsImpl(node);
+        if (elementType == ARITH_PARENS_ELEMENT) return new ParenthesesExpressionsImpl(node);
 
         log.warn("MISSING PSI for" + node);
 
