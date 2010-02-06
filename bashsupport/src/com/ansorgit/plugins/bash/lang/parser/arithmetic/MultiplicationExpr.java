@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class MultiplicationExpr extends AbstractRepeatedExpr {
     MultiplicationExpr() {
-        super(new ExponentExpr(), arithmeticProduct);
+        super(new ExponentExpr(), arithmeticProduct, ARITH_MULTIPLICACTION_ELEMENT);
     }
 }

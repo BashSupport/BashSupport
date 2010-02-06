@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class LogicalAnd extends AbstractRepeatedExpr {
     LogicalAnd() {
-        super(new BitwiseOr(), ARITH_AND);
+        super(new BitwiseOr(), AND_AND, ARITH_LOGIC_AND_ELEMENT);
     }
 }

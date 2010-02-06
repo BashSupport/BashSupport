@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class CompundComparisionExpr extends AbstractRepeatedExpr {
     CompundComparisionExpr() {
-        super(new ShiftExpr(), arithmeticAssign);//fixme marker
+        super(new ShiftExpr(), arithmeticCmpOp, ARITH_COMPUND_COMPARISION_ELEMENT);
     }
 }

@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class ShiftExpr extends AbstractRepeatedExpr {
     ShiftExpr() {
-        super(new AdditionExpr(), arithmeticShiftOps);
+        super(new AdditionExpr(), arithmeticShiftOps, ARITH_SHIFT_ELEMENT);
     }
 }

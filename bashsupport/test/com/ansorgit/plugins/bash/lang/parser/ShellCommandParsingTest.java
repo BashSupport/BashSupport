@@ -272,7 +272,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     public void testParseArithmeticCommand3() {
         //$(($a && $a))
         mockTest(arithmeticParsingTester,
-                EXPR_ARITH, VARIABLE, ARITH_AND, VARIABLE, _EXPR_ARITH
+                EXPR_ARITH, VARIABLE, ARITH_BITWISE_AND, VARIABLE, _EXPR_ARITH
         );
     }
 

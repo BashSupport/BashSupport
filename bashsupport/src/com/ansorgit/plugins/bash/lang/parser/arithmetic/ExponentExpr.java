@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class ExponentExpr extends AbstractRepeatedExpr {
     ExponentExpr() {
-        super(new NegationExpr(), ARITH_EXP);
+        super(new NegationExpr(), ARITH_EXP, ARITH_EXPONENT_ELEMENT);
     }
 }

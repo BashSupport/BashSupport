@@ -21,6 +21,8 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -39,16 +41,28 @@ class SimpleArithmeticExpr implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
+        PsiBuilder.Marker marker = builder.mark();
+        boolean ok = false;
+
         if (Parsing.var.isValid(builder)) {
-            return Parsing.var.parse(builder);
+            ok = Parsing.var.parse(builder);
+        } else {
+            IElementType tokenType = builder.getTokenType();
+            if (tokenType == WORD) {
+                ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
+                ok = true;
+            } else if (tokenType == NUMBER) {
+                builder.advanceLexer();
+                ok = true;
+            }
         }
 
-        IElementType tokenType = builder.getTokenType();
-        if (tokenType == WORD || tokenType == NUMBER) {
-            builder.advanceLexer();
-            return true;
+        if (ok) {
+            marker.done(ARITH_SIMPLE_ELEMENT);
+        } else {
+            marker.drop();
         }
 
-        return false;
+        return ok;
     }
 }

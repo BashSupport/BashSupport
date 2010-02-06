@@ -52,6 +52,10 @@ abstract class AbstractRepeatedExpr implements ParsingFunction {
         this(next, TokenSet.create(operator), null);
     }
 
+    protected AbstractRepeatedExpr(ParsingFunction next, IElementType operator, IElementType marker) {
+        this(next, TokenSet.create(operator), marker);
+    }
+
     public boolean isValid(IElementType token) {
         throw new IllegalStateException("unsupported");
     }
@@ -63,12 +67,14 @@ abstract class AbstractRepeatedExpr implements ParsingFunction {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
 
+        int count = 0;
         boolean ok = true;
         do {
             ok = next.parse(builder);
+            count++;
         } while (ok && ParserUtil.conditionalRead(builder, operators));
 
-        if (ok && partMarker != null) {
+        if (ok && count > 1 && partMarker != null) {
             marker.done(partMarker);
         } else {
             marker.drop();

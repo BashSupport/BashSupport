@@ -52,8 +52,8 @@ public class AbstractAssignment implements ParsingFunction {
         PsiBuilder.Marker marker = builder.mark();
         boolean ok = ParserUtil.conditionalRead(builder, acceptedWords) && acceptedEqualTokens.contains(builder.getTokenType());
         if (ok) {
-            builder.advanceLexer();
-            marker.drop();
+            marker.done(VAR_DEF_ELEMENT);
+            builder.advanceLexer();    //eat the assignment operator
         } else {
             marker.rollbackTo();
         }
