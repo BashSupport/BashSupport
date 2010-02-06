@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: AdditionExpr.java, Class: AdditionExpr
+ * File: BitwiseOr.java, Class: BitwiseOr
  * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +16,12 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.arithmetic;
+package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
- * Addition expressions.
- * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 7:14:40 PM
  */
-class AdditionExpr extends AbstractRepeatedExpr {
-    AdditionExpr() {
-        super(new MultiplicationExpr(), arithmeticAdditionOps, ARITH_ASSIGNMENT_ELEMENT);
-    }
+public interface BitwiseOr {
 }

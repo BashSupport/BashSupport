@@ -27,6 +27,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class BitwiseAnd extends AbstractRepeatedExpr {
     BitwiseAnd() {
-        super(new EqualityExpr(), AMP);
+        super(new EqualityExpr(), AMP, ARITH_BIT_AND_ELEMENT);
     }
 }

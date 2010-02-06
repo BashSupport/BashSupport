@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class LogicalOr extends AbstractRepeatedExpr {
     LogicalOr() {
-        super(new LogicalAnd(), PIPE); //fixme check
+        super(new LogicalAnd(), OR_OR, ARITH_LOGIC_OR_ELEMENT); //fixme check
     }
 }

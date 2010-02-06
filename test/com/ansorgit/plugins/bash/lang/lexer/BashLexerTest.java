@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,35 @@ public class BashLexerTest {
         testTokenization("[ $(uname -a) ]", EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
 
         //testTokenization("a[$a]", ARRAY_ASSIGNMENT_WORD);//fixme
+    }
+
+    @Test
+    public void testArithmeticExpr() {
+        testTokenization("$((a && b))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, _EXPR_ARITH);
+
+        testTokenization("$((a || b))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, _EXPR_ARITH);
+
+        testTokenization("$((!a))", DOLLAR, EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
+
+        testTokenization("$((~a))", DOLLAR, EXPR_ARITH, ARITH_BITWISE_NEGATE, WORD, _EXPR_ARITH);
+
+        testTokenization("$((a>>2))", DOLLAR, EXPR_ARITH, WORD, ARITH_SHIFT_RIGHT, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a<<2))", DOLLAR, EXPR_ARITH, WORD, ARITH_SHIFT_LEFT, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a|2))", DOLLAR, EXPR_ARITH, WORD, PIPE, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a&2))", DOLLAR, EXPR_ARITH, WORD, ARITH_BITWISE_AND, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a^2))", DOLLAR, EXPR_ARITH, WORD, ARITH_BITWISE_XOR, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a%2))", DOLLAR, EXPR_ARITH, WORD, ARITH_MOD, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a-2))", DOLLAR, EXPR_ARITH, WORD, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a--))", DOLLAR, EXPR_ARITH, WORD, ARITH_MINUS_MINUS, _EXPR_ARITH);
+
+        testTokenization("$((--a))", DOLLAR, EXPR_ARITH, ARITH_MINUS_MINUS, WORD, _EXPR_ARITH);
     }
 
     @Test
