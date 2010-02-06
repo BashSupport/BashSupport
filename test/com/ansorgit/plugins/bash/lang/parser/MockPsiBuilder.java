@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-02-01
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -190,7 +190,14 @@ public class MockPsiBuilder implements PsiBuilder {
         }
 
         public Marker precede() {
-            return null;
+            MockMarker preceedingMarker = new MockMarker(this.position, "preceded marker " + this);
+            //fixme fix the stack of markers in the psi builder
+            int pos = MockPsiBuilder.this.markers.indexOf(this);
+            if (pos != -1) {
+                MockPsiBuilder.this.markers.insertElementAt(preceedingMarker, pos);
+            }
+
+            return preceedingMarker;
         }
 
         private void finishMarker() {
