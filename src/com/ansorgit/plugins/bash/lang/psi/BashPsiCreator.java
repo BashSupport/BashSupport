@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2010-01-31
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashShebangImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashSymbolImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectExprImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectListImpl;
@@ -115,6 +116,12 @@ public class BashPsiCreator implements BashElementTypes {
 
         if (elementType == HEREDOC_START_MARKER_ELEMENT) return new BashHereDocStartMarkerImpl(node);
         if (elementType == HEREDOC_END_MARKER_ELEMENT) return new BashHereDocEndMarkerImpl(node);
+
+        if (elementType == ARITH_ASSIGNMENT) return new AssignmentExpressionsImpl(node);
+        if (elementType == ARITH_MUL) return new ProductExpressionsImpl(node);
+        if (elementType == ARITH_SUM) return new SumExpressionsImpl(node);
+        if (elementType == ARITH_SIMPLE) return new SimpleExpressionsImpl(node);
+        if (elementType == ARITH_PARENS) return new ParenthesesExpressionsImpl(node);
 
         log.warn("MISSING PSI for" + node);
 
