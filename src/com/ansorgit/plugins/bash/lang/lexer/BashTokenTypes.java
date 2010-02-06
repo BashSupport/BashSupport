@@ -122,17 +122,23 @@ public interface BashTokenTypes {
     final TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
 
 
+    //arithmetic comparision
+
+    TokenSet arithmeticCompareOps = TokenSet.create();
+
+
     //arithmetic operators: plus
     IElementType ARITH_PLUS_PLUS = new BashElementType("++");//++
     IElementType ARITH_PLUS = new BashElementType("+");//+
-    TokenSet arithmeticPlus = TokenSet.create(ARITH_PLUS_PLUS, ARITH_PLUS);
-
     //arithmetic operators: minus
     IElementType ARITH_MINUS_MINUS = new BashElementType("--");//++
     IElementType ARITH_MINUS = new BashElementType("-");//+
-    TokenSet arithmeticMinus = TokenSet.create(ARITH_MINUS, ARITH_MINUS_MINUS);
 
-    TokenSet arithmeticAdditionOps = TokenSet.orSet(arithmeticPlus, arithmeticMinus);
+    TokenSet arithmeticPostOps = TokenSet.create(ARITH_PLUS_PLUS, ARITH_MINUS_MINUS);
+    TokenSet arithmeticPreOps = TokenSet.create(ARITH_PLUS_PLUS, ARITH_MINUS_MINUS);
+    TokenSet arithmeticAdditionOps = TokenSet.create(ARITH_PLUS, ARITH_MINUS);
+
+    TokenSet arithmeticShiftOps = TokenSet.create(SHIFT_RIGHT); //fixme add shift left
 
     //arithmetic operators: misc
     IElementType ARITH_EXP = new BashElementType("**");//**
@@ -140,13 +146,12 @@ public interface BashTokenTypes {
     IElementType ARITH_DIV = new BashElementType("/");// /
     IElementType ARITH_MOD = new BashElementType("%");//%
     IElementType ARITH_SHIFT_LEFT = new BashElementType("<<");//++
-    IElementType ARITH_EXCL = new BashElementType("arithmetic !");//||
-    //fixme missing: ~
+    IElementType ARITH_NEGATE = new BashElementType("negation !");//||
+    IElementType ARITH_BITWISE_NEGATE = new BashElementType("bitwise negation ~");//~ //fixme
 
-    TokenSet arithmeticMisc = TokenSet.create(ARITH_EXP, ARITH_MULT, ARITH_DIV, ARITH_MOD,
-            ARITH_SHIFT_LEFT, LEFT_PAREN, RIGHT_PAREN, ARITH_EXCL);
+    TokenSet arithmeticNegationOps = TokenSet.create(ARITH_NEGATE, ARITH_BITWISE_NEGATE);
 
-    TokenSet arithmeticProduct = TokenSet.create(ARITH_MULT);
+    TokenSet arithmeticProduct = TokenSet.create(ARITH_MULT, ARITH_DIV);
 
     //arithmetic operators: comparision
     IElementType ARITH_LE = new BashElementType("<=");//<=
@@ -161,7 +166,10 @@ public interface BashTokenTypes {
     //arithmetic expressiong: logic
     IElementType ARITH_OR = new BashElementType("||");//||
     IElementType ARITH_AND = new BashElementType("&&");//||
-    //fixme missing: & ^ , |, ?:
+    IElementType ARITH_QMARK = new BashElementType("?");//||
+    IElementType ARITH_COLON = new BashElementType(":");//||
+    IElementType ARITH_XOR = new BashElementType("^");//||
+    //fixme missing: & ^ , |
 
     TokenSet arithmeticLogic = TokenSet.create(ARITH_OR, ARITH_AND);
 
@@ -178,7 +186,7 @@ public interface BashTokenTypes {
     //fixme missing: &= |= ^=, = ","
 
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
-            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT, EQ);
+            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
 
 
     //builtin command

@@ -53,6 +53,18 @@ public class ArithmeticParserTest extends MockPsiTest {
     }
 
     @Test
+    public void testParseList() throws Exception {
+        //((1,2))
+        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
+
+        //(($a,b))
+        mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, COMMA, WORD, _EXPR_ARITH);
+
+        //(($a,1*3,b))
+        mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, COMMA, NUMBER, ARITH_MULT, NUMBER, COMMA, WORD, _EXPR_ARITH);
+    }
+
+    @Test
     public void testParseAssignments() throws Exception {
         //((a=1))
         mockTest(arithmeticTest, EXPR_ARITH, WORD, EQ, NUMBER, _EXPR_ARITH);

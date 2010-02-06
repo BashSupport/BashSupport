@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,6 +110,37 @@ public class ParserUtil {
         return true;
     }
 
+    /**
+     * Advances to the next token if the current token is of the specified type.
+     *
+     * @param builder To read from
+     * @param token   The token to check for
+     * @return True if the token has been red.
+     */
+    public static boolean conditionalRead(BashPsiBuilder builder, IElementType token) {
+        if (builder.getTokenType() == token) {
+            builder.advanceLexer();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Advances to the next token if the current token is of the specified type.
+     *
+     * @param builder To read from
+     * @return True if the token has been red.
+     */
+    public static boolean conditionalRead(BashPsiBuilder builder, TokenSet tokens) {
+        if (tokens.contains(builder.getTokenType())) {
+            builder.advanceLexer();
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean checkNextOrError(BashPsiBuilder builder, IElementType expected, @PropertyKey(resourceBundle = BUNDLE) String message, PsiBuilder.Marker marker) {
         final IElementType next = getTokenAndAdvance(builder);
         if (next != expected) {
@@ -133,10 +164,6 @@ public class ParserUtil {
             BashTokenTypes.SEMI, BashTokenTypes.LINE_FEED,
             BashTokenTypes.AND_AND, BashTokenTypes.OR_OR
     );
-
-    public static boolean isSimpleCommandEnd(IElementType tokenType) {
-        return simpleCommandEnds.contains(tokenType);
-    }
 
     public static boolean hasNextTokens(BashPsiBuilder builder, IElementType... tokens) {
         if (tokens.length == 1) return tokens[0] == builder.getTokenType();
