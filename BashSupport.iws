@@ -7,9 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.zip" />
@@ -149,7 +149,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/EqualityExpr.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/CompundComparisionExpr.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractAssignment.java" />
@@ -161,10 +160,11 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/LogicalAnd.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/LogicalOr.java" />
         <option value="$PROJECT_DIR$/jflex.log" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
+        <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java" />
       </list>
     </option>
   </component>
@@ -1141,7 +1141,7 @@
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="Plugin.Intellij IDEA">
+  <component name="RunManager" selected="JUnit.All tests">
     <configuration default="false" name="ArithmeticParserTest.testParse" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
@@ -1812,7 +1812,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36536312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18916914" sideWeight="0.78435755" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3027933" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15464684" sideWeight="0.66368717" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15464684" sideWeight="0.68603355" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3810056" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3273743" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1821,7 +1821,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31895912" sideWeight="0.2603352" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28624535" sideWeight="0.66368717" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28624535" sideWeight="0.68603355" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27583644" sideWeight="0.6893855" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30614525" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
@@ -1856,7 +1856,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="lexer fixes for arithmetic parsing" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1884,7 +1884,6 @@
     <MESSAGE value="improved here doc parsing" />
     <MESSAGE value="guess by content is configurable now" />
     <MESSAGE value="heredoc marker enhancements" />
-    <MESSAGE value="fixes" />
     <MESSAGE value="new highlighting option" />
     <MESSAGE value="fixed heredoc issues" />
     <MESSAGE value="parsing fixes" />
@@ -1894,6 +1893,7 @@
     <MESSAGE value="first part of arithmetic expression parsing" />
     <MESSAGE value="second take on the arithmetic expression parsing" />
     <MESSAGE value="lexer fixes for arithmetic parsing" />
+    <MESSAGE value="fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1927,38 +1927,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="47" selection-start="6701" selection-end="6701" vertical-scroll-proportion="1.1462585">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleArithmeticExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="26" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.89285713">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="0" selection-start="3150" selection-end="3150" vertical-scroll-proportion="0.3222417">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/LogicalOr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="17" selection-start="772" selection-end="772" vertical-scroll-proportion="0.0863061">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/LogicalAnd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="17" selection-start="771" selection-end="771" vertical-scroll-proportion="0.0863061">
@@ -2010,13 +1978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="290" column="21" selection-start="9737" selection-end="9737" vertical-scroll-proportion="0.4964789">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="141" column="49" selection-start="6530" selection-end="6530" vertical-scroll-proportion="0.6349765">
@@ -2041,6 +2002,41 @@
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex">
       <provider selected="true" editor-type-id="text-editor">
         <state line="281" column="2" selection-start="9155" selection-end="9155" vertical-scroll-proportion="0.26056337">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/formatting/FormatterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="0" selection-start="2081" selection-end="2081" vertical-scroll-proportion="0.33212996">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/IntegrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="0" selection-start="5315" selection-end="5315" vertical-scroll-proportion="0.33274958">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/VarParsingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="0" selection-start="2097" selection-end="2097" vertical-scroll-proportion="0.56632656">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Changelog.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="95" selection-start="1812" selection-end="1812" vertical-scroll-proportion="1.5236428">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ShellCommandParsingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="281" column="0" selection-start="9358" selection-end="9358" vertical-scroll-proportion="0.33274958">
           <folding />
         </state>
       </provider>
