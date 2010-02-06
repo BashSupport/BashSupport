@@ -79,15 +79,27 @@ public interface BashElementTypes {
 
     //arithmetic commands
     public final IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
-    public final IElementType ARITH_ASSIGNMENT = new BashElementType("arithmetic assignment expressions");
-    public final IElementType ARITH_SUM = new BashElementType("arithmetic sum expr");
-    public final IElementType ARITH_MUL = new BashElementType("arithmetic mult expr");
-    public final IElementType ARITH_SIMPLE = new BashElementType("arithmetic simple expr");
-    public final IElementType ARITH_PARENS = new BashElementType("arithmetic parenthesis expr");
 
-    public final IElementType ARITH_POST_INCR = new BashElementType("arithmetic post increment");
-    public final IElementType ARITH_POST_DECR = new BashElementType("arithmetic post decrement");
+    public final IElementType ARITH_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic assignment");
+    public final IElementType ARITH_SUM_ELEMENT = new BashElementType("arithmetic sum");
+    public final IElementType ARITH_BIT_OR_ELEMENT = new BashElementType("arithmetic bitwise or");
+    public final IElementType ARITH_BIT_XOR_ELEMENT = new BashElementType("arithmetic bitwise xor");
+    public final IElementType ARITH_BIT_AND_ELEMENT = new BashElementType("arithmetic bitwise and");
+    public final IElementType ARITH_COMBINATION_ASSIGNMENT_ELEMENT = new BashElementType("arith assignment");
+    public final IElementType ARITH_COMPUND_COMPARISION_ELEMENT = new BashElementType("arith compund comparision");
+    public final IElementType ARITH_EQUALITY_ELEMENT = new BashElementType("arithmetic equality");
+    public final IElementType ARITH_EXPONENT_ELEMENT = new BashElementType("arithmetic exponent");
+    public final IElementType ARITH_LOGIC_AND_ELEMENT = new BashElementType("arithmetic logic and");
+    public final IElementType ARITH_LOGIC_OR_ELEMENT = new BashElementType("arithmetic logic or");
+    public final IElementType ARITH_MULTIPLICACTION_ELEMENT = new BashElementType("arithmetic multiplication");
+    public final IElementType ARITH_NEGATION_ELEMENT = new BashElementType("arithmetic negation");
+    public final IElementType ARITH_POST_INCR_ELEMENT = new BashElementType("arithmetic post incr");
+    public final IElementType ARITH_PRE_INC_ELEMENT = new BashElementType("arithmetic pre incr");
+    public final IElementType ARITH_SHIFT_ELEMENT = new BashElementType("arithmetic shift");
+    public final IElementType ARITH_SIMPLE_ELEMENT = new BashElementType("arithmetic simple");
+    public final IElementType ARITH_SIMPLE_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic simple assignment");
 
+    public final IElementType ARITH_PARENS_ELEMENT = new BashElementType("arithmetic parenthesis expr");
 
     public final IElementType CASE_COMMAND = new BashElementType("case pattern");
     public final IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");

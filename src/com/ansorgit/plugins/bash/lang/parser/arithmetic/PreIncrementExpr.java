@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -40,6 +41,17 @@ class PreIncrementExpr implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        return (ParserUtil.conditionalRead(builder, arithmeticPreOps) && next.isValid(builder)) || next.parse(builder);
+        PsiBuilder.Marker marker = builder.mark();
+        boolean mark = ParserUtil.conditionalRead(builder, arithmeticPreOps);
+
+        boolean ok = next.parse(builder);
+
+        if (mark) {
+            marker.done(ARITH_PRE_INC_ELEMENT);
+        } else {
+            marker.drop();
+        }
+
+        return ok;
     }
 }

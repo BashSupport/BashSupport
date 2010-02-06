@@ -122,11 +122,6 @@ public interface BashTokenTypes {
     final TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
 
 
-    //arithmetic comparision
-
-    TokenSet arithmeticCompareOps = TokenSet.create();
-
-
     //arithmetic operators: plus
     IElementType ARITH_PLUS_PLUS = new BashElementType("++");//++
     IElementType ARITH_PLUS = new BashElementType("+");//+
@@ -145,7 +140,8 @@ public interface BashTokenTypes {
     IElementType ARITH_MULT = new BashElementType("*");//*
     IElementType ARITH_DIV = new BashElementType("/");// /
     IElementType ARITH_MOD = new BashElementType("%");//%
-    IElementType ARITH_SHIFT_LEFT = new BashElementType("<<");//++
+    IElementType ARITH_SHIFT_LEFT = new BashElementType("<<");//<<
+    IElementType ARITH_SHIFT_RIGHT = new BashElementType(">>");//>>
     IElementType ARITH_NEGATE = new BashElementType("negation !");//||
     IElementType ARITH_BITWISE_NEGATE = new BashElementType("bitwise negation ~");//~ //fixme
 
@@ -161,18 +157,16 @@ public interface BashTokenTypes {
     IElementType ARITH_EQ = new BashElementType("==");//==
     IElementType ARITH_NE = new BashElementType("!=");//!=
 
-    TokenSet arithmeticCmp = TokenSet.create(ARITH_LE, ARITH_GE, ARITH_NE, ARITH_LT, ARITH_LT, ARITH_EQ);
+    TokenSet arithmeticCmpOp = TokenSet.create(ARITH_LE, ARITH_GE, ARITH_LT, ARITH_LT);
+
+    TokenSet arithmeticEqualityOps = TokenSet.create(ARITH_NE, ARITH_EQ);
 
     //arithmetic expressiong: logic
-    IElementType ARITH_OR = new BashElementType("||");//||
-    IElementType ARITH_AND = new BashElementType("&&");//||
     IElementType ARITH_QMARK = new BashElementType("?");//||
     IElementType ARITH_COLON = new BashElementType(":");//||
-    IElementType ARITH_XOR = new BashElementType("^");//||
-    //fixme missing: & ^ , |
-
-    TokenSet arithmeticLogic = TokenSet.create(ARITH_OR, ARITH_AND);
-
+    IElementType ARITH_BITWISE_XOR = new BashElementType("^");//||
+    IElementType ARITH_BITWISE_AND = new BashElementType("&");//||
+    //fixme missing: & |
 
     //arithmetic operators: assign
     IElementType ARITH_ASS_MUL = new BashElementType("*=");// *=

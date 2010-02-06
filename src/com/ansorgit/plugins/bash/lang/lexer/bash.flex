@@ -125,7 +125,7 @@ WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | {EscapedChar}
 WordAfter =  {WordFirst} | "#" | "[" | "]" | "!"
 
-ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | "&" | "%" | "," | "~" | {EscapedChar}
+ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 ArithWordAfter =  {ArithWordFirst} | "#" | "[" | "]" | "!"
 
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
@@ -254,7 +254,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
    "unalias"                    |
    "wait"                       { return INTERNAL_COMMAND; }
 
-   <S_STRINGMODE> {
+   <S_STRINGMODE, S_ARITH> {
        "&&"                         { return AND_AND; }
 
        "||"                         { return OR_OR; }
@@ -390,6 +390,9 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "<="                          { return ARITH_LE; }
   "!="                          { return ARITH_NE; }
 
+  "<<"                          { return ARITH_SHIFT_LEFT; }
+  ">>"                          { return ARITH_SHIFT_RIGHT; }
+
   "*="                          { return ARITH_ASS_MUL; }
   "/="                          { return ARITH_ASS_DIV; }
   "%="                          { return ARITH_ASS_MOD; }
@@ -410,11 +413,11 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "%"                           { return ARITH_MOD; }
   "<<"                          { return ARITH_SHIFT_LEFT; }
 
-  "||"                          { return ARITH_OR; }
-  "&"                           { return ARITH_AND; }
   "!"                           { return ARITH_NEGATE; }
 
+  "&"                           { return ARITH_BITWISE_AND; }
   "~"                           { return ARITH_BITWISE_NEGATE; }
+  "^"                           { return ARITH_BITWISE_XOR; }
 
   {ArithWord}                   { return WORD; }
 }

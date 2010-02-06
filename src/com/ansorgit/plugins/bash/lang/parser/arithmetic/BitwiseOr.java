@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class BitwiseOr extends AbstractRepeatedExpr {
     BitwiseOr() {
-        super(new BitwiseXor(), PIPE);//check this
+        super(new BitwiseXor(), PIPE, ARITH_BIT_OR_ELEMENT);
     }
 }
