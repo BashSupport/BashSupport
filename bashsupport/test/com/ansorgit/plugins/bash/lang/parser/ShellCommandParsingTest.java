@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandParsingTest.java, Class: ShellCommandParsingTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -270,7 +270,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
 
     @Test
     public void testParseArithmeticCommand3() {
-        //$((1))
+        //$(($a && $a))
         mockTest(arithmeticParsingTester,
                 EXPR_ARITH, VARIABLE, ARITH_AND, VARIABLE, _EXPR_ARITH
         );
@@ -278,6 +278,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
 
     @Test
     public void testParseArithmeticCommand5() {
+        //$(((1)))
         mockTest(arithmeticParsingTester, EXPR_ARITH, LEFT_PAREN, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
     }
 
