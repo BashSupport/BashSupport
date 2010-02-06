@@ -278,7 +278,11 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "+="                            { return ADD_EQ; }
   "="                             { return EQ; }
   "("                             { return LEFT_PAREN; }
-  ","                             { return COMMA; }
+
+  <S_ARITH> {
+    ","                             { return COMMA; }
+  }
+
   {AssignListWord}                { return WORD; }
   ")"                             { backToPreviousState(); return RIGHT_PAREN; }
 }
