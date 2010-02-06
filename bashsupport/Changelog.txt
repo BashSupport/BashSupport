@@ -1,6 +1,10 @@
 2010-xx-xx:
  - Version 0.9.7-maia
 
+2010-02-6:
+ - Parsing of arithmetic expressions
+ - Support for variables in arithmetic expressions, e.g. in arithmetic for loops
+
 2010-01-30:
  - Heredoc markers support Go to definition, rename and Search usages now
  - Heredoc end markers parsing improved
