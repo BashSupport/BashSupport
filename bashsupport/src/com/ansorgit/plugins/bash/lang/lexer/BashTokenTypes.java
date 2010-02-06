@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,8 +99,30 @@ public interface BashTokenTypes {
     IElementType HERE_STRING = new BashElementType("<<<");//<<<
     //fixme: missing here doc <<- word\n...\ndelimiter
 
-    //arithmetic operators: plus
+    // single characters
+    IElementType BACKSLASH = new BashElementType("\\");
+    IElementType AMP = new BashElementType("&");
+    IElementType AT = new BashElementType("@");
+    IElementType COLON = new BashElementType(":");
+    IElementType COMMA = new BashElementType(",");
+    IElementType EQ = new BashElementType("=");
+    IElementType ADD_EQ = new BashElementType("+=");
+    IElementType SEMI = new BashElementType(";");
+    IElementType SHIFT_RIGHT = new BashElementType(">>");//>>
+    IElementType LESS_THAN = new BashElementType("<");//>>
+    IElementType GREATER_THAN = new BashElementType(">");//>>
 
+    IElementType PIPE = new BashElementType("|");// }
+    IElementType PIPE_AMP = new BashElementType("|&"); //bash 4 only, equivalent to 2>&1 |
+    IElementType AND_AND = new BashElementType("&&");//!=
+    IElementType OR_OR = new BashElementType("||");//!=
+
+    IElementType LINE_FEED = new BashElementType("linefeed");// }
+
+    final TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
+
+
+    //arithmetic operators: plus
     IElementType ARITH_PLUS_PLUS = new BashElementType("++");//++
     IElementType ARITH_PLUS = new BashElementType("+");//+
     TokenSet arithmeticPlus = TokenSet.create(ARITH_PLUS_PLUS, ARITH_PLUS);
@@ -110,17 +132,21 @@ public interface BashTokenTypes {
     IElementType ARITH_MINUS = new BashElementType("-");//+
     TokenSet arithmeticMinus = TokenSet.create(ARITH_MINUS, ARITH_MINUS_MINUS);
 
+    TokenSet arithmeticAdditionOps = TokenSet.orSet(arithmeticPlus, arithmeticMinus);
+
     //arithmetic operators: misc
-    IElementType ARITH_EXP = new BashElementType("**");//++
-    IElementType ARITH_MULT = new BashElementType("*");//++
-    IElementType ARITH_DIV = new BashElementType("/");//++
-    IElementType ARITH_MOD = new BashElementType("%");//++
+    IElementType ARITH_EXP = new BashElementType("**");//**
+    IElementType ARITH_MULT = new BashElementType("*");//*
+    IElementType ARITH_DIV = new BashElementType("/");// /
+    IElementType ARITH_MOD = new BashElementType("%");//%
     IElementType ARITH_SHIFT_LEFT = new BashElementType("<<");//++
     IElementType ARITH_EXCL = new BashElementType("arithmetic !");//||
     //fixme missing: ~
 
     TokenSet arithmeticMisc = TokenSet.create(ARITH_EXP, ARITH_MULT, ARITH_DIV, ARITH_MOD,
             ARITH_SHIFT_LEFT, LEFT_PAREN, RIGHT_PAREN, ARITH_EXCL);
+
+    TokenSet arithmeticProduct = TokenSet.create(ARITH_MULT);
 
     //arithmetic operators: comparision
     IElementType ARITH_LE = new BashElementType("<=");//<=
@@ -152,7 +178,7 @@ public interface BashTokenTypes {
     //fixme missing: &= |= ^=, = ","
 
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
-            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
+            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT, EQ);
 
 
     //builtin command
@@ -160,30 +186,7 @@ public interface BashTokenTypes {
     TokenSet commands = TokenSet.create(COMMAND_TOKEN);
 
     //variables
-    IElementType VARIABLE = new BashElementType("variable");//!=
-
-    // single characters
-    IElementType BACKSLASH = new BashElementType("\\");
-    IElementType AMP = new BashElementType("&");
-    IElementType AT = new BashElementType("@");
-    IElementType COLON = new BashElementType(":");
-    IElementType COMMA = new BashElementType(",");
-    IElementType EQ = new BashElementType("=");
-    IElementType ADD_EQ = new BashElementType("+=");
-    IElementType SEMI = new BashElementType(";");
-    IElementType SHIFT_RIGHT = new BashElementType(">>");//>>
-    IElementType LESS_THAN = new BashElementType("<");//>>
-    IElementType GREATER_THAN = new BashElementType(">");//>>
-
-    IElementType PIPE = new BashElementType("|");// }
-    IElementType PIPE_AMP = new BashElementType("|&"); //bash 4 only, equivalent to 2>&1 |
-    IElementType AND_AND = new BashElementType("&&");//!=
-    IElementType OR_OR = new BashElementType("||");//!=
-
-    IElementType LINE_FEED = new BashElementType("linefeed");// }
-
-    final TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
-
+    IElementType VARIABLE = new BashElementType("variable");
 
     //parameter expansion
     IElementType PARAM_EXPANSION_OP = new BashElementType("Parameter expansion operator");

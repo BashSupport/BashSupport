@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,15 @@ public interface BashElementTypes {
     public final IElementType BACKQUOTE_COMMAND = new BashElementType("backquote shellcommand");
     public final IElementType FUNCTION_DEF_COMMAND = new BashElementType("function definition shell command");
     public final IElementType GROUP_COMMAND = new BashElementType("group command");
+
+    //arithmetic commands
     public final IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
+    public final IElementType ARITH_ASSIGNMENT = new BashElementType("arithmetic assignment expressions");
+    public final IElementType ARITH_SUM = new BashElementType("arithmetic sum expr");
+    public final IElementType ARITH_MUL = new BashElementType("arithmetic mult expr");
+    public final IElementType ARITH_SIMPLE = new BashElementType("arithmetic simple expr");
+    public final IElementType ARITH_PARENS = new BashElementType("arithmetic parenthesis expr");
+
 
     public final IElementType CASE_COMMAND = new BashElementType("case pattern");
     public final IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");
