@@ -412,7 +412,9 @@ CasePattern = {CaseFirst}{CaseAfter}*
 
   "||"                          { return ARITH_OR; }
   "&"                           { return ARITH_AND; }
-  "!"                           { return ARITH_EXCL; }
+  "!"                           { return ARITH_NEGATE; }
+
+  "~"                           { return ARITH_BITWISE_NEGATE; }
 
   {ArithWord}                   { return WORD; }
 }
