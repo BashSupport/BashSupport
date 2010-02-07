@@ -18,8 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.BitwiseAnd;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * User: jansorg
@@ -28,6 +30,15 @@ import com.intellij.lang.ASTNode;
  */
 public class BitwiseAndExpressionsImpl extends AbstractExpression implements BitwiseAnd {
     public BitwiseAndExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "BitwiseAndExpr");
+        super(astNode, "BitwiseAndExpr", Type.TwoOperands);
+    }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        if (operator == BashTokenTypes.ARITH_BITWISE_AND) {
+            return currentValue & nextExpressionValue;
+        }
+
+        return null;
     }
 }

@@ -18,9 +18,16 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +40,28 @@ import java.util.List;
  * Time: 12:14:33 PM
  */
 public abstract class AbstractExpression extends BashPsiElementImpl implements ArithmeticExpression {
-    public AbstractExpression(final ASTNode astNode, final String name) {
+    private final Type type;
+
+    public enum Type {
+        NoOperands,
+        TwoOperands,
+        PrefixOperand,
+        PostfixOperand,
+        Unsupported
+    }
+
+    public AbstractExpression(final ASTNode astNode, final String name, Type type) {
         super(astNode, name);
+        this.type = type;
+    }
+
+    @Override
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof BashVisitor) {
+            ((BashVisitor) visitor).visitArithmeticExpression(this);
+        } else {
+            visitor.visitElement(this);
+        }
     }
 
     public boolean isStatic() {
@@ -53,7 +80,52 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         return Arrays.asList(findChildrenByClass(ArithmeticExpression.class));
     }
 
+    protected abstract Long compute(long currentValue, IElementType operator, Long nextExpressionValue);
+
     public long computeNumericValue() {
-        throw new IllegalStateException("Unsupported");
+        List<ArithmeticExpression> childs = subexpressions();
+        int childSize = childs.size();
+        if (childSize == 0) {
+            throw new UnsupportedOperationException("unsupported");
+        }
+
+        ArithmeticExpression firstChild = childs.get(0);
+        long result = firstChild.computeNumericValue();
+
+        if (type == Type.PostfixOperand) {
+            PsiElement operator = BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE);
+            return compute(result, BashPsiUtils.nodeType(operator), null);
+        } else if (type == Type.PrefixOperand) {
+            PsiElement operator = BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE);
+            return compute(result, BashPsiUtils.nodeType(operator), null);
+        } else if (type == Type.TwoOperands) {
+            int i = 1;
+            while (i < childSize) {
+                ArithmeticExpression c = childs.get(i);
+                long nextValue = c.computeNumericValue();
+
+                PsiElement opElement = BashPsiUtils.findPreviousSibling(c, BashTokenTypes.WHITESPACE);
+                if (opElement != null) {
+                    IElementType op = BashPsiUtils.nodeType(opElement);
+
+                    result = compute(result, op, nextValue);
+                }
+
+                i++;
+            }
+
+            return result;
+        } else {
+            throw new UnsupportedOperationException("unsupported");
+        }
+    }
+
+    public ArithmeticExpression findParentExpression() {
+        PsiElement context = getParent();
+        if (context instanceof AbstractExpression) {
+            return (AbstractExpression) context;
+        }
+
+        return null;
     }
 }

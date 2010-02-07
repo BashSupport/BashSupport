@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,8 +133,6 @@ public interface BashTokenTypes {
     TokenSet arithmeticPreOps = TokenSet.create(ARITH_PLUS_PLUS, ARITH_MINUS_MINUS);
     TokenSet arithmeticAdditionOps = TokenSet.create(ARITH_PLUS, ARITH_MINUS);
 
-    TokenSet arithmeticShiftOps = TokenSet.create(SHIFT_RIGHT); //fixme add shift left
-
     //arithmetic operators: misc
     IElementType ARITH_EXP = new BashElementType("**");//**
     IElementType ARITH_MULT = new BashElementType("*");//*
@@ -143,7 +141,9 @@ public interface BashTokenTypes {
     IElementType ARITH_SHIFT_LEFT = new BashElementType("<<");//<<
     IElementType ARITH_SHIFT_RIGHT = new BashElementType(">>");//>>
     IElementType ARITH_NEGATE = new BashElementType("negation !");//||
-    IElementType ARITH_BITWISE_NEGATE = new BashElementType("bitwise negation ~");//~ //fixme
+    IElementType ARITH_BITWISE_NEGATE = new BashElementType("bitwise negation ~");//~
+
+    TokenSet arithmeticShiftOps = TokenSet.create(ARITH_SHIFT_LEFT, ARITH_SHIFT_RIGHT);
 
     TokenSet arithmeticNegationOps = TokenSet.create(ARITH_NEGATE, ARITH_BITWISE_NEGATE);
 
@@ -152,13 +152,13 @@ public interface BashTokenTypes {
     //arithmetic operators: comparision
     IElementType ARITH_LE = new BashElementType("<=");//<=
     IElementType ARITH_GE = new BashElementType(">=");//>=
-    IElementType ARITH_GT = new BashElementType(">");//>=
-    IElementType ARITH_LT = new BashElementType("<");//>=
-    IElementType ARITH_EQ = new BashElementType("==");//==
+    IElementType ARITH_GT = new BashElementType("arith >");//>=
+    IElementType ARITH_LT = new BashElementType("arith <");//>=
+
+    TokenSet arithmeticCmpOp = TokenSet.create(ARITH_LE, ARITH_GE, ARITH_LT, ARITH_GT);
+
+    IElementType ARITH_EQ = new BashElementType("arith ==");//==
     IElementType ARITH_NE = new BashElementType("!=");//!=
-
-    TokenSet arithmeticCmpOp = TokenSet.create(ARITH_LE, ARITH_GE, ARITH_LT, ARITH_LT);
-
     TokenSet arithmeticEqualityOps = TokenSet.create(ARITH_NE, ARITH_EQ);
 
     //arithmetic expressiong: logic
@@ -166,7 +166,7 @@ public interface BashTokenTypes {
     IElementType ARITH_COLON = new BashElementType(":");//||
     IElementType ARITH_BITWISE_XOR = new BashElementType("^");//||
     IElementType ARITH_BITWISE_AND = new BashElementType("&");//||
-    //fixme missing: & |
+    //fixme missing: |
 
     //arithmetic operators: assign
     IElementType ARITH_ASS_MUL = new BashElementType("*=");// *=

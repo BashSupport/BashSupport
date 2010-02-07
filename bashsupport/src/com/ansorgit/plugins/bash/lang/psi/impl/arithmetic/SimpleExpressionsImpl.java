@@ -19,9 +19,13 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -30,21 +34,27 @@ import com.intellij.psi.PsiElement;
  */
 public class SimpleExpressionsImpl extends AbstractExpression implements SimpleExpression {
     public SimpleExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithSimpleExpr");
+        super(astNode, "ArithSimpleExpr", Type.NoOperands);
     }
 
     @Override
     public boolean isStatic() {
-        PsiElement firstChild = getFirstChild();
-        if (firstChild != null) {
-            ASTNode astNode = firstChild.getNode();
+        //it can have one operator in front followed by a simple expression
+        //or just contain a number
 
-            if (astNode != null) {
-                return astNode.getElementType() == BashTokenTypes.NUMBER;
-            }
+        IElementType first = BashPsiUtils.nodeType(getFirstChild());
+
+        if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
+            List<ArithmeticExpression> subexpressions = subexpressions();
+            return subexpressions.size() == 1 && subexpressions.get(0).isStatic();
         }
 
-        return false;
+        return first == BashTokenTypes.NUMBER;
+    }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        throw new UnsupportedOperationException("Unsupported");
     }
 
     @Override

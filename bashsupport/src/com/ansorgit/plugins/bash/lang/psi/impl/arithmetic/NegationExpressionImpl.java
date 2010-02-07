@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: LogicalAndImpl.java, Class: LogicalAndImpl
+ * File: NegationExpressionImpl.java, Class: NegationExpressionImpl
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.LogicalAnd;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.NegationExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -28,15 +28,17 @@ import com.intellij.psi.tree.IElementType;
  * Date: Feb 6, 2010
  * Time: 12:13:49 PM
  */
-public class LogicalAndImpl extends AbstractExpression implements LogicalAnd {
-    public LogicalAndImpl(final ASTNode astNode) {
-        super(astNode, "LogicalAndExpr", Type.TwoOperands);
+public class NegationExpressionImpl extends AbstractExpression implements NegationExpression {
+    public NegationExpressionImpl(final ASTNode astNode) {
+        super(astNode, "NegationExpr", Type.PrefixOperand);
     }
 
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        if (operator == BashTokenTypes.AND_AND && nextExpressionValue != null) {
-            return (currentValue != 0L && nextExpressionValue != 0L) ? 1L : 0L;
+        if (operator == BashTokenTypes.ARITH_NEGATE) {
+            return currentValue != 0 ? 0L : 1L;
+        } else if (operator == BashTokenTypes.ARITH_BITWISE_NEGATE) {
+            return ~currentValue;
         }
 
         return null;
