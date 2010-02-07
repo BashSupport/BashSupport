@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleAssignmentExpr.java, Class: SimpleAssignmentExpr
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,6 @@ import com.intellij.psi.tree.TokenSet;
  */
 class SimpleAssignmentExpr extends AbstractAssignment {
     protected SimpleAssignmentExpr() {
-        super(new TernaryExpression(), TokenSet.create(EQ));
+        super(ParenExpr.delegate(new TernaryExpression()), TokenSet.create(EQ));
     }
 }

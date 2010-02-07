@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: LogicalOr.java, Class: LogicalOr
+ * File: SimpleAssignmentExpressionsImpl.java, Class: SimpleAssignmentExpressionsImpl
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,18 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.arithmetic;
+package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
+
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleAssignmentExpression;
+import com.intellij.lang.ASTNode;
 
 /**
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 12:13:49 PM
  */
-class LogicalOr extends AbstractRepeatedExpr {
-    LogicalOr() {
-        super(ParenExpr.delegate(new LogicalAnd()), OR_OR, ARITH_LOGIC_OR_ELEMENT); //fixme check
+public class SimpleAssignmentExpressionsImpl extends AbstractExpression implements SimpleAssignmentExpression {
+    public SimpleAssignmentExpressionsImpl(final ASTNode astNode) {
+        super(astNode, "ArithSimpleAssignment");
     }
 }

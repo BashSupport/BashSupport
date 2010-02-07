@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: LogicalOr.java, Class: LogicalOr
+ * File: ExponentExpr.java, Class: ExponentExpr
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,12 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.arithmetic;
+package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 7:14:40 PM
  */
-class LogicalOr extends AbstractRepeatedExpr {
-    LogicalOr() {
-        super(ParenExpr.delegate(new LogicalAnd()), OR_OR, ARITH_LOGIC_OR_ELEMENT); //fixme check
-    }
+public interface ExponentExpr {
 }
