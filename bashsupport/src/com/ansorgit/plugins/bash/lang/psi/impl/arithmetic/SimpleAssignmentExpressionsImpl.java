@@ -18,8 +18,12 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleAssignmentExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -28,6 +32,22 @@ import com.intellij.lang.ASTNode;
  */
 public class SimpleAssignmentExpressionsImpl extends AbstractExpression implements SimpleAssignmentExpression {
     public SimpleAssignmentExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithSimpleAssignment");
+        super(astNode, "ArithSimpleAssignment", Type.Unsupported);
+    }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        throw new UnsupportedOperationException("unsupported");
+    }
+
+    @Override
+    public long computeNumericValue() {
+        //find the child after the assignment sign
+        List<ArithmeticExpression> childs = subexpressions();
+        if (childs.size() != 2) {
+            throw new IllegalStateException("impossible state");
+        }
+
+        return childs.get(1).computeNumericValue();
     }
 }

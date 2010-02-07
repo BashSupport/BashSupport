@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.editor.annotator;
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -77,20 +76,6 @@ public class BashAnnotator implements Annotator {
             annotateString((BashString) element, annotationHolder);
         } else if (element instanceof BashSubshellCommand) {
             annotateSubshell((BashSubshellCommand) element, annotationHolder);
-        } else if (element instanceof ArithmeticExpression) {
-            annotateArithmeticExpression((ArithmeticExpression) element, annotationHolder);
-        }
-    }
-
-    private void annotateArithmeticExpression(ArithmeticExpression arithmeticExpression, AnnotationHolder annotationHolder) {
-        if (arithmeticExpression.isStatic() && arithmeticExpression.subexpressions().size() > 1) {
-            try {
-                long value = arithmeticExpression.computeNumericValue();
-                annotationHolder.createWarningAnnotation(arithmeticExpression, "Replace with " + value);
-            }
-            catch (Exception e) {
-                annotationHolder.createWarningAnnotation(arithmeticExpression, "Replace with ---");
-            }
         }
     }
 

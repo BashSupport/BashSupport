@@ -408,6 +408,11 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "+"                           { return ARITH_PLUS; }
   "++"                          { return ARITH_PLUS_PLUS; }
   "-"                           { return ARITH_MINUS; }
+
+  "--"/{IntegerLiteral}         { yypushback(1); return ARITH_MINUS; }
+  "--"/{WhiteSpace}+{IntegerLiteral} 
+                                { yypushback(1); return ARITH_MINUS; }
+
   "--"                          { return ARITH_MINUS_MINUS; }
   "=="                          { return ARITH_EQ; }
 

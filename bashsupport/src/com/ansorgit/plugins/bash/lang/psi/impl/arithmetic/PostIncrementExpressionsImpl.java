@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ProductExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * User: jansorg
@@ -28,6 +29,11 @@ import com.intellij.lang.ASTNode;
  */
 public class PostIncrementExpressionsImpl extends AbstractExpression implements ProductExpression {
     public PostIncrementExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithPostIncrement");
+        super(astNode, "ArithPostIncrement", Type.Unsupported);
+    }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        throw new UnsupportedOperationException("unsupported");
     }
 }

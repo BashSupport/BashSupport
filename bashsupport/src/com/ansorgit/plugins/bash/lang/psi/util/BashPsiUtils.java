@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-01-31
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -162,5 +163,40 @@ public class BashPsiUtils {
 
     public static TextRange createRange(PsiElement node) {
         return TextRange.from(node.getTextOffset(), node.getTextLength());
+    }
+
+    public static IElementType nodeType(PsiElement element) {
+        ASTNode node = element.getNode();
+        if (node == null) {
+            return null;
+        }
+
+        return node.getElementType();
+    }
+
+    public static PsiElement findNextSibling(PsiElement start, IElementType ignoreType) {
+        PsiElement current = start.getNextSibling();
+        while (current != null) {
+            if (ignoreType != nodeType(current)) {
+                return current;
+            }
+
+            current = current.getNextSibling();
+        }
+
+        return null;
+    }
+
+    public static PsiElement findPreviousSibling(PsiElement start, IElementType ignoreType) {
+        PsiElement current = start.getPrevSibling();
+        while (current != null) {
+            if (ignoreType != nodeType(current)) {
+                return current;
+            }
+
+            current = current.getPrevSibling();
+        }
+
+        return null;
     }
 }
