@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: EqualityExpr.java, Class: EqualityExpr
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class EqualityExpr extends AbstractRepeatedExpr {
     EqualityExpr() {
-        super(new CompundComparisionExpr(), arithmeticEqualityOps, ARITH_EQUALITY_ELEMENT);
+        super(ParenExpr.delegate(new CompundComparisionExpr()), arithmeticEqualityOps, ARITH_EQUALITY_ELEMENT);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,10 +118,21 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == HEREDOC_END_MARKER_ELEMENT) return new BashHereDocEndMarkerImpl(node);
 
         if (elementType == ARITH_ASSIGNMENT_ELEMENT) return new AssignmentExpressionsImpl(node);
-        if (elementType == ARITH_MULTIPLICACTION_ELEMENT) return new ProductExpressionsImpl(node);
-        if (elementType == ARITH_SUM_ELEMENT) return new SumExpressionsImpl(node);
-        if (elementType == ARITH_SIMPLE_ELEMENT) return new SimpleExpressionsImpl(node);
+        if (elementType == ARITH_BIT_AND_ELEMENT) return new BitwiseAndExpressionsImpl(node);
+        if (elementType == ARITH_BIT_OR_ELEMENT) return new BitwiseOrExpressionsImpl(node);
+        if (elementType == ARITH_BIT_XOR_ELEMENT) return new BitwiseXorExpressionsImpl(node);
+        if (elementType == ARITH_LOGIC_AND_ELEMENT) return new LogicalAndImpl(node);
+        if (elementType == ARITH_LOGIC_OR_ELEMENT) return new LogicalOrmpl(node);
+        if (elementType == ARITH_COMPUND_COMPARISION_ELEMENT) return new CompoundComparisionExpressionsImpl(node);
+        if (elementType == ARITH_EXPONENT_ELEMENT) return new ExponentExprImpl(node);
         if (elementType == ARITH_PARENS_ELEMENT) return new ParenthesesExpressionsImpl(node);
+        if (elementType == ARITH_POST_INCR_ELEMENT) return new PostIncrementExpressionsImpl(node);
+        if (elementType == ARITH_PRE_INC_ELEMENT) return new PreIncrementExpressionsImpl(node);
+        if (elementType == ARITH_MULTIPLICACTION_ELEMENT) return new ProductExpressionsImpl(node);
+        if (elementType == ARITH_SHIFT_ELEMENT) return new ShiftExpressionsImpl(node);
+        if (elementType == ARITH_SIMPLE_ELEMENT) return new SimpleExpressionsImpl(node);
+        if (elementType == ARITH_SUM_ELEMENT) return new SumExpressionsImpl(node);
+        if (elementType == ARITH_TERNERAY_ELEMENT) return new TernaryExpressionsImpl(node);
 
         log.warn("MISSING PSI for" + node);
 

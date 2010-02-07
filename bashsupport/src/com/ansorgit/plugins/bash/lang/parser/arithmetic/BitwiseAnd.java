@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BitwiseAnd.java, Class: BitwiseAnd
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class BitwiseAnd extends AbstractRepeatedExpr {
     BitwiseAnd() {
-        super(new EqualityExpr(), AMP, ARITH_BIT_AND_ELEMENT);
+        super(ParenExpr.delegate(new EqualityExpr()), AMP, ARITH_BIT_AND_ELEMENT);
     }
 }

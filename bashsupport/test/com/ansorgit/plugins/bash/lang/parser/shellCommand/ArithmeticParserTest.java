@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParserTest.java, Class: ArithmeticParserTest
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,6 +95,21 @@ public class ArithmeticParserTest extends MockPsiTest {
 
         //((1 * (2 + 3)))
         mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_MULT, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+    }
+
+    @Test
+    public void testTristateOperator() {
+        //((a ? b : c))
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_QMARK, WORD, ARITH_COLON, WORD, _EXPR_ARITH);
+
+        //((a ? (b ? c :d) : c))
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_QMARK, LEFT_PAREN, WORD, ARITH_QMARK, WORD, ARITH_COLON, WORD, RIGHT_PAREN, ARITH_COLON, WORD, _EXPR_ARITH);
+
+        //((a ? b ? c :d : c))
+        //mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_QMARK, WORD, ARITH_QMARK, WORD, ARITH_COLON, WORD, ARITH_COLON, WORD, _EXPR_ARITH);
+
+        //((1+2 ? 3*4 : 5))
+        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_PLUS, NUMBER, ARITH_QMARK, NUMBER, ARITH_MULT, NUMBER, ARITH_COLON, WORD, _EXPR_ARITH);
     }
 
     @Test

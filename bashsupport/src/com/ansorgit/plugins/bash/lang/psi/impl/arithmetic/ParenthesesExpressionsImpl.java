@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParenthesesExpressionsImpl.java, Class: ParenthesesExpressionsImpl
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SumExpression;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -26,7 +26,7 @@ import com.intellij.lang.ASTNode;
  * Date: Feb 6, 2010
  * Time: 12:13:49 PM
  */
-public class ParenthesesExpressionsImpl extends AbstractExpression implements SumExpression {
+public class ParenthesesExpressionsImpl extends AbstractExpression implements ParenthesesExpression {
     public ParenthesesExpressionsImpl(final ASTNode astNode) {
         super(astNode, "ArithParenExpr");
     }

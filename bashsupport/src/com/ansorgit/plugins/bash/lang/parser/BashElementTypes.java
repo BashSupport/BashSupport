@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ public interface BashElementTypes {
     public final IElementType ARITH_SHIFT_ELEMENT = new BashElementType("arithmetic shift");
     public final IElementType ARITH_SIMPLE_ELEMENT = new BashElementType("arithmetic simple");
     public final IElementType ARITH_SIMPLE_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic simple assignment");
+    public final IElementType ARITH_TERNERAY_ELEMENT = new BashElementType("arithmetic ternary operator");
 
     public final IElementType ARITH_PARENS_ELEMENT = new BashElementType("arithmetic parenthesis expr");
 

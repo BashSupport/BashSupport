@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: LogicalOr.java, Class: LogicalOr
+ * File: TernaryExpression.java, Class: TernaryExpression
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,14 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.arithmetic;
+package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
+ * An arithmetic sum expression.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 10:57:11 AM
  */
-class LogicalOr extends AbstractRepeatedExpr {
-    LogicalOr() {
-        super(ParenExpr.delegate(new LogicalAnd()), OR_OR, ARITH_LOGIC_OR_ELEMENT); //fixme check
-    }
+public interface TernaryExpression extends ArithmeticExpression {
 }

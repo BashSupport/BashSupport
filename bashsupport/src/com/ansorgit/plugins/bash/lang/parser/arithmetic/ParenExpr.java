@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: PostIncrementExpr.java, Class: PostIncrementExpr
+ * File: ParenExpr.java, Class: ParenExpr
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,30 +25,48 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parses an optional parantheses expression. If not found it delegates to another function.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 10:21:56 PM
  */
-class PostIncrementExpr implements ParsingFunction {
+class ParenExpr implements ParsingFunction {
+    private final ParsingFunction delegate;
+
+    public static ParsingFunction delegate(ParsingFunction delegate) {
+        return new ParenExpr(delegate);
+    }
+
+    public ParenExpr(ParsingFunction delegate) {
+        this.delegate = delegate;
+    }
+
     public boolean isValid(IElementType token) {
         throw new IllegalStateException("unsupported");
     }
 
-    private ParsingFunction next = ParenExpr.delegate(new SimpleArithmeticExpr());
-
     public boolean isValid(BashPsiBuilder builder) {
-        return next.isValid(builder);
+        return builder.getTokenType() == LEFT_PAREN || delegate.isValid(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        boolean ok = next.parse(builder);
-        if (ok && ParserUtil.conditionalRead(builder, arithmeticPostOps)) {
-            marker.done(ARITH_POST_INCR_ELEMENT);
+        if (ParserUtil.conditionalRead(builder, LEFT_PAREN)) {
+            ArithmeticExprParser.instance.parse(builder);
+            boolean ok = ParserUtil.conditionalRead(builder, RIGHT_PAREN);
+
+            if (ok) {
+                marker.done(ARITH_PARENS_ELEMENT);
+            } else {
+                marker.drop();
+            }
+
+            return ok;
         } else {
             marker.drop();
         }
 
-        return ok;
+        return delegate.parse(builder);
     }
 }
