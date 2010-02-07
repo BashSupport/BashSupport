@@ -121,10 +121,12 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == ARITH_BIT_AND_ELEMENT) return new BitwiseAndExpressionsImpl(node);
         if (elementType == ARITH_BIT_OR_ELEMENT) return new BitwiseOrExpressionsImpl(node);
         if (elementType == ARITH_BIT_XOR_ELEMENT) return new BitwiseXorExpressionsImpl(node);
+        if (elementType == ARITH_EQUALITY_ELEMENT) return new EqualityExprImpl(node);
         if (elementType == ARITH_LOGIC_AND_ELEMENT) return new LogicalAndImpl(node);
         if (elementType == ARITH_LOGIC_OR_ELEMENT) return new LogicalOrmpl(node);
         if (elementType == ARITH_COMPUND_COMPARISION_ELEMENT) return new CompoundComparisionExpressionsImpl(node);
         if (elementType == ARITH_EXPONENT_ELEMENT) return new ExponentExprImpl(node);
+        if (elementType == ARITH_NEGATION_ELEMENT) return new NegationExpressionImpl(node);
         if (elementType == ARITH_PARENS_ELEMENT) return new ParenthesesExpressionsImpl(node);
         if (elementType == ARITH_POST_INCR_ELEMENT) return new PostIncrementExpressionsImpl(node);
         if (elementType == ARITH_PRE_INC_ELEMENT) return new PreIncrementExpressionsImpl(node);

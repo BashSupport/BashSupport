@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.TernaryExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * User: jansorg
@@ -28,7 +29,7 @@ import com.intellij.lang.ASTNode;
  */
 public class TernaryExpressionsImpl extends AbstractExpression implements TernaryExpression {
     public TernaryExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithTernaryExpr");
+        super(astNode, "ArithTernaryExpr", Type.Unsupported);
     }
 
     @Override
@@ -36,7 +37,8 @@ public class TernaryExpressionsImpl extends AbstractExpression implements Ternar
         return false;
     }
 
-    public long computeNumericValue() {
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("unsupported");
     }
 }

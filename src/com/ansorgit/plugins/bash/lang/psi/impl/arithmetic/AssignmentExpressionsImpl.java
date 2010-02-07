@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AssignmentExpressionsImpl.java, Class: AssignmentExpressionsImpl
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,12 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -27,7 +31,23 @@ import com.intellij.lang.ASTNode;
  * Time: 12:13:49 PM
  */
 public class AssignmentExpressionsImpl extends AbstractExpression implements AssignmentExpression {
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        throw new UnsupportedOperationException("unsupported");
+    }
+
     public AssignmentExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithAssignmentExpr");
+        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
+    }
+
+    @Override
+    public long computeNumericValue() {
+        //find the child after the assignment sign
+        List<ArithmeticExpression> childs = subexpressions();
+        if (childs.size() != 2) {
+            throw new IllegalStateException("impossible state");
+        }
+
+        return childs.get(1).computeNumericValue();
     }
 }

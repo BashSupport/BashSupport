@@ -18,8 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ExponentExpr;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * User: jansorg
@@ -28,6 +30,15 @@ import com.intellij.lang.ASTNode;
  */
 public class ExponentExprImpl extends AbstractExpression implements ExponentExpr {
     public ExponentExprImpl(final ASTNode astNode) {
-        super(astNode, "ExponentExpr");
+        super(astNode, "ExponentExpr", Type.TwoOperands);
+    }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        if (operator == BashTokenTypes.ARITH_EXP) {
+            return (long) Math.pow((double) currentValue, nextExpressionValue.doubleValue());
+        }
+
+        return null;
     }
 }

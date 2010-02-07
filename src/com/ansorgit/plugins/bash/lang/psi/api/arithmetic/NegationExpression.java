@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BitwiseAnd.java, Class: BitwiseAnd
+ * File: NegationExpression.java, Class: NegationExpression
  * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +16,12 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.arithmetic;
+package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
- * Arithmetic bitwise and expression.
- * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * Time: 7:14:40 PM
  */
-class BitwiseAnd extends AbstractRepeatedExpr {
-    BitwiseAnd() {
-        super(ParenExpr.delegate(new EqualityExpr()), ARITH_BITWISE_AND, ARITH_BIT_AND_ELEMENT);
-    }
+public interface NegationExpression extends ArithmeticExpression {
 }

@@ -18,8 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.BitwiseXor;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * User: jansorg
@@ -28,6 +30,16 @@ import com.intellij.lang.ASTNode;
  */
 public class BitwiseXorExpressionsImpl extends AbstractExpression implements BitwiseXor {
     public BitwiseXorExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "BitwiseXorExpr");
+        super(astNode, "BitwiseXorExpr", Type.TwoOperands);
     }
+
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        if (operator == BashTokenTypes.ARITH_BITWISE_XOR) {
+            return currentValue ^ nextExpressionValue;
+        }
+
+        return null;
+    }
+
 }
