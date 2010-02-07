@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticExpression.java, Class: ArithmeticExpression
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,4 +36,11 @@ public interface ArithmeticExpression extends BashPsiElement {
      * @return The list of contained subexpressions. Can be an empty list.
      */
     public List<ArithmeticExpression> subexpressions();
+
+    /**
+     * Computes the numeric value of this expression. This only is possible if this expressions is static.
+     *
+     * @return The numeric value. If not isStatic an IllegalStateException is thrown.
+     */
+    public long computeNumericValue();
 }

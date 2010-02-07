@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: TernaryExpression.java, Class: TernaryExpression
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -33,18 +34,27 @@ class TernaryExpression implements ParsingFunction {
         throw new IllegalStateException("Not supported");
     }
 
-    private ParsingFunction logicalOr = new LogicalOr();
+    private ParsingFunction logicalOr = ParenExpr.delegate(new LogicalOr());
 
     public boolean isValid(BashPsiBuilder builder) {
         return logicalOr.isValid(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
+        PsiBuilder.Marker marker = builder.mark();
         boolean ok = logicalOr.parse(builder);
 
         if (ok && ParserUtil.conditionalRead(builder, ARITH_QMARK)) {
-            ok = ok && logicalOr.parse(builder);//fixme check
+            ok = logicalOr.parse(builder);//check this
             ok = ok && ParserUtil.conditionalRead(builder, ARITH_COLON) && logicalOr.parse(builder);
+
+            if (ok) {
+                marker.done(ARITH_TERNERAY_ELEMENT);
+            } else {
+                marker.drop();
+            }
+        } else {
+            marker.drop();
         }
 
         return ok;

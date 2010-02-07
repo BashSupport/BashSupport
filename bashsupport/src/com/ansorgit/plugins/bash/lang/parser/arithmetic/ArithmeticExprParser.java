@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticExprParser.java, Class: ArithmeticExprParser
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
  * Time: 4:27:55 PM
  */
 public class ArithmeticExprParser extends AbstractRepeatedExpr {
-    public static final ParsingFunction instance = new ArithmeticExprParser();
+    public static final ParsingFunction instance = ParenExpr.delegate(new ArithmeticExprParser());
 
     public ArithmeticExprParser() {
         super(new CombinationAssignment(), COMMA);
