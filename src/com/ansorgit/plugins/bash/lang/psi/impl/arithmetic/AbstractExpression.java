@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractExpression.java, Class: AbstractExpression
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.intellij.lang.ASTNode;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,10 +38,22 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
     }
 
     public boolean isStatic() {
-        return false;
+        //fixme smaren up this implementation
+        List<ArithmeticExpression> arithmeticExpressionList = subexpressions();
+        for (ArithmeticExpression e : arithmeticExpressionList) {
+            if (!e.isStatic()) {
+                return false;
+            }
+        }
+
+        return arithmeticExpressionList.size() >= 1;
     }
 
     public List<ArithmeticExpression> subexpressions() {
-        return Collections.emptyList();
+        return Arrays.asList(findChildrenByClass(ArithmeticExpression.class));
+    }
+
+    public long computeNumericValue() {
+        throw new IllegalStateException("Unsupported");
     }
 }

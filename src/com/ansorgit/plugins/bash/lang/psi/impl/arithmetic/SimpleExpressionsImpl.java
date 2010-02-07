@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleExpressionsImpl.java, Class: SimpleExpressionsImpl
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,5 +45,20 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
         }
 
         return false;
+    }
+
+    @Override
+    public long computeNumericValue() {
+        if (isStatic()) {
+            String asString = getText();
+            try {
+                return Long.valueOf(asString);
+            } catch (NumberFormatException e) {
+                //fixme
+                return -1000;
+            }
+        } else {
+            throw new UnsupportedOperationException("unsupported");
+        }
     }
 }

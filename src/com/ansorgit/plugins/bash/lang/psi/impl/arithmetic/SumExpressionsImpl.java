@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SumExpressionsImpl.java, Class: SumExpressionsImpl
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,14 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SumExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -29,5 +35,39 @@ import com.intellij.lang.ASTNode;
 public class SumExpressionsImpl extends AbstractExpression implements SumExpression {
     public SumExpressionsImpl(final ASTNode astNode) {
         super(astNode, "ArithSumExpr");
+    }
+
+    public long computeNumericValue() {
+        List<ArithmeticExpression> childs = subexpressions();
+        if (childs.size() == 0) {
+            throw new UnsupportedOperationException("unsupported");
+        }
+
+        long result = childs.get(0).computeNumericValue();
+
+        int i = 1;
+        while (i < childs.size()) {
+            ArithmeticExpression c = childs.get(i);
+            long nextValue = c.computeNumericValue();
+
+            PsiElement opElement = c;
+            do {
+                opElement = opElement.getPrevSibling();
+            } while (opElement != null && opElement.getNode().getElementType() == BashTokenTypes.WHITESPACE);
+
+            if (opElement != null) {
+                IElementType op = opElement.getNode().getElementType();
+
+                if (op == BashTokenTypes.ARITH_PLUS) {
+                    result += nextValue;
+                } else if (op == BashTokenTypes.ARITH_MINUS) {
+                    result -= nextValue;
+                }
+            }
+
+            i++;
+        }
+
+        return result;
     }
 }

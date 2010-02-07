@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ShiftExpr.java, Class: ShiftExpr
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
  */
 class ShiftExpr extends AbstractRepeatedExpr {
     ShiftExpr() {
-        super(new AdditionExpr(), arithmeticShiftOps, ARITH_SHIFT_ELEMENT);
+        super(ParenExpr.delegate(new AdditionExpr()), arithmeticShiftOps, ARITH_SHIFT_ELEMENT);
     }
 }

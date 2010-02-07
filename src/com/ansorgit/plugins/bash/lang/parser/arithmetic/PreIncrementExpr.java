@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: PreIncrementExpr.java, Class: PreIncrementExpr
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import com.intellij.psi.tree.IElementType;
  * Time: 4:27:55 PM
  */
 class PreIncrementExpr implements ParsingFunction {
-    private ParsingFunction next = new PostIncrementExpr();
+    private ParsingFunction next = ParenExpr.delegate(new PostIncrementExpr());
 
     public boolean isValid(IElementType token) {
         throw new IllegalStateException("unsupported");
