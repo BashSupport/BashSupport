@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,20 @@ public class BashLexerTest {
 
     @Test
     public void testArithmeticExpr() {
+        testTokenization("$((1))", DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((-1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((--1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((--a))", DOLLAR, EXPR_ARITH, ARITH_MINUS_MINUS, WORD, _EXPR_ARITH);
+
+        testTokenization("$((- --a))", DOLLAR, EXPR_ARITH, ARITH_MINUS, WHITESPACE, ARITH_MINUS_MINUS, WORD, _EXPR_ARITH);
+
+        testTokenization("$((-1 -1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, NUMBER, WHITESPACE, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a & b))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, ARITH_BITWISE_AND, WHITESPACE, WORD, _EXPR_ARITH);
+
         testTokenization("$((a && b))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, _EXPR_ARITH);
 
         testTokenization("$((a || b))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, _EXPR_ARITH);
@@ -91,6 +105,16 @@ public class BashLexerTest {
         testTokenization("$((--a))", DOLLAR, EXPR_ARITH, ARITH_MINUS_MINUS, WORD, _EXPR_ARITH);
 
         testTokenization("$((a,2))", DOLLAR, EXPR_ARITH, WORD, COMMA, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a>2))", DOLLAR, EXPR_ARITH, WORD, ARITH_GT, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a > 2))", DOLLAR, EXPR_ARITH, WORD, WHITESPACE, ARITH_GT, WHITESPACE, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a>=2))", DOLLAR, EXPR_ARITH, WORD, ARITH_GE, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a<2))", DOLLAR, EXPR_ARITH, WORD, ARITH_LT, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a<=2))", DOLLAR, EXPR_ARITH, WORD, ARITH_LE, NUMBER, _EXPR_ARITH);
     }
 
     @Test

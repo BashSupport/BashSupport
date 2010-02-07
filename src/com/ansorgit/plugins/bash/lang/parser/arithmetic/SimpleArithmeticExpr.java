@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-07
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,10 @@ class SimpleArithmeticExpr implements ParsingFunction {
         PsiBuilder.Marker marker = builder.mark();
         boolean ok = false;
 
-        if (Parsing.var.isValid(builder)) {
+        if (arithmeticAdditionOps.contains(builder.getTokenType())) {
+            builder.advanceLexer(); //eat the prefix - or + token
+            ok = this.parse(builder);
+        } else if (Parsing.var.isValid(builder)) {
             ok = Parsing.var.parse(builder);
         } else {
             IElementType tokenType = builder.getTokenType();
