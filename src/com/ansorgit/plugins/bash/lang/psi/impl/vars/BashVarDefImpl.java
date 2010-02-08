@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-01-28
+ * Last modified: 2010-02-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
@@ -67,7 +67,9 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public PsiElement setName(@NonNls String newname) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(newname)) return null;
+        if (!BashIdentifierUtil.isValidIdentifier(newname)) {
+            throw new IncorrectOperationException("can't have an empty name");
+        }
 
         PsiElement original = findAssignmentWord();
         PsiElement replacement = BashChangeUtil.createAssignmentWord(getProject(), newname);
