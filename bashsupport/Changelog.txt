@@ -1,6 +1,9 @@
 2010-xx-xx:
  - Version 0.9.7-maia
 
+2010-02-08:
+ - exported variables resolve again
+ 
 2010-02-07:
  - Finished arithmetic expression parsing
  - New inspection and quickfix to replace a static expression with its result

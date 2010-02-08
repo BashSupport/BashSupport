@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-01-30
+ * Last modified: 2010-02-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.settings.BashSettings;
@@ -32,11 +33,8 @@ import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,6 +60,11 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         } else {
             visitor.visitElement(this);
         }
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return processor.execute(this, state);
     }
 
     @Override
@@ -102,18 +105,20 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(newName)) return null;
-        //log.debug("renaming to " + newName);
+        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
+            throw new IncorrectOperationException("Can't have an empty name");
+        }
 
+        //if this is variable which doesn't have a $ sign prefix
         if (isSingleWord()) {
             return replace(BashChangeUtil.createWord(getProject(), newName));
-        } else {
-            return replace(BashChangeUtil.createVariable(getProject(), newName, false));
         }
+
+        return replace(BashChangeUtil.createVariable(getProject(), newName, false));
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        return null;
+        throw new IncorrectOperationException("unimplemented");
     }
 
     public boolean isReferenceTo(PsiElement element) {
