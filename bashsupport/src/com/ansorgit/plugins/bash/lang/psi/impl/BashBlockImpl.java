@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBlockImpl.java, Class: BashBlockImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
@@ -56,16 +57,6 @@ public class BashBlockImpl extends BashPsiElementImpl implements BashBlock {
             return false;
         }
 
-        //log.info("Looking into children...");
-        //process all children
-        for (PsiElement child : getChildren()) {
-            //log.info("... " + child.getText());
-            if (!child.processDeclarations(processor, resolveState, lastParent, place)) {
-                //log.info("...found it");
-                return false;
-            }
-        }
-
-        return true;
+        return BashPsiUtils.processChildDeclarations(this, processor, resolveState, lastParent, place);
     }
 }

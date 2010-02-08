@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashComponents.java, Class: BashComponents
- * Last modified: 2010-02-07
+ * File: BashIdentifierUtil.java, Class: BashIdentifierUtil
+ * Last modified: 2010-02-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,20 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash;
+package com.ansorgit.plugins.bash.lang.psi.util;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Central place where the component names are stored.
- * <p/>
+ * Created by IntelliJ IDEA.
  * User: jansorg
- * Date: Jan 25, 2010
- * Time: 8:34:41 PM
+ * Date: Feb 8, 2010
+ * Time: 9:55:14 PM
+ * To change this template use File | Settings | File Templates.
  */
-public class BashComponents {
-    public static String HighlighterFactory = "BashHighlighterFactory";
+public class BashIdentifierUtil {
+    public static boolean isValidIdentifier(String name) {
+        return StringUtils.stripToNull(name) != null && !name.contains(" ");
+
+    }
 }
