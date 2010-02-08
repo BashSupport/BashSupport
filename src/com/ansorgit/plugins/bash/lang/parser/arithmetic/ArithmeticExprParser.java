@@ -21,6 +21,8 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 
 /**
+ * Parsing function for arithmetic expressions.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 4:27:55 PM

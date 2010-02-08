@@ -8,7 +8,7 @@ Planned features:
   - code folding (basic folding done)
   - parser unit tests
   - test with advanced bash scripts
-- full arithmetic expressions support, includes arithmetic for loops
+  - full arithmetic expressions support, includes arithmetic for loops
   - subshell expressions
 - eval expressions
   - here documents
@@ -88,7 +88,6 @@ Bugs:
     - Not supported: echo if in etc.
 - Unsupported: Nested param expansions
     - Not supported: : ${MINTMPKB:=1024}
-
     - Nicht selektierbar: test -x $SDPTOOL || return 1
     - Support doc for commands export, declare
     - Support "a=2 export b=10", b is not defined atm
@@ -115,16 +114,16 @@ Bugs:
 - Bash v4: see http://bash-hackers.org/wiki/doku.php/bash4
 - Bad code green: "echo > &1"
 - "declare a b" doesn't resolve a b, but "declare a=1 b" does
-- Die Variable a von "export a" erscheint nicht in den Completions
+    - Die Variable a von "export a" erscheint nicht in den Completions
 - support getopts variable parameter
 - Icon for global variables
 - Icon for script variables
 - Icon for bash global variables
-- Declare help page is missing
+    - Declare help page is missing
     - local help page is missing
-- code completion für ${<here>} geht nicht
-- configuration option to turn "unknown variable" off
-- Convert to quoted string for if [ "${CONSOLE_FONT}" ]; then
+    - code completion für ${<here>} geht nicht
+    - configuration option to turn "unknown variable" off
+    - Convert to quoted string for if [ "${CONSOLE_FONT}" ]; then
 - Fehlermeldungen: jump to line fuer deutsch geht nicht
   /home/jansorg/_DISK2/JavaProjects/projects/messe-ffm/webcrawler/build_custom_nutch.sh: Zeile 51: exit: 'webcrawler/nutch' needs to be a directory.: Ein numerischer Parameter ist
   erforderlich.
@@ -132,7 +131,7 @@ Bugs:
     - Highlight option for global vars
 - Fix variables in array assignments a[$a]=1 , this needs a lexing refactoring
 - "make" is enabled for newly created Bash run configurations
-- Variable loest nicht auf: export strange=1; echo $strange
+    - Variable loest nicht auf: export strange=1; echo $strange
 - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
