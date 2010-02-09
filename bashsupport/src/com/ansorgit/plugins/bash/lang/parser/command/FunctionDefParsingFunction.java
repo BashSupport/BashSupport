@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class FunctionDefParsingFunction extends DefaultParsingFunction {
-    public boolean isValid(IElementType token) {
+    private boolean isValid(IElementType token) {
         return false;
     }
 

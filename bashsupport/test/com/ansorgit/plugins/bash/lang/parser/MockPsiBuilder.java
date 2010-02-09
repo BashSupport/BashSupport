@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -211,7 +211,13 @@ public class MockPsiBuilder implements PsiBuilder {
                     details.append(m.details).append("\n\n");
                 }
 
-                throw new IllegalStateException("This marker isn't closed in order. Details:\n" + details.toString());
+                boolean hasCurrent = MockPsiBuilder.this.markers.contains(this);
+                String detailMessage = "This marker isn't closed in order. Current markers (newest is later):\n" + details.toString();
+                if (!hasCurrent) {
+                    detailMessage = "++ The current marker is already closed!\n" + detailMessage;
+                }
+
+                throw new IllegalStateException(detailMessage);
             }
 
             MockPsiBuilder.this.markers.pop();

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsing.java, Class: ParameterExpansionParsing
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         return builder.getTokenType() == LEFT_CURLY;
     }
 
-    public boolean isValid(IElementType token) {
+    private boolean isValid(IElementType token) {
         throw new IllegalStateException("Can't check with single element");
     }
 
@@ -51,6 +51,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //the first token has to be a plain word token
         IElementType paramToken = builder.getTokenType();
+
+        //fixme
         if (!ParserUtil.isWordToken(paramToken)) {
             marker.drop();
             return false; //fixme fail gracefully?
