@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractLoopParser.java, Class: AbstractLoopParser
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ public class AbstractLoopParser extends DefaultParsingFunction implements Parsin
         this.commandMarker = commandMarker;
     }
 
-    public boolean isValid(IElementType tokenType) {
-        return tokenType == startToken;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType() == startToken;
     }
 
     public boolean parse(BashPsiBuilder builder) {

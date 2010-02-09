@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -174,7 +174,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, DOLLAR, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
 
         //$ {#a}
-        mockTestError(fileParsingTest, DOLLAR, WHITESPACE, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
+        mockTestFail(fileParsingTest, DOLLAR, WHITESPACE, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
     }
 
     @Test

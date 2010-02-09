@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: DefaultParsingFunction.java, Class: DefaultParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,4 @@ package com.ansorgit.plugins.bash.lang.parser;
  * @author Joachim Ansorg
  */
 public abstract class DefaultParsingFunction implements ParsingFunction {
-    public boolean isValid(BashPsiBuilder builder) {
-        return isValid(builder.getTokenType());
-    }
 }

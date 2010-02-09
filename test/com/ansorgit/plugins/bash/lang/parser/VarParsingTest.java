@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: VarParsingTest.java, Class: VarParsingTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -34,15 +34,6 @@ public class VarParsingTest extends MockPsiTest {
             return Parsing.var.parse(builder);
         }
     };
-
-    @Test
-    public void testIsVariable1() {
-        Assert.assertTrue(Parsing.var.isValid(DOLLAR));
-        Assert.assertTrue(Parsing.var.isValid(VARIABLE));
-
-        Assert.assertFalse(Parsing.var.isValid(WHILE_KEYWORD));
-        Assert.assertFalse(Parsing.var.isValid(WHITESPACE));
-    }
 
     @Test
     public void testParse1() {
@@ -70,9 +61,10 @@ public class VarParsingTest extends MockPsiTest {
     }
 
     @Test
+    @Ignore
     public void testParseError1() {
         //${a;}
-        mockTestError(varParsingTest, DOLLAR, LEFT_CURLY, WORD, SEMI, RIGHT_CURLY);
+        mockTestFail(varParsingTest, DOLLAR, LEFT_CURLY, WORD, SEMI, RIGHT_CURLY);
     }
 
     @Test
