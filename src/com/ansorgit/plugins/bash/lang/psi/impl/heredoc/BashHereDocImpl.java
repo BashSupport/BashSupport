@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHereDocImpl.java, Class: BashHereDocImpl
- * Last modified: 2010-01-31
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -89,12 +90,6 @@ public class BashHereDocImpl extends BashPsiElementImpl implements BashHereDoc {
         return last instanceof BashHereDocEndMarker ? (BashHereDocEndMarker) last : null;
     }
 
-    @Nullable
-    private String markerText() {
-        PsiElement end = findEndMarkerElement();
-        return end != null ? end.getText() : null;
-    }
-
     public boolean isEvaluatingVariables() {
         PsiElement start = findStartMarkerElement();
         return (start instanceof BashHereDocStartMarker) && ((BashHereDocStartMarker) start).isEvaluatingVariables();
@@ -107,6 +102,6 @@ public class BashHereDocImpl extends BashPsiElementImpl implements BashHereDoc {
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        return super.processDeclarations(processor, state, lastParent, place);
+        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
     }
 }

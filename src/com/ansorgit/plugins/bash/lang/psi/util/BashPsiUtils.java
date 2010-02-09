@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-02-07
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -198,5 +199,33 @@ public class BashPsiUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Replaces the priginal element with the replacement.
+     *
+     * @param original    The original element which should be replaced.
+     * @param replacement The new element
+     * @return The replaces element. Depending on the context of the original element it either the original element or the replacement element.
+     */
+    public static PsiElement replaceElement(PsiElement original, PsiElement replacement) throws IncorrectOperationException {
+        try {
+            return original.replace(replacement);
+        } catch (IncorrectOperationException e) {
+            //failed, try another way
+        } catch (UnsupportedOperationException e) {
+            //failed, try another way
+        }
+
+        PsiElement parent = original.getParent();
+        if (parent != null) {
+            PsiElement inserted = parent.addBefore(replacement, original);
+            original.delete();
+            return inserted;
+        } else {
+            //last try, not optimal
+            original.getNode().replaceAllChildrenToChildrenOf(replacement.getNode());
+            return original;
+        }
     }
 }
