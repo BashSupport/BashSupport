@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-02-08
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
@@ -61,21 +62,17 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public String getName() {
-        //log.debug("getName");
-        final PsiElement element = findAssignmentWord();
-        return element.getText();
+        return findAssignmentWord().getText();
     }
 
-    public PsiElement setName(@NonNls String newname) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newname)) {
+    public PsiElement setName(@NonNls String newName) throws IncorrectOperationException {
+        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
             throw new IncorrectOperationException("can't have an empty name");
         }
 
         PsiElement original = findAssignmentWord();
-        PsiElement replacement = BashChangeUtil.createAssignmentWord(getProject(), newname);
-        getNode().replaceChild(original.getNode(), replacement.getNode());
-
-        return this;
+        PsiElement replacement = BashChangeUtil.createAssignmentWord(getProject(), newName);
+        return BashPsiUtils.replaceElement(original, replacement);
     }
 
     public boolean isArray() {
@@ -96,7 +93,10 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
 
         //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
         //as parsed var
-        ASTNode node = getFirstChild().getNode().findChildByType(accepted);
+        PsiElement firstChild = getFirstChild();
+        ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
+
+        ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
         return node != null ? node.getPsi() : getFirstChild();
     }
 
@@ -124,10 +124,10 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     @Override
-    public boolean processDeclarations(PsiScopeProcessor processor,
-                                       ResolveState resolveState,
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState resolveState,
                                        PsiElement lastParent,
-                                       PsiElement place) {
+                                       @NotNull PsiElement place) {
         return processor.execute(this, resolveState);
     }
 
@@ -149,7 +149,6 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public TextRange getRangeInElement() {
-        //log.debug("getRangeInElement");
         return TextRange.from(0, getReferencedName().length());
     }
 
@@ -193,6 +192,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);
     }
 
+    @NotNull
     public Object[] getVariants() {
         return EMPTY_VARIANTS;
     }
