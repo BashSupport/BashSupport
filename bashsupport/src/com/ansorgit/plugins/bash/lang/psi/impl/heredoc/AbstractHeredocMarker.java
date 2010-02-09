@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractHeredocMarker.java, Class: AbstractHeredocMarker
- * Last modified: 2010-01-31
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,9 @@ package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiTreeUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
@@ -70,9 +66,9 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
     }
 
     public PsiElement setName(@NotNull @NonNls String newname) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(newname)) throw new IncorrectOperationException("Invalid name");
+        if (!BashIdentifierUtil.isValidIdentifier(newname)) throw new IncorrectOperationException("The name is empty");
 
-        return replace(BashChangeUtil.createWord(getProject(), newname));
+        return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newname));
     }
 
     @Override
@@ -134,6 +130,4 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
     public boolean isSoft() {
         return false;
     }
-
-
 }
