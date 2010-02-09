@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BackquoteParsingFunction.java, Class: BackquoteParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class BackquoteParsingFunction extends DefaultParsingFunction {
         return !builder.getBackquoteData().isInBackquote() && builder.getTokenType() == BashTokenTypes.BACKQUOTE;
     }
 
-    public boolean isValid(IElementType token) {
+    private boolean isValid(IElementType token) {
         throw new IllegalStateException("isValid(token) not supported");
     }
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-02-07
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -205,7 +205,7 @@ public interface BashTokenTypes {
     IElementType INTEGER_LITERAL = new BashElementType("int literal");
     //fixme dot and colon?
     TokenSet stringLiterals = TokenSet.create(WORD, STRING2, INTEGER_LITERAL, COLON, INTERNAL_COMMAND);
-    TokenSet editorStringLiterals = TokenSet.create(STRING2);
+    //removed:
 
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...

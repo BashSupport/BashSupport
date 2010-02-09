@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ComposedVariableParsing.java, Class: ComposedVariableParsing
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parses a combined variable. A combined variable can be a subshell expression, a
@@ -35,19 +36,41 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class ComposedVariableParsing extends DefaultParsingFunction {
-    public boolean isValid(IElementType token) {
-        return token == DOLLAR;
+    private static TokenSet acceptedStarts = TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
+
+    private boolean isValid(IElementType token) {
+        throw new UnsupportedOperationException("unsupported");
+    }
+
+    @Override
+    public boolean isValid(BashPsiBuilder builder) {
+        if (!ParserUtil.hasNextTokens(builder, DOLLAR)) {
+            return false;
+        }
+
+        PsiBuilder.Marker marker = builder.mark();
+        try {
+            ParserUtil.getTokenAndAdvance(builder); //DOLLAR
+            return acceptedStarts.contains(builder.getTokenType(true));
+        }
+        finally {
+            marker.rollbackTo();
+        }
     }
 
     public boolean parse(BashPsiBuilder builder) {
         final PsiBuilder.Marker varMarker = builder.mark();
-        builder.advanceLexer();
+        builder.advanceLexer(true);
 
         final IElementType nextToken = builder.getTokenType(true);
+        if (nextToken == WHITESPACE) {
+            return false;
+        }
+
         //check if a subshell of command group is following
         if (Parsing.parameterExpansionParsing.isValid(builder)) {
             Parsing.parameterExpansionParsing.parse(builder);
-        } else if (Parsing.shellCommand.arithmeticParser.isValid(nextToken)) {
+        } else if (Parsing.shellCommand.arithmeticParser.isValid(builder)) {
             Parsing.shellCommand.arithmeticParser.parse(builder);
         } else if (nextToken == LEFT_PAREN) {
             Parsing.shellCommand.subshellParser.parse(builder);

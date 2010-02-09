@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleCommandParsingFunction.java, Class: SimpleCommandParsingFunction
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class SimpleCommandParsingFunction extends DefaultParsingFunction {
 
-    public boolean isValid(IElementType builder) {
+    private boolean isValid(IElementType builder) {
         throw new UnsupportedOperationException("isValid(token) is not supported.");
     }
 

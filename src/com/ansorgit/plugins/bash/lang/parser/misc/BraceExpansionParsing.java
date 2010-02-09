@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BraceExpansionParsing.java, Class: BraceExpansionParsing
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,6 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class BraceExpansionParsing implements ParsingFunction {
     private static final TokenSet validExpansionTokens = TokenSet.create(WORD, INTEGER_LITERAL);
-
-    public boolean isValid(IElementType token) {
-        throw new IllegalStateException("Can't check with single element");
-    }
 
     public boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParsingFunction.java, Class: ParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * A parsing function provides a common interface to parse a single aspect of the grammar.
@@ -38,14 +37,6 @@ public interface ParsingFunction extends BashTokenTypes, BashElementTypes {
      * @return True if the next tokens are valid, false if the sequence is invalid.
      */
     boolean isValid(BashPsiBuilder builder);
-
-    /**
-     * Checks whether the next single token is understood by the parser.
-     *
-     * @param token The token to check.
-     * @return True if the token parameter element is valid, false if it's invalid.
-     */
-    boolean isValid(IElementType token);
 
     /**
      * Parse the next few tokens. If the next tokens could not be parsed false is returned.

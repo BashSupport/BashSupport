@@ -2,7 +2,9 @@
  - Version 0.9.7-maia
 
 2010-02-09:
+ - Fixed test cases
  - Fixed rename of heredoc markers
+ - Fixed a marker error
 
 2010-02-08:
  - Exported variables resolve again

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SelectParsingFunction.java, Class: SelectParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Date: 02.05.2009
@@ -34,8 +33,8 @@ import com.intellij.psi.tree.IElementType;
 public class SelectParsingFunction extends DefaultParsingFunction {
     private final LoopParserUtil helper = new LoopParserUtil();
 
-    public boolean isValid(IElementType tokenType) {
-        return tokenType == SELECT_KEYWORD;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType() == SELECT_KEYWORD;
     }
 
     public boolean parse(BashPsiBuilder builder) {
