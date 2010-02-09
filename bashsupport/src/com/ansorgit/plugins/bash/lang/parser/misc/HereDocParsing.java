@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-01-30
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,16 +61,16 @@ public class HereDocParsing implements ParsingTool {
                 foundExactEnd = expectedEnd.equals(line.first);
                 foundPrefixedEnd = !foundExactEnd && expectedEnd.equals(line.first.trim());
 
-                if (expectedEnd.equals(line.first.trim())) {
+                if (foundPrefixedEnd || foundExactEnd) {
                     //we've found our end marker, the heredoc marker should end before this end marker, though
                     //so we need to rollback to the start of the line, finish the document marker and then
                     //read in the end marker line again
 
                     line.second.rollbackTo();
                     if (readLines > 1) {
+                        //hereDocMarker.error("An heredoc end marker must be at the beginning of a line.");
                         hereDocMarker.done(HEREDOC_ELEMENT);
                     } else {
-                        //we don't want to mark a heredoc which is only start and end marker
                         hereDocMarker.drop();
                     }
 
@@ -78,8 +78,7 @@ public class HereDocParsing implements ParsingTool {
                     //noinspection ConstantConditions
                     line.second.done(HEREDOC_END_MARKER_ELEMENT);
 
-                    builder.eatOptionalNewlines(1);
-
+                    //don't eat the newline after the end token, it's the command separator (needed in loops, etc)
                     break;
                 }
 
@@ -94,7 +93,6 @@ public class HereDocParsing implements ParsingTool {
             }
 
             if (foundPrefixedEnd) {
-                hereDocMarker.error("An heredoc end marker must be at the beginning of a line.");
                 builder.getHereDocData().reset();//fixme check this
 
                 return false;

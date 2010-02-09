@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParsingChain.java, Class: ParsingChain
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
  */
 
 package com.ansorgit.plugins.bash.lang.parser;
-
-import com.intellij.psi.tree.IElementType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,17 +44,6 @@ public abstract class ParsingChain implements ParsingFunction {
 
         for (ParsingFunction f : parsingFunctions) {
             if (f.isValid(builder))
-                return true;
-        }
-
-        return false;
-    }
-
-    public boolean isValid(IElementType token) {
-        if (token == null) return false;
-
-        for (ParsingFunction f : parsingFunctions) {
-            if (f.isValid(token))
                 return true;
         }
 

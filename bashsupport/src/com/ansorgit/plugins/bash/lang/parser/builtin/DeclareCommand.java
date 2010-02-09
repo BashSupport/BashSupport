@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: DeclareCommand.java, Class: DeclareCommand
- * Last modified: 2010-01-21
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class DeclareCommand extends VariableDefCommand implements ParsingTool {
         super(true, INTERNAL_COMMAND_ELEMENT, "declare", true);
     }
 
-    public boolean isValid(IElementType token) {
+    private boolean isValid(IElementType token) {
         throw new UnsupportedOperationException();
     }
 }

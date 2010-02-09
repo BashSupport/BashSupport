@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: CaseParsingFunction.java, Class: CaseParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         Faulty, SingleElement, ElementWithEndMarker
     }
 
-    public boolean isValid(IElementType token) {
-        return token == CASE_KEYWORD;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType() == CASE_KEYWORD;
     }
 
     /**
@@ -82,7 +82,7 @@ public class CaseParsingFunction extends DefaultParsingFunction {
             test the next set of patterns after completing execution of the current
             action, rather than terminating the command.
         */
-        log.assertTrue(isValid(builder.getTokenType()));
+        log.assertTrue(isValid(builder));
         final PsiBuilder.Marker caseCommand = builder.mark();
 
         builder.advanceLexer();//after the "case"

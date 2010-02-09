@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParser.java, Class: ArithmeticParser
- * Last modified: 2010-02-06
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ import com.intellij.psi.tree.IElementType;
 public final class ArithmeticParser extends DefaultParsingFunction {
     private ParsingFunction parsingFunction = new ArithmeticExprParser();
 
-    public boolean isValid(IElementType token) {
-        return token == BashTokenTypes.EXPR_ARITH;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType() == BashTokenTypes.EXPR_ARITH;
     }
 
     /**

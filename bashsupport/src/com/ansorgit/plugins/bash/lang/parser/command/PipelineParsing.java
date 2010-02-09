@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: PipelineParsing.java, Class: PipelineParsing
- * Last modified: 2010-01-26
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser.command;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -76,7 +77,7 @@ public class PipelineParsing implements ParsingTool {
     */
 
     public boolean parsePipelineCommand(BashPsiBuilder builder) {
-        final PsiBuilder.Marker pipelineCommandMarker = builder.mark();
+        final BashSmartMarker pipelineCommandMarker = new BashSmartMarker(builder.mark());
 
         boolean hasBang = false;
 
@@ -111,7 +112,9 @@ public class PipelineParsing implements ParsingTool {
             }
         }
 
-        pipelineCommandMarker.drop();//fixme
+        if (pipelineCommandMarker.isOpen()) {
+            pipelineCommandMarker.drop();
+        }
 
         return true;
     }

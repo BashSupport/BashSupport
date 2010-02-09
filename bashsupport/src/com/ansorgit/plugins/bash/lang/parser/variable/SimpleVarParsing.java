@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleVarParsing.java, Class: SimpleVarParsing
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.variable;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Date: 02.05.2009
@@ -32,8 +31,8 @@ import com.intellij.psi.tree.IElementType;
 public class SimpleVarParsing extends DefaultParsingFunction {
     //static final Logger log = Logger.getInstance("#bash.varParsingFunction");
 
-    public boolean isValid(IElementType tokenType) {
-        return tokenType == VARIABLE;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType(true) == VARIABLE;
     }
 
     public boolean parse(BashPsiBuilder builder) {

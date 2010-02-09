@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: IfParsingFunction.java, Class: IfParsingFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ import com.intellij.psi.tree.IElementType;
 public class IfParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ifParsingFunction");
 
-    public boolean isValid(IElementType token) {
-        return token == BashTokenTypes.IF_KEYWORD;
+    public boolean isValid(BashPsiBuilder builder) {
+        return builder.getTokenType() == BashTokenTypes.IF_KEYWORD;
     }
 
     public boolean parse(BashPsiBuilder builder) {
