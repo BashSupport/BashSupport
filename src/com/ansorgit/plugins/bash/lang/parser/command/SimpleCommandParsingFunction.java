@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleCommandParsingFunction.java, Class: SimpleCommandParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses a simple command. A simple command is a combination of assignments, redirects,
@@ -35,11 +34,6 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class SimpleCommandParsingFunction extends DefaultParsingFunction {
-
-    private boolean isValid(IElementType builder) {
-        throw new UnsupportedOperationException("isValid(token) is not supported.");
-    }
-
     public boolean isValid(BashPsiBuilder builder) {
         return isSimpleCommandElement(builder);
     }
@@ -77,15 +71,15 @@ public class SimpleCommandParsingFunction extends DefaultParsingFunction {
      * @return True if the command has been parsed successfully.
      */
     private boolean parseCommandWord(BashPsiBuilder builder) {
-        if (!Parsing.word.isWordToken(builder)) {
+        boolean isWord = Parsing.word.isWordToken(builder);
+        if (!isWord) {
             return false;
         }
 
         final PsiBuilder.Marker cmdMarker = builder.mark();
         final boolean internal = builder.getTokenType() == INTERNAL_COMMAND;
 
-        final boolean ok = Parsing.word.parseWord(builder);
-        if (!ok) {
+        if (!Parsing.word.parseWord(builder)) {
             cmdMarker.drop();
             return false;
         }
@@ -104,6 +98,7 @@ public class SimpleCommandParsingFunction extends DefaultParsingFunction {
         //   simple_command_element 	:	word | assignment_word | redirection;
         return Parsing.word.isWordToken(builder)
                 || Parsing.redirection.isRedirect(builder)
+                || Parsing.braceExpansionParsing.isValid(builder)
                 || CommandParsingUtil.isAssignment(builder, CommandParsingUtil.Mode.StrictAssignmentMode);
     }
 

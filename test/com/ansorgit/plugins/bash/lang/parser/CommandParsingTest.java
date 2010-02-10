@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingTest.java, Class: CommandParsingTest
- * Last modified: 2010-01-19
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,14 @@ public class CommandParsingTest extends MockPsiTest {
 
     @Test
     public void testParseSimpleCommand() {
+        //a
         mockTest(simpleCommandTest, WORD);
+        //{a,a}
+        mockTest(simpleCommandTest, LEFT_CURLY, WORD, COMMA, WORD, RIGHT_CURLY);
+        //1{a,a}
+        mockTest(simpleCommandTest, INTEGER_LITERAL, LEFT_CURLY, WORD, COMMA, WORD, RIGHT_CURLY);
+        //$a
+        mockTest(simpleCommandTest, VARIABLE);
     }
 
     @Test

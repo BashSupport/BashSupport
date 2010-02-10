@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingPsiBuilder.java, Class: ForwardingPsiBuilder
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,5 +110,9 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
 
     public <T> void putUserData(Key<T> key, T value) {
         originalPsiBuilder.putUserData(key, value);
+    }
+
+    public LighterASTNode getLatestDoneMarker() {
+        return originalPsiBuilder.getLatestDoneMarker();
     }
 }

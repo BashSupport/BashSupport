@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractReadCommand.java, Class: AbstractReadCommand
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Base class which accepts a list of "read" style words as variables.
@@ -30,10 +29,6 @@ import com.intellij.psi.tree.IElementType;
 abstract class AbstractReadCommand extends VariableDefCommand {
     public AbstractReadCommand(String command) {
         super(true, INTERNAL_COMMAND_ELEMENT, command, false);
-    }
-
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException();
     }
 
     /**

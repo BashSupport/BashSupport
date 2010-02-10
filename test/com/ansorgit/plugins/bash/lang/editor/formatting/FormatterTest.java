@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: FormatterTest.java, Class: FormatterTest
- * Last modified: 2010-02-01
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.editor.formatting;
 import com.ansorgit.plugins.bash.lang.base.BashFormatterTestCase;
 import com.ansorgit.plugins.bash.lang.base.TestUtils;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import org.junit.Ignore;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ import java.util.List;
  *
  * @author Ilya.Sergey, Joachim Ansorg
  */
+@Ignore
 public class FormatterTest extends BashFormatterTestCase {
 
     @Override
