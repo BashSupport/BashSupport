@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,6 +118,7 @@ public class MockPsiBuilder implements PsiBuilder {
     }
 
     public String getTokenText() {
+        getTokenType();//find the right one
         return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unkown";
     }
 
@@ -165,6 +166,10 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public void enforceCommentTokens(TokenSet tokenSet) {
         enforcedCommentTokens = tokenSet;
+    }
+
+    public LighterASTNode getLatestDoneMarker() {
+        return null;
     }
 
     public <T> T getUserData(Key<T> tKey) {

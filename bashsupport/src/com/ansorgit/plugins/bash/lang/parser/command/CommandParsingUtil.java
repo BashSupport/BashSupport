@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,13 +81,15 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         final IElementType tokenType = builder.getTokenType();
         switch (mode) {
             case SimpleMode:
-                return ParserUtil.isWordToken(tokenType) || Parsing.var.isValid(builder);
+                return ParserUtil.isWordToken(tokenType)
+                        || Parsing.word.isWordToken(builder)
+                        || Parsing.var.isValid(builder);
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
                         || tokenType == ARRAY_ASSIGNMENT_WORD
-                        || tokenType == WORD
                         || ParserUtil.isWordToken(tokenType)
+                        || Parsing.word.isWordToken(builder)
                         || Parsing.var.isValid(builder);
 
             default:

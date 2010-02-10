@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: GroupCommandParsingFunction.java, Class: GroupCommandParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,11 +38,16 @@ public class GroupCommandParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.GroupCommandParsingFunction");
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == BashTokenTypes.LEFT_CURLY;
+        PsiBuilder.Marker marker = builder.mark();
+        try {
+            return ParserUtil.conditionalRead(builder, LEFT_CURLY) && ParserUtil.isWhitespace(builder.getTokenType(true));
+        } finally {
+            marker.rollbackTo();
+        }
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        log.assertTrue(isValid(builder));
+        //log.assertTrue(isValid(builder));
 
         final PsiBuilder.Marker group = builder.mark();
         builder.advanceLexer();//after the { token
