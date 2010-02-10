@@ -38,11 +38,6 @@ import com.intellij.psi.tree.TokenSet;
 public class ComposedVariableParsing extends DefaultParsingFunction {
     private static TokenSet acceptedStarts = TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
 
-    private boolean isValid(IElementType token) {
-        throw new UnsupportedOperationException("unsupported");
-    }
-
-    @Override
     public boolean isValid(BashPsiBuilder builder) {
         if (!ParserUtil.hasNextTokens(builder, DOLLAR)) {
             return false;

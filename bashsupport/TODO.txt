@@ -106,14 +106,14 @@ Bugs:
     - Not properly parsed: {a,b,c}{a,b,c}{a,b,c}
     - variables in here docs are not highlighted
 - not variable auto completion in here docs
-- not correctly parsed: a=$({1..9})
+    - not correctly parsed: a=$({1..9})
 - Bash v4: Inspection in v3 mode to warn about the ambiguous redirect &| if run on v4
 - Bash v4: declare keyword changes
 - Bash v4: read keyword changes
 - Bash v4: help command changes
 - Bash v4: see http://bash-hackers.org/wiki/doku.php/bash4
 - Bad code green: "echo > &1"
-- "declare a b" doesn't resolve a b, but "declare a=1 b" does
+    - "declare a b" doesn't resolve a b, but "declare a=1 b" does
     - Die Variable a von "export a" erscheint nicht in den Completions
 - support getopts variable parameter
 - Icon for global variables
