@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ExportCommandTest.java, Class: ExportCommandTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,8 @@ public class ExportCommandTest extends MockPsiTest {
     public void testParse() {
         //export a=1
         mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD);
+        //export a
+        mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD);
         //export a=1 b=2
         mockTest(parserFunction, Lists.newArrayList("export"),
                 INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD);

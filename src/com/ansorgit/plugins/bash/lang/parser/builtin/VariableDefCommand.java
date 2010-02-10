@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: VariableDefCommand.java, Class: VariableDefCommand
- * Last modified: 2010-01-21
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,6 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
         }
     }
 
-    @Override
     public final boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();
         try {
@@ -109,8 +108,11 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
     }
 
     private boolean readOptions(BashPsiBuilder builder) {
+        String text = builder.getTokenText();
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             boolean ok = Parsing.word.parseWord(builder);
+            text = builder.getTokenText();
+
             if (!ok) return false;
         }
 
@@ -118,6 +120,11 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
     }
 
     boolean isAssignment(BashPsiBuilder builder) {
+        String text = builder.getTokenText();
+        if (text != null && text.startsWith("-")) {
+            return false;
+        }
+
         final PsiBuilder.Marker start = builder.mark();
 
         try {

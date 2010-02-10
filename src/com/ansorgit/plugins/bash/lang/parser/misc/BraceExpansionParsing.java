@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BraceExpansionParsing.java, Class: BraceExpansionParsing
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.misc;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -35,8 +34,8 @@ public class BraceExpansionParsing implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();
         try {
-            IElementType token = builder.getTokenType(true);
-            return (token == LEFT_CURLY || token == WORD) && parse(builder);
+            //fixme speed this up if necessary
+            return parse(builder);
         }
         finally {
             start.rollbackTo();

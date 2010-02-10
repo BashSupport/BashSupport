@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -492,8 +492,9 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
     public void testFunctionWithReadArgs() {
-        //make sure that the -p optoin is not taken as a variable name
-        mockTest(fileParsingTest, Lists.newArrayList("$", "(", "read", " ", "-p"),
+        //make sure that the -p option is not taken as a variable name
+        //$(read -p "")
+        mockTest(fileParsingTest, Lists.newArrayList("$", "(", "read", " ", "-p", " "),
                 DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD,
                 STRING_END, RIGHT_PAREN);
     }
@@ -531,6 +532,7 @@ public class IntegrationTest extends MockPsiTest {
     public void testBashV4() {
         mockTest(BashVersion.Bash_v4, fileParsingTest, WORD, PIPE_AMP, WORD);
     }
+
 
     @Test
     public void testFunction() {

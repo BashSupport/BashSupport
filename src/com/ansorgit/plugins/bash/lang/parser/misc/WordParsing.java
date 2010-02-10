@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: WordParsing.java, Class: WordParsing
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,17 @@ public class WordParsing implements ParsingTool {
 
     public boolean isWordToken(final BashPsiBuilder builder, final boolean enableRemapping) {
         final IElementType tokenType = builder.getTokenType(false, enableRemapping);
-        return tokenType == STRING_BEGIN
+        return isComposedString(tokenType)
                 || Parsing.braceExpansionParsing.isValid(builder)
                 || BashTokenTypes.stringLiterals.contains(tokenType)
                 || Parsing.var.isValid(builder)
                 || Parsing.shellCommand.backquoteParser.isValid(builder)
                 || Parsing.shellCommand.conditionalParser.isValid(builder)
                 || tokenType == LEFT_CURLY;
+    }
+
+    public static boolean isComposedString(IElementType tokenType) {
+        return tokenType == STRING_BEGIN;
     }
 
     public boolean parseWord(BashPsiBuilder builder) {
@@ -135,7 +139,7 @@ public class WordParsing implements ParsingTool {
         return isOk && (processedTokens > 0);
     }
 
-    private boolean parseComposedString(BashPsiBuilder builder) {
+    public static boolean parseComposedString(BashPsiBuilder builder) {
         PsiBuilder.Marker stringStart = builder.mark();
 
         builder.advanceLexer();//after STRING_START
