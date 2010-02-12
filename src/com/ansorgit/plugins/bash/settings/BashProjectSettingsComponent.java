@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettingsComponent.java, Class: BashProjectSettingsComponent
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,35 +38,28 @@ import org.jetbrains.annotations.NotNull;
 public class BashProjectSettingsComponent implements PersistentStateComponent<BashProjectSettings>, ProjectComponent {
     private BashProjectSettings settings = new BashProjectSettings();
 
-    @Override
     public BashProjectSettings getState() {
         return settings;
     }
 
-    @Override
     public void loadState(BashProjectSettings state) {
         this.settings = state;
     }
 
-    @Override
     public void projectOpened() {
     }
 
-    @Override
     public void projectClosed() {
     }
 
     @NotNull
-    @Override
     public String getComponentName() {
         return "BashSupportProject";
     }
 
-    @Override
     public void initComponent() {
     }
 
-    @Override
     public void disposeComponent() {
     }
 }
