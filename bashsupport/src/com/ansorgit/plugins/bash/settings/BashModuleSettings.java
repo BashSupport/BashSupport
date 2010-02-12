@@ -1,6 +1,6 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashComponents.java, Class: BashComponents
+ * File: BashModuleSettings.java, Class: BashModuleSettings
  * Last modified: 2010-02-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,14 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash;
+package com.ansorgit.plugins.bash.settings;
+
+import java.io.Serializable;
 
 /**
- * Central place where the component names are stored.
- * <p/>
  * User: jansorg
- * Date: Jan 25, 2010
- * Time: 8:34:41 PM
+ * Date: Feb 11, 2010
+ * Time: 8:52:40 PM
  */
-public class BashComponents {
-    public static String HighlighterFactory = "BashHighlighterFactory";
-    public static final String MODULE_SETTINGS_STORAGE_ID = "BashModuleSettings";
+public class BashModuleSettings implements Serializable {
 }

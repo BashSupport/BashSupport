@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashComponents.java, Class: BashComponents
- * Last modified: 2010-02-11
+ * File: FileMode.java, Class: FileMode
+ * Last modified: 2010-02-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,13 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash;
+package com.ansorgit.plugins.bash.settings.facet.ui;
 
 /**
- * Central place where the component names are stored.
- * <p/>
  * User: jansorg
- * Date: Jan 25, 2010
- * Time: 8:34:41 PM
+ * Date: Feb 12, 2010
+ * Time: 10:36:46 PM
  */
-public class BashComponents {
-    public static String HighlighterFactory = "BashHighlighterFactory";
-    public static final String MODULE_SETTINGS_STORAGE_ID = "BashModuleSettings";
+public enum FileMode {
+    Ignore, Accept
 }
