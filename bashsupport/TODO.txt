@@ -60,6 +60,10 @@ Planned for 1.0:
   - Improve the support for arithmetic for loops. Need support for arithmetic expressions
   - More advanced, context-sensitive code completion for keywords
 
+Planned for 0.9.7:
+-----------------
+  - better option to work with files without extension
+
 User comments:
 --------------
   Would be nice if it had a separate highlighting option for `command` strings
@@ -70,7 +74,7 @@ Bugs:
     - No doc shown for function (should show the command before it)
     - Backquotes in strings are not supported
 - "a=1 ((1))" is invalid, "((1))" is valid
-- Handle "a[a+1]=a" in a better way, support vars in the array index
+- Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
     - Support all pattern matching possibilities
 - Support <<- which removes tab characters (parses, intention for this?)
     - Besserer Support für "declare"
@@ -105,7 +109,7 @@ Bugs:
     - String not properly parsed: echo "The answer is $((6*7))"
     - Not properly parsed: {a,b,c}{a,b,c}{a,b,c}
     - variables in here docs are not highlighted
-- not variable auto completion in here docs
+- no variable auto completion in here docs
     - not correctly parsed: a=$({1..9})
 - Bash v4: Inspection in v3 mode to warn about the ambiguous redirect &| if run on v4
 - Bash v4: declare keyword changes
@@ -135,3 +139,4 @@ Bugs:
 - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
+- Add Bash facet with tree based configuration for include / exclude for files without extensions
