@@ -43,7 +43,9 @@
       </component>
       <scrollpane id="e39ff" binding="treeScollArea">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="100" height="200"/>
+          </grid>
         </constraints>
         <properties>
           <enabled value="true"/>

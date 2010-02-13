@@ -7,35 +7,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashModuleSettings.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashModuleListenerAdapater.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChooseFileModeAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetLoader.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashModuleSettingsComponent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.form" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetTypeFrameworkSupportProvider.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetSettings.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashModuleSettingsStorage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/BashComponents.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/BashComponents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsComponent.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsComponent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.form" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChangeFileModeTo.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/AbstractFileTreeTable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
     <ignored path="BashSupport-src.zip" />
+    <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
     <ignored path="BashPlugin.iws" />
     <ignored path="BashSupport-src.tar.gz" />
+    <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,8 +94,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -118,7 +104,19 @@
   </component>
   <component name="FileColors" enabled="false" enabledForTabs="false" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="FileTreeTable.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="60" column="61" selection-start="2736" selection-end="2736" vertical-scroll-proportion="-0.46126762">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -128,22 +126,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/DemoFacetTypeFrameworkSupportProvider.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ScalaFacetLoader.java" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetLoader.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetType.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetTypeFrameworkSupportProvider.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetEditorTab.java" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacet.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetConfiguration.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetSettings.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.form" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/AbstractFileTreeTable.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.form" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChooseFileEncodingAction.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChangeFileEncodingTo.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChangeFileModeTo.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChooseFileModeAction.java" />
       </list>
     </option>
   </component>
@@ -628,22 +626,6 @@
     <panes>
       <pane id="Scope">
         <subPane subId="Problems" />
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
         <subPane subId="Tests">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -659,6 +641,22 @@
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="test">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -717,7 +715,9 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -870,49 +870,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="113" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="77" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="97" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
     <property name="OverrideImplement.combined" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="97" />
     <property name="options.splitter.main.proportions" value="0.18874459" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
-    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
     <property name="recentsLimit" value="5" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="85" />
@@ -929,22 +905,22 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="93" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="886" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2944849" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="options.lastSelected" value="File.Encoding" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+    <property name="options.lastSelected" value="File.Encoding" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
-    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="Publish">
     <option name="myPathMappings">
@@ -1667,29 +1643,29 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1400" height="1017" extended-state="6" />
+    <frame x="0" y="0" width="1400" height="1015" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264095" sideWeight="0.68561876" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36536312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18916914" sideWeight="0.68561876" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30211818" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30167598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.092193305" sideWeight="0.7430168" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30657747" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30614525" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2419175" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24134079" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31895912" sideWeight="0.2603352" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31226766" sideWeight="0.68561876" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26022306" sideWeight="0.68603355" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27434945" sideWeight="0.6849162" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3199554" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27434945" sideWeight="0.6849162" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Cycles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1789,58 +1765,24 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetConfiguration.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/psi/search/GlobalSearchScope.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="13" selection-start="2171" selection-end="2171" vertical-scroll-proportion="0.5620609">
-          <folding />
-        </state>
+        <state line="17" column="74" selection-start="886" selection-end="894" vertical-scroll-proportion="0.41958043" />
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/javax/swing/event/ChangeEvent.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/module/Module.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="13" selection-start="878" selection-end="878" vertical-scroll-proportion="0.38641685">
-          <folding />
-        </state>
+        <state line="34" column="39" selection-start="1302" selection-end="1302" vertical-scroll-proportion="0.50174826" />
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/javax/swing/event/ChangeListener.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="26" selection-start="571" selection-end="571" vertical-scroll-proportion="0.3272101">
-          <folding />
-        </state>
+        <state line="90" column="23" selection-start="3193" selection-end="3193" vertical-scroll-proportion="0.68384075" />
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/options/UnnamedConfigurable.class">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/util/ui/tree/AbstractFileTreeTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="27" selection-start="272" selection-end="272" vertical-scroll-proportion="0.120551094">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="97" selection-start="6655" selection-end="6655" vertical-scroll-proportion="0.89461356">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="976" selection-end="976" vertical-scroll-proportion="0.10332951">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacetType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="19" selection-start="1522" selection-end="1522" vertical-scroll-proportion="0.27554536">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/BashFacet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="4" selection-start="1003" selection-end="1003" vertical-scroll-proportion="0.12295082">
+        <state line="16" column="0" selection-start="602" selection-end="602" vertical-scroll-proportion="0.28169015">
           <folding />
         </state>
       </provider>
@@ -1850,54 +1792,90 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java">
+    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/nio/charset/Charset.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="12" selection-start="811" selection-end="811" vertical-scroll-proportion="0.20373514">
+        <state line="467" column="22" selection-start="17411" selection-end="17411" vertical-scroll-proportion="0.3452244">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/vfs/encoding/EncodingManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="13" selection-start="1017" selection-end="1017" vertical-scroll-proportion="0.3565365">
+        <state line="14" column="20" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/openapi/vfs/encoding/FileTreeTable.class">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChangeFileModeTo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="90" selection-start="192" selection-end="273" vertical-scroll-proportion="0.10186757">
+        <state line="48" column="10" selection-start="1797" selection-end="1797" vertical-scroll-proportion="0.4225352">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/psi/search/GlobalSearchScope.class">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/vfs/encoding/ChangeFileEncodingTo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="74" selection-start="886" selection-end="894" vertical-scroll-proportion="0.41958043">
+        <state line="29" column="6" selection-start="0" selection-end="1670" vertical-scroll-proportion="0.14084508">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/module/Module.class">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/vfs/encoding/ChooseFileEncodingAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="39" selection-start="1302" selection-end="1302" vertical-scroll-proportion="0.50174826">
+        <state line="47" column="71" selection-start="0" selection-end="5804" vertical-scroll-proportion="0.0863061">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/BashFacetUI.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="23" selection-start="3193" selection-end="3193" vertical-scroll-proportion="0.68384075">
+        <state line="42" column="5" selection-start="1326" selection-end="1326" vertical-scroll-proportion="0.39700806">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ModuleFileFilter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="70" selection-start="604" selection-end="604" vertical-scroll-proportion="0.3272101">
+        <state line="54" column="33" selection-start="1643" selection-end="1643" vertical-scroll-proportion="0.60414267">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/openapi/vfs/encoding/FileTreeTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="2" selection-start="1412" selection-end="5640" vertical-scroll-proportion="0.10356732">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/AbstractFileTreeTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="124" column="20" selection-start="4850" selection-end="4850" vertical-scroll-proportion="0.33274958">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/ChooseFileModeAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="40" selection-start="3328" selection-end="3328" vertical-scroll-proportion="0.5051784">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/FileTreeTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="61" selection-start="2736" selection-end="2736" vertical-scroll-proportion="-0.46126762">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
