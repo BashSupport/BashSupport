@@ -31,30 +31,36 @@ import java.util.Map;
  */
 public final class FileMode implements Comparable<FileMode> {
     private final String id;
+    private final int index;
     private final String displayName;
 
     private static Map<String, FileMode> idMap = Maps.newHashMap();
 
     static {
-        idMap.put("accept", new FileMode("accept", "Accept"));
-        idMap.put("ignore", new FileMode("ignore", "Ignore"));
-        idMap.put("guess", new FileMode("guess", "Auto"));
+        idMap.put("default", new FileMode("defaultMode", "Default", 0));
+        idMap.put("auto", new FileMode("auto", "Auto", 1));
+        idMap.put("ignore", new FileMode("ignore", "Ignore", 2));
+        idMap.put("accept", new FileMode("accept", "Accept", 3));
     }
 
     public static List<FileMode> all() {
         return Lists.newArrayList(auto(), accept(), ignore());
     }
 
-    public static FileMode accept() {
-        return idMap.get("accept");
+    public static FileMode defaultMode() {
+        return forId("default");
     }
 
-    public static FileMode auto() {
-        return idMap.get("guess");
+    public static FileMode accept() {
+        return forId("accept");
     }
 
     public static FileMode ignore() {
-        return idMap.get("ignore");
+        return forId("ignore");
+    }
+
+    public static FileMode auto() {
+        return forId("auto");
     }
 
     public static FileMode forId(String id) {
@@ -69,13 +75,20 @@ public final class FileMode implements Comparable<FileMode> {
         return id;
     }
 
-    private FileMode(String id, String displayName) {
+    private FileMode(String id, String displayName, int index) {
         this.id = id;
         this.displayName = displayName;
+        this.index = index;
     }
 
+    @Override
+    public String toString() {
+        return "FileMode{" +
+                "displayName='" + displayName + '\'' +
+                '}';
+    }
 
     public int compareTo(FileMode o) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return index - o.index;
     }
 }

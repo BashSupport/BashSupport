@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashModuleSettingsComponent.java, Class: BashModuleSettingsComponent
- * Last modified: 2010-02-12
+ * Last modified: 2010-02-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@ package com.ansorgit.plugins.bash.settings;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
-import com.intellij.openapi.module.ModuleConfigurationEditor;
-import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationEditorProvider;
-import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -30,13 +27,17 @@ import org.jetbrains.annotations.NotNull;
  * Date: Feb 11, 2010
  * Time: 8:52:02 PM
  */
-public class BashModuleSettingsComponent implements ModuleComponent, ModuleConfigurationEditorProvider {
-    private final Module myModule;
-    private BashModuleSettingsStorage myModuleSettingsStorage;
+public class BashModuleSettingsComponent implements ModuleComponent {
+    private final Module module;
+    private BashModuleSettings moduleSettings;
 
-    public BashModuleSettingsComponent(final Module module, final BashModuleSettingsStorage mduleStorage) {
-        myModule = module;
-        myModuleSettingsStorage = BashModuleSettingsStorage.getInstance(module);
+    public BashModuleSettingsComponent(final Module module, final BashModuleSettings mduleStorage) {
+        this.module = module;
+        moduleSettings = BashModuleSettings.getInstance(module);
+    }
+
+    public static BashModuleSettingsComponent getInstance(Module module) {
+        return module.getComponent(BashModuleSettingsComponent.class);
     }
 
     public void projectOpened() {
@@ -57,9 +58,5 @@ public class BashModuleSettingsComponent implements ModuleComponent, ModuleConfi
     }
 
     public void disposeComponent() {
-    }
-
-    public ModuleConfigurationEditor[] createEditors(ModuleConfigurationState moduleConfigurationState) {
-        return new ModuleConfigurationEditor[0];
     }
 }

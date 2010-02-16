@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ChooseFileModeAction.java, Class: ChooseFileModeAction
- * Last modified: 2010-02-13
+ * Last modified: 2010-02-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public abstract class ChooseFileModeAction extends ComboBoxAction {
+abstract class ChooseFileModeAction extends ComboBoxAction {
     private final VirtualFile myVirtualFile;
 
     public ChooseFileModeAction(VirtualFile virtualFile) {
@@ -67,9 +65,10 @@ public abstract class ChooseFileModeAction extends ComboBoxAction {
         boolean enabled = true;
         if (virtualFile != null) {
             FileMode mode = modeFromFile(virtualFile);
-            if (mode != null) {
+            /*if (mode != null) {
                 enabled = false;
-            } else if (!virtualFile.isDirectory()) {
+            } else*/
+            if (!virtualFile.isDirectory()) {
                 FileType fileType = FileTypeManager.getInstance().getFileTypeByFile(virtualFile);
                 if (fileType.isBinary()) {
                     enabled = false;
@@ -92,7 +91,7 @@ public abstract class ChooseFileModeAction extends ComboBoxAction {
         }
 
         //return EncodingManager.getInstance().getCachedCharsetFromContent(document);
-        return FileMode.accept();//fixme
+        return FileMode.defaultMode();
     }
 
     @NotNull
@@ -100,8 +99,8 @@ public abstract class ChooseFileModeAction extends ComboBoxAction {
         return createGroup(true);
     }
 
-    private void fileModeActions(DefaultActionGroup group, final VirtualFile virtualFile, List<FileMode> charsets) {
-        for (FileMode slave : charsets) {
+    private void fileModeActions(DefaultActionGroup group, final VirtualFile virtualFile, List<FileMode> fileModes) {
+        for (FileMode slave : fileModes) {
             ChangeFileModeTo action = new ChangeFileModeTo(virtualFile, slave) {
                 protected void chosen(final VirtualFile file, final FileMode mode) {
                     ChooseFileModeAction.this.chosen(file, mode);
@@ -123,7 +122,7 @@ public abstract class ChooseFileModeAction extends ComboBoxAction {
         }
 
         public void actionPerformed(final AnActionEvent e) {
-            chosen(myFile, FileMode.ignore());
+            chosen(myFile, FileMode.defaultMode());
         }
     }
 
@@ -132,21 +131,17 @@ public abstract class ChooseFileModeAction extends ComboBoxAction {
     public DefaultActionGroup createGroup(boolean showClear) {
         DefaultActionGroup group = new DefaultActionGroup();
 
-        List<FileMode> favorites = new ArrayList<FileMode>();
-        Collections.sort(favorites);
-
-        FileMode mode = myVirtualFile == null ? null : modeFromFile(myVirtualFile);
-        favorites.remove(mode);
+        //FileMode mode = myVirtualFile == null ? null : modeFromFile(myVirtualFile);
 
         if (showClear) {
             group.add(new ClearThisFileModeAction(myVirtualFile));
         }
 
-        fileModeActions(group, myVirtualFile, favorites);
+        fileModeActions(group, myVirtualFile, FileMode.all());
 
-        DefaultActionGroup more = new DefaultActionGroup("more", true);
-        group.add(more);
-        fileModeActions(more, myVirtualFile, FileMode.all());
+//        DefaultActionGroup more = new DefaultActionGroup("more", true);
+//        group.add(more);
+//        fileModeActions(more, myVirtualFile, FileMode.all());
         return group;
     }
 }
