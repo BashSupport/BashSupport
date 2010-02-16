@@ -31,11 +31,11 @@ class ChangeFileModeTo extends AnAction implements DumbAware {
     private final VirtualFile myFile;
     private final FileMode myMode;
 
-    ChangeFileModeTo(@Nullable VirtualFile file, @NotNull FileMode charset) {
-        super(charset.toString(), "Change " + (file == null ? "default" : "file '" + file.getName() + "'") +
-                " mode to '" + charset.getDisplayName() + "'.", null);
+    ChangeFileModeTo(@Nullable VirtualFile file, @NotNull FileMode mode) {
+        super(mode.getDisplayName(), "Change " + (file == null ? "default" : "file '" + file.getName() + "'") +
+                " mode to '" + mode.getDisplayName() + "'.", null);
         myFile = file;
-        myMode = charset;
+        myMode = mode;
     }
 
     public void actionPerformed(final AnActionEvent e) {

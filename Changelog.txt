@@ -1,6 +1,9 @@
 2010-xx-xx:
  - Version 0.9.7-maia
 
+2010-02-16:
+ - More work on the facet configuration
+ 
 2010-02-10:
  - Fixed "export a" like variables
  - Fixed parsing of commands which only consist of an expansion
