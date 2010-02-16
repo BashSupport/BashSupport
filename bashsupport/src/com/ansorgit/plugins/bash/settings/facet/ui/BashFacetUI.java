@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFacetUI.java, Class: BashFacetUI
- * Last modified: 2010-02-12
+ * Last modified: 2010-02-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.settings.facet.ui;
 
 import com.ansorgit.plugins.bash.settings.facet.BashFacetConfiguration;
-import com.ansorgit.plugins.bash.settings.facet.BashFacetSettings;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.facet.ui.FacetValidatorsManager;
@@ -44,7 +43,7 @@ public class BashFacetUI extends FacetEditorTab {
     private JPanel basePanel;
     private JScrollPane treeScollArea;
 
-    private FileTreeTable fileTreeTable;
+    private ModuleFileTreeTable fileTreeTable;
 
     private final BashFacetConfiguration facetConfiguration;
     private final FacetEditorContext facetEditorContext;
@@ -59,39 +58,56 @@ public class BashFacetUI extends FacetEditorTab {
         return "BashSupport";
     }
 
-    private BashFacetSettings.Mode findMode() {
+    private BashFacetConfiguration.OperationMode findMode() {
         if (ignoreFilesWithoutExtensionRadioButton.isSelected()) {
-            return BashFacetSettings.Mode.IgnoreAll;
-        } else if (acceptAllFilesWithoutRadioButton.isSelected()) {
-            return BashFacetSettings.Mode.AcceptAll;
-        } else {
-            return BashFacetSettings.Mode.CustomSettings;
+            return BashFacetConfiguration.OperationMode.IgnoreAll;
         }
+
+        if (acceptAllFilesWithoutRadioButton.isSelected()) {
+            return BashFacetConfiguration.OperationMode.AcceptAll;
+        }
+
+        return BashFacetConfiguration.OperationMode.Custom;
+    }
+
+    private void setMode(BashFacetConfiguration.OperationMode mode) {
+        acceptAllFilesWithoutRadioButton.setSelected(mode == BashFacetConfiguration.OperationMode.AcceptAll);
+        ignoreFilesWithoutExtensionRadioButton.setSelected(mode == BashFacetConfiguration.OperationMode.IgnoreAll);
+        customSettingsRadioButton.setSelected(mode == BashFacetConfiguration.OperationMode.Custom);
+
+        basePanel.setEnabled(customSettingsRadioButton.isSelected());
+        fileTreeTable.setEnabled(customSettingsRadioButton.isSelected());
     }
 
     public JComponent createComponent() {
         customSettingsRadioButton.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                treeScollArea.setEnabled(true);
+                JRadioButton button = (JRadioButton) e.getSource();
+                treeScollArea.setEnabled(button.isSelected());
+
+                basePanel.setEnabled(customSettingsRadioButton.isSelected());
+                fileTreeTable.setEnabled(customSettingsRadioButton.isSelected());
             }
         });
 
-        fileTreeTable = new FileTreeTable(facetEditorContext.getModule());
+        fileTreeTable = new ModuleFileTreeTable(facetEditorContext.getModule(), facetConfiguration.getMapping());
         treeScollArea.setViewportView(fileTreeTable);
+
+        reset();
 
         return basePanel;
     }
 
     public boolean isModified() {
-        return findMode() != facetConfiguration.getState().mode;
+        return findMode() != facetConfiguration.getOperationMode();
     }
 
     public void apply() throws ConfigurationException {
-        facetConfiguration.getState().mode = findMode();
+        facetConfiguration.setOperationMode(findMode());
     }
 
     public void reset() {
-        //fixme
+        setMode(facetConfiguration.getOperationMode());
     }
 
     public void disposeUIResources() {
