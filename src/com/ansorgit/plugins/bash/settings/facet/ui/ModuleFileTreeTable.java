@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: FileTreeTable.java, Class: FileTreeTable
- * Last modified: 2010-02-13
+ * File: ModuleFileTreeTable.java, Class: ModuleFileTreeTable
+ * Last modified: 2010-02-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.encoding.ChangeEncodingUpdateGroup;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,16 +30,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.Map;
 
 /**
  * User: jansorg
  * Date: Feb 12, 2010
  * Time: 10:35:52 PM
  */
-public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
-    public FileTreeTable(Module module) {
+class ModuleFileTreeTable extends AbstractFileTreeTable<FileMode> {
+    public ModuleFileTreeTable(Module module, final Map<VirtualFile, FileMode> mapping) {
         super(module, FileMode.class, "Ignore / Accept", new ModuleFileFilter(module));
-        //reset(EncodingProjectManager.getInstance(project).getAllMappings());
+        reset(mapping);
 
         getValueColumn().setCellRenderer(new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(final JTable table, final Object value,
@@ -50,13 +50,13 @@ public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
                 final FileMode t = (FileMode) value;
                 final Object userObject = table.getModel().getValueAt(row, 0);
                 final VirtualFile file = userObject instanceof VirtualFile ? (VirtualFile) userObject : null;
-                final Pair<String, Boolean> pair = ChangeEncodingUpdateGroup.update(file);
+                final Pair<String, Boolean> pair = ChangeFileTypeUpdateGroup.update(file);
                 final boolean enabled = file == null || pair.getSecond();
 
                 if (t != null) {
                     setText(t.getDisplayName());
                 } else if (file != null) {
-                    FileMode fileMode = ChooseFileModeAction.modeFromFile(file);
+                    FileMode fileMode = mapping.get(file);
                     if (fileMode != null) {
                         setText(fileMode.getDisplayName());
                     }
@@ -93,6 +93,7 @@ public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
                         boolean clearSettings = clearSubdirectoriesOnDemandOrCancel(virtualFile, "There are settings specified for the subdirectories. Override them?", "Override Subdirectory Settings");
                         if (clearSettings) {
                             getTableModel().setValueAt(mode, new DefaultMutableTreeNode(virtualFile), 1);
+                            mapping.put(virtualFile, mode);
                         }
                     }
                 };
@@ -100,12 +101,18 @@ public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
                 Presentation templatePresentation = changeAction.getTemplatePresentation();
                 final JComponent comboComponent = changeAction.createCustomComponent(templatePresentation);
 
-                DataContext dataContext = SimpleDataContext
-                        .getSimpleContext(PlatformDataKeys.VIRTUAL_FILE.getName(), myVirtualFile, SimpleDataContext.getProjectContext(getModule().getProject()));
-                AnActionEvent event =
-                        new AnActionEvent(null, dataContext, ActionPlaces.UNKNOWN, templatePresentation, ActionManager.getInstance(), 0);
+                DataContext dataContext = SimpleDataContext.getSimpleContext(PlatformDataKeys.VIRTUAL_FILE.getName(),
+                        myVirtualFile,
+                        SimpleDataContext.getProjectContext(getModule().getProject()));
+
+                AnActionEvent event = new AnActionEvent(null,
+                        dataContext,
+                        ActionPlaces.UNKNOWN,
+                        templatePresentation, ActionManager.getInstance(), 0);
                 changeAction.update(event);
+
                 editorComponent = comboComponent;
+
                 comboComponent.addComponentListener(new ComponentAdapter() {
                     @Override
                     public void componentShown(final ComponentEvent e) {
@@ -114,7 +121,7 @@ public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
                 });
 
                 FileMode mode = (FileMode) getTableModel().getValueAt(new DefaultMutableTreeNode(myVirtualFile), 1);
-                templatePresentation.setText(mode == null ? "" : mode.toString());
+                templatePresentation.setText(mode == null ? "" : mode.getDisplayName());
                 comboComponent.revalidate();
 
                 return editorComponent;
@@ -124,7 +131,8 @@ public class FileTreeTable extends AbstractFileTreeTable<FileMode> {
 
     @Override
     protected boolean isNullObject(final FileMode value) {
-        return value == FileMode.ignore();
+        //return value == FileMode.auto();
+        return value == FileMode.defaultMode();
     }
 
     @Override

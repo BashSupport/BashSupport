@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashModuleSettings.java, Class: BashModuleSettings
- * Last modified: 2010-02-11
+ * Last modified: 2010-02-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,41 @@
 
 package com.ansorgit.plugins.bash.settings;
 
-import java.io.Serializable;
+import com.ansorgit.plugins.bash.BashComponents;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.impl.storage.ClasspathStorage;
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
 
-/**
- * User: jansorg
- * Date: Feb 11, 2010
- * Time: 8:52:40 PM
- */
-public class BashModuleSettings implements Serializable {
+@State(
+        name = BashComponents.MODULE_SETTINGS_STORAGE_ID,
+        storages = {
+                @Storage(
+                        id = ClasspathStorage.DEFAULT_STORAGE,
+                        file = "$MODULE_FILE$"
+                )
+        }
+)
+public class BashModuleSettings implements PersistentStateComponent<Element> {
+    private Element settings;
+
+    public static BashModuleSettings getInstance(@NotNull final Module module) {
+        //return ServiceManager.getService(module.getProject(), BashModuleSettings.class);
+        return module.getComponent(BashModuleSettings.class);
+    }
+
+    public String getID() {
+        return BashComponents.MODULE_SETTINGS_STORAGE_ID;
+    }
+
+    public Element getState() {
+        return settings;
+    }
+
+    public void loadState(@NotNull final Element settings) {
+        this.settings = settings;
+    }
 }

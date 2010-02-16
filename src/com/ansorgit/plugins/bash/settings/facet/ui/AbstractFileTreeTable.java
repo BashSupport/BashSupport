@@ -48,7 +48,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public abstract class AbstractFileTreeTable<T> extends TreeTable {
+abstract class AbstractFileTreeTable<T> extends TreeTable {
     private final MyModel<T> myModel;
     private final Module myModule;
 
