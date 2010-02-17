@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFacetConfiguration.java, Class: BashFacetConfiguration
- * Last modified: 2010-02-16
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ import java.util.*;
         }
 )
 
-public class BashFacetConfiguration implements FacetConfiguration, /*PersistentStateComponent<Element>, */ Serializable {
-    private OperationMode operationMode;
+public class BashFacetConfiguration implements FacetConfiguration, Serializable {
+    private OperationMode operationMode = OperationMode.IgnoreAll;
     private Logger LOG = Logger.getInstance("BashFacetConfig");
 
     public BashFacetConfiguration() {
@@ -77,6 +77,28 @@ public class BashFacetConfiguration implements FacetConfiguration, /*PersistentS
     //fixme thread safety ?
     private Map<VirtualFile, FileMode> mapping = new HashMap<VirtualFile, FileMode>();
 
+    public FileMode findMode(VirtualFile file) {
+        if (operationMode == OperationMode.AcceptAll) {
+            return FileMode.accept();
+        }
+
+        if (operationMode == OperationMode.IgnoreAll) {
+            return FileMode.ignore();
+        }
+
+        //custom mode
+        if (mapping.containsKey(file)) {
+            return mapping.get(file);
+        }
+
+        VirtualFile parent = file.getParent();
+        if (parent != null) {
+            return findMode(parent);
+        }
+
+        return mapping.containsKey(null) ? mapping.get(null) : FileMode.defaultMode();
+    }
+
     public static enum OperationMode {
         IgnoreAll, AcceptAll, Custom
     }
@@ -91,13 +113,22 @@ public class BashFacetConfiguration implements FacetConfiguration, /*PersistentS
 
     @Deprecated
     public void readExternal(Element element) throws InvalidDataException {
+        Element modeChild = element.getChild("operationMode");
+        if (modeChild != null) {
+            String modeString = modeChild.getAttributeValue("type", OperationMode.IgnoreAll.name());
+            operationMode = OperationMode.valueOf(modeString);
+        }
+
         List<Element> files = element.getChildren("file");
         for (Element fileElement : files) {
             String url = fileElement.getAttributeValue("url");
 
-            String modeId = fileElement.getAttributeValue("fileMode");
-            FileMode mode = FileMode.forId(modeId);
+            String modeId = fileElement.getAttributeValue("mode");
+            if (modeId == null) {
+                continue;
+            }
 
+            FileMode mode = FileMode.forId(modeId);
             if (mode == null) {
                 continue;
             }
@@ -113,7 +144,9 @@ public class BashFacetConfiguration implements FacetConfiguration, /*PersistentS
 
     @Deprecated
     public void writeExternal(Element element) throws WriteExternalException {
-        //Element element = new Element("state");
+        Element modeElement = new Element("operationMode");
+        modeElement.setAttribute("type", operationMode.name());
+        element.addContent(modeElement);
 
         List<VirtualFile> files = new ArrayList<VirtualFile>(mapping.keySet());
         ContainerUtil.quickSort(files, new Comparator<VirtualFile>() {
@@ -131,10 +164,6 @@ public class BashFacetConfiguration implements FacetConfiguration, /*PersistentS
             child.setAttribute("url", file == null ? "MODULE" : file.getUrl());
             child.setAttribute("mode", mode.getId());
         }
-
-        //element.setAttribute("operationMode", operationMode.name());
-
-        //return element;
     }
 
     public OperationMode getOperationMode() {
@@ -149,11 +178,8 @@ public class BashFacetConfiguration implements FacetConfiguration, /*PersistentS
         return mapping;
     }
 
-    public void resetMapping() {
-        mapping = new HashMap<VirtualFile, FileMode>();
-    }
-
-    public void addMapping(VirtualFile file, FileMode mode) {
-        mapping.put(file, mode);
+    public void setMapping(Map<VirtualFile, FileMode> newMapping) {
+        mapping.clear();
+        mapping.putAll(newMapping);
     }
 }

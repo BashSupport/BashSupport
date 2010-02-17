@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFacetUI.java, Class: BashFacetUI
- * Last modified: 2010-02-16
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,13 @@ import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.facet.ui.FacetValidatorsManager;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nls;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.util.HashMap;
 
 /**
  * GUI settings which are displayed for a Bash module facet.
@@ -90,7 +92,7 @@ public class BashFacetUI extends FacetEditorTab {
             }
         });
 
-        fileTreeTable = new ModuleFileTreeTable(facetEditorContext.getModule(), facetConfiguration.getMapping());
+        fileTreeTable = new ModuleFileTreeTable(facetEditorContext.getModule(), new HashMap<VirtualFile, FileMode>(facetConfiguration.getMapping()));
         treeScollArea.setViewportView(fileTreeTable);
 
         reset();
@@ -99,15 +101,18 @@ public class BashFacetUI extends FacetEditorTab {
     }
 
     public boolean isModified() {
-        return findMode() != facetConfiguration.getOperationMode();
+        return findMode() != facetConfiguration.getOperationMode() ||
+                !fileTreeTable.getMapping().equals(facetConfiguration.getMapping());
     }
 
     public void apply() throws ConfigurationException {
         facetConfiguration.setOperationMode(findMode());
+        facetConfiguration.setMapping(fileTreeTable.getMapping());
     }
 
     public void reset() {
         setMode(facetConfiguration.getOperationMode());
+        fileTreeTable.reset(facetConfiguration.getMapping());
     }
 
     public void disposeUIResources() {

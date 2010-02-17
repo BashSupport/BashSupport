@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFormattingModelBuilder.java, Class: BashFormattingModelBuilder
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.editor.formatting;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.formatting.FormattingModel;
 import com.intellij.formatting.FormattingModelBuilder;
 import com.intellij.formatting.FormattingModelProvider;
@@ -40,8 +39,8 @@ public class BashFormattingModelBuilder implements FormattingModelBuilder {
         ASTNode node = element.getNode();
         assert node != null;
 
-        PsiFile containingFile = element.getContainingFile().getViewProvider().getPsi(BashFileType.BASH_LANGUAGE);
-        assert containingFile != null : element.getContainingFile();
+        PsiFile containingFile = element.getContainingFile();//.getViewProvider().getPsi(BashFileType.BASH_LANGUAGE);
+        //assert containingFile != null : element.getContainingFile();
 
         ASTNode astNode = containingFile.getNode();
         assert astNode != null;

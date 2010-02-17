@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettings.java, Class: BashProjectSettings
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,25 @@ public class BashProjectSettings implements Serializable {
     private Set<String> globalVariables = new HashSet<String>();
     private boolean autcompleteGlobalVars = true;
     private boolean supportBash4 = false;
+
+    private boolean autocompleteBuiltinVars = false;
+    private boolean autocompleteBuiltinCommands = true;
+
+    public boolean isAutocompleteBuiltinVars() {
+        return autocompleteBuiltinVars;
+    }
+
+    public void setAutocompleteBuiltinVars(boolean autocompleteBuiltinVars) {
+        this.autocompleteBuiltinVars = autocompleteBuiltinVars;
+    }
+
+    public boolean isAutocompleteBuiltinCommands() {
+        return autocompleteBuiltinCommands;
+    }
+
+    public void setAutocompleteBuiltinCommands(boolean autocompleteBuiltinCommands) {
+        this.autocompleteBuiltinCommands = autocompleteBuiltinCommands;
+    }
 
     public static BashProjectSettings storedSettings(Project project) {
         return project.getComponent(BashProjectSettingsComponent.class).getState();

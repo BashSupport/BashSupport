@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: FileMode.java, Class: FileMode
- * Last modified: 2010-02-13
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,15 @@
 package com.ansorgit.plugins.bash.settings.facet.ui;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * FileMode controls how a single file is handled.
+ * <p/>
  * User: jansorg
  * Date: Feb 12, 2010
  * Time: 10:36:46 PM
@@ -34,13 +37,22 @@ public final class FileMode implements Comparable<FileMode> {
     private final int index;
     private final String displayName;
 
-    private static Map<String, FileMode> idMap = Maps.newHashMap();
+    private static Map<String, FileMode> idMap = new ConcurrentHashMap<String, FileMode>();
+    //default mode means that the file inherits from the parent if possible. If the parent has no
+    //value set then the using class has to decide, usually this means to ignore it.
+    private static final FileMode defaultMode = new FileMode("defaultMode", "Default", 0);
+    //Guess the file type by content
+    private static final FileMode autoMode = new FileMode("auto", "Auto (guess file type)", 1);
+    //Ignore the file
+    private static final FileMode ignoreMode = new FileMode("ignore", "Ignore", 2);
+    //Accept a file as bash content
+    private static final FileMode acceptMode = new FileMode("accept", "Accept", 3);
 
     static {
-        idMap.put("default", new FileMode("defaultMode", "Default", 0));
-        idMap.put("auto", new FileMode("auto", "Auto", 1));
-        idMap.put("ignore", new FileMode("ignore", "Ignore", 2));
-        idMap.put("accept", new FileMode("accept", "Accept", 3));
+        idMap.put(defaultMode.getId(), defaultMode);
+        idMap.put(autoMode.getId(), autoMode);
+        idMap.put(ignoreMode.getId(), ignoreMode);
+        idMap.put(acceptMode.getId(), acceptMode);
     }
 
     public static List<FileMode> all() {
@@ -48,22 +60,22 @@ public final class FileMode implements Comparable<FileMode> {
     }
 
     public static FileMode defaultMode() {
-        return forId("default");
+        return defaultMode;
     }
 
     public static FileMode accept() {
-        return forId("accept");
+        return acceptMode;
     }
 
     public static FileMode ignore() {
-        return forId("ignore");
+        return ignoreMode;
     }
 
     public static FileMode auto() {
-        return forId("auto");
+        return autoMode;
     }
 
-    public static FileMode forId(String id) {
+    public static FileMode forId(@NotNull String id) {
         return idMap.get(id);
     }
 
@@ -90,5 +102,22 @@ public final class FileMode implements Comparable<FileMode> {
 
     public int compareTo(FileMode o) {
         return index - o.index;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FileMode mode = (FileMode) o;
+
+        if (id != null ? !id.equals(mode.id) : mode.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

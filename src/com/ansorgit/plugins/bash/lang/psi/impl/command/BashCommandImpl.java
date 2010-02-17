@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-01-30
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.ansorgit.plugins.bash.settings.BashSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -208,7 +207,7 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
 
         variants.addAll(processor.getFunctionDefs());
 
-        if (BashSettings.storedSettings().isAutocompleteBuiltinCommands()) {
+        if (BashProjectSettings.storedSettings(getProject()).isAutocompleteBuiltinCommands()) {
             variants.addAll(LanguageBuiltins.commands);
         }
 
