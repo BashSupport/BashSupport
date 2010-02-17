@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ChooseFileModeAction.java, Class: ChooseFileModeAction
- * Last modified: 2010-02-16
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,13 +65,13 @@ abstract class ChooseFileModeAction extends ComboBoxAction {
     public static boolean isEnabled(VirtualFile virtualFile) {
         boolean enabled = true;
         if (virtualFile != null) {
-            FileMode mode = modeFromFile(virtualFile);
+            //FileMode mode = modeFromFile(virtualFile);
             /*if (mode != null) {
                 enabled = false;
             } else*/
             if (!virtualFile.isDirectory()) {
                 FileType fileType = FileTypeManager.getInstance().getFileTypeByFile(virtualFile);
-                if (fileType.isBinary()) {
+                if (StringUtil.isNotEmpty(virtualFile.getExtension()) && fileType.isBinary()) {
                     enabled = false;
                 }
             }
@@ -90,7 +91,6 @@ abstract class ChooseFileModeAction extends ComboBoxAction {
             return null;
         }
 
-        //return EncodingManager.getInstance().getCachedCharsetFromContent(document);
         return FileMode.defaultMode();
     }
 
@@ -126,7 +126,7 @@ abstract class ChooseFileModeAction extends ComboBoxAction {
         }
     }
 
-    protected abstract void chosen(VirtualFile virtualFile, FileMode charset);
+    protected abstract void chosen(VirtualFile virtualFile, FileMode fileMode);
 
     public DefaultActionGroup createGroup(boolean showClear) {
         DefaultActionGroup group = new DefaultActionGroup();

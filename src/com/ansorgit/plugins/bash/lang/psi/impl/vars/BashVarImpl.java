@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-02-08
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.ansorgit.plugins.bash.settings.BashSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Comparing;
@@ -142,7 +141,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
         variants.addAll(processor.getVariables());
 
-        if (BashSettings.storedSettings().isAutocompleteBuiltinVars()) {
+        if (BashProjectSettings.storedSettings(getProject()).isAutocompleteBuiltinVars()) {
             variants.addAll(LanguageBuiltins.bashShellVars);
             variants.addAll(LanguageBuiltins.bourneShellVars);
         }

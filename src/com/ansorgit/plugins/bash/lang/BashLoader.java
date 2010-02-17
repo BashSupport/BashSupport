@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLoader.java, Class: BashLoader
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang;
 
-import com.ansorgit.plugins.bash.settings.BashSettingsComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerAdapter;
@@ -55,15 +53,5 @@ public class BashLoader implements ApplicationComponent {
     }
 
     public void disposeComponent() {
-    }
-
-
-    /**
-     * Provides settings component
-     *
-     * @return settings component
-     */
-    public BashSettingsComponent getSettingsComponent() {
-        return ServiceManager.getService(BashSettingsComponent.class);
     }
 }

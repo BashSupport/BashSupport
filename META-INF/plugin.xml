@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-02-13
+  ~ Last modified: 2010-02-17
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -83,16 +83,6 @@
         </component>
 
         <component>
-            <implementation-class>
-                com.ansorgit.plugins.bash.settings.BashSettingsConfigurable
-            </implementation-class>
-        </component>
-
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.settings.BashSettingsComponent</implementation-class>
-        </component>
-
-        <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.facet.BashFacetLoader</implementation-class>
         </component>
     </application-components>
@@ -116,10 +106,6 @@
 
     <!-- Plugin's module components -->
     <module-components>
-        <!--<component>
-            <implementation-class>com.ansorgit.plugins.bash.settings.BashModuleSettingsComponent</implementation-class>
-            <option name="type" value="BASH_MODULE"/>            
-        </component>-->
     </module-components>
 
     <actions>
@@ -141,25 +127,30 @@
         <!--Language extensions -->
         <lang.braceMatcher language="Bash"
                            implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashBraceMatcher"/>
+
         <lang.commenter language="Bash"
                         implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashCommenter"/>
+
         <lang.parserDefinition language="Bash"
                                implementationClass="com.ansorgit.plugins.bash.lang.parser.BashParserDefinition"/>
+
         <lang.foldingBuilder language="Bash"
                              implementationClass="com.ansorgit.plugins.bash.editor.codefolding.BashFoldingBuilder"/>
+
         <lang.psiStructureViewFactory language="Bash"
                                       implementationClass="com.ansorgit.plugins.bash.structureview.BashStructureViewFactory"/>
+
         <lang.refactoringSupport language="Bash"
                                  implementationClass="com.ansorgit.plugins.bash.refactoring.BashRefactoringSupport"/>
+
         <lang.documentationProvider language="Bash"
                                     implementationClass="com.ansorgit.plugins.bash.documentation.BashDocumentationProvider"/>
+
         <lang.findUsagesProvider language="Bash"
                                  implementationClass="com.ansorgit.plugins.bash.editor.usages.BashFindUsagesProvider"/>
 
-        <completion.contributor language="Bash"
-                                implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
-
-        <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
+        <!-- <lang.substitutor language="Bash"
+                implementationClass="com.ansorgit.plugins.bash.file.BashLanguageSubstitutor"/> -->
 
         <lang.formatter language="Bash"
                         implementationClass="com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder"/>
@@ -167,6 +158,11 @@
         <!--
         <codeStyleSettingsProvider implementation="org.jetbrains.plugins.clojure.formatter.codeStyle.ClojureCodeStyleSettingsProvider"/>
         -->
+
+        <completion.contributor language="Bash"
+                                implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
+
+        <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 
         <annotator language="Bash"
                    implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
