@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ChangeFileTypeUpdateGroup.java, Class: ChangeFileTypeUpdateGroup
- * Last modified: 2010-02-16
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,7 @@ package com.ansorgit.plugins.bash.settings.facet.ui;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
-import com.intellij.openapi.fileEditor.impl.LoadTextUtil;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
@@ -59,7 +57,7 @@ public class ChangeFileTypeUpdateGroup extends DefaultActionGroup {
         String text;
         if (enabled) {
             String pattern;
-            FileMode mode = ChooseFileModeAction.modeFromFile(virtualFile);
+            /*FileMode mode = ChooseFileModeAction.modeFromFile(virtualFile);
             if (mode != null) {
                 pattern = "Mode: {0}";
                 enabled = false;
@@ -72,11 +70,10 @@ public class ChangeFileTypeUpdateGroup extends DefaultActionGroup {
                 enabled = false;
             } else {
                 pattern = "Change mode from ''{0}'' to";
-            }
+            } */
 
-            if (mode == null) {
-                mode = FileMode.defaultMode();//virtualFile;
-            }
+            pattern = "Change mode from ''{0}'' to";
+            FileMode mode = FileMode.defaultMode();
 
             text = MessageFormat.format(pattern, mode.getDisplayName());
         } else {

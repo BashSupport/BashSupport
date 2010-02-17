@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ModuleFileTreeTable.java, Class: ModuleFileTreeTable
- * Last modified: 2010-02-16
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,13 +38,21 @@ import java.util.Map;
  * Time: 10:35:52 PM
  */
 class ModuleFileTreeTable extends AbstractFileTreeTable<FileMode> {
+    public Map<VirtualFile, FileMode> getMapping() {
+        return getValues();
+    }
+
     public ModuleFileTreeTable(Module module, final Map<VirtualFile, FileMode> mapping) {
-        super(module, FileMode.class, "Ignore / Accept", new ModuleFileFilter(module));
+        super(module, FileMode.class, "Ignore / Accept / Guess", new ModuleFileFilter(module));
         reset(mapping);
 
         getValueColumn().setCellRenderer(new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent(final JTable table, final Object value,
-                                                           final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+            public Component getTableCellRendererComponent(final JTable table,
+                                                           final Object value,
+                                                           final boolean isSelected,
+                                                           final boolean hasFocus,
+                                                           final int row,
+                                                           final int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
                 final FileMode t = (FileMode) value;
@@ -56,7 +64,7 @@ class ModuleFileTreeTable extends AbstractFileTreeTable<FileMode> {
                 if (t != null) {
                     setText(t.getDisplayName());
                 } else if (file != null) {
-                    FileMode fileMode = mapping.get(file);
+                    FileMode fileMode = getValues().get(file);
                     if (fileMode != null) {
                         setText(fileMode.getDisplayName());
                     }
@@ -93,7 +101,7 @@ class ModuleFileTreeTable extends AbstractFileTreeTable<FileMode> {
                         boolean clearSettings = clearSubdirectoriesOnDemandOrCancel(virtualFile, "There are settings specified for the subdirectories. Override them?", "Override Subdirectory Settings");
                         if (clearSettings) {
                             getTableModel().setValueAt(mode, new DefaultMutableTreeNode(virtualFile), 1);
-                            mapping.put(virtualFile, mode);
+                            getValues().put(virtualFile, mode);
                         }
                     }
                 };
@@ -131,13 +139,11 @@ class ModuleFileTreeTable extends AbstractFileTreeTable<FileMode> {
 
     @Override
     protected boolean isNullObject(final FileMode value) {
-        //return value == FileMode.auto();
-        return value == FileMode.defaultMode();
+        return FileMode.defaultMode().equals(value);
     }
 
     @Override
     protected boolean isValueEditableForFile(final VirtualFile virtualFile) {
-        //return ChangeEncodingUpdateGroup.update(virtualFile).getSecond();
         return true;
     }
 }

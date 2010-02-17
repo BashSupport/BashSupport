@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileTypeLoader.java, Class: BashFileTypeLoader
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,8 @@
 
 package com.ansorgit.plugins.bash.file;
 
-import com.ansorgit.plugins.bash.lang.BashLoader;
-import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
-import com.intellij.openapi.util.io.FileUtil;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 public class BashFileTypeLoader extends FileTypeFactory {
@@ -32,10 +28,20 @@ public class BashFileTypeLoader extends FileTypeFactory {
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consumer.consume(BashFileType.BASH_FILE_TYPE, BashFileType.DEFAULT_EXTENSION);
         consumer.consume(BashFileType.BASH_FILE_TYPE, "bash");
-        //consumer.consume(BashFileType.BASH_FILE_TYPE, new FileNameMatcherDelegate(new BashFileNameMatcher()));
+
+        /*consumer.consume(BashFileType.BASH_FILE_TYPE, new FileNameMatcher() {
+            public boolean accept(@NonNls String fileName) {
+                return StringUtils.isNotEmpty(fileName) && FileUtil.getExtension(fileName).length() == 0;
+            }
+
+            @NotNull
+            public String getPresentableString() {
+                return "Bash";  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });*/
     }
 
-    private static final class FileNameMatcherDelegate implements FileNameMatcher {
+    /* private static final class FileNameMatcherDelegate implements FileNameMatcher {
         private final FileNameMatcher delegate;
         private boolean checked = false;
         private boolean enabled = false;
@@ -76,5 +82,5 @@ public class BashFileTypeLoader extends FileTypeFactory {
         public String getPresentableString() {
             return "Bash";
         }
-    }
+    }*/
 }
