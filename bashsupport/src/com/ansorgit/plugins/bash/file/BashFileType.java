@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-01-29
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,20 @@ package com.ansorgit.plugins.bash.file;
 
 import com.ansorgit.plugins.bash.lang.Bash;
 import com.ansorgit.plugins.bash.lang.BashLanguage;
-import com.ansorgit.plugins.bash.lang.BashLoader;
+import com.ansorgit.plugins.bash.settings.facet.BashFacet;
+import com.ansorgit.plugins.bash.settings.facet.BashFacetConfiguration;
+import com.ansorgit.plugins.bash.settings.facet.ui.FileMode;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.lang.Language;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.ex.FileTypeIdentifiableByVirtualFile;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -101,12 +108,37 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             return true;
         } else if (!file.isInLocalFileSystem()) {
             return false;
-        } else if (checkEnabled() && (file.getExtension() == null || file.getExtension().length() == 0)) {
+        } else if (StringUtils.isEmpty(file.getExtension())) {
             //no extensions, special checks (looking at the content, etc)
-            if (file.getLength() == 0) {
-                //we always take empty files
+
+            //guess project
+            Project project = ProjectUtil.guessProjectForFile(file);
+            if (project == null) {
+                return false;
+            }
+
+            Module module = ModuleUtil.findModuleForFile(file, project);
+            if (module == null) {
+                return false;
+            }
+
+            BashFacet facet = BashFacet.getInstance(module);
+            if (facet == null) {
+                return false;
+            }
+
+            BashFacetConfiguration config = facet.getConfiguration();
+            FileMode mode = config.findMode(file);
+
+            if (mode == FileMode.accept()) {
                 return true;
-            } else if (checkGuessByContentEnabled()) {
+            } else if (mode == FileMode.ignore()) {
+                return false;
+            } else if (mode == FileMode.auto()) {
+                if (file.getLength() == 0) {
+                    return true;
+                }
+
                 try {
                     byte[] data = new byte[48];
                     InputStream inputStream = file.getInputStream();
@@ -124,25 +156,9 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
                 } catch (IOException e) {
                     LOG.warn("Error checking file content for Bash", e);
                 }
-            } else {
-                return true;
             }
         }
 
         return false;
-    }
-
-    private boolean checkEnabled() {
-        final BashLoader bashLoader = BashLoader.getInstance();
-        if (bashLoader == null || bashLoader.getSettingsComponent() == null) return false;
-
-        return bashLoader.getSettingsComponent().getState().isLoadEmptyExtensions();
-    }
-
-    private boolean checkGuessByContentEnabled() {
-        final BashLoader bashLoader = BashLoader.getInstance();
-        if (bashLoader == null || bashLoader.getSettingsComponent() == null) return false;
-
-        return bashLoader.getSettingsComponent().getState().isGuessByContent();
     }
 }

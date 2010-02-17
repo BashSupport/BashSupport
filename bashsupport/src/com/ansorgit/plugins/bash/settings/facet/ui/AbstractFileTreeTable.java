@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractFileTreeTable.java, Class: AbstractFileTreeTable
- * Last modified: 2010-02-13
+ * Last modified: 2010-02-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
                     setText(getModuleNodeText());
                     return this;
                 }
+
                 FileNode fileNode = (FileNode) value;
                 VirtualFile file = fileNode.getObject();
                 if (fileNode.getParent() instanceof FileNode) {
