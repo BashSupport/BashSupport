@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-02-17
+  ~ Last modified: 2010-02-18
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
@@ -57,21 +56,36 @@
 
     <change-notes><![CDATA[
     <html>
-        <b>Changes in version 0.9.6-maia:</b>
-        <ul>
-         <li> Path/file completion paths./</li>
-         <li> Configurable support for Bash version 4.0.</li>
-         <li> Expansions now can be replaced with the evaluated result.</li>
-         <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
-         <li> Improved parser.</li>
-        </ul>
+       <b>Changes in version 0.9.7-maia:</b>
+       <ul>
+        <li>Source code released, licensed under the terms of the Apache License 2.0</li>
+        <li>New Bashsupport facet to configure which files without extensions are Bash scripts</li>
+        <li>Removed global settings, these are project settings now</li>
+        <li>Several parser fixes and improvements</li>
+        <li>Improved support for heredocs: Go to declaration and rename for markers</li>
+        <li>Arithmetic expressions are supported now, including variable declarations</li>
+        <li>New inspection and quickfix to replace a static arithmetic expression with the result</li>
+        <li>Arithmetic for loops</li>
+        <li>Color configuration for heredoc start and end markers</li>
+        <li>Improved color configuration dialog</li>
+        <li>Support for the "local" keyword</li>
+        <li>Fixed duplicate var name suggeestions in completion popup</li>
+        <li>Improved highlighting of unresolved variables</li>
+        <li>Highlighting of variables inside of strings</li>
+        <li>New inspection to unregister global variables</li>
+        <li>Support for simple variable substitutions, e.g. ${A}</li>
+        <li>Fixed || and && operators in conditional commands</li>
+        <li>You can turn on debug mode by setting the environment variable bashsupport.debug to "true", useful for debugging</li>
+       </ul>
 
         <b>Latest major changes:</b>
         <ul>
+          <li> Path/file completion/</li>
+          <li> Configurable support for Bash version 4.0.</li>
+          <li> Expansions now can be replaced with the evaluated result.</li>
+          <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
           <li> Run configuration for Bash scripts. You can now run the scripts from within IntelliJ.</li>
           <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
-          <li> Several new inspections.</li>
-          <li> Added GUI setting to manage global variables.</li>
         </ul>
     </html>
     ]]>

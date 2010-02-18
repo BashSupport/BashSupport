@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashParserDefinition.java, Class: BashParserDefinition
- * Last modified: 2010-01-30
+ * Last modified: 2010-02-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
         final IElementType left = leftAst.getElementType();
         final IElementType right = rightAst.getElementType();
 
-        if (right == BashTokenTypes.LINE_FEED) {
+        if (right == BashTokenTypes.LINE_FEED || left == BashTokenTypes.ASSIGNMENT_WORD) {
             return SpaceRequirements.MUST_NOT;
         }
 
@@ -93,7 +93,10 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
                 || left == BashTokenTypes.LEFT_SQUARE
                 || right == BashTokenTypes.RIGHT_SQUARE
                 || left == BashTokenTypes.RIGHT_SQUARE
-                || right == BashTokenTypes.LEFT_SQUARE) {
+                || right == BashTokenTypes.LEFT_SQUARE
+
+                || left == BashTokenTypes.VARIABLE
+                || right == BashTokenTypes.VARIABLE) {
 
             return SpaceRequirements.MAY;
         }

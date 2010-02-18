@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFacet.java, Class: BashFacet
- * Last modified: 2010-02-12
+ * Last modified: 2010-02-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ public class BashFacet extends Facet<BashFacetConfiguration> {
         super(facetType, module, name, configuration, underlyingFacet);
     }
 
-    @Override
+    /*@Override
     public boolean isDisposed() {
         return super.isDisposed();
-    }
+    } */
 
     @Override
     public void initFacet() {
