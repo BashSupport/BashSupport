@@ -2,6 +2,7 @@
  - Version 0.9.7-maia
 
 2010-02-17:
+ - Variable rename does not insert whitespace any more
  - Finished the facet configuration, if you want to handle files without extension as Bash scripts
    you have to add a Bash facet and configure your preferences
  - Removed global settings, these are project settings now

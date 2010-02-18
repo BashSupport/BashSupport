@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-02-17
+ * Last modified: 2010-02-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
@@ -110,14 +111,15 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
         //if this is variable which doesn't have a $ sign prefix
         if (isSingleWord()) {
-            return replace(BashChangeUtil.createWord(getProject(), newName));
+            return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
         }
 
-        return replace(BashChangeUtil.createVariable(getProject(), newName, false));
+        return BashPsiUtils.replaceElement(this, BashChangeUtil.createVariable(getProject(), newName, false));
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        throw new IncorrectOperationException("unimplemented");
+        //throw new IncorrectOperationException("unimplemented");
+        return null;
     }
 
     public boolean isReferenceTo(PsiElement element) {

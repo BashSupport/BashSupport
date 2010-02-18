@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashChangeUtil.java, Class: BashChangeUtil
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,12 @@
 package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.intellij.lang.LanguageParserDefinitions;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Date: 16.04.2009
@@ -35,45 +33,60 @@ import com.intellij.psi.PsiFileFactory;
  * @author Joachim Ansorg
  */
 public class BashChangeUtil {
-    public static void replaceText(PsiFile file, TextRange range, String replacement) {
-        Document document = file.getViewProvider().getDocument();
+    private static final String TEMP_FILE_NAME = "__.sh";
+
+    /*public static void replaceText(final PsiFile file, final TextRange range, final String replacement) {
+        final Document document = file.getViewProvider().getDocument();
         assert document != null;
 
         document.replaceString(range.getStartOffset(), range.getEndOffset(), replacement);
+        PsiDocumentManager.getInstance(file.getProject()).commitDocument(document);
+        PsiDocumentManager.getInstance(file.getProject()).doPostponedOperationsAndUnblockDocument(document);
     }
 
-    public static PsiElement createTreeFromText(Project project, String text) {
-        ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
-        assert def != null;
+    public static void replaceText(PsiElement element, String replacement) {
+        replaceText(element.getContainingFile(), element.getTextRange(), replacement);
+    }
 
-        String filename = "dummy.sh";
-        final PsiFile dummyFile = PsiFileFactory.getInstance(project).createFileFromText(filename, text);
-        return dummyFile.getFirstChild();
+    public static void replaceText(PsiElement element, String replacement, TextRange rangeWithinElement) {
+        TextRange range = TextRange.from(element.getTextOffset() + rangeWithinElement.getStartOffset(), rangeWithinElement.getLength());
+        replaceText(element.getContainingFile(), range, replacement);
+    } */
+
+
+    @NotNull
+    private static PsiFile createFileFromText(@NotNull final Project project, @NotNull final String name, @NotNull final FileType fileType, @NotNull final String text) {
+        return PsiFileFactory.getInstance(project).createFileFromText(name, fileType, text);
+    }
+
+    public static PsiFile createDummyBashFile(Project project, String text) {
+        return createFileFromText(project, TEMP_FILE_NAME, BashFileType.BASH_FILE_TYPE, text);
     }
 
     public static PsiElement createSymbol(Project project, String name) {
-        final PsiElement functionElement = createTreeFromText(project, name + "() { x; }");
-        return functionElement.getFirstChild();
+        final PsiElement functionElement = createDummyBashFile(project, name + "() { x; }");
+        return functionElement.getFirstChild().getFirstChild();
     }
 
     public static PsiElement createWord(Project project, String name) {
-        return createTreeFromText(project, name);
+        return createDummyBashFile(project, name).getFirstChild();
     }
 
     public static PsiElement createAssignmentWord(Project project, String name) {
-        final PsiElement assignmentCommand = createTreeFromText(project, name + "=a");
-        PsiElement varDef = assignmentCommand.getFirstChild();
-        return varDef != null ? varDef.getFirstChild() : null;
+        final PsiElement assignmentCommand = createDummyBashFile(project, name + "=a").getFirstChild();
+
+        return assignmentCommand.getFirstChild().getFirstChild();
     }
 
     public static PsiElement createVariable(Project project, String name, boolean withBraces) {
         final String text = withBraces ? "${" + name + "}" : "$" + name;
-        return createTreeFromText(project, text).getFirstChild();
+        PsiElement command = createDummyBashFile(project, text).getFirstChild();
+
+        return command.getFirstChild().getFirstChild();
     }
 
     public static PsiElement createShebang(Project project, String command, boolean addNewline) {
-        final PsiElement psi = createTreeFromText(project, "#!" + command + (addNewline ? "\n" : ""));
-        return psi.getFirstChild();
+        String text = "#!" + command + (addNewline ? "\n" : "");
+        return createDummyBashFile(project, text).getFirstChild();
     }
-
 }
