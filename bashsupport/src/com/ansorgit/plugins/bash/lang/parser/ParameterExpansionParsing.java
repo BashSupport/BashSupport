@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsing.java, Class: ParameterExpansionParsing
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
@@ -50,10 +51,14 @@ public class ParameterExpansionParsing implements ParsingFunction {
         final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
 
         //the first token has to be a plain word token
-        IElementType paramToken = builder.getTokenType();
+        IElementType paramToken = builder.getTokenType(true);
+
+        if (paramToken == BashTokenTypes.PARAM_EXPANSION_OP) {
+            builder.advanceLexer(true);
+        }
 
         //fixme
-        if (!ParserUtil.isWordToken(paramToken)) {
+        if (!ParserUtil.isWordToken(builder.getTokenType(true))) {
             marker.drop();
             return false; //fixme fail gracefully?
         }
@@ -64,15 +69,14 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //Parsing.word.parseWord(builder, false, substitutionEnd, TokenSet.EMPTY);
 
+        boolean isValid = true;
         boolean markedAsVar = false;
-        while (true) {
-            if (builder.getTokenType() == RIGHT_CURLY) {
-                break;
-            }
-
-            IElementType next = ParserUtil.getTokenAndAdvance(builder);
-            if (!validTokens.contains(next)) {
-                break;
+        while (isValid && builder.getTokenType() != RIGHT_CURLY) {
+            if (Parsing.var.isValid(builder)) {
+                isValid = Parsing.var.parse(builder);
+            } else {
+                IElementType next = ParserUtil.getTokenAndAdvance(builder);
+                isValid = validTokens.contains(next) || ParserUtil.isWordToken(next);
             }
         }
 
@@ -84,6 +88,6 @@ public class ParameterExpansionParsing implements ParsingFunction {
             marker.drop();
         }
 
-        return validEnd;
+        return validEnd && isValid;
     }
 }

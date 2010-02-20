@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-02-07
+ * Last modified: 2010-02-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ public class BashLexerTest {
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
+        testTokenization("${!echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
         testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
         testTokenization("${echo} ${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("a=1 b=2 echo", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, INTERNAL_COMMAND);
@@ -190,6 +191,8 @@ public class BashLexerTest {
 
         testTokenization("\\.", WORD);
         testTokenization("\\n", WORD);
+        testTokenization("\\>", WORD);
+        testTokenization("\\<", WORD);
 
         testTokenization("a#%%", WORD);
 
@@ -486,12 +489,37 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testParamExpansionNested() {
+        //${a${a}}
+        testTokenization("${a${b}}", DOLLAR, LEFT_CURLY, WORD,
+                DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_CURLY);
+
+        //${a$(a)}
+        testTokenization("${a$(b)}", DOLLAR, LEFT_CURLY, WORD,
+                DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_CURLY);
+
+        //${a$($(a))}
+        testTokenization("${a$($(b))}", DOLLAR, LEFT_CURLY, WORD,
+                DOLLAR, LEFT_PAREN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_PAREN, RIGHT_CURLY);
+
+        //${a$(a > b)}
+        testTokenization("${a$(a > b)}", DOLLAR, LEFT_CURLY, WORD,
+                DOLLAR, LEFT_PAREN, WORD, WHITESPACE, GREATER_THAN, WHITESPACE, WORD, RIGHT_PAREN, RIGHT_CURLY);
+
+        //DIR=${$(a $(b)/..)}
+        testTokenization("DIR=${$(a $(b)/..)}", ASSIGNMENT_WORD, EQ, DOLLAR, LEFT_CURLY,
+                DOLLAR, LEFT_PAREN, WORD, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN,
+                WORD, RIGHT_PAREN, RIGHT_CURLY);
+    }
+
+    @Test
     public void testParamExpansion() {
         testTokenization("${a}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${a:a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
         testTokenization("${a:-a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
         testTokenization("${a:.*}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, RIGHT_CURLY);
     }
+
 
     private void testTokenization(String code, IElementType... expectedTokens) {
         testTokenization(BashVersion.Bash_v3, code, expectedTokens);
