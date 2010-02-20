@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ShebangPathCompletionProvider.java, Class: ShebangPathCompletionProvider
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class ShebangPathCompletionProvider extends BashCompletionProvider {
         BashShebang shebang = (BashShebang) element;
         String shellcommand = shebang.shellCommand();
 
-        int elementOffset = parameters.getOffset() - shebang.shellCommandOffset();
+        int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
         return elementOffset > 0 && elementOffset < shellcommand.length()
                 ? shellcommand.substring(0, elementOffset)
                 : shellcommand;

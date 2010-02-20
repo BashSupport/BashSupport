@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsingTest.java, Class: ParameterExpansionParsingTest
- * Last modified: 2010-01-27
+ * Last modified: 2010-02-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,5 +40,17 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
 
         //{B:-B}
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testParseAdvanced() {
+        //{a:$(a $(b)/..)}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, DOLLAR, LEFT_PAREN, WORD,
+                WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN,
+                WORD, RIGHT_PAREN, RIGHT_CURLY);
+
+        //{a:${a:a}}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, DOLLAR, LEFT_CURLY,
+                WORD, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY, RIGHT_CURLY);
     }
 }
