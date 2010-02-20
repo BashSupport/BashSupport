@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashShebang.java, Class: BashShebang
- * Last modified: 2009-12-04
+ * Last modified: 2010-02-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.openapi.util.TextRange;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Date: 16.04.2009
  * Time: 14:50:39
@@ -30,12 +33,8 @@ public interface BashShebang extends BashPsiElement {
      */
     public String shellCommand();
 
-    /**
-     * Returns the file offset where the shell command part starts.
-     *
-     * @return The offset in the file
-     */
-    public int shellCommandOffset();
-
     public void updateCommand(String command);
+
+    @NotNull
+    public TextRange commandRange();
 }
