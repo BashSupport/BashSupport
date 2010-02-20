@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: VarParsingTest.java, Class: VarParsingTest
- * Last modified: 2010-02-09
+ * Last modified: 2010-02-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -60,12 +59,11 @@ public class VarParsingTest extends MockPsiTest {
         mockTest(varParsingTest, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
     }
 
-    @Test
-    @Ignore
+/*    @Test
     public void testParseError1() {
         //${a;}
         mockTestFail(varParsingTest, DOLLAR, LEFT_CURLY, WORD, SEMI, RIGHT_CURLY);
-    }
+    }*/
 
     @Test
     public void testParseError2() {

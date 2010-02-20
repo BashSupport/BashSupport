@@ -75,8 +75,7 @@ import java.util.Stack;
   */
   private void backToPreviousState() {
     if (lastStates.isEmpty()) {
-      //yybegin(YYINITIAL);
-      throw new IllegalStateException("Tries to go to previous state, but not more state left.");
+      throw new IllegalStateException("BashLexer: Tried to go to previous state, but not more state left.");
     }
     else {
       yybegin(lastStates.pop());
@@ -116,7 +115,7 @@ ContinuedLine = "\\" {LineTerminator}
 Comment = "#"  {InputCharacter}*
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 
-EscapedChar    = "\\t" | "\\n" | "\\r" | "\\\"" | "\\'" | "\\`" | "\\." | "\\#" | "\\$" | "\\*" | "\\ " | "\\\\" | "\\?" | "\\!"
+EscapedChar    = "\\t" | "\\n" | "\\r" | "\\\"" | "\\'" | "\\`" | "\\." | "\\#" | "\\$" | "\\*" | "\\ " | "\\\\" | "\\?" | "\\!" | "\\>" | "\\<"
 StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 
@@ -155,9 +154,6 @@ CasePattern = {CaseFirst}{CaseAfter}*
 /*  If in an arithmetic expression */
 %state S_ARITH
 
-/*  In in an eval */
-%state S_EVAL
-
 /*  If in a case */
 %state S_CASE
 
@@ -165,7 +161,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
 %state S_CASE_PATTERN
 
 /*  If in a arithmetic subshell */
-%state S_ARITH_SUBSHELL
+%state S_SUBSHELL
 
 /*  If in a assignment */
 %state S_ARRAYASSIGN
@@ -174,20 +170,20 @@ CasePattern = {CaseFirst}{CaseAfter}*
 %xstate S_STRINGMODE
 
 /*  To match tokens in pattern expansion mode ${...} . Needs special parsing of # */
-%state S_EXPANSION
+%state S_PARAM_EXPANSION
 
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
 
 %%
 /***************************** INITIAL STAATE ************************************/
-<YYINITIAL, S_CASE, S_CASE_PATTERN, S_ARITH_SUBSHELL> {
+<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL> {
   {Shebang}                     { return SHEBANG; }
   {Comment}({LineTerminator}{Comment})+/{LineTerminator}    { return COMMENT; }
   {Comment}                     { return COMMENT; }
 }
 
-<YYINITIAL, S_CASE, S_EVAL, S_ARITH_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
   "[ "                          { goToState(S_TEST); return EXPR_CONDITIONAL; }
 
   /** Strings */
@@ -261,7 +257,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
    }
 }
 
-<YYINITIAL, S_CASE, S_ARITH_SUBSHELL, S_EVAL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
     <S_ARITH> {
        {ArrayAssignmentWord} / "=("|"+=("   { goToState(S_ARRAYASSIGN); return ARRAY_ASSIGNMENT_WORD; }
        {AssignmentWord} / "=("|"+=("        { goToState(S_ARRAYASSIGN); return ASSIGNMENT_WORD; }
@@ -287,11 +283,11 @@ CasePattern = {CaseFirst}{CaseAfter}*
   ")"                             { backToPreviousState(); return RIGHT_PAREN; }
 }
 
-<YYINITIAL, S_ARITH_SUBSHELL> {
+<YYINITIAL, S_SUBSHELL> {
   "in"                          { return IN_KEYWORD; }
 }
 
-<YYINITIAL, S_CASE, S_ARITH_SUBSHELL> {
+<YYINITIAL, S_CASE, S_SUBSHELL> {
 /* keywords and expressions */
   "case"                        { inCaseBody = false; goToState(S_CASE); return CASE_KEYWORD; }
 
@@ -368,9 +364,9 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "-N"                         { return COND_OP; }
 }
 
-<S_ARITH, S_TEST> {
+<S_ARITH, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
   /* If a subshell expression is found, return DOLLAR and move before the bracket */
-  "$("/[^(]                     { yypushback(1); goToState(S_ARITH_SUBSHELL); return DOLLAR; }
+  "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL); return DOLLAR; }
 }
 
 /*** Arithmetic expressions *************/
@@ -382,6 +378,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
                                     backToPreviousState();
                                     return _EXPR_ARITH; }
                                 }
+
   ")"                           { openParenths--; return RIGHT_PAREN; }
 
   "("                           { openParenths++; return LEFT_PAREN; }
@@ -431,7 +428,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
   {ArithWord}                   { return WORD; }
 }
 
-<S_ARITH_SUBSHELL> {
+<S_SUBSHELL> {
   ")"                           { backToPreviousState(); return RIGHT_PAREN; }
 }
 
@@ -530,7 +527,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
   [^\"]                       { string.advanceToken(); return STRING_CHAR; }
 }  
 
-<YYINITIAL, S_EVAL, S_BACKQUOTE> {
+<YYINITIAL, S_BACKQUOTE> {
   /* Bash 4 */
     "&>>"                         { if (isBash4()) {
                                         return REDIRECT_AMP_GREATER_GREATER;
@@ -552,7 +549,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
   ">|"                          { return REDIRECT_GREATER_BAR; }
 }
 
-<S_EXPANSION> {
+<S_PARAM_EXPANSION> {
   "#"|"-"|"+" |"!"|"%"|":"|"*"|"@"|"/"|"?"|"="|"."|"^"
                                 { return PARAM_EXPANSION_OP; }
   "["                           { return LEFT_SQUARE; }
@@ -566,7 +563,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
 
 
 /** Match in all except of string */
-<YYINITIAL, S_ARITH, S_EVAL, S_CASE, S_CASE_PATTERN, S_ARITH_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
   /* Matching in all states */
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
@@ -576,7 +573,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_EVAL, S_CASE, S_CASE_PATTERN, S_ARITH_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
@@ -633,13 +630,13 @@ CasePattern = {CaseFirst}{CaseAfter}*
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_EVAL, S_CASE, S_CASE_PATTERN, S_ARITH_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_BACKQUOTE, S_STRINGMODE> {
-    "${"                          { goToState(S_EXPANSION); yypushback(1); return DOLLAR; }
+<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_BACKQUOTE, S_STRINGMODE> {
+    "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
 }    
 
 
-<YYINITIAL, S_CASE, S_EVAL, S_TEST, S_ARITH_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_TEST, S_SUBSHELL, S_BACKQUOTE> {
   {Word}                          { return WORD; }
 }
 
