@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractFileTreeTable.java, Class: AbstractFileTreeTable
- * Last modified: 2010-02-17
+ * Last modified: 2010-02-28
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -75,6 +78,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
                 return node.toString();
             }
         });
+
         final DefaultTreeExpander treeExpander = new DefaultTreeExpander(getTree());
         CommonActionsManager.getInstance().createCollapseAllAction(treeExpander, this);
         CommonActionsManager.getInstance().createExpandAllAction(treeExpander, this);
@@ -82,33 +86,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
         getTree().setShowsRootHandles(true);
         getTree().setLineStyleAngled();
         getTree().setRootVisible(true);
-        getTree().setCellRenderer(new DefaultTreeCellRenderer() {
-            public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel, final boolean expanded,
-                                                          final boolean leaf, final int row, final boolean hasFocus) {
-                super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-                if (value instanceof ModuleRootNode) {
-                    setText(getModuleNodeText());
-                    return this;
-                }
-
-                FileNode fileNode = (FileNode) value;
-                VirtualFile file = fileNode.getObject();
-                if (fileNode.getParent() instanceof FileNode) {
-                    setText(file.getName());
-                } else {
-                    setText(file.getPresentableUrl());
-                }
-
-                Icon icon;
-                if (file.isDirectory()) {
-                    icon = expanded ? Icons.DIRECTORY_OPEN_ICON : Icons.DIRECTORY_CLOSED_ICON;
-                } else {
-                    icon = IconUtil.getIcon(file, 0, null);
-                }
-                setIcon(icon);
-                return this;
-            }
-        });
+        getTree().setCellRenderer(new DefaultTreeCellRenderer());
         getTableHeader().setReorderingAllowed(false);
 
 
@@ -189,6 +167,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
 
     public void reset(final Map<VirtualFile, T> mappings) {
         myModel.reset(mappings);
+
         final TreeNode root = (TreeNode) myModel.getRoot();
         myModel.nodeChanged(root);
         getTree().setModel(null);
@@ -298,7 +277,9 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
         public void setValueAt(final Object aValue, final Object node, final int column) {
             final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
             final Object userObject = treeNode.getUserObject();
-            if (userObject instanceof Module) return;
+            if (userObject instanceof Module) {
+                return;
+            }
             final VirtualFile file = (VirtualFile) userObject;
             final T t = (T) aValue;
             if (t == null || myTreeTable.isNullObject(t)) {
@@ -339,7 +320,9 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
             NextRoot:
             for (VirtualFile root : roots) {
                 for (VirtualFile candidate : roots) {
-                    if (VfsUtil.isAncestor(candidate, root, true)) continue NextRoot;
+                    if (VfsUtil.isAncestor(candidate, root, true)) {
+                        continue NextRoot;
+                    }
                 }
                 if (myFilter.accept(root)) {
                     children.add(new FileNode(root, module, myFilter));
@@ -385,9 +368,15 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
                     public int compare(final ConvenientNode node1, final ConvenientNode node2) {
                         Object o1 = node1.getObject();
                         Object o2 = node2.getObject();
-                        if (o1 == o2) return 0;
-                        if (o1 instanceof Module) return -1;
-                        if (o2 instanceof Module) return 1;
+                        if (o1 == o2) {
+                            return 0;
+                        }
+                        if (o1 instanceof Module) {
+                            return -1;
+                        }
+                        if (o2 instanceof Module) {
+                            return 1;
+                        }
                         VirtualFile file1 = (VirtualFile) o1;
                         VirtualFile file2 = (VirtualFile) o2;
                         if (file1.isDirectory() != file2.isDirectory()) {
@@ -440,4 +429,31 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
         }
     }
 
+    private class DefaultTreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
+        public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel, final boolean expanded,
+                                                      final boolean leaf, final int row, final boolean hasFocus) {
+            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            if (value instanceof ModuleRootNode) {
+                setText(getModuleNodeText());
+                return this;
+            }
+
+            FileNode fileNode = (FileNode) value;
+            VirtualFile file = fileNode.getObject();
+            if (fileNode.getParent() instanceof FileNode) {
+                setText(file.getName());
+            } else {
+                setText(file.getPresentableUrl());
+            }
+
+            Icon icon;
+            if (file.isDirectory()) {
+                icon = expanded ? Icons.DIRECTORY_OPEN_ICON : Icons.DIRECTORY_CLOSED_ICON;
+            } else {
+                icon = IconUtil.getIcon(file, 0, null);
+            }
+            setIcon(icon);
+            return this;
+        }
+    }
 }

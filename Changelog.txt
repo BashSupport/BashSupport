@@ -1,5 +1,8 @@
+2010-02-28:
+ - The facet configuration tree is expanded by default now
+
 2010-02-19:
- - Fixed ${!name} 
+ - Fixed ${!name}
  - Fixed echo \> a
  - Fixed nested evaluations inside of a parameter expansion block
 
