@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-02-17
+ * Last modified: 2010-02-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.settings.facet.BashFacet;
 import com.ansorgit.plugins.bash.settings.facet.BashFacetConfiguration;
 import com.ansorgit.plugins.bash.settings.facet.ui.FileMode;
 import com.ansorgit.plugins.bash.util.BashIcons;
+import com.ansorgit.plugins.bash.util.content.BashContentUtil;
 import com.intellij.lang.Language;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
@@ -32,13 +33,12 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -135,27 +135,7 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             } else if (mode == FileMode.ignore()) {
                 return false;
             } else if (mode == FileMode.auto()) {
-                if (file.getLength() == 0) {
-                    return true;
-                }
-
-                try {
-                    byte[] data = new byte[48];
-                    InputStream inputStream = file.getInputStream();
-
-                    //the guess logic should be improved
-                    int read = inputStream.read(data, 0, 10);
-                    if (read > 0) {
-                        String content = new String(data);
-                        for (String s : validContentStarts) {
-                            if (content.startsWith(s)) {
-                                return true;
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    LOG.warn("Error checking file content for Bash", e);
-                }
+                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), 0.75d, ProjectUtil.guessProjectForFile(file));
             }
         }
 

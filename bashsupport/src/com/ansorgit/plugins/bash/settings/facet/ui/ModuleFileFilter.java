@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ModuleFileFilter.java, Class: ModuleFileFilter
- * Last modified: 2010-02-13
+ * Last modified: 2010-02-28
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 package com.ansorgit.plugins.bash.settings.facet.ui;
 
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileFilter;
 
@@ -31,13 +30,23 @@ import com.intellij.openapi.vfs.VirtualFileFilter;
  * Time: 10:39:47 PM
  */
 class ModuleFileFilter implements VirtualFileFilter {
-    private final Module module;
-
-    public ModuleFileFilter(Module module) {
-        this.module = module;
+    public ModuleFileFilter() {
     }
 
     public boolean accept(VirtualFile virtualFile) {
-        return !(!virtualFile.isDirectory() && virtualFile.getExtension() != null);
+        if (virtualFile.isDirectory()) {
+            boolean hasValidSubtree = false;
+
+            for (VirtualFile f : virtualFile.getChildren()) {
+                if (accept(f)) {
+                    hasValidSubtree = true;
+                    break;
+                }
+            }
+
+            return hasValidSubtree;
+        }
+
+        return virtualFile.getExtension() == null;
     }
 }
