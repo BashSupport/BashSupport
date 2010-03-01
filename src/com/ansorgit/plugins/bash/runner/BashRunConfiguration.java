@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRunConfiguration.java, Class: BashRunConfiguration
- * Last modified: 2010-01-26
+ * Last modified: 2010-03-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -81,7 +80,7 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
         BashCommandLineState state = new BashCommandLineState(this, env);
 
-        TextConsoleBuilder textConsoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(getProject());
+        TextConsoleBuilder textConsoleBuilder = new BashTextConsoleBuilder(getProject());
         textConsoleBuilder.addFilter(new BashLineErrorFilter(getProject()));
 
         state.setConsoleBuilder(textConsoleBuilder);
