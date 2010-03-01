@@ -1,3 +1,6 @@
+2010-03-01:
+ - A process started withing a run script action is terminated when the stop button is pressed 
+
 2010-02-28:
  - The facet configuration tree is expanded by default now
 
