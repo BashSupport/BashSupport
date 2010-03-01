@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandLineState.java, Class: BashCommandLineState
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public class BashCommandLineState extends CommandLineState {
         GeneralCommandLine commandLine = generateCommandLine();
 
         OSProcessHandler osProcessHandler = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
-        ProcessTerminatedListener.attach(osProcessHandler);
+        osProcessHandler.putUserData(OSProcessHandler.SILENTLY_DESTROY_ON_CLOSE, Boolean.TRUE);
+        ProcessTerminatedListener.attach(osProcessHandler, runConfiguration.getProject());
 
         return osProcessHandler;
     }
