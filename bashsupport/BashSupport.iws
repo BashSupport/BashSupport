@@ -5,21 +5,16 @@
     <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
     <option name="ANALYSIS_IN_BACKGROUND" value="true" />
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="691" mnemonic="1" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.ipr" afterPath="$PROJECT_DIR$/BashSupport.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/AddReplAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/BashReplAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/BashReplAction.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/BashReplAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashTextConsoleBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashTextConsoleBuilder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashReplActionGroup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/quickfix/AddShebangQuickfix.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/quickfix/AddShebangQuickfix.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.tar.gz" />
@@ -52,64 +47,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints>
-      <breakpoint url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="235" class="com.intellij.execution.impl.ConsoleViewImpl" package="com.intellij.execution.impl">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="950" class="com.intellij.execution.impl.ConsoleViewImpl.MyTypedHandler" package="com.intellij.execution.impl">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="499" class="com.intellij.execution.impl.ConsoleViewImpl" package="com.intellij.execution.impl">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
-    <field_breakpoints>
-      <breakpoint url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="105" class="com.intellij.execution.impl.ConsoleViewImpl" package="com.intellij.execution.impl" field_name="isViewer">
-        <option name="WATCH_MODIFICATION" value="true" />
-        <option name="WATCH_ACCESS" value="false" />
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </field_breakpoints>
     <breakpoint_any>
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -180,9 +117,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashRunConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashConsoleViewImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/quickfix/AddShebangQuickfix.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/console/RunBashConsoleAction.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ClojureReplActionGroup.java" />
@@ -190,12 +124,15 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ClojureReplProcessHandler.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/ClojureReplAction.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/AddReplAction.java" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashTextConsoleBuilder.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashReplProcessHandler.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplManager.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" />
         <option value="$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" />
+        <option value="$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/diagnostic/logging/AdditionalTabComponent.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/BashReplAction.java" />
+        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" />
       </list>
     </option>
   </component>
@@ -1012,19 +949,19 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
     </key>
-    <key name="IntroduceConstantDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashFileType" />
-    </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashElementTypes" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder" />
       <recent name="com.ansorgit.plugins.bash.lang.Bash" />
+    </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
+      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashFileType" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.ansorgit.plugins.bash.runner" />
@@ -1033,16 +970,16 @@
       <recent name="com.ansorgit.plugins.bash.settings.facet" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.arithmetic" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
+      <recent name="$PROJECT_DIR$/test" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.lexer" />
       <recent name="com.ansorgit.plugins.bash.lang.parser" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
-      <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
   <component name="RunManager" selected="Plugin.Intellij IDEA">
@@ -1738,16 +1675,16 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30167598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1724907" sideWeight="0.6312849" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34301677" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34301677" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24134079" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31895912" sideWeight="0.2603352" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2825279" sideWeight="0.649162" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32490706" sideWeight="0.649162" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31152415" sideWeight="0.6312849" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31152415" sideWeight="0.649162" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4178771" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32937685" sideWeight="0.550838" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1853,116 +1790,116 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashReplActionGroup.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/execution/configurations/CommandLineState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="874" selection-end="874" vertical-scroll-proportion="0.0">
+        <state line="50" column="24" selection-start="2105" selection-end="2105" vertical-scroll-proportion="0.2977191">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/lang/UNIXProcess.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/java/debugger/impl/src/com/intellij/debugger/actions/KillProcessAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="17" selection-start="6029" selection-end="6029" vertical-scroll-proportion="0.80941176">
+        <state line="30" column="39" selection-start="1093" selection-end="1093" vertical-scroll-proportion="0.09003601">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/application/impl/ApplicationImpl.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/actionSystem/DefaultActionGroup.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="327" column="0" selection-start="11708" selection-end="11708" vertical-scroll-proportion="0.21034078">
+        <state line="75" column="20" selection-start="2419" selection-end="2419" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/util/concurrent/Executors.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/console/LanguageConsoleImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="440" column="0" selection-start="19937" selection-end="19937" vertical-scroll-proportion="0.21198156">
+        <state line="118" column="61" selection-start="5186" selection-end="5186" vertical-scroll-proportion="0.31533742">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/OSProcessHandler.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/console/LanguageConsoleViewImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="0" selection-start="3425" selection-end="3425" vertical-scroll-proportion="0.21034078">
+        <state line="47" column="26" selection-start="1572" selection-end="1572" vertical-scroll-proportion="0.42352942">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/execution/impl/ConsoleViewImpl.class">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/smRunner/src/com/intellij/execution/testframework/sm/runner/ui/SMTRunnerConsoleView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="56" selection-start="8082" selection-end="8082" vertical-scroll-proportion="0.33254993">
+        <state line="34" column="13" selection-start="1519" selection-end="1519" vertical-scroll-proportion="0.14117648">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/ProcessHandler.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/actions/StopAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="26" selection-start="5859" selection-end="5859" vertical-scroll-proportion="0.49579832">
+        <state line="46" column="32" selection-start="1792" selection-end="1792" vertical-scroll-proportion="0.36416185">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/runners/RunContentBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="207" column="60" selection-start="8437" selection-end="8437" vertical-scroll-proportion="0.8265896">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/actionSystem/IdeActions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="195" column="24" selection-start="9769" selection-end="9769" vertical-scroll-proportion="0.7976879">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="251" column="41" selection-start="9443" selection-end="9443" vertical-scroll-proportion="0.06482593">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/execution/ui/ConsoleView.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="58" selection-start="1082" selection-end="1082" vertical-scroll-proportion="0.58235294">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="23" selection-start="6472" selection-end="6472" vertical-scroll-proportion="0.35774308">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="181" column="21" selection-start="6525" selection-end="6525" vertical-scroll-proportion="0.6152941">
+        <state line="726" column="35" selection-start="25933" selection-end="25933" vertical-scroll-proportion="0.47976878">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/application/ModalityState.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="0" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.6345476">
+        <state line="47" column="50" selection-start="1637" selection-end="1637" vertical-scroll-proportion="0.67164177">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleState.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="47" selection-start="2498" selection-end="2498" vertical-scroll-proportion="0.3778802">
+        <state line="242" column="103" selection-start="10317" selection-end="10317" vertical-scroll-proportion="1.4953445">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/editor/actionSystem/TypedActionHandler.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/java/debugger/impl/src/com/intellij/debugger/ui/DebuggerSessionTab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="7" selection-start="1298" selection-end="1298" vertical-scroll-proportion="0.328341">
+        <state line="520" column="36" selection-start="21175" selection-end="21175" vertical-scroll-proportion="0.51582867">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/keymap/impl/IdeKeyEventDispatcher.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/plugins/ant/src/com/intellij/lang/ant/config/execution/PlainTextView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="337" column="0" selection-start="13118" selection-end="13118" vertical-scroll-proportion="0.017626323">
+        <state line="171" column="16" selection-start="5183" selection-end="5183" vertical-scroll-proportion="0.44692737">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/ide/IdeEventQueue.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/plugins/maven/src/main/java/org/jetbrains/idea/maven/embedder/MavenConsoleImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="382" column="0" selection-start="11438" selection-end="11438" vertical-scroll-proportion="0.20329025">
+        <state line="62" column="20" selection-start="2730" selection-end="2730" vertical-scroll-proportion="0.20758122">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/java/debugger/impl/src/com/intellij/debugger/engine/RemoteStateState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="38" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.9776536">
           <folding />
         </state>
       </provider>
