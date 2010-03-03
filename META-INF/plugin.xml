@@ -135,18 +135,11 @@
                text="Bash REPL" description="Bash" popup="true">
 
             <action id="com.ansorgit.plugins.bash.actions.repl.AddReplAction"
-                    class="com.ansorgit.plugins.bash.actions.repl.AddReplAction" text="Add new Bash REPL"
-                    description="Add REPL">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt A"/>
+                    class="com.ansorgit.plugins.bash.actions.repl.AddReplAction" text="Add new Bash console"
+                    description="Open a new Bash console window">
             </action>
 
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </group>
-
-        <group id="Bash.REPL.PanelGroup"
-               class="com.ansorgit.plugins.bash.repl.BashReplActionGroup"
-               text="Bash REPL" description="Bash" popup="true">
-            <reference ref="com.ansorgit.plugins.bash.actions.repl.AddReplAction"/>
         </group>
     </actions>
 
