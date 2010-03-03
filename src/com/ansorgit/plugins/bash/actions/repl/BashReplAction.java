@@ -80,6 +80,7 @@ public abstract class BashReplAction extends AnAction {
                         "evaluate.norepl.message",
                         "evaluate.norepl.title");
             }
+
             return;
         }
 
@@ -92,7 +93,7 @@ public abstract class BashReplAction extends AnAction {
          return;
        } */
 
-        repl.writeToCurrentRepl(textToEvaluate, requestFocus);
+        //repl.writeToCurrentRepl(textToEvaluate, requestFocus);
     }
 
 
