@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-02-20
+  ~ Last modified: 2010-03-03
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -127,6 +127,27 @@
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
         </action>
+
+
+        <!-- A subset of the REPL actions that should be displayed in the panel toolbar. -->
+        <group id="Bash.REPL.Group"
+               class="com.ansorgit.plugins.bash.repl.BashReplActionGroup"
+               text="Bash REPL" description="Bash" popup="true">
+
+            <action id="com.ansorgit.plugins.bash.actions.repl.AddReplAction"
+                    class="com.ansorgit.plugins.bash.actions.repl.AddReplAction" text="Add new Bash REPL"
+                    description="Add REPL">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt A"/>
+            </action>
+
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+
+        <group id="Bash.REPL.PanelGroup"
+               class="com.ansorgit.plugins.bash.repl.BashReplActionGroup"
+               text="Bash REPL" description="Bash" popup="true">
+            <reference ref="com.ansorgit.plugins.bash.actions.repl.AddReplAction"/>
+        </group>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -184,5 +205,11 @@
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
         <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>
+
+        <!-- Repl-->
+        <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
+                        serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
+
+
     </extensions>
 </idea-plugin>
