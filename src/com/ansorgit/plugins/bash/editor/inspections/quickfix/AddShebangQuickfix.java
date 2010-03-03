@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangQuickfix.java, Class: AddShebangQuickfix
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -41,12 +42,17 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
         return "Add shebang line";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
-        if (document != null) {
-            document.insertString(0, "#!/bin/sh\n");
-            PsiDocumentManager.getInstance(project).commitDocument(document);
-        }
+    public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+        //work around a problem in a 9.0.2 eap which need a write session
+        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+            public void run() {
+                Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+                if (document != null) {
+                    document.insertString(0, "#!/bin/sh\n");
+                    PsiDocumentManager.getInstance(project).commitDocument(document);
+                }
+            }
+        });
     }
 
 }
