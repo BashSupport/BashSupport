@@ -17,45 +17,38 @@
  */
 package com.ansorgit.plugins.bash.repl;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.actions.repl.AddReplAction;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.CantRunException;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.impl.ConsoleViewImpl;
-import com.intellij.execution.process.*;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.EditorComponentImpl;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Key;
 import com.intellij.ui.PopupHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PipedReader;
-import java.io.PipedWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Kurt Christensen, ilyas
  */
 
 public class ReplPanel extends JPanel implements Disposable {
-
     public static final String REPL_TOOLWINDOW_PLACE = "REPL.ToolWindow";
     public static final String REPL_TOOLWINDOW_POPUP_PLACE = "REPL.ToolWindow.Popup";
 
@@ -63,33 +56,44 @@ public class ReplPanel extends JPanel implements Disposable {
 
     private Project myProject;
     private Repl myRepl;
+    private DefaultActionGroup actions;
 
     public ReplPanel(@NotNull final Project project, @NotNull final Module module) throws IOException, ConfigurationException, CantRunException {
         setLayout(new BorderLayout());
 
+
         myProject = project;
-        myRepl = new Repl(module);
+        myRepl = new Repl(module, AnAction.EMPTY_ARRAY);
 
-        final ActionGroup actions = getActions();
+        this.actions = new DefaultActionGroup(ActionManager.getInstance().getAction(AddReplAction.class.getName()));
+        //actions.addAll(myRepl.view.createConsoleActions());
+        final AnAction stopAction = ActionManager.getInstance().getAction(IdeActions.ACTION_STOP_PROGRAM);
+        actions.add(stopAction);
 
-        final JPanel toolbarPanel = new JPanel(new GridLayout());
-        toolbarPanel.add(ActionManager.getInstance().createActionToolbar(REPL_TOOLWINDOW_PLACE, actions, false).getComponent());
+        //actions.add(new CloseAction(myExecutor, contentDescriptor, myProject));
 
-        add(toolbarPanel, BorderLayout.WEST);
+        //final JPanel toolbarPanel = new JPanel(new GridLayout());
+        //toolbarPanel.add(ActionManager.getInstance().createActionToolbar(REPL_TOOLWINDOW_PLACE, actions, false).getComponent());
+        //add(toolbarPanel, BorderLayout.WEST);
+        final JComponent actionToolbar =
+                ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, false).getComponent();
+        //ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, actions, true).getComponent();
+
+        add(actionToolbar, BorderLayout.WEST);
         add(myRepl.getView().getComponent(), BorderLayout.CENTER);
 
         Disposer.register(this, myRepl);
     }
 
-    private ActionGroup getActions() {
+    /*private ActionGroup getActions() {
         return (ActionGroup) ActionManager.getInstance().getAction(BASH_REPL_ACTION_GROUP);
-    }
+    } */
 
-    public String writeToCurrentRepl(String s) {
+    /*public String writeToCurrentRepl(String s) {
         return writeToCurrentRepl(s, true);
-    }
+    } */
 
-    public String writeToCurrentRepl(String input, boolean requestFocus) {
+    /*public String writeToCurrentRepl(String input, boolean requestFocus) {
         if (myRepl != null) {
             final PipedWriter pipeOut;
             PipedReader pipeIn = null;
@@ -154,7 +158,7 @@ public class ReplPanel extends JPanel implements Disposable {
             }
         }
         return null;
-    }
+    }*/
 
     public void dispose() {
         myProject = null;
@@ -165,28 +169,15 @@ public class ReplPanel extends JPanel implements Disposable {
         public ConsoleView view;
         private ProcessHandler processHandler;
 
-        public Repl(Module module) throws IOException, ConfigurationException, CantRunException {
-            final TextConsoleBuilderImpl builder = new TextConsoleBuilderImpl(myProject) {
-                private final ArrayList<Filter> filters = new ArrayList<Filter>();
-
-                @Override
-                public ConsoleView getConsole() {
-                    final ConsoleViewImpl view = new ConsoleViewImpl(myProject, false, BashFileType.BASH_FILE_TYPE);
-
-                    for (Filter filter : filters) {
-                        view.addMessageFilter(filter);
-                    }
-
-                    return view;
-                }
-
-                @Override
-                public void addFilter(Filter filter) {
-                    filters.add(filter);
-                }
-            };
-
+        public Repl(Module module, AnAction... customActions) throws IOException, ConfigurationException, CantRunException {
+            final TextConsoleBuilderImpl builder = new BashTextConsoleBuilder(myProject);
             view = builder.getConsole();
+            if (view instanceof ConsoleViewImpl) {
+                ConsoleViewImpl v = (ConsoleViewImpl) view;
+                for (AnAction a : customActions) {
+                    v.addCustomConsoleAction(a);
+                }
+            }
 
             // TODO - What does the "help ID" give us??
 
@@ -243,7 +234,7 @@ public class ReplPanel extends JPanel implements Disposable {
             PopupHandler.installPopupHandler(ed.getContentComponent(),
                     (ActionGroup) actionManager.getAction("Bash.REPL.Group"), REPL_TOOLWINDOW_POPUP_PLACE, actionManager);
 
-            view.print("Welcome to the BashSupport console\n", ConsoleViewContentType.NORMAL_OUTPUT);
+            view.print("Welcome to the BashSupport console\n\n", ConsoleViewContentType.NORMAL_OUTPUT);
         }
 
         public ConsoleView getView() {
@@ -260,5 +251,6 @@ public class ReplPanel extends JPanel implements Disposable {
             EditorComponentImpl eci = (EditorComponentImpl) view.getPreferredFocusableComponent();
             return eci.getEditor();
         }
+
     }
 }
