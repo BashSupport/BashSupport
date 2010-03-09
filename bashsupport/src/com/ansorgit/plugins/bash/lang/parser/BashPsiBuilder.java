@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,9 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      * @return The token for the given conditions.
      */
     public IElementType getTokenType(boolean withWhitespace, boolean remapping) {
-        if (!remapping) return getTokenType(withWhitespace);
+        if (!remapping) {
+            return getTokenType(withWhitespace);
+        }
         return getRemappingTokenType(withWhitespace);
     }
 
@@ -119,7 +121,9 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     public IElementType getRemappingTokenType(boolean withWhitespace) {
         getParsingState().enterSimpleCommand();
         try {
-            if (!withWhitespace) return getTokenType();
+            if (!withWhitespace) {
+                return getTokenType();
+            }
 
             enableWhitespace();
             try {
@@ -132,6 +136,23 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
             getParsingState().leaveSimpleCommand();
         }
     }
+
+    /*public IElementType getRemappingHeredocTokenType() {
+        getParsingState().enterHereDoc();
+        try {
+            if (getHereDocData().isStrippingWhitespace()) return getTokenType();
+
+            enableWhitespace();
+            try {
+                return getTokenType();
+            }
+            finally {
+                disableWhitespace();
+            }
+        } finally {
+            getParsingState().leaveHereDoc();
+        }
+    } */
 
     public void advanceLexer(boolean useWhitespace) {
         if (!useWhitespace) {
@@ -172,7 +193,9 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     public boolean eatOptionalNewlines(int maxNewlines, boolean withWhitespace) {
         boolean hasNewline = (getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED);
 
-        if (maxNewlines < 0) maxNewlines = Integer.MAX_VALUE;
+        if (maxNewlines < 0) {
+            maxNewlines = Integer.MAX_VALUE;
+        }
 
         int readNewlines = 0;
         while (!eof() && getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
@@ -200,6 +223,14 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
 
     public void remapShebangToComment() {
         tokenRemapper.setMapShebangToComment(true);
+    }
+
+    public void enterHereDoc() {
+        getParsingState().enterHereDoc();
+    }
+
+    public void leaveHereDoc() {
+        getParsingState().leaveHereDoc();
     }
 
     /**
@@ -237,7 +268,9 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      * Removes the last error reporting state from the stack of saved states.
      */
     public void leaveLastErrorLevel() {
-        if (!errorsStatusStack.isEmpty()) errorsStatusStack.pop();
+        if (!errorsStatusStack.isEmpty()) {
+            errorsStatusStack.pop();
+        }
     }
 
     /**
@@ -286,10 +319,13 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
 
         @Override
         public void error(final String errorMessage) {
-            if (BashPsiBuilder.this.getErrorReportingStatus()) original.error(errorMessage);
-            else {
+            if (BashPsiBuilder.this.getErrorReportingStatus()) {
+                original.error(errorMessage);
+            } else {
                 drop();
-                if (log.isDebugEnabled()) log.debug("Marker: suppressed error " + errorMessage);
+                if (log.isDebugEnabled()) {
+                    log.debug("Marker: suppressed error " + errorMessage);
+                }
             }
         }
     }

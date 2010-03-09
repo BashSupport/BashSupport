@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,20 @@ public class HereDocParsing implements ParsingTool {
             return false;
         }
 
+        try {
+            builder.enterHereDoc();
+
+            if (doParsing(builder)) {
+                return false;
+            }
+        } finally {
+            builder.leaveHereDoc();
+        }
+
+        return true;
+    }
+
+    private boolean doParsing(BashPsiBuilder builder) {
         builder.eatOptionalNewlines(1);
 
         while (!builder.eof() && builder.getHereDocData().expectsHereDoc()) {
@@ -96,12 +110,12 @@ public class HereDocParsing implements ParsingTool {
                 ParserUtil.error(builder, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();//fixme check this
 
-                return false;
+                return true;
             } else if (!foundExactEnd) {
                 ParserUtil.error(hereDocMarker, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();
 
-                return false;
+                return true;
             }
 
             //this could happen if the users enters text at the end of a document
@@ -112,8 +126,7 @@ public class HereDocParsing implements ParsingTool {
 
             builder.getHereDocData().removeExpectedEnd();
         }
-
-        return true;
+        return false;
     }
 
     /**

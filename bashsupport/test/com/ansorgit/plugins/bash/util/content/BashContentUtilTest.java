@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashContentUtilTest.java, Class: BashContentUtilTest
- * Last modified: 2010-02-23
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import java.net.URL;
 public class BashContentUtilTest {
     @Test
     public void testBashContentUtil() {
-        URL resource = getClass().getResource("/com/ansorgit/plugins/bash/util/content/scriptWithShebang.txt");
+        URL resource = getClass().getResource("scriptWithShebang.txt");
         Assert.assertNotNull(resource);
 
         File file = new File(resource.getFile());

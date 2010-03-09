@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenRemapper.java, Class: BashTokenRemapper
- * Last modified: 2010-01-19
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,11 +56,24 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
             return WORD;
         }
 
+        if (builder.getParsingState().isInHereDoc() && remappedInHereDoc(elementType)) {
+            return STRING2;
+        }
+
         if (remapShebangToComment && elementType == SHEBANG) {
             return COMMENT;
         }
 
         return elementType;
+    }
+
+    private boolean remappedInHereDoc(IElementType elementType) {
+        boolean evaluating = builder.getHereDocData().isCurrentlyEvaluating();
+        if (evaluating && elementType == BashTokenTypes.VARIABLE) {
+            return false;
+        }
+
+        return elementType != BashTokenTypes.LINE_FEED;
     }
 
     private boolean remappedToWord(final IElementType element) {
