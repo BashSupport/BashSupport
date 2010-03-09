@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AddReplAction.java, Class: AddReplAction
- * Last modified: 2010-03-03
+ * Last modified: 2010-03-04
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.module.Module;
 
-public class AddReplAction extends BashReplAction {
+public class AddReplAction extends AbstractBashReplAction {
     public AddReplAction() {
         getTemplatePresentation().setIcon(BashIcons.BASH_FILE_ICON);
     }

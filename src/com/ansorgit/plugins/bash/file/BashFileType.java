@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-02-20
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.file;
 
+import com.ansorgit.plugins.bash.editor.highlighting.BashEditorHighlighter;
 import com.ansorgit.plugins.bash.lang.Bash;
 import com.ansorgit.plugins.bash.lang.BashLanguage;
 import com.ansorgit.plugins.bash.settings.facet.BashFacet;
@@ -27,6 +28,8 @@ import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.content.BashContentUtil;
 import com.intellij.lang.Language;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.highlighter.EditorHighlighter;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.ex.FileTypeIdentifiableByVirtualFile;
 import com.intellij.openapi.module.Module;
@@ -37,6 +40,7 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -86,6 +90,15 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
 
     public Icon getIcon() {
         return BashIcons.BASH_FILE_ICON;
+    }
+
+    public EditorHighlighter getEditorHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile, @NotNull EditorColorsScheme colors) {
+        return new BashEditorHighlighter(colors, project, virtualFile);
+    }
+
+    @Override
+    public boolean isJVMDebuggingSupported() {
+        return false;
     }
 
     /**
