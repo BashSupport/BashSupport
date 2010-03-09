@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHighlighterFactory.java, Class: BashHighlighterFactory
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.intellij.codeHighlighting.TextEditorHighlightingPass;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -35,9 +36,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BashHighlighterFactory implements TextEditorHighlightingPassFactory {
     private TextEditorHighlightingPassRegistrar myRegistrar;
+    private Project myProject;
 
-    public BashHighlighterFactory(final TextEditorHighlightingPassRegistrar passRegistrar) {
+    public BashHighlighterFactory(final TextEditorHighlightingPassRegistrar passRegistrar, Project project) {
         myRegistrar = passRegistrar;
+        myProject = project;
     }
 
     public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
@@ -49,11 +52,10 @@ public class BashHighlighterFactory implements TextEditorHighlightingPassFactory
     }
 
     public void projectOpened() {
-
+        myRegistrar.registerTextEditorHighlightingPass(this, TextEditorHighlightingPassRegistrar.Anchor.LAST, 0, false, true);
     }
 
     public void projectClosed() {
-
     }
 
     @NonNls
@@ -63,10 +65,8 @@ public class BashHighlighterFactory implements TextEditorHighlightingPassFactory
     }
 
     public void initComponent() {
-        myRegistrar.registerTextEditorHighlightingPass(this, null, null, true, -1);
     }
 
     public void disposeComponent() {
-
     }
 }

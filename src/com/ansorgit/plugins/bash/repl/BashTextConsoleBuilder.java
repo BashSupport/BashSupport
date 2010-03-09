@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTextConsoleBuilder.java, Class: BashTextConsoleBuilder
- * Last modified: 2010-03-03
+ * Last modified: 2010-03-04
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,16 +26,15 @@ import com.intellij.execution.ui.ConsoleView;
 import com.intellij.openapi.project.Project;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
  * User: jansorg
  * Date: Mar 3, 2010
  * Time: 10:41:12 PM
- * To change this template use File | Settings | File Templates.
  */
 class BashTextConsoleBuilder extends TextConsoleBuilderImpl {
-    private final ArrayList<Filter> filters = new ArrayList<Filter>();
+    private final List<Filter> filters = new ArrayList<Filter>();
     private final Project project;
 
     public BashTextConsoleBuilder(Project project) {
@@ -45,7 +44,13 @@ class BashTextConsoleBuilder extends TextConsoleBuilderImpl {
 
     @Override
     public ConsoleView getConsole() {
-        final ConsoleViewImpl view = new ConsoleViewImpl(project, true, BashFileType.BASH_FILE_TYPE);
+        final ConsoleViewImpl view = new ConsoleViewImpl(project, false, BashFileType.BASH_FILE_TYPE) {
+            @Override
+            public boolean hasDeferredOutput() {
+                return true;
+            }
+        };
+
         for (Filter filter : filters) {
             view.addMessageFilter(filter);
         }

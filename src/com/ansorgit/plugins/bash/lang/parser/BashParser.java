@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashParser.java, Class: BashParser
- * Last modified: 2010-01-31
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,10 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
-import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,39 +62,5 @@ public class BashParser implements PsiParser {
         rootMarker.done(root);
 
         return builder.getTreeBuilt();
-    }
-
-    private ASTNode postprocess(ASTNode treeBuilt) {
-        treeBuilt.getPsi().acceptChildren(new PsiRecursiveElementVisitor() {
-            @Override
-            public void visitElement(PsiElement element) {
-                if (element instanceof BashHereDoc) {
-                    BashHereDoc doc = (BashHereDoc) element;
-                    boolean keepVars = doc.isEvaluatingVariables();
-                    //map all keywords to simple word tokens
-                    //keep variables if they are evaluated
-
-                    cleanupChildren(doc, keepVars);
-                }
-            }
-
-            private void cleanupChildren(PsiElement doc, boolean keepVars) {
-                for (ASTNode n : doc.getNode().getChildren(null)) {
-                    PsiElement c = n.getPsi();
-                    if (c instanceof BashVar && !keepVars) {
-                        c.replace(BashChangeUtil.createWord(doc.getProject(), c.getText()));
-                    }
-
-                    cleanupChildren(c, keepVars);
-                }
-
-            }
-
-            @Override
-            public void visitFile(PsiFile file) {
-            }
-        });
-
-        return treeBuilt;
     }
 }

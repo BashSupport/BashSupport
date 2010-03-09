@@ -1,3 +1,6 @@
+2010-03-09:
+ - Proper highlighting for heredocs, variables and other tokens are not highlighted any more
+
 2010-03-02:
  - AddShebangQuickfix is now run in a separate write action
 

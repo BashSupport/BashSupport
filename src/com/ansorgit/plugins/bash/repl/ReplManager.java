@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ReplManager.java, Class: ReplManager
- * Last modified: 2010-03-03
+ * Last modified: 2010-03-04
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manages REPLs in a dedicated ToolWindow and ToolWindow itself
+ * Manages REPLs in a dedicated ToolWindow and the ToolWindow itself.
  *
  * @author spleaner
  */
