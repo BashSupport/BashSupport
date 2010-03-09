@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashReplAction.java, Class: BashReplAction
- * Last modified: 2010-03-03
+ * File: AbstractBashReplAction.java, Class: AbstractBashReplAction
+ * Last modified: 2010-03-04
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BashReplAction extends AnAction {
+abstract class AbstractBashReplAction extends AnAction {
 
     static Module getModule(AnActionEvent e) {
         Module module = e.getData(DataKeys.MODULE);

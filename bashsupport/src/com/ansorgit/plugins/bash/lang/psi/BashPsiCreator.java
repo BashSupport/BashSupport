@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2010-02-07
+ * Last modified: 2010-03-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,76 +65,182 @@ public class BashPsiCreator implements BashElementTypes {
         final IElementType elementType = node.getElementType();
 
         //Bash shebang line
-        if (elementType == SHEBANG_ELEMENT) return new BashShebangImpl(node);
+        if (elementType == SHEBANG_ELEMENT) {
+            return new BashShebangImpl(node);
+        }
 
         //Block
-        if (elementType == BLOCK_ELEMENT) return new BashBlockImpl(node);
-        if (elementType == GROUP_COMMAND) return new BashBlockImpl(node);
+        if (elementType == BLOCK_ELEMENT) {
+            return new BashBlockImpl(node);
+        }
+        if (elementType == GROUP_COMMAND) {
+            return new BashBlockImpl(node);
+        }
 
         //shell command elements
-        if (elementType == FUNCTION_DEF_COMMAND) return new BashFunctionDefImpl(node);
-        if (elementType == BACKQUOTE_COMMAND) return new BashBackquoteImpl(node);
-        if (elementType == SUBSHELL_COMMAND) return new BashSubshellCommandImpl(node);
-        if (elementType == PIPELINE_COMMAND) return new BashPipelineImpl(node);
-        if (elementType == COMPOSED_COMMAND) return new BashComposedCommandImpl(node);
+        if (elementType == FUNCTION_DEF_COMMAND) {
+            return new BashFunctionDefImpl(node);
+        }
+        if (elementType == BACKQUOTE_COMMAND) {
+            return new BashBackquoteImpl(node);
+        }
+        if (elementType == SUBSHELL_COMMAND) {
+            return new BashSubshellCommandImpl(node);
+        }
+        if (elementType == PIPELINE_COMMAND) {
+            return new BashPipelineImpl(node);
+        }
+        if (elementType == COMPOSED_COMMAND) {
+            return new BashComposedCommandImpl(node);
+        }
 
         //loops
-        if (elementType == FOR_COMMAND) return new BashForImpl(node);
-        if (elementType == WHILE_COMMAND) return new BashWhileImpl(node);
-        if (elementType == SELECT_COMMAND) return new BashSelectImpl(node);
-        if (elementType == UNTIL_COMMAND) return new BashUntilImpl(node);
+        if (elementType == FOR_COMMAND) {
+            return new BashForImpl(node);
+        }
+        if (elementType == WHILE_COMMAND) {
+            return new BashWhileImpl(node);
+        }
+        if (elementType == SELECT_COMMAND) {
+            return new BashSelectImpl(node);
+        }
+        if (elementType == UNTIL_COMMAND) {
+            return new BashUntilImpl(node);
+        }
 
         //other shell things
-        if (elementType == IF_COMMAND) return new BashIfImpl(node);
-        if (elementType == CONDITIONAL_COMMAND) return new BashConditionalCommandImpl(node);
-        if (elementType == CASE_COMMAND) return new BashCaseImpl(node);
-        if (elementType == CASE_PATTERN_ELEMENT) return new BashCasePatternImpl(node);
-        if (elementType == CASE_PATTERN_LIST_ELEMENT) return new BashCasePatternListElementImpl(node);
-        if (elementType == TIME_COMMAND) return new BashTimeCommandImpl(node);
-        if (elementType == REDIRECT_ELEMENT) return new BashRedirectExprImpl(node);
-        if (elementType == REDIRECT_LIST_ELEMENT) return new BashRedirectListImpl(node);
+        if (elementType == IF_COMMAND) {
+            return new BashIfImpl(node);
+        }
+        if (elementType == CONDITIONAL_COMMAND) {
+            return new BashConditionalCommandImpl(node);
+        }
+        if (elementType == CASE_COMMAND) {
+            return new BashCaseImpl(node);
+        }
+        if (elementType == CASE_PATTERN_ELEMENT) {
+            return new BashCasePatternImpl(node);
+        }
+        if (elementType == CASE_PATTERN_LIST_ELEMENT) {
+            return new BashCasePatternListElementImpl(node);
+        }
+        if (elementType == TIME_COMMAND) {
+            return new BashTimeCommandImpl(node);
+        }
+        if (elementType == REDIRECT_ELEMENT) {
+            return new BashRedirectExprImpl(node);
+        }
+        if (elementType == REDIRECT_LIST_ELEMENT) {
+            return new BashRedirectListImpl(node);
+        }
 
         //vars
-        if (elementType == VAR_DEF_ELEMENT) return new BashVarDefImpl(node);
-        if (elementType == VAR_ELEMENT) return new BashVarImpl(node);
-        if (elementType == VAR_SUBSTITUTION_ELEMENT) return new BashVarSubstitutionImpl(node);
-        if (elementType == VAR_COMPOSED_VAR_ELEMENT) return new BashComposedVarImpl(node);
+        if (elementType == VAR_DEF_ELEMENT) {
+            return new BashVarDefImpl(node);
+        }
+        if (elementType == VAR_ELEMENT) {
+            return new BashVarImpl(node);
+        }
+        if (elementType == VAR_SUBSTITUTION_ELEMENT) {
+            return new BashVarSubstitutionImpl(node);
+        }
+        if (elementType == VAR_COMPOSED_VAR_ELEMENT) {
+            return new BashComposedVarImpl(node);
+        }
 
         //commands
-        if (elementType == SIMPLE_COMMAND_ELEMENT) return new BashCommandImpl(node);
+        if (elementType == SIMPLE_COMMAND_ELEMENT) {
+            return new BashCommandImpl(node);
+        }
 
         //misc elements
-        if (elementType == STRING_ELEMENT) return new BashStringImpl(node);
-        if (elementType == HEREDOC_ELEMENT) return new BashHereDocImpl(node);
-        if (elementType == SYMBOL_ELEMENT) return new BashSymbolImpl(node);
-        if (elementType == PARSED_WORD_ELEMENT) return new BashWordImpl(node);
-        if (elementType == EXPANSION_ELEMENT) return new BashExpansionImpl(node);
+        if (elementType == STRING_ELEMENT) {
+            return new BashStringImpl(node);
+        }
+        if (elementType == SYMBOL_ELEMENT) {
+            return new BashSymbolImpl(node);
+        }
+        if (elementType == PARSED_WORD_ELEMENT) {
+            return new BashWordImpl(node);
+        }
+        if (elementType == EXPANSION_ELEMENT) {
+            return new BashExpansionImpl(node);
+        }
 
-        if (elementType == ARITHMETIC_COMMAND) return new BashCommandImpl(node);
-        if (elementType == INTERNAL_COMMAND_ELEMENT) return new BashInternalCommandImpl(node);
-        if (elementType == GENERIC_COMMAND_ELEMENT) return new BashGenericCommandImpl(node);
+        if (elementType == ARITHMETIC_COMMAND) {
+            return new BashCommandImpl(node);
+        }
+        if (elementType == INTERNAL_COMMAND_ELEMENT) {
+            return new BashInternalCommandImpl(node);
+        }
+        if (elementType == GENERIC_COMMAND_ELEMENT) {
+            return new BashGenericCommandImpl(node);
+        }
 
-        if (elementType == HEREDOC_START_MARKER_ELEMENT) return new BashHereDocStartMarkerImpl(node);
-        if (elementType == HEREDOC_END_MARKER_ELEMENT) return new BashHereDocEndMarkerImpl(node);
+        if (elementType == HEREDOC_START_MARKER_ELEMENT) {
+            return new BashHereDocStartMarkerImpl(node);
+        }
+        if (elementType == HEREDOC_ELEMENT) {
+            return new BashHereDocImpl(node);
+        }
+        if (elementType == HEREDOC_END_MARKER_ELEMENT) {
+            return new BashHereDocEndMarkerImpl(node);
+        }
 
-        if (elementType == ARITH_ASSIGNMENT_ELEMENT) return new AssignmentExpressionsImpl(node);
-        if (elementType == ARITH_BIT_AND_ELEMENT) return new BitwiseAndExpressionsImpl(node);
-        if (elementType == ARITH_BIT_OR_ELEMENT) return new BitwiseOrExpressionsImpl(node);
-        if (elementType == ARITH_BIT_XOR_ELEMENT) return new BitwiseXorExpressionsImpl(node);
-        if (elementType == ARITH_EQUALITY_ELEMENT) return new EqualityExprImpl(node);
-        if (elementType == ARITH_LOGIC_AND_ELEMENT) return new LogicalAndImpl(node);
-        if (elementType == ARITH_LOGIC_OR_ELEMENT) return new LogicalOrmpl(node);
-        if (elementType == ARITH_COMPUND_COMPARISION_ELEMENT) return new CompoundComparisionExpressionsImpl(node);
-        if (elementType == ARITH_EXPONENT_ELEMENT) return new ExponentExprImpl(node);
-        if (elementType == ARITH_NEGATION_ELEMENT) return new NegationExpressionImpl(node);
-        if (elementType == ARITH_PARENS_ELEMENT) return new ParenthesesExpressionsImpl(node);
-        if (elementType == ARITH_POST_INCR_ELEMENT) return new PostIncrementExpressionsImpl(node);
-        if (elementType == ARITH_PRE_INC_ELEMENT) return new PreIncrementExpressionsImpl(node);
-        if (elementType == ARITH_MULTIPLICACTION_ELEMENT) return new ProductExpressionsImpl(node);
-        if (elementType == ARITH_SHIFT_ELEMENT) return new ShiftExpressionsImpl(node);
-        if (elementType == ARITH_SIMPLE_ELEMENT) return new SimpleExpressionsImpl(node);
-        if (elementType == ARITH_SUM_ELEMENT) return new SumExpressionsImpl(node);
-        if (elementType == ARITH_TERNERAY_ELEMENT) return new TernaryExpressionsImpl(node);
+        if (elementType == ARITH_ASSIGNMENT_ELEMENT) {
+            return new AssignmentExpressionsImpl(node);
+        }
+        if (elementType == ARITH_BIT_AND_ELEMENT) {
+            return new BitwiseAndExpressionsImpl(node);
+        }
+        if (elementType == ARITH_BIT_OR_ELEMENT) {
+            return new BitwiseOrExpressionsImpl(node);
+        }
+        if (elementType == ARITH_BIT_XOR_ELEMENT) {
+            return new BitwiseXorExpressionsImpl(node);
+        }
+        if (elementType == ARITH_EQUALITY_ELEMENT) {
+            return new EqualityExprImpl(node);
+        }
+        if (elementType == ARITH_LOGIC_AND_ELEMENT) {
+            return new LogicalAndImpl(node);
+        }
+        if (elementType == ARITH_LOGIC_OR_ELEMENT) {
+            return new LogicalOrmpl(node);
+        }
+        if (elementType == ARITH_COMPUND_COMPARISION_ELEMENT) {
+            return new CompoundComparisionExpressionsImpl(node);
+        }
+        if (elementType == ARITH_EXPONENT_ELEMENT) {
+            return new ExponentExprImpl(node);
+        }
+        if (elementType == ARITH_NEGATION_ELEMENT) {
+            return new NegationExpressionImpl(node);
+        }
+        if (elementType == ARITH_PARENS_ELEMENT) {
+            return new ParenthesesExpressionsImpl(node);
+        }
+        if (elementType == ARITH_POST_INCR_ELEMENT) {
+            return new PostIncrementExpressionsImpl(node);
+        }
+        if (elementType == ARITH_PRE_INC_ELEMENT) {
+            return new PreIncrementExpressionsImpl(node);
+        }
+        if (elementType == ARITH_MULTIPLICACTION_ELEMENT) {
+            return new ProductExpressionsImpl(node);
+        }
+        if (elementType == ARITH_SHIFT_ELEMENT) {
+            return new ShiftExpressionsImpl(node);
+        }
+        if (elementType == ARITH_SIMPLE_ELEMENT) {
+            return new SimpleExpressionsImpl(node);
+        }
+        if (elementType == ARITH_SUM_ELEMENT) {
+            return new SumExpressionsImpl(node);
+        }
+        if (elementType == ARITH_TERNERAY_ELEMENT) {
+            return new TernaryExpressionsImpl(node);
+        }
 
         log.warn("MISSING PSI for" + node);
 
