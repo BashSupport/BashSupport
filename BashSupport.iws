@@ -10,36 +10,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashCommenter.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashCommenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParsingStateData.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParsingStateData.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashReplActionGroup.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/Repl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashEditorHighlighter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashEditorHighlighterPass.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashEditorHighlighterPass.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/AddHeredocVarHighlightingPass.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/RemoveHighlightingFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/HeredocVarHighlightingFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplPanel.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashEditorHighlighterPass.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/RemoveHeredocHighlightingPass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashSyntaxHighlighter.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashSyntaxHighlighter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.ipr" afterPath="$PROJECT_DIR$/BashSupport.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content/BashContentUtilTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content/BashContentUtilTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParser.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParser.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/intentions" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/codefolding/BashFoldingBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/codefolding/BashFoldingBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jflex.log" afterPath="$PROJECT_DIR$/jflex.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashFileImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashFileImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashHighlighterFactory.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashHighlighterFactory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/BashReplAction.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/AbstractBashReplAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/AddReplAction.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/repl/AddReplAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplManager.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/ReplManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
-    <ignored path="BashPlugin.iws" />
-    <ignored path=".idea/workspace.xml" />
     <ignored path="BashSupport-src.zip" />
     <ignored path="BashSupport-src.tar.gz" />
+    <ignored path="BashPlugin.iws" />
+    <ignored path=".idea/workspace.xml" />
     <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
@@ -123,7 +116,17 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Changelog.txt" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Changelog.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="1" selection-start="63" selection-end="63" vertical-scroll-proportion="0.081374325">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -136,21 +139,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content/BashContentUtilTest.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java" />
-        <option value="$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/editor/highlighter/EditorHighlighterFactoryImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashEditorHighlighter.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashFileImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParser.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashCommenter.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/BashLanguage.java" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/repl/BashTextConsoleBuilder.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
+        <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashEditorHighlighterPass.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/HeredocVarHighlightingFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/RemoveHighlightingFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/RemoveHeredocHighlightingPass.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/AddHeredocVarHighlightingPass.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashHighlighterFactory.java" />
+        <option value="$PROJECT_DIR$/jflex.log" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/codefolding/BashFoldingBuilder.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
       </list>
     </option>
@@ -161,6 +164,9 @@
     <option name="FILTER_INFO" value="false" />
     <option name="FILTER_DEBUG" value="false" />
     <option name="CUSTOM_FILTER" value="" />
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
   </component>
   <component name="ModuleEditorState">
     <option name="LAST_EDITED_MODULE_NAME" />
@@ -634,7 +640,97 @@
       <sortByType ProjectPane="false" />
     </navigator>
     <panes>
-      <pane id="Favorites" />
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Tests">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="test">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="testdata">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="test">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane />
       </pane>
@@ -644,10 +740,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="BashSupport" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -936,6 +1028,58 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="formatting" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="codefolding" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -956,97 +1100,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Problems" />
-        <subPane subId="Tests">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="test">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="testdata">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="test">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1116,24 +1170,17 @@
       <recent name="com.ansorgit.plugins.bash.lang.psi.util" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
       <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.editor.inspections.quickfix" />
       <recent name="com.ansorgit.plugins.bash.editor.inspections.inspections" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
-      <recent name="com.ansorgit.plugins.bash.lang.psi.api.arithmetic" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
-    </key>
-    <key name="IntroduceConstantDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashFileType" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
@@ -1142,12 +1189,23 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder" />
       <recent name="com.ansorgit.plugins.bash.lang.Bash" />
     </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
+      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashFileType" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
       <recent name="com.ansorgit.plugins.bash.runner" />
       <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.settings.facet.ui" />
       <recent name="com.ansorgit.plugins.bash.settings.facet" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.arithmetic" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
+      <recent name="$PROJECT_DIR$/test" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.lexer" />
@@ -1155,10 +1213,6 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
-      <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
   <component name="RunManager" selected="Plugin.Intellij IDEA">
@@ -1852,24 +1906,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1400" height="1015" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36536312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22997032" sideWeight="0.550838" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30167598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1724907" sideWeight="0.6312849" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10037175" sideWeight="0.6670391" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34301677" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32513967" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24134079" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31895912" sideWeight="0.2603352" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2780669" sideWeight="0.649162" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.333829" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30185872" sideWeight="0.6670391" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31152415" sideWeight="0.6905028" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31152415" sideWeight="0.6670391" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4178771" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32937685" sideWeight="0.550838" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1975,116 +2029,116 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/editor/impl/IterationState.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/AddHeredocVarHighlightingPass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="403" column="60" selection-start="15479" selection-end="15479" vertical-scroll-proportion="0.33333334">
+        <state line="69" column="20" selection-start="2713" selection-end="2713" vertical-scroll-proportion="0.41048825">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/HighlightInfoFilterImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/heredoc/BashHereDocImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="41" selection-start="1411" selection-end="1411" vertical-scroll-proportion="0.37769786">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/GeneralHighlightingPass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="378" column="42" selection-start="18330" selection-end="18330" vertical-scroll-proportion="0.3327338">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/folding/impl/CodeFoldingManagerImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="24" selection-start="2270" selection-end="2270" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/vcs-impl/src/com/intellij/openapi/vcs/changes/ChangesViewManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="14" selection-start="3752" selection-end="3752" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/vcs-impl/src/com/intellij/openapi/vcs/changes/ui/ChangesViewContentManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="14" selection-start="2833" selection-end="2833" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/psi/PsiRecursiveElementVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="14" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.33208954">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/TextEditorBackgroundHighlighter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="0" selection-start="4502" selection-end="4502" vertical-scroll-proportion="0.82718897">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/idea-IC-93.13/lib/trove4j.jar!/gnu/trove/TIntHash.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="19" selection-start="1132" selection-end="1132" vertical-scroll-proportion="0.44930875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/TextEditorHighlightingPassRegistrarImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="56" selection-start="5859" selection-end="5859" vertical-scroll-proportion="0.2004802">
+        <state line="50" column="0" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.33273056">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeHighlighting/TextEditorHighlightingPass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="0" selection-start="2888" selection-end="2888" vertical-scroll-proportion="0.0">
+        <state line="116" column="17" selection-start="3904" selection-end="3904" vertical-scroll-proportion="0.755877">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashEditorHighlighterPass.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/RemoveHighlightingFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="70" selection-start="2262" selection-end="2262" vertical-scroll-proportion="0.251497">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/CodeFoldingPass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="0" selection-start="1727" selection-end="1727" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/daemon/impl/PassExecutorService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="327" column="0" selection-start="15317" selection-end="15317" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashHighlighterFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="4" selection-start="2430" selection-end="2430" vertical-scroll-proportion="0.9529412">
+        <state line="33" column="11" selection-start="1263" selection-end="1263" vertical-scroll-proportion="0.30701753">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/codeHighlighting/BashHighlighterFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="59" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.37015277">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/openapi/editor/FoldingGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="13" selection-start="836" selection-end="836" vertical-scroll-proportion="0.2631579">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/lang/folding/FoldingDescriptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="115" column="22" selection-start="4314" selection-end="4314" vertical-scroll-proportion="0.33273056">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="581" column="64" selection-start="21446" selection-end="21446" vertical-scroll-proportion="0.62025315">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="164" column="16" selection-start="5411" selection-end="5411" vertical-scroll-proportion="0.55700934">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="21" selection-start="1860" selection-end="1860" vertical-scroll-proportion="0.19252336">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/codefolding/BashFoldingBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="29" selection-start="2809" selection-end="2809" vertical-scroll-proportion="0.38698012">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="41" selection-start="2626" selection-end="2626" vertical-scroll-proportion="0.43037975">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/ListParsing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="36" selection-start="5664" selection-end="5664" vertical-scroll-proportion="0.43037975">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jflex.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="0" selection-start="1165" selection-end="1165" vertical-scroll-proportion="0.18987341">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ParserUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="0" selection-start="3201" selection-end="3201" vertical-scroll-proportion="0.33273056">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="92" selection-start="104" selection-end="104" vertical-scroll-proportion="0.027075812">
+        <state line="3" column="1" selection-start="63" selection-end="63" vertical-scroll-proportion="0.081374325">
           <folding />
         </state>
       </provider>

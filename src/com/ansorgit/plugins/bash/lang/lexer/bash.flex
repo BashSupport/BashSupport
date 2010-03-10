@@ -579,7 +579,8 @@ CasePattern = {CaseFirst}{CaseAfter}*
     "$"\'{SingleCharacter}*\'     |
     \'{SingleCharacter}*\'        { return STRING2; }
 
-    {LineTerminator}+             { return LINE_FEED; }
+    /* Single line feeds are required to properly parse heredocs*/
+    {LineTerminator}             { return LINE_FEED; }
 
     /* Backquote expression */
     `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }

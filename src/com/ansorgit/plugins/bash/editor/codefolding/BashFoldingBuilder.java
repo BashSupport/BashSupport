@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFoldingBuilder.java, Class: BashFoldingBuilder
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilder;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,8 @@ import java.util.List;
  * @author Joachim Ansorg, mail@joachim-ansorg.de
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
-    public FoldingDescriptor[] buildFoldRegions(ASTNode node, Document document) {
+    @NotNull
+    public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode node, @NotNull Document document) {
         List<FoldingDescriptor> descriptors = new ArrayList<FoldingDescriptor>();
         appendDescriptors(node, document, descriptors);
 
@@ -45,25 +48,49 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
         final IElementType type = node.getElementType();
 
         if (isFoldable(type)) {
-            if (document.getLineNumber(node.getStartOffset()) + minumumLineOffset(type) <=
-                    document.getLineNumber(node.getTextRange().getEndOffset())) {
-                descriptors.add(new FoldingDescriptor(node, node.getTextRange()));
+            int startLine = document.getLineNumber(node.getStartOffset());
+
+            TextRange adjustedFoldingRange = adjustFoldingRange(node);
+            int endLine = document.getLineNumber(adjustedFoldingRange.getEndOffset());
+
+            if (startLine + minumumLineOffset(type) <= endLine) {
+                descriptors.add(new FoldingDescriptor(node, adjustedFoldingRange));
             }
         }
 
-        //work on all child elements
-        ASTNode child = node.getFirstChildNode();
-        while (child != null) {
-            child = appendDescriptors(child, document, descriptors).getTreeNext();
+        if (mayContainFoldBlocks(type)) {
+            //work on all child elements
+            ASTNode child = node.getFirstChildNode();
+            while (child != null) {
+                child = appendDescriptors(child, document, descriptors).getTreeNext();
+            }
         }
 
         return node;
     }
 
+    private static TextRange adjustFoldingRange(ASTNode node) {
+        if (node.getElementType() == HEREDOC_ELEMENT) {
+            TextRange textRange = node.getTextRange();
+            return TextRange.from(textRange.getStartOffset(), textRange.getLength() - 1);
+        }
+
+        return node.getTextRange();
+    }
+
+    private static boolean mayContainFoldBlocks(IElementType type) {
+        if (type == HEREDOC_ELEMENT) {
+            return false;
+        }
+
+        return true;
+    }
+
     private static boolean isFoldable(IElementType type) {
         return type == BLOCK_ELEMENT
                 || type == GROUP_COMMAND
-                || type == CASE_PATTERN_LIST_ELEMENT;
+                || type == CASE_PATTERN_LIST_ELEMENT
+                || type == HEREDOC_ELEMENT;
     }
 
     private static int minumumLineOffset(IElementType type) {
@@ -73,9 +100,14 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
 
     public String getPlaceholderText(ASTNode node) {
         final IElementType type = node.getElementType();
-        if (!isFoldable(type)) return null;
+        if (!isFoldable(type)) {
+            return null;
+        }
 
-        //fixme return right text for case patterns
+        if (type == HEREDOC_ELEMENT) {
+            return "...";
+        }
+
         return "{...}";
     }
 
