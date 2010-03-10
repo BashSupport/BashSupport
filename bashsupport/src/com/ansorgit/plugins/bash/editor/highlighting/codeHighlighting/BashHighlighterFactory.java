@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHighlighterFactory.java, Class: BashHighlighterFactory
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,10 @@
 package com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting;
 
 import com.ansorgit.plugins.bash.BashComponents;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.intellij.codeHighlighting.TextEditorHighlightingPass;
-import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar;
-import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.editor.markup.HighlighterLayer;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 25, 2010
  * Time: 8:27:58 PM
  */
-public class BashHighlighterFactory implements TextEditorHighlightingPassFactory {
+public class BashHighlighterFactory implements ProjectComponent {
     private TextEditorHighlightingPassRegistrar myRegistrar;
     private Project myProject;
 
@@ -43,16 +40,9 @@ public class BashHighlighterFactory implements TextEditorHighlightingPassFactory
         myProject = project;
     }
 
-    public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
-        if (file instanceof BashFile) {
-            return new BashEditorHighlighterPass(file.getProject(), (BashFile) file, editor);
-        }
-
-        return null;
-    }
-
     public void projectOpened() {
-        myRegistrar.registerTextEditorHighlightingPass(this, TextEditorHighlightingPassRegistrar.Anchor.LAST, 0, false, true);
+        myRegistrar.registerTextEditorHighlightingPass(new RemoveHighlightingFactory(), TextEditorHighlightingPassRegistrar.Anchor.AFTER, HighlighterLayer.ADDITIONAL_SYNTAX, false, true);
+        //myRegistrar.registerTextEditorHighlightingPass(new HeredocVarHighlightingFactory(), TextEditorHighlightingPassRegistrar.Anchor.LAST, HighlighterLayer.ADDITIONAL_SYNTAX, false, false);
     }
 
     public void projectClosed() {

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSyntaxHighlighter.java, Class: BashSyntaxHighlighter
- * Last modified: 2010-01-30
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
     private static final TextAttributes SHEBANG_ATTRIB = SyntaxHighlighterColors.LINE_COMMENT.getDefaultAttributes().clone();
     private static final TextAttributes REDIRECTION_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
     private static final TextAttributes CONDITIONAL_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
-    private static final TextAttributes HERE_DOC_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
+    public static final TextAttributes HERE_DOC_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
     private static final TextAttributes HERE_DOC_START_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
     private static final TextAttributes HERE_DOC_END_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
     private static final TextAttributes BACKQUOTE_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();

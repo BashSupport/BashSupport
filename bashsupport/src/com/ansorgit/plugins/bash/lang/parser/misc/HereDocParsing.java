@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,12 +57,12 @@ public class HereDocParsing implements ParsingTool {
     }
 
     private boolean doParsing(BashPsiBuilder builder) {
-        builder.eatOptionalNewlines(1);
+        builder.eatOptionalNewlines(1, true);
 
         while (!builder.eof() && builder.getHereDocData().expectsHereDoc()) {
             final String expectedEnd = builder.getHereDocData().expectedDocEnd();
-            //read lines until we found the end of the current here-doc
 
+            //read lines until we found the end of the current here-doc
             final BashSmartMarker hereDocMarker = new BashSmartMarker(builder.mark());
 
             boolean foundPrefixedEnd = false;
@@ -82,13 +82,14 @@ public class HereDocParsing implements ParsingTool {
 
                     line.second.rollbackTo();
                     if (readLines > 1) {
-                        //hereDocMarker.error("An heredoc end marker must be at the beginning of a line.");
+                        builder.eatOptionalNewlines();
                         hereDocMarker.done(HEREDOC_ELEMENT);
                     } else {
                         hereDocMarker.drop();
                     }
 
                     line = readLine(builder);
+
                     //noinspection ConstantConditions
                     line.second.done(HEREDOC_END_MARKER_ELEMENT);
 
@@ -97,10 +98,6 @@ public class HereDocParsing implements ParsingTool {
                 }
 
                 line.second.drop();
-
-                if (builder.getTokenType(true) == LINE_FEED) {
-                    builder.eatOptionalNewlines(-1, true);
-                }
 
                 line = readLine(builder);
                 readLines++;
@@ -145,6 +142,9 @@ public class HereDocParsing implements ParsingTool {
         StringBuilder string = new StringBuilder();
 
         PsiBuilder.Marker lineMarker = builder.mark();
+
+        builder.eatOptionalNewlines(-1, true);
+
         while (!builder.eof() && builder.getTokenType(true) != LINE_FEED) {
             if (string.length() > 0) { //isEmpty is JDK6
                 string.append(" ");
