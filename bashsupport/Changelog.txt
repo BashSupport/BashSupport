@@ -1,3 +1,7 @@
+2010-03-10:
+ - Heredoc parsing fixes
+ - Heredoc folding fixes
+ 
 2010-03-09:
  - Proper highlighting for heredocs, variables and other tokens are not highlighted any more
 

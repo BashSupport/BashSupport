@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTextConsoleBuilder.java, Class: BashTextConsoleBuilder
- * Last modified: 2010-03-04
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,12 +44,13 @@ class BashTextConsoleBuilder extends TextConsoleBuilderImpl {
 
     @Override
     public ConsoleView getConsole() {
-        final ConsoleViewImpl view = new ConsoleViewImpl(project, false, BashFileType.BASH_FILE_TYPE) {
+        ConsoleViewImpl view = new ConsoleViewImpl(project, false, BashFileType.BASH_FILE_TYPE);
+        /*{
             @Override
             public boolean hasDeferredOutput() {
                 return true;
             }
-        };
+        };*/
 
         for (Filter filter : filters) {
             view.addMessageFilter(filter);

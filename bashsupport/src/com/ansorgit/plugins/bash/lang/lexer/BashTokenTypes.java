@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,7 +176,7 @@ public interface BashTokenTypes {
     IElementType ARITH_ASS_MINUS = new BashElementType("-=");// /=
     IElementType ARITH_ASS_SHIFT_RIGHT = new BashElementType(">>=");// /=
     IElementType ARITH_ASS_SHIFT_LEFT = new BashElementType("<<=");// /=
-//    IElementType ARITH_ASS_SHIFT_AND = new BashElementType("/=");// /=
+    //    IElementType ARITH_ASS_SHIFT_AND = new BashElementType("/=");// /=
     //fixme missing: &= |= ^=, = ","
 
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
@@ -189,6 +189,7 @@ public interface BashTokenTypes {
 
     //variables
     IElementType VARIABLE = new BashElementType("variable");
+    TokenSet variableSet = TokenSet.create(VARIABLE);
 
     //parameter expansion
     IElementType PARAM_EXPANSION_OP = new BashElementType("Parameter expansion operator");
