@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashEditorHighlighterPass.java, Class: BashEditorHighlighterPass
- * Last modified: 2010-03-09
+ * File: RemoveHeredocHighlightingPass.java, Class: RemoveHeredocHighlightingPass
+ * Last modified: 2010-03-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,38 +42,41 @@ import java.util.List;
  * Date: Jan 25, 2010
  * Time: 8:36:58 PM
  */
-public class BashEditorHighlighterPass extends TextEditorHighlightingPass {
+class RemoveHeredocHighlightingPass extends TextEditorHighlightingPass {
     private final BashFile bashFile;
     private final Editor editor;
-    private final List<TextRange> docRanges = Lists.newArrayList();
+    private List<TextRange> unhighlightRanges;
 
-    public BashEditorHighlighterPass(Project project, BashFile bashFile, Editor editor) {
-        super(project, editor.getDocument(), false);
+    public RemoveHeredocHighlightingPass(Project project, BashFile bashFile, Editor editor) {
+        super(project, editor.getDocument(), true);
         this.bashFile = bashFile;
         this.editor = editor;
     }
 
     @Override
     public void doCollectInformation(ProgressIndicator progress) {
-        //fixme take care of proper variable highlighting in here docs
+        final List<TextRange> collectedRanges = Lists.newLinkedList();
+
         PsiRecursiveElementVisitor visitor = new PsiRecursiveElementVisitor() {
             @Override
             public void visitElement(PsiElement element) {
                 if (element instanceof BashHereDoc) {
-                    docRanges.add(element.getTextRange());
+                    collectedRanges.add(element.getTextRange());
+                } else {
+                    element.acceptChildren(this);
                 }
-
-                element.acceptChildren(this);
             }
         };
 
         visitor.visitElement(bashFile);
+        unhighlightRanges = collectedRanges;
     }
 
     @Override
     public void doApplyInformationToEditor() {
-        for (TextRange r : docRanges) {
-            editor.getMarkupModel().addRangeHighlighter(r.getStartOffset(), r.getEndOffset(), HighlighterLayer.LAST, TextAttributes.ERASE_MARKER, HighlighterTargetArea.LINES_IN_RANGE);
+        for (TextRange r : unhighlightRanges) {
+            editor.getMarkupModel().addRangeHighlighter(r.getStartOffset(), r.getEndOffset(),
+                    HighlighterLayer.ADDITIONAL_SYNTAX, TextAttributes.ERASE_MARKER, HighlighterTargetArea.LINES_IN_RANGE);
         }
     }
 }

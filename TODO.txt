@@ -19,7 +19,7 @@ Planned features:
   - variables: goto symbol
   - support for case, select, ...
   - Parser: Improve support for arithmetic for loop and arithmetic expressions
-  - In '' werden backticks nicht ausgewertet
+  - No backtick evaluation in '' 
   - PSI parsing, advanced parsing
 
 Possible features:
