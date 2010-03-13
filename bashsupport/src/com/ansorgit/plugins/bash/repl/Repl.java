@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: Repl.java, Class: Repl
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,7 +121,7 @@ class Repl implements Disposable {
                 (ActionGroup) actionManager.getAction("Bash.REPL.Group"), ReplPanel.REPL_TOOLWINDOW_POPUP_PLACE, actionManager);
 
         view.print(commandLine.getCommandLineString(), ConsoleViewContentType.NORMAL_OUTPUT);
-        //view.print("Welcome to the BashSupport console\n\n", ConsoleViewContentType.NORMAL_OUTPUT);
+        view.print("Welcome to the BashSupport console\n\n", ConsoleViewContentType.NORMAL_OUTPUT);
     }
 
     public ConsoleView getView() {
