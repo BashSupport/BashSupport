@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashWhile.java, Class: BashWhile
- * Last modified: 2010-03-13
+ * File: BashLoop.java, Class: BashLoop
+ * Last modified: 2010-03-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.loops;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * Date: 06.05.2009
- * Time: 12:43:44
- *
- * @author Joachim Ansorg
+ * Marker interface for loops.
+ * User: jansorg
+ * Date: Mar 12, 2010
+ * Time: 7:52:50 PM
  */
-public interface BashWhile extends BashLoop, BashKeyword {
+public interface BashLoop extends BashPsiElement {
 }

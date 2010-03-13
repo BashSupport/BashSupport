@@ -57,12 +57,7 @@ Possible features:
 
 Planned for 1.0:
 ----------------
-  - Improve the support for arithmetic for loops. Need support for arithmetic expressions
   - More advanced, context-sensitive code completion for keywords
-
-Planned for 0.9.7:
------------------
-  - better option to work with files without extension
 
 User comments:
 --------------
@@ -86,7 +81,7 @@ Bugs:
       um expansions etc. mizubekommen. Das Durchlaufen legt Strings an bzw. managed das Highlighting
     - Vollständiges Lexing für Expansion, inkl Whitespace
 - Support tilde expansion
-- Unterstützung für Strg+J
+- Support for Ctrl+J
 - export a[1]=1 is invalid, "declare a[1]=2" is valid though
 - Support parameters to the shebang command
     - Not supported: echo if in etc.
@@ -95,14 +90,13 @@ Bugs:
     - Nicht selektierbar: test -x $SDPTOOL || return 1
     - Support doc for commands export, declare
     - Support "a=2 export b=10", b is not defined atm
-- variablen gehn in arithmetischen for-loop nicht
+    - no variables in arithmetic for loop
 - there are 2 types of shebang inspection suggestions
     1) when shebang is wrong to fix it
     2) when shebang is ok to change it to the alternative one
     how to remove at all the second fix? it's very irritating, cause shebang line is always underlined
     - Better default colors for variables and elements
-- Parsing von internal commands ändern, damit es auch in subshells geht: $(echo a) sollte echo
-  als internal command haben
+    - $(echo a) should have "echo" as internal command
     - support for command path completion
     - Doesn't work: echo "${class//./_} [shape=box label=\"$class\"]"
     - Unsupported: "local exitval=0"
@@ -139,4 +133,4 @@ Bugs:
 - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
-- Add Bash facet with tree based configuration for include / exclude for files without extensions
+    - Add Bash facet with tree based configuration for include / exclude for files without extensions
