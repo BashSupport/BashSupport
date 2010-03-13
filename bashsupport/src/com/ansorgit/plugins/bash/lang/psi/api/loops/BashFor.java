@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFor.java, Class: BashFor
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  *
  * @author Joachim Ansorg
  */
-public interface BashFor extends BashPsiElement, BashKeyword {
+public interface BashFor extends BashLoop, BashPsiElement, BashKeyword {
     /**
      * Returns true if this for loop is arithmetic.
      *

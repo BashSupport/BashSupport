@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashUntil.java, Class: BashUntil
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,5 +26,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
  *
  * @author Joachim Ansorg
  */
-public interface BashUntil extends BashKeyword {
+public interface BashUntil extends BashLoop, BashKeyword {
 }
