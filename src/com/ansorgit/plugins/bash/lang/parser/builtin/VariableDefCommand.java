@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: VariableDefCommand.java, Class: VariableDefCommand
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,9 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (!isValid(builder)) return false;
+        if (!isValid(builder)) {
+            return false;
+        }
 
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
@@ -113,7 +115,9 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
             boolean ok = Parsing.word.parseWord(builder);
             text = builder.getTokenText();
 
-            if (!ok) return false;
+            if (!ok) {
+                return false;
+            }
         }
 
         return true;
@@ -131,11 +135,16 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
             if (builder.getTokenType() == BashTokenTypes.ASSIGNMENT_WORD) {
                 builder.advanceLexer();
             } else if (Parsing.word.isWordToken(builder)) {
-                if (!Parsing.word.parseWord(builder)) return false;
+                if (!Parsing.word.parseWord(builder)) {
+                    return false;
+                }
             }
 
-            //EQ expected
-            return (builder.getTokenType() == BashTokenTypes.EQ);
+            //EQ or whitespace expected
+            //IElementType next = builder.getTokenType(true);
+            //return (next == BashTokenTypes.EQ || next == BashTokenTypes.WHITESPACE);
+            //we either have a single word (no assignment) or a value assignment part
+            return true;
         }
         finally {
             start.rollbackTo();

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.diff.FlyweightCapableTreeStructure;
@@ -45,6 +46,8 @@ public class MockPsiBuilder implements PsiBuilder {
     private List<String> errors = new ArrayList<String>();
     private Stack<MockMarker> markers = new Stack<MockMarker>();
     private Map<Key<?>, Object> userData = new HashMap<Key<?>, Object>();
+
+    private List<Pair<MockMarker, IElementType>> doneMarkers = Lists.newLinkedList();
 
     private StringBuilder resultText = new StringBuilder();
 
@@ -184,7 +187,11 @@ public class MockPsiBuilder implements PsiBuilder {
         return resultText.toString();
     }
 
-    private class MockMarker implements Marker {
+    public List<Pair<MockMarker, IElementType>> getDoneMarkers() {
+        return doneMarkers;
+    }
+
+    public final class MockMarker implements Marker {
         private final int position;
         private final String details;
         private boolean addedError = false;
@@ -212,7 +219,9 @@ public class MockPsiBuilder implements PsiBuilder {
                 //output the exising markers
                 for (int i = markers.size() - 1; i >= 0; --i) {
                     final MockMarker m = markers.get(i);
-                    if (m == this) details.append("## current marker follows ##");
+                    if (m == this) {
+                        details.append("## current marker follows ##");
+                    }
                     details.append(m.details).append("\n\n");
                 }
 
@@ -239,14 +248,18 @@ public class MockPsiBuilder implements PsiBuilder {
 
         public void done(IElementType elementType) {
             finishMarker();
+
+            doneMarkers.add(Pair.create(this, elementType));
         }
 
         public void doneBefore(IElementType elementType, Marker marker) {
             finishMarker();
+            doneMarkers.add(Pair.create(this, elementType));
         }
 
         public void doneBefore(IElementType elementType, Marker marker, String s) {
             finishMarker();
+            doneMarkers.add(Pair.create(this, elementType));
         }
 
         public void error(String s) {

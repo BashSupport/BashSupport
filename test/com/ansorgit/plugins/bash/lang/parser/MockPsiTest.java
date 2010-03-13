@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiTest.java, Class: MockPsiTest
- * Last modified: 2010-01-29
+ * Last modified: 2010-03-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,6 +93,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
         Assert.assertTrue("Parsing was not successful", ok);
 
         Assert.assertEquals("Not all elements have been processed.", expectedCount, mockBuilder.processedElements());
+        Assert.assertTrue("Post condition failed", f.postCheck(mockBuilder));
     }
 
     public void mockTestError(MockFunction f, IElementType... elements) {
@@ -134,6 +135,10 @@ public abstract class MockPsiTest implements BashTokenTypes {
         public abstract boolean apply(BashPsiBuilder psi);
 
         public boolean preCheck(BashPsiBuilder psi) {
+            return true;
+        }
+
+        public boolean postCheck(MockPsiBuilder mockBuilder) {
             return true;
         }
     }
