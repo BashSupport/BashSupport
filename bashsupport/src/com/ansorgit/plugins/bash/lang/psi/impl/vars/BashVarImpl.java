@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-02-18
+ * Last modified: 2010-03-15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,12 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.ansorgit.plugins.bash.util.BashIcons;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
@@ -38,6 +43,8 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -94,7 +101,9 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
     public PsiElement resolve() {
         final String varName = getName();
-        if (varName == null) return null;
+        if (varName == null) {
+            return null;
+        }
 
         final BashVarProcessor processor = new BashVarProcessor(varName, this);
         return BashResolveUtil.treeWalkUp(processor, this, null, this, false, true);
@@ -141,18 +150,34 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         final BashVarVariantsProcessor processor = new BashVarVariantsProcessor(this);
         BashResolveUtil.treeWalkUp(processor, this, null, this, false, true);
 
-        variants.addAll(processor.getVariables());
+        variants.addAll(createPsiItems(processor.getVariables()));
 
         if (BashProjectSettings.storedSettings(getProject()).isAutocompleteBuiltinVars()) {
-            variants.addAll(LanguageBuiltins.bashShellVars);
-            variants.addAll(LanguageBuiltins.bourneShellVars);
+            variants.addAll(createItems(LanguageBuiltins.bashShellVars, BashIcons.BASH_VAR_ICON));
+            variants.addAll(createItems(LanguageBuiltins.bourneShellVars, BashIcons.BOURNE_VAR_ICON));
         }
 
         if (BashProjectSettings.storedSettings(getProject()).isAutcompleteGlobalVars()) {
-            variants.addAll(BashProjectSettings.storedSettings(getProject()).getGlobalVariables());
+            variants.addAll(createItems(BashProjectSettings.storedSettings(getProject()).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON));
         }
 
         return variants.toArray();
+    }
+
+    private static Collection<LookupElement> createPsiItems(Collection<? extends PsiNamedElement> elements) {
+        return Collections2.transform(elements, new Function<PsiNamedElement, LookupElement>() {
+            public LookupElement apply(PsiNamedElement from) {
+                return LookupElementBuilder.create(from).setCaseSensitive(true);
+            }
+        });
+    }
+
+    private static Collection<LookupElement> createItems(Collection<String> globalVars, final Icon icon) {
+        return Lists.transform(Lists.newArrayList(globalVars), new Function<String, LookupElement>() {
+            public LookupElement apply(String from) {
+                return LookupElementBuilder.create(from).setCaseSensitive(true).setIcon(icon);
+            }
+        });
     }
 
     public boolean isSoft() {
