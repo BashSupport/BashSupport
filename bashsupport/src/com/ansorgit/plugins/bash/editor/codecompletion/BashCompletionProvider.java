@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCompletionProvider.java, Class: BashCompletionProvider
- * Last modified: 2010-02-08
+ * Last modified: 2010-03-15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
 
         List<String> items = addBashCompletions(currentText, parameters, context, resultWithoutPrefix);
         for (String i : items) {
-            result.addElement(new PathLookupElement(i));
+            result.addElement(new PathLookupElement(i, !i.endsWith("/")));
         }
     }
 
