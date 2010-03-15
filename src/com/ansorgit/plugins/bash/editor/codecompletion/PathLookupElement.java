@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: PathLookupElement.java, Class: PathLookupElement
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementPresentation;
+import com.intellij.util.Icons;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,11 +30,19 @@ import org.jetbrains.annotations.NotNull;
  * Date: Dec 3, 2009
  * Time: 2:52:31 PM
  */
-public final class PathLookupElement extends LookupElement {
+final class PathLookupElement extends LookupElement {
     private final String path;
+    private final boolean isFile;
 
-    public PathLookupElement(String path) {
+    public PathLookupElement(String path, boolean isFile) {
         this.path = path;
+        this.isFile = isFile;
+    }
+
+    @Override
+    public void renderElement(LookupElementPresentation presentation) {
+        presentation.setIcon(isFile ? Icons.FILE_ICON : Icons.DIRECTORY_CLOSED_ICON);
+        super.renderElement(presentation);
     }
 
     @NotNull
