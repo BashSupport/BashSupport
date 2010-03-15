@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: ShebangPathCompletionProvider.java, Class: ShebangPathCompletionProvider
- * Last modified: 2010-02-19
+ * Last modified: 2010-03-15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import java.util.List;
  * Date: Dec 3, 2009
  * Time: 2:27:52 PM
  */
-public class ShebangPathCompletionProvider extends BashCompletionProvider {
+class ShebangPathCompletionProvider extends BashCompletionProvider {
     private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
 
     public ShebangPathCompletionProvider() {

@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashIcons.java, Class: BashIcons
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,4 +37,10 @@ public interface BashIcons {
     final Icon BASH_FILE_ICON = IconLoader.findIcon(DATA_PATH + "bash-16.png");
 
     final Icon FUNCTION_DEF_ICON = IconLoader.findIcon(DATA_PATH + "function-16.png");
+
+    final Icon GLOBAL_VAR_ICON = IconLoader.findIcon(DATA_PATH + "global-var-16.png");
+
+    final Icon BASH_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
+
+    final Icon BOURNE_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
 }
