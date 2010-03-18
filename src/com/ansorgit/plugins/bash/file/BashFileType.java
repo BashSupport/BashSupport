@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,7 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
     public static final List<String> extensionList = Arrays.asList(extensions);
 
     public static final List<String> validContentStarts = Arrays.asList("#!/bin/sh", "#!/bin/bash", "#!/usr/bin/sh", "#!/usr/bin/bash");
+    private static final double MIN_FILE_PROBABILIY = 0.75d;
 
     protected BashFileType() {
         super(new BashLanguage());
@@ -104,6 +105,9 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
     /**
      * Here we check if a given file belongs to our plugin.
      * We take this road because we need the actual file and not a filename to check files without extension.
+     * <p/>
+     * A file is checked according to the rules defined in the facet settings.
+     * A file can be set to ignored, accepted or auto. Auto means that the content is checked.
      *
      * @param file The file to check
      * @return True if BashSupport wants to take that file
@@ -148,7 +152,7 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             } else if (mode == FileMode.ignore()) {
                 return false;
             } else if (mode == FileMode.auto()) {
-                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), 0.75d, ProjectUtil.guessProjectForFile(file));
+                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
             }
         }
 
