@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -436,14 +436,17 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
     public void testShebang() {
-        //a #!/bin/sh        
+        //#!/bin/bash
+        mockTest(fileParsingTest, SHEBANG);
+
+        //\n\n#!/bin/sh
+        mockTest(fileParsingTest, LINE_FEED, LINE_FEED, SHEBANG);
+
+        //a #!/bin/sh
         mockTest(fileParsingTest, Lists.newArrayList("a", "#!/bin/sh"), WORD, COMMENT);
 
         //echo a; #!/bin/sh
         mockTest(fileParsingTest, INTERNAL_COMMAND, WORD, SEMI, COMMENT);
-
-        //\n\n#!/bin/sh
-        mockTest(fileParsingTest, LINE_FEED, LINE_FEED, SHEBANG);
     }
 
     @Test
