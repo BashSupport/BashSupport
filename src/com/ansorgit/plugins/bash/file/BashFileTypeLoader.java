@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileTypeLoader.java, Class: BashFileTypeLoader
- * Last modified: 2010-02-20
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
 
 public class BashFileTypeLoader extends FileTypeFactory {
-    //private Logger log = Logger.getInstance("#bash.FileTypeLoader");
-
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consumer.consume(BashFileType.BASH_FILE_TYPE, BashFileType.DEFAULT_EXTENSION);
         consumer.consume(BashFileType.BASH_FILE_TYPE, "bash");
