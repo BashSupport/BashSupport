@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashShebangImpl.java, Class: BashShebangImpl
- * Last modified: 2010-02-20
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -44,8 +45,14 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
     }
 
     public String shellCommand() {
+        String allText = getText();
+        if (StringUtils.isEmpty(allText)) {
+            return null;
+        }
+
         //shebang line without the prefix #!
-        String line = getText().substring(2);
+        int commandOffset = shellCommandOffset();
+        String line = allText.substring(commandOffset);
         log.debug("shellCommand: " + line);
 
         String commandLine = hasNewline() ? line.substring(0, line.length() - 1) : line;
@@ -61,12 +68,22 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
     }
 
     public int shellCommandOffset() {
-        return 2;
+        String line = getText();
+        if (!line.startsWith("#!")) {
+            return 0;
+        }
+
+        int offset = 2;
+        for (int i = 2; i < line.length() && line.charAt(i) == ' '; i++) {
+            offset++;
+        }
+
+        return offset;
     }
 
     @NotNull
     public TextRange commandRange() {
-        return TextRange.from(2, shellCommand().length());
+        return TextRange.from(shellCommandOffset(), shellCommand().length());
     }
 
     public void updateCommand(String command) {

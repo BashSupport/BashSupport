@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSyntaxHighlighter.java, Class: BashSyntaxHighlighter
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements BashTokenTypes {
     private static final TokenSet lineCommentSet = TokenSet.create(COMMENT);
-    private static final TokenSet shebangCommentSet = TokenSet.create(BashTokenTypes.SHEBANG);
+    private static final TokenSet shebangCommentSet = TokenSet.EMPTY;//TokenSet.create(BashTokenTypes.SHEBANG);
     private static final TokenSet parenthesisSet = TokenSet.create(LEFT_PAREN, RIGHT_PAREN);
     private static final TokenSet curlySet = TokenSet.create(LEFT_CURLY, RIGHT_CURLY);
     private static final TokenSet bracketSet = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE);

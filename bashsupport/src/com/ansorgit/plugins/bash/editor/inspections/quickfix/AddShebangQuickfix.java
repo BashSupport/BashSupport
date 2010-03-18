@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangQuickfix.java, Class: AddShebangQuickfix
- * Last modified: 2010-03-02
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
     }
 
     public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
-        //work around a problem in a 9.0.2 eap which need a write session
+        // work around a problem in a 9.0.2 eap which need a write session
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             public void run() {
                 Document document = PsiDocumentManager.getInstance(project).getDocument(file);
