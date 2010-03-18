@@ -1,5 +1,8 @@
+2010-03-18:
+ - Improved parsing for shebang lines
+
 2010-03-15:
- - Icons for path and variable completions 
+ - Icons for path and variable completions
 
 2010-03-13:
  - Fixes "export a" variables
@@ -9,7 +12,7 @@
  - Heredoc folding fixes
  
 2010-03-09:
- - Proper highlighting for heredocs, variables and other tokens are not highlighted any more
+ - Improved highlighting for heredocs, variables and other tokens are not highlighted any more
 
 2010-03-02:
  - AddShebangQuickfix is now run in a separate write action
