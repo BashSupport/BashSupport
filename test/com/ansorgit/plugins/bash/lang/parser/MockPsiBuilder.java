@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-03-13
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class MockPsiBuilder implements PsiBuilder {
 
     private StringBuilder resultText = new StringBuilder();
 
-    private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespace, BashTokenTypes.comments);
+    private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespace);
     private TokenSet enforcedCommentTokens = BashTokenTypes.comments;
 
     int elementPosition = 0;
