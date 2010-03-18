@@ -1,7 +1,7 @@
 /*
  * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-02-19
+ * Last modified: 2010-03-18
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class BashLexerTest {
         testTokenization("# Text", COMMENT);
         testTokenization("# Text\n", COMMENT, LINE_FEED);
         testTokenization("a #!b", WORD, WHITESPACE, SHEBANG);
-        testTokenization("#a\n#b\n", COMMENT, LINE_FEED);
+        testTokenization("#a\n#b\n", COMMENT, LINE_FEED, COMMENT, LINE_FEED);
     }
 
     @Test
@@ -169,8 +169,8 @@ public class BashLexerTest {
                 STRING_BEGIN, WORD, STRING_END, WHITESPACE, WORD);
 
         testTokenization("\"$(\"hey there\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
-//        testTokenization("\"$(\"hey there\\\"\")\" \\\" \"$(\"hey there\")\" a",
-//                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, STRING_END, STRING_BEGIN, WORD, STRING_END);
+        //        testTokenization("\"$(\"hey there\\\"\")\" \\\" \"$(\"hey there\")\" a",
+        //                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, STRING_END, STRING_BEGIN, WORD, STRING_END);
         testTokenization("\"$(echo \\\"\\\")\"",
                 STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD,
                 WHITESPACE, WORD, WORD, RIGHT_PAREN, STRING_END);

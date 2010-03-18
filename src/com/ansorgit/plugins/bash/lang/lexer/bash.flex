@@ -112,8 +112,9 @@ InputCharacter = [^\r\n]
 WhiteSpace=[ \t\f]
 ContinuedLine = "\\" {LineTerminator}
 
-Comment = "#"  {InputCharacter}*
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
+Comment = "#"  {InputCharacter}*
+Comments = {Comment}({Comment}{LineTerminator})*
 
 EscapedChar    = "\\t" | "\\n" | "\\r" | "\\\"" | "\\'" | "\\`" | "\\." | "\\#" | "\\$" | "\\*" | "\\ " | "\\\\" | "\\?" | "\\!" | "\\>" | "\\<"
 StringStart = "$\"" | "\""
@@ -179,8 +180,7 @@ CasePattern = {CaseFirst}{CaseAfter}*
 /***************************** INITIAL STAATE ************************************/
 <YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL> {
   {Shebang}                     { return SHEBANG; }
-  {Comment}({LineTerminator}{Comment})+/{LineTerminator}    { return COMMENT; }
-  {Comment}                     { return COMMENT; }
+  {Comments}                    { return COMMENT; }
 }
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
