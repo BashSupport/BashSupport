@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: UnregisterGlobalVariableQuickfix.java, Class: UnregisterGlobalVariableQuickfix
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Unregisters a global variable.
+ * <p/>
  * User: jansorg
  * Date: Jan 25, 2010
  * Time: 10:30:22 PM

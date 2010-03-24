@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IfParsingFunction.java, Class: IfParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for if expressions.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:24:54
  *
@@ -136,7 +138,9 @@ public class IfParsingFunction extends DefaultParsingFunction {
             return false;
         }
 
-        if (builder.getTokenType() == BashTokenTypes.ELIF_KEYWORD) return parseElifClause(builder);
+        if (builder.getTokenType() == BashTokenTypes.ELIF_KEYWORD) {
+            return parseElifClause(builder);
+        }
 
         //the else is handled by the parseIfCommand method
         return true;

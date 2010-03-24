@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.forwarding.ForwardingMarker;
-import com.ansorgit.plugins.bash.lang.parser.forwarding.ForwardingPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.util.ForwardingMarker;
+import com.ansorgit.plugins.bash.lang.parser.util.ForwardingPsiBuilder;
 import com.ansorgit.plugins.bash.util.ReflectionUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
@@ -136,23 +136,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
             getParsingState().leaveSimpleCommand();
         }
     }
-
-    /*public IElementType getRemappingHeredocTokenType() {
-        getParsingState().enterHereDoc();
-        try {
-            if (getHereDocData().isStrippingWhitespace()) return getTokenType();
-
-            enableWhitespace();
-            try {
-                return getTokenType();
-            }
-            finally {
-                disableWhitespace();
-            }
-        } finally {
-            getParsingState().leaveHereDoc();
-        }
-    } */
 
     public void advanceLexer(boolean useWhitespace) {
         if (!useWhitespace) {

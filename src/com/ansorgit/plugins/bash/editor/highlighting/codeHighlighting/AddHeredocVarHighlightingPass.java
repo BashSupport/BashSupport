@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddHeredocVarHighlightingPass.java, Class: AddHeredocVarHighlightingPass
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,9 @@ import com.intellij.psi.PsiRecursiveElementVisitor;
 import java.util.List;
 
 /**
+ * Implements a text editor highlighting pass to add highlighting to
+ * variables included in heredocs.
+ * <p/>
  * User: jansorg
  * Date: Jan 25, 2010
  * Time: 8:36:58 PM

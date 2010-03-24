@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IteratingExpansion.java, Class: IteratingExpansion
- * Last modified: 2010-01-27
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,12 @@ class IteratingExpansion implements Expansion {
         this.currentValue = valueIterator.hasNext() ? valueIterator.next() : null;
     }
 
+    /**
+     * Find the next value of the value chain.
+     *
+     * @param previousFlipped True if the previous element just flipped.
+     * @return The new vlaue.
+     */
     public String findNext(boolean previousFlipped) {
         boolean resetIsFlipped = true;
 

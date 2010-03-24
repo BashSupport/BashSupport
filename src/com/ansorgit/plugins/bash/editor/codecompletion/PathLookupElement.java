@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PathLookupElement.java, Class: PathLookupElement
- * Last modified: 2010-03-15
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Lookup element which contains a simple path element.
+ * The icon is shown according to the type (file / directory entry).
+ * <p/>
  * <p/>
  * User: jansorg
  * Date: Dec 3, 2009

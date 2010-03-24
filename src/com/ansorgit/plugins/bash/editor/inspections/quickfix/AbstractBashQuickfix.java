@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractBashQuickfix.java, Class: AbstractBashQuickfix
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Abstract base class for Bash quickfixes.
+ * <p/>
  * User: jansorg
  * Date: 21.05.2009
  * Time: 10:47:27

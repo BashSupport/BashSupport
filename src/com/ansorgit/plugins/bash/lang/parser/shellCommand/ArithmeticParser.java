@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParser.java, Class: ArithmeticParser
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,17 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for arithmetic expressions.
+ * It delegates to the actual arithmetic expression parser implementation but takes
+ * care of start and end marker tokens.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:13:45
  *
  * @author Joachim Ansorg
  */
 public final class ArithmeticParser extends DefaultParsingFunction {
-    private ParsingFunction parsingFunction = new ArithmeticExprParser();
+    private ParsingFunction arithmeticExprParser = new ArithmeticExprParser();
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == BashTokenTypes.EXPR_ARITH;
@@ -72,7 +76,7 @@ public final class ArithmeticParser extends DefaultParsingFunction {
         final PsiBuilder.Marker arithmetic = builder.mark();
         builder.advanceLexer();//after the start token
 
-        if (!parsingFunction.parse(builder)) {
+        if (!arithmeticExprParser.parse(builder)) {
             ParserUtil.error(arithmetic, "parser.unexpected.token");
             return false;
         }

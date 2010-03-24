@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: DocumentationReader.java, Class: DocumentationReader
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,6 @@ class DocumentationReader {
                 return null;
             }
 
-            //final InputStream stream = DocumentationReader.class.getResourceAsStream(fullPath);
             final InputStream inputStream = new BufferedInputStream(url.openStream());
             String data = StreamUtil.readText(inputStream);
             log.debug("result " + data);

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: UnresolvedVariableInspection.java, Class: UnresolvedVariableInspection
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * This inspection marks unresolved variables.
+ * <p/>
  * User: jansorg
  * Date: Jan 25, 2010
  * Time: 10:11:49 PM

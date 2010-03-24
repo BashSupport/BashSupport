@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSpacingProcessor.java, Class: BashSpacingProcessor
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 
 /**
- * @author ilyas
+ * This code is based on code taken from the Groovy plugin.
+ *
+ * @author ilyas, jansorg
  */
 public class BashSpacingProcessor extends BashVisitor {
     private static final ThreadLocal<BashSpacingProcessor> mySharedProcessorAllocator = new ThreadLocal<BashSpacingProcessor>();
@@ -98,7 +100,9 @@ public class BashSpacingProcessor extends BashVisitor {
         }
 
         private void init(final ASTNode child) {
-            if (child == null) return;
+            if (child == null) {
+                return;
+            }
             ASTNode treePrev = child.getTreePrev();
             while (treePrev != null && SpacingUtil.isWhiteSpace(treePrev)) {
                 treePrev = treePrev.getTreePrev();

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFoldingBuilder.java, Class: BashFoldingBuilder
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,11 +79,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static boolean mayContainFoldBlocks(IElementType type) {
-        if (type == HEREDOC_ELEMENT) {
-            return false;
-        }
-
-        return true;
+        return type != HEREDOC_ELEMENT;
     }
 
     private static boolean isFoldable(IElementType type) {
@@ -98,7 +94,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
 
-    public String getPlaceholderText(ASTNode node) {
+    public String getPlaceholderText(@NotNull ASTNode node) {
         final IElementType type = node.getElementType();
         if (!isFoldable(type)) {
             return null;
@@ -111,7 +107,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
         return "{...}";
     }
 
-    public boolean isCollapsedByDefault(ASTNode node) {
+    public boolean isCollapsedByDefault(@NotNull ASTNode node) {
         return false;
     }
 }

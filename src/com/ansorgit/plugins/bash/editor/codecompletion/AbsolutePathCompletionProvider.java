@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbsolutePathCompletionProvider.java, Class: AbsolutePathCompletionProvider
- * Last modified: 2009-12-04   
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collections;
@@ -35,7 +34,7 @@ import java.util.List;
  * Time: 2:27:52 PM
  */
 class AbsolutePathCompletionProvider extends BashCompletionProvider {
-    private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
+    //private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
 
     public AbsolutePathCompletionProvider() {
         super(true);

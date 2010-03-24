@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: StringParsingState.java, Class: StringParsingState
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import com.intellij.openapi.diagnostic.Logger;
-
 import java.util.Stack;
 
 /**
@@ -35,7 +33,7 @@ import java.util.Stack;
  */
 public final class StringParsingState {
     private final StringBuilder stringData = new StringBuilder(256);
-    private final static Logger log = Logger.getInstance("#bash.StringParsingState");
+    //private final static Logger log = Logger.getInstance("#bash.StringParsingState");
 
     private static final class SubshellState {
         private boolean inString = false;
@@ -88,14 +86,20 @@ public final class StringParsingState {
     }
 
     public void enterSubstring() {
-        if (!isNewAllowed()) throw new IllegalStateException("New string is not alllowed");
+        if (!isNewAllowed()) {
+            throw new IllegalStateException("New string is not alllowed");
+        }
 
         subshells.peek().enterSubstring();
     }
 
     public void leaveSubstring() {
-        if (!isInSubshell()) throw new IllegalStateException("not in subshell");
-        if (!isInSubstring()) throw new IllegalStateException("not in string");
+        if (!isInSubshell()) {
+            throw new IllegalStateException("not in subshell");
+        }
+        if (!isInSubstring()) {
+            throw new IllegalStateException("not in string");
+        }
 
         subshells.peek().leaveSubstring();
     }
@@ -122,11 +126,15 @@ public final class StringParsingState {
 
     public void enterSubshellParenth() {
         assert !subshells.isEmpty();
-        if (!subshells.peek().freshStart) subshells.peek().enterParenth();
+        if (!subshells.peek().freshStart) {
+            subshells.peek().enterParenth();
+        }
     }
 
     public void advanceToken() {
-        if (!subshells.isEmpty()) subshells.peek().advanceToken();
+        if (!subshells.isEmpty()) {
+            subshells.peek().advanceToken();
+        }
     }
 
     public boolean isFreshSubshell() {
