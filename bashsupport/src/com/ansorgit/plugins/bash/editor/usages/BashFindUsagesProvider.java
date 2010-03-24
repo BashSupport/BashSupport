@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFindUsagesProvider.java, Class: BashFindUsagesProvider
- * Last modified: 2010-01-31
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * The find usages provider implementation for Bash.
+ * <p/>
  * Date: 06.05.2009
  * Time: 20:42:06
  *
@@ -62,16 +64,24 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     @NotNull
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof BashFunctionDef) return "function";
-        if (element instanceof BashVarDef) return "variable";
-        if (element instanceof BashHereDocMarker) return "heredoc marker";
+        if (element instanceof BashFunctionDef) {
+            return "function";
+        }
+        if (element instanceof BashVarDef) {
+            return "variable";
+        }
+        if (element instanceof BashHereDocMarker) {
+            return "heredoc marker";
+        }
 
         return "";
     }
 
     @NotNull
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (!canFindUsagesFor(element)) return "";
+        if (!canFindUsagesFor(element)) {
+            return "";
+        }
 
         String name = ((PsiNamedElement) element).getName();
         return name != null ? name : "";

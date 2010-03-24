@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHighlighterFactory.java, Class: BashHighlighterFactory
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +22,21 @@ import com.ansorgit.plugins.bash.BashComponents;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.markup.HighlighterLayer;
-import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Factory which provides text editor highlighters for the Bash file type.
+ * <p/>
  * User: jansorg
  * Date: Jan 25, 2010
  * Time: 8:27:58 PM
  */
 public class BashHighlighterFactory implements ProjectComponent {
     private TextEditorHighlightingPassRegistrar myRegistrar;
-    private Project myProject;
 
-    public BashHighlighterFactory(final TextEditorHighlightingPassRegistrar passRegistrar, Project project) {
+    public BashHighlighterFactory(final TextEditorHighlightingPassRegistrar passRegistrar) {
         myRegistrar = passRegistrar;
-        myProject = project;
     }
 
     public void projectOpened() {

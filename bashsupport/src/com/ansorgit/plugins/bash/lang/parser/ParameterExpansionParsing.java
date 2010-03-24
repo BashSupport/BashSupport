@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsing.java, Class: ParameterExpansionParsing
- * Last modified: 2010-02-19
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,13 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
+ * Parssing of parameter expansion blocks.
+ * <p/>
  * User: jansorg
  * Date: Jan 27, 2010
  * Time: 8:48:33 PM
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private final TokenSet substitutionEnd = TokenSet.create(RIGHT_CURLY);
     private final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP);
 
 
@@ -48,7 +49,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
 
-        final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
+        ParserUtil.getTokenAndAdvance(builder);
 
         //the first token has to be a plain word token
         IElementType paramToken = builder.getTokenType(true);
@@ -66,8 +67,6 @@ public class ParameterExpansionParsing implements ParsingFunction {
         PsiBuilder.Marker varMarker = builder.mark();
         builder.advanceLexer();
         varMarker.done(BashElementTypes.VAR_ELEMENT);
-
-        //Parsing.word.parseWord(builder, false, substitutionEnd, TokenSet.EMPTY);
 
         boolean isValid = true;
         boolean markedAsVar = false;

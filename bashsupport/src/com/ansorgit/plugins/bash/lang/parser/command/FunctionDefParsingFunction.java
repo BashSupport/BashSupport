@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for function definitions.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:32:25
  *
@@ -38,7 +40,6 @@ public class FunctionDefParsingFunction extends DefaultParsingFunction {
         return false;
     }
 
-    @Override
     public boolean isValid(BashPsiBuilder builder) {
         if (builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD) {
             return true;

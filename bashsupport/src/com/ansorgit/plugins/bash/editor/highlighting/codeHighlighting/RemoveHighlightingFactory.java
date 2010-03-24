@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RemoveHighlightingFactory.java, Class: RemoveHighlightingFactory
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Highlighting pass factory which provides the highlighters to remove heredocs formatting.
+ * <p/>
  * User: jansorg
  * Date: Mar 10, 2010
  * Time: 7:37:35 PM
@@ -47,6 +49,8 @@ class RemoveHighlightingFactory implements TextEditorHighlightingPassFactory {
 
     @NotNull
     public String getComponentName() {
+        //this class is instanciated by BashHighlighterFactory
+        //and thus is not a real component.
         return null;
     }
 

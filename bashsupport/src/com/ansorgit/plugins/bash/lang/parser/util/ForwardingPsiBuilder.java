@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingPsiBuilder.java, Class: ForwardingPsiBuilder
- * Last modified: 2010-02-18
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.forwarding;
+package com.ansorgit.plugins.bash.lang.parser.util;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ITokenTypeRemapper;
@@ -111,6 +111,9 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
     public <T> void putUserData(Key<T> key, T value) {
         originalPsiBuilder.putUserData(key, value);
     }
+
+    //fixme this is an API change by JetBrains added in a 9.0.2 eap
+    //fixme delegating is not compatible with newer sdks.
 
     /*public LighterASTNode getLatestDoneMarker() {
         return originalPsiBuilder.getLatestDoneMarker();

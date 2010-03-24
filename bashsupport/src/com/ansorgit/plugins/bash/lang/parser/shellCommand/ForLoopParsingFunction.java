@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForLoopParsingFunction.java, Class: ForLoopParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for for loops statements.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:21:19
  *
@@ -48,7 +50,8 @@ public class ForLoopParsingFunction extends DefaultParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        /*
+        /* The grammar:
+
            for_command:
                 FOR WORD newline_list DO compound_list DONE
              |    FOR WORD newline_list '{' compound_list '}'
@@ -127,7 +130,9 @@ public class ForLoopParsingFunction extends DefaultParsingFunction {
             ;
          */
 
-        if (log.isDebugEnabled()) log.assertTrue(builder.getTokenType() == FOR_KEYWORD);
+        if (log.isDebugEnabled()) {
+            log.assertTrue(builder.getTokenType() == FOR_KEYWORD);
+        }
 
         PsiBuilder.Marker marker = builder.mark();
         builder.advanceLexer();//after the "for" keyword

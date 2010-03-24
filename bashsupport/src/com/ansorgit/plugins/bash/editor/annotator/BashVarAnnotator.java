@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarAnnotator.java, Class: BashVarAnnotator
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import com.intellij.openapi.diagnostic.Logger;
 /**
  * Annotates a Bash variable usage element. It marks the Var psi elements as buildtin or composed variables,
  * according to the type.
+ *
+ * @author Joachim Ansorg
  */
 class BashVarAnnotator {
     private static final Logger log = Logger.getInstance("#BashVarAnnotator");

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WrapWordInStringInspection.java, Class: WrapWordInStringInspection
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Inspection which can wrap a word token inside of a string.
+ * It offers options to either convert to a double quoted string or into
+ * a single quoted string.
+ * <p/>
  * User: jansorg
  * Date: 21.05.2009
  * Time: 10:32:31

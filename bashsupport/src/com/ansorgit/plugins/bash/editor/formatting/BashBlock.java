@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBlock.java, Class: BashBlock
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Block implementation for Groovy formatter
+ * Block implementation for the Bash formatter.
+ * <p/>
+ * This class is based on the block code for the Groovy formatter.
  *
- * @author ilyas
+ * @author ilyas, jansorg
  */
 public class BashBlock implements Block, BashElementTypes {
 
@@ -129,25 +131,6 @@ public class BashBlock implements Block, BashElementTypes {
             return new ChildAttributes(Indent.getNormalIndent(), null);
         }
 
-/*    if (CASE_SECTION.equals(astNode.getElementType())) {
-      return new ChildAttributes(Indent.getNormalIndent(), null);
-    }
-
-    if (psiParent instanceof GrBinaryExpression ||
-        psiParent instanceof GrCommandArgumentList ||
-        psiParent instanceof GrArgumentList) {
-      return new ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null);
-    }
-    if (psiParent instanceof GrParameterList) {
-      return new ChildAttributes(this.getIndent(), this.getAlignment());
-    }
-    if (psiParent instanceof GrListOrMap) {
-      return new ChildAttributes(Indent.getContinuationIndent(), null);
-    }
-    if (psiParent instanceof GrDocComment || psiParent instanceof GrDocTag) {
-      return new ChildAttributes(Indent.getSpaceIndent(GroovyIndentProcessor.GDOC_COMMENT_INDENT), null);
-    }*/
-
         return new ChildAttributes(Indent.getNoneIndent(), null);
     }
 
@@ -161,7 +144,9 @@ public class BashBlock implements Block, BashElementTypes {
      * @return true if node is incomplete
      */
     public boolean isIncomplete(@NotNull final ASTNode node) {
-        if (node.getElementType() instanceof ILazyParseableElementType) return false;
+        if (node.getElementType() instanceof ILazyParseableElementType) {
+            return false;
+        }
         ASTNode lastChild = node.getLastChildNode();
         while (lastChild != null &&
                 !(lastChild.getElementType() instanceof ILazyParseableElementType) &&
@@ -174,6 +159,4 @@ public class BashBlock implements Block, BashElementTypes {
     public boolean isLeaf() {
         return myNode.getFirstChildNode() == null;
     }
-
-
 }

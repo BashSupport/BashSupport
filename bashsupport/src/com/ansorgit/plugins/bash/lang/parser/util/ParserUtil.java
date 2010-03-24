@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2010-02-06
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,11 @@ package com.ansorgit.plugins.bash.lang.parser.util;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.util.BashStrings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Useful helper methods for the language parsing.
@@ -52,6 +47,14 @@ public class ParserUtil {
         marker.error(BashStrings.message(message));
     }
 
+    /**
+     * Takes a token, optionally enabling the whitespace mode, advances if the builder is not yet
+     * at the end and returns the previously taken token.
+     *
+     * @param builder        The token provider
+     * @param showWhitespace If true whitespace tokens will be returned, too.
+     * @return
+     */
     public static IElementType getTokenAndAdvance(BashPsiBuilder builder, boolean showWhitespace) {
         try {
             return builder.getTokenType(showWhitespace);
@@ -63,27 +66,36 @@ public class ParserUtil {
         }
     }
 
+    /**
+     * Same as {@link com.ansorgit.plugins.bash.lang.parser.util.ParserUtil#getTokenAndAdvance(com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder, boolean)}
+     * but always disables the whitespace mode.
+     *
+     * @param builder Provides the tokens.
+     * @return The current token.
+     */
     public static IElementType getTokenAndAdvance(BashPsiBuilder builder) {
         return getTokenAndAdvance(builder, false);
     }
 
-    public static List<IElementType> readAllOf(BashPsiBuilder builder, IElementType... types) {
-        Set<IElementType> valid = Sets.newHashSet(types);
-        List<IElementType> result = Lists.newArrayList();
-
-        while (valid.contains(builder.getTokenType())) {
-            result.add(getTokenAndAdvance(builder));
-        }
-
-        return result;
-    }
-
+    /**
+     * Encloses the current token in a marker (the marker token is the 2nd paramter).
+     *
+     * @param builder Provides the tokens.
+     * @param markAs  The type for the marker
+     */
     public static void markTokenAndAdvance(BashPsiBuilder builder, IElementType markAs) {
         final PsiBuilder.Marker marker = builder.mark();
         builder.advanceLexer();
         marker.done(markAs);
     }
 
+    /**
+     * Checks whether the next tokens equal a certain list of expected tokens.
+     *
+     * @param builder  Provides the tokens.
+     * @param expected The expected tokens.
+     * @return True if all expected tokens appear in the builder token stream in exactly the same order.
+     */
     public static boolean checkNextAndRollback(BashPsiBuilder builder, IElementType... expected) {
         final PsiBuilder.Marker start = builder.mark();
         try {
@@ -95,16 +107,6 @@ public class ParserUtil {
             }
         } finally {
             start.rollbackTo();
-        }
-
-        return true;
-    }
-
-    public static boolean checkNextOrError(BashPsiBuilder builder, IElementType expected, @PropertyKey(resourceBundle = BUNDLE) String message) {
-        final IElementType next = getTokenAndAdvance(builder);
-        if (next != expected) {
-            error(builder, message);
-            return false;
         }
 
         return true;
@@ -151,27 +153,37 @@ public class ParserUtil {
         return true;
     }
 
+    /**
+     * Returns whether the provided token is a word token.
+     *
+     * @param token The token to check
+     * @return True if the token is a valid word token.
+     */
     public static boolean isWordToken(IElementType token) {
-        //fixme add NUMBER?
         return BashTokenTypes.stringLiterals.contains(token);// || token == BashTokenTypes.VARIABLE;
     }
 
+    /**
+     * Checks whether a token is a valid identifier.
+     *
+     * @param tokenType The token to check
+     * @return True if the provided token is a valid identifier token.
+     */
     public static boolean isIdentifier(IElementType tokenType) {
         return tokenType == BashTokenTypes.WORD;
     }
 
-    private static final TokenSet simpleCommandEnds = TokenSet.create(
-            BashTokenTypes.SEMI, BashTokenTypes.LINE_FEED,
-            BashTokenTypes.AND_AND, BashTokenTypes.OR_OR
-    );
-
     public static boolean hasNextTokens(BashPsiBuilder builder, IElementType... tokens) {
-        if (tokens.length == 1) return tokens[0] == builder.getTokenType();
+        if (tokens.length == 1) {
+            return tokens[0] == builder.getTokenType();
+        }
 
         final PsiBuilder.Marker start = builder.mark();
         try {
             for (IElementType t : tokens) {
-                if (t != builder.getTokenType()) return false;
+                if (t != builder.getTokenType()) {
+                    return false;
+                }
                 builder.advanceLexer();
             }
 

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParsingStateData.java, Class: ParsingStateData
- * Last modified: 2010-03-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 /**
+ * Data container to track the advanced parsing state.
+ * It can track whether the parser currently is in a heredoc or a simple command.
+ * <p/>
  * User: jansorg
  * Date: Jan 29, 2010
  * Time: 7:12:36 PM

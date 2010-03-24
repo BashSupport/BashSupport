@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RecursiveIncludeFileInspection.java, Class: RecursiveIncludeFileInspection
- * Last modified: 2010-01-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
+ * This inspection detects recursive file inclusion.
+ * It can detect whether another file actually back-includes this file.
+ * <p/>
  * User: jansorg
  * Date: Nov 2, 2009
  * Time: 8:15:59 PM

@@ -8,3 +8,10 @@ Thanks to:
     o The JavaScript plugin. Ideas for the more complex things.
     o The IntelliJ batch custom language plugin. It provided me with the base for the run configuration setup.
     o The KDE project. I got the icons from there :)
+
+
+External code:
+   o com.ansorgit.plugins.bash.editor.formatting.BashBlock
+   o com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder
+   o com.ansorgit.plugins.bash.editor.formatting.processor.BashIndentProcessor
+   o com.ansorgit.plugins.bash.editor.formatting.processor.BashSpacingProcessor

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VarParsing.java, Class: VarParsing
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingChain;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Parsing of variables. Includes $(), ${} and $(()).
+ * Parsing of all sorts variables. Includes $(), ${} and $(()).
+ * Delegates to the certain parsing functions.
+ * <p/>
  * <p/>
  * Date: 27.03.2009
  * Time: 11:07:41
