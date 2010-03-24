@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,13 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing of a simple arithmetic expressions.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 5:52:20 PM
  */
 class SimpleArithmeticExpr implements ParsingFunction {
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("unsupported");
-    }
-
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
         return tokenType == WORD || tokenType == NUMBER || Parsing.var.isValid(builder);

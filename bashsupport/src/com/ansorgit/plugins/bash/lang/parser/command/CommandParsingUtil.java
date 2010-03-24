@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
+ * Parsing function for commands.
+ * <p/>
  * User: jansorg
  * Date: Nov 26, 2009
  * Time: 9:16:36 PM
@@ -229,7 +231,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      */
     public static boolean parseAssignmentList(BashPsiBuilder builder) {
         final IElementType first = ParserUtil.getTokenAndAdvance(builder);
-        if (first != LEFT_PAREN) return false;
+        if (first != LEFT_PAREN) {
+            return false;
+        }
 
         while (!builder.eof() && (builder.getTokenType() != RIGHT_PAREN)) {
             //optional newlines at the beginning
@@ -238,16 +242,22 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             if (builder.getTokenType() == LEFT_SQUARE) {
                 //assignment to specific position
                 boolean ok = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-                if (!ok) return false;
+                if (!ok) {
+                    return false;
+                }
                 //no we expect an equal sign
                 final IElementType eqToken = ParserUtil.getTokenAndAdvance(builder);
-                if (eqToken != EQ) return false;
+                if (eqToken != EQ) {
+                    return false;
+                }
                 //continued below
             }
 
             if (Parsing.word.isWordToken(builder)) {
                 final boolean ok = Parsing.word.parseWordList(builder, false, true);
-                if (!ok) return false;
+                if (!ok) {
+                    return false;
+                }
             }
 
             //optional newlines after the comma

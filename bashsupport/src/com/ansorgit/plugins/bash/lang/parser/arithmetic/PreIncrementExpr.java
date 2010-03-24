@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PreIncrementExpr.java, Class: PreIncrementExpr
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing of prefix increment operators.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 4:27:55 PM

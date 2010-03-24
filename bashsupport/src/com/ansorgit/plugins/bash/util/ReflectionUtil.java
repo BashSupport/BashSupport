@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReflectionUtil.java, Class: ReflectionUtil
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ public class ReflectionUtil {
      *
      * @param owner The object which contains the short member variable.
      * @param name  The name of the member variable.
-     * @param value The value to set-
-     * @return If the action was successful.
+     * @param value The value to set to
+     * @return True if the action was successful, false if was not successful.
      */
     public static boolean setShort(@NotNull final Object owner, final String name, final short value) {
         checkArgument(StringUtil.isNotEmpty(name));

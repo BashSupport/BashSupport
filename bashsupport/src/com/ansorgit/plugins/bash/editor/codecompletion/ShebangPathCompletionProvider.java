@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShebangPathCompletionProvider.java, Class: ShebangPathCompletionProvider
- * Last modified: 2010-03-15
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 
@@ -36,7 +35,7 @@ import java.util.List;
  * Time: 2:27:52 PM
  */
 class ShebangPathCompletionProvider extends BashCompletionProvider {
-    private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
+    //private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
 
     public ShebangPathCompletionProvider() {
         super(true);
@@ -66,7 +65,7 @@ class ShebangPathCompletionProvider extends BashCompletionProvider {
         String shellcommand = shebang.shellCommand();
 
         int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
-        return elementOffset > 0 && elementOffset < shellcommand.length()
+        return (elementOffset > 0 && elementOffset < shellcommand.length())
                 ? shellcommand.substring(0, elementOffset)
                 : shellcommand;
     }

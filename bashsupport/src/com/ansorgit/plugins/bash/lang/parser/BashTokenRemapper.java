@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenRemapper.java, Class: BashTokenRemapper
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Token remapper for the BashPsiBuilder.
  * It remapps certain tokens to words if remapping is enabled in the PsiBuilder
- * instance.
+ * instance. The remapping is activated by the parsing functions.
  * <p/>
  * Date: 12.04.2009
  * Time: 16:25:28

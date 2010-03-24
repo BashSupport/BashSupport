@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSmartMarker.java, Class: BashSmartMarker
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Wraps a PsiBuilder marker and keeps track whether it's still open or not.
+ * <p/>
  * User: jansorg
  * Date: Jan 30, 2010
  * Time: 12:18:29 PM

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RemoveHeredocHighlightingPass.java, Class: RemoveHeredocHighlightingPass
- * Last modified: 2010-03-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,14 @@ import com.intellij.psi.PsiRecursiveElementVisitor;
 import java.util.List;
 
 /**
+ * Text editor highlighting pass which removes highlighting from heredocs.
+ * The parser marks heredocs, that's why keyword tokens may appear in heredocs.
+ * The token remapper of the parser fixes this for the parsing process, but
+ * the highlighting appeareantly is based on the lexing result.
+ * <p/>
+ * In this highlighting pass we remove all highlighting in heredoc subtokens.
+ * <p/>
+ * <p/>
  * User: jansorg
  * Date: Jan 25, 2010
  * Time: 8:36:58 PM

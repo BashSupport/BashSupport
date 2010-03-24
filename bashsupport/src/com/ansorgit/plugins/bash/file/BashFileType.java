@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-03-18
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.file;
 
-import com.ansorgit.plugins.bash.editor.highlighting.BashEditorHighlighter;
 import com.ansorgit.plugins.bash.lang.Bash;
 import com.ansorgit.plugins.bash.lang.BashLanguage;
 import com.ansorgit.plugins.bash.settings.facet.BashFacet;
@@ -27,9 +26,6 @@ import com.ansorgit.plugins.bash.settings.facet.ui.FileMode;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.content.BashContentUtil;
 import com.intellij.lang.Language;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.highlighter.EditorHighlighter;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.ex.FileTypeIdentifiableByVirtualFile;
 import com.intellij.openapi.module.Module;
@@ -40,34 +36,37 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * The file type implementation for Bash files.
+ * <p/>
  * Date: 22.03.2009
  * Time: 11:08:04
  *
  * @author Joachim Ansorg
  */
 public class BashFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile {
-    private static final Logger LOG = Logger.getInstance("#BashFileType");
+    // private static final Logger LOG = Logger.getInstance("#BashFileType");
     public static final BashFileType BASH_FILE_TYPE = new BashFileType();
     public static final Language BASH_LANGUAGE = BASH_FILE_TYPE.getLanguage();
+
     /**
      * The default file extension of bash scripts.
      */
     public static final String DEFAULT_EXTENSION = "sh";
+    public static final String BASH_EXTENSION = "bash";
 
     /**
      * All extensions which are associated with this plugin.
      */
-    public static final String[] extensions = {DEFAULT_EXTENSION, "bash"};
+    public static final String[] extensions = {DEFAULT_EXTENSION, BASH_EXTENSION};
     public static final List<String> extensionList = Arrays.asList(extensions);
 
-    public static final List<String> validContentStarts = Arrays.asList("#!/bin/sh", "#!/bin/bash", "#!/usr/bin/sh", "#!/usr/bin/bash");
+    //needed for the automatic file content type guessing
     private static final double MIN_FILE_PROBABILIY = 0.75d;
 
     protected BashFileType() {
@@ -91,10 +90,6 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
 
     public Icon getIcon() {
         return BashIcons.BASH_FILE_ICON;
-    }
-
-    public EditorHighlighter getEditorHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile, @NotNull EditorColorsScheme colors) {
-        return new BashEditorHighlighter(colors, project, virtualFile);
     }
 
     @Override

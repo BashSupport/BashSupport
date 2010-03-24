@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WordToSinglequotedStringQuickfix.java, Class: WordToSinglequotedStringQuickfix
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Converts a word like into an unquoted string 'a'.
+ * <p/>
  * User: jansorg
  * Date: 21.05.2009
  * Time: 10:40:37

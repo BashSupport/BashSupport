@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WhileLoopParserFunction.java, Class: WhileLoopParserFunction
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 
 /**
+ * Parsing function for while loops.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:11:11
  *

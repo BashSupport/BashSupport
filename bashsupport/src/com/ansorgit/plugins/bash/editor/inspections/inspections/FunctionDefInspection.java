@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefInspection.java, Class: FunctionDefInspection
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,9 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * In Bash a function definition must not have a command block as body. A body block is good style, though.
+ * This inspection offers a quickfix to wrap the body in a block.
+ * <p/>
  * Date: 15.05.2009
  * Time: 15:14:04
  *

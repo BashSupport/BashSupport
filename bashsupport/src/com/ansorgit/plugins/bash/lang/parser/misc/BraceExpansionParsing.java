@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BraceExpansionParsing.java, Class: BraceExpansionParsing
- * Last modified: 2010-02-10
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
 /**
+ * Parsing function for brace expansions.
+ * <p/>
  * User: jansorg
  * Date: Nov 14, 2009
  * Time: 11:57:59 PM
@@ -34,7 +36,6 @@ public class BraceExpansionParsing implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();
         try {
-            //fixme speed this up if necessary
             return parse(builder);
         }
         finally {
@@ -65,7 +66,7 @@ public class BraceExpansionParsing implements ParsingFunction {
                 return false;
             }
 
-            //fixme check if the last char before the right curcly is a whitespace or not
+            //fixme check if the last char before the right curly bracket is a whitespace or not
             //make sure we don't run into endless parsing or don't stop if there's a missing right curly bracket
             while (validExpansionTokens.contains(builder.getTokenType(true))) {
                 builder.advanceLexer(true);
