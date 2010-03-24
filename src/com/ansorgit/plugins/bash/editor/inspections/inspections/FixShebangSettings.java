@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FixShebangSettings.java, Class: FixShebangSettings
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import javax.swing.*;
 
 /**
- * Created by IntelliJ IDEA.
+ * These are the ui settings for the fix shebang inspection.
+ * <p/>
  * User: jansorg
  * Date: 21.05.2009
  * Time: 14:56:28
- * To change this template use File | Settings | File Templates.
  */
 public class FixShebangSettings {
     private JTextArea validCommandsEdit;

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateExpansionQuickfix.java, Class: EvaluateExpansionQuickfix
- * Last modified: 2010-01-27
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Evaluates an expansion and replaces the placeholder with the evaluated result.
+ * <p/>
  * User: jansorg
  * Date: Nov 15, 2009
  * Time: 12:50:35 AM

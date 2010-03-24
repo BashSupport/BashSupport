@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangInspection.java, Class: AddShebangInspection
- * Last modified: 2010-01-21
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * This inspection detects a missing shebang line and offers a file-level quickfix to add one.
  * Date: 15.05.2009
  * Time: 14:56:55
  *

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ElementIconGutterProvider.java, Class: ElementIconGutterProvider
- * Last modified: 2009-12-25
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 /**
+ * Default gutter icon provider for psi elements.
+ * <p/>
  * User: jansorg
  * Date: Oct 31, 2009
  * Time: 8:13:21 PM

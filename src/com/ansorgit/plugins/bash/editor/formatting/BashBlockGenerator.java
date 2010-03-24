@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBlockGenerator.java, Class: BashBlockGenerator
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import com.intellij.formatting.Block;
 import com.intellij.formatting.Indent;
 import com.intellij.formatting.Wrap;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 
 import java.util.ArrayList;
@@ -34,8 +32,10 @@ import java.util.List;
 
 /**
  * Utility class to generate myBlock hierarchy
+ * <p/>
+ * This code was taken from the Groovy plugin.
  *
- * @author ilyas
+ * @author ilyas, jansorg
  */
 public class BashBlockGenerator implements BashElementTypes {
 
@@ -77,7 +77,7 @@ public class BashBlockGenerator implements BashElementTypes {
 
 
     private static ASTNode[] getBashChildren(final ASTNode node) {
-        PsiElement psi = node.getPsi();
+        //PsiElement psi = node.getPsi();
         /*if (psi instanceof OuterLanguageElement) {
             TextRange range = node.getTextRange();
             ArrayList<ASTNode> childList = new ArrayList<ASTNode>();
@@ -91,7 +91,7 @@ public class BashBlockGenerator implements BashElementTypes {
         return node.getChildren(null);
     }
 
-    private static void addChildNodes(PsiElement elem, ArrayList<ASTNode> childNodes, TextRange range) {
+    /*private static void addChildNodes(PsiElement elem, ArrayList<ASTNode> childNodes, TextRange range) {
         ASTNode node = elem.getNode();
         if (range.contains(elem.getTextRange()) && node != null) {
             childNodes.add(node);
@@ -101,5 +101,5 @@ public class BashBlockGenerator implements BashElementTypes {
             }
         }
 
-    }
+    } */
 }

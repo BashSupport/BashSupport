@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CaseParsingFunction.java, Class: CaseParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for case statements.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:20:22
  *
@@ -46,8 +48,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
     /**
      * Parse the case command.
      *
-     * @param builder
-     * @return
+     * @param builder Provides the tokens
+     * @return True if a valid case command was found and parsed.
      */
     public boolean parse(BashPsiBuilder builder) {
         /*

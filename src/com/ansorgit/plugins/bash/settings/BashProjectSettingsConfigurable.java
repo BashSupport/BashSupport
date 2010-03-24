@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettingsConfigurable.java, Class: BashProjectSettingsConfigurable
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.settings;
 
-import com.ansorgit.plugins.bash.lang.BashLoader;
+import com.ansorgit.plugins.bash.BashComponents;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.Configurable;
@@ -45,7 +45,7 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
 
     @NotNull
     public String getComponentName() {
-        return BashLoader.COMPONENT_NAME + ".ProjectSettingsConfigurable";
+        return BashComponents.BASH_LOADER + ".ProjectSettingsConfigurable";
     }
 
     public void initComponent() {
@@ -80,7 +80,9 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     }
 
     public boolean isModified() {
-        if (settingsPanel == null) return false;
+        if (settingsPanel == null) {
+            return false;
+        }
 
         return settingsPanel.isModified(BashProjectSettings.storedSettings(project));
     }

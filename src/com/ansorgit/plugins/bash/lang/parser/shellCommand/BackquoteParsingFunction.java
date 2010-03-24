@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BackquoteParsingFunction.java, Class: BackquoteParsingFunction
- * Last modified: 2010-02-09
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
 /**
+ * Parsing function for backtic / backquote calls.
+ * <p/>
  * Date: 02.05.2009
  * Time: 11:17:08
  *
@@ -37,7 +39,6 @@ import com.intellij.psi.tree.IElementType;
 public class BackquoteParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.BackquoteParsing");
 
-    @Override
     public boolean isValid(BashPsiBuilder builder) {
         return !builder.getBackquoteData().isInBackquote() && builder.getTokenType() == BashTokenTypes.BACKQUOTE;
     }

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashIndentProcessor.java, Class: BashIndentProcessor
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author ilyas
+ * This class is based on code taken from the Groovy plugin.
+ *
+ * @author ilyas, jansorg
  */
 public abstract class BashIndentProcessor implements BashElementTypes, BashTokenTypes {
     private static final TokenSet BLOCKS = TokenSet.create(BLOCK_ELEMENT, GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT);

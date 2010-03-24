@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocData.java, Class: HereDocData
- * Last modified: 2010-01-29
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,12 @@ import java.util.Queue;
 
 /**
  * Contains the status of here-doc parsing.
- * It contains a stack of expected doc-ends.
+ * It contains a stack of expected heredoc end markers.
+ *
+ * @author Joachim Ansorg
  */
 public final class HereDocData {
-    //Values are triples: karker text, type, striü/no-strip
+    //Values are triples: marker text, type, strip/don't-strip
     private final Queue<Triple<String, MarkerType, Boolean>> expectedEnds = new LinkedList<Triple<String, MarkerType, Boolean>>();
 
     public enum MarkerType {
@@ -52,7 +54,7 @@ public final class HereDocData {
     }
 
     public boolean isStrippingWhitespace() {
-        return expectedEnds.peek().second == MarkerType.Eval;
+        return isCurrentlyEvaluating();//expectedEnds.peek().second == MarkerType.Eval;
     }
 
     public boolean expectsHereDoc() {

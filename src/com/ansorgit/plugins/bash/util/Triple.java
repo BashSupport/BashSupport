@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: Triple.java, Class: Triple
- * Last modified: 2010-01-29   
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,13 @@
 package com.ansorgit.plugins.bash.util;
 
 /**
+ * A triple is a combination of three values of (optionally) different types.
+ * <p/>
  * User: jansorg
  * Date: Jan 29, 2010
  * Time: 7:07:23 PM
  */
-public class Triple<A, B, C> {
+public final class Triple<A, B, C> {
     public final A first;
     public final B second;
     public final C third;

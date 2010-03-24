@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingMarker.java, Class: ForwardingMarker
- * Last modified: 2009-12-04
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.forwarding;
+package com.ansorgit.plugins.bash.lang.parser.util;
 
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;

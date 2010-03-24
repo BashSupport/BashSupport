@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ExponentExpr.java, Class: ExponentExpr
- * Last modified: 2010-02-07
+ * Last modified: 2010-03-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 /**
+ * Parsing of exponent expressions.
+ * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 4:27:55 PM

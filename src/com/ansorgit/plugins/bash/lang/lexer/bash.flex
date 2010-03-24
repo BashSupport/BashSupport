@@ -2,7 +2,7 @@
     The Bash language is a beast. It contains many strange or unusual constructs
     and has a great flexibility in what is possible.
     The lexer tries to do as much as possible in the lexing phase to help the parser
-    later on to.
+    later on.
 
     A major problem is that tokens have to interpreted according to their context.
     e.g. a=b echo a=b
@@ -15,12 +15,12 @@
     The lexer parses a string as STRING_BEGIN, STRING_CHAR and STRING_END. These
     tokens are mapped to a STRING later on by the lexer.MergingLexer class.
 
-    Lexing all as a STRING token was the way to go. This worked but for some strange
+    Lexing all as a STRING token was the way to go. This worked, but for some strange
     reason the lexer got wrong offsets for this complex setup (returning the string only at the
     last occurence of "). That's why the token merging strategy was established.
 
     If you really want to hack on this lexer: Be careful :)
-    There are unit tests for the lexer but there's no 100% coverage of all situations.
+    There are unit tests for the lexer but there's no 100% coverage for all cases.
 
      @author Joachim Ansorg, mail@ansorg-it.com
 **/
