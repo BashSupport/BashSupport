@@ -1,4 +1,4 @@
-General list of to-do items. Indented items are already implemented.
+General list of to-do items. Indented items are already implemented / fixed.
 
 Planned features:
 -----------------
