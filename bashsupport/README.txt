@@ -2,9 +2,10 @@ About:
 ------
 This is a custom language plugin for IntelliJ IDEA version 9.x. It is compatible with
 the Community and the Ultimate editions of IntelliJ. It also is working with RubyMine 2.0.1 or later.
+It is supposed to work with the other available editions (PyCharm, WebStorm, PHPStorm).
 
 This plugin supports the Bash command shell, which is widely available in Linux and UNIX systems.
-There is not support yet for Windows Cygwin editions of Bash.
+There is no support yet for Windows Cygwin editions of Bash.
 
 
 Further information:
@@ -17,6 +18,8 @@ License:
 --------
    This work is licensed under the terms of the Apache 2.0 license.
    Read the file LICENSE.txt for further details.
+
+   Please see NOTICE for further details about the license and included code of other developers.
 
 Developer information:
 ----------------------
@@ -52,3 +55,7 @@ Developer information:
    The Bash PSI definition is in com.ansorgit.plugins.bash.lang.psi . The entry point is the class
    BashPsiCreator, which is used to map a AST node to a newly created PSI node.
 
+ Other extensions
+ ~~~~~~~~~~~~~~~~
+   A good starting point is META-INF/plugins.xml. The referenced classes are the entry point for most
+   of the functionality offered by the plugin.
