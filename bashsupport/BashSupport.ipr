@@ -14,6 +14,9 @@
   <component name="BashSupportProjectSettings">
     <option name="globalVariables">
       <set>
+        <option value="IDEA_CLASSPATH" />
+        <option value="IDEA_PROPERTIES" />
+        <option value="JDK_HOME" />
         <option value="a" />
       </set>
     </option>
