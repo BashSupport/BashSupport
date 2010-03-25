@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarUtils.java, Class: BashVarUtils
- * Last modified: 2010-01-28
+ * Last modified: 2010-03-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,7 @@ public class BashVarUtils {
 
         boolean varIsLocalDef = childCandidate instanceof BashVarDef && ((BashVarDef) childCandidate).isFunctionScopeLocal();
 
-        return variableDefinition.isFunctionScopeLocal() || varIsLocalDef
-                ? PsiTreeUtil.isAncestor(varDefContainer, childCandidate, false)
-                : true;
+        return !(variableDefinition.isFunctionScopeLocal() || varIsLocalDef)
+                || PsiTreeUtil.isAncestor(varDefContainer, childCandidate, false);
     }
 }

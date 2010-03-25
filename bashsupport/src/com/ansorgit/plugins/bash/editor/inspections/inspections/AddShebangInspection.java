@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangInspection.java, Class: AddShebangInspection
- * Last modified: 2010-03-24
+ * Last modified: 2010-03-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,9 +42,16 @@ public class AddShebangInspection extends AbstractBashInspection {
     public AddShebangInspection() {
     }
 
+    @Pattern("[a-zA-Z_0-9.]+")
+    @NotNull
+    @Override
+    public String getID() {
+        return "AddShebangLine";
+    }
+
     @NotNull
     public String getShortName() {
-        return "AddShebangLine";
+        return "Add Shebang line";
     }
 
     @Nls

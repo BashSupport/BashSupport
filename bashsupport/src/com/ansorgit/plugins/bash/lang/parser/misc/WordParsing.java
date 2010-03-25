@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WordParsing.java, Class: WordParsing
- * Last modified: 2010-03-24
+ * Last modified: 2010-03-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,6 @@ public class WordParsing implements ParsingTool {
         }
 
         PsiBuilder.Marker marker = builder.mark();
-        boolean isFirstRead = true;
         boolean isOk = true;
 
         int processedTokens = 0;
@@ -98,7 +97,6 @@ public class WordParsing implements ParsingTool {
             }
 
             final IElementType nextToken = builder.getTokenType(true, enableRemapping);
-            isFirstRead = false;
 
             if (nextToken == WHITESPACE) {
                 break;

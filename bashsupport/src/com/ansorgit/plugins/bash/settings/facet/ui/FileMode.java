@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FileMode.java, Class: FileMode
- * Last modified: 2010-02-17
+ * Last modified: 2010-03-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ public final class FileMode implements Comparable<FileMode> {
     private static final FileMode acceptMode = new FileMode("accept", "Accept", 3);
 
     static {
-        idMap.put(defaultMode.getId(), defaultMode);
-        idMap.put(autoMode.getId(), autoMode);
-        idMap.put(ignoreMode.getId(), ignoreMode);
-        idMap.put(acceptMode.getId(), acceptMode);
+        idMap.put(defaultMode.id, defaultMode);
+        idMap.put(autoMode.id, autoMode);
+        idMap.put(ignoreMode.id, ignoreMode);
+        idMap.put(acceptMode.id, acceptMode);
     }
 
     public static List<FileMode> all() {
@@ -106,14 +106,15 @@ public final class FileMode implements Comparable<FileMode> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         FileMode mode = (FileMode) o;
-
-        if (id != null ? !id.equals(mode.id) : mode.id != null) return false;
-
-        return true;
+        return id != null ? id.equals(mode.id) : mode.id == null;
     }
 
     @Override
