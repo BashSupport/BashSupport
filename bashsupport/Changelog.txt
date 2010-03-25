@@ -1,3 +1,9 @@
+2010-03-25:
+ - Update to Google collections 1.0
+
+2010-03-24:
+ - Updated documentation and copyright information
+
 2010-03-18:
  - Improved parsing for shebang lines
 

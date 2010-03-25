@@ -19,7 +19,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Google collections rc3" level="project" />
+    <orderEntry type="library" name="Google collections" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
