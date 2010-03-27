@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashComponents.java, Class: BashComponents
- * Last modified: 2010-03-24
+ * Last modified: 2010-03-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,6 @@ package com.ansorgit.plugins.bash;
  * Time: 8:34:41 PM
  */
 public class BashComponents {
-    public static String HighlighterFactory = "BashHighlighterFactory";
+    public static final String HighlighterFactory = "BashHighlighterFactory";
     public static final String BASH_LOADER = "bash.support.loader";
 }
