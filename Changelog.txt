@@ -1,7 +1,7 @@
 2010-03-28:
  - Version 0.9.8-maia
  - Fixed shebang command completion
- - New icon added, remved old icon which was taken from the KDE project
+ - New file icon added, remved old file icon which was taken from the KDE project
 
 2010-03-25:
  - Update to Google collections 1.0
