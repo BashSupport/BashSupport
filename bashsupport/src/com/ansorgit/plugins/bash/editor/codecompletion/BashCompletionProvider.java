@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCompletionProvider.java, Class: BashCompletionProvider
- * Last modified: 2010-03-15
+ * Last modified: 2010-03-28
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
             return;
         }
 
-        String originalText = element.getText();
+        String originalText = findOriginalText(element);
         final String currentText = findCurrentText(parameters, element);
 
         CompletionResultSet result = currentText != null && originalText.startsWith(currentText)
@@ -66,8 +66,12 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         }
     }
 
+    protected String findOriginalText(PsiElement element) {
+        return element.getText();
+    }
+
     protected String findCurrentText(CompletionParameters parameters, PsiElement element) {
-        String originalText = element.getText();
+        String originalText = findOriginalText(element);
         int elementOffset = parameters.getOffset() - element.getTextOffset();
 
         return (elementOffset >= 0) && (elementOffset < originalText.length())
