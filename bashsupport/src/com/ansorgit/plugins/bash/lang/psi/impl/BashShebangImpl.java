@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashShebangImpl.java, Class: BashShebangImpl
- * Last modified: 2010-03-18
+ * Last modified: 2010-03-28
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
         }
 
         //shebang line without the prefix #!
-        int commandOffset = shellCommandOffset();
+        int commandOffset = getShellCommandOffset();
         String line = allText.substring(commandOffset);
         log.debug("shellCommand: " + line);
 
@@ -67,7 +67,7 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
         return commandLine.trim();
     }
 
-    public int shellCommandOffset() {
+    public int getShellCommandOffset() {
         String line = getText();
         if (!line.startsWith("#!")) {
             return 0;
@@ -83,7 +83,7 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
 
     @NotNull
     public TextRange commandRange() {
-        return TextRange.from(shellCommandOffset(), shellCommand().length());
+        return TextRange.from(getShellCommandOffset(), shellCommand().length());
     }
 
     public void updateCommand(String command) {

@@ -1,4 +1,3 @@
-
 Thanks to:
 ----------
     o The arc plugin. It gave me the first ideas how to create a custom language plugin
@@ -7,10 +6,8 @@ Thanks to:
     o The Groovy plugin. Good source to start the formatter.
     o The JavaScript plugin. Ideas for the more complex things.
     o The IntelliJ batch custom language plugin. It provided me with the base for the run configuration setup.
-    o The KDE project. I got the icons from there :)
 
-
-External code:
+External code (based on other plugins' code, also noted in the class javadoc):
    o com.ansorgit.plugins.bash.editor.formatting.BashBlock
    o com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder
    o com.ansorgit.plugins.bash.editor.formatting.processor.BashIndentProcessor
