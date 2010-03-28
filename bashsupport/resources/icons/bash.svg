@@ -68,39 +68,48 @@
        height="438.10681"
        x="121.37514"
        y="341.16592"
-       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport/resources/icons/bash-64.png"
-       inkscape:export-xdpi="13.09"
-       inkscape:export-ydpi="13.09" />
+       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+       inkscape:export-xdpi="3.27"
+       inkscape:export-ydpi="3.27" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:10.79475975;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:10.38499928;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3594"
-       width="346.07001"
-       height="289.54019"
-       x="164.82216"
-       y="394.02496"
-       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport/resources/icons/bash-64.png"
-       inkscape:export-xdpi="13.09"
-       inkscape:export-ydpi="13.09" />
-    <path
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:17.49311638;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 327.78723,644.40993 155.93121,0"
-       id="path2816"
-       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport/resources/icons/bash-64.png"
-       inkscape:export-xdpi="13.09"
-       inkscape:export-ydpi="13.09" />
+       width="351.73825"
+       height="263.65753"
+       x="164.61728"
+       y="420.11252"
+       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+       inkscape:export-xdpi="3.27"
+       inkscape:export-ydpi="3.27" />
     <text
        xml:space="preserve"
-       style="font-size:233.46868896px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.74973798;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="155.33276"
-       y="631.37598"
+       style="font-size:905.60571289px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:6.78708887;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="188.72911"
+       y="635.02753"
        id="text3590"
-       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport/resources/icons/bash-64.png"
-       inkscape:export-xdpi="13.09"
-       inkscape:export-ydpi="13.09"><tspan
+       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+       inkscape:export-xdpi="3.27"
+       inkscape:export-ydpi="3.27"
+       sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3592"
-         x="155.33276"
-         y="631.37598"
-         style="stroke-width:1.74973798">&gt;</tspan></text>
+         x="188.72911"
+         y="635.02753"
+         style="font-size:248.2507019px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;stroke-width:6.78708887;font-family:Arial;-inkscape-font-specification:Arial Bold">&gt;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:308.02508545px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:7.70062685;font-family:Bitstream Vera Sans"
+       x="369.40356"
+       y="529.03809"
+       id="text3642"
+       transform="scale(0.93138565,1.0736691)"
+       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+       inkscape:export-xdpi="3.27"
+       inkscape:export-ydpi="3.27"><tspan
+         sodipodi:role="line"
+         id="tspan3644"
+         x="369.40356"
+         y="529.03809"
+         style="stroke-width:7.70062685">_</tspan></text>
   </g>
 </svg>
