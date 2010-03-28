@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-03-25
+  ~ Last modified: 2010-03-28
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -35,22 +35,35 @@
             <li> Advanced syntax highlighting and configuration</li>
             <li> Run Bash scripts within IDEA</li>
             <li> Autocompletion for variables, functions and file paths</li>
-            <li> Inspections for common problems</li>
-            <li> Basic refactorings (rename of variables and funtions)</li>
+            <li> Inspections and quickfixes for common problems</li>
+            <li> Basic refactorings (rename variables, functions and heredoc markers)</li>
             <li> Advanced navigation (structure view, go to declaration, ...)</li>
-            <li> Ctrl+Q (Quick documentation lookup) for internal and external commands and functions</li>
+            <li> Ctrl+Q (Quick documentation lookup) for internal commands, external commands and functions</li>
             <li> Highlight usages in file for functions and variables</li>
             <li> Code folding, line commenting / uncommenting, brace matching</li>
             <li> Supports file extensions .sh, .bash and files without extension (configurable)</li>
+            <li> Advanced support for arithmetic expressions and brace expansions</li>
             </ul>
 
             <br>
-            <b>Experimental features:</b>
+            <b>Experimental features (not yet configurable, use at your own risk):</b>
             <ul>
-            <li> Code formatter</li>
+                <li> Code formatter</li>
             </ul>
-         <br>
-        <b>This is an early release of this plugin. Please vote and provide feedback to help!</b>
+
+            <br>
+            <b>Plugin contest 2009</b>
+            <hr>
+            <p>
+                The plugin was started in 2009. All contained features are submitted to the contest.
+                The source code package contains further information in the files README.txt and NOTICE.<br>
+                The source code repository is online at
+                <a href="http://code.google.com/p/bashsupport/source/checkout">code.google.com</a><br>
+
+                Documentation is available at
+                <a href="http://www.ansorg-it.com/en/products_bashsupport.html">the authors website</a> in English and
+                German.
+            </p>
   </html>
   ]]></description>
 
@@ -58,39 +71,28 @@
     <html>
        <b>Changes in version 0.9.8-maia:</b>
        <ul>
-
+        <li> Improved parsing                                                            </li>
+        <li> Icons for path and variable completions                                                        </li>
+        <li> Fixed "export a" variables                                                                     </li>
+        <li> Fixed for heredoc folding and highlighting                                                     </li>
+        <li> AddShebangQuickfix is now run in a separate write action                                       </li>
+        <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
+        <li> The facet configuration tree is expanded by default now                                        </li>
        </ul>
 
-       <b>Changes in version 0.9.7-maia:</b>
+       <b>Recent changes:</b>
        <ul>
-        <li>Source code released, licensed under the terms of the Apache License 2.0</li>
-        <li>New Bashsupport facet to configure which files without extensions are Bash scripts</li>
-        <li>Removed global settings, these are project settings now</li>
-        <li>Several parser fixes and improvements</li>
-        <li>Improved support for heredocs: Go to declaration and rename for markers</li>
-        <li>Arithmetic expressions are supported now, including variable declarations</li>
-        <li>New inspection and quickfix to replace a static arithmetic expression with the result</li>
-        <li>Arithmetic for loops</li>
-        <li>Color configuration for heredoc start and end markers</li>
-        <li>Improved color configuration dialog</li>
-        <li>Support for the "local" keyword</li>
-        <li>Fixed duplicate var name suggeestions in completion popup</li>
-        <li>Improved highlighting of unresolved variables</li>
-        <li>Highlighting of variables inside of strings</li>
-        <li>New inspection to unregister global variables</li>
-        <li>Support for simple variable substitutions, e.g. ${A}</li>
-        <li>Fixed || and && operators in conditional commands</li>
-        <li>You can turn on debug mode by setting the environment variable bashsupport.debug to "true", useful for debugging</li>
-       </ul>
-
-        <b>Latest major changes:</b>
-        <ul>
-          <li> Path/file completion/</li>
-          <li> Configurable support for Bash version 4.0.</li>
-          <li> Expansions now can be replaced with the evaluated result.</li>
-          <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
-          <li> Run configuration for Bash scripts. You can now run the scripts from within IntelliJ.</li>
-          <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
+            <li> Removed global settings, these are project settings now</li>
+            <li> Arithmetic expressions are supported now, including variable declarations</li>
+            <li> Color configuration for heredoc start and end markers</li>
+            <li> Support for the "local" keyword</li>
+            <li> New Bashsupport facet to configure which files without extensions are Bash scripts</li>
+            <li> Source code released, licensed under the terms of the Apache License 2.0</li>
+            <li> Path/file completion/</li>
+            <li> Configurable support for Bash version 4.0.</li>
+            <li> Expansions now can be replaced with the evaluated result.</li>
+            <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
+            <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
         </ul>
     </html>
     ]]>
