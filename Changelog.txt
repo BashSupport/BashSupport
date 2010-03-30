@@ -1,3 +1,8 @@
+2010-03-30:
+  - Version 0.9.9-maia
+  - Fixed icon size
+  - Added setting to turn off the formatter (defualt is formatter turned off)
+
 2010-03-28:
  - Version 0.9.8-maia
  - Fixed shebang command completion

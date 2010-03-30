@@ -6,7 +6,7 @@ TEMP=/tmp/bashsupport-src
 SRC=/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode
 DIRS="doc lib META-INF resources src test testdata"
 FILES="BashSupport.iml BashSupport.ipr BashSupport.iws build.xml Changelog.txt LICENSE.txt NOTICE pack-sourcecode.sh README.txt TODO.txt"
-REMOVE_PATTERNS="testdata/mockJDK Changelog.txt BashSupport.zip pack-sourcecode.sh"
+REMOVE_PATTERNS="testdata/mockJDK Changelog.txt BashSupport.zip pack-sourcecode.sh doc"
 
 rm -rf $TEMP
 mkdir $TEMP
