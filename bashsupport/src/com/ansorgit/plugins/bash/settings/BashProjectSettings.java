@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettings.java, Class: BashProjectSettings
- * Last modified: 2010-02-17
+ * Last modified: 2010-03-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ public class BashProjectSettings implements Serializable {
 
     private boolean autocompleteBuiltinVars = false;
     private boolean autocompleteBuiltinCommands = true;
+
+    private boolean formatterEnabled = false;
 
     public boolean isAutocompleteBuiltinVars() {
         return autocompleteBuiltinVars;
@@ -90,5 +92,13 @@ public class BashProjectSettings implements Serializable {
 
     public void setSupportBash4(boolean supportBash4) {
         this.supportBash4 = supportBash4;
+    }
+
+    public boolean isFormatterEnabled() {
+        return formatterEnabled;
+    }
+
+    public void setFormatterEnabled(boolean formatterEnabled) {
+        this.formatterEnabled = formatterEnabled;
     }
 }

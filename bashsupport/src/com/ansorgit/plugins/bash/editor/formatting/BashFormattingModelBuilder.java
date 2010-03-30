@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFormattingModelBuilder.java, Class: BashFormattingModelBuilder
- * Last modified: 2010-03-24
+ * Last modified: 2010-03-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.editor.formatting;
 
+import com.ansorgit.plugins.bash.editor.formatting.noOpModel.NoOpBlock;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.formatting.FormattingModel;
 import com.intellij.formatting.FormattingModelBuilder;
 import com.intellij.formatting.FormattingModelProvider;
@@ -42,10 +44,14 @@ public class BashFormattingModelBuilder implements FormattingModelBuilder {
         assert node != null;
 
         PsiFile containingFile = element.getContainingFile();//.getViewProvider().getPsi(BashFileType.BASH_LANGUAGE);
-        //assert containingFile != null : element.getContainingFile();
-
         ASTNode astNode = containingFile.getNode();
         assert astNode != null;
+
+        BashProjectSettings projectSettings = BashProjectSettings.storedSettings(containingFile.getProject());
+        if (!projectSettings.isFormatterEnabled()) {
+            return FormattingModelProvider.createFormattingModelForPsiFile(containingFile,
+                    new NoOpBlock(astNode), settings);
+        }
 
         return FormattingModelProvider.createFormattingModelForPsiFile(containingFile,
                 new BashBlock(astNode, null, Indent.getAbsoluteNoneIndent(), null, settings), settings);
