@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashParserDefinition.java, Class: BashParserDefinition
- * Last modified: 2010-02-18
+ * Last modified: 2010-04-14
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,13 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
                 || right == BashTokenTypes.RIGHT_PAREN
                 || left == BashTokenTypes.RIGHT_PAREN
                 || right == BashTokenTypes.LEFT_PAREN
+
+                || left == BashTokenTypes.LEFT_CURLY
+                || right == BashTokenTypes.LEFT_CURLY
+                || left == BashTokenTypes.RIGHT_CURLY
+                || right == BashTokenTypes.RIGHT_CURLY
+
+                || (left == BashTokenTypes.WORD && right == BashTokenTypes.PARAM_EXPANSION_OP)
 
                 || left == BashTokenTypes.LEFT_SQUARE
                 || right == BashTokenTypes.RIGHT_SQUARE
