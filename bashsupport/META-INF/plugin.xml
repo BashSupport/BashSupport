@@ -20,7 +20,7 @@
     <category>Custom Languages</category>
     <version>0.9.9-maia</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg IT-Services</vendor>
-    <idea-version since-build="91.15" until-build="95.0"/>
+    <idea-version since-build="91.15" until-build="96.0"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>

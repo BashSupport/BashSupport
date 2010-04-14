@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashInternalCommandImpl.java, Class: BashInternalCommandImpl
- * Last modified: 2010-01-25
+ * Last modified: 2010-04-14
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashInternalCommand;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 
 /**
  * User: jansorg
@@ -29,5 +30,20 @@ import com.intellij.lang.ASTNode;
 public class BashInternalCommandImpl extends BashCommandImpl implements BashInternalCommand {
     public BashInternalCommandImpl(ASTNode astNode) {
         super(astNode, "BashInternalCommand");
+    }
+
+    @Override
+    public boolean isInternalCommand() {
+        return true;
+    }
+
+    @Override
+    public boolean isExternalCommand() {
+        return false;
+    }
+
+    @Override
+    public PsiElement commandElement() {
+        return this;
     }
 }

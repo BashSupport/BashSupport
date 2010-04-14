@@ -24,9 +24,9 @@ for f in $FILES; do
     cp "$SRC/$f" $TEMP
 done
 
-for pattern in $REMOVE_PATTERNS; do
-    echo "Removing $TEMP/$pattern"
-    rm -rf "$TEMP/$pattern"
+for oldPattern in $REMOVE_PATTERNS; do
+    echo "Removing $TEMP/$oldPattern"
+    rm -rf "$TEMP/$oldPattern"
 done
 
 find $TEMP -iname .svn | xargs rm -rf
@@ -35,5 +35,3 @@ echo "Creating source code archive ..."
 #tar --create -z --file=$SRC/BashSupport-src.tar.gz .
 rm -f $SRC/BashSupport-src.zip
 zip -r $SRC/BashSupport-src.zip .
-
-
