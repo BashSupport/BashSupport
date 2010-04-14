@@ -10,17 +10,9 @@
     <bookmark url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="693" mnemonic="1" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="option to turn the formatter off, icon fixed, 0.9.9-maia">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/icons/bash.svg" afterPath="$PROJECT_DIR$/resources/icons/bash.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+    <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashGenericCommandImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashGenericCommandImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashInternalCommandImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashInternalCommandImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pack-sourcecode.sh" afterPath="$PROJECT_DIR$/pack-sourcecode.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParserDefinition.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParserDefinition.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path=".idea/workspace.xml" />
@@ -108,10 +100,10 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TODO.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TODO.txt">
+      <file leaf-file-name="plugin.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="137" column="4" selection-start="6441" selection-end="6441" vertical-scroll-proportion="0.87661576">
+            <state line="20" column="19" selection-start="880" selection-end="880" vertical-scroll-proportion="0.35252643">
               <folding />
             </state>
           </provider>
@@ -137,7 +129,6 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsPane.form" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsPane.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/formatting/BashFormattingModelBuilder.java" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/test/Test.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParserDefinition.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashGenericCommandImpl.java" />
@@ -146,6 +137,7 @@
         <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/pack-sourcecode.sh" />
         <option value="$PROJECT_DIR$/TODO.txt" />
+        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
       </list>
     </option>
   </component>
@@ -1991,7 +1983,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="option to turn the formatter off, icon fixed, 0.9.9-maia" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugfixes for show documentation and for variable renaming" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -2004,7 +1996,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="more work on the facet configuration" />
     <MESSAGE value="facet settings to configure files without extension, moved global settings to project settings" />
     <MESSAGE value="preparing 0.9.7-maia" />
     <MESSAGE value="0.9.7-maia" />
@@ -2029,6 +2020,7 @@
     <MESSAGE value="removed jdk files" />
     <MESSAGE value="preparing 0.9.8, replaced icon with own version" />
     <MESSAGE value="option to turn the formatter off, icon fixed, 0.9.9-maia" />
+    <MESSAGE value="bugfixes for show documentation and for variable renaming" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2062,13 +2054,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="30" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.3321492">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/extapi/psi/ASTDelegatePsiElement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="145" column="23" selection-start="4278" selection-end="4278" vertical-scroll-proportion="0.33333334">
@@ -2169,7 +2154,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TODO.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="4" selection-start="6441" selection-end="6441" vertical-scroll-proportion="0.87661576">
+        <state line="136" column="53" selection-start="6436" selection-end="6436" vertical-scroll-proportion="0.8589894">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="19" selection-start="880" selection-end="880" vertical-scroll-proportion="0.35252643">
           <folding />
         </state>
       </provider>
