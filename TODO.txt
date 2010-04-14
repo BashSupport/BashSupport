@@ -57,7 +57,7 @@ Possible features:
 
 Planned for 1.0:
 ----------------
-  - More advanced, context-sensitive code completion for keywords
+- More advanced, context-sensitive code completion for keywords
 
 User comments:
 --------------
@@ -134,3 +134,6 @@ Bugs:
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
     - Add Bash facet with tree based configuration for include / exclude for files without extensions
+- Quotation marks in heredocs mix up the parser
+    - ctrl+q does not work in subshell commands
+- ctrl+q does not work for functions any more

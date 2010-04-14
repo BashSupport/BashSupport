@@ -53,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -62,7 +62,10 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g2835">
+       id="g2835"
+       inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+       inkscape:export-xdpi="3.27"
+       inkscape:export-ydpi="3.27">
       <rect
          inkscape:export-ydpi="3.27"
          inkscape:export-xdpi="3.27"

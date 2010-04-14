@@ -1,3 +1,7 @@
+2010-04-14:
+  - Fixed incorrectly inserted whitespace after renaming a variable
+  - Show documentation fixed for internal commands in a subshell element
+
 2010-03-30:
   - Version 0.9.9-maia
   - Fixed icon size

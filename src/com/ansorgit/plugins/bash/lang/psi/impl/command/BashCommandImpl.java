@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-02-17
+ * Last modified: 2010-04-14
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,7 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     public boolean isVarDefCommand() {
-        return isInternal && (LanguageBuiltins.varDefCommands.contains(getReferencedName())
+        return isInternalCommand() && (LanguageBuiltins.varDefCommands.contains(getReferencedName())
                 || LanguageBuiltins.localVarDefCommands.contains(getReferencedName()));
     }
 
@@ -98,7 +98,9 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
 
     public PsiElement commandElement() {
         PsiElement element = findChildByType(BashElementTypes.INTERNAL_COMMAND_ELEMENT);
-        if (element != null) return element;
+        if (element != null) {
+            return element;
+        }
 
         return findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
     }
@@ -134,7 +136,9 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
 
     public String getReferencedName() {
         final PsiElement element = commandElement();
-        if (element != null) return element.getText();
+        if (element != null) {
+            return element.getText();
+        }
 
         return null;
     }
@@ -147,7 +151,9 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     public TextRange getRangeInElement() {
         final PsiElement element = commandElement();
         //if (element == null) log.warn("commandElement ist null!");
-        if (element == null) return TextRange.from(0, getTextLength());
+        if (element == null) {
+            return TextRange.from(0, getTextLength());
+        }
 
         //log.info("getRangeInElement: " + element.getTextRange());
         final TextRange textRange = TextRange.from(element.getStartOffsetInParent(), element.getTextLength());
@@ -157,14 +163,16 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
 
     private PsiElement internalResolve() {
         final String referencedName = getReferencedName();
-        if (referencedName == null) return null;
+        if (referencedName == null) {
+            return null;
+        }
 
         final BashFunctionProcessor processor = new BashFunctionProcessor(referencedName);
         return BashResolveUtil.treeWalkUp(processor, this, null, this, true, false);
     }
 
     public PsiElement resolve() {
-        return isInternal || isExternalCommand() ? this : internalResolve();
+        return isInternalCommand() || isExternalCommand() ? this : internalResolve();
         //fixme for doc provider we should return null for internal commands
         //fixme or better: add own implemenation for internal commands
     }
@@ -174,7 +182,9 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(newName)) return null;
+        if (StringUtil.isEmpty(newName)) {
+            return null;
+        }
 
         final PsiElement original = commandElement();
         final PsiElement replacement = BashChangeUtil.createWord(getProject(), newName);
@@ -192,8 +202,9 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
         //log.info("isReferenceTo " + element);
 
         if (element instanceof PsiNamedElement) {
-            if (Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName()))
+            if (Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName())) {
                 return resolve() == element;
+            }
         }
 
         return false;
@@ -255,7 +266,7 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
             BashVisitor v = (BashVisitor) visitor;
-            if (isInternal) {
+            if (isInternalCommand()) {
                 v.visitInternalCommand(this);
             } else {
                 v.visitGenericCommand(this);

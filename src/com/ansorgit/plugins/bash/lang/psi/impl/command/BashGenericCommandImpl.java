@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashGenericCommandImpl.java, Class: BashGenericCommandImpl
- * Last modified: 2010-01-25
+ * Last modified: 2010-04-14
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,5 +29,10 @@ import com.intellij.lang.ASTNode;
 public class BashGenericCommandImpl extends BashCommandImpl implements BashGenericCommand {
     public BashGenericCommandImpl(ASTNode astNode) {
         super(astNode, "BashGenericCommand");
+    }
+
+    @Override
+    public boolean isInternalCommand() {
+        return false;
     }
 }
