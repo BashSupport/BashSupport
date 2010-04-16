@@ -2,6 +2,7 @@
   - Fixed exception at startup ("Directory index is not initialized yet for Project") 
   - Fixed keywords as unquored paramters to commands 
   - Fixed some unit tests 
+  - Fixed errorneous whitespace inserted before a renamed variable 
 
 2010-04-14:
   - Fixed incorrectly inserted whitespace after renaming a variable
