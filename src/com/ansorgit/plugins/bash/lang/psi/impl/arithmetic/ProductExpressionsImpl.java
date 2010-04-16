@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ProductExpressionsImpl.java, Class: ProductExpressionsImpl
- * Last modified: 2010-02-07
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,12 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ProductExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -42,5 +45,18 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
         }
 
         return null;
+    }
+
+    public boolean hasRemainder() {
+        List<ArithmeticExpression> subs = subexpressions();
+
+        if (subs.size() == 2 && findOperator() == BashTokenTypes.ARITH_DIV) {
+            long leftValue = subs.get(0).computeNumericValue();
+            long rightValue = subs.get(1).computeNumericValue();
+
+            return leftValue != ((leftValue / rightValue) * rightValue);
+        }
+
+        return false;
     }
 }
