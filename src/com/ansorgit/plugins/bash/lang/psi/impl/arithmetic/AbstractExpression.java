@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractExpression.java, Class: AbstractExpression
- * Last modified: 2010-02-07
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,17 +42,13 @@ import java.util.List;
 public abstract class AbstractExpression extends BashPsiElementImpl implements ArithmeticExpression {
     private final Type type;
 
-    public enum Type {
-        NoOperands,
-        TwoOperands,
-        PrefixOperand,
-        PostfixOperand,
-        Unsupported
-    }
-
     public AbstractExpression(final ASTNode astNode, final String name, Type type) {
         super(astNode, name);
         this.type = type;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     @Override
@@ -92,12 +88,8 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         ArithmeticExpression firstChild = childs.get(0);
         long result = firstChild.computeNumericValue();
 
-        if (type == Type.PostfixOperand) {
-            PsiElement operator = BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE);
-            return compute(result, BashPsiUtils.nodeType(operator), null);
-        } else if (type == Type.PrefixOperand) {
-            PsiElement operator = BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE);
-            return compute(result, BashPsiUtils.nodeType(operator), null);
+        if (type == Type.PostfixOperand || type == Type.PrefixOperand) {
+            return compute(result, findOperator(), null);
         } else if (type == Type.TwoOperands) {
             int i = 1;
             while (i < childSize) {
@@ -106,9 +98,9 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
 
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(c, BashTokenTypes.WHITESPACE);
                 if (opElement != null) {
-                    IElementType op = BashPsiUtils.nodeType(opElement);
+                    IElementType operator = BashPsiUtils.nodeType(opElement);
 
-                    result = compute(result, op, nextValue);
+                    result = compute(result, operator, nextValue);
                 }
 
                 i++;
@@ -124,6 +116,35 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         PsiElement context = getParent();
         if (context instanceof AbstractExpression) {
             return (AbstractExpression) context;
+        }
+
+        return null;
+    }
+
+    public IElementType findOperator() {
+        List<ArithmeticExpression> childs = subexpressions();
+        int childSize = childs.size();
+        if (childSize == 0) {
+            return null;
+        }
+
+        ArithmeticExpression firstChild = childs.get(0);
+
+        if (type == Type.PostfixOperand) {
+            return BashPsiUtils.nodeType(BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE));
+        } else if (type == Type.PrefixOperand) {
+            return BashPsiUtils.nodeType(BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE));
+        } else if (type == Type.TwoOperands) {
+            int i = 1;
+            while (i < childSize) {
+                PsiElement opElement = BashPsiUtils.findPreviousSibling(childs.get(i), BashTokenTypes.WHITESPACE);
+                if (opElement != null) {
+                    //found
+                    return BashPsiUtils.nodeType(opElement);
+                }
+
+                i++;
+            }
         }
 
         return null;

@@ -3,6 +3,7 @@
   - Fixed keywords as unquored paramters to commands 
   - Fixed some unit tests 
   - Fixed errorneous whitespace inserted before a renamed variable 
+  - New inspection which detects integer division with a remainder 
 
 2010-04-14:
   - Fixed incorrectly inserted whitespace after renaming a variable
