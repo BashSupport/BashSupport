@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParenExpr.java, Class: ParenExpr
- * Last modified: 2010-02-09
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses an optional parantheses expression. If not found it delegates to another function.
@@ -40,10 +39,6 @@ class ParenExpr implements ParsingFunction {
 
     public ParenExpr(ParsingFunction delegate) {
         this.delegate = delegate;
-    }
-
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("unsupported");
     }
 
     public boolean isValid(BashPsiBuilder builder) {

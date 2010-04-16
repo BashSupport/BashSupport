@@ -114,9 +114,9 @@ Bugs:
     - "declare a b" doesn't resolve a b, but "declare a=1 b" does
     - Die Variable a von "export a" erscheint nicht in den Completions
 - support getopts variable parameter
-- Icon for global variables
+    - Icon for global variables
 - Icon for script variables
-- Icon for bash global variables
+    - Icon for bash global variables
     - Declare help page is missing
     - local help page is missing
     - code completion für ${<here>} geht nicht

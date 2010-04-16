@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticExpression.java, Class: ArithmeticExpression
- * Last modified: 2010-02-07
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,6 +30,16 @@ import java.util.List;
  * Time: 10:56:51 AM
  */
 public interface ArithmeticExpression extends BashPsiElement {
+    public enum Type {
+        NoOperands,
+        TwoOperands,
+        PrefixOperand,
+        PostfixOperand,
+        Unsupported
+    }
+
+    public Type getType();
+
     public boolean isStatic();
 
     /**
@@ -52,4 +63,7 @@ public interface ArithmeticExpression extends BashPsiElement {
      */
     @Nullable
     public ArithmeticExpression findParentExpression();
+
+    @Nullable
+    public IElementType findOperator();
 }
