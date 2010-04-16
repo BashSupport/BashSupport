@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractRepeatedExpr.java, Class: AbstractRepeatedExpr
- * Last modified: 2010-03-25
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,6 @@ abstract class AbstractRepeatedExpr implements ParsingFunction {
 
     protected AbstractRepeatedExpr(ParsingFunction next, IElementType operator, IElementType marker) {
         this(next, TokenSet.create(operator), marker);
-    }
-
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("unsupported");
     }
 
     public boolean isValid(BashPsiBuilder builder) {

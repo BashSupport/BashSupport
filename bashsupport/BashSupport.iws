@@ -11,15 +11,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ShiftExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ShiftExpressionsImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImplTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AbstractExpression.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AbstractExpression.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/impl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PreIncrementExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PreIncrementExpressionsImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PostIncrementExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PostIncrementExpressionsImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ArithmeticExpression.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ArithmeticExpression.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
-    <ignored path="BashSupport-src.zip" />
-    <ignored path="BashPlugin.iws" />
     <ignored path="BashSupport-src.tar.gz" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
+    <ignored path="BashSupport-src.zip" />
+    <ignored path="BashPlugin.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,8 +103,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -100,11 +114,51 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TODO.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TODO.txt">
+      <file leaf-file-name="FloatArithmeticInspection.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="136" column="4" selection-start="6393" selection-end="6393" vertical-scroll-proportion="0.80611044">
+            <state line="78" column="35" selection-start="2674" selection-end="2674" vertical-scroll-proportion="0.6543779">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProductExpression.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="19" selection-start="1163" selection-end="1163" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProductExpressionsImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="9" selection-start="2141" selection-end="2141" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Changelog.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Changelog.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="66" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ParenExpr.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="34" selection-start="1524" selection-end="1524" vertical-scroll-proportion="0.0">
+              <folding>
+                <marker date="1271460599000" expanded="false" signature="755:969" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,22 +176,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsPane.form" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/BashProjectSettingsPane.java" />
-        <option value="$PROJECT_DIR$/test/Test.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashGenericCommandImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashInternalCommandImpl.java" />
-        <option value="$PROJECT_DIR$/pack-sourcecode.sh" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/IntegrationTest.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/formatting/BashFormattingModelBuilder.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ConditionalParsingTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParserDefinition.java" />
-        <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/TODO.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PostIncrementExpressionsImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PreIncrementExpressionsImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ShiftExpressionsImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImplTest.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ArithmeticExpression.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AbstractExpression.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/quickfix/FloatArithmeticQuickfix.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" />
+        <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java" />
       </list>
     </option>
   </component>
@@ -623,6 +677,100 @@
       <sortByType ProjectPane="false" />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Tests">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="test">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashPlugin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="testdata">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="BashSupport">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="test">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -652,6 +800,102 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -837,7 +1081,101 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arithmetic" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arithmetic" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -910,30 +1248,8 @@
               <option name="myItemId" value="editor" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="formatting" />
+              <option name="myItemId" value="inspections" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -959,11 +1275,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="formatting" />
+              <option name="myItemId" value="inspections" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="processor" />
+              <option name="myItemId" value="quickfix" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -985,7 +1301,63 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="documentation" />
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inspections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inspections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1033,117 +1405,23 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Problems" />
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Tests">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashPlugin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="test">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="testdata">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="BashSupport">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="test">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="113" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="77" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="77" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="97" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
     <property name="OverrideImplement.combined" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="97" />
     <property name="options.splitter.main.proportions" value="0.18874459" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
-    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
     <property name="recentsLimit" value="5" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="85" />
@@ -1155,28 +1433,28 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="80" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="874" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="80" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="80" />
     <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="80" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="93" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="886" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2944849" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="options.lastSelected" value="editor.preferences.completion" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+    <property name="options.lastSelected" value="reference.projectsettings.compiler.javacompiler" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
-    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="Publish">
     <option name="myPathMappings">
@@ -1186,17 +1464,17 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
       <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.shellCommand" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.builtin" />
       <recent name="com.ansorgit.plugins.bash.lang.parser" />
-      <recent name="com.ansorgit.plugins.bash.lang.psi.util" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
-      <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.editor.inspections.quickfix" />
       <recent name="com.ansorgit.plugins.bash.editor.inspections.inspections" />
+      <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
+      <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -1207,19 +1485,19 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
     </key>
-    <key name="IntroduceConstantDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
-      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
-    </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.BashComponents" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashElementTypes" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder" />
+    </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
+      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
+      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
@@ -1228,6 +1506,10 @@
       <recent name="com.ansorgit.plugins.bash.settings.facet.ui" />
       <recent name="com.ansorgit.plugins.bash.settings.facet" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
+      <recent name="$PROJECT_DIR$/test" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.lexer" />
       <recent name="com.ansorgit.plugins.bash.lang.parser" />
@@ -1235,46 +1517,8 @@
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
-      <recent name="$PROJECT_DIR$/test" />
-    </key>
   </component>
-  <component name="RunManager" selected="JUnit.ConditionalParsingTest.testConditional1">
-    <configuration default="false" name="IntegrationTest.testShebang" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <option name="METHOD_NAME" value="testShebang" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="55066" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Plugin.Intellij IDEA">
     <configuration default="false" name="BashLexerTest.testSimpleDefTokenization" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
@@ -1384,6 +1628,41 @@
       </option>
       <envs />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ProductExpressionsImplTest.testCompute" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="BashSupport" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.ProductExpressionsImplTest" />
+      <option name="METHOD_NAME" value="testCompute" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="JavaRebel" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1761,11 +2040,6 @@
       <option name="PROGRAM_PARAMETERS" value="nosplash" />
       <log_file path="$PROJECT_DIR$/../../../.IntelliJIdea90/system/plugins-sandbox/system/log/idea.log" checked="true" skipped="true" show_all="false" alias="IDEA LOG" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="44349" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="34380" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
@@ -1792,7 +2066,6 @@
       </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="JavaRebel" />
       <ConfigurationWrapper RunnerId="JavaRebel Debug" />
       <ConfigurationWrapper RunnerId="Profile " />
@@ -1800,17 +2073,17 @@
       <method />
     </configuration>
     <list size="11">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testShebang" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testSimpleDefTokenization" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testShebang" />
-      <item index="3" class="java.lang.String" itemvalue="Bash.create-html.sh" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.All tests" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.HereDocParsingTest.testSimpleHereDocs" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.PsiTests" />
-      <item index="8" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
-      <item index="9" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testFunction2" />
-      <item index="10" class="java.lang.String" itemvalue="JUnit.ConditionalParsingTest.testConditional1" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testSimpleDefTokenization" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testShebang" />
+      <item index="2" class="java.lang.String" itemvalue="Bash.create-html.sh" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.All tests" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.HereDocParsingTest.testSimpleHereDocs" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.PsiTests" />
+      <item index="7" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
+      <item index="8" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testFunction2" />
+      <item index="9" class="java.lang.String" itemvalue="JUnit.ConditionalParsingTest.testConditional1" />
+      <item index="10" class="java.lang.String" itemvalue="JUnit.ProductExpressionsImplTest.testCompute" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1910,29 +2183,29 @@
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36536312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22988506" sideWeight="0.59323883" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40111732" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10037175" sideWeight="0.750838" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29273742" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24022347" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28376436" sideWeight="0.28026173" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.333829" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32936803" sideWeight="0.6994413" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24312268" sideWeight="0.6994413" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1732342" sideWeight="0.6994413" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33184358" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283046" sideWeight="0.59323883" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31152415" sideWeight="0.6625698" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Cycles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40130863" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295838" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1957,7 +2230,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed incorrectly inserted whitespace" />
+    <option name="LAST_COMMIT_MESSAGE" value="new inspection to detect integer division with remainder" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1970,8 +2243,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="fixes, all expanded in facet configuration ui, enabled multi selection" />
-    <MESSAGE value="bash console runner fixes" />
     <MESSAGE value="beginning repl console, based on clojure plugin code" />
     <MESSAGE value="work on console" />
     <MESSAGE value="heredoc fixes: proper highlighting, proper token remapping" />
@@ -1995,6 +2266,8 @@
     <MESSAGE value="preparing 0.9.10-maia" />
     <MESSAGE value="fixed exception at startup, fixed invalid parsing of keywords as parameters to commands, fixed unit tests" />
     <MESSAGE value="fixed incorrectly inserted whitespace" />
+    <MESSAGE value="todo entries" />
+    <MESSAGE value="new inspection to detect integer division with remainder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2028,115 +2301,121 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/PreIncrementExpressionsImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="13" selection-start="1457" selection-end="1457" vertical-scroll-proportion="0.0">
+        <state line="30" column="68" selection-start="1135" selection-end="1135" vertical-scroll-proportion="0.19411765">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FunctionDefInspection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="17" selection-start="3031" selection-end="3031" vertical-scroll-proportion="0.0">
+        <state line="70" column="0" selection-start="2421" selection-end="2421" vertical-scroll-proportion="0.8463385">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/xml/impl/src/com/intellij/lang/html/HtmlFormattingModelBuilder.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImplTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="19" selection-start="2013" selection-end="2013" vertical-scroll-proportion="0.43956044">
+        <state line="53" column="0" selection-start="2187" selection-end="2187" vertical-scroll-proportion="0.6394009">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="28" selection-start="1970" selection-end="1970" vertical-scroll-proportion="0.8261618">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/formatting/FormattingModelBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ArithmeticExpression.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="12" selection-start="2550" selection-end="2550" vertical-scroll-proportion="0.78723407">
+        <state line="40" column="16" selection-start="1228" selection-end="1228" vertical-scroll-proportion="0.34562212">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/formatting/BashFormattingModelBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="26" selection-start="2618" selection-end="2618" vertical-scroll-proportion="0.8138298">
+        <state line="58" column="4" selection-start="2107" selection-end="2107" vertical-scroll-proportion="0.5952941">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/formatting/FormatterImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ShiftExpr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="341" column="0" selection-start="14546" selection-end="14546" vertical-scroll-proportion="0.32269505">
+        <state line="27" column="33" selection-start="888" selection-end="888" vertical-scroll-proportion="0.19411765">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/psi/impl/source/codeStyle/CodeStyleManagerImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AdditionExpr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="265" column="0" selection-start="11604" selection-end="11604" vertical-scroll-proportion="0.32269505">
+        <state line="27" column="6" selection-start="859" selection-end="859" vertical-scroll-proportion="0.19411765">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/formatting/FormatProcessor.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticExprParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="724" column="0" selection-start="25955" selection-end="25955" vertical-scroll-proportion="0.32302406">
+        <state line="29" column="13" selection-start="968" selection-end="968" vertical-scroll-proportion="0.22941177">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/util/Collections.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/SumExpressionsImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2969" column="0" selection-start="115193" selection-end="115193" vertical-scroll-proportion="0.32220367">
+        <state line="30" column="19" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.19009216">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AbstractExpression.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="75" selection-start="1853" selection-end="1853" vertical-scroll-proportion="0.54467356">
+        <state line="94" column="41" selection-start="3276" selection-end="3276" vertical-scroll-proportion="1.110599">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/psi/impl/source/PostprocessReformattingAspect.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="0" selection-start="4791" selection-end="4791" vertical-scroll-proportion="0.3127148">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/editorActions/EnterHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="323" column="0" selection-start="14183" selection-end="14183" vertical-scroll-proportion="0.32302406">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ConditionalParsingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="44" column="34" selection-start="1524" selection-end="1524" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1271460599000" expanded="false" signature="755:969" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="66" selection-start="246" selection-end="246" vertical-scroll-proportion="0.10309278">
+        <state line="5" column="66" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashParserDefinition.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="16" selection-start="2959" selection-end="2959" vertical-scroll-proportion="0.33222038">
+        <state line="57" column="9" selection-start="2141" selection-end="2141" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.txt">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="136" column="4" selection-start="6393" selection-end="6393" vertical-scroll-proportion="0.80611044">
+        <state line="34" column="19" selection-start="1163" selection-end="1163" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="35" selection-start="2674" selection-end="2674" vertical-scroll-proportion="0.6543779">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
