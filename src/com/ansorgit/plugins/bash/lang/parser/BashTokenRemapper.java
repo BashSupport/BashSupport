@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenRemapper.java, Class: BashTokenRemapper
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,8 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
             LEFT_SQUARE, BANG_TOKEN,
             IF_KEYWORD, THEN_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD,
             WHILE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
+            IN_KEYWORD, FUNCTION_KEYWORD, CASE_KEYWORD, ESAC_KEYWORD, SELECT_KEYWORD,
+            UNTIL_KEYWORD, TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
             EQ, AT);
 
     private boolean remapShebangToComment = false;

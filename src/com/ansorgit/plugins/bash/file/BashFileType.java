@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ import com.ansorgit.plugins.bash.settings.facet.ui.FileMode;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.content.BashContentUtil;
 import com.intellij.lang.Language;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.ex.FileTypeIdentifiableByVirtualFile;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -50,7 +52,7 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public class BashFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile {
-    // private static final Logger LOG = Logger.getInstance("#BashFileType");
+    private static final Logger LOG = Logger.getInstance("#BashFileType");
     public static final BashFileType BASH_FILE_TYPE = new BashFileType();
     public static final Language BASH_LANGUAGE = BASH_FILE_TYPE.getLanguage();
 
@@ -121,33 +123,45 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
         } else if (!file.isInLocalFileSystem()) {
             return false;
         } else if (StringUtils.isEmpty(file.getExtension())) {
-            //no extensions, special checks (looking at the content, etc)
+            BashFacet facet = null;
+            try {
+                //no extensions, special checks (looking at the content, etc)
 
-            //guess project
-            Project project = ProjectUtil.guessProjectForFile(file);
-            if (project == null) {
-                return false;
-            }
+                //guess project
+                Project project = ProjectUtil.guessProjectForFile(file);
+                if (project == null) {
+                    return false;
+                }
 
-            Module module = ModuleUtil.findModuleForFile(file, project);
-            if (module == null) {
-                return false;
-            }
+                DumbServiceImpl dumbService = DumbServiceImpl.getInstance(project);
+                if (dumbService == null || dumbService.isDumb()) {
+                    return false;
+                }
 
-            BashFacet facet = BashFacet.getInstance(module);
-            if (facet == null) {
-                return false;
-            }
+                Module module = ModuleUtil.findModuleForFile(file, project);
+                if (module == null) {
+                    return false;
+                }
 
-            BashFacetConfiguration config = facet.getConfiguration();
-            FileMode mode = config.findMode(file);
+                facet = BashFacet.getInstance(module);
+                if (facet == null) {
+                    return false;
+                }
 
-            if (mode == FileMode.accept()) {
-                return true;
-            } else if (mode == FileMode.ignore()) {
-                return false;
-            } else if (mode == FileMode.auto()) {
-                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
+
+                BashFacetConfiguration config = facet.getConfiguration();
+                FileMode mode = config.findMode(file);
+
+                if (mode == FileMode.accept()) {
+                    return true;
+                } else if (mode == FileMode.ignore()) {
+                    return false;
+                } else if (mode == FileMode.auto()) {
+                    return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
+                }
+            } catch (Exception e) {
+                //ignore this
+                LOG.warn("Could not check the file type due to exception", e);
             }
         }
 

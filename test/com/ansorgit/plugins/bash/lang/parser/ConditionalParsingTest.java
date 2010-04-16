@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ConditionalParsingTest.java, Class: ConditionalParsingTest
- * Last modified: 2010-01-19
+ * Last modified: 2010-04-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,11 @@ public class ConditionalParsingTest extends MockPsiTest {
         //[[ a ]]
         mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, WORD, _BRACKET_KEYWORD);
         //[[ $(echo a) ]]
-        mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
+        mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, WHITESPACE, _BRACKET_KEYWORD);
         //[[ `echo a` ]]
         mockTest(conditionalCommandParserTest, EXPR_CONDITIONAL, BACKQUOTE, WORD, WORD, BACKQUOTE, _EXPR_CONDITIONAL);
         //[ \${a} ]
-        mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, WORD, LEFT_CURLY, WORD, RIGHT_CURLY, _BRACKET_KEYWORD);
+        mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, WHITESPACE, WORD, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, _BRACKET_KEYWORD);
         //[ a  ] 
         mockTest(conditionalCommandParserTest, BRACKET_KEYWORD, WORD, WHITESPACE, _BRACKET_KEYWORD);
         //[[ a  ]]
