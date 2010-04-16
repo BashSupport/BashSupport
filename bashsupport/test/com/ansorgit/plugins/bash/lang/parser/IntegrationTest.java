@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-03-18
+ * Last modified: 2010-04-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -545,6 +545,16 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, Lists.newArrayList("doIt", "(", ")", "{", "\n", "export"),
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
                 INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WHITESPACE, STRING_BEGIN, WORD, STRING_END, LINE_FEED,
+                RIGHT_CURLY);
+    }
+
+    @Test
+    public void testFunction2() {
+        //a() {
+        //    echo in
+        //}
+        mockTest(fileParsingTest, Lists.newArrayList("a", "(", ")", "{", "\n", "echo", "in"),
+                WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED, INTERNAL_COMMAND, IN_KEYWORD, LINE_FEED,
                 RIGHT_CURLY);
     }
 }
