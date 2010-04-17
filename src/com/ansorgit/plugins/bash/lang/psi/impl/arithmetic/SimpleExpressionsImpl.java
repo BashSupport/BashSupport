@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleExpressionsImpl.java, Class: SimpleExpressionsImpl
- * Last modified: 2010-02-07
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,23 +33,31 @@ import java.util.List;
  * Time: 12:13:49 PM
  */
 public class SimpleExpressionsImpl extends AbstractExpression implements SimpleExpression {
+    private Boolean isStatic = null;
+
     public SimpleExpressionsImpl(final ASTNode astNode) {
         super(astNode, "ArithSimpleExpr", Type.NoOperands);
     }
 
     @Override
     public boolean isStatic() {
-        //it can have one operator in front followed by a simple expression
-        //or just contain a number
+        //fixme check if we need thread-safeness
 
-        IElementType first = BashPsiUtils.nodeType(getFirstChild());
+        if (isStatic == null) {
+            //it can have one operator in front followed by a simple expression
+            //or just contain a number
 
-        if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
-            List<ArithmeticExpression> subexpressions = subexpressions();
-            return subexpressions.size() == 1 && subexpressions.get(0).isStatic();
+            IElementType first = BashPsiUtils.nodeType(getFirstChild());
+
+            if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
+                List<ArithmeticExpression> subexpressions = subexpressions();
+                isStatic = subexpressions.size() == 1 && subexpressions.get(0).isStatic();
+            } else {
+                isStatic = (first == BashTokenTypes.NUMBER);
+            }
         }
 
-        return first == BashTokenTypes.NUMBER;
+        return isStatic;
     }
 
     @Override
@@ -65,7 +73,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                 return Long.valueOf(asString);
             } catch (NumberFormatException e) {
                 //fixme
-                return -1000;
+                return 0;
             }
         } else {
             throw new UnsupportedOperationException("unsupported");

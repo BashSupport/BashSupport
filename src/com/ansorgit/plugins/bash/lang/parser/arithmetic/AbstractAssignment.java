@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractAssignment.java, Class: AbstractAssignment
- * Last modified: 2010-02-09
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -30,18 +28,14 @@ import com.intellij.psi.tree.TokenSet;
  * Date: Feb 6, 2010
  * Time: 6:31:03 PM
  */
-public class AbstractAssignment implements ParsingFunction {
-    private final ParsingFunction next;
+class AbstractAssignment implements ArithmeticParsingFunction {
+    private final ArithmeticParsingFunction next;
     private final TokenSet acceptedEqualTokens;
     private TokenSet acceptedWords = TokenSet.create(WORD, ASSIGNMENT_WORD);
 
-    public AbstractAssignment(ParsingFunction next, TokenSet acceptedEqualTokens) {
+    public AbstractAssignment(ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
         this.next = next;
         this.acceptedEqualTokens = acceptedEqualTokens;
-    }
-
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("unsupported");
     }
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -50,7 +44,10 @@ public class AbstractAssignment implements ParsingFunction {
 
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        boolean ok = ParserUtil.conditionalRead(builder, acceptedWords) && acceptedEqualTokens.contains(builder.getTokenType());
+
+        boolean ok = ParserUtil.conditionalRead(builder, acceptedWords)
+                && acceptedEqualTokens.contains(builder.getTokenType());
+
         if (ok) {
             marker.done(VAR_DEF_ELEMENT);
             builder.advanceLexer();    //eat the assignment operator
@@ -59,5 +56,13 @@ public class AbstractAssignment implements ParsingFunction {
         }
 
         return next.parse(builder);
+    }
+
+    public boolean partialParsing(BashPsiBuilder builder) {
+        return next.partialParsing(builder);
+    }
+
+    public boolean isValidPartial(BashPsiBuilder builder) {
+        return next.isValidPartial(builder);
     }
 }

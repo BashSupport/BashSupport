@@ -76,7 +76,7 @@ public class FloatArithmeticInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitArithmeticExpression(ArithmeticExpression expression) {
-                if (!isOnTheFly || !expression.isStatic()) {
+                if (!expression.isStatic()) {
                     return;
                 }
 
