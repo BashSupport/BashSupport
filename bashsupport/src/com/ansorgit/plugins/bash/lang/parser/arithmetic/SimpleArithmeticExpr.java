@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -32,7 +31,7 @@ import com.intellij.psi.tree.IElementType;
  * Date: Feb 6, 2010
  * Time: 5:52:20 PM
  */
-class SimpleArithmeticExpr implements ParsingFunction {
+class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
         return tokenType == WORD || tokenType == NUMBER || Parsing.var.isValid(builder);
@@ -65,5 +64,13 @@ class SimpleArithmeticExpr implements ParsingFunction {
         }
 
         return ok;
+    }
+
+    public boolean partialParsing(BashPsiBuilder builder) {
+        return false;
+    }
+
+    public boolean isValidPartial(BashPsiBuilder builder) {
+        return false;
     }
 }

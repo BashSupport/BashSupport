@@ -41,6 +41,7 @@ import java.util.List;
  */
 public abstract class AbstractExpression extends BashPsiElementImpl implements ArithmeticExpression {
     private final Type type;
+    private Boolean isStatic = null;
 
     public AbstractExpression(final ASTNode astNode, final String name, Type type) {
         super(astNode, name);
@@ -61,15 +62,23 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
     }
 
     public boolean isStatic() {
-        //fixme smaren up this implementation
-        List<ArithmeticExpression> arithmeticExpressionList = subexpressions();
-        for (ArithmeticExpression e : arithmeticExpressionList) {
-            if (!e.isStatic()) {
-                return false;
+        if (isStatic == null) {
+            //fixme smarten up this implementation
+            List<ArithmeticExpression> arithmeticExpressionList = subexpressions();
+
+            for (ArithmeticExpression e : arithmeticExpressionList) {
+                if (!e.isStatic()) {
+                    isStatic = false;
+                    break;
+                }
+            }
+
+            if (isStatic == null) {
+                isStatic = arithmeticExpressionList.size() >= 1;
             }
         }
 
-        return arithmeticExpressionList.size() >= 1;
+        return isStatic;
     }
 
     public List<ArithmeticExpression> subexpressions() {
@@ -82,7 +91,7 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         List<ArithmeticExpression> childs = subexpressions();
         int childSize = childs.size();
         if (childSize == 0) {
-            throw new UnsupportedOperationException("unsupported");
+            throw new UnsupportedOperationException("unsupported, zero children are not supported");
         }
 
         ArithmeticExpression firstChild = childs.get(0);
@@ -121,6 +130,11 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         return null;
     }
 
+    /**
+     * Find the first operator which belongs to this expression.
+     *
+     * @return The operator, if available. Null otherwise.
+     */
     public IElementType findOperator() {
         List<ArithmeticExpression> childs = subexpressions();
         int childSize = childs.size();
