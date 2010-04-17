@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PostIncrementExpr.java, Class: PostIncrementExpr
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing of post increments expressions.
@@ -31,15 +29,19 @@ import com.intellij.psi.tree.IElementType;
  * Date: Feb 6, 2010
  * Time: 4:29:05 PM
  */
-class PostIncrementExpr implements ParsingFunction {
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("unsupported");
-    }
-
-    private ParsingFunction next = ParenExpr.delegate(new SimpleArithmeticExpr());
+class PostIncrementExpr implements ArithmeticParsingFunction {
+    private ArithmeticParsingFunction next = ParenExpr.delegate(new SimpleArithmeticExpr());
 
     public boolean isValid(BashPsiBuilder builder) {
         return next.isValid(builder);
+    }
+
+    public boolean partialParsing(BashPsiBuilder builder) {
+        return next.partialParsing(builder);
+    }
+
+    public boolean isValidPartial(BashPsiBuilder builder) {
+        return next.isValidPartial(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {

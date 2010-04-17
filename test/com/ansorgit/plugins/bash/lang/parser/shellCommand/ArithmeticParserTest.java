@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParserTest.java, Class: ArithmeticParserTest
- * Last modified: 2010-02-07
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,6 +107,21 @@ public class ArithmeticParserTest extends MockPsiTest {
 
         //((1 * (2 + 3)))
         mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_MULT, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+
+        //(( (2 + 3) / 2 ))
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, ARITH_DIV, NUMBER, _EXPR_ARITH);
+
+        //(( (2 + 3) / (1/2 + (3*4) / 5) ))
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, ARITH_DIV,
+                LEFT_PAREN,
+                NUMBER, ARITH_DIV, NUMBER, ARITH_PLUS,
+                LEFT_PAREN, NUMBER, ARITH_MULT, NUMBER, RIGHT_PAREN,
+                ARITH_DIV, NUMBER,
+                RIGHT_PAREN,
+                _EXPR_ARITH);
+
+        // Error: (( (3) * ))
+        mockTestError(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, RIGHT_PAREN, ARITH_MULT, _EXPR_ARITH);
     }
 
     @Test

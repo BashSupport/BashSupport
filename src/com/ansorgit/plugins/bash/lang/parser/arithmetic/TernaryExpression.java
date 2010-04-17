@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: TernaryExpression.java, Class: TernaryExpression
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 
@@ -30,8 +29,8 @@ import com.intellij.lang.PsiBuilder;
  * Date: Feb 6, 2010
  * Time: 4:29:05 PM
  */
-class TernaryExpression implements ParsingFunction {
-    private ParsingFunction logicalOr = ParenExpr.delegate(new LogicalOr());
+class TernaryExpression implements ArithmeticParsingFunction {
+    private ArithmeticParsingFunction logicalOr = ParenExpr.delegate(new LogicalOr());
 
     public boolean isValid(BashPsiBuilder builder) {
         return logicalOr.isValid(builder);
@@ -55,5 +54,13 @@ class TernaryExpression implements ParsingFunction {
         }
 
         return ok;
+    }
+
+    public boolean partialParsing(BashPsiBuilder builder) {
+        return logicalOr.partialParsing(builder);
+    }
+
+    public boolean isValidPartial(BashPsiBuilder builder) {
+        return logicalOr.isValidPartial(builder);
     }
 }
