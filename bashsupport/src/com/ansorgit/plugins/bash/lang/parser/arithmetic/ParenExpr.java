@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 
@@ -30,14 +29,14 @@ import com.intellij.lang.PsiBuilder;
  * Date: Feb 6, 2010
  * Time: 10:21:56 PM
  */
-class ParenExpr implements ParsingFunction {
-    private final ParsingFunction delegate;
+class ParenExpr implements ArithmeticParsingFunction {
+    private final ArithmeticParsingFunction delegate;
 
-    public static ParsingFunction delegate(ParsingFunction delegate) {
+    public static ArithmeticParsingFunction delegate(ArithmeticParsingFunction delegate) {
         return new ParenExpr(delegate);
     }
 
-    public ParenExpr(ParsingFunction delegate) {
+    public ParenExpr(ArithmeticParsingFunction delegate) {
         this.delegate = delegate;
     }
 
@@ -57,11 +56,20 @@ class ParenExpr implements ParsingFunction {
                 marker.drop();
             }
 
-            return ok;
+            //try partial parsing for the remaining tokens, we might have an operator as current token
+            return delegate.isValidPartial(builder) ? delegate.partialParsing(builder) : ok;
         } else {
             marker.drop();
         }
 
         return delegate.parse(builder);
+    }
+
+    public boolean partialParsing(BashPsiBuilder builder) {
+        return delegate.partialParsing(builder);
+    }
+
+    public boolean isValidPartial(BashPsiBuilder builder) {
+        return delegate.isValidPartial(builder);
     }
 }
