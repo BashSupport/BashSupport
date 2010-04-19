@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangInspection.java, Class: AddShebangInspection
- * Last modified: 2010-03-25
+ * Last modified: 2010-04-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class AddShebangInspection extends AbstractBashInspection {
 
     @Override
     public String getStaticDescription() {
-        return "If a file does not yet have a shebang line this inspection offers" +
+        return "If a file does not yet have a shebang line this inspection offers " +
                 "a file wide quickfix to add one.";
     }
 
