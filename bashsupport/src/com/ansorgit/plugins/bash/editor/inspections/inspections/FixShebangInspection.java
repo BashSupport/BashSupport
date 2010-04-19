@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FixShebangInspection.java, Class: FixShebangInspection
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ public class FixShebangInspection extends AbstractBashInspection {
     private String commands;
     private final FixShebangSettings settingsPanel = new FixShebangSettings();
 
+    //fixme fix this for windows cygwin environments
     private static final String defaultCommands = "/bin/sh\n/bin/bash";
 
     public FixShebangInspection() {
@@ -110,11 +111,12 @@ public class FixShebangInspection extends AbstractBashInspection {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
+        final Set<String> commands = Sets.newHashSet(configuredCommands().split("\\n"));
+        commands.remove(""); //invalid command, may not be offered as replacement
+
         return new BashVisitor() {
             @Override
             public void visitShebang(BashShebang shebang) {
-                Set<String> commands = Sets.newHashSet(configuredCommands().split("\\n"));
-                commands.remove(""); //invalid command, may not be offered as replacement
 
                 if (isOnTheFly && !commands.contains(shebang.shellCommand()) && commands.size() > 0) {
                     commands.remove(shebang.shellCommand());//currently used command

@@ -1,5 +1,8 @@
+2010-04-19:
+  - Missing textedit box to manage custom shebang lines
+
 2010-04-16:
-  - Fixed exception at startup ("Directory index is not initialized yet for Project") 
+  - Fixed exception at startup ("Directory index is not initialized yet for Project")
   - Fixed keywords as unquored paramters to commands 
   - Fixed some unit tests 
   - Fixed errorneous whitespace inserted before a renamed variable 
