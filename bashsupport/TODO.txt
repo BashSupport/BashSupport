@@ -83,9 +83,9 @@ Bugs:
 - Support tilde expansion
 - Support for Ctrl+J
 - export a[1]=1 is invalid, "declare a[1]=2" is valid though
-- Support parameters to the shebang command
+    - Support parameters to the shebang command
     - Not supported: echo if in etc.
-- Unsupported: Nested param expansions
+    - Unsupported: Nested param expansions
     - Not supported: : ${MINTMPKB:=1024}
     - Nicht selektierbar: test -x $SDPTOOL || return 1
     - Support doc for commands export, declare

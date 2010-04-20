@@ -1,5 +1,6 @@
 2010-04-20:
   - Support for the "readonly" command
+  - New inspection to detect changes to read-only variables
   - Possible fix for an exception caused by appending newlines at the end of a file
 
 2010-04-19:
