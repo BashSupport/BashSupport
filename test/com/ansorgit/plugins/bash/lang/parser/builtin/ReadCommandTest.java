@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReadCommandTest.java, Class: ReadCommandTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
@@ -42,5 +43,10 @@ public class ReadCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND);
         mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND, WORD);
         mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND, WORD, WORD, WORD);
+    }
+
+    @Test
+    public void testBuiltin() {
+        LanguageBuiltins.localVarDefCommands.contains("read");
     }
 }

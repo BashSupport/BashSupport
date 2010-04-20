@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: DeclareCommandTest.java, Class: DeclareCommandTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
@@ -57,4 +58,10 @@ public class DeclareCommandTest extends MockPsiTest {
         //declare $abc=(a,b)
         mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
     }
+
+    @Test
+    public void testBuiltin() {
+        LanguageBuiltins.varDefCommands.contains("declare");
+    }
+
 }
