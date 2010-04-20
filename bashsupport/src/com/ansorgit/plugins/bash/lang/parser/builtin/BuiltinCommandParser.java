@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BuiltinCommandParser.java, Class: BuiltinCommandParser
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingChain;
 public class BuiltinCommandParser extends ParsingChain {
     public BuiltinCommandParser() {
         addParsingFunction(new ExportCommand());
+        addParsingFunction(new ReadonlyCommand());
         addParsingFunction(new DeclareCommand());
         addParsingFunction(new ReadCommand());
         addParsingFunction(new LocalCommand());

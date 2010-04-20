@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: DeclareCommand.java, Class: DeclareCommand
+ * File: ReadonlyCommand.java, Class: ReadonlyCommand
  * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,17 +21,17 @@ package com.ansorgit.plugins.bash.lang.parser.builtin;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Syntax: declare [-afFirtx] [-p] [name[=value] ...]
+ * Syntax: readonly [-af] [name[=value] ...] or readonly -p
  * <p/>
- * Parses the declare command. It makes the assignments available to the reference detection.
+ * Makes the assignments available to the reference detection.
  * <p/>
- * Date: 15.04.2009
- * Time: 22:12:32
+ * Date: 01.05.2009
+ * Time: 20:55:46
  *
  * @author Joachim Ansorg
  */
-class DeclareCommand extends VariableDefCommand implements ParsingTool {
-    DeclareCommand() {
-        super(true, INTERNAL_COMMAND_ELEMENT, "declare", true);
+class ReadonlyCommand extends VariableDefCommand implements ParsingTool {
+    ReadonlyCommand() {
+        super(true, INTERNAL_COMMAND_ELEMENT, "readonly", true);
     }
 }

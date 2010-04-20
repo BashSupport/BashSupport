@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: NoOpBlock.java, Class: NoOpBlock
- * Last modified: 2010-03-30
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,8 @@ public class NoOpBlock implements Block {
 
     @NotNull
     public ChildAttributes getChildAttributes(int newChildIndex) {
-        return ChildAttributes.DELEGATE_TO_NEXT_CHILD;
+        return new ChildAttributes(Indent.getNoneIndent(), Alignment.createAlignment());
+        //return ChildAttributes.DELEGATE_TO_NEXT_CHILD;
     }
 
     public boolean isIncomplete() {

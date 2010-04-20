@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ExportCommandTest.java, Class: ExportCommandTest
+ * File: ReadonlyCommandTest.java, Class: ReadonlyCommandTest
  * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,20 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class ExportCommandTest extends MockPsiTest {
+public class ReadonlyCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return new ExportCommand().parse(psi);
+            ReadonlyCommand d = new ReadonlyCommand();
+            return d.parse(psi);
         }
     };
 
     MockFunction parserFunctionWithMarker = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return new ExportCommand().parse(psi);
+            ReadonlyCommand d = new ReadonlyCommand();
+            return d.parse(psi);
         }
 
         @Override
@@ -70,24 +72,24 @@ public class ExportCommandTest extends MockPsiTest {
 
     @Test
     public void testBuiltin() {
-        LanguageBuiltins.varDefCommands.contains("export");
+        LanguageBuiltins.varDefCommands.contains("readonly");
     }
 
     @Test
     public void testParse() {
         //export a=1
-        mockTest(parserFunctionWithMarker, Lists.newArrayList("export"), INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD);
+        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD);
         //export a
-        mockTest(parserFunctionWithMarker, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD);
+        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), INTERNAL_COMMAND, WORD);
         //export a=1 b=2
-        mockTest(parserFunctionWithMarker, Lists.newArrayList("export"),
+        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"),
                 INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD);
     }
 
     @Test
     public void testComplicated() {
         //>out a=1 export a=1
-        mockTest(parserFunction, Lists.newArrayList(">", "out", " ", "a", "=", "1", " ", "export"),
+        mockTest(parserFunction, Lists.newArrayList(">", "out", " ", "a", "=", "1", " ", "readonly"),
                 GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, INTERNAL_COMMAND,
                 WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
     }
