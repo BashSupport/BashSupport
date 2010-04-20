@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-02-18
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
@@ -52,6 +53,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  */
 public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, BashVar {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
+
     private static final TokenSet accepted = TokenSet.create(
             BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD, BashTokenTypes.ARRAY_ASSIGNMENT_WORD);
     private static final Object[] EMPTY_VARIANTS = new Object[0];
@@ -113,6 +115,11 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return false;
     }
 
+    public boolean hasAssignmentValue() {
+        PsiElement element = findAssignmentWord();
+        return element != null && BashPsiUtils.nodeType(element) == BashTokenTypes.ASSIGNMENT_WORD;
+    }
+
     public boolean isCommandLocal() {
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
@@ -153,10 +160,14 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public PsiElement resolve() {
-        if (isCommandLocal()) return null;
+        if (isCommandLocal()) {
+            return null;
+        }
 
         final String varName = getName();
-        if (varName == null) return null;
+        if (varName == null) {
+            return null;
+        }
 
         final BashVarProcessor processor = new BashVarProcessor(varName, this);
         final PsiElement element = BashResolveUtil.treeWalkUp(processor, this, this, this, false, true);
@@ -181,10 +192,14 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
 
     public boolean isReferenceTo(PsiElement element) {
         //local vars can't be resolved in the script
-        if (isCommandLocal()) return false;
+        if (isCommandLocal()) {
+            return false;
+        }
 
         //if it's a var def and appears earlier in the same context or above it's a valid ref
-        if (!(element instanceof BashVarDef)) return false;
+        if (!(element instanceof BashVarDef)) {
+            return false;
+        }
 
         BashVarDef def = (BashVarDef) element;
 
@@ -221,6 +236,19 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isComposedVar() {
+        return false;
+    }
+
+    public boolean isReadonly() {
+        //fixme support "declare -r" style readonly variables
+
+        PsiElement context = getParent();
+        if (context instanceof BashCommand) {
+            BashCommand command = (BashCommand) context;
+
+            return command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedName());
+        }
+
         return false;
     }
 }
