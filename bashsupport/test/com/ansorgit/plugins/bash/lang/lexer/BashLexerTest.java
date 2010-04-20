@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-03-18
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -247,6 +247,7 @@ public class BashLexerTest {
         testTokenization("declare", INTERNAL_COMMAND);
         testTokenization("echo", INTERNAL_COMMAND);
         testTokenization("export", INTERNAL_COMMAND);
+        testTokenization("readonly", INTERNAL_COMMAND);
         testTokenization("local", INTERNAL_COMMAND);
 
         testTokenization(".", INTERNAL_COMMAND);

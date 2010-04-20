@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VariableDefCommand.java, Class: VariableDefCommand
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ abstract class VariableDefCommand extends DefaultParsingFunction {
 
     boolean isAssignment(BashPsiBuilder builder) {
         String text = builder.getTokenText();
-        if (text != null && text.startsWith("-")) {
+        if (text != null && text.length() > 0 && text.charAt(0) == '-') {
             return false;
         }
 
