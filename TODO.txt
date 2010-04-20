@@ -137,5 +137,5 @@ Bugs:
 - Quotation marks in heredocs mix up the parser
     - ctrl+q does not work in subshell commands
     - ctrl+q does not work for functions any more
-- Reanming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
-
+- Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
+    - Support the "readonly" command

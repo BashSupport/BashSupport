@@ -1,16 +1,20 @@
+2010-04-20:
+  - Support for the "readonly" command
+  - Possible fix for an exception caused by appending newlines at the end of a file
+
 2010-04-19:
   - Missing textedit box to manage custom shebang lines
 
 2010-04-16:
   - Fixed exception at startup ("Directory index is not initialized yet for Project")
-  - Fixed keywords as unquored paramters to commands 
+  - Fixed keywords as unquoted parameters to commands
   - Fixed some unit tests 
   - Fixed errorneous whitespace inserted before a renamed variable 
   - New inspection which detects integer division with a remainder 
 
 2010-04-14:
   - Fixed incorrectly inserted whitespace after renaming a variable
-  - Show documentation fixed for internal commands in a subshell element
+  - "Show documentation" fixed for internal commands in a subshell element
 
 2010-03-30:
   - Version 0.9.9-maia

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: LanguageBuiltins.java, Class: LanguageBuiltins
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public final class LanguageBuiltins {
     );
 
     public static final Collection<String> varDefCommands = Sets.newHashSet(
-            "export", "read", "declare"
+            "export", "read", "declare", "readonly"
     );
 
     public static final Collection<String> localVarDefCommands = Sets.newHashSet(
