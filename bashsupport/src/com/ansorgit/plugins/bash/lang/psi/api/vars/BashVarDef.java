@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDef.java, Class: BashVarDef
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-20
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,17 @@ import org.jetbrains.annotations.NotNull;
 public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIdentifierOwner, NavigationItem {
     public String getName();
 
+    /**
+     * Returns true if this variable definition defines an array variable.
+     *
+     * @return True if an array variable is being defined
+     */
     public boolean isArray();
+
+    /**
+     * @return True if this definition defines a ready-only variable
+     */
+    public boolean isReadonly();
 
     /**
      * Returns true if this variable definition if only for the following statement.
@@ -61,4 +71,9 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
      * @return True if it's local in a function
      */
     public boolean isFunctionScopeLocal();
+
+    /**
+     * @return True if this is a variable definition with assignment, e.g. "export a=1"
+     */
+    public boolean hasAssignmentValue();
 }

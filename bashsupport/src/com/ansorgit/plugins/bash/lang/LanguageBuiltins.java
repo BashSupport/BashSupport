@@ -85,5 +85,9 @@ public final class LanguageBuiltins {
 
     public static final Collection<String> localVarDefCommands = Sets.newHashSet(
             "local"
+
+    );
+    public static final Collection<String> readonlyVarDefCommands = Sets.newHashSet(
+            "readonly"
     );
 }
