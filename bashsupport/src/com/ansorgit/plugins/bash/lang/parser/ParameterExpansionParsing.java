@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsing.java, Class: ParameterExpansionParsing
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,9 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 8:48:33 PM
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP);
-
-
     private static final Logger log = Logger.getInstance("#ParamExpansion");
+
+    private static final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;

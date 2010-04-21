@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenRemapper.java, Class: BashTokenRemapper
- * Last modified: 2010-04-16
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import com.intellij.psi.tree.TokenSet;
 class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
     //private static final Logger log = Logger.getInstance("#bash.BashTokenRemapper");
     private final BashPsiBuilder builder;
-    private final TokenSet mappedToWord = TokenSet.create(
+    private static final TokenSet mappedToWord = TokenSet.create(
             ASSIGNMENT_WORD, ARRAY_ASSIGNMENT_WORD,
             LEFT_SQUARE, BANG_TOKEN,
             IF_KEYWORD, THEN_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD,
