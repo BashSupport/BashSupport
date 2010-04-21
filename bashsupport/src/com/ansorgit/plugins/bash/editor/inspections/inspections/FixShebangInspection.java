@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FixShebangInspection.java, Class: FixShebangInspection
- * Last modified: 2010-04-19
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +117,6 @@ public class FixShebangInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitShebang(BashShebang shebang) {
-
                 if (isOnTheFly && !commands.contains(shebang.shellCommand()) && commands.size() > 0) {
                     commands.remove(shebang.shellCommand());//currently used command
                     for (String command : commands) {

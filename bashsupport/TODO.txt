@@ -37,7 +37,7 @@ Possible features:
 - Check for function call method params (possible?)
 - Intention/annotator to highlight builtin variables
     - Local variables
-- handle read-only vars
+    - handle read-only vars
 - "unset" builtin unterstützen
     - Intention für brace expansions, z.B. ech{o,a}
 - Support for collapse blocks. Very important would be to be able to collapse the initial comment (that is mostly the license agreement in many projects)
@@ -50,10 +50,10 @@ Possible features:
     - Better include support?
 - Diagram for file with include dependencies?
 - Built-in exception reporter
-- Intention which detects writes to local variables
-- Intention which detects writes to read-only variables
+    - Intention which detects writes to local variables
+    - Intention which detects writes to read-only variables
 - "Run before make" for IntelliJ 9
-- Arithmetic expressions inspection: detect floating point operations
+    - Arithmetic expressions inspection: detect floating point operations
 
 Planned for 1.0:
 ----------------
@@ -91,10 +91,10 @@ Bugs:
     - Support doc for commands export, declare
     - Support "a=2 export b=10", b is not defined atm
     - no variables in arithmetic for loop
-- there are 2 types of shebang inspection suggestions
-    1) when shebang is wrong to fix it
-    2) when shebang is ok to change it to the alternative one
-    how to remove at all the second fix? it's very irritating, cause shebang line is always underlined
+    - there are 2 types of shebang inspection suggestions
+        1) when shebang is wrong to fix it
+        2) when shebang is ok to change it to the alternative one
+        how to remove at all the second fix? it's very irritating, cause shebang line is always underlined
     - Better default colors for variables and elements
     - $(echo a) should have "echo" as internal command
     - support for command path completion
@@ -137,6 +137,6 @@ Bugs:
 - Quotation marks in heredocs mix up the parser
     - ctrl+q does not work in subshell commands
     - ctrl+q does not work for functions any more
-- Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
+    - Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
     - Support the "readonly" command
 - Add shebang does not work for empty file
