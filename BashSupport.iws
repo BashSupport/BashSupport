@@ -11,14 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/LanguageBuiltins.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/LanguageBuiltins.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/InternalVariableInspection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FixShebangInspection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FixShebangInspection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/InspectionProvider.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/LanguageBuiltinsTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/ReadonlyVariableInspection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/ReadonlyVariableInspection.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path=".idea/workspace.xml" />
@@ -123,7 +116,6 @@
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/builtin/DeclareCommandTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/vars/BashVarDef.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarDefImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/ReadonlyVariableInspection.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashChangeUtil.java" />
         <option value="$PROJECT_DIR$/TODO.txt" />
@@ -134,6 +126,7 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/LanguageBuiltins.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/InternalVariableInspection.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/ReadonlyVariableInspection.java" />
       </list>
     </option>
   </component>
@@ -662,6 +655,84 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inspections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inspections" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inspections" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1573,21 +1644,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1400" height="1015" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36536312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22882615" sideWeight="0.59323883" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10037175" sideWeight="0.750838" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31354985" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31354985" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24049217" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28376436" sideWeight="0.28026173" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.333829" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32862455" sideWeight="0.6786114" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32862455" sideWeight="0.6786114" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1724907" sideWeight="0.6786114" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33034715" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
@@ -1696,13 +1767,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/java/openapi/src/com/intellij/psi/util/PsiUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="537" column="24" selection-start="23025" selection-end="23025" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/psi/util/PsiTreeUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="623" column="0" selection-start="22942" selection-end="22942" vertical-scroll-proportion="0.8763251">
@@ -1811,6 +1875,13 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/ReadonlyVariableInspection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="91" selection-start="2979" selection-end="2979" vertical-scroll-proportion="0.69964665">
+          <folding />
         </state>
       </provider>
     </entry>
