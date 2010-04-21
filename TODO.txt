@@ -139,3 +139,4 @@ Bugs:
     - ctrl+q does not work for functions any more
 - Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
     - Support the "readonly" command
+- Add shebang does not work for empty file
