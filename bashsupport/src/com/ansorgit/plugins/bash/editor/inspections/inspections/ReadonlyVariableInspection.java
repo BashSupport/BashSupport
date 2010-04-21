@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReadonlyVariableInspection.java, Class: ReadonlyVariableInspection
- * Last modified: 2010-04-20
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class ReadonlyVariableInspection extends AbstractBashInspection {
 
     @Override
     public String getStaticDescription() {
-        return "Attemt to change a read-only variable.";
+        return "Attempt to change a read-only variable. Read-only variables can not be modified once they are declared.";
     }
 
     @NotNull
@@ -79,11 +79,8 @@ public class ReadonlyVariableInspection extends AbstractBashInspection {
                         BashVarDef originalDefinition = (BashVarDef) resolve;
 
                         if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
-                            holder.registerProblem(varDef,
-                                    "Change to a readonly variable",
-                                    LocalQuickFix.EMPTY_ARRAY);
+                            holder.registerProblem(varDef, "Change to a readonly variable", LocalQuickFix.EMPTY_ARRAY);
                         }
-
                     }
                 }
             }
