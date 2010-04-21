@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: LanguageBuiltins.java, Class: LanguageBuiltins
- * Last modified: 2010-04-20
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public final class LanguageBuiltins {
     public static final Collection<String> bashShellVars = Sets.newHashSet(
             "$", "#", "*", "@", "-", "!", "_", "?",
             "0", "1", "2", "3", "4", "5", "6", "8", "9",
-            "BASH", "BASHPID", "BASH_ALIASES", "BASH_ARGC",
+            "BASH", "BASHOPTS", "BASHPID", "BASH_ALIASES", "BASH_ARGC",
             "BASH_ARGV", "BASH_CMDS", "BASH_COMMAND", "BASH_ENV",
             "BASH_EXECUTION_STRING", "BASH_LINENO", "BASH_REMATCH", "BASH_SOURCE",
             "BASH_SUBSHELL", "BASH_VERSINFO", "BASH_VERSION", "COLUMNS",
@@ -63,6 +63,11 @@ public final class LanguageBuiltins {
 
     public static final Collection<String> bashShellVars_v4 = Sets.newHashSet(
             "BASHPID", "PROMPT_DIRTRIM"
+    );
+
+    public static final Collection<String> readonlyShellVars = Sets.newHashSet(
+            "BASH", "BASHOPTS", "BASHPID", "BASH_SUBSHELL", "BASH_VERSINFO", "BASH_VERSION", "EUID",
+            "HOSTNAME", "HOSTTYPE", "OLDPWD", "PPID", "PWD", "UID"
     );
 
     public static final Collection<String> commands = Sets.newHashSet(

@@ -1,3 +1,7 @@
+2010-04-21:
+  - New inspection to detect changes to shell read-only variables, like EUID
+  - Fixed variable renaming of ${a} variables
+
 2010-04-20:
   - Support for the "readonly" command
   - New inspection to detect changes to read-only variables
