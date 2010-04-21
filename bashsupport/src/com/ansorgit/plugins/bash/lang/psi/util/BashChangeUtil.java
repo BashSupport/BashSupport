@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashChangeUtil.java, Class: BashChangeUtil
- * Last modified: 2010-02-20
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,15 @@ public class BashChangeUtil {
     }
 
     public static PsiElement createVariable(Project project, String name, boolean withBraces) {
-        final String text = withBraces ? "${" + name + "}" : "$" + name;
+        if (withBraces) {
+            String text = "${" + name + "}";
+            PsiElement command = createDummyBashFile(project, text).getFirstChild();
+
+            //fixme terrible code
+            return command.getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild().getNextSibling();
+        }
+
+        String text = "$" + name;
         PsiElement command = createDummyBashFile(project, text).getFirstChild();
 
         return command.getFirstChild().getFirstChild();

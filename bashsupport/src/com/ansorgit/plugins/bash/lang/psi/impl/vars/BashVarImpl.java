@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-03-15
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,7 +120,8 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
         //if this is variable which doesn't have a $ sign prefix
         if (isSingleWord()) {
-            return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
+            //return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
+            return BashPsiUtils.replaceElement(this, BashChangeUtil.createVariable(getProject(), newName, true));
         }
 
         return BashPsiUtils.replaceElement(this, BashChangeUtil.createVariable(getProject(), newName, false));
@@ -197,7 +198,8 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
      * @return True if this variable is just a single, composed word token
      */
     private boolean isSingleWord() {
-        return getText().length() > 0 && getText().charAt(0) != '$';
+        String text = getText();
+        return text.length() > 0 && text.charAt(0) != '$';
     }
 
     public boolean isBuiltinVar() {
