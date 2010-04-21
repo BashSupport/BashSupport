@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingPsiBuilder.java, Class: ForwardingPsiBuilder
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-21
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,10 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.diff.FlyweightCapableTreeStructure;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Method;
 
 /**
  * A PsiBuilder implementation which delegates all method to another PsiBuilder.
@@ -104,18 +107,27 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
         originalPsiBuilder.setTokenTypeRemapper(remapper);
     }
 
-    public <T> T getUserData(Key<T> key) {
+    public <T> T getUserData(@NotNull Key<T> key) {
         return originalPsiBuilder.getUserData(key);
     }
 
-    public <T> void putUserData(Key<T> key, T value) {
+    public <T> void putUserData(@NotNull Key<T> key, T value) {
         originalPsiBuilder.putUserData(key, value);
     }
 
-    //fixme this is an API change by JetBrains added in a 9.0.2 eap
-    //fixme delegating is not compatible with newer sdks.
+    private Class[] EMPTY = new Class[0];
 
-    /*public LighterASTNode getLatestDoneMarker() {
-        return originalPsiBuilder.getLatestDoneMarker();
-    } */
+    public LighterASTNode getLatestDoneMarker() {
+        //this method was added after the initial 9.0 release by JetBrains,
+        //thus we have to call the delegate with reflection to avoid incompatibility with older releases
+
+        try {
+            Method declaredMethod = originalPsiBuilder.getClass().getMethod("getLatedDoneMarker", EMPTY);
+            return (LighterASTNode) declaredMethod.invoke(originalPsiBuilder);
+        } catch (Exception e) {
+            //ignore this
+        }
+
+        return null;
+    }
 }
