@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-04-21
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         if (!remapping) {
             return getTokenType(withWhitespace);
         }
+
         return getRemappingTokenType(withWhitespace);
     }
 
