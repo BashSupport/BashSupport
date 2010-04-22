@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-04-20
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -317,6 +317,9 @@ public class BashLexerTest {
         testTokenization("<<-", REDIRECT_LESS_LESS_MINUS);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
+        testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
+        testTokenization("> 1", GREATER_THAN, WHITESPACE, INTEGER_LITERAL);
+        testTokenization(">&1", REDIRECT_GREATER_AND, INTEGER_LITERAL);
     }
 
     @Test
@@ -481,6 +484,10 @@ public class BashLexerTest {
         //new &>> redirect token
         testTokenization(BashVersion.Bash_v4, "a &>> out", WORD, WHITESPACE, REDIRECT_AMP_GREATER_GREATER, WHITESPACE, WORD);
         testTokenization(BashVersion.Bash_v3, "a &>> out", WORD, WHITESPACE, AMP, SHIFT_RIGHT, WHITESPACE, WORD);
+
+        //new &> redirect token
+        testTokenization(BashVersion.Bash_v4, "a &> out", WORD, WHITESPACE, REDIRECT_AMP_GREATER, WHITESPACE, WORD);
+        testTokenization(BashVersion.Bash_v3, "a &> out", WORD, WHITESPACE, AMP, GREATER_THAN, WHITESPACE, WORD);
 
         //new |& redirect token
         testTokenization(BashVersion.Bash_v4, "a |& b", WORD, WHITESPACE, PIPE_AMP, WHITESPACE, WORD);

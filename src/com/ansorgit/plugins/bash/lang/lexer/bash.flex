@@ -537,6 +537,14 @@ CasePattern = {CaseFirst}{CaseAfter}*
                                     }
                                   }
 
+    "&>"                          { if (isBash4()) {
+                                        return REDIRECT_AMP_GREATER;
+                                    } else {
+                                        yypushback(1);
+                                        return AMP;
+                                    }
+                                  }
+
   /* Bash v3 */
   "<<<"                         { return REDIRECT_LESS_LESS_LESS; }
   "<<"                          { return REDIRECT_LESS_LESS; }

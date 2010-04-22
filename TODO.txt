@@ -32,7 +32,7 @@ Possible features:
     - Intention to check for double function definition
 - Intention to check for unused functions (needs index)
 - Intention to check for unused vars (needs index)
-- Intention to check for writes to build-in vars
+    - Intention to check for writes to built-in vars
 - Check for external command if binary is there
 - Check for function call method params (possible?)
 - Intention/annotator to highlight builtin variables
@@ -134,9 +134,13 @@ Bugs:
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
     - Add Bash facet with tree based configuration for include / exclude for files without extensions
-- Quotation marks in heredocs mix up the parser
+- Quotation marks in heredocs mix up the parser, Strings are lexed, heredocs are parsed but not lexed,
+  thus the parser sees an incomplete string and can not parse the heredoc. This should be fixed somehow, probably
+  needs a lexer refactoring / rework.
     - ctrl+q does not work in subshell commands
     - ctrl+q does not work for functions any more
     - Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
     - Support the "readonly" command
 - Add shebang does not work for empty file
+- Rework the redirect lexing and parsing, currently redirects into filehandles and files are not well parsed
+  Redirect of stdout into stderr is not well parsed for example.
