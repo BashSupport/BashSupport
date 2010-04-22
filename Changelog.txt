@@ -1,5 +1,9 @@
+2010-04-22:
+  - Improved redirect parsing
+  - Fixed redirect marker error
+
 2010-04-21:
-  - New inspection to detect changes to shell read-only variables, like EUID
+  - New inspection to detect changes to shell read-only variables, $EUID for example
   - Fixed variable renaming of ${a} variables
 
 2010-04-20:
@@ -8,7 +12,7 @@
   - Possible fix for an exception caused by appending newlines at the end of a file
 
 2010-04-19:
-  - Missing textedit box to manage custom shebang lines
+  - Added missing textedit box to manage custom shebang lines
 
 2010-04-16:
   - Fixed exception at startup ("Directory index is not initialized yet for Project")

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsing.java, Class: RedirectionParsing
- * Last modified: 2010-01-29
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,14 +52,16 @@ public class RedirectionParsing implements ParsingTool {
          | number? GREATER_BAR word
          ;
 
-        bash 4 additional redirects: &<<
+        bash 4 additional redirects:
+          &<<
           >>& word
+          >& word
      */
     private static final TokenSet validBeforeWord = TokenSet.create(
             GREATER_THAN, LESS_THAN, SHIFT_RIGHT, REDIRECT_LESS_LESS,
             REDIRECT_LESS_LESS_LESS, REDIRECT_GREATER_AND, REDIRECT_LESS_AND,
             REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER, REDIRECT_GREATER_BAR,
-            REDIRECT_AMP_GREATER_GREATER
+            REDIRECT_AMP_GREATER_GREATER, REDIRECT_AMP_GREATER
     );
 
     private static final TokenSet validBeforeNumber = TokenSet.create(
@@ -82,7 +84,10 @@ public class RedirectionParsing implements ParsingTool {
         final PsiBuilder.Marker redirectList = builder.mark();
 
         while (isRedirect(builder)) {
-            parseSingleRedirect(builder);
+            boolean ok = parseSingleRedirect(builder);
+            if (!ok) {
+                return false;
+            }
         }
 
         redirectList.done(REDIRECT_LIST_ELEMENT);
@@ -93,19 +98,25 @@ public class RedirectionParsing implements ParsingTool {
     public boolean isRedirect(BashPsiBuilder builder) {
         final PsiBuilder.Marker start = builder.mark();
         try {
-            final boolean firstIsNumber = builder.getTokenType() == NUMBER;
-            if (firstIsNumber) builder.advanceLexer();
+            final boolean firstIsNumber = builder.getTokenType() == INTEGER_LITERAL;
+            if (firstIsNumber) {
+                builder.advanceLexer();
+            }
 
-            final IElementType redirectToken = ParserUtil.getTokenAndAdvance(builder);
+            final IElementType redirectToken = ParserUtil.getTokenAndAdvance(builder, true);
             if (!BashTokenTypes.redirectionSet.contains(redirectToken)) {
                 return false;
             }
 
-            final boolean targetIsNumber = builder.getTokenType() == NUMBER;
-            if (targetIsNumber) return validBeforeNumber.contains(redirectToken);
+            final boolean targetIsNumber = builder.getTokenType() == INTEGER_LITERAL;
+            if (targetIsNumber) {
+                return validBeforeNumber.contains(redirectToken);
+            }
 
             final boolean targetIsWord = Parsing.word.isWordToken(builder);
-            if (targetIsWord) return validBeforeWord.contains(redirectToken);
+            if (targetIsWord) {
+                return validBeforeWord.contains(redirectToken);
+            }
         } finally {
             start.rollbackTo();
         }
@@ -125,7 +136,7 @@ public class RedirectionParsing implements ParsingTool {
 
         final PsiBuilder.Marker redirect = builder.mark();
 
-        if (firstToken == NUMBER) {
+        if (firstToken == INTEGER_LITERAL) {
             builder.advanceLexer();
         }
 
@@ -141,7 +152,7 @@ public class RedirectionParsing implements ParsingTool {
                 return false;
             }
 
-            //fixme better imple with a sort of capture mode?
+            //fixme better impl with a sort of capture mode?
 
             //get the name of the expected here doc end
             HereDocParsing.readHeredocMarker(builder);
@@ -150,23 +161,24 @@ public class RedirectionParsing implements ParsingTool {
             return true;
         }
 
-        if (thirdToken != NUMBER && !Parsing.word.isWordToken(builder)) {
+        if (thirdToken != INTEGER_LITERAL && !Parsing.word.isWordToken(builder)) {
+            error(redirect, "parser.redirect.expected.target");
+
             return false;
         }
 
         //fixme still right?
-        if (thirdToken == NUMBER && !validBeforeNumber.contains(secondToken)) {
-            error(redirect, "parser.redirect.expected.filename");
+        if (thirdToken == INTEGER_LITERAL && !validBeforeNumber.contains(secondToken)) {
+            error(redirect, "parser.redirect.expected.target");
             return false;
-        } else if (thirdToken == NUMBER) {
-            builder.advanceLexer();//read in the number
-        }
-
-        if (Parsing.word.isWordToken(builder) && validBeforeWord.contains(secondToken)) {
+        } else if (thirdToken == INTEGER_LITERAL) {
+            //read in the number
+            builder.advanceLexer(true);
+        } else if (Parsing.word.isWordToken(builder) && validBeforeWord.contains(secondToken)) {
             //read the word (might be $() or something similair
             Parsing.word.parseWord(builder);
         } else {
-            error(redirect, "parser.redirected.expteced.filedescriptor");
+            error(redirect, "parser.redirected.expected.filedescriptor");
             return false;
         }
 

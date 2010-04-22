@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsingTest.java, Class: RedirectionParsingTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ package com.ansorgit.plugins.bash.lang.parser;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Date: 24.03.2009
  * Time: 21:56:59
@@ -39,13 +41,25 @@ public class RedirectionParsingTest extends MockPsiTest {
         //>a
         mockTest(redirectionTest, GREATER_THAN, WORD);
         //1>a
-        mockTest(redirectionTest, NUMBER, GREATER_THAN, WORD);
+        mockTest(redirectionTest, INTEGER_LITERAL, GREATER_THAN, WORD);
         //>>a
         mockTest(redirectionTest, SHIFT_RIGHT, WORD);
         //>$a
         mockTest(redirectionTest, GREATER_THAN, VARIABLE);
         //>>a>a
         mockTest(redirectionTest, SHIFT_RIGHT, WORD, GREATER_THAN, WORD);
+        //>&1
+        mockTest(redirectionTest, REDIRECT_GREATER_AND, INTEGER_LITERAL);
+    }
+
+    @Test
+    public void testRedirectErrors() {
+        //1 > out
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", " ", ">", " ", "out"),
+                INTEGER_LITERAL, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
+        //>& 1
+        //mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList(">&", " ", "1"),
+        //        REDIRECT_GREATER_AND, WHITESPACE, INTEGER_LITERAL);
     }
 
     @Test

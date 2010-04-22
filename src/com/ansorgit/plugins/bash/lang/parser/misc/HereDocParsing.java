@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-03-10
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class HereDocParsing implements ParsingTool {
         try {
             builder.enterHereDoc();
 
-            if (doParsing(builder)) {
+            if (!doParsing(builder)) {
                 return false;
             }
         } finally {
