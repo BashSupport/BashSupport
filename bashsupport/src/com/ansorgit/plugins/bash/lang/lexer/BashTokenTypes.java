@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-03-10
+ * Last modified: 2010-04-22
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -220,8 +220,10 @@ public interface BashTokenTypes {
     IElementType REDIRECT_LESS_LESS_MINUS = new BashElementType("<<-");//[[
     IElementType REDIRECT_LESS_GREATER = new BashElementType("<>");//[[
     IElementType REDIRECT_GREATER_BAR = new BashElementType(">|");//[[
-    //Bash 4: 
+
+    //Bash 4:
     IElementType REDIRECT_AMP_GREATER_GREATER = new BashElementType("&>>");
+    IElementType REDIRECT_AMP_GREATER = new BashElementType("&>");
 
     //fixme missing: &>  >&
 
@@ -229,7 +231,7 @@ public interface BashTokenTypes {
             GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
             REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_AND,
             REDIRECT_GREATER_AND, REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER, REDIRECT_GREATER_BAR,
-            REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
+            REDIRECT_AMP_GREATER, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
 
     //sets
     TokenSet identifierTokenSet = TokenSet.orSet(keywords, TokenSet.create(INTERNAL_COMMAND));
