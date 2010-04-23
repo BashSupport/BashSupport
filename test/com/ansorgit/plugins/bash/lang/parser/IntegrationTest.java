@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-04-22
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -576,5 +576,9 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, COLON, WHITESPACE, GREATER_THAN, WORD);
         //&> OUT
         mockTest(BashVersion.Bash_v4, fileParsingTest, REDIRECT_AMP_GREATER, WORD);
+
+        //exec 9 <& 0 < /etc/fstab
+        mockTest(fileParsingTest, WORD, INTEGER_LITERAL, WHITESPACE, REDIRECT_LESS_AMP, WHITESPACE, INTEGER_LITERAL,
+                LESS_THAN, WHITESPACE, WORD);
     }
 }

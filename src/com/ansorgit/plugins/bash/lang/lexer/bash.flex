@@ -147,6 +147,7 @@ CaseFirst=[^|)(# \n\r\f\t\f]
 CaseAfter=[^|)( \n\r\f\t\f]
 CasePattern = {CaseFirst}{CaseAfter}*
 
+Filedescriptor = "&" {IntegerLiteral}
 
 /************* STATES ************/
 /* If in a conditional expression */
@@ -425,6 +426,9 @@ CasePattern = {CaseFirst}{CaseAfter}*
   "~"                           { return ARITH_BITWISE_NEGATE; }
   "^"                           { return ARITH_BITWISE_XOR; }
 
+  "?"                           { return ARITH_QMARK; }
+  ":"                           { return ARITH_COLON; }
+
   {ArithWord}                   { return WORD; }
 }
 
@@ -548,13 +552,17 @@ CasePattern = {CaseFirst}{CaseAfter}*
   /* Bash v3 */
   "<<<"                         { return REDIRECT_LESS_LESS_LESS; }
   "<<"                          { return REDIRECT_LESS_LESS; }
-  "<<-"                         { return REDIRECT_LESS_LESS_MINUS ; }
+  "<<-"                         { return REDIRECT_LESS_LESS_MINUS; }
   "<>"                          { return REDIRECT_LESS_GREATER; }
-  "<&"                          { return REDIRECT_LESS_AND; }
-  ">&"                          { return REDIRECT_GREATER_AND; }
-  ">|"                          { return REDIRECT_GREATER_BAR; }
+
+  "<&" / {ArithWord}            { return REDIRECT_LESS_AMP; }
+  ">&" / {ArithWord}            { return REDIRECT_GREATER_AMP; }
+  "<&" / {WhiteSpace}           { return REDIRECT_LESS_AMP; }
+  ">&" / {WhiteSpace}           { return REDIRECT_GREATER_AMP; }
 
   ">|"                          { return REDIRECT_GREATER_BAR; }
+
+  {Filedescriptor}              { return FILEDESCRIPTOR; }              
 }
 
 <S_PARAM_EXPANSION> {

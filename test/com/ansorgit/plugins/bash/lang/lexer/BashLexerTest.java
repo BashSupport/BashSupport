@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-04-22
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -266,6 +266,10 @@ public class BashLexerTest {
         testTokenization("((i=$((1 + 9))))",
                 EXPR_ARITH, ASSIGNMENT_WORD, EQ, DOLLAR, EXPR_ARITH, NUMBER, WHITESPACE,
                 ARITH_PLUS, WHITESPACE, NUMBER, _EXPR_ARITH, _EXPR_ARITH);
+
+        testTokenization("((1 == 1 ? 0 : 0))",
+                EXPR_ARITH, NUMBER, WHITESPACE, ARITH_EQ, WHITESPACE, NUMBER, WHITESPACE, ARITH_QMARK,
+                WHITESPACE, NUMBER, WHITESPACE, ARITH_COLON, WHITESPACE, NUMBER, _EXPR_ARITH);
     }
 
     @Test
@@ -310,8 +314,8 @@ public class BashLexerTest {
 
     @Test
     public void testRedirect1() {
-        testTokenization(">&2", REDIRECT_GREATER_AND, INTEGER_LITERAL);
-        testTokenization("<&", REDIRECT_LESS_AND);
+        testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
         testTokenization("<<", REDIRECT_LESS_LESS);
         testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
         testTokenization("<<-", REDIRECT_LESS_LESS_MINUS);
@@ -319,7 +323,13 @@ public class BashLexerTest {
         testTokenization(">|", REDIRECT_GREATER_BAR);
         testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
         testTokenization("> 1", GREATER_THAN, WHITESPACE, INTEGER_LITERAL);
-        testTokenization(">&1", REDIRECT_GREATER_AND, INTEGER_LITERAL);
+        testTokenization(">&1", GREATER_THAN, FILEDESCRIPTOR);
+
+        testTokenization("3>&9", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("3>&10", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("10>&10", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("10>&a123", INTEGER_LITERAL, REDIRECT_GREATER_AMP, WORD);
+        testTokenization("10>& a123", INTEGER_LITERAL, REDIRECT_GREATER_AMP, WHITESPACE, WORD);
     }
 
     @Test
