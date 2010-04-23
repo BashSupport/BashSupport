@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandDelegator.java, Class: ShellCommandDelegator
- * Last modified: 2010-02-09
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,7 @@ public class ShellCommandDelegator extends DefaultParsingFunction {
         final boolean ok = Parsing.shellCommand.parse(builder);
         //parse optional redirect list, if the shell command parsed
         final boolean redirectOk = Parsing.redirection.parseList(builder, true)
-                || !ok
-                || !Parsing.redirection.isRedirect(builder);
+                || !ok;
         return ok && redirectOk;
     }
 }

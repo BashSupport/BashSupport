@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -174,17 +174,22 @@ public class ParserUtil {
     }
 
     public static boolean hasNextTokens(BashPsiBuilder builder, IElementType... tokens) {
+        return hasNextTokens(builder, false, tokens);
+    }
+
+    public static boolean hasNextTokens(BashPsiBuilder builder, boolean enableWhitespace, IElementType... tokens) {
         if (tokens.length == 1) {
-            return tokens[0] == builder.getTokenType();
+            return tokens[0] == builder.getTokenType(enableWhitespace);
         }
 
         final PsiBuilder.Marker start = builder.mark();
         try {
             for (IElementType t : tokens) {
-                if (t != builder.getTokenType()) {
+                if (t != builder.getTokenType(enableWhitespace)) {
                     return false;
                 }
-                builder.advanceLexer();
+
+                builder.advanceLexer(enableWhitespace);
             }
 
             return true;
