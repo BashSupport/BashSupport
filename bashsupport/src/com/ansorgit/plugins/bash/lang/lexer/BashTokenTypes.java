@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-04-22
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -213,25 +213,23 @@ public interface BashTokenTypes {
     TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND);
 
     //redirects
-    IElementType REDIRECT_LESS_LESS = new BashElementType("<<");//[[
-    IElementType REDIRECT_LESS_LESS_LESS = new BashElementType("<<<");//
-    IElementType REDIRECT_LESS_AND = new BashElementType("<&");//[[
-    IElementType REDIRECT_GREATER_AND = new BashElementType(">&");//[[
-    IElementType REDIRECT_LESS_LESS_MINUS = new BashElementType("<<-");//[[
-    IElementType REDIRECT_LESS_GREATER = new BashElementType("<>");//[[
-    IElementType REDIRECT_GREATER_BAR = new BashElementType(">|");//[[
+    IElementType REDIRECT_LESS_LESS = new BashElementType("<<");
+    IElementType REDIRECT_LESS_LESS_LESS = new BashElementType("<<<");
+    IElementType REDIRECT_LESS_AMP = new BashElementType("<&");
+    IElementType REDIRECT_GREATER_AMP = new BashElementType(">&");
+    IElementType REDIRECT_LESS_LESS_MINUS = new BashElementType("<<-");
+    IElementType REDIRECT_LESS_GREATER = new BashElementType("<>");
+    IElementType REDIRECT_GREATER_BAR = new BashElementType(">|");
+
+    IElementType FILEDESCRIPTOR = new BashElementType("&[0-9] filedescriptor");
 
     //Bash 4:
     IElementType REDIRECT_AMP_GREATER_GREATER = new BashElementType("&>>");
     IElementType REDIRECT_AMP_GREATER = new BashElementType("&>");
 
-    //fixme missing: &>  >&
-
-    TokenSet redirectionSet = TokenSet.create(
-            GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
-            REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_AND,
-            REDIRECT_GREATER_AND, REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER, REDIRECT_GREATER_BAR,
-            REDIRECT_AMP_GREATER, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
+    TokenSet redirectionSet = TokenSet.create(GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
+            REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER,
+            REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
 
     //sets
     TokenSet identifierTokenSet = TokenSet.orSet(keywords, TokenSet.create(INTERNAL_COMMAND));

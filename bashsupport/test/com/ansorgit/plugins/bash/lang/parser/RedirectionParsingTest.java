@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsingTest.java, Class: RedirectionParsingTest
- * Last modified: 2010-04-22
+ * Last modified: 2010-04-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,14 @@ public class RedirectionParsingTest extends MockPsiTest {
         //>>a>a
         mockTest(redirectionTest, SHIFT_RIGHT, WORD, GREATER_THAN, WORD);
         //>&1
-        mockTest(redirectionTest, REDIRECT_GREATER_AND, INTEGER_LITERAL);
+        mockTest(redirectionTest, GREATER_THAN, FILEDESCRIPTOR);
+        //>>1
+        mockTest(redirectionTest, SHIFT_RIGHT, INTEGER_LITERAL);
+        //>> 1
+        mockTest(redirectionTest, SHIFT_RIGHT, WHITESPACE, INTEGER_LITERAL);
+        //>& 1
+        mockTest(BashVersion.Bash_v3, redirectionTest, 3, Arrays.asList(">&", " ", "1"),
+                REDIRECT_GREATER_AMP, WHITESPACE, INTEGER_LITERAL);
     }
 
     @Test
@@ -57,9 +64,24 @@ public class RedirectionParsingTest extends MockPsiTest {
         //1 > out
         mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", " ", ">", " ", "out"),
                 INTEGER_LITERAL, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
-        //>& 1
-        //mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList(">&", " ", "1"),
-        //        REDIRECT_GREATER_AND, WHITESPACE, INTEGER_LITERAL);
+        //1> &1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", ">", " ", "&1"),
+                INTEGER_LITERAL, GREATER_THAN, WHITESPACE, FILEDESCRIPTOR);
+        //>>&1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList(">>", "&1"),
+                SHIFT_RIGHT, FILEDESCRIPTOR);
+        //1>>&1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", ">>", "&1"),
+                INTEGER_LITERAL, SHIFT_RIGHT, FILEDESCRIPTOR);
+        //<<&1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("<<", "&1"),
+                REDIRECT_LESS_LESS, FILEDESCRIPTOR);
+        //1<<&1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", "<<", "&1"),
+                INTEGER_LITERAL, REDIRECT_LESS_LESS, FILEDESCRIPTOR);
+        //<<<&1
+        mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("<<<", "&1"),
+                REDIRECT_LESS_LESS_LESS, FILEDESCRIPTOR);
     }
 
     @Test
