@@ -33,8 +33,8 @@ Possible features:
 - Intention to check for unused functions (needs index)
 - Intention to check for unused vars (needs index)
     - Intention to check for writes to built-in vars
-- Check for external command if binary is there
-- Check for function call method params (possible?)
+- Inspection for external command if binary is there
+- Inspection for function call method params (possible?)
 - Intention/annotator to highlight builtin variables
     - Local variables
     - handle read-only vars
@@ -46,13 +46,13 @@ Possible features:
 - Live templates for for / while / case / test for file / test for dir / ...
 - Regexp support
 - Find inspirations on http://lloydpuckitt.wordpress.com/
-- Module facet for configuration and file set?
+    - Module facet for configuration and file set?
     - Better include support?
 - Diagram for file with include dependencies?
 - Built-in exception reporter
     - Intention which detects writes to local variables
     - Intention which detects writes to read-only variables
-- "Run before make" for IntelliJ 9
+- "Run before make" default should be "turned off" (for IntelliJ 9)
     - Arithmetic expressions inspection: detect floating point operations
 
 Planned for 1.0:
@@ -64,7 +64,7 @@ User comments:
   Would be nice if it had a separate highlighting option for `command` strings
   (and also supported nesting "`command2`").
 
-Bugs:
+Bugs (indentation marks fixed bugs):
 -----
     - No doc shown for function (should show the command before it)
     - Backquotes in strings are not supported
@@ -142,5 +142,5 @@ Bugs:
     - Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
     - Support the "readonly" command
 - Add shebang does not work for empty file
-- Rework the redirect lexing and parsing, currently redirects into filehandles and files are not well parsed
-  Redirect of stdout into stderr is not well parsed for example.
+    - Rework the redirect lexing and parsing, currently redirects into filehandles and files are not well parsed
+- Add inspection to detect bad filehandles, e.g. &10
