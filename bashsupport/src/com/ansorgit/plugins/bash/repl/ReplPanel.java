@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReplPanel.java, Class: ReplPanel
- * Last modified: 2010-03-09
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 package com.ansorgit.plugins.bash.repl;
 
 import com.ansorgit.plugins.bash.actions.repl.AddReplAction;
-import com.intellij.execution.CantRunException;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -50,7 +49,7 @@ public class ReplPanel extends JPanel implements Disposable {
     private Repl myRepl;
     private DefaultActionGroup actions;
 
-    public ReplPanel(@NotNull final Project project, @NotNull final Module module) throws IOException, ConfigurationException, CantRunException {
+    public ReplPanel(@NotNull final Project project, @NotNull final Module module) throws IOException, ConfigurationException {
         setLayout(new BorderLayout());
 
         myProject = project;

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiTest.java, Class: BashPsiTest
- * Last modified: 2010-02-01
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 
 /**
  * User: jansorg
  * Date: Jan 11, 2010
  * Time: 10:30:39 PM
  */
-public abstract class BashPsiTest extends LightCodeInsightFixtureTestCase {
+public abstract class BashPsiTest extends CodeInsightFixtureTestCase {
     protected VirtualFile getFile(final String relative_path, final Module module) {
         final String path = getFullPath(relative_path, module);
         return LocalFileSystem.getInstance().findFileByPath(path);

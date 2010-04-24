@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-04-22
+  ~ Last modified: 2010-04-24
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
     <name>BashSupport</name>
     <category>Custom Languages</category>
     <version>0.9.10-maia</version>
-    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg IT-Services</vendor>
-    <idea-version since-build="91.15" until-build="99.0"/>
+    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
+    <idea-version since-build="91.15" until-build="98.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -46,9 +46,9 @@
             </ul>
 
             <br>
-            <b>Experimental features (not yet configurable, use at your own risk):</b>
+            <b>Experimental features:</b>
             <ul>
-                <li> Code formatter</li>
+                <li>Code formatter (turned off by default)</li>
             </ul>
 
             <br>
@@ -69,36 +69,42 @@
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 0.9.9-maia:</b>
+       <b>Changes in version 0.9.10-maia:</b>
        <ul>
-        <li>Compatible with the latest 9.0.2 EAP</li>
-        <li>Formatter is turned off by default now</li>
+          <li>Support for the "readonly" command</li>
+          <li>New inspection to detect changes to read-only variables</li>
+          <li>New inspection to detect changes to shell read-only variables, $EUID for example</li>
+          <li>New inspection which detects integer division with a remainder</li>
+          <li>"Show documentation" fixed for internal commands in a subshell element</li>
+          <li>Fixed variable renaming of ${a} variables</li>
+          <li>Possible fix for an exception caused by appending newlines at the end of a file</li>
+          <li>Added missing textedit box to manage custom shebang lines</li>
+          <li>Fixed keywords as unquoted parameters to commands</li>
+          <li>Fixed errorneous whitespace inserted before a renamed variable</li>
+          <li>Fixed exception at startup ("Directory index is not initialized yet for Project")</li>
+          <li>Parser and lexer improvements, especially for redirects</li>
+          <li>Compatibility with RubyMine 2.0.2</li>
        </ul>
 
-       <b>Changes in version 0.9.8-maia:</b>
+       <b>Changes in version 0.9.9-maia:</b>
        <ul>
-        <li> Improved parsing                                                            </li>
-        <li> Icons for path and variable completions                                                        </li>
-        <li> Fixed "export a" variables                                                                     </li>
-        <li> Fixed for heredoc folding and highlighting                                                     </li>
-        <li> AddShebangQuickfix is now run in a separate write action                                       </li>
-        <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
-        <li> The facet configuration tree is expanded by default now                                        </li>
+          <li>Compatible with the latest 9.0.2 EAP</li>
+          <li>Formatter is turned off by default now</li>
        </ul>
 
        <b>Recent changes:</b>
        <ul>
-            <li> Removed global settings, these are project settings now</li>
-            <li> Arithmetic expressions are supported now, including variable declarations</li>
-            <li> Color configuration for heredoc start and end markers</li>
-            <li> Support for the "local" keyword</li>
-            <li> New Bashsupport facet to configure which files without extensions are Bash scripts</li>
-            <li> Source code released, licensed under the terms of the Apache License 2.0</li>
-            <li> Path/file completion/</li>
-            <li> Configurable support for Bash version 4.0.</li>
-            <li> Expansions now can be replaced with the evaluated result.</li>
-            <li> Ctrl+Q on function definitions and calls now shows the comment block right before the definition of the requested function.</li>
-            <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
+          <li> Fixed for heredoc folding and highlighting                                                     </li>
+          <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
+          <li> Removed global settings, these are project settings now</li>
+          <li> Arithmetic expressions are supported now, including variable declarations</li>
+          <li> Color configuration for heredoc start and end markers</li>
+          <li> New Bashsupport facet to configure which files without extensions are Bash scripts</li>
+          <li> Source code released, licensed under the terms of the Apache License 2.0</li>
+          <li> Path/file completion/</li>
+          <li> Configurable support for Bash version 4.0.</li>
+          <li> Expansions now can be replaced with the evaluated result.</li>
+          <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
         </ul>
     </html>
     ]]>

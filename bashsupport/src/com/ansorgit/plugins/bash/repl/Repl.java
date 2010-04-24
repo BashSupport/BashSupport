@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: Repl.java, Class: Repl
- * Last modified: 2010-03-11
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.repl;
 
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
-import com.intellij.execution.CantRunException;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
@@ -53,7 +52,7 @@ class Repl implements Disposable {
     public ConsoleView view;
     private ProcessHandler processHandler;
 
-    public Repl(Module module, AnAction... customActions) throws IOException, ConfigurationException, CantRunException {
+    public Repl(Module module, AnAction... customActions) throws IOException, ConfigurationException {
         Project myProject = module.getProject();
 
         final TextConsoleBuilderImpl builder = new BashTextConsoleBuilder(myProject);
@@ -81,7 +80,7 @@ class Repl implements Disposable {
         try {
             myProcess = commandLine.createProcess();
         } catch (ExecutionException e) {
-            throw new CantRunException("The process could not be started: " + e.getMessage());
+            throw new UnsupportedOperationException("The process could not be started: " + e.getMessage());
         }
 
         processHandler = new OSProcessHandler(myProcess, commandLine.getCommandLineString());

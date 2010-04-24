@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractBashReplAction.java, Class: AbstractBashReplAction
- * Last modified: 2010-03-25
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.ansorgit.plugins.bash.settings.facet.BashFacetType;
 import com.intellij.facet.FacetManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -37,9 +37,9 @@ import org.jetbrains.annotations.Nullable;
 abstract class AbstractBashReplAction extends AnAction {
 
     static Module getModule(AnActionEvent e) {
-        Module module = e.getData(DataKeys.MODULE);
+        Module module = e.getData(LangDataKeys.MODULE);
         if (module == null) {
-            final Project project = e.getData(DataKeys.PROJECT);
+            final Project project = e.getData(LangDataKeys.PROJECT);
             if (project == null) {
                 return null;
             }
@@ -68,7 +68,7 @@ abstract class AbstractBashReplAction extends AnAction {
     }
 
     static void evaluateInCurrentRepl(@NotNull String textToEvaluate, @NotNull AnActionEvent event, boolean showErrors, boolean requestFocus) {
-        Project project = event.getData(DataKeys.PROJECT);
+        Project project = event.getData(LangDataKeys.PROJECT);
         if (project == null) {
             return;
         }
