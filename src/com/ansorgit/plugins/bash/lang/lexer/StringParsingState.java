@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: StringParsingState.java, Class: StringParsingState
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import java.util.Stack;
+import com.intellij.util.containers.Stack;
 
 /**
  * Class to store information about the current parsing of strings.
@@ -33,7 +33,6 @@ import java.util.Stack;
  */
 public final class StringParsingState {
     private final StringBuilder stringData = new StringBuilder(256);
-    //private final static Logger log = Logger.getInstance("#bash.StringParsingState");
 
     private static final class SubshellState {
         private boolean inString = false;
@@ -74,7 +73,7 @@ public final class StringParsingState {
 
     public void reset() {
         stringData.setLength(0);
-        subshells.removeAllElements();
+        subshells.clear();
     }
 
     public boolean isInSubstring() {

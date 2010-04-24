@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-03-18
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.containers.Stack;
 import com.intellij.util.diff.FlyweightCapableTreeStructure;
 
 import java.util.*;
@@ -206,7 +207,7 @@ public class MockPsiBuilder implements PsiBuilder {
             //fixme fix the stack of markers in the psi builder
             int pos = MockPsiBuilder.this.markers.indexOf(this);
             if (pos != -1) {
-                MockPsiBuilder.this.markers.insertElementAt(preceedingMarker, pos);
+                MockPsiBuilder.this.markers.add(pos, preceedingMarker);
             }
 
             return preceedingMarker;

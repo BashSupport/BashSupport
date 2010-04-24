@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashDelegatingElementImpl.java, Class: BashDelegatingElementImpl
- * Last modified: 2010-01-25
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,11 +38,13 @@ public abstract class BashDelegatingElementImpl extends BashPsiElementImpl {
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        for (PsiElement c : this.getChildren()) {
-            boolean proceed = c.processDeclarations(processor, state, lastParent, place);
-            if (!proceed) {
+        PsiElement child = getFirstChild();
+        while (child != null) {
+            if (!child.processDeclarations(processor, state, lastParent, place)) {
                 return false;
             }
+
+            child = child.getNextSibling();
         }
 
         return true;
