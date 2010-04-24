@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ConditionalParsingFunction.java, Class: ConditionalParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of conditional statements, like [ -z "" ] .
@@ -36,6 +37,8 @@ import com.intellij.psi.tree.IElementType;
  */
 public class ConditionalParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalParsingFunction");
+
+    private static final TokenSet conditionalRejects = TokenSet.create(_EXPR_CONDITIONAL, _BRACKET_KEYWORD);
 
     public boolean isValid(BashPsiBuilder builder) {
         IElementType token = builder.getTokenType();
@@ -76,7 +79,7 @@ public class ConditionalParsingFunction extends DefaultParsingFunction {
             if (conditionalOperators.contains(tokenType) || ParserUtil.isWordToken(tokenType)) {
                 builder.advanceLexer();
             } else if (Parsing.word.isWordToken(builder, true)) {
-                success = Parsing.word.parseWord(builder, true);//fixme set reject?
+                success = Parsing.word.parseWord(builder, true, conditionalRejects, TokenSet.EMPTY);
             } else {
                 success = false;
             }
@@ -89,13 +92,15 @@ public class ConditionalParsingFunction extends DefaultParsingFunction {
         if (simpleMode && builder.getTokenType() == _EXPR_CONDITIONAL) {
             builder.advanceLexer();
             return true;
-        } else if (!simpleMode && builder.getTokenType() == _BRACKET_KEYWORD) {
+        }
+
+        if (!simpleMode && builder.getTokenType() == _BRACKET_KEYWORD) {
             builder.advanceLexer();
             return true;
-        } else {
-            ParserUtil.error(builder, "parser.shell.conditional.expectedEnd");
-            return false;
         }
+
+        ParserUtil.error(builder, "parser.shell.conditional.expectedEnd");
+        return false;
     }
 
     private boolean isEndToken(IElementType tokenType) {

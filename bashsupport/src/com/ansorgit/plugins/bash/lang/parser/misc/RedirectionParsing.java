@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsing.java, Class: RedirectionParsing
- * Last modified: 2010-04-23
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,11 +83,7 @@ public class RedirectionParsing implements ParsingTool {
         final PsiBuilder.Marker redirectList = builder.mark();
 
         do {
-            boolean ok = parseSingleRedirect(builder);
-            if (!ok) {
-                redirectList.drop();
-                return false;
-            }
+            parseSingleRedirect(builder);
         } while (isRedirect(builder));
 
         redirectList.done(REDIRECT_LIST_ELEMENT);
@@ -103,7 +99,6 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         PsiBuilder.Marker marker = builder.mark();
-
         try {
             builder.enterNewErrorLevel(false);
             return parseSingleRedirect(builder, true);
@@ -119,16 +114,15 @@ public class RedirectionParsing implements ParsingTool {
     }
 
     public boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode) {
+        PsiBuilder.Marker marker = builder.mark();
+
         IElementType firstToken = builder.getTokenType();
         boolean firstIsInt = firstToken == INTEGER_LITERAL;
-
-        PsiBuilder.Marker marker = builder.mark();
 
         //after a int as first token no whitespace may appear
         IElementType secondToken;
         if (firstIsInt) {
-            //eat first token
-            builder.advanceLexer(true);
+            builder.advanceLexer(true); //first token
             secondToken = builder.getTokenType(true);
         } else {
             secondToken = builder.getTokenType();
@@ -157,38 +151,31 @@ public class RedirectionParsing implements ParsingTool {
                 return Parsing.word.isWordToken(builder);
             }
 
-            if (!handleHereDocRedirect(builder, marker)) {
+            if (!handleHereDocRedirect(builder)) {
                 marker.error("Expected heredoc marker");
                 return false;
             }
 
+            marker.done(REDIRECT_ELEMENT);
             return true;
         }
 
         boolean ok = Parsing.word.parseWord(builder);
-        if (!ok) {
-            marker.error("Invalid redirect");
-        } else {
+        if (ok) {
             marker.done(REDIRECT_ELEMENT);
+        } else {
+            marker.error("Invalid redirect");
         }
 
         return ok;
     }
 
-    private boolean handleHereDocRedirect(BashPsiBuilder builder, PsiBuilder.Marker marker) {
-        //boolean firstIsStart = firstToken == REDIRECT_LESS_LESS;
-        //here doc
+    private boolean handleHereDocRedirect(BashPsiBuilder builder) {
         if (!Parsing.word.isWordToken(builder)) {
-            error(marker, "parser.redirect.expected.string");
             return false;
         }
 
-        //fixme better impl with a sort of capture mode?
-
-        //get the name of the expected here doc end
         HereDocParsing.readHeredocMarker(builder);
-        marker.done(REDIRECT_ELEMENT);
-
         return true;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
- * Last modified: 2010-01-26
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,10 @@ public class ListParsing implements ParsingTool {
 
         //this is the list0 parsing here
         if (!parseList1(builder, false, true)) {
-            if (optionalMarker != null) optionalMarker.drop();
+            if (optionalMarker != null) {
+                optionalMarker.drop();
+            }
+
             return false;
         }
 
@@ -114,14 +117,20 @@ public class ListParsing implements ParsingTool {
 
         //in contrast to the grammar we assume that compound_list is terminated
         if (token == SEMI || token == LINE_FEED || token == AMP) {
-            if (optionalMarker != null) optionalMarker.done(BLOCK_ELEMENT);
+            if (optionalMarker != null) {
+                optionalMarker.done(BLOCK_ELEMENT);
+            }
+
             builder.advanceLexer();
             builder.eatOptionalNewlines();
 
             return true;
         }
 
-        if (optionalMarker != null) optionalMarker.done(BLOCK_ELEMENT);
+        if (optionalMarker != null) {
+            optionalMarker.done(BLOCK_ELEMENT);
+        }
+
         return builder.eof() || optionalTerminator;
     }
 
@@ -130,7 +139,6 @@ public class ListParsing implements ParsingTool {
     }
 
     /*
-
     list1:	list1 AND_AND newline_list list1
         |	list1 OR_OR newline_list list1
         |	list1 '&' newline_list list1
