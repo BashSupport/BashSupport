@@ -1,6 +1,8 @@
 2010-04-24:
   - Added "&-" to the lexer
   - Improved parsing and marking of redirect lists
+  - Improved parsing of conditional commands
+  - 0.9.10-maia
 
 2010-04-23:
   - Reworked redirect parsing

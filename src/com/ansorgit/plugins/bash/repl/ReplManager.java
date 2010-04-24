@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReplManager.java, Class: ReplManager
- * Last modified: 2010-03-04
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.repl;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.intellij.execution.CantRunException;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
@@ -93,7 +92,7 @@ public class ReplManager extends ContentManagerAdapter implements Disposable {
                     "config.error.replNotConfiguredTitle",
                     JOptionPane.WARNING_MESSAGE);
             return null;
-        } catch (CantRunException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "config.error.replNotConfiguredMessage",
                     "config.error.replNotConfiguredTitle",
