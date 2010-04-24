@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashWordImpl.java, Class: BashWordImpl
- * Last modified: 2010-01-25
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,10 +62,13 @@ public class BashWordImpl extends BashPsiElementImpl implements BashWord {
     }
 
     public boolean isStatic() {
-        for (PsiElement element : getChildren()) {
-            if (element instanceof BashVar || element instanceof BashSubshellCommand) {
+        PsiElement child = getFirstChild();
+        while (child != null) {
+            if (child instanceof BashVar || child instanceof BashSubshellCommand) {
                 return false;
             }
+
+            child = child.getNextSibling();
         }
 
         return true;

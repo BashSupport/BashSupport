@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-04-14
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,10 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     public boolean isExternalCommand() {
+        //internal resolve is expensive, so we should cache it
+        //we have to listen to psi changes in the file, though
+        //otherwise we might still have isExternal set to true even if a
+        //a target exists now, e.g. a bash function witht the right name
         return isExternal && (internalResolve() == null);
     }
 
@@ -194,13 +198,10 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        //log.info("bindToElement");
         return null;
     }
 
     public boolean isReferenceTo(PsiElement element) {
-        //log.info("isReferenceTo " + element);
-
         if (element instanceof PsiNamedElement) {
             if (Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName())) {
                 return resolve() == element;
@@ -234,21 +235,8 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     @Override
-    public boolean processDeclarations(PsiScopeProcessor processor,
-                                       ResolveState resolveState,
-                                       PsiElement lastParent,
+    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState resolveState, PsiElement lastParent,
                                        PsiElement place) {
-        //log.debug("processDeclarations with " + processor);
-
-        //assignment are only valid for other elements if this is a pure assignment
-        /*if (isPureAssignment() || isVarDefCommand()) {
-            for (final PsiElement c : getChildren()) {
-                if (!c.processDeclarations(processor, resolveState, lastParent, place)) {
-                    return false;
-                }
-            }
-        } */
-
         return BashPsiUtils.processChildDeclarations(this, processor, resolveState, lastParent, place);
     }
 

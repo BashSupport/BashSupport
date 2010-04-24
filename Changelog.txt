@@ -4,6 +4,8 @@
   - Improved parsing of conditional commands
   - 0.9.10-maia
 
+  - Some performance tuning
+
 2010-04-23:
   - Reworked redirect parsing
   - Fixed ternary operator in arithmetic expressions
