@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-04-23
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -324,6 +324,11 @@ public class BashLexerTest {
         testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
         testTokenization("> 1", GREATER_THAN, WHITESPACE, INTEGER_LITERAL);
         testTokenization(">&1", GREATER_THAN, FILEDESCRIPTOR);
+
+        testTokenization("<&-", LESS_THAN, FILEDESCRIPTOR);
+        testTokenization(">&-", GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("1>&-", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
+        testTokenization("1>&-", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
 
         testTokenization("3>&9", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("3>&10", INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);

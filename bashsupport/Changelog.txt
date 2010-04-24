@@ -1,3 +1,6 @@
+2010-04-24:
+  - Added "&-" to the lexer
+
 2010-04-23:
   - Reworked redirect parsing
   - Fixed ternary operator in arithmetic expressions
