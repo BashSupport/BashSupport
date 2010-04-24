@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PsiTests.java, Class: PsiTests
- * Last modified: 2010-02-01
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
+import junit.framework.Assert;
 import org.jetbrains.annotations.NonNls;
 import org.junit.Ignore;
 
@@ -52,7 +53,7 @@ public class PsiTests extends BashPsiTest {
     private void doTest() throws IOException {
         String filename = getTestName(false).toLowerCase() + ".test";
         final VirtualFile file = getFile(filename, myModule);
-        assertNotNull("File not found : " + filename, file);
+        Assert.assertNotNull("File not found : " + filename, file);
 
         String fileText = StringUtil.convertLineSeparators(VfsUtil.loadText(file), "\n");
         final IntRef startMarker = new IntRef(fileText.indexOf(START_MARKER));
@@ -66,18 +67,18 @@ public class PsiTests extends BashPsiTest {
         final String result = fileText.substring(resultMarker.get());
         VfsUtil.saveText(file, fileText.substring(0, resultMarker.get()));
 
-        final BashFile myFile = (BashFile) PsiManager.getInstance(getProject()).findFile(file);
+        final BashFile myFile = (BashFile) PsiManager.getInstance(myFixture.getProject()).findFile(file);
         final PsiElement startElement = myFile.findElementAt(startMarker.get());
         final PsiElement endElement = myFile.findElementAt(stopMarker.get());
         final BashPsiElement context = BashPsiUtils.getCoveringRPsiElement(PsiTreeUtil.findCommonParent(startElement, endElement));
         final StringBuffer buffer = new StringBuffer();
         //final Instruction[] instructions = new RControlFlowBuilder().buildControlFlow(myFile.getFileSymbol(), context, null, null);
         //for (Instruction instruction : instructions) {
-//            buffer.append(instruction).append("\n");
+        //            buffer.append(instruction).append("\n");
         //      }
 
 
-        assertEquals(result.trim(), buffer.toString().trim());
+        Assert.assertEquals(result.trim(), buffer.toString().trim());
     }
 
     public void testComment() throws IOException {

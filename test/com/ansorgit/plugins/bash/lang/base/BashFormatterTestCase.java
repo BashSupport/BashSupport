@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFormatterTestCase.java, Class: BashFormatterTestCase
- * Last modified: 2010-01-11
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,20 +28,21 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 import com.intellij.util.IncorrectOperationException;
 import org.junit.Assert;
 
 import java.io.IOException;
 
-public abstract class BashFormatterTestCase extends LightCodeInsightFixtureTestCase {
+//this test is currently broken
+public abstract class BashFormatterTestCase extends CodeInsightFixtureTestCase {
     private static final Logger LOG = Logger.getInstance("#BashFormatterTestCase");
     protected CodeStyleSettings myTempSettings;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setSettings(getProject());
+        setSettings(myFixture.getProject());
     }
 
     @Override
@@ -66,7 +67,7 @@ public abstract class BashFormatterTestCase extends LightCodeInsightFixtureTestC
     }
 
     protected void setSettingsBack() {
-        final CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(getProject());
+        final CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(myFixture.getProject());
         myTempSettings.getIndentOptions(BashFileType.BASH_FILE_TYPE).INDENT_SIZE = 200;
         myTempSettings.getIndentOptions(BashFileType.BASH_FILE_TYPE).CONTINUATION_INDENT_SIZE = 200;
         myTempSettings.getIndentOptions(BashFileType.BASH_FILE_TYPE).TAB_SIZE = 200;
@@ -82,7 +83,7 @@ public abstract class BashFormatterTestCase extends LightCodeInsightFixtureTestC
     }
 
     protected void checkFormatting(String expected) throws IOException {
-        CommandProcessor.getInstance().executeCommand(getProject(), new Runnable() {
+        CommandProcessor.getInstance().executeCommand(myFixture.getProject(), new Runnable() {
             public void run() {
                 ApplicationManager.getApplication().runWriteAction(new Runnable() {
                     public void run() {
