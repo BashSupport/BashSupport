@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,10 +48,10 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         boolean ok = true;
 
         while (!builder.eof() && ok) {
-            if (Parsing.word.isWordToken(builder, true)) {
+            if (Parsing.redirection.isRedirect(builder)) {
+                ok = Parsing.redirection.parseList(builder, false);
+            } else if (Parsing.word.isWordToken(builder, true)) {
                 ok = Parsing.word.parseWord(builder, true);
-            } else if (Parsing.redirection.isRedirect(builder)) {
-                ok = Parsing.redirection.parseSingleRedirect(builder);
             } else {
                 break;
             }
