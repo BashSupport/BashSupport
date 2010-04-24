@@ -1,5 +1,6 @@
 2010-04-24:
   - Added "&-" to the lexer
+  - Improved parsing and marking of redirect lists
 
 2010-04-23:
   - Reworked redirect parsing

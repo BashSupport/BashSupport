@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: GroupCommandParsingFunction.java, Class: GroupCommandParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,8 +49,6 @@ public class GroupCommandParsingFunction extends DefaultParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        //log.assertTrue(isValid(builder));
-
         final PsiBuilder.Marker group = builder.mark();
         builder.advanceLexer();//after the { token
 
@@ -61,14 +59,16 @@ public class GroupCommandParsingFunction extends DefaultParsingFunction {
         }
 
         if (!Parsing.list.parseCompoundList(builder, true, false, false)) {
-            ParserUtil.error(group, "parser.unexpected.token");//fixme
+            //ParserUtil.error(group, "parser.unexpected.token");
+            group.drop();
             return false;
         }
 
         //check the closing curly bracket
         final IElementType lastToken = ParserUtil.getTokenAndAdvance(builder);
         if (lastToken != BashTokenTypes.RIGHT_CURLY) {
-            ParserUtil.error(group, "parser.unexpected.token");
+            //ParserUtil.error(group, "parser.unexpected.token");
+            group.drop();
             return false;
         }
 

@@ -90,3 +90,8 @@ case "$1" in
 esac
 
 :
+run_by_init() {
+    function a() {
+    lkjsdlkj>
+    }
+}

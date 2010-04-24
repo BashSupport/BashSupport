@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandParsingTest.java, Class: ShellCommandParsingTest
- * Last modified: 2010-02-06
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -248,7 +248,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
         mockTestError(commandGroupParsingTest, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         //{ echo a}
-        mockTestError(commandGroupParsingTest,
+        mockTestFail(commandGroupParsingTest,
                 LEFT_CURLY, WHITESPACE, WORD, WORD, RIGHT_CURLY);
     }
 

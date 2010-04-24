@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandDelegator.java, Class: ShellCommandDelegator
- * Last modified: 2010-04-23
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.command;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * This simply delegates the parsing to the shellcommands. This way internal shell commands
@@ -33,10 +32,6 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class ShellCommandDelegator extends DefaultParsingFunction {
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("isValid(token) not support");
-    }
-
     public boolean isValid(BashPsiBuilder builder) {
         return Parsing.shellCommand.isValid(builder);
     }
@@ -44,8 +39,8 @@ public class ShellCommandDelegator extends DefaultParsingFunction {
     public boolean parse(BashPsiBuilder builder) {
         final boolean ok = Parsing.shellCommand.parse(builder);
         //parse optional redirect list, if the shell command parsed
-        final boolean redirectOk = Parsing.redirection.parseList(builder, true)
-                || !ok;
+        //fixme is this still required
+        final boolean redirectOk = Parsing.redirection.parseList(builder, true) || !ok;
         return ok && redirectOk;
     }
 }
