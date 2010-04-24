@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-02-09
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,10 +122,13 @@ public class BashPsiUtils {
     }
 
     public static boolean processChildDeclarations(PsiElement parentContainer, PsiScopeProcessor processor, ResolveState resolveState, PsiElement parent, PsiElement place) {
-        for (PsiElement c : parentContainer.getChildren()) {
-            if (!c.processDeclarations(processor, resolveState, parent, place)) {
+        PsiElement child = parentContainer.getFirstChild();
+        while (child != null) {
+            if (!child.processDeclarations(processor, resolveState, parent, place)) {
                 return false;
             }
+
+            child = child.getNextSibling();
         }
 
         return true;

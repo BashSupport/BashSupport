@@ -33,7 +33,7 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
-import java.util.Stack;
+import com.intellij.util.containers.Stack;
 
 %%
 
@@ -47,17 +47,13 @@ import java.util.Stack;
 %type IElementType
 
 %{
-  private Stack<Integer> lastStates = new Stack<Integer>();
+  private Stack<Integer> lastStates = new Stack<Integer>(25);
   private int openParenths = 0;
-  private com.ansorgit.plugins.bash.lang.BashVersion bashVersion = com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
+  private boolean isBash4 = false;
 
   public _BashLexer(com.ansorgit.plugins.bash.lang.BashVersion version, java.io.Reader in) {
     this(in);
-    this.bashVersion = version;
-  }
-
-  private boolean isBash4() {
-    return com.ansorgit.plugins.bash.lang.BashVersion.Bash_v4.equals(this.bashVersion);
+    this.isBash4 = com.ansorgit.plugins.bash.lang.BashVersion.Bash_v4.equals(version);
   }
 
   /**
@@ -80,19 +76,6 @@ import java.util.Stack;
     else {
       yybegin(lastStates.pop());
     }
-  }
-
-  //The name of a heredoc. The name is the name end token of it.
-  private String hereDocName = null;
-  //The content of the heredoc.
-  private StringBuilder hereDoc = new StringBuilder();
-
-  /**
-   *Helper function to start a new here - doc
-   */
-  private void startHereDoc(String name) {
-    hereDocName = name;
-    hereDoc.setLength(0);
   }
 
   //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
@@ -440,7 +423,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "esac"                       { backToPreviousState(); return ESAC_KEYWORD; }
 
   ";&"                         { goToState(S_CASE_PATTERN);
-                                 if (isBash4()) {
+                                 if (isBash4) {
                                     return CASE_END;
                                  }
                                  else {
@@ -450,7 +433,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                }
   
   ";;&"                        { goToState(S_CASE_PATTERN);
-                                 if (!isBash4()) {
+                                 if (!isBash4) {
                                     yypushback(1);
                                  }
                                  return CASE_END;
@@ -513,7 +496,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 
  "|&"                         { string.advanceToken();
-                                if (isBash4()) {
+                                if (isBash4) {
                                     return (string.isInSubshell() && !string.isInSubstring()) ? PIPE_AMP : WORD;
                                 } else {
                                     yypushback(1);
@@ -533,7 +516,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <YYINITIAL, S_BACKQUOTE> {
   /* Bash 4 */
-    "&>>"                         { if (isBash4()) {
+    "&>>"                         { if (isBash4) {
                                         return REDIRECT_AMP_GREATER_GREATER;
                                     } else {
                                         yypushback(2);
@@ -541,7 +524,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                     }
                                   }
 
-    "&>"                          { if (isBash4()) {
+    "&>"                          { if (isBash4) {
                                         return REDIRECT_AMP_GREATER;
                                     } else {
                                         yypushback(1);
@@ -609,7 +592,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "{"                           { return LEFT_CURLY; }
 
-    "|&"                          { if (isBash4())
+    "|&"                          { if (isBash4)
                                         return PIPE_AMP; 
                                      else {
                                         yypushback(1);
