@@ -147,7 +147,7 @@ CaseFirst=[^|)(# \n\r\f\t\f]
 CaseAfter=[^|)( \n\r\f\t\f]
 CasePattern = {CaseFirst}{CaseAfter}*
 
-Filedescriptor = "&" {IntegerLiteral}
+Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /************* STATES ************/
 /* If in a conditional expression */
