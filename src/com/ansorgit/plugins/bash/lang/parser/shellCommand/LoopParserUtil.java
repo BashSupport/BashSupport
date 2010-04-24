@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: LoopParserUtil.java, Class: LoopParserUtil
- * Last modified: 2009-12-04
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ class LoopParserUtil implements BashTokenTypes {
 
                 return ok;
             } else {
-                ParserUtil.error(builder, "parser.shell.loop.expectedBody");
+                //ParserUtil.error(builder, "parser.shell.loop.expectedBody");
                 return false;
             }
         }

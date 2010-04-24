@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WordParsing.java, Class: WordParsing
- * Last modified: 2010-03-25
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ public class WordParsing implements ParsingTool {
 
         IElementType end = ParserUtil.getTokenAndAdvance(builder);
         if (end != STRING_END) {
-            builder.error("Invalid string");
+            stringStart.error("String end marker not found");
             return false;
         }
 
@@ -166,7 +166,7 @@ public class WordParsing implements ParsingTool {
 
     public boolean parseWordList(BashPsiBuilder builder, boolean readListTerminator, boolean enableRemapping) {
         if (!isWordToken(builder, enableRemapping)) {
-            ParserUtil.error(builder, "parser.unexpected.token");
+            //ParserUtil.error(builder, "parser.unexpected.token");
             return false;
         }
 
@@ -176,7 +176,7 @@ public class WordParsing implements ParsingTool {
 
         if (readListTerminator) {
             if (!Parsing.list.isListTerminator(builder.getTokenType())) {
-                ParserUtil.error(builder, "parser.unexpected.token");
+                //ParserUtil.error(builder, "parser.unexpected.token");
                 return false;
             }
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-04-23
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -580,5 +580,24 @@ public class IntegrationTest extends MockPsiTest {
         //exec 9 <& 0 < /etc/fstab
         mockTest(fileParsingTest, WORD, INTEGER_LITERAL, WHITESPACE, REDIRECT_LESS_AMP, WHITESPACE, INTEGER_LITERAL,
                 LESS_THAN, WHITESPACE, WORD);
+    }
+
+    @Test
+    public void testIf() {
+        //if [[ -z $a ]]
+        //then
+        //  echo a
+        //fi
+
+        mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, VARIABLE, _BRACKET_KEYWORD, LINE_FEED,
+                THEN_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, FI_KEYWORD);
+
+        //if [[ -z "a" ]]
+        //then
+        //  echo a
+        //fi
+
+        mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, WORD, STRING_END, _BRACKET_KEYWORD, LINE_FEED,
+                THEN_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, FI_KEYWORD);
     }
 }

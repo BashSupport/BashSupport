@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-04-24
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,6 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class FunctionDefParsingFunction extends DefaultParsingFunction {
-    private boolean isValid(IElementType token) {
-        return false;
-    }
-
     public boolean isValid(BashPsiBuilder builder) {
         if (builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD) {
             return true;
@@ -67,6 +63,7 @@ public class FunctionDefParsingFunction extends DefaultParsingFunction {
         final IElementType firstToken = builder.getTokenType();
         if (firstToken == BashTokenTypes.FUNCTION_KEYWORD) {
             builder.advanceLexer();//after the function keyword
+
             //get the function name
             final PsiBuilder.Marker nameMarker = builder.mark();
 
@@ -77,6 +74,7 @@ public class FunctionDefParsingFunction extends DefaultParsingFunction {
                 ParserUtil.error(function, "parser.unexpected.token");
                 return false;
             }
+
             nameMarker.done(BashElementTypes.SYMBOL_ELEMENT);
 
             //optional ()
@@ -115,7 +113,8 @@ public class FunctionDefParsingFunction extends DefaultParsingFunction {
         //if we didn't have on ore more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
         if (!newlinesAtBegin && !isGroup) {
-            ParserUtil.error(function, "parser.unexpected.token");
+            function.drop();
+            //ParserUtil.error(function, "parser.unexpected.token");
             return false;
         }
 
