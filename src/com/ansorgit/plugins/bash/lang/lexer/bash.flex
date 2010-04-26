@@ -99,7 +99,7 @@ Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
 Comments = {Comment}({Comment}{LineTerminator})*
 
-EscapedChar    = "\\t" | "\\n" | "\\r" | "\\\"" | "\\'" | "\\`" | "\\." | "\\#" | "\\$" | "\\*" | "\\ " | "\\\\" | "\\?" | "\\!" | "\\>" | "\\<"
+EscapedChar = "\\" [^\n]
 StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 

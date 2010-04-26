@@ -94,6 +94,10 @@
       </value>
     </option>
   </component>
+  <component name="CompilerAPISettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
+    <option name="MAXIMUM_HEAP_SIZE" value="192" />
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="compAPI" />
     <resourceExtensions>

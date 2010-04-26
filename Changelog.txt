@@ -1,3 +1,8 @@
+2010-04-26:
+  - Fixed Java5 compilation
+  - Fixed unsupported escape codes
+  - 0.9.11-maia
+
 2010-04-24:
   - Added "&-" to the lexer
   - Improved parsing and marking of redirect lists
