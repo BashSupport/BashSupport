@@ -11,100 +11,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/gcc.html" afterPath="$PROJECT_DIR$/resources/documentation/external/gcc.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/grep.html" afterPath="$PROJECT_DIR$/resources/documentation/external/grep.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/xsltproc.html" afterPath="$PROJECT_DIR$/resources/documentation/external/xsltproc.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/rm.html" afterPath="$PROJECT_DIR$/resources/documentation/external/rm.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/chksum.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/sha1sum.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/gs.html" afterPath="$PROJECT_DIR$/resources/documentation/external/gs.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/kill.html" afterPath="$PROJECT_DIR$/resources/documentation/external/kill.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/expr.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/apt-get.html" afterPath="$PROJECT_DIR$/resources/documentation/external/apt-get.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ps.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ps.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/reset.html" afterPath="$PROJECT_DIR$/resources/documentation/external/reset.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/perl.html" afterPath="$PROJECT_DIR$/resources/documentation/external/perl.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/awk.html" afterPath="$PROJECT_DIR$/resources/documentation/external/awk.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/rmdir.html" afterPath="$PROJECT_DIR$/resources/documentation/external/rmdir.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/umount.html" afterPath="$PROJECT_DIR$/resources/documentation/external/umount.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/seq.html" afterPath="$PROJECT_DIR$/resources/documentation/external/seq.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/tac.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/cp.html" afterPath="$PROJECT_DIR$/resources/documentation/external/cp.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/gunzip.html" afterPath="$PROJECT_DIR$/resources/documentation/external/gunzip.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/xargs.html" afterPath="$PROJECT_DIR$/resources/documentation/external/xargs.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/cat.html" afterPath="$PROJECT_DIR$/resources/documentation/external/cat.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/sh.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/SystemPathUtilTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/SystemPathUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ld.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ld.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/man.html" afterPath="$PROJECT_DIR$/resources/documentation/external/man.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/sum.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/rar.html" afterPath="$PROJECT_DIR$/resources/documentation/external/rar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/bc.html" afterPath="$PROJECT_DIR$/resources/documentation/external/bc.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/sed.html" afterPath="$PROJECT_DIR$/resources/documentation/external/sed.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/find.html" afterPath="$PROJECT_DIR$/resources/documentation/external/find.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/cut.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/sudo.html" afterPath="$PROJECT_DIR$/resources/documentation/external/sudo.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/sha2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/pr.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/locate.html" afterPath="$PROJECT_DIR$/resources/documentation/external/locate.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/split.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/ProductExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/zip.html" afterPath="$PROJECT_DIR$/resources/documentation/external/zip.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ls.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ls.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/java.html" afterPath="$PROJECT_DIR$/resources/documentation/external/java.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/file.html" afterPath="$PROJECT_DIR$/resources/documentation/external/file.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/info.html" afterPath="$PROJECT_DIR$/resources/documentation/external/info.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/whois.html" afterPath="$PROJECT_DIR$/resources/documentation/external/whois.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/make.html" afterPath="$PROJECT_DIR$/resources/documentation/external/make.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/egrep.html" afterPath="$PROJECT_DIR$/resources/documentation/external/egrep.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/tar.html" afterPath="$PROJECT_DIR$/resources/documentation/external/tar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ant.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ant.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ifconfig.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ifconfig.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/killall.html" afterPath="$PROJECT_DIR$/resources/documentation/external/killall.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/head.html" afterPath="$PROJECT_DIR$/resources/documentation/external/head.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/csplit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/bzip2.html" afterPath="$PROJECT_DIR$/resources/documentation/external/bzip2.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/wget.html" afterPath="$PROJECT_DIR$/resources/documentation/external/wget.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/modprobe.html" afterPath="$PROJECT_DIR$/resources/documentation/external/modprobe.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/who.html" afterPath="$PROJECT_DIR$/resources/documentation/external/who.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/nl.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/sleep.html" afterPath="$PROJECT_DIR$/resources/documentation/external/sleep.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/test.html" afterPath="$PROJECT_DIR$/resources/documentation/external/test.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/tail.html" afterPath="$PROJECT_DIR$/resources/documentation/external/tail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/mount.html" afterPath="$PROJECT_DIR$/resources/documentation/external/mount.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/wc.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/rmmod.html" afterPath="$PROJECT_DIR$/resources/documentation/external/rmmod.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/gzip.html" afterPath="$PROJECT_DIR$/resources/documentation/external/gzip.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashEditorHighlighter.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/FloatArithmeticInspection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/md5sum.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/top.html" afterPath="$PROJECT_DIR$/resources/documentation/external/top.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/lsmod.html" afterPath="$PROJECT_DIR$/resources/documentation/external/lsmod.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/g++.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/tee.html" afterPath="$PROJECT_DIR$/resources/documentation/external/tee.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/apt.html" afterPath="$PROJECT_DIR$/resources/documentation/external/apt.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/zless.html" afterPath="$PROJECT_DIR$/resources/documentation/external/zless.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/whoami.html" afterPath="$PROJECT_DIR$/resources/documentation/external/whoami.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/bash.html" afterPath="$PROJECT_DIR$/resources/documentation/external/bash.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/od.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/date.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/paste.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/documentation/external/mv.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/create-html.sh" afterPath="$PROJECT_DIR$/resources/documentation/external/create-html.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/ldd.html" afterPath="$PROJECT_DIR$/resources/documentation/external/ldd.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/dd.html" afterPath="$PROJECT_DIR$/resources/documentation/external/dd.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/vim.html" afterPath="$PROJECT_DIR$/resources/documentation/external/vim.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/less.html" afterPath="$PROJECT_DIR$/resources/documentation/external/less.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/su.html" afterPath="$PROJECT_DIR$/resources/documentation/external/su.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/javac.html" afterPath="$PROJECT_DIR$/resources/documentation/external/javac.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/documentation/external/tr.html" afterPath="$PROJECT_DIR$/resources/documentation/external/tr.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/KeywordDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashKeywordDocSource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/InternalCmdDocumentation.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/InternalCommandDocumentation.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.tar.gz" />
@@ -204,22 +123,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashBlockImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/word/BashWordImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/word/BashStringImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashDelegatingElementImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
-        <option value="$PROJECT_DIR$/jflex.log" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" />
-        <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/resources/documentation/external/create-html.sh" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/SystemPathUtil.java" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/SystemPathUtilTest.java" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java" />
+        <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachedDocSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSouece.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
       </list>
     </option>
   </component>
@@ -768,84 +687,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="refactoring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -868,75 +709,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
+              <option name="myItemId" value="refactoring" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -980,33 +753,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="editor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="highlighting" />
+              <option name="myItemId" value="documentation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1039,28 +786,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="documentation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="documentation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="external" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1222,6 +947,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="113" />
+    <property name="INTRODUCE_CONSTANT_NONNLS" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="77" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
@@ -1276,11 +1002,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ansorgit.plugins.bash.util" />
+      <recent name="com.ansorgit.plugins.bash.documentation" />
       <recent name="com.ansorgit.plugins.bash.lang" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
       <recent name="com.ansorgit.plugins.bash.util.content" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.shellCommand" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.builtin" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.editor.inspections.inspections" />
@@ -1297,6 +1023,13 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
     </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.documentation.SystemInfopageDocSource" />
+      <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
+      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
+      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
+    </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.BashComponents" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
@@ -1304,23 +1037,12 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashElementTypes" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder" />
     </key>
-    <key name="IntroduceConstantDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
-      <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
-      <recent name="com.ansorgit.plugins.bash.lang.BashLoader" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <recent name="com.ansorgit.plugins.bash.lang.highlighter.BashSyntaxHighlighter" />
-    </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ansorgit.plugins.bash.documentation" />
       <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
       <recent name="com.ansorgit.plugins.bash.runner" />
       <recent name="com.ansorgit.plugins.bash.util.content" />
       <recent name="com.ansorgit.plugins.bash.settings.facet.ui" />
-      <recent name="com.ansorgit.plugins.bash.settings.facet" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
-      <recent name="$PROJECT_DIR$/test" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.lexer" />
@@ -1329,12 +1051,16 @@
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/content" />
+      <recent name="$PROJECT_DIR$/test" />
+    </key>
   </component>
-  <component name="RunManager" selected="Bash.create-html.sh">
-    <configuration default="false" name="ShellCommandParsingTest.testParseGroupCommandError" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="Plugin.Intellij IDEA">
+    <configuration default="false" name="SystemPathUtilTest.testFindBestExecutable" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1342,9 +1068,9 @@
       <module name="BashSupport" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.ShellCommandParsingTest" />
-      <option name="METHOD_NAME" value="testParseGroupCommandError" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.util" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.util.SystemPathUtilTest" />
+      <option name="METHOD_NAME" value="testFindBestExecutable" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -1359,10 +1085,10 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="IntegrationTest.testIf" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="SystemPathUtilTest.testFindBestExecutablePaths" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1370,9 +1096,37 @@
       <module name="BashSupport" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.IntegrationTest" />
-      <option name="METHOD_NAME" value="testIf" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.util" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.util.SystemPathUtilTest" />
+      <option name="METHOD_NAME" value="testFindBestExecutablePaths" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="SystemInfopageDocSourceTest.testInfoPageCall" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.documentation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="BashSupport" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.documentation" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.documentation.SystemInfopageDocSourceTest" />
+      <option name="METHOD_NAME" value="testInfoPageCall" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -1384,7 +1138,7 @@
       </option>
       <envs />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="44963" />
+        <option name="DEBUG_PORT" value="57144" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
@@ -1393,10 +1147,10 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="BashLexerTest.testStrings" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="SystemInfopageDocSourceTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.lexer.*" />
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.documentation.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1404,10 +1158,10 @@
       <module name="BashSupport" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.lexer" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.lexer.BashLexerTest" />
-      <option name="METHOD_NAME" value="testStrings" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.documentation" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.documentation.SystemInfopageDocSourceTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -1421,23 +1175,10 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="create-html.sh" type="BashConfigurationType" factoryName="Bash" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="INTERPRETER_PATH" value="/bin/bash" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/resources/documentation/external" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <module name="BashSupport" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/resources/documentation/external/create-html.sh" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ArithmeticParserTest.testParse" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="SystemInfopageDocSourceTest.testInfoFileExists" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.shellCommand.*" />
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.documentation.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1445,9 +1186,9 @@
       <module name="BashSupport" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser.shellCommand" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.shellCommand.ArithmeticParserTest" />
-      <option name="METHOD_NAME" value="testParse" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.documentation" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.documentation.SystemInfopageDocSourceTest" />
+      <option name="METHOD_NAME" value="testInfoFileExists" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -1799,16 +1540,16 @@
       <method />
     </configuration>
     <list size="10">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ShellCommandParsingTest.testParseGroupCommandError" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testIf" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testStrings" />
-      <item index="3" class="java.lang.String" itemvalue="Bash.create-html.sh" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.All tests" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.HereDocParsingTest.testSimpleHereDocs" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.PsiTests" />
-      <item index="8" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
-      <item index="9" class="java.lang.String" itemvalue="JUnit.ArithmeticParserTest.testParse" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.All tests" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.HereDocParsingTest.testSimpleHereDocs" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.PsiTests" />
+      <item index="4" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.SystemPathUtilTest.testFindBestExecutable" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.SystemPathUtilTest.testFindBestExecutablePaths" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.SystemInfopageDocSourceTest.testInfoPageCall" />
+      <item index="8" class="java.lang.String" itemvalue="JUnit.SystemInfopageDocSourceTest" />
+      <item index="9" class="java.lang.String" itemvalue="JUnit.SystemInfopageDocSourceTest.testInfoFileExists" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1903,7 +1644,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1400" height="1015" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36506158" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
@@ -1911,21 +1652,21 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25979844" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15613383" sideWeight="0.7525196" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2911534" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31598514" sideWeight="0.33706608" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.333829" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32862455" sideWeight="0.68533033" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2795539" sideWeight="0.70100784" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3068309" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3345725" sideWeight="0.5800672" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3068309" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32763743" sideWeight="0.59323883" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3345725" sideWeight="0.5800672" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Cycles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2022,104 +1763,120 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/refactoring/BashRefactoringSupport.java">
+    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/lang/UNIXProcess.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="13" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.24249423" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/BashLanguage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="13" selection-start="1181" selection-end="1181" vertical-scroll-proportion="0.2078522" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="13" selection-start="1975" selection-end="1975" vertical-scroll-proportion="-1.1731448" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileTypeLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="13" selection-start="1038" selection-end="1038" vertical-scroll-proportion="0.19053118" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="402" column="2" selection-start="13937" selection-end="13937" vertical-scroll-proportion="0.61130744">
+        <state line="164" column="0" selection-start="5062" selection-end="5062" vertical-scroll-proportion="0.33333334">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/ProcessOutput.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="30" selection-start="5079" selection-end="5079" vertical-scroll-proportion="0.41108546">
+        <state line="65" column="22" selection-start="1533" selection-end="1533" vertical-scroll-proportion="0.49557522">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/OSProcessHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="26" selection-start="6419" selection-end="6419" vertical-scroll-proportion="0.752459">
+        <state line="117" column="14" selection-start="3831" selection-end="3831" vertical-scroll-proportion="0.14051095">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AdditionExpr.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/CapturingProcessHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="37" selection-start="961" selection-end="961" vertical-scroll-proportion="0.3110048">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/MultiplicationExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="6" selection-start="888" selection-end="888" vertical-scroll-proportion="0.2631579">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="37" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.39838338">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="70" selection-start="1997" selection-end="1997" vertical-scroll-proportion="0.60188454">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="44" selection-start="895" selection-end="895" vertical-scroll-proportion="0.3533569">
+        <state line="65" column="4" selection-start="2053" selection-end="2053" vertical-scroll-proportion="0.43893805">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="2" selection-start="71" selection-end="71" vertical-scroll-proportion="0.03533569">
+        <state line="2" column="31" selection-start="100" selection-end="100" vertical-scroll-proportion="0.034642033">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/documentation/external/create-html.sh">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="431" selection-end="431" vertical-scroll-proportion="1.3008547">
+        <state line="30" column="13" selection-start="935" selection-end="935" vertical-scroll-proportion="0.24249423">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashDocumentationProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="13" selection-start="1260" selection-end="1260" vertical-scroll-proportion="0.25981525">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.txt">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="34" selection-start="7511" selection-end="7511" vertical-scroll-proportion="1.362676">
+        <state line="40" column="12" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.2944573">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="11" selection-start="964" selection-end="964" vertical-scroll-proportion="0.30981067">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/command/BashCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="17" selection-start="2313" selection-end="2313" vertical-scroll-proportion="0.023372287">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/documentation/DocumentationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="665" column="0" selection-start="27234" selection-end="27234" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-impl/src/com/intellij/openapi/application/impl/ApplicationImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="698" column="0" selection-start="23537" selection-end="23537" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/google-collect-1.0-src.zip!/com/google/common/collect/MapMaker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="759" column="6" selection-start="28227" selection-end="28227" vertical-scroll-proportion="0.33222038">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="8" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.7575058">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="4" selection-start="1848" selection-end="1848" vertical-scroll-proportion="0.22850412">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="64" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.34642032">
           <folding />
         </state>
       </provider>
