@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionPsiCommentSource.java, Class: FunctionPsiCommentSource
- * Last modified: 2009-12-25
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,9 @@ import com.intellij.psi.PsiElement;
 import java.util.List;
 
 /**
+ * Provides the comment right before a function definition as documentation for a function call psi element and
+ * for the definition itself.
+ * <p/>
  * User: jansorg
  * Date: Nov 10, 2009
  * Time: 7:12:28 PM
@@ -37,12 +40,14 @@ class FunctionPsiCommentSource implements DocumentationSource {
 
     public String documentation(PsiElement element, PsiElement originalElement) {
         if (element instanceof BashFunctionDef) {
-            log.info("Looking for doc for function def");
+            log.debug("Looking for doc for function def");
             return functionDefComment(element);
-        } else if (element instanceof BashCommand) {
+        }
+
+        if (element instanceof BashCommand) {
             BashCommand command = (BashCommand) element;
             if (command.isFunctionCall()) {
-                log.info("Looking for doc for function call");
+                log.debug("Looking for doc for function call");
 
                 PsiElement function = command.resolve();
 
