@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: awk.html, Class: awk.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p>GAWK(1) Utility Commands GAWK(1)
@@ -243,320 +243,430 @@
               is  also  useful when reporting bugs.  (Per the GNU Coding Stan‐
               dards, these options cause an immediate, successful exit.)
 
-       --     Signal the end of options. This is useful to allow further argu‐
+       --
+              Signal the end of options. This is useful to allow further argu‐
               ments  to the AWK program itself to start with a “-”.  This pro‐
               vides consistency with the argument parsing convention  used  by
               most other POSIX programs.
+
        In  compatibility  mode,  any other options are flagged as invalid, but
        are otherwise ignored.  In normal operation, as long  as  program  text
        has  been supplied, unknown options are passed on to the AWK program in
        the ARGV array for processing.  This is particularly useful for running
-       AWK programs via the “<strong>!” executable interpreter mechanism.
-       AWK PROGRAM EXECUTION
-       An AWK program consists of a sequence of pattern-action statements and
+       AWK programs via the “#!” executable interpreter mechanism.
+</pre>
+<p><strong>AWK PROGRAM EXECUTION</strong>
+</p><pre>
+       An  AWK program consists of a sequence of pattern-action statements and
        optional function definitions.
-       pattern { action statements }
-       function name(parameter list) { statements }
-       Gawk first reads the program source from the program-file(s) if speci‐
+
+              pattern   { action statements }
+              function name(parameter list) { statements }
+
+       Gawk first reads the program source from the program-file(s) if  speci‐
        fied, from arguments to --source, or from the first non-option argument
-       on the command line. The -f and --source options may be used multiple
-       times on the command line. Gawk reads the program text as if all the
-       program-files and command line source texts had been concatenated
-       together. This is useful for building libraries of AWK functions,
-       without having to include them in each new AWK program that uses them.
+       on the command line.  The -f and --source options may be used  multiple
+       times  on  the command line.  Gawk reads the program text as if all the
+       program-files and command  line  source  texts  had  been  concatenated
+       together.   This  is  useful  for  building libraries of AWK functions,
+       without having to include them in each new AWK program that uses  them.
        It also provides the ability to mix library functions with command line
        programs.
-       The environment variable AWKPATH specifies a search path to use when
-       finding source files named with the -f option. If this variable does
-       not exist, the default path is ".:/usr/local/share/awk". (The actual
-       directory may vary, depending upon how gawk was built and installed.)
+
+       The environment variable AWKPATH specifies a search path  to  use  when
+       finding  source  files named with the -f option.  If this variable does
+       not exist, the default path is ".:/usr/local/share/awk".   (The  actual
+       directory  may  vary, depending upon how gawk was built and installed.)
        If a file name given to the -f option contains a “/” character, no path
        search is performed.
-       Gawk executes AWK programs in the following order. First, all variable
-       assignments specified via the -v option are performed. Next, gawk com‐
-       piles the program into an internal form. Then, gawk executes the code
-       in the BEGIN block(s) (if any), and then proceeds to read each file
-       named in the ARGV array. If there are no files named on the command
+
+       Gawk executes AWK programs in the following order.  First, all variable
+       assignments specified via the -v option are performed.  Next, gawk com‐
+       piles  the program into an internal form.  Then, gawk executes the code
+       in the BEGIN block(s) (if any), and then proceeds  to  read  each  file
+       named  in  the  ARGV array.  If there are no files named on the command
        line, gawk reads the standard input.
+
        If a filename on the command line has the form var=val it is treated as
-       a variable assignment. The variable var will be assigned the value
-       val. (This happens after any BEGIN block(s) have been run.) Command
-       line variable assignment is most useful for dynamically assigning val‐
-       ues to the variables AWK uses to control how input is broken into
-       fields and records. It is also useful for controlling state if multi‐
+       a  variable  assignment.   The  variable var will be assigned the value
+       val.  (This happens after any BEGIN block(s) have been  run.)   Command
+       line  variable assignment is most useful for dynamically assigning val‐
+       ues to the variables AWK uses to  control  how  input  is  broken  into
+       fields  and records.  It is also useful for controlling state if multi‐
        ple passes are needed over a single data file.
-       If the value of a particular element of ARGV is empty (""), gawk skips
+
+       If the value of a particular element of ARGV is empty (""), gawk  skips
        over it.
-       For each record in the input, gawk tests to see if it matches any pat‐
-       tern in the AWK program. For each pattern that the record matches, the
-       associated action is executed. The patterns are tested in the order
+
+       For  each record in the input, gawk tests to see if it matches any pat‐
+       tern in the AWK program.  For each pattern that the record matches, the
+       associated  action  is  executed.  The patterns are tested in the order
        they occur in the program.
-       Finally, after all the input is exhausted, gawk executes the code in
+
+       Finally, after all the input is exhausted, gawk executes  the  code  in
        the END block(s) (if any).
-       VARIABLES, RECORDS AND FIELDS
+</pre>
+<p><strong>VARIABLES, RECORDS AND FIELDS</strong>
+</p><pre>
        AWK variables are dynamic; they come into existence when they are first
-       used. Their values are either floating-point numbers or strings, or
-       both, depending upon how they are used. AWK also has one dimensional
-       arrays; arrays with multiple dimensions may be simulated. Several pre-
-       defined variables are set as a program runs; these are described as
+       used.  Their values are either floating-point numbers  or  strings,  or
+       both,  depending  upon how they are used.  AWK also has one dimensional
+       arrays; arrays with multiple dimensions may be simulated.  Several pre-
+       defined  variables  are  set  as a program runs; these are described as
        needed and summarized below.
-       Records
-       Normally, records are separated by newline characters. You can control
-       how records are separated by assigning values to the built-in variable
-       RS. If RS is any single character, that character separates records.
-       Otherwise, RS is a regular expression. Text in the input that matches
-       this regular expression separates the record. However, in compatibil‐
+</pre>
+<p> Records
+</p><pre>
+       Normally, records are separated by newline characters.  You can control
+       how  records are separated by assigning values to the built-in variable
+       RS.  If RS is any single character, that character  separates  records.
+       Otherwise,  RS is a regular expression.  Text in the input that matches
+       this regular expression separates the record.  However, in  compatibil‐
        ity mode, only the first character of its string value is used for sep‐
-       arating records. If RS is set to the null string, then records are
-       separated by blank lines. When RS is set to the null string, the new‐
-       line character always acts as a field separator, in addition to what‐
+       arating records.  If RS is set to the null  string,  then  records  are
+       separated  by blank lines.  When RS is set to the null string, the new‐
+       line character always acts as a field separator, in addition  to  what‐
        ever value FS may have.
-       Fields
+</pre>
+<p> Fields
+</p><pre>
        As each input record is read, gawk splits the record into fields, using
-       the value of the FS variable as the field separator. If FS is a single
-       character, fields are separated by that character. If FS is the null
-       string, then each individual character becomes a separate field. Oth‐
-       erwise, FS is expected to be a full regular expression. In the special
-       case that FS is a single space, fields are separated by runs of spaces
-       and/or tabs and/or newlines. (But see the section POSIX COMPATIBILITY,
-       below). NOTE: The value of IGNORECASE (see below) also affects how
-       fields are split when FS is a regular expression, and how records are
+       the value of the FS variable as the field separator.  If FS is a single
+       character,  fields  are separated by that character.  If FS is the null
+       string, then each individual character becomes a separate field.   Oth‐
+       erwise, FS is expected to be a full regular expression.  In the special
+       case that FS is a single space, fields are separated by runs of  spaces
+       and/or tabs and/or newlines.  (But see the section POSIX COMPATIBILITY,
+       below).  NOTE: The value of IGNORECASE (see  below)  also  affects  how
+       fields  are  split when FS is a regular expression, and how records are
        separated when RS is a regular expression.
-       If the FIELDWIDTHS variable is set to a space separated list of num‐
-       bers, each field is expected to have fixed width, and gawk splits up
-       the record using the specified widths. The value of FS is ignored.
-       Assigning a new value to FS overrides the use of FIELDWIDTHS, and
+
+       If the FIELDWIDTHS variable is set to a space separated  list  of  num‐
+       bers,  each  field  is expected to have fixed width, and gawk splits up
+       the record using the specified widths.  The value  of  FS  is  ignored.
+       Assigning  a  new  value  to  FS  overrides the use of FIELDWIDTHS, and
        restores the default behavior.
-       Each field in the input record may be referenced by its position, $1,
-       $2, and so on. $0 is the whole record. Fields need not be referenced
+
+       Each field in the input record may be referenced by its  position,  $1,
+       $2,  and so on.  $0 is the whole record.  Fields need not be referenced
        by constants:
-       n = 5
-       print $n
+
+              n = 5
+              print $n
+
        prints the fifth field in the input record.
-       The variable NF is set to the total number of fields in the input
+
+       The variable NF is set to the total  number  of  fields  in  the  input
        record.
-       References to non-existent fields (i.e. fields after $NF) produce the
-       null-string. However, assigning to a non-existent field (e.g., $(NF+2)
+
+       References  to  non-existent fields (i.e. fields after $NF) produce the
+       null-string.  However, assigning to a non-existent field (e.g., $(NF+2)
        = 5) increases the value of NF, creates any intervening fields with the
-       null string as their value, and causes the value of $0 to be recom‐
-       puted, with the fields being separated by the value of OFS. References
-       to negative numbered fields cause a fatal error. Decrementing NF
-       causes the values of fields past the new value to be lost, and the
-       value of $0 to be recomputed, with the fields being separated by the
+       null string as their value, and causes the value of  $0  to  be  recom‐
+       puted, with the fields being separated by the value of OFS.  References
+       to negative numbered fields  cause  a  fatal  error.   Decrementing  NF
+       causes  the  values  of  fields  past the new value to be lost, and the
+       value of $0 to be recomputed, with the fields being  separated  by  the
        value of OFS.
-       Assigning a value to an existing field causes the whole record to be
-       rebuilt when $0 is referenced. Similarly, assigning a value to $0
+
+       Assigning  a  value  to an existing field causes the whole record to be
+       rebuilt when $0 is referenced.  Similarly,  assigning  a  value  to  $0
        causes the record to be resplit, creating new values for the fields.
-       Built-in Variables
-       Gawk's built-in variables are:
-       ARGC The number of command line arguments (does not include
-       options to gawk, or the program source).
-       ARGIND The index in ARGV of the current file being processed.
-       ARGV Array of command line arguments. The array is indexed from
-       0 to ARGC - 1. Dynamically changing the contents of ARGV
-       can control the files used for data.
-       BINMODE On non-POSIX systems, specifies use of “binary” mode for
-       all file I/O. Numeric values of 1, 2, or 3, specify that
-       input files, output files, or all files, respectively,
-       should use binary I/O. String values of "r", or "w" spec‐
-       ify that input files, or output files, respectively, should
-       use binary I/O. String values of "rw" or "wr" specify that
-       all files should use binary I/O. Any other string value is
-       treated as "rw", but generates a warning message.
-       CONVFMT The conversion format for numbers, "%.6g", by default.
-       ENVIRON An array containing the values of the current environment.
-       The array is indexed by the environment variables, each
-       element being the value of that variable (e.g., ENVI�‐
-       RON["HOME"] might be /home/arnold). Changing this array
-       does not affect the environment seen by programs which gawk
-       spawns via redirection or the system() function.
-       ERRNO If a system error occurs either doing a redirection for
-       getline, during a read for getline, or during a close(),
-       then ERRNO will contain a string describing the error. The
-       value is subject to translation in non-English locales.
-       FIELDWIDTHS A white-space separated list of fieldwidths. When set,
-       gawk parses the input into fields of fixed width, instead
-       of using the value of the FS variable as the field separa‐
-       tor.
-       FILENAME The name of the current input file. If no files are speci‐
-       fied on the command line, the value of FILENAME is “-”.
-       However, FILENAME is undefined inside the BEGIN block
-       (unless set by getline).
-       FNR The input record number in the current input file.
-       FS The input field separator, a space by default. See Fields,
-       above.
-       IGNORECASE Controls the case-sensitivity of all regular expression and
-       string operations. If IGNORECASE has a non-zero value,
-       then string comparisons and pattern matching in rules,
-       field splitting with FS, record separating with RS, regular
-       expression matching with ~ and !~, and the gensub(),
-       gsub(), index(), match(), split(), and sub() built-in func‐
-       tions all ignore case when doing regular expression opera‐
-       tions. NOTE: Array subscripting is not affected. However,
-       the asort() and asorti() functions are affected.
-       Thus, if IGNORECASE is not equal to zero, /aB/ matches all
-       of the strings "ab", "aB", "Ab", and "AB". As with all AWK
-       variables, the initial value of IGNORECASE is zero, so all
-       regular expression and string operations are normally case-
-       sensitive. Under Unix, the full ISO 8859-1 Latin-1 charac‐
-       ter set is used when ignoring case. As of gawk 3.1.4, the
-       case equivalencies are fully locale-aware, based on the C
-       &lt;ctype.h&gt; facilities such as isalpha(), and toupper().
-       LINT Provides dynamic control of the --lint option from within
-       an AWK program. When true, gawk prints lint warnings. When
-       false, it does not. When assigned the string value
-       "fatal", lint warnings become fatal errors, exactly like
-       --lint=fatal. Any other true value just prints warnings.
-       NF The number of fields in the current input record.
-       NR The total number of input records seen so far.
-       OFMT The output format for numbers, "%.6g", by default.
-       OFS The output field separator, a space by default.
-       ORS The output record separator, by default a newline.
-       PROCINFO The elements of this array provide access to information
-       about the running AWK program. On some systems, there may
-       be elements in the array, "group1" through "groupn" for
-       some n, which is the number of supplementary groups that
-       the process has. Use the in operator to test for these
-       elements. The following elements are guaranteed to be
-       available:
-       PROCINFO["egid"] the value of the getegid(2) system call.
-       PROCINFO["euid"] the value of the geteuid(2) system call.
-       PROCINFO["FS"] "FS" if field splitting with FS is in
-       effect, or "FIELDWIDTHS" if field split‐
-       ting with FIELDWIDTHS is in effect.
-       PROCINFO["gid"] the value of the getgid(2) system call.
-       PROCINFO["pgrpid"] the process group ID of the current
-       process.
-       PROCINFO["pid"] the process ID of the current process.
-       PROCINFO["ppid"] the parent process ID of the current
-       process.
-       PROCINFO["uid"] the value of the getuid(2) system call.
-       PROCINFO["version"]
-       The version of gawk. This is available
-       from version 3.1.4 and later.
-       RS The input record separator, by default a newline.
-       RT The record terminator. Gawk sets RT to the input text that
-       matched the character or regular expression specified by
-       RS.
-       RSTART The index of the first character matched by match(); 0 if
-       no match. (This implies that character indices start at
-       one.)
-       RLENGTH The length of the string matched by match(); -1 if no
-       match.
-       SUBSEP The character used to separate multiple subscripts in array
-       elements, by default "\034".
-       TEXTDOMAIN The text domain of the AWK program; used to find the local‐
-       ized translations for the program's strings.
-       Arrays
-       Arrays are subscripted with an expression between square brackets ([
-       and ]). If the expression is an expression list (expr, expr ...) then
-       the array subscript is a string consisting of the concatenation of the
+</pre>
+<p> Built-in Variables
+</p>
+
+<p> Gawk's built-in variables are:
+</p>
+<pre>
+       ARGC        The  number  of  command  line  arguments (does not include
+                   options to gawk, or the program source).
+
+       ARGIND      The index in ARGV of the current file being processed.
+
+       ARGV        Array of command line arguments.  The array is indexed from
+                   0  to  ARGC - 1.  Dynamically changing the contents of ARGV
+                   can control the files used for data.
+
+       BINMODE     On non-POSIX systems, specifies use of  “binary”  mode  for
+                   all  file  I/O.  Numeric values of 1, 2, or 3, specify that
+                   input files, output  files,  or  all  files,  respectively,
+                   should  use binary I/O.  String values of "r", or "w" spec‐
+                   ify that input files, or output files, respectively, should
+                   use binary I/O.  String values of "rw" or "wr" specify that
+                   all files should use binary I/O.  Any other string value is
+                   treated as "rw", but generates a warning message.
+
+       CONVFMT     The conversion format for numbers, "%.6g", by default.
+
+       ENVIRON     An  array containing the values of the current environment.
+                   The array is indexed by  the  environment  variables,  each
+                   element  being  the  value  of  that  variable (e.g., ENVI‐
+                   RON["HOME"] might be /home/arnold).   Changing  this  array
+                   does not affect the environment seen by programs which gawk
+                   spawns via redirection or the system() function.
+
+       ERRNO       If a system error occurs either  doing  a  redirection  for
+                   getline,  during  a  read for getline, or during a close(),
+                   then ERRNO will contain a string describing the error.  The
+                   value is subject to translation in non-English locales.
+
+       FIELDWIDTHS A  white-space  separated  list  of fieldwidths.  When set,
+                   gawk parses the input into fields of fixed  width,  instead
+                   of  using the value of the FS variable as the field separa‐
+                   tor.
+
+       FILENAME    The name of the current input file.  If no files are speci‐
+                   fied  on  the  command  line, the value of FILENAME is “-”.
+                   However, FILENAME  is  undefined  inside  the  BEGIN  block
+                   (unless set by getline).
+
+       FNR         The input record number in the current input file.
+
+       FS          The input field separator, a space by default.  See Fields,
+                   above.
+
+       IGNORECASE  Controls the case-sensitivity of all regular expression and
+                   string  operations.   If  IGNORECASE  has a non-zero value,
+                   then string comparisons  and  pattern  matching  in  rules,
+                   field splitting with FS, record separating with RS, regular
+                   expression matching  with  ~  and  !~,  and  the  gensub(),
+                   gsub(), index(), match(), split(), and sub() built-in func‐
+                   tions all ignore case when doing regular expression  opera‐
+                   tions.  NOTE: Array subscripting is not affected.  However,
+                   the asort() and asorti() functions are affected.
+                   Thus, if IGNORECASE is not equal to zero, /aB/ matches  all
+                   of the strings "ab", "aB", "Ab", and "AB".  As with all AWK
+                   variables, the initial value of IGNORECASE is zero, so  all
+                   regular expression and string operations are normally case-
+                   sensitive.  Under Unix, the full ISO 8859-1 Latin-1 charac‐
+                   ter  set is used when ignoring case.  As of gawk 3.1.4, the
+                   case equivalencies are fully locale-aware, based on  the  C
+                   &lt;ctype.h&gt; facilities such as isalpha(), and toupper().
+
+       LINT        Provides  dynamic  control of the --lint option from within
+                   an AWK program.  When true, gawk prints lint warnings. When
+                   false,  it  does  not.   When  assigned  the  string  value
+                   "fatal", lint warnings become fatal  errors,  exactly  like
+                   --lint=fatal.  Any other true value just prints warnings.
+
+       NF          The number of fields in the current input record.
+
+       NR          The total number of input records seen so far.
+
+       OFMT        The output format for numbers, "%.6g", by default.
+
+       OFS         The output field separator, a space by default.
+
+       ORS         The output record separator, by default a newline.
+
+       PROCINFO    The  elements  of  this array provide access to information
+                   about the running AWK program.  On some systems, there  may
+                   be  elements  in  the  array, "group1" through "groupn" for
+                   some n, which is the number of  supplementary  groups  that
+                   the  process  has.   Use  the in operator to test for these
+                   elements.  The following  elements  are  guaranteed  to  be
+                   available:
+
+                   PROCINFO["egid"]   the value of the getegid(2) system call.
+
+                   PROCINFO["euid"]   the value of the geteuid(2) system call.
+
+                   PROCINFO["FS"]     "FS"  if  field  splitting with FS is in
+                                      effect, or "FIELDWIDTHS" if field split‐
+                                      ting with FIELDWIDTHS is in effect.
+
+                   PROCINFO["gid"]    the value of the getgid(2) system call.
+
+                   PROCINFO["pgrpid"] the  process  group  ID  of  the current
+                                      process.
+
+                   PROCINFO["pid"]    the process ID of the current process.
+
+                   PROCINFO["ppid"]   the parent process  ID  of  the  current
+                                      process.
+
+                   PROCINFO["uid"]    the value of the getuid(2) system call.
+
+                   PROCINFO["version"]
+                                      The  version of gawk.  This is available
+                                      from version 3.1.4 and later.
+
+       RS          The input record separator, by default a newline.
+
+       RT          The record terminator.  Gawk sets RT to the input text that
+                   matched  the  character  or regular expression specified by
+                   RS.
+
+       RSTART      The index of the first character matched by match();  0  if
+                   no  match.   (This  implies that character indices start at
+                   one.)
+
+       RLENGTH     The length of the string  matched  by  match();  -1  if  no
+                   match.
+
+       SUBSEP      The character used to separate multiple subscripts in array
+                   elements, by default "\034".
+
+       TEXTDOMAIN  The text domain of the AWK program; used to find the local‐
+                   ized translations for the program's strings.
+</pre>
+<p> Arrays
+</p><pre>
+       Arrays  are  subscripted  with an expression between square brackets ([
+       and ]).  If the expression is an expression list (expr, expr ...)  then
+       the  array subscript is a string consisting of the concatenation of the
        (string) value of each expression, separated by the value of the SUBSEP
-       variable. This facility is used to simulate multiply dimensioned
-       arrays. For example:
-       i = "A"; j = "B"; k = "C"
-       x[i, j, k] = "hello, world\n"
+       variable.   This  facility  is  used  to  simulate multiply dimensioned
+       arrays.  For example:
+
+              i = "A"; j = "B"; k = "C"
+              x[i, j, k] = "hello, world\n"
+
        assigns the string "hello, world\n" to the element of the array x which
-       is indexed by the string "A\034B\034C". All arrays in AWK are associa‐
+       is indexed by the string "A\034B\034C".  All arrays in AWK are associa‐
        tive, i.e. indexed by string values.
-       The special operator in may be used to test if an array has an index
+
+       The special operator in may be used to test if an array  has  an  index
        consisting of a particular value.
-       if (val in array)
-       print array[val]
+
+              if (val in array)
+                   print array[val]
+
        If the array has multiple subscripts, use (i, j) in array.
+
        The in construct may also be used in a for loop to iterate over all the
        elements of an array.
-       An element may be deleted from an array using the delete statement.
-       The delete statement may also be used to delete the entire contents of
+
+       An element may be deleted from an array  using  the  delete  statement.
+       The  delete statement may also be used to delete the entire contents of
        an array, just by specifying the array name without a subscript.
-       Variable Typing And Conversion
-       Variables and fields may be (floating point) numbers, or strings, or
-       both. How the value of a variable is interpreted depends upon its con‐
-       text. If used in a numeric expression, it will be treated as a number;
+</pre>
+<p> Variable Typing And Conversion
+</p><pre>
+       Variables and fields may be (floating point) numbers,  or  strings,  or
+       both.  How the value of a variable is interpreted depends upon its con‐
+       text.  If used in a numeric expression, it will be treated as a number;
        if used as a string it will be treated as a string.
+
        To force a variable to be treated as a number, add 0 to it; to force it
        to be treated as a string, concatenate it with the null string.
-       When a string must be converted to a number, the conversion is accom‐
-       plished using strtod(3). A number is converted to a string by using
-       the value of CONVFMT as a format string for sprintf(3), with the
-       numeric value of the variable as the argument. However, even though
-       all numbers in AWK are floating-point, integral values are always con‐
-       verted as integers. Thus, given
-       CONVFMT = "%2.2f"
-       a = 12
-       b = a ""
+
+       When a string must be converted to a number, the conversion  is  accom‐
+       plished  using  strtod(3).   A number is converted to a string by using
+       the value of CONVFMT as  a  format  string  for  sprintf(3),  with  the
+       numeric  value  of  the variable as the argument.  However, even though
+       all numbers in AWK are floating-point, integral values are always  con‐
+       verted as integers.  Thus, given
+
+              CONVFMT = "%2.2f"
+              a = 12
+              b = a ""
+
        the variable b has a string value of "12" and not "12.00".
-       When operating in POSIX mode (such as with the --posix command line
+
+       When  operating  in  POSIX  mode (such as with the --posix command line
        option), beware that locale settings may interfere with the way decimal
        numbers are treated: the decimal separator of the numbers you are feed‐
-       ing to gawk must conform to what your locale would expect, be it a
+       ing to gawk must conform to what your locale  would  expect,  be  it  a
        comma (,) or a period (.).
-       Gawk performs comparisons as follows: If two variables are numeric,
-       they are compared numerically. If one value is numeric and the other
-       has a string value that is a “numeric string,” then comparisons are
-       also done numerically. Otherwise, the numeric value is converted to a
-       string and a string comparison is performed. Two strings are compared,
+
+       Gawk  performs  comparisons  as  follows: If two variables are numeric,
+       they are compared numerically.  If one value is numeric and  the  other
+       has  a  string  value  that is a “numeric string,” then comparisons are
+       also done numerically.  Otherwise, the numeric value is converted to  a
+       string and a string comparison is performed.  Two strings are compared,
        of course, as strings.
+
        Note that string constants, such as "57", are not numeric strings, they
-       are string constants. The idea of “numeric string” only applies to
-       fields, getline input, FILENAME, ARGV elements, ENVIRON elements and
-       the elements of an array created by split() that are numeric strings.
-       The basic idea is that user input, and only user input, that looks
+       are  string  constants.   The  idea of “numeric string” only applies to
+       fields, getline input, FILENAME, ARGV elements,  ENVIRON  elements  and
+       the  elements  of an array created by split() that are numeric strings.
+       The basic idea is that user input, and  only  user  input,  that  looks
        numeric, should be treated that way.
-       Uninitialized variables have the numeric value 0 and the string value
+
+       Uninitialized  variables  have the numeric value 0 and the string value
        "" (the null, or empty, string).
-       Octal and Hexadecimal Constants
+</pre>
+<p> Octal and Hexadecimal Constants
+</p><pre>
        Starting with version 3.1 of gawk , you may use C-style octal and hexa‐
-       decimal constants in your AWK program source code. For example, the
-       octal value 011 is equal to decimal 9, and the hexadecimal value 0x11
+       decimal  constants  in  your AWK program source code.  For example, the
+       octal value 011 is equal to decimal 9, and the hexadecimal  value  0x11
        is equal to decimal 17.
-       String Constants
-       String constants in AWK are sequences of characters enclosed between
-       double quotes ("). Within strings, certain escape sequences are recog‐
-       nized, as in C. These are:
-       \\ A literal backslash.
-       \a The “alert” character; usually the ASCII BEL character.
-       \b backspace.
-       \f form-feed.
-       \n newline.
-       \r carriage return.
-       \t horizontal tab.
-       \v vertical tab.
+</pre>
+<p> String Constants
+</p><pre>
+       String  constants  in  AWK are sequences of characters enclosed between
+       double quotes (").  Within strings, certain escape sequences are recog‐
+       nized, as in C.  These are:
+
+       \\   A literal backslash.
+
+       \a   The “alert” character; usually the ASCII BEL character.
+
+       \b   backspace.
+
+       \f   form-feed.
+
+       \n   newline.
+
+       \r   carriage return.
+
+       \t   horizontal tab.
+
+       \v   vertical tab.
+
        \xhex digits
-       The character represented by the string of hexadecimal digits fol‐
-       lowing the \x. As in ANSI C, all following hexadecimal digits are
-       considered part of the escape sequence. (This feature should tell
-       us something about language design by committee.) E.g., "\x1B" is
-       the ASCII ESC (escape) character.
-       \ddd The character represented by the 1-, 2-, or 3-digit sequence of
-       octal digits. E.g., "\033" is the ASCII ESC (escape) character.
-       \c The literal character c.
-       The escape sequences may also be used inside constant regular expres‐
+            The character represented by the string of hexadecimal digits fol‐
+            lowing the \x.  As in ANSI C, all following hexadecimal digits are
+            considered part of the escape sequence.  (This feature should tell
+            us something about language design by committee.)  E.g., "\x1B" is
+            the ASCII ESC (escape) character.
+
+       \ddd The  character  represented  by the 1-, 2-, or 3-digit sequence of
+            octal digits.  E.g., "\033" is the ASCII ESC (escape) character.
+
+       \c   The literal character c.
+
+       The escape sequences may also be used inside constant  regular  expres‐
        sions (e.g., /[ \t\f\n\r\v]/ matches whitespace characters).
+
        In compatibility mode, the characters represented by octal and hexadec‐
-       imal escape sequences are treated literally when used in regular
-       expression constants. Thus, /a\52b/ is equivalent to /a\<em>b/.
-           PATTERNS AND ACTIONS
-           AWK is a line-oriented language. The pattern comes first, and then the
-           action. Action statements are enclosed in { and }. Either the pattern
-           may be missing, or the action may be missing, but, of course, not both.
-           If the pattern is missing, the action is executed for every single
-           record of input. A missing action is equivalent to
-           { print }
-           which prints the entire record.
-           Comments begin with the “</strong>” character, and continue until the end of
+       imal escape sequences  are  treated  literally  when  used  in  regular
+       expression constants.  Thus, /a\52b/ is equivalent to /a\*b/.
+</pre>
+<p><strong>PATTERNS AND ACTIONS</strong>
+</p><pre>
+       AWK is a line-oriented language.  The pattern comes first, and then the
+       action.  Action statements are enclosed in { and }.  Either the pattern
+       may be missing, or the action may be missing, but, of course, not both.
+       If the pattern is missing, the action  is  executed  for  every  single
+       record of input.  A missing action is equivalent to
+
+              { print }
+
+       which prints the entire record.
+
+       Comments  begin  with  the “#” character, and continue until the end of
        the line.  Blank lines may be used to separate statements.  Normally, a
        statement  ends with a newline, however, this is not the case for lines
        ending in a “,”, {, ?, :, &amp;&amp;, or ||.  Lines ending in do or  else  also
        have  their  statements  automatically continued on the following line.
        In other cases, a line can be continued by ending it  with  a  “\”,  in
        which case the newline will be ignored.
+
        Multiple  statements  may  be put on one line by separating them with a
        “;”.  This applies to both the statements within the action part  of  a
        pattern-action  pair (the usual case), and to the pattern-action state‐
        ments themselves.
-   Patterns
-       AWK patterns may be one of the following:
+</pre>
+<p> Patterns
+</p>
+
+<p> AWK patterns may be one of the following:
+</p>
+<pre>
               BEGIN
               END
               /regular expression/
@@ -567,6 +677,7 @@
               (pattern)
               ! pattern
               pattern1, pattern2
+
        BEGIN and END are two special kinds of patterns which  are  not  tested
        against  the  input.  The action parts of all BEGIN patterns are merged
        as if all the statements had been written  in  a  single  BEGIN  block.
@@ -575,42 +686,63 @@
        when  an exit statement is executed).  BEGIN and END patterns cannot be
        combined with other patterns in pattern  expressions.   BEGIN  and  END
        patterns cannot have missing action parts.
+
        For /regular expression/ patterns, the associated statement is executed
        for each input record that matches  the  regular  expression.   Regular
        expressions  are  the  same  as  those  in egrep(1), and are summarized
        below.
+
        A relational expression may use any of the operators defined  below  in
        the  section  on  actions.  These generally test whether certain fields
        match certain regular expressions.
+
        The &amp;&amp;, ||, and !  operators are logical AND, logical OR,  and  logical
        NOT,  respectively, as in C.  They do short-circuit evaluation, also as
        in C, and are used for combining more  primitive  pattern  expressions.
        As  in  most  languages, parentheses may be used to change the order of
        evaluation.
+
        The ?: operator is like the same operator in C.  If the  first  pattern
        is true then the pattern used for testing is the second pattern, other‐
        wise it is the third.  Only one of the second  and  third  patterns  is
        evaluated.
+
        The pattern1, pattern2 form of an expression is called a range pattern.
        It matches all input records starting with a record that  matches  pat‐
        tern1,  and continuing until a record that matches pattern2, inclusive.
        It does not combine with any other sort of pattern expression.
-   Regular Expressions
+</pre>
+<p> Regular Expressions
+</p><pre>
        Regular expressions are the extended kind found  in  egrep.   They  are
        composed of characters as follows:
+
        c          matches the non-metacharacter c.
+
        \c         matches the literal character c.
+
        .          matches any character including newline.
+
        ^          matches the beginning of a string.
+
        $          matches the end of a string.
+
        [abc...]   character list, matches any of the characters abc....
+
        [^abc...]  negated character list, matches any character except abc....
+
        r1|r2      alternation: matches either r1 or r2.
+
        r1r2       concatenation: matches r1, and then r2.
+
        r+         matches one or more r's.
-       r</em>         matches zero or more r's.
+
+       r*         matches zero or more r's.
+
        r?         matches zero or one r's.
+
        (r)        grouping: matches r.
+
        r{n}
        r{n,}
        r{n,m}     One  or two numbers inside braces denote an interval expres‐
@@ -711,7 +843,7 @@
               characters  that are equivalent.  The name is enclosed in [= and
               =].  For example, the name e might be used to represent  all  of
               “e,”  “´,”  and “`.”  In this case, [[=e=]] is a regular expres‐
-              sion that matches any of e, �´, or `.
+              sion that matches any of e, ´, or `.
 
        These features are very valuable in non-English speaking locales.   The
        library  functions  that gawk uses for regular expression matching cur‐
@@ -1148,7 +1280,7 @@
                                &amp;.   (This  must  be  typed as "\\&amp;"; see GAWK:
                                Effective AWK Programming for a fuller  discus‐
                                sion  of  the  rules for &amp;'s and backslashes in
-                               the replacement text of sub(), gsub(), and gen�‐
+                               the replacement text of sub(), gsub(), and gen‐
                                sub().)
 
        index(s, t)             Returns the index of the string t in the string
@@ -1244,7 +1376,7 @@
                  Formats  timestamp  according to the specification in format.
                  If utc-flag is present  and  is  non-zero  or  non-null,  the
                  result is in UTC, otherwise the result is in local time.  The
-                 timestamp should be of the same  form  as  returned  by  sys�‐
+                 timestamp should be of the same  form  as  returned  by  sys‐
                  time().   If timestamp is missing, the current time of day is
                  used.  If format is missing, a default format  equivalent  to
                  the output of date(1) is used.  See the specification for the
@@ -1374,8 +1506,8 @@
                returned by function.
 
        This function is provided and documented in GAWK:  Effective  AWK  Pro‐
-       gramming, but everything about this feature is likely to change eventu�‐
-       ally.  We STRONGLY recommend that you do not use this feature for  any�‐
+       gramming, but everything about this feature is likely to change eventu‐
+       ally.  We STRONGLY recommend that you do not use this feature for  any‐
        thing that you aren't willing to redo.
 </pre>
 <p><strong>SIGNALS</strong>
@@ -1569,7 +1701,7 @@
        · The use of nextfile to abandon processing of the current input file.
 
        · The and(), asort(), asorti(), bindtextdomain(), compl(), dcgettext(),
-         dcngettext(),  gensub(),  lshift(),  mktime(),  or(), rshift(), strf�‐
+         dcngettext(),  gensub(),  lshift(),  mktime(),  or(), rshift(), strf‐
          time(), strtonum(), systime() and xor() functions.
 
        · Localizable strings.

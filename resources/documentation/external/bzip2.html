@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: bzip2.html, Class: bzip2.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p>bzip2(1) bzip2(1)
@@ -36,8 +36,11 @@
 <p><strong>SYNOPSIS</strong>
 </p><pre>
        bzip2 [ -cdfkqstvzVL123456789 ] [ filenames ...  ]
+       bzip2 [ -h|--help ]
        bunzip2 [ -fkvsVL ] [ filenames ...  ]
+       bunzip2 [ -h|--help ]
        bzcat [ -s ] [ filenames ...  ]
+       bzcat [ -h|--help ]
        bzip2recover filename
 </pre>
 <p><strong>DESCRIPTION</strong>
@@ -188,6 +191,9 @@
               cessed.   Further -v's increase the verbosity level, spewing out
               lots of information which is primarily of interest for  diagnos‐
               tic purposes.
+
+       -h --help
+              Print a help message and exit.
 
        -L --license -V --version
               Display the software version, license terms and conditions.

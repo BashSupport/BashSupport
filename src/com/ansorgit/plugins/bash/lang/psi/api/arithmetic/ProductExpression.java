@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ProductExpression.java, Class: ProductExpression
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,5 +32,5 @@ public interface ProductExpression extends ArithmeticExpression {
      *
      * @return True if a remainder would be there
      */
-    public boolean hasRemainder();
+    public boolean hasDivisionRemainder();
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-04-23
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -147,7 +147,7 @@ public interface BashTokenTypes {
 
     TokenSet arithmeticNegationOps = TokenSet.create(ARITH_NEGATE, ARITH_BITWISE_NEGATE);
 
-    TokenSet arithmeticProduct = TokenSet.create(ARITH_MULT, ARITH_DIV);
+    TokenSet arithmeticProduct = TokenSet.create(ARITH_MULT, ARITH_DIV, ARITH_MOD);
 
     //arithmetic operators: comparision
     IElementType ARITH_LE = new BashElementType("<=");//<=

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ProductExpressionsImpl.java, Class: ProductExpressionsImpl
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,12 +42,14 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
             return currentValue * nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_DIV) {
             return currentValue / nextExpressionValue;
+        } else if (operator == BashTokenTypes.ARITH_MOD) {
+            return currentValue % nextExpressionValue;
         }
 
         return null;
     }
 
-    public boolean hasRemainder() {
+    public boolean hasDivisionRemainder() {
         List<ArithmeticExpression> subs = subexpressions();
 
         if (subs.size() == 2 && findOperator() == BashTokenTypes.ARITH_DIV) {
