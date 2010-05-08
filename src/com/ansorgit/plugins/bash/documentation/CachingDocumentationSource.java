@@ -37,7 +37,7 @@ import java.util.Map;
  * Date: 08.05.2010
  * Time: 12:59:53
  */
-public class CachingDocumentationSource implements DocumentationSource {
+class CachingDocumentationSource implements DocumentationSource {
     private final CachableDocumentationSource delegate;
 
     //strong values to compare keys with equals(...)
