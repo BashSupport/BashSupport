@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: perl.html, Class: perl.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p>PERL(1) Perl Programmers Reference Guide PERL(1)
@@ -41,7 +41,7 @@
             [ -Idir ] [ -m[-]module ] [ -M[-]'module...' ] [ -f ]
             [ -C [number/list] ]      [ -P ]      [ -S ]      [ -x[dir] ]
             [ -i[extension] ]
-            [ -e 'command' ] [ -- ] [ programfile ] [ argument ]...
+            [ [-e|-E] 'command' ] [ -- ] [ programfile ] [ argument ]...
 </pre>
 <p><strong>DESCRIPTION</strong>
 </p><pre>
@@ -100,6 +100,8 @@
            perltoot            Perl OO tutorial, part 1
            perltooc            Perl OO tutorial, part 2
            perlbot             Perl OO tricks and examples
+
+           perlperf            Perl Performance and Optimization Techniques
 
            perlstyle           Perl style guide
 
@@ -185,6 +187,7 @@
            perlclib            Internal replacements for standard C library functions
            perlguts            Perl internal functions for those doing extensions
            perlcall            Perl calling conventions from C
+           perlmroapi          Perl method resolution plugin interface
            perlreapi           Perl regular expression plugin interface
            perlreguts          Perl regular expression engine internals
 
@@ -194,6 +197,7 @@
            perlapio            Perl internal IO abstraction interface
 
            perlhack            Perl hackers guide
+           perlrepository      Perl source repository
 </pre>
 <p> Miscellaneous
 </p><pre>
@@ -205,6 +209,7 @@
 
            perlhist            Perl history records
            perldelta           Perl changes since previous version
+           perl5100delta       Perl changes in version 5.10.0
            perl595delta        Perl changes in version 5.9.5
            perl594delta        Perl changes in version 5.9.4
            perl593delta        Perl changes in version 5.9.3
@@ -212,6 +217,7 @@
            perl591delta        Perl changes in version 5.9.1
            perl590delta        Perl changes in version 5.9.0
            perl588delta        Perl changes in version 5.8.8
+           perl589delta        Perl changes in version 5.8.9
            perl587delta        Perl changes in version 5.8.7
            perl586delta        Perl changes in version 5.8.6
            perl585delta        Perl changes in version 5.8.5
@@ -252,6 +258,7 @@
            perldos             Perl notes for DOS
            perlepoc            Perl notes for EPOC
            perlfreebsd         Perl notes for FreeBSD
+           perlhaiku           Perl notes for Haiku
            perlhpux            Perl notes for HP-UX
            perlhurd            Perl notes for Hurd
            perlirix            Perl notes for Irix
@@ -447,7 +454,7 @@
        The three principal virtues of a programmer are Laziness, Impatience,
        and Hubris.  See the Camel Book for why.
 
-perl v5.10.0                      2009-10-01                           PERL(1)
+perl v5.10.1                      2010-04-23                           PERL(1)
 </pre>
 </body>
 </html>

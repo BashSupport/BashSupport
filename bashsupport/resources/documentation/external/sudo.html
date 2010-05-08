@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: sudo.html, Class: sudo.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p><strong>SUDO(8) MAINTENANCE COMMANDS SUDO(8)</strong>
@@ -36,11 +36,14 @@
 <p><strong>SYNOPSIS</strong>
 </p>
 
-<p> sudo [-n] -h | -K | -k | -L | -V | -v
+<p> sudo -h | -K | -k | -L | -V
+</p>
+
+<p> sudo -v [-AknS] [-a auth_type] [-p prompt]
 </p>
 <pre>
-       sudo -l[l] [-AnS] [-g groupname|<strong>gid] [-U username] [-u username|</strong>uid]
-       [command]
+       sudo -l[l] [-AknS] [-a auth_type] [-g groupname|<strong>gid] [-p prompt]
+    [-U username] [-u username|</strong>uid] [command]
 
        sudo [-AbEHnPS] [-a auth_type] [-C fd] [-c class|-] [-g groupname|<strong>gid]
     [-p prompt] [-r role] [-t type] [-u username|</strong>uid] [VAR=value]
@@ -100,12 +103,12 @@
 <pre>
        -A          Normally, if sudo requires a password, it will read it from
                    the current terminal.  If the -A (askpass) option is
-                   specified, a helper program is executed to read the user's
-                   password and output the password to the standard output.
-                   If the SUDO_ASKPASS environment variable is set, it
-                   specifies the path to the helper program.  Otherwise, the
-                   value specified by the askpass option in sudoers(5) is
-                   used.
+                   specified, a (possibly graphical) helper program is
+                   executed to read the user's password and output the
+                   password to the standard output.  If the SUDO_ASKPASS
+                   environment variable is set, it specifies the path to the
+                   helper program.  Otherwise, the value specified by the
+                   askpass option in sudoers(5) is used.
 
        -a type     The -a (authentication type) option causes sudo to use the
                    specified authentication type when validating the user, as
@@ -205,14 +208,22 @@
                    other environment variables are removed.
 
        -K          The -K (sure kill) option is like -k except that it removes
-                   the user's timestamp entirely.  Like -k, this option does
-                   not require a password.
+                   the user's timestamp entirely and may not be used in
+                   conjunction with a command or other option.  This option
+                   does not require a password.
 
-       -k          The -k (kill) option to sudo invalidates the user's
-                   timestamp by setting the time on it to the Epoch.  The next
-                   time sudo is run a password will be required.  This option
-                   does not require a password and was added to allow a user
-                   to revoke sudo permissions from a .logout file.
+       -k          When used by itself, the -k (kill) option to sudo
+                   invalidates the user's timestamp by setting the time on it
+                   to the Epoch.  The next time sudo is run a password will be
+                   required.  This option does not require a password and was
+                   added to allow a user to revoke sudo permissions from a
+                   .logout file.
+
+                   When used in conjunction with a command or an option that
+                   may require a password, the -k option will cause sudo to
+                   ignore the user's timestamp file.  As a result, sudo will
+                   prompt for a password (if one is required by sudoers) and
+                   will not update the user's timestamp file.
 
        -L          The -L (list defaults) option will list out the parameters
                    that may be set in a Defaults line along with a short
@@ -478,14 +489,22 @@
 <p> $ sudo ls /usr/local/protected
 </p>
 <pre>
-       To list the home directory of user yazza on a machine where the file
-       system holding ~yazza is not exported as root:
+       To list the home directory of user yaz on a machine where the file
+       system holding ~yaz is not exported as root:
 
-        $ sudo -u yazza ls ~yazza
+        $ sudo -u yaz ls ~yaz
 
        To edit the index.html file as user www:
 
         $ sudo -u www vi ~www/htdocs/index.html
+
+       To view system logs only accessible to root and users in the adm group:
+
+        $ sudo -g adm view /var/log/syslog
+
+       To run an editor as jim with a different primary group:
+
+        $ sudo -u jim -g audio vi ~jim/sound.txt
 
        To shutdown a machine:
 
@@ -560,7 +579,7 @@
        See the LICENSE file distributed with sudo or
        <a href="http://www.sudo.ws/sudo/license.html">http://www.sudo.ws/sudo/license.html</a> for complete details.
 
-1.7.0                            June 22, 2009                         SUDO(8)
+1.7.2p1                         April 13, 2010                         SUDO(8)
 </pre>
 </body>
 </html>

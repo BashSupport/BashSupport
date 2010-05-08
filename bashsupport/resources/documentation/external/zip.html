@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: zip.html, Class: zip.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p><strong>ZIP(1) ZIP(1)</strong>
@@ -342,7 +342,7 @@
               zip inarchive.zip foo.c bar.c --out outarchive.zip
 
        reads archive inarchive.zip, even if split, adds the  files  foo.c  and
-       bar.c,  and  writes  the resulting archive to outarchive.zip.  If inar�‐
+       bar.c,  and  writes  the resulting archive to outarchive.zip.  If inar‐
        chive.zip is split then outarchive.zip defaults to the same split size.
        Be  aware  that  if outarchive.zip and any split files that are created
        with it already exist, these are always overwritten as  needed  without
@@ -409,8 +409,8 @@
 
        where the option starts with --, has a multicharacter name, can include
        a  trailing  dash to negate the option (if the option supports it), and
-       can have a value (option argument) specified by preceeding  it  with  =
-       (no spaces).  Values can also follow the argument.  So
+       can have a value (option argument) specified by preceding it with = (no
+       spaces).  Values can also follow the argument.  So
 
               --before-date=mmddyyyy
 
@@ -1154,7 +1154,7 @@
 
        -P password
        --password password
-              Use password to encrypt zipfile entries (if any).  THIS IS INSE�‐
+              Use password to encrypt zipfile entries (if any).  THIS IS INSE‐
               CURE!   Many  multi-user  operating systems provide ways for any
               user to see the current command line of any other user; even  on
               stand-alone  systems  there  is  always  the threat of over-the-
@@ -1266,7 +1266,7 @@
 
               Split  archives  are  stored in numbered files.  For example, if
               the output  archive  is  named  archive  and  three  splits  are
-              required,  the  resulting archive will be in the three files ar�‐
+              required,  the  resulting archive will be in the three files ar‐
               chive.z01, archive.z02, and archive.zip.  Do not change the num‐
               bering  of  these  files  or the archive will not be readable as
               these are used to determine the order the splits are read.
@@ -1464,7 +1464,7 @@
 
                      zip inarchive "*.c" --copy --out outarchive
 
-              copies entries with names ending in .c from  inarchive  to  out�‐
+              copies entries with names ending in .c from  inarchive  to  out‐
               archive.   The  wildcard must be escaped on some systems to pre‐
               vent the shell from substituting names of files  from  the  file
               system  which  may  have  no relevance to the entries in the ar‐
@@ -1819,7 +1819,7 @@
               zip inarchive.zip foo.c bar.c --out outarchive.zip
 
        reads  archive  inarchive.zip,  even if split, adds the files foo.c and
-       bar.c, and writes the resulting archive to  outarchive.zip.   If  inar�‐
+       bar.c, and writes the resulting archive to  outarchive.zip.   If  inar‐
        chive.zip is split then outarchive.zip defaults to the same split size.
        Be aware that outarchive.zip and any split files that are created  with
        it  are always overwritten without warning.  This may be changed in the
@@ -2002,7 +2002,7 @@
        be  converted  using  Rahul  Dhesi's BILF program.  This version of zip
        handles some of the conversion internally.  When using Kermit to trans‐
        fer  zip  files  from  VMS to MSDOS, type "set file type block" on VMS.
-       When transfering from MSDOS to VMS, type "set file type fixed" on  VMS.
+       When transferring from MSDOS to VMS, type "set file type fixed" on VMS.
        In both cases, type "set file type binary" on MSDOS.
 
        Under  some  older  VMS  versions, zip may hang for file specifications
