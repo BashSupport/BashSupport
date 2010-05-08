@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: DocumentationReader.java, Class: DocumentationReader
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,9 @@ import java.net.URL;
  */
 class DocumentationReader {
     private static final Logger log = Logger.getInstance("#bash.DocumentationReader");
+
+    private DocumentationReader() {
+    }
 
     /**
      * Reads documenation from a url, mostly this is a file source.

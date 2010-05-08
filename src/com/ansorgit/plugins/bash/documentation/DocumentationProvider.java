@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: DocumentationProvider.java, Class: DocumentationProvider
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,9 @@ class DocumentationProvider {
 
     static {
         sourceList.add(new FunctionPsiCommentSource());
-        sourceList.add(new KeywordDocSource());
-        sourceList.add(new InternalCmdDocumentation());
+        sourceList.add(new BashKeywordDocSource());
+        sourceList.add(new InternalCommandDocumentation());
+        sourceList.add(new CachingDocumentationSource(new SystemInfopageDocSource()));
         sourceList.add(new ManpageDocSource());
     }
 
@@ -59,7 +60,9 @@ class DocumentationProvider {
         for (DocumentationSource source : sourceList) {
             log.info("Trying with " + source);
             String doc = source.documentation(element, originalElement);
-            if (doc != null) return doc;
+            if (doc != null) {
+                return doc;
+            }
         }
 
         return "No documentation found.";
@@ -76,7 +79,9 @@ class DocumentationProvider {
         log.info("documentationUrl for " + element);
         for (DocumentationSource source : sourceList) {
             String url = source.documentationUrl(element, originalElement);
-            if (url != null) return url;
+            if (url != null) {
+                return url;
+            }
         }
 
         return null;
