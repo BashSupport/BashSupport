@@ -11,19 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/SystemPathUtilTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/SystemPathUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/KeywordDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashKeywordDocSource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/InternalCmdDocumentation.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/InternalCommandDocumentation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.tar.gz" />
@@ -110,7 +99,19 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="CachingDocumentationSource.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="69" column="20" selection-start="2279" selection-end="2279" vertical-scroll-proportion="0.852194">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -1696,7 +1697,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed % operator, added a few more man pages" />
+    <option name="LAST_COMMIT_MESSAGE" value="System's info page lookup for ctrl+q" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1709,7 +1710,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="preparing 0.9.8, replaced icon with own version" />
     <MESSAGE value="option to turn the formatter off, icon fixed, 0.9.9-maia" />
     <MESSAGE value="bugfixes for show documentation and for variable renaming" />
     <MESSAGE value="preparing 0.9.10-maia" />
@@ -1734,6 +1734,7 @@
     <MESSAGE value="some performance tuning" />
     <MESSAGE value="fixed compilation for Mac/Java5, fixed unknown escape characters" />
     <MESSAGE value="fixed % operator, added a few more man pages" />
+    <MESSAGE value="System's info page lookup for ctrl+q" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1856,15 +1857,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="8" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.7575058">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="4" selection-start="1848" selection-end="1848" vertical-scroll-proportion="0.22850412">
@@ -1878,6 +1870,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="44" column="64" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.34642032">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="20" selection-start="2279" selection-end="2279" vertical-scroll-proportion="0.852194">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
