@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: umount.html, Class: umount.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p>UMOUNT(8) Linux Programmer's Manual UMOUNT(8)
@@ -40,7 +40,7 @@
 </p>
 <pre>
        umount -a [-dflnrv] [-t vfstype] [-O options]
-       umount [-dflnrv] dir | device [...]
+       umount [-dflnrv] {dir|device}...
 </pre>
 <p><strong>DESCRIPTION</strong>
 </p><pre>
@@ -100,12 +100,16 @@
        -l     Lazy unmount. Detach the filesystem from the filesystem  hierar‐
               chy now, and cleanup all references to the filesystem as soon as
               it is not busy anymore.  (Requires kernel 2.4.11 or later.)
+
+       --no-canonicalize
+              Don't canonicalize paths. For more details about this option see
+              the mount(8) man page.
 </pre>
 <p><strong>THE LOOP DEVICE</strong>
 </p><pre>
-       The umount command will free the loop device (if any)  associated  with
+       The  umount  command will free the loop device (if any) associated with
        the mount, in case it finds the option `loop=...' in /etc/mtab, or when
-       the -d option was given.  Any pending loop devices can be  freed  using
+       the  -d  option was given.  Any pending loop devices can be freed using
        `losetup -d', see losetup(8).
 </pre>
 <p><strong>NOTES</strong>
@@ -114,14 +118,14 @@
 <p> The syntax of external umount helpers is:
 </p>
 
-<p> /sbin/umount.&lt;suffix&gt; [-nlfvr] dir | device
+<p> /sbin/umount.&lt;suffix&gt; {dir|device} [-nlfvr]
 </p>
 <pre>
-       where  the  &lt;suffix&gt; is filesystem type or a value from "uhelper=" mtab
+       where the &lt;suffix&gt; is filesystem type or a value from  "uhelper="  mtab
        option.
 
-       The uhelper (unprivileged umount helper) is possible to used when  non-
-       root  user  wants  to  umount  a mountpoint which is not defined in the
+       The  uhelper (unprivileged umount helper) is possible to used when non-
+       root user wants to umount a mountpoint which  is  not  defined  in  the
        /etc/fstab file (e.g devices mounted by HAL).
 </pre>
 <p><strong>FILES</strong>
@@ -144,7 +148,7 @@
 
 <p><strong>AVAILABILITY</strong>
 </p><pre>
-       The umount command is part of the util-linux-ng package and  is  avail‐
+       The  umount  command is part of the util-linux-ng package and is avail‐
        able from <a href="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</a>
 
 Linux 2.0                        26 July 1997                        UMOUNT(8)

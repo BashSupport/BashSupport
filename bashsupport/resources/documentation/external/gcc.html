@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: gcc.html, Class: gcc.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p><strong>GCC(1) GNU GCC(1)</strong>
@@ -92,7 +92,7 @@
        Overall Options
            -c  -S  -E  -o file  -combine  -pipe  -pass-exit-codes -x language
            -v  -###  --help[=class[,...]]  --target-help --version
-           -wrapper@file
+           -wrapper@file -fplugin=file -fplugin-arg-name=arg
 
        C Language Options
            -ansi  -std=standard  -fgnu89-inline -aux-info filename -fno-asm
@@ -250,8 +250,8 @@
            -funit-at-a-time -funroll-all-loops -funroll-loops
            -funsafe-loop-optimizations -funsafe-math-optimizations
            -funswitch-loops -fvariable-expansion-in-unroller -fvect-cost-model
-           -fvpt -fweb -fwhole-program --param name=value -O  -O0  -O1  -O2
-           -O3  -Os
+           -fvpt -fweb -fwhole-program -fuse-ld --param name=value -O  -O0
+           -O1  -O2  -O3  -Os
 
        Preprocessor Options
            -Aquestion=answer -A-question[=answer] -C  -dD  -dI  -dM  -dN
@@ -925,6 +925,17 @@
 
            This will invoke all subprograms of gcc under "gdb --args", thus
            cc1 invocation will be "gdb --args cc1 ...".
+
+       -fplugin=name.so
+           Load the plugin code in file name.so, assumed to be a shared object
+           to be dlopen'd by the compiler.  The base name of the shared object
+           file is used to identify the plugin for the purposes of argument
+           parsing (See -fplugin-arg-name-key=value below).  Each plugin
+           should define the callback functions specified in the Plugins API.
+
+       -fplugin-arg-name-key=value
+           Define an argument called key with a value of value for the plugin
+           called name.
 
        @file
            Read command-line options from file.  The options read are inserted
@@ -5462,6 +5473,18 @@
 
            This option is not supported for Fortran programs.
 
+       -fuse-ld=gold
+           Use the gold linker instead of the default linker.  This option is
+           only necessary if GCC has been configured with --enable-gold=both
+           or --enable-gold=both/ld.  Note: Backported for Debian/Ubuntu from
+           GCC 4.5.
+
+       -fuse-ld=bfd
+           Use the ld.bfd linker instead of the default linker.  This option
+           is only necessary if GCC has been configured with
+           --enable-gold=both/gold.  Note: Backported for Debian/Ubuntu from
+           GCC 4.5.
+
        -fcprop-registers
            After register allocation and post-register allocation instruction
            splitting, we perform a copy-propagation pass to try to reduce
@@ -6526,6 +6549,7 @@
        of these options make sense only together with -E because they cause
        the preprocessor output to be unsuitable for actual compilation.
 
+       -Wp,option
            You can use -Wp,option to bypass the compiler driver and pass
            option directly through to the preprocessor.  If option contains
            commas, it is split into multiple options at the commas.  However,
@@ -6536,8 +6560,7 @@
            should avoid using -Wp and let the driver handle the options
            instead.
 
-           -Xpreprocessor option
-
+       -Xpreprocessor option
            Pass option as an option to the preprocessor.  You can use this to
            supply system-specific preprocessor options which GCC does not know
            how to recognize.
@@ -13734,17 +13757,8 @@
             You have freedom to copy and modify this GNU Manual, like GNU
             software.  Copies published by the Free Software Foundation raise
             funds for GNU development.
-</pre>
-<p><strong>POD ERRORS</strong>
-</p><pre>
-       Hey! The above document had some coding errors, which are explained
-       below:
 
-       Around line 8761:
-           You can't have =items (as at line 8774) unless the first thing
-           after the =over is an =item
-
-gcc-4.4.1                         2010-01-10                            GCC(1)
+gcc-4.4.3                         2010-03-26                            GCC(1)
 </pre>
 </body>
 </html>

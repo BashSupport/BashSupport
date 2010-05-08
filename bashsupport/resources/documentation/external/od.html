@@ -1,0 +1,187 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: od.html, Class: od.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>OD(1) User Commands OD(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> od - dump files in octal and other formats
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       od [OPTION]... [FILE]...
+       od [-abcdfilosx]... [FILE] [[+]OFFSET[.][b]]
+       od --traditional [OPTION]... [FILE] [[+]OFFSET[.][b] [+][LABEL][.][b]]
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       Write an unambiguous representation, octal bytes by default, of FILE to
+       standard output.  With more than one FILE argument, concatenate them in
+       the  listed  order to form the input.  With no FILE, or when FILE is -,
+       read standard input.
+
+       All arguments to long options are mandatory for short options.
+
+       -A, --address-radix=RADIX
+              decide how file offsets are printed
+
+       -j, --skip-bytes=BYTES
+              skip BYTES input bytes first
+
+       -N, --read-bytes=BYTES
+              limit dump to BYTES input bytes
+
+       -S, --strings[=BYTES]
+              output strings of at least BYTES graphic chars
+
+       -t, --format=TYPE
+              select output format or formats
+
+       -v, --output-duplicates
+              do not use * to mark line suppression
+
+       -w, --width[=BYTES]
+              output BYTES bytes per output line
+
+       --traditional
+              accept arguments in traditional form
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+</pre>
+<p> Traditional format specifications may be intermixed; they accumulate:
+</p>
+
+<p> -a same as -t a, select named characters, ignoring high-order bit
+</p>
+
+<p> -b same as -t o1, select octal bytes
+</p>
+
+<p> -c same as -t c, select ASCII characters or backslash escapes
+</p>
+
+<p> -d same as -t u2, select unsigned decimal 2-byte units
+</p>
+
+<p> -f same as -t fF, select floats
+</p>
+
+<p> -i same as -t dI, select decimal ints
+</p>
+
+<p> -l same as -t dL, select decimal longs
+</p>
+
+<p> -o same as -t o2, select octal 2-byte units
+</p>
+
+<p> -s same as -t d2, select decimal 2-byte units
+</p>
+
+<p> -x same as -t x2, select hexadecimal 2-byte units
+</p>
+<pre>
+       If first and second call formats  both  apply,  the  second  format  is
+       assumed  if the last operand begins with + or (if there are 2 operands)
+       a  digit.   An  OFFSET  operand  means  -j  OFFSET.    LABEL   is   the
+       pseudo-address  at  first  byte  printed, incremented when dump is pro‐
+       gressing.  For OFFSET and LABEL, a 0x or 0X prefix indicates  hexadeci‐
+       mal; suffixes may be . for octal and b for multiply by 512.
+
+       TYPE is made up of one or more of these specifications:
+
+       a      named character, ignoring high-order bit
+
+       c      ASCII character or backslash escape
+
+       d[SIZE]
+              signed decimal, SIZE bytes per integer
+
+       f[SIZE]
+              floating point, SIZE bytes per integer
+
+       o[SIZE]
+              octal, SIZE bytes per integer
+
+       u[SIZE]
+              unsigned decimal, SIZE bytes per integer
+
+       x[SIZE]
+              hexadecimal, SIZE bytes per integer
+
+       SIZE  is  a  number.   For  TYPE  in  doux,  SIZE  may  also  be  C for
+       sizeof(char),  S  for  sizeof(short),  I  for  sizeof(int)  or  L   for
+       sizeof(long).   If  TYPE  is f, SIZE may also be F for sizeof(float), D
+       for sizeof(double) or L for sizeof(long double).
+
+       RADIX is d for decimal, o for octal, x for hexadecimal or n  for  none.
+       BYTES  is  hexadecimal  with 0x or 0X prefix, and may have a multiplier
+       suffix: b  512,  kB  1000,  K  1024,  MB  1000<em>1000, M 1024</em>1024,  GB
+       1000<em>1000</em>1000,  G 1024<em>1024</em>1024, and so on for T, P, E, Z, Y.  Adding
+       a z suffix to any type displays printable characters at the end of each
+       output  line.   Option  --string  without  a  number  implies 3; option
+       --width without a number implies 32.  By default, od uses -A  o  -t  oS
+       -w16.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Written by Jim Meyering.
+</p>
+
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report od bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright  ©  2009  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The  full  documentation  for od is maintained as a Texinfo manual.  If
+       the info and od programs are properly installed at your site, the  com‐
+       mand
+
+              info coreutils 'od invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                             OD(1)
+</pre>
+</body>
+</html>

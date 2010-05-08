@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: modprobe.html, Class: modprobe.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
 <p><strong>MODPROBE(8) MODPROBE(8)</strong>
@@ -193,6 +193,9 @@
               run  any  of  the  install commands. Note that modinfo(8) can be
               used to extract dependencies of a module from the module itself,
               but knows nothing of aliases or install commands.
+
+       --resolve-alias
+              Print all module names matching an alias.
 
        -o --name
               This  option  tries to rename the module which is being inserted
