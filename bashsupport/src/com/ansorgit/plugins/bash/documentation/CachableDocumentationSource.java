@@ -21,10 +21,13 @@ package com.ansorgit.plugins.bash.documentation;
 import com.intellij.psi.PsiElement;
 
 /**
+ * Extends a documentation source with a cache key providing method. A CachableDocumentationSource
+ * takes a CachableDocumentationSource and used the key to store the data with its value in the cache.
+ * <p/>
  * User: jansorg
  * Date: 08.05.2010
  * Time: 13:13:17
  */
-public interface CachableDocumentationSource extends DocumentationSource {
+interface CachableDocumentationSource extends DocumentationSource {
     String findCacheKey(PsiElement element, PsiElement originalElement);
 }
