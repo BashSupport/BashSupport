@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: DocumentationReader.java, Class: DocumentationReader
+ * File: ClasspathDocumentationReader.java, Class: ClasspathDocumentationReader
  * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.net.URL;
  *
  * @author Joachim Ansorg
  */
-class DocumentationReader {
+class ClasspathDocumentationReader {
     private static final Logger log = Logger.getInstance("#bash.DocumentationReader");
 
-    private DocumentationReader() {
+    private ClasspathDocumentationReader() {
     }
 
     /**
@@ -48,24 +48,23 @@ class DocumentationReader {
      * @param command The command name, e.g. "echo"
      * @return The documentation content or null.
      */
-    static String readFromFile(String path, String command) {
-        log.debug("loading doc for " + path + "/" + command + ".txt");
+    static String readFromClasspath(String path, String command) {
+        //log.debug("loading doc for " + path + "/" + command + ".txt");
         if (StringUtil.isEmpty(path) || StringUtil.isEmpty(command)) {
             return null;
         }
 
         final String fullPath = path + "/" + command + ".html";
         try {
-            URL url = DocumentationReader.class.getResource(fullPath);
+            URL url = ClasspathDocumentationReader.class.getResource(fullPath);
             if (url == null) {
                 log.debug("couldn't find resource");
                 return null;
             }
 
             final InputStream inputStream = new BufferedInputStream(url.openStream());
-            String data = StreamUtil.readText(inputStream);
-            log.debug("result " + data);
-            return data;
+
+            return StreamUtil.readText(inputStream);
         } catch (IOException e) {
             log.debug("Failed to read documentation.", e);
         }

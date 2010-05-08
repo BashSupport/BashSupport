@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ClasspathDocSource.java, Class: ClasspathDocSource
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,10 +38,12 @@ abstract class ClasspathDocSource implements DocumentationSource {
     }
 
     public String documentation(PsiElement element, PsiElement originalElement) {
-        if (!isValid(element, originalElement)) return null;
+        if (!isValid(element, originalElement)) {
+            return null;
+        }
 
         BashCommand cmd = (BashCommand) element;
-        return DocumentationReader.readFromFile(prefixPath, cmd.getReferencedName());
+        return ClasspathDocumentationReader.readFromClasspath(prefixPath, cmd.getReferencedName());
     }
 
     abstract boolean isValid(PsiElement element, PsiElement originalElement);
