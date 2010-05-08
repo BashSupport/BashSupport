@@ -1,0 +1,182 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: pr.html, Class: pr.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>PR(1) User Commands PR(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> pr - convert text files for printing
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> pr [OPTION]... [FILE]...
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> Paginate or columnate FILE(s) for printing.
+</p>
+<pre>
+       Mandatory  arguments  to  long  options are mandatory for short options
+       too.
+
+       +FIRST_PAGE[:LAST_PAGE], --pages=FIRST_PAGE[:LAST_PAGE]
+              begin [stop] printing with page FIRST_[LAST_]PAGE
+
+       -COLUMN, --columns=COLUMN
+              output COLUMN columns and print columns down, unless -a is used.
+              Balance number of lines in the columns on each page.
+
+       -a, --across
+              print  columns across rather than down, used together with -COL‐
+              UMN
+
+       -c, --show-control-chars
+              use hat notation (^G) and octal backslash notation
+
+       -d, --double-space
+              double space the output
+
+       -D, --date-format=FORMAT
+              use FORMAT for the header date
+
+       -e[CHAR[WIDTH]], --expand-tabs[=CHAR[WIDTH]]
+              expand input CHARs (TABs) to tab WIDTH (8)
+
+       -F, -f, --form-feed
+              use form feeds instead of  newlines  to  separate  pages  (by  a
+              3-line  page header with -F or a 5-line header and trailer with‐
+              out -F)
+
+       -h, --header=HEADER
+              use a centered HEADER instead of filename in page header, -h  ""
+              prints a blank line, don't use -h""
+
+       -i[CHAR[WIDTH]], --output-tabs[=CHAR[WIDTH]]
+              replace spaces with CHARs (TABs) to tab WIDTH (8)
+
+       -J, --join-lines
+              merge full lines, turns off -W line truncation, no column align‐
+              ment, --sep-string[=STRING] sets separators
+
+       -l, --length=PAGE_LENGTH
+              set the page length to PAGE_LENGTH (66) lines (default number of
+              lines of text 56, and with -F 63)
+
+       -m, --merge
+              print all files in parallel, one in each column, truncate lines,
+              but join lines of full length with -J
+
+       -n[SEP[DIGITS]], --number-lines[=SEP[DIGITS]]
+              number lines, use DIGITS (5) digits,  then  SEP  (TAB),  default
+              counting starts with 1st line of input file
+
+       -N, --first-line-number=NUMBER
+              start  counting  with  NUMBER  at 1st line of first page printed
+              (see +FIRST_PAGE)
+
+       -o, --indent=MARGIN
+              offset each line with MARGIN (zero) spaces, do not affect -w  or
+              -W, MARGIN will be added to PAGE_WIDTH
+
+       -r, --no-file-warnings
+              omit warning when a file cannot be opened
+
+       -s[CHAR],--separator[=CHAR]
+              separate  columns by a single character, default for CHAR is the
+              &lt;TAB&gt; character without -w and 'no char' with -w -s[CHAR]  turns
+              off  line  truncation  of all 3 column options (-COLUMN|-a -COL‐
+              UMN|-m) except -w is set
+
+       -SSTRING, --sep-string[=STRING]
+              separate columns by STRING, without -S: Default separator  &lt;TAB&gt;
+              with -J and &lt;space&gt; otherwise (same as -S" "), no effect on col‐
+              umn options
+
+       -t, --omit-header
+              omit page headers and trailers
+
+       -T, --omit-pagination
+              omit page headers and trailers, eliminate any pagination by form
+              feeds set in input files
+
+       -v, --show-nonprinting
+              use octal backslash notation
+
+       -w, --width=PAGE_WIDTH
+              set  page  width  to  PAGE_WIDTH  (72)  characters  for multiple
+              text-column output only, -s[char] turns off (72)
+
+       -W, --page-width=PAGE_WIDTH
+              set page width to PAGE_WIDTH (72)  characters  always,  truncate
+              lines, except -J option is set, no interference with -S or -s
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       -t  is  implied if PAGE_LENGTH &lt;= 10.  With no FILE, or when FILE is -,
+       read standard input.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Written by Pete TerMaat and Roland Huebner.
+</p>
+
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report pr bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright © 2009 Free Software Foundation, Inc.   License  GPLv3+:  GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The full documentation for pr is maintained as a  Texinfo  manual.   If
+       the  info and pr programs are properly installed at your site, the com‐
+       mand
+
+              info coreutils 'pr invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                             PR(1)
+</pre>
+</body>
+</html>

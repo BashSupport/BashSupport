@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FloatArithmeticInspection.java, Class: FloatArithmeticInspection
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class FloatArithmeticInspection extends AbstractBashInspection {
                 if (expression instanceof ProductExpression) {
                     ProductExpression product = (ProductExpression) expression;
 
-                    if (product.hasRemainder()) {
+                    if (product.hasDivisionRemainder()) {
                         holder.registerProblem(expression, getShortName());
                     }
                 }

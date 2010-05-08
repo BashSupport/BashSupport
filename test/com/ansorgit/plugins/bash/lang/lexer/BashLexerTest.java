@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-04-26
+ * Last modified: 2010-04-28
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -240,6 +240,8 @@ public class BashLexerTest {
         testTokenization("\\ ", WORD);
         testTokenization("\\?", WORD);
         testTokenization("\\!", WORD);
+        //fixme: line continuation, check with spec
+        //testTokenization("abc\\\nabc", WORD);
 
         //subshells
         testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,

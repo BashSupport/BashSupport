@@ -1,15 +1,20 @@
+2010-05-08:
+  - Support for the % operator in arithmetic expressions
+
+2010-04-28:
+  - 0.9.11-maia
+
 2010-04-26:
   - Fixed Java5 compilation
   - Fixed unsupported escape codes
-  - 0.9.11-maia
 
 2010-04-24:
+  - Some performance tuning
+
+  - 0.9.10-maia
   - Added "&-" to the lexer
   - Improved parsing and marking of redirect lists
   - Improved parsing of conditional commands
-  - 0.9.10-maia
-
-  - Some performance tuning
 
 2010-04-23:
   - Reworked redirect parsing

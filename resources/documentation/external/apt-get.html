@@ -1,7 +1,7 @@
 <!--
-  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: apt-get.html, Class: apt-get.html
-  ~ Last modified: 2010-01-27
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,488 +21,546 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
 </head>
 <body>
-<p>APT-GET(8) [FIXME: manual] APT-GET(8)
+<p><strong>APT-GET(8) APT APT-GET(8)</strong>
 </p>
 
 <p><strong>NAME</strong>
-</p>
-
-<p> apt-get - APT package handling utility -- command-line interface
-</p>
-
+</p><pre>
+       apt-get - APT-Werkzeug für den Umgang mit Paketen --
+       Befehlszeilenschnittstelle
+</pre>
 <p><strong>SYNOPSIS</strong>
 </p><pre>
-       apt-get [-sqdyfmubV] [-o= config_string ] [-c= config_file ]
-               [-t= { target_release_name | target_release_number_expression | target_release_codename }]
+       apt-get [-sqdyfmubV] [-o= Konfigurationszeichenkette ]
+               [-c= Konfigurationsdatei ]
+               [-t= { Ziel-Release-Name | numerischer Ziel-Release-Ausdruck | Ziel-Release-Codename }]
                {update | upgrade | dselect-upgrade | dist-upgrade |
-               install pkg [ { =pkg_version_number | /target_release_name | /target_release_codename } ] ...
-               | remove pkg...  | purge pkg...  |
-               source pkg [ { =pkg_version_number | /target_release_name | /target_release_codename } ] ...
-               | build-dep pkg...  | check | clean | autoclean | autoremove |
-               {-v | --version} | {-h | --help}}
+               install pkg [ { =Paketversionsnummer | /Ziel-Release-Name | /Ziel-Release-Codename } ] ...
+               | remove Paket...  | purge Paket...  |
+               source Paket [ { =Paketversionsnummer | /Ziel-Release-Name | /Ziel-Release-Codename } ] ...
+               | build-dep Paket...  | check | clean | autoclean | autoremove
+               | {-v | --version} | {-h | --help}}
 </pre>
-<p><strong>DESCRIPTION</strong>
+<p><strong>BESCHREIBUNG</strong>
 </p><pre>
-       apt-get is the command-line tool for handling packages, and may be
-       considered the user´s "back-end" to other tools using the APT library.
-       Several "front-end" interfaces exist, such as dselect(8), aptitude(8),
-       synaptic(8), gnome-apt(1) and wajig(1).
+       apt-get ist ein Befehlszeilenwerkzeug zur Handhabung von Paketen und
+       könnte als »Backend« anderer Werkzeugen betrachtet werden, die die
+       APT-Bibliothek benutzen. Es existieren mehrere
+       Oberflächenschnittstellen, wie dselect(1), aptitude(8), synaptic(8),
+       gnome-apt(1) und wajig(1).
 
-       Unless the -h, or --help option is given, one of the commands below
-       must be present.
+       Sofern nicht die -h-, oder --help-Option angegeben ist, muss einer der
+       unten aufgeführten Befehle vorkommen.
 
        update
-           update is used to resynchronize the package index files from their
-           sources. The indexes of available packages are fetched from the
-           location(s) specified in /etc/apt/sources.list. For example, when
-           using a Debian archive, this command retrieves and scans the
-           Packages.gz files, so that information about new and updated
-           packages is available. An update should always be performed before
-           an upgrade or dist-upgrade. Please be aware that the overall
-           progress meter will be incorrect as the size of the package files
-           cannot be known in advance.
+           update wird benutzt, um die Paketindexdatei wieder mit ihren
+           Quellen zu synchronisieren. Die Indizes verfügbarer Pakete werden
+           von den in /etc/apt/sources.list angegebenen Orten geladen. Wenn
+           Sie zum Beispiel ein Debian-Archiv benutzen, erneuert dieser Befehl
+           die Packages.gz-Dateien und wertet sie aus, so dass Informationen
+           über neue und aktualisierte Pakete verfügbar sind. Ein update
+           sollte immer vor einem upgrade oder dist-upgrade ausgeführt werden.
+           Bitte seien Sie sich bewusst, dass die Gesamtfortschrittsanzeige
+           nicht richtig sein wird, da die Größe der Pakete nicht im voraus
+           bekannt ist.
 
        upgrade
-           upgrade is used to install the newest versions of all packages
-           currently installed on the system from the sources enumerated in
-           /etc/apt/sources.list. Packages currently installed with new
-           versions available are retrieved and upgraded; under no
-           circumstances are currently installed packages removed, or packages
-           not already installed retrieved and installed. New versions of
-           currently installed packages that cannot be upgraded without
-           changing the install status of another package will be left at
-           their current version. An update must be performed first so that
-           apt-get knows that new versions of packages are available.
+           upgrade wird benutzt, um die neusten Versionen aller aktuell auf
+           dem System installierten Pakete aus den in /etc/apt/sources.list
+           aufgezählten Quellen zu installieren. Aktuell installierte Pakete
+           mit verfügbaren neuen Versionen werden heruntergeladen und das
+           Upgrade durchgeführt. Unter keinen Umständen werden derzeit
+           installierte Pakete entfernt oder nicht installierte Pakete
+           heruntergeladen und installiert. Neue Versionen von aktuell
+           installierten Paketen von denen kein Upgrade durchgeführt werden
+           kann, ohne den Installationsstatus eines anderen Paketes zu ändern,
+           werden in ihrer aktuellen Version bleiben. Zuerst muss ein update
+           durchgeführt werden, so dass apt-get die neuen Versionen der
+           verfügbaren Pakete kennt.
 
        dselect-upgrade
-           dselect-upgrade is used in conjunction with the traditional Debian
-           packaging front-end, dselect(8).  dselect-upgrade follows the
-           changes made by dselect(8) to the Status field of available
-           packages, and performs the actions necessary to realize that state
-           (for instance, the removal of old and the installation of new
-           packages).
+           dselect-upgrade wird zusammen mit der traditionellen
+           Debian-Oberfläche dselect(1) benutzt.  dselect-upgrade folgt den
+           durch dselect(1) am Status-Feld verfügbarer Pakete gemachten
+           Änderungen und führt die notwendigen Aktionen durch, um diesen
+           Status zu realisieren (zum Beispiel das Entfernen von alten und
+           Installieren von neuen Paketen).
 
        dist-upgrade
-           dist-upgrade in addition to performing the function of upgrade,
-           also intelligently handles changing dependencies with new versions
-           of packages; apt-get has a "smart" conflict resolution system, and
-           it will attempt to upgrade the most important packages at the
-           expense of less important ones if necessary. So, dist-upgrade
-           command may remove some packages. The /etc/apt/sources.list file
-           contains a list of locations from which to retrieve desired package
-           files. See also apt_preferences(5) for a mechanism for overriding
-           the general settings for individual packages.
+           dist-upgrade führt zusätzlich zu der Funktion von upgrade
+           intelligente Handhabung von Abhängigkeitsänderungen mit neuen
+           Versionen von Paketen durch.  apt-get hat ein »intelligentes«
+           Konfliktauflösungssystem und es wird versuchen, Upgrades der
+           wichtigsten Pakete, wenn nötig zu Lasten der weniger wichtigen, zu
+           machen. So könnte der dist-upgrade-Befehl einige Pakete entfernen.
+           Die /etc/apt/sources.list-Datei enthält eine Liste mit Orten, von
+           denen gewünschte Paketdateien abgerufen werden. Siehe auch
+           apt_preferences(5) für einen Mechanismus zum überschreiben der
+           allgemeinen Einstellungen für einzelne Pakete.
 
        install
-           install is followed by one or more packages desired for
-           installation or upgrading. Each package is a package name, not a
-           fully qualified filename (for instance, in a Debian GNU/Linux
-           system, libc6 would be the argument provided, not
-           libc6_1.9.6-2.deb). All packages required by the package(s)
-           specified for installation will also be retrieved and installed.
-           The /etc/apt/sources.list file is used to locate the desired
-           packages. If a hyphen is appended to the package name (with no
-           intervening space), the identified package will be removed if it is
-           installed. Similarly a plus sign can be used to designate a package
-           to install. These latter features may be used to override decisions
-           made by apt-get´s conflict resolution system.
+           install wird gefolgt von einem oder mehreren gewünschten Paketen
+           zur Installation oder zum Upgrade. Jedes Paket ist ein Paketname,
+           kein vollständig zusammengesetzter Dateiname (zum Beispiel wäre in
+           einem »Debian GNU/Linux«-System libc6 das bereitgestellte Argument,
+           nicht libc6_1.9.6-2.deb). Alle von den zur Installation angegebenen
+           Paketen benötigten Pakete werden zusätzlich heruntergeladen und
+           installiert. Die /etc/apt/sources.list-Datei wird benutzt, um die
+           gewünschten Pakete zu finden. Wenn ein Bindestrich an den
+           Paketnamen (ohne Leerzeichen dazwischen) angehängt ist, wird das
+           erkannte Pakete entfernt, falls es installiert ist. Ähnlich kann
+           ein Pluszeichen benutzt werden, um ein Paket zum Installieren
+           vorzumerken. Diese letzteren Funktionen können benutzt werden, um
+           Entscheidungen zu überschreiben, die vom Konfliktauflösungssystem
+           von apt-get getroffen wurden.
 
-           A specific version of a package can be selected for installation by
-           following the package name with an equals and the version of the
-           package to select. This will cause that version to be located and
-           selected for install. Alternatively a specific distribution can be
-           selected by following the package name with a slash and the version
-           of the distribution or the Archive name (stable, testing,
-           unstable).
+           Eine bestimmte Version eines Paketes kann durch den Paketnamen
+           gefolgt von einem Gleichheitszeichen und der Version des Paketes
+           zur Installation ausgewählt werden. Dies bewirkt, dass diese
+           Version gesucht und zum Installieren ausgewählt wird. Alternativ
+           kann eine bestimmte Distribution durch den Paketnamen gefolgt von
+           einem Schrägstrich und der Version der Distribution oder des
+           Archivnamens (»stable«, »testing«, »unstable«) ausgewählt werden.
 
-           Both of the version selection mechanisms can downgrade packages and
-           must be used with care.
+           Beide Mechanismen der Versionsauswahl können ein Downgrade von
+           Paketen durchführen und müssen mit Vorsicht gehandhabt werden.
 
-           This is also the target to use if you want to upgrade one or more
-           already-installed packages without upgrading every package you have
-           on your system. Unlike the "upgrade" target, which installs the
-           newest version of all currently installed packages, "install" will
-           install the newest version of only the package(s) specified. Simply
-           provide the name of the package(s) you wish to upgrade, and if a
-           newer version is available, it (and its dependencies, as described
-           above) will be downloaded and installed.
+           Dies ist außerdem die bevorzugt zu benutzende Art, wenn Sie Sie ein
+           Upgrade eines oder mehrerer bereits installierter Pakete
+           durchführen möchten, ohne ein Upgrade aller Pakete, die Sie auf
+           Ihrem System haben, durchzuführen. Anders als das Ziel von
+           »upgrade«, das die neusten Versionen aller aktuell installierten
+           Pakete installiert, wird »install« nur die neusten Versionen der
+           angegebenen Pakete installieren. Geben Sie einfach den Namen des
+           Paketes an, von dem Sie ein Upgrade durchführen möchten und wenn
+           eine neuere Version verfügbar ist, wird sie (und ihre
+           Abhängigkeiten, wie oben beschrieben) heruntergeladen und
+           installiert.
 
-           Finally, the apt_preferences(5) mechanism allows you to create an
-           alternative installation policy for individual packages.
+           Letztendlich erlaubt Ihnen der apt_preferences(5)-Mechanismus eine
+           alternative Installationsrichtlinie für eigene Pakete zu erzeugen.
 
-           If no package matches the given expression and the expression
-           contains one of ´.´, ´?´ or ´<em>´ then it is assumed to be a POSIX
-    regular expression, and it is applied to all package names in the
-    database. Any matches are then installed (or removed). Note that
-    matching is done by substring so ´lo.</em>´ matches ´how-lo´ and
-           ´lowest´. If this is undesired, anchor the regular expression with
-           a ´^´ or ´$´ character, or create a more specific regular
-           expression.
+           Wenn keine Pakete dem angegebenen Ausdruck entsprechen und der
+           Ausdruck entweder ».«,»,«,»?« oder »<em>« enthält, dann wird vermutet,
+    dass es sich um einen regulären POSIX-Ausdruck handelt und er wird
+    auf alle Paketnamen in der Datenbank angewandt. Jeder Treffer wird
+    dann installiert (oder entfernt). Beachten Sie, dass nach
+    übereinstimmenden Zeichenkettenteilen gesucht wird, so dass »lo.</em>«
+           auf »how-lo« und »lowest« passt. Wenn dies nicht gewünscht wird,
+           hängen Sie an den regulären Ausdruck ein »^«- oder »$«-Zeichen, um
+           genauere reguläre Ausdruck zu erstellen.
 
        remove
-           remove is identical to install except that packages are removed
-           instead of installed. Note the removing a package leaves its
-           configuration files in system. If a plus sign is appended to the
-           package name (with no intervening space), the identified package
-           will be installed instead of removed.
+           remove ist identisch mit install, mit der Ausnahme, dass Pakte
+           entfernt anstatt installiert werden. Beachten Sie, dass das
+           Entfernen von Paketen deren Konfigurationsdateien im System
+           belässt. Wenn ein Pluszeichen an den Paketnamen angehängt wird
+           (ohne Leerzeichen dazwischen) wird das erkannte Paket installiert
+           anstatt entfernt.
 
        purge
-           purge is identical to remove except that packages are removed and
-           purged (any configuration files are deleted too).
+           purge entspricht remove mit der Ausnahme, dass Pakete entfernt und
+           vollständig gelöscht werden (jegliche Konfigurationsdateien werden
+           mitgelöscht).
 
        source
-           source causes apt-get to fetch source packages. APT will examine
-           the available packages to decide which source package to fetch. It
-           will then find and download into the current directory the newest
-           available version of that source package while respect the default
-           release, set with the option APT::Default-Release, the -t option or
-           per package with with the pkg/release syntax, if possible.
+           source veranlasst apt-get dazu, Paketquellen zu laden. APT wird die
+           verfügbaren Pakete überprüfen, um zu entscheiden, welche
+           Paketquellen geladen werden. Es wird dann die neueste Version der
+           Paketquelle finden und in das aktuelle Verzeichnis herunterladen.
+           Dabei berücksichtigt es das Vorgabe-Release, das mit der Option
+           APT::Default-Release, der Option -t oder pro Paket mit der
+           pkg/release-Syntax gesetzt wurde, wenn möglich.
 
-           Source packages are tracked separately from binary packages via
-           deb-src type lines in the sources.list(5) file. This means that you
-           will need to add such a line for each repository you want to get
-           sources from. If you don´t do this you will properly get another
-           (newer, older or none) source version than the one you have
-           installed or could install.
+           Paketquellen werden vom Programmpaket getrennt über
+           deb-src-Typzeilen in der sources.list(5)-Datei nachverfolgt. Das
+           bedeutet, dass Sie für jedes Depot, aus dem Sie Quellen erhalten
+           wollen, eine solche Zeile hinzufügen müssen. Wenn Sie dies nicht
+           tun, werden Sie eine andere als die passende (neuere, ältere oder
+           keine) Quellenversion erhalten, die Sie installiert haben oder
+           installieren könnten.
 
-           If the --compile options is specified then the package will be
-           compiled to a binary .deb using dpkg-buildpackage, if
-           --download-only is specified then the source package will not be
-           unpacked.
+           Wenn die --compile-Option angegeben ist, dann wird das Paket unter
+           Benutzung von dpkg-buildpackage zu einem binären .deb kompiliert,
+           wenn --download-only angegeben ist, wird das Quellpaket nicht
+           entpackt.
 
-           A specific source version can be retrieved by postfixing the source
-           name with an equals and then the version to fetch, similar to the
-           mechanism used for the package files. This enables exact matching
-           of the source package name and version, implicitly enabling the
-           APT::Get::Only-Source option.
+           Eine bestimmte Quellversion kann durch Voranstellen eines
+           Gleichheitszeichens vor den Paketnamen und dann der Version zum
+           Herunterladen erhalten werde, ähnlich dem Mechanismus, der für
+           Paketdateien benutzt wird. Dies ermöglicht exakte Übereinstimmung
+           von Quellpaketname und -Version und impliziert das Einschalten
+           derAPT::Get::Only-Source-Option.
 
-           Note that source packages are not tracked like binary packages,
-           they exist only in the current directory and are similar to
-           downloading source tar balls.
+           Beachten Sie, dass Quellpakete nicht wie normale Programmpakete
+           nachverfolgt werden, sie existieren nur im aktuellen Verzeichnis
+           und sind heruntergeladenen Tarballs ähnlich.
 
        build-dep
-           build-dep causes apt-get to install/remove packages in an attempt
-           to satisfy the build dependencies for a source package.
+           build-dep veranlasst apt-get, Pakete zu installieren/entfernen, um
+           zu versuchen, die Bauabhängigkeiten eines Quellpakets zu erfüllen.
 
        check
-           check is a diagnostic tool; it updates the package cache and checks
-           for broken dependencies.
+           check ist ein Diagnosewerkzeug. Es aktualisiert den
+           Paketzwischenspeicher und prüft, ob beschädigte Abhängigkeiten
+           vorliegen.
 
        clean
-           clean clears out the local repository of retrieved package files.
-           It removes everything but the lock file from
-           /var/cache/apt/archives/ and /var/cache/apt/archives/partial/. When
-           APT is used as a dselect(8) method, clean is run automatically.
-           Those who do not use dselect will likely want to run apt-get clean
-           from time to time to free up disk space.
+           clean bereinigt das lokale Depot von heruntergeladenen
+           Paketdateien. Es entfernt alles außer der Sperrdatei aus
+           /var/cache/apt/archives/ und /var/cache/apt/archives/partial/. Wenn
+           APT als eine dselect(1)-Methode benutzt wird, wird clean
+           automatisch ausgeführt. Diejenigen, die Dselect nicht benutzen,
+           werden apt-get clean wahrscheinlich von Zeit zu Zeit ausführen, um
+           Plattenplatz freizugeben.
 
        autoclean
-           Like clean, autoclean clears out the local repository of retrieved
-           package files. The difference is that it only removes package files
-           that can no longer be downloaded, and are largely useless. This
-           allows a cache to be maintained over a long period without it
-           growing out of control. The configuration option
-           APT::Clean-Installed will prevent installed packages from being
-           erased if it is set to off.
+           Wie clean bereinigt autoclean das lokale Depot von
+           heruntergeladenen Paketdateien. Der Unterschied besteht darin, dass
+           es nur Pakete entfernt, die nicht mehr heruntergeladen werden
+           können und größtenteils nutzlos sind. Dies erlaubt es, einen
+           Zwischenspeicher über eine lange Zeitspanne zu betreuen, ohne dass
+           er unkontrolliert anwächst. Die Konfigurationsoption
+           APT::Clean-Installed wird installierte Pakete vor der Löschung
+           bewahren, wenn sie auf »off« gesetzt ist.
 
        autoremove
-           autoremove is used to remove packages that were automatically
-           installed to satisfy dependencies for some package and that are no
-           more needed.
+           autoremove wird benutzt, um Pakete, die automatisch installiert
+           wurden, um Abhängigkeiten für einige Pakete zu erfüllen und die
+           nicht mehr benötigt werden, zu entfernen.
 </pre>
-<p><strong>OPTIONS</strong>
+<p><strong>OPTIONEN</strong>
 </p><pre>
-       All command line options may be set using the configuration file, the
-       descriptions indicate the configuration option to set. For boolean
-       options you can override the config file by using something like
-       -f-,--no-f, -f=no or several other variations.
+       Alle Befehlszeilenoptionen können durch die Konfigurationsdatei gesetzt
+       werden, die Beschreibung gibt die zu setzende Option an. Für boolesche
+       Optionen können Sie die Konfigurationsdatei überschreiben, indem Sie
+       etwas wie -f-, --no-f, -f=no oder etliche weitere Varianten benutzen.
 
        --no-install-recommends
-           Do not consider recommended packages as a dependency for
-           installing. Configuration Item: APT::Install-Recommends.
+           Empfohlene Pakete nicht als Abhängigkeit für die Installation
+           betrachten. Konfigurationselement: APT::Install-Recommends.
 
        -d, --download-only
-           Download only; package files are only retrieved, not unpacked or
-           installed. Configuration Item: APT::Get::Download-Only.
+           Nur herunterladen; Paketdateien werde nur heruntergeladen, nicht
+           entpackt oder installiert. Konfigurationselement:
+           APT::Get::Download-Only.
 
        -f, --fix-broken
            Fix; attempt to correct a system with broken dependencies in place.
            This option, when used with install/remove, can omit any packages
-           to permit APT to deduce a likely solution. Any Package that are
-           specified must completely correct the problem. The option is
-           sometimes necessary when running APT for the first time; APT itself
-           does not allow broken package dependencies to exist on a system. It
-           is possible that a system´s dependency structure can be so corrupt
-           as to require manual intervention (which usually means using
-           dselect(8) or dpkg --remove to eliminate some of the offending
-           packages). Use of this option together with -m may produce an error
-           in some situations. Configuration Item: APT::Get::Fix-Broken.
+           to permit APT to deduce a likely solution. If packages are
+           specified, these have to completely correct the problem. The option
+           is sometimes necessary when running APT for the first time; APT
+           itself does not allow broken package dependencies to exist on a
+           system. It is possible that a system's dependency structure can be
+           so corrupt as to require manual intervention (which usually means
+           using dselect(1) or dpkg --remove to eliminate some of the
+           offending packages). Use of this option together with -m may
+           produce an error in some situations. Configuration Item:
+           APT::Get::Fix-Broken.
 
        -m, --ignore-missing, --fix-missing
-           Ignore missing packages; If packages cannot be retrieved or fail
-           the integrity check after retrieval (corrupted package files), hold
-           back those packages and handle the result. Use of this option
-           together with -f may produce an error in some situations. If a
-           package is selected for installation (particularly if it is
-           mentioned on the command line) and it could not be downloaded then
-           it will be silently held back. Configuration Item:
-           APT::Get::Fix-Missing.
+           Fehlende Pakete ignorieren; Wenn Pakete nicht heruntergeladen
+           werden können oder die Integritätsprüfung nach dem Herunterladen
+           fehlschlägt (fehlerhafte Paketdateien), werden diese Pakete
+           zurückgehalten und das Ergebnis verarbeitet. Die Benutzung dieser
+           Option zusammen mit -f kann in einigen Situationen zu Fehlern
+           führen. Wenn ein Paket zur Installation ausgewählt ist (besonders,
+           wenn es auf der Befehlszeile genannt wurde) und es nicht
+           heruntergeladen werden kann, wird es stillschweigend
+           zurückgehalten. Konfigurationselement: APT::Get::Fix-Missing.
 
        --no-download
-           Disables downloading of packages. This is best used with
-           --ignore-missing to force APT to use only the .debs it has already
-           downloaded. Configuration Item: APT::Get::Download.
+           Schaltet das Herunterladen von Paketen aus. Dies wird am besten mit
+           --ignore-missing benutzt, um APT zu zwingen, nur die .debs zu
+           benutzten, die es bereits heruntergeladenen hat.
+           Konfigurationselement: APT::Get::Download.
 
        -q, --quiet
-           Quiet; produces output suitable for logging, omitting progress
-           indicators. More q´s will produce more quiet up to a maximum of 2.
-           You can also use -q=# to set the quiet level, overriding the
-           configuration file. Note that quiet level 2 implies -y, you should
-           never use -qq without a no-action modifier such as -d, --print-uris
-           or -s as APT may decided to do something you did not expect.
-           Configuration Item: quiet.
+           Still; erzeugt eine Ausgabe, die für Protokollierung geeignet ist
+           und Fortschrittsanzeiger weglässt. Mehr »q«s unterdrücken mehr
+           Ausgaben, bis zu einem Maximum von 2. Sie können außerdem -q=#
+           benutzen, um die Stillestufe zu setzen, was die Konfigurationsdatei
+           überschreibt. Beachten Sie, dass Stillestufe 2 -y impliziert. Sie
+           sollten niemals -qq ohne einen keine-Aktion-Umwandler, wie -d,
+           --print-uris oder -s benutzen, da APT entscheiden könnte, etwas zu
+           tun, das Sie nicht erwarten. Konfigurationselement: quiet.
 
        -s, --simulate, --just-print, --dry-run, --recon, --no-act
-           No action; perform a simulation of events that would occur but do
-           not actually change the system. Configuration Item:
-           APT::Get::Simulate.
+           Keine Aktion; führt eine Simulation von Ereignissen aus, die
+           eintreten würden, aber das aktuelle System nicht verändern.
+           Konfigurationselement: APT::Get::Simulate.
 
-           Simulation run as user will deactivate locking (Debug::NoLocking)
-           automatical. Also a notice will be displayed indicating that this
-           is only a simulation, if the option
-           APT::Get::Show-User-Simulation-Note is set (Default: true) Neigther
-           NoLocking nor the notice will be triggered if run as root (root
-           should know what he is doing without further warnings by apt-get).
+           Ausführung der Simulation als normaler Anwender wird das Sperren
+           (Debug::NoLocking) automatisch deaktivieren. Außerdem wird eine
+           Mitteilung angezeigt, die angibt, dass dies nur eine Simulation
+           ist, wenn die Option APT::Get::Show-User-Simulation-Note gesetzt
+           ist (Vorgabe ist »true«). Weder NoLocking noch die Mitteilung
+           werden ausgelöst, wenn es als root ausgeführt wird (root sollte
+           ohne weitere Warnungen von apt-get wissen, was er tut).
 
-           Simulate prints out a series of lines each one representing a dpkg
-           operation, Configure (Conf), Remove (Remv), Unpack (Inst). Square
-           brackets indicate broken packages with and empty set of square
-           brackets meaning breaks that are of no consequence (rare).
+           Simulieren gibt eine Serie von Zeilen aus, von denen jede eine
+           Dpkg-Operation darstellt: Konfigurieren (Conf), Entfernen (Remv),
+           Entpacken (Inst). Eckige Klammern zeigen beschädigte Pakete an und
+           ein leeres Paar eckiger Klammern bedeutet Unterbrechungen, die
+           keine Folgen haben (selten).
 
        -y, --yes, --assume-yes
-           Automatic yes to prompts; assume "yes" as answer to all prompts and
-           run non-interactively. If an undesirable situation, such as
-           changing a held package, trying to install a unauthenticated
-           package or removing an essential package occurs then apt-get will
-           abort. Configuration Item: APT::Get::Assume-Yes.
+           Automatisches »Ja« auf Anfragen; Versucht »Ja« auf alle Anfragen zu
+           antworten und ohne Eingaben zu laufen. Wenn eine unerwünschte
+           Situation eintritt, wie ein gehaltenes Paket zu ändern, ein nicht
+           authentifiziert Paket zu installieren oder ein essentielles Paket
+           zu entfernen, dann wird apt-get abgebrochen. Konfigurationselement:
+           APT::Get::Assume-Yes.
 
        -u, --show-upgraded
-           Show upgraded packages; Print out a list of all packages that are
-           to be upgraded. Configuration Item: APT::Get::Show-Upgraded.
+           Zeigt Pakete, von denen ein Upgrade durchgeführt werden soll; Gibt
+           eine Liste aller Pakete aus, von denen ein Upgrade gemacht wurde.
+           Konfigurationselement: APT::Get::Show-Upgraded.
 
        -V, --verbose-versions
-           Show full versions for upgraded and installed packages.
-           Configuration Item: APT::Get::Show-Versions.
+           Zeigt vollständige Versionen für Pakete, von denen ein Upgrade
+           durchgeführt oder die installiert wurden. Konfigurationselement:
+           APT::Get::Show-Versions.
 
        -b, --compile, --build
-           Compile source packages after downloading them. Configuration Item:
-           APT::Get::Compile.
+           Kompiliert Quellpakete, nachdem sie heruntergeladen wurden.
+           Konfigurationselement: APT::Get::Compile.
 
        --install-recommends
-           Also install recommended packages.
+           Installiert außerdem empfohlene Pakete.
 
        --no-install-recommends
-           Do not install recommended packages.
+           Keine empfohlenen Pakete installieren.
 
        --ignore-hold
-           Ignore package Holds; This causes apt-get to ignore a hold placed
-           on a package. This may be useful in conjunction with dist-upgrade
-           to override a large number of undesired holds. Configuration Item:
-           APT::Ignore-Hold.
+           Ignoriert zurückhalten des Paketes; Dies veranlasst apt-get, ein
+           für das Paket gesetztes »Halten« zu ignorieren. Dies kann zusammen
+           mit dist-upgrade nützlich sein, um eine große Anzahl ungewünschter
+           »Halten« zu überschreiben. Konfigurationselement: APT::Ignore-Hold.
 
        --no-upgrade
-           Do not upgrade packages; When used in conjunction with install,
-           no-upgrade will prevent packages on the command line from being
-           upgraded if they are already installed. Configuration Item:
-           APT::Get::Upgrade.
+           Kein Upgrade von Paketen durchführen; Wenn es zusammen mit install
+           benutzt wird, wird no-upgrade auf der Befehlszeile ein Upgrade von
+           Paketen verhindern, wenn sie bereits installiert sind.
+           Konfigurationselement: APT::Get::Upgrade.
 
        --force-yes
-           Force yes; This is a dangerous option that will cause apt to
-           continue without prompting if it is doing something potentially
-           harmful. It should not be used except in very special situations.
-           Using force-yes can potentially destroy your system! Configuration
-           Item: APT::Get::force-yes.
+           »Ja« erzwingen; Dies ist eine gefährliche Option, die APT
+           veranlasst, ohne Nachfrage fortzufahren, wenn es etwas
+           möglicherweise schädliches tut. Es sollte nicht benutzt werden,
+           außer in ganz besonderen Situationen.  force-yes zu benutzen, kann
+           möglicherweise ihr System zerstören! Konfigurationselement:
+           APT::Get::force-yes.
 
        --print-uris
-           Instead of fetching the files to install their URIs are printed.
-           Each URI will have the path, the destination file name, the size
-           and the expected md5 hash. Note that the file name to write to will
-           not always match the file name on the remote site! This also works
-           with the source and update commands. When used with the update
-           command the MD5 and size are not included, and it is up to the user
-           to decompress any compressed files. Configuration Item:
+           Anstatt die Dateien herunterzuladen, werden ihre URIs ausgegeben.
+           Jede URI wird den Pfad, den Zieldateinamen, die Größe und den
+           erwarteten md5-Hash enthalten. Beachten Sie, dass der zu
+           schreibende Dateiname nicht immer dem Dateinamen auf der entfernt
+           gelegenen Seite entspricht. Dies funktioniert auch mit den Befehlen
+           source und update. Wenn es mit dem Befehl update benutzt wird, sind
+           MD5 und Größe nicht enthalten und es ist Aufgabe des Benutzers,
+           komprimierte Dateien zu dekomprimieren. Konfigurationselement:
            APT::Get::Print-URIs.
 
        --purge
            Use purge instead of remove for anything that would be removed. An
            asterisk ("*") will be displayed next to packages which are
-           scheduled to be purged.  remove --purge is equivalent for purge
+           scheduled to be purged.  remove --purge is equivalent to the purge
            command. Configuration Item: APT::Get::Purge.
 
        --reinstall
-           Re-Install packages that are already installed and at the newest
-           version. Configuration Item: APT::Get::ReInstall.
+           Paket erneut installieren, die bereits installiert und in der
+           neuesten Version sind. Konfigurationselement: APT::Get::ReInstall.
 
        --list-cleanup
-           This option defaults to on, use --no-list-cleanup to turn it off.
-           When on apt-get will automatically manage the contents of
-           /var/lib/apt/lists to ensure that obsolete files are erased. The
-           only reason to turn it off is if you frequently change your source
-           list. Configuration Item: APT::Get::List-Cleanup.
+           Diese Option ist standardmäßig eingeschaltet. Um sie auszuschalten,
+           benutzen Sie --no-list-cleanup. Wenn eingeschaltet, wird apt-get
+           den Inhalt von /var/lib/apt/lists automatisch verwalten, um
+           sicherzustellen, dass veraltete Dateien gelöscht werden. Nur das
+           häufige Ändern der Quelllisten stellt den einzigen Grund zum
+           Ausschalten der Option dar. Konfigurationselement:
+           APT::Get::List-Cleanup.
 
        -t, --target-release, --default-release
-           This option controls the default input to the policy engine, it
-           creates a default pin at priority 990 using the specified release
-           string. This overrides the general settings in
-           /etc/apt/preferences. Specifically pinned packages are not affected
-           by the value of this option. In short, this option lets you have
-           simple control over which distribution packages will be retrieved
-           from. Some common examples might be -t �´2.1*�´, -t unstable or -t
-           sid. Configuration Item: APT::Default-Release; see also the
-           apt_preferences(5) manual page.
+           Diese Option steuert die standardmäßige Eingabe an die Einheit zur
+           Durchsetzung der Richtlinien (»policy«), sie erstellt eine
+           Vorgabe-Pin mit Priorität 990 unter Benutzung der angegebenen
+           Release-Zeichenkette. Dies überschreibt die allgemeinen
+           Einstellungen in /etc/apt/preferences. Pakete mit speziellem
+           Pinning sind nicht vom Wert dieser Option betroffen. Kurz gesagt,
+           gibt Ihnen diese Option einfache Kontrolle darüber, welche
+           Distributions-Pakete heruntergeladen werden sollen. Einige typische
+           Beispiele könnten -t '2.1*', -t unstable oder -t sid sein.
+           Konfigurationselement: APT::Default-Release; Lesen Sie auch die
+           apt_preferences(5)-Handbuchseite.
 
        --trivial-only
-           Only perform operations that are ´trivial´. Logically this can be
-           considered related to --assume-yes, where --assume-yes will answer
-           yes to any prompt, --trivial-only will answer no. Configuration
-           Item: APT::Get::Trivial-Only.
+           Nur Operationen ausführen, die »trivial« sind. Logischerweise kann
+           dies in Betracht bezogen auf --assume-yes sein, wobei --assume-yes
+           auf jede Frage mit »Ja« und --trivial-only mit »Nein« antworten
+           wird. Konfigurationselement: APT::Get::Trivial-Only.
 
        --no-remove
-           If any packages are to be removed apt-get immediately aborts
-           without prompting. Configuration Item: APT::Get::Remove.
+           Wenn irgendwelche Pakete entfernt werden sollen, bricht apt-get
+           sofort ohne Nachfrage ab. Konfigurationselement: APT::Get::Remove.
 
        --auto-remove
-           If the command is either install or remove, then this option acts
-           like running autoremove command, removing the unused dependency
-           packages. Configuration Item: APT::Get::AutomaticRemove.
+           Wenn der Befehl entweder install oder remove lautet, dann bewirkt
+           diese Option wie das Ausführen des autoremove-Befehls das Entfernen
+           der nicht benutzten Abhhängigkeitspakete. Konfigurationselement:
+           APT::Get::AutomaticRemove.
 
        --only-source
-           Only has meaning for the source and build-dep commands. Indicates
-           that the given source names are not to be mapped through the binary
-           table. This means that if this option is specified, these commands
-           will only accept source package names as arguments, rather than
-           accepting binary package names and looking up the corresponding
-           source package. Configuration Item: APT::Get::Only-Source.
+           Hat nur eine Bedeutung für die Befehle source und build-dep. Zeigt
+           an, dass die angegebenen Quellnamen nicht durch die Programmtabelle
+           ermittelt werden. Dies bedeutet, das dieser Befehl, wenn diese
+           Option angegeben ist, nur Quellpaketnamen als Argumente akzeptiert,
+           anstatt Programmpakete zu akzeptieren und nach den entsprechenden
+           Quellpaketen zu suchen. Konfigurationselement:
+           APT::Get::Only-Source.
 
        --diff-only, --dsc-only, --tar-only
-           Download only the diff, dsc, or tar file of a source archive.
-           Configuration Item: APT::Get::Diff-Only, APT::Get::Dsc-Only, and
-           APT::Get::Tar-Only.
+           Nur die diff-, dsc-, oder tar-Dateien eines Quellarchivs
+           herunterladen. Konfigurationselemente: APT::Get::Diff-Only,
+           APT::Get::Dsc-Only und APT::Get::Tar-Only.
 
        --arch-only
-           Only process architecture-dependent build-dependencies.
-           Configuration Item: APT::Get::Arch-Only.
+           Nur architekturabhängige Bauabhängigkeiten verarbeiten.
+           Konfigurationselement: APT::Get::Arch-Only.
 
        --allow-unauthenticated
-           Ignore if packages can´t be authenticated and don´t prompt about
-           it. This is useful for tools like pbuilder. Configuration Item:
-           APT::Get::AllowUnauthenticated.
+           Ignorieren, wenn Pakete nicht authentifiziert werden können und
+           nicht danach fragen. Dies ist für Werkzeuge wie pbuilder nützlich.
+           Konfigurationselement: APT::Get::AllowUnauthenticated.
 
        -h, --help
-           Show a short usage summary.
+           Ein kurze Aufrufzusammenfassung zeigen.
 
        -v, --version
-           Show the program version.
+           Die Version des Programms anzeigen.
 
        -c, --config-file
-           Configuration File; Specify a configuration file to use. The
-           program will read the default configuration file and then this
-           configuration file. See apt.conf(5) for syntax information.
+           Konfigurationsdatei; Gibt eine Konfigurationssdatei zum Benutzen
+           an. Das Programm wird die Vorgabe-Konfigurationsdatei und dann
+           diese Konfigurationsdatei lesen. Lesen Sie apt.conf(5), um
+           Syntax-Informationen zu erhalten
 
        -o, --option
-           Set a Configuration Option; This will set an arbitrary
-           configuration option. The syntax is -o Foo::Bar=bar.  -o and
-           --option can be used multiple times to set different options.
+           Eine Konfigurationsoption setzen; Dies wird eine beliebige
+           Konfigurationsoption setzen. Die Syntax lautet -o Foo::Bar=bar.  -o
+           und --option kann mehrfach benutzt werden, um verschiedene Optionen
+           zu setzen.
 </pre>
-<p><strong>FILES</strong>
+<p><strong>DATEIEN</strong>
 </p><pre>
        /etc/apt/sources.list
-           Locations to fetch packages from. Configuration Item:
+           Orte, von denen Pakete geladen werden. Konfigurationselement:
            Dir::Etc::SourceList.
 
+       /etc/apt/sources.list.d/
+           Dateifragmente für Orte, von denen Pakete geladen werden.
+           Konfigurationselement: Dir::Etc::SourceParts.
+
        /etc/apt/apt.conf
-           APT configuration file. Configuration Item: Dir::Etc::Main.
+           APT-Konfigurationsdatei. Konfigurationselement: Dir::Etc::Main.
 
        /etc/apt/apt.conf.d/
-           APT configuration file fragments. Configuration Item:
+           APT-Konfigurationsdatei-Fragmente. Konfigurationselement:
            Dir::Etc::Parts.
 
        /etc/apt/preferences
-           Version preferences file. This is where you would specify
-           "pinning", i.e. a preference to get certain packages from a
-           separate source or from a different version of a distribution.
-           Configuration Item: Dir::Etc::Preferences.
+           Version-Einstellungsdatei. Hier können Sie "pinning" angeben, d.h.
+           eine Einstellung, um bestimmte Pakete aus einer separaten Quelle
+           oder von einer anderen Version einer Distribution zu erhalten.
+           Konfigurationselement: Dir::Etc::Preferences.
+
+       /etc/apt/preferences.d/
+           Dateifragmente für die Versionseinstellungen.
+           Konfigurationselement: Dir::Etc::PreferencesParts.
 
        /var/cache/apt/archives/
-           Storage area for retrieved package files. Configuration Item:
-           Dir::Cache::Archives.
+           Speicherbereich für aufgerufene Paketdateien.
+           Konfigurationselement: Dir::Cache::Archives.
 
        /var/cache/apt/archives/partial/
-           Storage area for package files in transit. Configuration Item:
-           Dir::Cache::Archives (implicit partial).
+           Speicherbereich für Paketdateien auf dem Transportweg.
+           Konfigurationselement: Dir::Cache::Archives (implizit teilweise).
 
        /var/lib/apt/lists/
-           Storage area for state information for each package resource
-           specified in sources.list(5) Configuration Item: Dir::State::Lists.
+           Speicherbereich für Statusinformationen jeder in sources.list(5)
+           angegebenen Paketquelle Konfigurationselement: Dir::State::Lists.
 
        /var/lib/apt/lists/partial/
-           Storage area for state information in transit. Configuration Item:
-           Dir::State::Lists (implicit partial).
+           Speicherbereich für Statusinformationen auf dem Transportweg.
+           Konfigurationselement: Dir::State::Lists (implizit teilweise).
 </pre>
-<p><strong>SEE ALSO</strong>
+<p><strong>SIEHE AUCH</strong>
 </p><pre>
-       apt-cache(8), apt-cdrom(8), dpkg(8), dselect(8), sources.list(5),
-       apt.conf(5), apt-config(8), apt-secure(8), The APT User´s guide in
-       /usr/share/doc/apt-doc/, apt_preferences(5), the APT Howto.
+       apt-cache(8), apt-cdrom(8), dpkg(1), dselect(1), sources.list(5),
+       apt.conf(5), apt-config(8), apt-secure(8), Die APT-Benutzeranleitung in
+       /usr/share/doc/apt-doc/, apt_preferences(5), das APT-Howto.
 </pre>
-<p><strong>DIAGNOSTICS</strong>
-</p>
-
-<p> apt-get returns zero on normal operation, decimal 100 on error.
-</p>
-
-<p><strong>ORIGINAL AUTHORS</strong>
+<p><strong>DIAGNOSE</strong>
+</p><pre>
+       apt-get gibt bei normalen Operationen 0 zurück, dezimal 100 bei
+       Fehlern.
+</pre>
+<p><strong>ORIGINALAUTOREN</strong>
 </p>
 
 <p> Jason Gunthorpe
 </p>
 
-<p><strong>CURRENT AUTHORS</strong>
+<p><strong>AKTUELLE AUTOREN</strong>
 </p>
 
-<p> APT team
+<p> APT-Team
 </p>
 
-<p> QA Page[1]
+<p> QA-Seite[1]
 </p>
 
-<p><strong>BUGS</strong>
+<p><strong>FEHLER</strong>
 </p><pre>
-       APT bug page[2]. If you wish to report a bug in APT, please see
-       /usr/share/doc/debian/bug-reporting.txt or the reportbug(1) command.
+       APT-Fehlerseite[2]. Wenn Sie einen Fehler in APT berichten möchten,
+       lesen Sie bitte /usr/share/doc/debian/bug-reporting.txt oder den
+       reportbug(1)-Befehl. Verfassen Sie Fehlerberichte bitte auf Englisch.
+</pre>
+<p><strong>ÜBERSETZUNG</strong>
+</p><pre>
+       Die deutsche Übersetzung wurde 2009 von Chris Leick <a href="mailto:c.leick@vollbio.de">c.leick@vollbio.de</a>
+       angefertigt in Zusammenarbeit mit dem Debian German-l10n-Team
+       <a href="mailto:debian-l10n-german@lists.debian.org">debian-l10n-german@lists.debian.org</a>.
+
+       Note that this translated document may contain untranslated parts. This
+       is done on purpose, to avoid losing content when the translation is
+       lagging behind the original content.
 </pre>
 <p><strong>AUTHORS</strong>
-</p><pre>
-       Jason Gunthorpe
-           Author.
+</p>
 
-       APT team
-           Author.
-</pre>
+<p> Jason Gunthorpe
+</p>
+
+<p> APT-Team
+</p>
+
 <p><strong>NOTES</strong>
 </p>
 <ol>
-    <li>QA Page
+    <li>QA-Seite
         <a href="http://packages.qa.debian.org/a/apt.html">http://packages.qa.debian.org/a/apt.html</a>
     </li>
-    <li>APT bug page
+    <li>APT-Fehlerseite
         <a href="http://bugs.debian.org/src:apt">http://bugs.debian.org/src:apt</a>
     </li>
 </ol>
-<p>Linux 08 November 2008 APT-GET(8)</p>
+<p>Linux 8. November 2008 APT-GET(8)</p>
 
 </body>
 </html>

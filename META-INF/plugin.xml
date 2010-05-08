@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-04-24
+  ~ Last modified: 2010-05-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.11-maia</version>
+    <version>0.9.12-maia</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
     <idea-version since-build="91.15" until-build="98.999"/>
 
@@ -69,6 +69,13 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.11-maia:</b>
+       <ul>
+          <li>Fixed compilation for Java 5 plattforms</li>
+          <li>Fixed unsupported escape codes</li>
+          <li>Some speed improvements</li>
+       </ul>
+
        <b>Changes in version 0.9.10-maia:</b>
        <ul>
           <li>Support for the "readonly" command</li>
