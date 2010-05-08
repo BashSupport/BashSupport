@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: InternalCmdDocumentation.java, Class: InternalCmdDocumentation
- * Last modified: 2010-01-21
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * File: BashKeywordDocSource.java, Class: BashKeywordDocSource
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,24 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.intellij.psi.PsiElement;
 
 /**
- * Provides documentation for internal commands.
+ * Provides documentation for Bash keyword elements like "if", "while" and "for".
  * <p/>
- * Date: 03.05.2009
- * Time: 18:25:29
+ * Date: 06.05.2009
+ * Time: 12:37:14
  *
  * @author Joachim Ansorg
  */
-class InternalCmdDocumentation extends ClasspathDocSource {
-    InternalCmdDocumentation() {
-        super("/documentation/internal");
-    }
+class BashKeywordDocSource implements DocumentationSource {
+    public String documentation(PsiElement element, PsiElement originalElement) {
+        if (!(element instanceof BashKeyword)) {
+            return null;
+        }
 
-    boolean isValid(PsiElement element, PsiElement originalElement) {
-        return element instanceof BashCommand && ((BashCommand) element).isInternalCommand();
+        return DocumentationReader.readFromFile("/documentation/internal", ((BashKeyword) element).keywordElement().getText());
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {
