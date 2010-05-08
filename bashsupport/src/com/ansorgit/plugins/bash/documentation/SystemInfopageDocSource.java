@@ -69,7 +69,8 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
         }
 
         try {
-            String commandName = command.commandElement().getText();
+            String commandName = command.getReferencedName();
+
             boolean hasInfoPage = infoFileExists(commandName);
             if (!hasInfoPage) {
                 return null;
@@ -113,29 +114,11 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     }
 
     String callTextToHtml(final String infoPageData) throws IOException {
-        String inputFile = "-";
+        ProcessBuilder processBuilder = new ProcessBuilder(txt2htmlExecutable, "--infile", "-");
 
-        ProcessBuilder processBuilder = new ProcessBuilder(txt2htmlExecutable, "--infile", inputFile);
-
-        CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME)) {
-            @Override
-            public void startNotify() {
-                super.startNotify();
-
-                //we need to write after the stdout reader has been attached. Otherwise the process may block
-                //and wait for the stdout to be read
-                try {
-                    Writer stdinWriter = new OutputStreamWriter(getProcessInput(), CHARSET_NAME);
-                    stdinWriter.write(infoPageData);
-                    stdinWriter.close();
-                } catch (IOException e) {
-                    log.info("Exception passing data to txt2html", e);
-                }
-            }
-        };
+        CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData);
 
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
-
         if (output.getExitCode() != 0) {
             return null;
         }
@@ -159,9 +142,33 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
 
     public String findCacheKey(PsiElement element, PsiElement originalElement) {
         if (element instanceof BashCommand && ((BashCommand) element).isExternalCommand()) {
-            return ((BashCommand) element).commandElement().getText();
+            return ((BashCommand) element).getReferencedName();
         }
 
         return null;
+    }
+
+    private class MyCapturingProcessHandler extends CapturingProcessHandler {
+        private final String stdinData;
+
+        public MyCapturingProcessHandler(Process process, String stdinData) {
+            super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME));
+            this.stdinData = stdinData;
+        }
+
+        @Override
+        public void startNotify() {
+            super.startNotify();
+
+            //we need to write after the stdout reader has been attached. Otherwise the process may block
+            //and wait for the stdout to be read
+            try {
+                Writer stdinWriter = new OutputStreamWriter(getProcessInput(), CHARSET_NAME);
+                stdinWriter.write(stdinData);
+                stdinWriter.close();
+            } catch (IOException e) {
+                log.info("Exception passing data to txt2html", e);
+            }
+        }
     }
 }

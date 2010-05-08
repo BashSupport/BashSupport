@@ -35,7 +35,7 @@ class BashKeywordDocSource implements DocumentationSource {
             return null;
         }
 
-        return DocumentationReader.readFromFile("/documentation/internal", ((BashKeyword) element).keywordElement().getText());
+        return ClasspathDocumentationReader.readFromClasspath("/documentation/internal", ((BashKeyword) element).keywordElement().getText());
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {

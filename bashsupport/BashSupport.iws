@@ -11,8 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/FunctionPsiCommentSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/FunctionPsiCommentSource.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocumentationReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashKeywordDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashKeywordDocSource.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocSource.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.tar.gz" />
@@ -99,19 +104,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="CachingDocumentationSource.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="20" selection-start="2279" selection-end="2279" vertical-scroll-proportion="0.852194">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -124,8 +117,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParserTest.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ProductExpressionsImpl.java" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/resources/documentation/external/create-html.sh" />
@@ -134,12 +125,14 @@
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachedDocSource.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSouece.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/FunctionPsiCommentSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocumentationReader.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
       </list>
     </option>
   </component>
@@ -1057,7 +1050,7 @@
       <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
-  <component name="RunManager" selected="Plugin.Intellij IDEA">
+  <component name="RunManager" selected="JUnit.All tests">
     <configuration default="false" name="SystemPathUtilTest.testFindBestExecutable" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
@@ -1645,7 +1638,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1400" height="1015" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36506158" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
@@ -1660,7 +1653,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31598514" sideWeight="0.33706608" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.333829" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2795539" sideWeight="0.70100784" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2795539" sideWeight="0.68533033" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3345725" sideWeight="0.5800672" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3068309" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
@@ -1764,78 +1757,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../../../programs/share/java/jdk/src.zip!/java/lang/UNIXProcess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="0" selection-start="5062" selection-end="5062" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/ProcessOutput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="22" selection-start="1533" selection-end="1533" vertical-scroll-proportion="0.49557522">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/OSProcessHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="14" selection-start="3831" selection-end="3831" vertical-scroll-proportion="0.14051095">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/platform-api/src/com/intellij/execution/process/CapturingProcessHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="4" selection-start="2053" selection-end="2053" vertical-scroll-proportion="0.43893805">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Changelog.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="31" selection-start="100" selection-end="100" vertical-scroll-proportion="0.034642033">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="13" selection-start="935" selection-end="935" vertical-scroll-proportion="0.24249423">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashDocumentationProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="13" selection-start="1260" selection-end="1260" vertical-scroll-proportion="0.25981525">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="12" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.2944573">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="11" selection-start="964" selection-end="964" vertical-scroll-proportion="0.30981067">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/command/BashCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="17" selection-start="2313" selection-end="2313" vertical-scroll-proportion="0.023372287">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/codeInsight/documentation/DocumentationManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="665" column="0" selection-start="27234" selection-end="27234" vertical-scroll-proportion="0.33333334">
@@ -1857,25 +1778,95 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="4" selection-start="1848" selection-end="1848" vertical-scroll-proportion="0.22850412">
+        <state line="72" column="17" selection-start="2419" selection-end="2419" vertical-scroll-proportion="0.90415704">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/FunctionPsiCommentSource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="64" selection-start="1631" selection-end="1631" vertical-scroll-proportion="0.34642032">
+        <state line="67" column="8" selection-start="2422" selection-end="2422" vertical-scroll-proportion="0.6189377">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachingDocumentationSource.java">
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/util/src/com/intellij/openapi/util/io/StreamUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="20" selection-start="2279" selection-end="2279" vertical-scroll-proportion="0.852194">
+        <state line="40" column="23" selection-start="1223" selection-end="1223" vertical-scroll-proportion="0.33256352">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocumentationReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="38" selection-start="2246" selection-end="2246" vertical-scroll-proportion="0.74480367">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/DocumentationProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="6" selection-start="1186" selection-end="1186" vertical-scroll-proportion="0.27713627">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/CachableDocumentationSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="3" selection-start="1021" selection-end="1021" vertical-scroll-proportion="0.15588914">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/BashReference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="18" selection-start="932" selection-end="932" vertical-scroll-proportion="0.22995283">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/command/BashCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="18" selection-start="3215" selection-end="3215" vertical-scroll-proportion="0.8584906">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/ClasspathDocSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="83" selection-start="1518" selection-end="1518" vertical-scroll-proportion="0.4503464">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/InternalCommandDocumentation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="43" selection-start="1056" selection-end="1056" vertical-scroll-proportion="0.24249423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="140" column="18" selection-start="5015" selection-end="5015" vertical-scroll-proportion="0.3256351">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/BashKeywordDocSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="44" selection-start="1293" selection-end="1293" vertical-scroll-proportion="0.3533569">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="0" selection-start="5600" selection-end="5600" vertical-scroll-proportion="0.94014084">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
