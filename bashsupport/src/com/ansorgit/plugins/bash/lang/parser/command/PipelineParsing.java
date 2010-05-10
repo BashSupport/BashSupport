@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PipelineParsing.java, Class: PipelineParsing
- * Last modified: 2010-02-09
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,9 @@ public class PipelineParsing implements ParsingTool {
     public boolean isPipelineCommand(BashPsiBuilder builder) {
         final PsiBuilder.Marker start = builder.mark();
         try {
-            if (isPipeline(builder)) return true;
+            if (isPipeline(builder)) {
+                return true;
+            }
 
             final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
             final IElementType secondToken = builder.getTokenType();
@@ -121,7 +123,8 @@ public class PipelineParsing implements ParsingTool {
 
     private boolean parsePipelineOrError(BashPsiBuilder builder, PsiBuilder.Marker marker, IElementType markerCommand) {
         if (!parsePipleline(builder, marker, markerCommand)) {
-            ParserUtil.error(marker, "parser.pipeline.expected.pipeline");
+            //ParserUtil.error(marker, "parser.pipeline.expected.pipeline");
+            marker.drop();
             return false;
         }
 

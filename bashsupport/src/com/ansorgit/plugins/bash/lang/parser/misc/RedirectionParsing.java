@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsing.java, Class: RedirectionParsing
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,10 @@ public class RedirectionParsing implements ParsingTool {
         if (validBeforeFiledescriptor.contains(secondToken) && ParserUtil.hasNextTokens(builder, true, secondToken, FILEDESCRIPTOR)) {
             //avoid "advance without check" exceptions
             ParserUtil.getTokenAndAdvance(builder, true);
+
+            PsiBuilder.Marker descriptorMarker = builder.mark();
             ParserUtil.getTokenAndAdvance(builder, true);
+            descriptorMarker.done(FILEDESCRIPTOR);
 
             marker.done(REDIRECT_ELEMENT);
             return true;
@@ -152,7 +155,7 @@ public class RedirectionParsing implements ParsingTool {
             }
 
             if (!handleHereDocRedirect(builder)) {
-                marker.error("Expected heredoc marker");
+                //marker.error("Expected heredoc marker");
                 return false;
             }
 
@@ -164,7 +167,9 @@ public class RedirectionParsing implements ParsingTool {
         if (ok) {
             marker.done(REDIRECT_ELEMENT);
         } else {
-            marker.error("Invalid redirect");
+            marker.drop();
+            builder.error("Invalid redirect");
+            //marker.error("Invalid redirect");
         }
 
         return ok;

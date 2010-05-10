@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRunner.java, Class: BashRunner
- * Last modified: 2010-03-01
+ * Last modified: 2010-05-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ public class BashRunner extends DefaultProgramRunner {
                                              final ExecutionEnvironment env) throws ExecutionException {
 
         FileDocumentManager.getInstance().saveAllDocuments();
+
         ExecutionResult executionResult = state.execute(executor, this);
         if (executionResult == null) {
             return null;
@@ -63,7 +64,7 @@ public class BashRunner extends DefaultProgramRunner {
         final RunContentBuilder contentBuilder = new RunContentBuilder(project, this, executor);
         contentBuilder.setExecutionResult(executionResult);
         contentBuilder.setEnvironment(env);
+
         return contentBuilder.showRunContent(contentToReuse);
     }
-
 }

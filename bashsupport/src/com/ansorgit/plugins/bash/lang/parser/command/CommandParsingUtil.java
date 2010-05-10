@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -192,7 +192,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                     //assignment list for an array
                     final boolean ok = parseAssignmentList(builder);
                     if (!ok) {
-                        ParserUtil.error(assignment, "parser.unexpected.token");
+                        ParserUtil.error(builder, "parser.unexpected.token");
+                        assignment.drop();
                         return false;
                     }
                 }
@@ -201,7 +202,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 final boolean isEndToken = assignmentSeperators.contains(token);
                 if (token != null && !isEndToken) {
                     if (!Parsing.word.parseWord(builder, true, TokenSet.EMPTY, validWordTokens)) {
-                        ParserUtil.error(assignment, "parser.unexpected.token");
+                        ParserUtil.error(builder, "parser.unexpected.token");
+                        assignment.drop();
                         return false;
                     }
                 }

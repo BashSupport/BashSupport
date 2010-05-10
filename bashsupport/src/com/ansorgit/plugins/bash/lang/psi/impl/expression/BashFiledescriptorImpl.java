@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BashRedirectListImpl.java, Class: BashRedirectListImpl
- * Last modified: 2010-05-09
+ * File: BashFiledescriptorImpl.java, Class: BashFiledescriptorImpl
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,37 +19,43 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.expression;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashFiledescriptor;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * User: jansorg
- * Date: Oct 29, 2009
- * Time: 8:51:31 PM
+ * Date: 10.05.2010
+ * Time: 19:57:38
  */
-public class BashRedirectListImpl extends BashPsiElementImpl implements BashRedirectList {
-    public BashRedirectListImpl(final ASTNode astNode) {
-        super(astNode, "BashRedirectList");
-    }
-
-    @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
+public class BashFiledescriptorImpl extends BashPsiElementImpl implements BashFiledescriptor {
+    public BashFiledescriptorImpl(ASTNode astNode) {
+        super(astNode, "Bash filedescriptor");
     }
 
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitRedirectExpressionList(this);
+            ((BashVisitor) visitor).visitFiledescriptor(this);
         } else {
             visitor.visitElement(this);
+        }
+    }
+
+    @Nullable
+    public Integer descriptorAsInt() {
+        String text = getText();
+        if (!(text.length() > 0 && text.charAt(0) == '&') || text.equals("&-")) {
+            return null;
+        }
+
+        try {
+            return Integer.valueOf(text.substring(1));
+        } catch (Exception e) {
+            return null;
         }
     }
 }
