@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-04-22
+ * Last modified: 2010-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,9 @@ public class HereDocParsing implements ParsingTool {
 
                 return true;
             } else if (!foundExactEnd) {
-                ParserUtil.error(hereDocMarker, "parser.heredoc.expectedEnd");
+                //ParserUtil.error(hereDocMarker, "parser.heredoc.expectedEnd");
+                hereDocMarker.drop();
+                ParserUtil.error(builder, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();
 
                 return true;

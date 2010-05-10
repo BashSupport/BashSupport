@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleCommandParsingFunction.java, Class: SimpleCommandParsingFunction
- * Last modified: 2010-02-10
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,8 @@ public class SimpleCommandParsingFunction extends DefaultParsingFunction {
                 return false;
             }
         } else if (!hasAssignmentOrRedirect) {
-            ParserUtil.error(cmdMarker, "parser.command.expected.command");
+            ParserUtil.error(builder, "parser.command.expected.command");
+            cmdMarker.drop();
             return false;
         }
 

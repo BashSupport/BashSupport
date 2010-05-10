@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2010-03-09
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
@@ -25,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashShebangImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashSymbolImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.*;
+import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashFiledescriptorImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectExprImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectListImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashSubshellCommandImpl;
@@ -132,6 +134,9 @@ public class BashPsiCreator implements BashElementTypes {
         }
         if (elementType == REDIRECT_LIST_ELEMENT) {
             return new BashRedirectListImpl(node);
+        }
+        if (elementType == BashTokenTypes.FILEDESCRIPTOR) {
+            return new BashFiledescriptorImpl(node);
         }
 
         //vars

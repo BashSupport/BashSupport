@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IfParsingFunction.java, Class: IfParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,13 +63,15 @@ public class IfParsingFunction extends DefaultParsingFunction {
         builder.advanceLexer();
 
         if (!Parsing.list.parseCompoundList(builder, false)) {
-            ParserUtil.error(ifCommand, "parser.shell.if.expectedCommands");
+            ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+            ifCommand.drop();
             return false;
         }
 
         final IElementType thenKeyword = ParserUtil.getTokenAndAdvance(builder);
         if (thenKeyword != BashTokenTypes.THEN_KEYWORD) {
-            ParserUtil.error(ifCommand, "parser.shell.if.expectedThen");
+            ParserUtil.error(builder, "parser.shell.if.expectedThen");
+            ifCommand.drop();
             return false;
         }
 
@@ -98,7 +100,8 @@ public class IfParsingFunction extends DefaultParsingFunction {
 
         final IElementType fiKeyword = ParserUtil.getTokenAndAdvance(builder);
         if (fiKeyword != BashTokenTypes.FI_KEYWORD) {
-            ParserUtil.error(ifCommand, "parser.shell.if.expectedFi");
+            ParserUtil.error(builder, "parser.shell.if.expectedFi");
+            ifCommand.drop();
             return false;
         }
 
