@@ -1,8 +1,13 @@
+2010-05-10:
+ - Fixed error markers, no large red blocks any more
+ - Inspection to detect invalid filedescriptors (only 0-9 are valid)
+
 2010-05-08:
   - Support for the % operator in arithmetic expressions
   - Added a few more man pages 
-  - The quick documentation lookup (Ctrl+Q) now tries to read the system's info page for an external command, if it
-    is available (needs the commands "info" in the path, optionally "txt2html").
+  - The quick documentation lookup (Ctrl+Q) now tries to read the current system's info page
+    for an external command, if it is available (needs the commands "info" in the path,
+    optionally "txt2html" to turn the plain text into html).
 
 2010-04-28:
   - 0.9.11-maia

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -230,5 +230,14 @@ public class BashPsiUtils {
             original.getNode().replaceAllChildrenToChildrenOf(replacement.getNode());
             return original;
         }
+    }
+
+    @Nullable
+    public static TextRange rangeInParent(PsiElement parent, PsiElement child) {
+        if (!parent.getTextRange().contains(child.getTextRange())) {
+            return null;
+        }
+
+        return TextRange.from(child.getTextOffset() - parent.getTextOffset(), child.getTextLength());
     }
 }

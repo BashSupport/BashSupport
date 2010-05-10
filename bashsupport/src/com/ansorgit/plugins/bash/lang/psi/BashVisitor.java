@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVisitor.java, Class: BashVisitor
- * Last modified: 2010-02-07
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashFiledescriptor;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
@@ -110,5 +113,17 @@ public class BashVisitor extends PsiElementVisitor {
 
     public void visitArithmeticExpression(ArithmeticExpression expression) {
         visitElement(expression);
+    }
+
+    public void visitRedirectExpression(BashRedirectExpr redirect) {
+        visitElement(redirect);
+    }
+
+    public void visitRedirectExpressionList(BashRedirectList redirectList) {
+        visitElement(redirectList);
+    }
+
+    public void visitFiledescriptor(BashFiledescriptor filedescriptor) {
+        visitElement(filedescriptor);
     }
 }

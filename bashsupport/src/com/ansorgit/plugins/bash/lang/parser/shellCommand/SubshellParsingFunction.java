@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SubshellParsingFunction.java, Class: SubshellParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,14 +56,16 @@ public class SubshellParsingFunction extends DefaultParsingFunction {
 
         //parse compound list
         if (!Parsing.list.parseCompoundList(builder, true, false, false)) {
-            ParserUtil.error(subshell, "parser.shell.expectedCommands");
+            ParserUtil.error(builder, "parser.shell.expectedCommands");
+            subshell.drop();
             return false;
         }
 
         //get and check end token
         final IElementType lastToken = ParserUtil.getTokenAndAdvance(builder);
         if (lastToken != BashTokenTypes.RIGHT_PAREN) {
-            ParserUtil.error(subshell, "parser.unexpected.token");
+            ParserUtil.error(builder, "parser.unexpected.token");
+            subshell.drop();
             return false;
         }
 
