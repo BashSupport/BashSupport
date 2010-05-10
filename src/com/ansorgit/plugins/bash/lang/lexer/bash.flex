@@ -514,7 +514,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   [^\"]                       { string.advanceToken(); return STRING_CHAR; }
 }  
 
-<YYINITIAL, S_BACKQUOTE> {
+<YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
   /* Bash 4 */
     "&>>"                         { if (isBash4) {
                                         return REDIRECT_AMP_GREATER_GREATER;

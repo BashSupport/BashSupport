@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CaseParsingFunction.java, Class: CaseParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         builder.advanceLexer();//after the "case"
 
         if (!Parsing.word.parseWord(builder)) {
-            ParserUtil.error(caseCommand, "parser.unexpected.token");
+            caseCommand.drop();
+            ParserUtil.error(builder, "parser.unexpected.token");
             return false;
         }
 
@@ -99,7 +100,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
 
         final IElementType inToken = ParserUtil.getTokenAndAdvance(builder);
         if (inToken != IN_KEYWORD) {
-            ParserUtil.error(caseCommand, "parser.unexpected.token");
+            caseCommand.drop();
+            ParserUtil.error(builder, "parser.unexpected.token");
             return false;
         }
 
@@ -115,7 +117,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         CaseParseResult hasPattern = parsePatternList(builder);
         if (hasPattern == CaseParseResult.Faulty) {
             log.debug("Could not find first case pattern");
-            ParserUtil.error(caseCommand, "parser.unexpected.token");
+            caseCommand.drop();
+            ParserUtil.error(builder, "parser.unexpected.token");
             return false;
         }
 
@@ -138,7 +141,9 @@ public class CaseParsingFunction extends DefaultParsingFunction {
 
         final IElementType endToken = ParserUtil.getTokenAndAdvance(builder);
         if (endToken != ESAC_KEYWORD) {
-            ParserUtil.error(caseCommand, "parser.unexpected.token");
+            //ParserUtil.error(caseCommand, "parser.unexpected.token");
+            caseCommand.drop();
+            builder.error("Unexpected token");
             return false;
         }
 
@@ -169,14 +174,16 @@ public class CaseParsingFunction extends DefaultParsingFunction {
 
         //parse case pattern
         if (!readCasePattern(builder)) {
-            ParserUtil.error(casePattern, "parser.unexpected.token");
+            ParserUtil.error(builder, "parser.unexpected.token");
+            casePattern.drop();
             return CaseParseResult.Faulty;
         }
 
         //parse closing bracket
         final IElementType closingBracket = ParserUtil.getTokenAndAdvance(builder);
         if (closingBracket != RIGHT_PAREN) {
-            ParserUtil.error(casePattern, "parser.unexpected.token");
+            ParserUtil.error(builder, "parser.unexpected.token");
+            casePattern.drop();
             return CaseParseResult.Faulty;
         }
 
@@ -187,7 +194,8 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         if (builder.getTokenType() != CASE_END && builder.getTokenType() != ESAC_KEYWORD) {
             boolean parsed = Parsing.list.parseCompoundList(builder, true, false, true);
             if (!parsed) {
-                ParserUtil.error(casePattern, "parser.unexpected.token");
+                ParserUtil.error(builder, "parser.unexpected.token");
+                casePattern.drop();
                 return CaseParseResult.Faulty;
             }
         }

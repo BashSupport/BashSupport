@@ -145,11 +145,12 @@ Bugs (indentation marks fixed bugs):
 - Add shebang does not work for empty file
 - Add inspection to detect bad filehandles, e.g. &10
 - bash: insert string end
-- documentation for mv
+    - documentation for mv
 - Inspection to find incompatibilities with the old "sh" command
 - Extract local variable
 - Extract include script
 - Extract method
 - Support for "expr"
 - Support for "let"
+- Support for "eval"
 - Inspection to replace `expr 1 + 2` with $((1 + 2))

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: InspectionProvider.java, Class: InspectionProvider
- * Last modified: 2010-04-21
+ * Last modified: 2010-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,8 @@ public class InspectionProvider implements InspectionToolProvider {
                 EvaluateStaticArithExprInspection.class,
                 FloatArithmeticInspection.class,
                 ReadonlyVariableInspection.class,
-                InternalVariableInspection.class
+                InternalVariableInspection.class,
+                UnknownFiledescriptorInspection.class
                 //UnusedFunctionDefInspection.class
         };
     }
