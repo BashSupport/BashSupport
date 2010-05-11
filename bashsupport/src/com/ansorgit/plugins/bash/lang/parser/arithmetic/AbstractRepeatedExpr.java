@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractRepeatedExpr.java, Class: AbstractRepeatedExpr
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,7 @@ abstract class AbstractRepeatedExpr implements ArithmeticParsingFunction {
 
         int count = 0;
         boolean ok;
+
         //fixme fix with call to partialParsing
         do {
             ok = next.parse(builder);

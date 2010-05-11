@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandParsing.java, Class: ShellCommandParsing
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import com.ansorgit.plugins.bash.lang.parser.shellCommand.*;
  * @author Joachim Ansorg
  */
 public class ShellCommandParsing extends ParsingChain implements ParsingTool {
-    //private static final Logger log = Logger.getInstance("#bash.ShellCommandParsing");
-
     public ShellCommandParsing() {
         /*
        shell_command 	: for_command
@@ -79,6 +77,5 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
 
     public final ParsingFunction groupCommandParser = new GroupCommandParsingFunction();
 
-    //fixme refactor this
-    public final ParsingFunction backquoteParser = new BackquoteParsingFunction();
+    public final ParsingFunction backtickParser = new BacktickParsingFunction();
 }

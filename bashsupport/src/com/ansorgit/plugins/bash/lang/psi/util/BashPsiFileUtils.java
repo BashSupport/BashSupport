@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiFileUtils.java, Class: BashPsiFileUtils
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,9 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 
 /**
- * Created by IntelliJ IDEA.
  * User: jansorg
  * Date: Nov 2, 2009
  * Time: 8:50:30 PM
- * To change this template use File | Settings | File Templates.
  */
 public class BashPsiFileUtils {
     /**
@@ -46,6 +44,7 @@ public class BashPsiFileUtils {
 
         //fixme handle escaped / chars!
         PsiDirectory currentDir = startDirectory;
+
         //fixme support win \ dividers?
         String[] parts = relativePath.split("/");
         String filePart = parts.length > 0 ? parts[parts.length - 1] : "";

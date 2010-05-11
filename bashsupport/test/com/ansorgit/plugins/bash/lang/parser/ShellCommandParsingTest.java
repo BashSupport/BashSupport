@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandParsingTest.java, Class: ShellCommandParsingTest
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     private final MockFunction backquoteCommandParsingTester = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.backquoteParser.parse(builder);
+            return Parsing.shellCommand.backtickParser.parse(builder);
         }
     };
 
@@ -165,11 +165,11 @@ public class ShellCommandParsingTest extends MockPsiTest {
         //`a`
         final MockPsiBuilder mockBuilder = new MockPsiBuilder(BACKQUOTE, WORD, BACKQUOTE);
         BashPsiBuilder b = new BashPsiBuilder(mockBuilder, Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //`echo` echo a ``
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, WORD, BACKQUOTE, WORD, WORD, BACKQUOTE, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //invalid: ``echo a`
         //b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, BACKQUOTE, WORD, BACKQUOTE));
@@ -177,28 +177,28 @@ public class ShellCommandParsingTest extends MockPsiTest {
 
         //`echo` `echo a`
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, WORD, BACKQUOTE, BACKQUOTE, WORD, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
 
         //``echo a``
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, BACKQUOTE, WORD, WORD, BACKQUOTE, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //``
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //````
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, BACKQUOTE, BACKQUOTE, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //``````
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE, BACKQUOTE, BACKQUOTE, BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
 
         //`
         b = new BashPsiBuilder(new MockPsiBuilder(BACKQUOTE), Bash_v3);
-        Assert.assertTrue(Parsing.shellCommand.backquoteParser.isValid(b));
+        Assert.assertTrue(Parsing.shellCommand.backtickParser.isValid(b));
     }
 
     @Test

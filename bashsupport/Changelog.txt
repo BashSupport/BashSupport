@@ -1,3 +1,8 @@
+2010-05-11:
+ - Improved evaluation of static arithmetic expressions
+ - Improved parser (correctly parses "a=1 ((1))" now)
+ - Less error markers in faulty case commands
+ 
 2010-05-10:
  - Fixed error markers, no large red blocks any more
  - Inspection to detect invalid filedescriptors (only 0-9 are valid)

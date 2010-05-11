@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBraceMatcher.java, Class: BashBraceMatcher
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ public class BashBraceMatcher implements PairedBraceMatcher {
             new BracePair(BashTokenTypes.LEFT_SQUARE, BashTokenTypes.RIGHT_SQUARE, false),
             new BracePair(BashTokenTypes.EXPR_ARITH, BashTokenTypes._EXPR_ARITH, true),
             new BracePair(BashTokenTypes.EXPR_CONDITIONAL, BashTokenTypes._EXPR_CONDITIONAL, false),
+            new BracePair(BashTokenTypes.STRING_BEGIN, BashTokenTypes.STRING_END, false),
             new BracePair(BashTokenTypes.LEFT_CURLY, BashTokenTypes.RIGHT_CURLY, true), //structural
     };
 

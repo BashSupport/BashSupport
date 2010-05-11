@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: TernaryExpression.java, Class: TernaryExpression
- * Last modified: 2010-02-07
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * An arithmetic sum expression.
  * <p/>
@@ -26,4 +28,12 @@ package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
  * Time: 10:57:11 AM
  */
 public interface TernaryExpression extends ArithmeticExpression {
+    @NotNull
+    ArithmeticExpression findCondition();
+
+    @NotNull
+    ArithmeticExpression findMainBranch();
+
+    @NotNull
+    ArithmeticExpression findElseBranch();
 }
