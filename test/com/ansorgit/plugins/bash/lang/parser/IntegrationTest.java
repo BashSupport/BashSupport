@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-05-09
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -607,5 +607,13 @@ public class IntegrationTest extends MockPsiTest {
 
         //echo > &1 #invalid whitespace
         mockTestError(fileParsingTest, WORD, GREATER_THAN, WHITESPACE, FILEDESCRIPTOR);
+    }
+
+    @Test
+    public void testRedirectWithArithmeticCommand() {
+        //a=1 ((1))
+        mockTestFail(fileParsingTest,
+                ASSIGNMENT_WORD, EQ, WORD, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateArithExprQuickfix.java, Class: EvaluateArithExprQuickfix
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class EvaluateArithExprQuickfix extends AbstractBashQuickfix {
 
     @NotNull
     public String getName() {
-        return "Replace with the result '" + expression.computeNumericValue() + "'";
+        return "Replace '" + expression.getText() + "' with the result '" + expression.computeNumericValue() + "'";
     }
 
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {

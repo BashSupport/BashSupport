@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: MissingIncludeFileInspection.java, Class: MissingIncludeFileInspection
- * Last modified: 2010-01-25
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,11 +85,12 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
                         BashPsiElement firstParam = params.get(0);
                         if (firstParam instanceof BashCharSequence) {
                             BashCharSequence sequence = (BashCharSequence) firstParam;
+
                             if (sequence.isStatic()) {
                                 String filename = sequence.getUnwrappedCharSequence();
                                 PsiFile file = BashPsiFileUtils.findRelativeFile(bashCommand.getContainingFile(), filename);
                                 if (file == null) {
-                                    //check if it's an exisitng absolute file
+                                    //check if it's an existing absolute file
                                     File diskFile = new File(filename);
                                     boolean absoluteAndExists = diskFile.isAbsolute() && diskFile.exists();
                                     if (!absoluteAndExists) {

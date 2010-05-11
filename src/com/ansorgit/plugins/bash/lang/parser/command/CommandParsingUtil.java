@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2010-05-10
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,7 +242,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             builder.eatOptionalNewlines();
 
             if (builder.getTokenType() == LEFT_SQUARE) {
-                //assignment to specific position
+                //array value assignment to specific position
                 boolean ok = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                 if (!ok) {
                     return false;

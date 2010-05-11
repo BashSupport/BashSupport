@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,7 +148,7 @@ public class ListParsing implements ParsingTool {
         ;
 
      */
-    //fixme refactor this to include markers, take care of recurisve calls
+    //fixme refactor this to include markers, take care of recursive calls
 
     public boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand) {
         //used only to mark composed commands which combine several commands, not for single commands
@@ -209,6 +209,14 @@ public class ListParsing implements ParsingTool {
             result = parseList1(builder, simpleMode, false);
         } else {
             composedMarker.drop();
+
+            //this can happen if we have a valid command start, e.g. ">1" of the (invalid) sequence ">1 ((1))".
+            //">1" is valid and was successfully parsed, now the current token is (( now
+            //in this case we have to fail because the token is not expected here
+            if (token != null && simpleMode) {
+                builder.error("Unexpected token");
+                return false;
+            }
         }
 
         return result;

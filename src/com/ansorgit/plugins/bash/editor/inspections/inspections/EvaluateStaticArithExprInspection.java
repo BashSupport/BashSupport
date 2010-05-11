@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateStaticArithExprInspection.java, Class: EvaluateStaticArithExprInspection
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public class EvaluateStaticArithExprInspection extends AbstractBashInspection {
                     ArithmeticExpression parent = expression.findParentExpression();
                     if (parent == null || !parent.isStatic()) {
                         try {
-                            String template = "Replace with the evaluated result '" + expression.computeNumericValue() + "'";
+                            String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + expression.computeNumericValue() + "'";
                             holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
                         } catch (Exception e) {
                             //fixme
