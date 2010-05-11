@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BackquoteParsingFunction.java, Class: BackquoteParsingFunction
- * Last modified: 2010-03-24
+ * File: BacktickParsingFunction.java, Class: BacktickParsingFunction
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import com.intellij.psi.tree.IElementType;
  *
  * @author Joachim Ansorg
  */
-public class BackquoteParsingFunction extends DefaultParsingFunction {
+public class BacktickParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.BackquoteParsing");
 
     public boolean isValid(BashPsiBuilder builder) {
