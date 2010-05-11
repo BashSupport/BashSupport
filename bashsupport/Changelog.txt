@@ -4,8 +4,8 @@
  - Less error markers in faulty case commands
  
 2010-05-10:
- - Fixed error markers, no large red blocks any more
- - Inspection to detect invalid filedescriptors (only 0-9 are valid)
+ - Fixed error marker handling, no large red blocks any more
+ - Inspection to detect invalid filedescriptors (only the range &0 to &9 is valid)
 
 2010-05-08:
   - Support for the % operator in arithmetic expressions
