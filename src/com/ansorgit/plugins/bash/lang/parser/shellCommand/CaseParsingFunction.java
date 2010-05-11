@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CaseParsingFunction.java, Class: CaseParsingFunction
- * Last modified: 2010-05-10
+ * Last modified: 2010-05-11
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         log.assertTrue(isValid(builder));
         final PsiBuilder.Marker caseCommand = builder.mark();
 
-        builder.advanceLexer();//after the "case"
+        builder.advanceLexer(); //after the "case"
 
         if (!Parsing.word.parseWord(builder)) {
             caseCommand.drop();
@@ -194,7 +194,7 @@ public class CaseParsingFunction extends DefaultParsingFunction {
         if (builder.getTokenType() != CASE_END && builder.getTokenType() != ESAC_KEYWORD) {
             boolean parsed = Parsing.list.parseCompoundList(builder, true, false, true);
             if (!parsed) {
-                ParserUtil.error(builder, "parser.unexpected.token");
+                //ParserUtil.error(builder, "parser.unexpected.token");
                 casePattern.drop();
                 return CaseParseResult.Faulty;
             }
