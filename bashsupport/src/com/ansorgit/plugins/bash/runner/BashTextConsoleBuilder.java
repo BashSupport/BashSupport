@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 public class BashTextConsoleBuilder extends TextConsoleBuilder {
     private final Project myProject;
-    private final ArrayList<Filter> myFilters = new ArrayList<Filter>();
+    private final Iterable<Filter> myFilters = new ArrayList<Filter>();
     private boolean myViewer;
 
     public BashTextConsoleBuilder(final Project project) {

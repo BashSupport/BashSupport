@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractHeredocMarker.java, Class: AbstractHeredocMarker
- * Last modified: 2010-02-09
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.*;
@@ -66,7 +67,9 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
     }
 
     public PsiElement setName(@NotNull @NonNls String newname) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newname)) throw new IncorrectOperationException("The name is empty");
+        if (!BashIdentifierUtil.isValidIdentifier(newname)) {
+            throw new IncorrectOperationException("The name is empty");
+        }
 
         return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newname));
     }
@@ -94,9 +97,11 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
 
     public PsiElement resolve() {
         final String varName = getText();
-        if (varName == null) return null;
+        if (varName == null) {
+            return null;
+        }
 
-        final BasHereDocMarkerProcessor processor = new BasHereDocMarkerProcessor(getReferencedName(), otherEndsType);
+        final ResolveProcessor processor = new BasHereDocMarkerProcessor(getReferencedName(), otherEndsType);
         if (expectLater) {
             BashPsiTreeUtils.treeWalkDown(processor, this, null, ResolveState.initial());
         } else {
