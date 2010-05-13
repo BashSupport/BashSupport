@@ -1,3 +1,7 @@
+2010-05-12:
+ - Smaller performance improvements
+ - Improved bash console, still experimental
+
 2010-05-11:
  - Improved evaluation of static arithmetic expressions
  - Improved parser (correctly parses "a=1 ((1))" now)

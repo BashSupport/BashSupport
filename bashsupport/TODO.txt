@@ -116,7 +116,9 @@ Bugs (indentation marks fixed bugs):
     - Support the "readonly" command
     - Rework the redirect lexing and parsing, currently redirects into filehandles and files are not well parsed
     - Bad code green: "echo > &1"
-- "a=1 ((1))" is invalid, "((1))" is valid
+    - "a=1 ((1))" is invalid, "((1))" is valid
+    - Add inspection to detect bad filehandles, e.g. &10
+    - documentation for mv
 - Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
 - Support <<- which removes tab characters (parses, intention for this?)
 - Support tilde expansion
@@ -143,9 +145,7 @@ Bugs (indentation marks fixed bugs):
   thus the parser sees an incomplete string and can not parse the heredoc. This should be fixed somehow, probably
   needs a lexer refactoring / rework.
 - Add shebang does not work for empty file
-- Add inspection to detect bad filehandles, e.g. &10
-- bash: insert string end
-    - documentation for mv
+- bash: insert string end after " is typed
 - Inspection to find incompatibilities with the old "sh" command
 - Extract local variable
 - Extract include script
