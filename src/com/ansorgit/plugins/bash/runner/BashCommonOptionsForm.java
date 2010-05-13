@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommonOptionsForm.java, Class: BashCommonOptionsForm
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,12 +53,10 @@ public class BashCommonOptionsForm implements CommonBashRunConfigurationParams {
         interpreterOptions.setText(options);
     }
 
-    @Override
     public String getWorkingDirectory() {
         return workingDirEdit.getText();
     }
 
-    @Override
     public void setWorkingDirectory(String workingDirectory) {
         workingDirEdit.setText(workingDirectory);
     }
@@ -71,12 +69,10 @@ public class BashCommonOptionsForm implements CommonBashRunConfigurationParams {
         environmentVariablesEdit.setEnvs(envs);
     }
 
-    @Override
     public String getInterpreterPath() {
         return bashInterpreterEdit.getText();
     }
 
-    @Override
     public void setInterpreterPath(String path) {
         this.bashInterpreterEdit.setText(path);
     }
