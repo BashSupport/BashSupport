@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateExpansionInspection.java, Class: EvaluateExpansionInspection
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class EvaluateExpansionInspection extends AbstractBashInspection {
             @Override
             public void visitExpansion(BashExpansion expansion) {
                 if (isOnTheFly) {
-                    holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion));
+                    holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion, holder.getProject()));
                 }
             }
         };

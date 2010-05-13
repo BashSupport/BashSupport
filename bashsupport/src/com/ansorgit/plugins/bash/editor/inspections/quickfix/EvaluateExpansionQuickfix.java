@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateExpansionQuickfix.java, Class: EvaluateExpansionQuickfix
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class EvaluateExpansionQuickfix extends AbstractBashQuickfix {
     private final BashExpansion expansion;
+    private Project project;
 
-    public EvaluateExpansionQuickfix(BashExpansion expansion) {
+    public EvaluateExpansionQuickfix(BashExpansion expansion, Project project) {
         this.expansion = expansion;
+        this.project = project;
     }
 
     @NotNull
     public String getName() {
+        boolean supportBash4 = BashProjectSettings.storedSettings(project).isSupportBash4();
+        String replacement = ValueExpansionUtil.expand(expansion.getText(), supportBash4);
+
+        if (replacement.length() < 20) {
+            return "Replace with the result '" + replacement + "'";
+        }
+
         return "Replace with evaluated expansion";
     }
 
