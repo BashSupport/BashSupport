@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTextConsoleBuilder.java, Class: BashTextConsoleBuilder
- * Last modified: 2010-03-03
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,9 +52,7 @@ public class BashTextConsoleBuilder extends TextConsoleBuilder {
     }
 
     protected ConsoleViewImpl createConsole() {
-        ConsoleViewImpl view = new ConsoleViewImpl(myProject, myViewer);
-        view.setHistorySize(10);
-        return view;
+        return new ConsoleViewImpl(myProject, myViewer);
     }
 
     @Override
