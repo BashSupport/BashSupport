@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: LoopParserUtil.java, Class: LoopParserUtil
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,14 +34,18 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 class LoopParserUtil implements BashTokenTypes {
+    private LoopParserUtil() {
+    }
+
     /**
      * Parses a compound list enclodes by {} or by DO ..  DONE
      * This type of command block is used in for and select loops.
      *
      * @param builder           The builder which provides the data.
      * @param parseCompoundList True if a compound list is expected as loop body. False if a normal list is expteced.
+     * @return True if the parsing was successful
      */
-    boolean parseLoopBody(BashPsiBuilder builder, boolean parseCompoundList) {
+    static boolean parseLoopBody(BashPsiBuilder builder, boolean parseCompoundList) {
         final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
         if (firstToken == DO_KEYWORD || firstToken == LEFT_CURLY) {
             boolean parsed = parseCompoundList

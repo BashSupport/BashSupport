@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2010-04-23
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class ParserUtil {
     @NonNls
     private static final String BUNDLE = "com.ansorgit.plugins.bash.bash";
 
-    public static void error(BashPsiBuilder builder, @PropertyKey(resourceBundle = BUNDLE) String message) {
+    public static void error(PsiBuilder builder, @PropertyKey(resourceBundle = BUNDLE) String message) {
         builder.error(BashStrings.message(message));
     }
 
@@ -83,7 +83,7 @@ public class ParserUtil {
      * @param builder Provides the tokens.
      * @param markAs  The type for the marker
      */
-    public static void markTokenAndAdvance(BashPsiBuilder builder, IElementType markAs) {
+    public static void markTokenAndAdvance(PsiBuilder builder, IElementType markAs) {
         final PsiBuilder.Marker marker = builder.mark();
         builder.advanceLexer();
         marker.done(markAs);
@@ -119,7 +119,7 @@ public class ParserUtil {
      * @param token   The token to check for
      * @return True if the token has been red.
      */
-    public static boolean conditionalRead(BashPsiBuilder builder, IElementType token) {
+    public static boolean conditionalRead(PsiBuilder builder, IElementType token) {
         if (builder.getTokenType() == token) {
             builder.advanceLexer();
             return true;
@@ -134,7 +134,7 @@ public class ParserUtil {
      * @param builder To read from
      * @return True if the token has been red.
      */
-    public static boolean conditionalRead(BashPsiBuilder builder, TokenSet tokens) {
+    public static boolean conditionalRead(PsiBuilder builder, TokenSet tokens) {
         if (tokens.contains(builder.getTokenType())) {
             builder.advanceLexer();
             return true;
