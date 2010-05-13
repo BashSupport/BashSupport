@@ -119,6 +119,7 @@ Bugs (indentation marks fixed bugs):
     - "a=1 ((1))" is invalid, "((1))" is valid
     - Add inspection to detect bad filehandles, e.g. &10
     - documentation for mv
+    - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
 - Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
 - Support <<- which removes tab characters (parses, intention for this?)
 - Support tilde expansion
@@ -138,7 +139,6 @@ Bugs (indentation marks fixed bugs):
 - Improved man page formatting
 - Fix variables in array assignments a[$a]=1 , this needs a lexing refactoring
 - "make" is enabled for newly created Bash run configurations
-    - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
 - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
 - Quotation marks in heredocs mix up the parser, Strings are lexed, heredocs are parsed but not lexed,
@@ -154,3 +154,4 @@ Bugs (indentation marks fixed bugs):
 - Support for "let"
 - Support for "eval"
 - Inspection to replace `expr 1 + 2` with $((1 + 2))
+- Inspection / quickfix fo r $RANDOM to insert a random number
