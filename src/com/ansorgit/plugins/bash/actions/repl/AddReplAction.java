@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.actions.repl;
 
-import com.ansorgit.plugins.bash.runner.BashConsoleRunner;
+import com.ansorgit.plugins.bash.runner.repl.BashConsoleRunner;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;

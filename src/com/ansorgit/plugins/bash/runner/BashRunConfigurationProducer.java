@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRunConfigurationProducer.java, Class: BashRunConfigurationProducer
- * Last modified: 2010-01-26
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class BashRunConfigurationProducer extends RuntimeConfigurationProducer i
             VirtualFile file = sourceFile.getVirtualFile();
 
             BashRunConfiguration runConfiguration = (BashRunConfiguration) settings.getConfiguration();
-            runConfiguration.setName(file.getName());
+            runConfiguration.setName(file.getPresentableName());
 
             runConfiguration.setScriptName(file.getPath());
             if (file.getParent() != null) {

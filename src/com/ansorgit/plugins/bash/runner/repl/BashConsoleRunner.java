@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.runner;
+package com.ansorgit.plugins.bash.runner.repl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
+ * ConsoleRunner implementation to run a bash shell in a window.
+ * <p/>
  * User: jansorg
  * Date: 13.05.2010
  * Time: 00:45:23
@@ -44,9 +46,7 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory {
     public BashConsoleRunner(Project myProject, String workingDir) {
         super(myProject, "Bash", new CommandLineArgumentsProvider() {
             public String[] getArguments() {
-                return new String[]{
-                        "--noediting", "-s"
-                };
+                return new String[]{};
             }
 
             public boolean passParentEnvs() {
@@ -80,6 +80,7 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
+
         return consoleView;
     }
 
