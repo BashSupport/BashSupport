@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParsingFunction.java, Class: ArithmeticParsingFunction
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 
 /**
+ * Extended parsing function for parsing of arithmetic expressions.
+ * <p/>
  * User: jansorg
  * Date: Apr 17, 2010
  * Time: 10:47:30 PM
