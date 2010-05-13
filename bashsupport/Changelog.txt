@@ -1,5 +1,7 @@
 2010-05-13:
- - Variable name completion in heredocs with enabled variable evaluation 
+ - Variable name completion in heredocs with enabled variable evaluation
+ - Some code cleanup and refactoring
+ - Improved some inspection/quickfix messages
 
 2010-05-12:
  - Smaller performance improvements
