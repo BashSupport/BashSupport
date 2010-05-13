@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBlockGenerator.java, Class: BashBlockGenerator
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class BashBlockGenerator implements BashElementTypes {
         myAlignment = _myAlignment;
 
         // For other cases
-        final ArrayList<Block> subBlocks = new ArrayList<Block>();
+        final List<Block> subBlocks = new ArrayList<Block>();
         ASTNode children[] = getBashChildren(node);
         ASTNode prevChildNode = null;
         for (ASTNode childNode : children) {

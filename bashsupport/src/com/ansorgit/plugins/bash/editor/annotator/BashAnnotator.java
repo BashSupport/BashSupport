@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2010-02-07
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,15 +79,13 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateWord(BashWord bashWord, AnnotationHolder annotationHolder) {
+    private void annotateWord(PsiElement bashWord, AnnotationHolder annotationHolder) {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
         Annotation annotation = annotationHolder.createInfoAnnotation(bashWord, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.NONE);
     }
 
-    private void annotateString(BashString bashString, final AnnotationHolder holder) {
-        log.debug("Annotating string");
-
+    private void annotateString(PsiElement bashString, final AnnotationHolder holder) {
         final Annotation annotation = holder.createInfoAnnotation(TextRange.from(bashString.getTextOffset(), bashString.getTextLength()), null);
         annotation.setTextAttributes(BashSyntaxHighlighter.STRING);
 
@@ -110,7 +108,6 @@ public class BashAnnotator implements Annotator {
     }
 
     private void annotateCommand(BashCommand bashCommand, AnnotationHolder annotationHolder) {
-        log.debug("annotating command");
         PsiElement cmdElement = null;
         TextAttributesKey attributesKey = null;
 
@@ -143,12 +140,12 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateHereDocStart(BashHereDocStartMarker element, AnnotationHolder annotationHolder) {
+    private void annotateHereDocStart(PsiElement element, AnnotationHolder annotationHolder) {
         final Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.HERE_DOC_START);
     }
 
-    private void annotateHereDocEnd(BashHereDocEndMarker element, AnnotationHolder annotationHolder) {
+    private void annotateHereDocEnd(PsiElement element, AnnotationHolder annotationHolder) {
         final Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.HERE_DOC_END);
     }
@@ -161,9 +158,7 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateSubshell(BashSubshellCommand element, AnnotationHolder holder) {
-        log.debug("Annotating string");
-
+    private void annotateSubshell(PsiElement element, AnnotationHolder holder) {
         final Annotation annotation = holder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.SUBSHELL_COMMAND);
     }

@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashDelegatingElementImpl;
@@ -167,7 +168,7 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
             return null;
         }
 
-        final BashFunctionProcessor processor = new BashFunctionProcessor(referencedName);
+        final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
         return BashResolveUtil.treeWalkUp(processor, this, null, this, true, false);
     }
 
