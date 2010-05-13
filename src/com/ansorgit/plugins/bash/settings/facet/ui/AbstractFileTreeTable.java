@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractFileTreeTable.java, Class: AbstractFileTreeTable
- * Last modified: 2010-02-28
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.settings.facet.ui;
 
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DefaultTreeExpander;
+import com.intellij.ide.TreeExpander;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleFileIndex;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -79,7 +80,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
             }
         });
 
-        final DefaultTreeExpander treeExpander = new DefaultTreeExpander(getTree());
+        final TreeExpander treeExpander = new DefaultTreeExpander(getTree());
         CommonActionsManager.getInstance().createCollapseAllAction(treeExpander, this);
         CommonActionsManager.getInstance().createExpandAllAction(treeExpander, this);
 
@@ -119,7 +120,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
 
     public static void press(final Container comboComponent) {
         if (comboComponent instanceof JButton) {
-            final JButton button = (JButton) comboComponent;
+            final AbstractButton button = (JButton) comboComponent;
             button.doClick();
         } else {
             for (int i = 0; i < comboComponent.getComponentCount(); i++) {
