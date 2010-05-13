@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SelectParsingFunction.java, Class: SelectParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,6 @@ import com.intellij.lang.PsiBuilder;
  * @author Joachim Ansorg
  */
 public class SelectParsingFunction extends DefaultParsingFunction {
-    private final LoopParserUtil helper = new LoopParserUtil();
-
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == SELECT_KEYWORD;
     }
@@ -76,7 +74,7 @@ public class SelectParsingFunction extends DefaultParsingFunction {
         builder.eatOptionalNewlines();
 
         //now parse the body
-        if (!helper.parseLoopBody(builder, false)) {
+        if (!LoopParserUtil.parseLoopBody(builder, false)) {
             selectCommand.drop();
             return false;
         }

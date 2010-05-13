@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForLoopParsingFunction.java, Class: ForLoopParsingFunction
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ import com.intellij.psi.tree.IElementType;
  */
 public class ForLoopParsingFunction extends DefaultParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ForLoopParsingFunction");
-    private final LoopParserUtil helper = new LoopParserUtil();
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == FOR_KEYWORD
@@ -105,7 +104,7 @@ public class ForLoopParsingFunction extends DefaultParsingFunction {
             builder.eatOptionalNewlines();
         }
 
-        if (!helper.parseLoopBody(builder, true)) {
+        if (!LoopParserUtil.parseLoopBody(builder, true)) {
             forLoop.drop();
             return false;
         }
@@ -166,7 +165,7 @@ public class ForLoopParsingFunction extends DefaultParsingFunction {
             builder.eatOptionalNewlines();
         }
 
-        if (!helper.parseLoopBody(builder, true)) {
+        if (!LoopParserUtil.parseLoopBody(builder, true)) {
             marker.drop();
             return false;
         }
