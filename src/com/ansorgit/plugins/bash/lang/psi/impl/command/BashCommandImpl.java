@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,15 +154,11 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
 
     public TextRange getRangeInElement() {
         final PsiElement element = commandElement();
-        //if (element == null) log.warn("commandElement ist null!");
         if (element == null) {
             return TextRange.from(0, getTextLength());
         }
 
-        //log.info("getRangeInElement: " + element.getTextRange());
-        final TextRange textRange = TextRange.from(element.getStartOffsetInParent(), element.getTextLength());
-        log.debug("Range: " + textRange);
-        return textRange;
+        return TextRange.from(element.getStartOffsetInParent(), element.getTextLength());
     }
 
     private PsiElement internalResolve() {
@@ -176,7 +172,16 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     }
 
     public PsiElement resolve() {
-        return isInternalCommand() || isExternalCommand() ? this : internalResolve();
+        if (isInternalCommand()) {
+            return this;
+        }
+
+        PsiElement result = internalResolve();
+        if (isExternal && result == null) {
+            return this;
+        }
+
+        return result;
         //fixme for doc provider we should return null for internal commands
         //fixme or better: add own implemenation for internal commands
     }

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddReplAction.java, Class: AddReplAction
- * Last modified: 2010-03-04
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,16 @@
 
 package com.ansorgit.plugins.bash.actions.repl;
 
-import com.ansorgit.plugins.bash.repl.ReplManager;
+import com.ansorgit.plugins.bash.runner.BashConsoleRunner;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
 
 public class AddReplAction extends AbstractBashReplAction {
+    private static final com.intellij.openapi.diagnostic.Logger log = com.intellij.openapi.diagnostic.Logger.getInstance("AddReplAction");
+
     public AddReplAction() {
         getTemplatePresentation().setIcon(BashIcons.BASH_FILE_ICON);
     }
@@ -38,13 +41,21 @@ public class AddReplAction extends AbstractBashReplAction {
             return;
         }
         presentation.setEnabled(true);
+
         super.update(e);
     }
 
     public void actionPerformed(AnActionEvent e) {
         Module module = getModule(e);
+
         if (module != null) {
-            ReplManager.getInstance(module.getProject()).createNewRepl(module);
+            try {
+                Project project = module.getProject();
+                BashConsoleRunner consoleRunner = new BashConsoleRunner(project, project.getBaseDir().getPath());
+                consoleRunner.initAndRun();
+            } catch (Exception ex) {
+                log.warn("Error running bash repl", ex);
+            }
         }
     }
 
