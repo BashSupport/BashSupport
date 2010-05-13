@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: HereDocParsing.java, Class: HereDocParsing
- * Last modified: 2010-05-09
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
-import com.ansorgit.plugins.bash.lang.parser.HereDocData;
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.util.Pair;
@@ -148,6 +145,11 @@ public class HereDocParsing implements ParsingTool {
         builder.eatOptionalNewlines(-1, true);
 
         while (!builder.eof() && builder.getTokenType(true) != LINE_FEED) {
+            if (Parsing.var.isValid(builder)) {
+                //fixme check return value?
+                Parsing.var.parse(builder);
+            }
+
             if (string.length() > 0) { //isEmpty is JDK6
                 string.append(" ");
             }

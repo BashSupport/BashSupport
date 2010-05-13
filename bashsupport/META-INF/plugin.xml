@@ -227,8 +227,8 @@
                 implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
-        <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
         <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>
+        <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
         <!-- Repl-->
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"

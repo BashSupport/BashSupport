@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ansorgit.plugins.bash.runner;
+package com.ansorgit.plugins.bash.runner.repl;
 
 import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupManager;
@@ -55,11 +55,15 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
+ * This file comes from the IntelliJ IDEA sources.
+ * <p/>
+ * Some parts have been patched by Joachim Ansorg, mail@joachim-ansorg.de .
+ *
  * @author oleg
  *         This class provides basic functionality for running consoles.
  *         It launches extrnal process and handles line input with history
  */
-public abstract class AbstractConsoleRunnerWithHistory {
+abstract class AbstractConsoleRunnerWithHistory {
     protected final Project myProject;
     protected final String myConsoleTitle;
 
@@ -187,6 +191,7 @@ public abstract class AbstractConsoleRunnerWithHistory {
                         (lookup == null || !lookup.isCompletion()));
             }
         };
+
         //EmptyAction.setupAction(myRunAction, "Console.Execute", null);
         toolbarActions.add(myRunAction);
 

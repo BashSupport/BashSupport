@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenRemapper.java, Class: BashTokenRemapper
- * Last modified: 2010-04-22
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,9 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
 
     private boolean remappedInHereDoc(IElementType elementType) {
         boolean evaluating = builder.getHereDocData().isCurrentlyEvaluating();
-        if ((elementType == WHITESPACE) || (evaluating && (elementType == BashTokenTypes.VARIABLE))) {
+        //fixme we need to enable variable expansion here somehow if we're in avaluation mode
+        //i.e. ${a}
+        if ((elementType == WHITESPACE) || (evaluating && elementType == BashTokenTypes.VARIABLE)) {
             return false;
         }
 
