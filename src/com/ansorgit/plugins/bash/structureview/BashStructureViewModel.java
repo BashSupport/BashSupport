@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashStructureViewModel.java, Class: BashStructureViewModel
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ import org.jetbrains.annotations.NotNull;
  */
 class BashStructureViewModel extends TextEditorBasedStructureViewModel implements StructureViewModel {
     private final PsiFile myFile;
+    private static final Class[] CLASSS = new Class[]{BashFunctionDef.class};
+    private static final Sorter[] SORTERS = new Sorter[]{Sorter.ALPHA_SORTER};
 
     public BashStructureViewModel(PsiFile psiFile) {
         super(psiFile);
@@ -59,12 +61,12 @@ class BashStructureViewModel extends TextEditorBasedStructureViewModel implement
     @NotNull
     @Override
     protected Class[] getSuitableClasses() {
-        return new Class[]{BashFunctionDef.class};
+        return CLASSS;
     }
 
     @NotNull
     public Sorter[] getSorters() {
-        return new Sorter[]{Sorter.ALPHA_SORTER};
+        return SORTERS;
     }
 
     @NotNull
