@@ -1,5 +1,8 @@
+2010-05-26:
+ - Hex-, octal- and custom-base-literals for the arithmetic mode
+
 2010-05-13:
- - Variable name completion in heredocs with enabled variable evaluation
+ - Variable name completion in evaluating heredocs
  - Some code cleanup and refactoring
  - Improved some inspection/quickfix messages
 
