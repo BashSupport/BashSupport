@@ -12,7 +12,7 @@ Further information:
 --------------------
     o Author: Joachim Ansorg, mail@ansorg-it.com
     o Documentation URL: http://www.ansorg-it.com/en/products_bashsupport.html
-    o Source code: from http://www.ansorg-it.com/en/products_bashsupport.html
+    o Source code: http://www.ansorg-it.com/en/products_bashsupport.html
 
 License:
 --------

@@ -155,3 +155,5 @@ Bugs (indentation marks fixed bugs):
 - Support for "eval"
 - Inspection to replace `expr 1 + 2` with $((1 + 2))
 - Inspection / quickfix fo r $RANDOM to insert a random number
+- search scope for variables in included scripts
+- Not working: declare -r next_number=p$(printf "%02d" $((10#${number:1} + 1)))

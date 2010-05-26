@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FileParsing.java, Class: FileParsing
- * Last modified: 2010-03-24
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class FileParsing implements ParsingTool {
         boolean success = true;
         while (!builder.eof()) {
             builder.eatOptionalNewlines();
-            //fixme calling twice workaround a yet undiscovered bug
+            //fixme calling twice to work around a yet undiscovered bug
             //for some reason the newlines are not eaten at the beginning after the shebang line
             builder.eatOptionalNewlines();
             if (builder.eof()) {

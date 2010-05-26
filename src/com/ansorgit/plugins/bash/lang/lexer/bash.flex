@@ -122,7 +122,10 @@ AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
 ArrayAssignmentWord = [a-zA-Z_][a-zA-Z0-9_]* "[" [0-9+*/-]+ "]"
 Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*"
 
-IntegerLiteral = [0-9]+
+IntegerLiteral = [0] | ([1-9][0-9]*)
+BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
+HexIntegerLiteral = "0x" [0-9a-fA-F]+
+OctalIntegerLiteral = "0" [0-7]+
 
 AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
 
@@ -367,6 +370,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "("                           { openParenths++; return LEFT_PAREN; }
 
+  {HexIntegerLiteral}           { return ARITH_HEX_NUMBER; }
+  {BaseIntegerLiteral}          { return ARITH_BASE_NUMBER; }
+  {OctalIntegerLiteral}         { return ARITH_OCTAL_NUMBER; }
   {IntegerLiteral}              { return NUMBER; }
 
   ">"                           { return ARITH_GT; }
@@ -390,14 +396,16 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "++"                          { return ARITH_PLUS_PLUS; }
   "-"                           { return ARITH_MINUS; }
 
-  "--"/{IntegerLiteral}         { yypushback(1); return ARITH_MINUS; }
-  "--"/{WhiteSpace}+{IntegerLiteral} 
+  "--"/({HexIntegerLiteral}|{BaseIntegerLiteral}|{BaseIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
+                                { yypushback(1); return ARITH_MINUS; }
+
+  "--"/{WhiteSpace}+({HexIntegerLiteral}|{BaseIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
                                 { yypushback(1); return ARITH_MINUS; }
 
   "--"                          { return ARITH_MINUS_MINUS; }
   "=="                          { return ARITH_EQ; }
 
-  "**"                          { return ARITH_EXP; }
+  "**"                          { return ARITH_EXPONENT; }
   "*"                           { return ARITH_MULT; }
   "/"                           { return ARITH_DIV; }
   "%"                           { return ARITH_MOD; }

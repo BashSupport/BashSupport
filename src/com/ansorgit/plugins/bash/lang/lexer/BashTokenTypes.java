@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2010-05-08
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ public interface BashTokenTypes {
 
     IElementType LINE_FEED = new BashElementType("linefeed");// }
 
-    final TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
+    TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
 
 
     //arithmetic operators: plus
@@ -134,7 +134,7 @@ public interface BashTokenTypes {
     TokenSet arithmeticAdditionOps = TokenSet.create(ARITH_PLUS, ARITH_MINUS);
 
     //arithmetic operators: misc
-    IElementType ARITH_EXP = new BashElementType("**");//**
+    IElementType ARITH_EXPONENT = new BashElementType("**");//**
     IElementType ARITH_MULT = new BashElementType("*");//*
     IElementType ARITH_DIV = new BashElementType("/");// /
     IElementType ARITH_MOD = new BashElementType("%");//%
@@ -182,6 +182,12 @@ public interface BashTokenTypes {
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
             ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
 
+    //arithmetic literals
+    IElementType ARITH_BASE_NUMBER = new BashElementType("xx#xx literal");
+    IElementType ARITH_HEX_NUMBER = new BashElementType("0x hex literal");
+    IElementType ARITH_OCTAL_NUMBER = new BashElementType("octal literal");
+
+    TokenSet arithLiterals = TokenSet.create(NUMBER, ARITH_BASE_NUMBER, ARITH_OCTAL_NUMBER, ARITH_HEX_NUMBER);
 
     //builtin command
     IElementType COMMAND_TOKEN = new BashElementType("command");//!=

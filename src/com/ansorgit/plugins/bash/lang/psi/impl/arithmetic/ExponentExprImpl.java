@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ExponentExprImpl.java, Class: ExponentExprImpl
- * Last modified: 2010-02-07
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class ExponentExprImpl extends AbstractExpression implements ExponentExpr
 
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        if (operator == BashTokenTypes.ARITH_EXP) {
+        if (operator == BashTokenTypes.ARITH_EXPONENT) {
             return (long) Math.pow((double) currentValue, nextExpressionValue.doubleValue());
         }
 

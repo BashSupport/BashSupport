@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-05-09
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -562,6 +562,32 @@ public class BashLexerTest {
         testTokenization("${a:.*}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, RIGHT_CURLY);
     }
 
+
+    @Test
+    public void testArithmeticLiterals() throws Exception {
+        testTokenization("$((123))", DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((0x123))", DOLLAR, EXPR_ARITH, ARITH_HEX_NUMBER, _EXPR_ARITH);
+        testTokenization("$((0xA))", DOLLAR, EXPR_ARITH, ARITH_HEX_NUMBER, _EXPR_ARITH);
+        testTokenization("$((0xAf))", DOLLAR, EXPR_ARITH, ARITH_HEX_NUMBER, _EXPR_ARITH);
+        testTokenization("$((-0xAf))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_HEX_NUMBER, _EXPR_ARITH);
+        testTokenization("$((--0xAf))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, ARITH_HEX_NUMBER, _EXPR_ARITH);
+        testTokenization("$((+0xAf))", DOLLAR, EXPR_ARITH, ARITH_PLUS, ARITH_HEX_NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((10#1))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
+        testTokenization("$((10#100))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
+        testTokenization("$((-10#100))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_BASE_NUMBER, _EXPR_ARITH);
+        testTokenization("$((+10#100))", DOLLAR, EXPR_ARITH, ARITH_PLUS, ARITH_BASE_NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((0123))", DOLLAR, EXPR_ARITH, ARITH_OCTAL_NUMBER, _EXPR_ARITH);
+        testTokenization("$((-0123))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_OCTAL_NUMBER, _EXPR_ARITH);
+
+        //also afe is not valid here we expect it to lex because we check the base in
+        //an inspection
+        testTokenization("$((10#100afe))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((35#abcdefghijkl))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
+    }
 
     private void testTokenization(String code, IElementType... expectedTokens) {
         testTokenization(BashVersion.Bash_v3, code, expectedTokens);
