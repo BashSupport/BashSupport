@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2010-04-17
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,9 @@ import com.intellij.psi.tree.IElementType;
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
-        return tokenType == WORD || tokenType == NUMBER || Parsing.var.isValid(builder);
+        return tokenType == WORD
+                || arithLiterals.contains(tokenType)
+                || Parsing.var.isValid(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -51,7 +53,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
             if (tokenType == WORD) {
                 ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
                 ok = true;
-            } else if (tokenType == NUMBER) {
+            } else if (arithLiterals.contains(tokenType)) {
                 builder.advanceLexer();
                 ok = true;
             }
