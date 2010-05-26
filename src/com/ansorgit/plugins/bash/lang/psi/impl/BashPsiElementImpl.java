@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiElementImpl.java, Class: BashPsiElementImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-26
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
-import com.intellij.psi.search.LocalSearchScope;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.NonClasspathDirectoryScope;
 import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,8 +58,15 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
         return name == null ? super.toString() : name;
     }
 
+    @NotNull
     @Override
     public SearchScope getUseScope() {
-        return new LocalSearchScope(getContainingFile());
+        return new NonClasspathDirectoryScope(getProject().getBaseDir());
+    }
+
+    @NotNull
+    @Override
+    public GlobalSearchScope getResolveScope() {
+        return new NonClasspathDirectoryScope(getProject().getBaseDir());
     }
 }
