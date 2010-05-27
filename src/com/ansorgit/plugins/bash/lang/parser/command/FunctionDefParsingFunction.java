@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,9 @@ import com.intellij.psi.tree.IElementType;
  */
 public class FunctionDefParsingFunction extends DefaultParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
-        if (builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD) {
-            return true;
-        }
+        boolean withKeyword = builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD;
+        return withKeyword || ParserUtil.checkNextAndRollback(builder, BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
 
-        return ParserUtil.checkNextAndRollback(builder, BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -110,11 +108,12 @@ public class FunctionDefParsingFunction extends DefaultParsingFunction {
         //optional newlines before the body
         final boolean newlinesAtBegin = builder.eatOptionalNewlines();
 
-        //if we didn't have on ore more newlines we need a command group, i.e. {...}
+        //if we don't have on ore more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
         if (!newlinesAtBegin && !isGroup) {
             function.drop();
-            //ParserUtil.error(function, "parser.unexpected.token");
+
+            ParserUtil.errorToken(builder, "parser.unexpected.token");
             return false;
         }
 

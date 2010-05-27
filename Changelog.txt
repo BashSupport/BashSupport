@@ -1,5 +1,10 @@
+2010-05-27:
+ - Slightly Improved error reporting
+ - Parser improvements for function definitions
+ - Properly resetting PSI element caches now
+
 2010-05-26:
- - Hex-, octal- and custom-base-literals for the arithmetic mode
+ - Hex, octal and custom-base literals in arithmetic expressions
 
 2010-05-13:
  - Variable name completion in evaluating heredocs

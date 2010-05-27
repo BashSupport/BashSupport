@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @return True if the operation has been successful.
      */
-    private boolean enableWhitespace() {
+    public boolean enableWhitespace() {
         return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
     }
 
@@ -72,7 +72,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @return True if successful.
      */
-    private boolean disableWhitespace() {
+    public boolean disableWhitespace() {
         return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
     }
 

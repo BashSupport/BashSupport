@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-05-13
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,8 +57,8 @@ import java.util.List;
 public class BashCommandImpl extends BashDelegatingElementImpl implements BashCommand {
     private static final Logger log = Logger.getInstance("#bash.BashCommandImpl");
 
-    private final boolean isInternal;
-    private final boolean isExternal;
+    private boolean isInternal;
+    private boolean isExternal;
 
     public BashCommandImpl(ASTNode astNode) {
         this(astNode, "bash command");
@@ -67,8 +67,19 @@ public class BashCommandImpl extends BashDelegatingElementImpl implements BashCo
     public BashCommandImpl(ASTNode astNode, String name) {
         super(astNode, name);
 
+        updateCache();
+    }
+
+    private void updateCache() {
         isInternal = findChildByType(BashElementTypes.INTERNAL_COMMAND_ELEMENT) != null;
         isExternal = findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT) != null;
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        updateCache();
     }
 
     public boolean isFunctionCall() {
