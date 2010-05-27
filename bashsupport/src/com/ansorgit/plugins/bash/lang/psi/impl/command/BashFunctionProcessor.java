@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionProcessor.java, Class: BashFunctionProcessor
- * Last modified: 2010-04-24
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,10 +43,10 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
     public boolean execute(PsiElement element, ResolveState resolveState) {
         //resetResult();
 
-        log.debug("Looking at " + element);
+        //log.debug("Looking at " + element);
         if (element instanceof BashFunctionDef) {
             final BashFunctionDef f = (BashFunctionDef) element;
-            log.debug("Comparing to function " + f.getName());
+            //log.debug("Comparing to function " + f.getName());
 
             if (symboleName.equals(f.getName())) {
                 storeResult(element, BashPsiUtils.blockNestingLevel(f));
