@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2010-05-13
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,12 @@ import org.jetbrains.annotations.PropertyKey;
 public class ParserUtil {
     @NonNls
     private static final String BUNDLE = "com.ansorgit.plugins.bash.bash";
+
+    public static void errorToken(PsiBuilder builder, @PropertyKey(resourceBundle = BUNDLE) String message) {
+        PsiBuilder.Marker marker = builder.mark();
+        builder.advanceLexer();
+        marker.error(BashStrings.message(message));
+    }
 
     public static void error(PsiBuilder builder, @PropertyKey(resourceBundle = BUNDLE) String message) {
         builder.error(BashStrings.message(message));
