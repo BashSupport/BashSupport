@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleExpressionsImpl.java, Class: SimpleExpressionsImpl
- * Last modified: 2010-05-26
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,18 +62,28 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
         if (isStatic == null) {
             //it can have one operator in front followed by a simple expression
             //or just contain a number
-
-            IElementType first = BashPsiUtils.nodeType(getFirstChild());
-
-            if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
-                List<ArithmeticExpression> subexpressions = subexpressions();
-                isStatic = subexpressions.size() == 1 && subexpressions.get(0).isStatic();
+            ASTNode[] children = getNode().getChildren(null);
+            if (children.length > 1) {
+                isStatic = false;
             } else {
-                isStatic = BashTokenTypes.arithLiterals.contains(first);
+                IElementType first = BashPsiUtils.nodeType(getFirstChild());
+
+                if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
+                    List<ArithmeticExpression> subexpressions = subexpressions();
+                    isStatic = subexpressions.size() == 1 && subexpressions.get(0).isStatic();
+                } else {
+                    isStatic = BashTokenTypes.arithLiterals.contains(first);
+                }
             }
         }
 
         return isStatic;
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+        isStatic = null;
     }
 
     @Override

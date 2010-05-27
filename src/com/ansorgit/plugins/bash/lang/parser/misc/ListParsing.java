@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
- * Last modified: 2010-05-11
+ * Last modified: 2010-05-27
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.misc;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
@@ -214,7 +215,7 @@ public class ListParsing implements ParsingTool {
             //">1" is valid and was successfully parsed, now the current token is (( now
             //in this case we have to fail because the token is not expected here
             if (token != null && simpleMode) {
-                builder.error("Unexpected token");
+                ParserUtil.errorToken(builder, "parser.unexpected.token");
                 return false;
             }
         }
