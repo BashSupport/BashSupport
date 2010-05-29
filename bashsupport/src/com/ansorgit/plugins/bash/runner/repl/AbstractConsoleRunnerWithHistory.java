@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractConsoleRunnerWithHistory.java, Class: AbstractConsoleRunnerWithHistory
- * Last modified: 2010-05-13
+ * Last modified: 2010-05-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -179,7 +180,7 @@ abstract class AbstractConsoleRunnerWithHistory {
         toolbarActions.add(closeAction);
 
         // run action
-        myRunAction = new DumbAwareAction(null, null, IconLoader.getIcon("/actions/execute.png")) {
+        myRunAction = new DumbAwareAction("Execute current input", "Executes the current input of the editor with the Bash executable", IconLoader.getIcon("/actions/execute.png")) {
             public void actionPerformed(final AnActionEvent e) {
                 runExecuteActionInner();
             }
@@ -191,6 +192,7 @@ abstract class AbstractConsoleRunnerWithHistory {
                         (lookup == null || !lookup.isCompletion()));
             }
         };
+        myRunAction.registerCustomShortcutSet(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK, null);
 
         //EmptyAction.setupAction(myRunAction, "Console.Execute", null);
         toolbarActions.add(myRunAction);
@@ -209,6 +211,7 @@ abstract class AbstractConsoleRunnerWithHistory {
                 return true;
             }
         };
+
         final AnAction historyNextAction = ConsoleHistoryModel.createHistoryAction(myHistory, true, historyProcessor);
         final AnAction historyPrevAction = ConsoleHistoryModel.createHistoryAction(myHistory, false, historyProcessor);
         historyNextAction.getTemplatePresentation().setVisible(false);
@@ -249,15 +252,18 @@ abstract class AbstractConsoleRunnerWithHistory {
         final Document document = getLanguageConsole().getCurrentEditor().getDocument();
         final String documentText = document.getText();
         final TextRange range = new TextRange(0, document.getTextLength());
+
         getLanguageConsole().getCurrentEditor().getSelectionModel().setSelection(range.getStartOffset(), range.getEndOffset());
         getLanguageConsole().addCurrentToHistory(range, false);
         getLanguageConsole().setInputText("");
-        final String line = documentText;
-        if (!StringUtil.isEmptyOrSpaces(line)) {
-            myHistory.addToHistory(line);
+
+        if (!StringUtil.isEmptyOrSpaces(documentText)) {
+            myHistory.addToHistory(documentText);
         }
+
         // Send to interpreter / server
-        final String text2send = line.length() == 0 ? "\n\n" : line + "\n";
+        //final String text2send = line.length() == 0 ? "\n\n" : line + "\n";
+        final String text2send = documentText + "\n";
         sendInput(text2send);
     }
 
