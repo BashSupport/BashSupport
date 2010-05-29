@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashConsoleRunner.java, Class: BashConsoleRunner
- * Last modified: 2010-05-13
+ * Last modified: 2010-05-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.runner.repl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
@@ -28,8 +29,6 @@ import com.intellij.execution.process.CommandLineArgumentsProvider;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.openapi.project.Project;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Collections;
 import java.util.Map;
 
@@ -64,22 +63,7 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory {
     @Override
     protected LanguageConsoleViewImpl createConsoleView() {
         LanguageConsoleViewImpl consoleView = new LanguageConsoleViewImpl(myProject, "Bash", BashFileType.BASH_LANGUAGE);
-        consoleView.getConsole().getCurrentEditor().getComponent().addKeyListener(new KeyListener() {
-            public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_ENTER && e.isControlDown()) {
-                    //run the action on alt+enter
-                    BashConsoleRunner.this.runExecuteActionInner();
-                }
-            }
-
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            public void keyReleased(KeyEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
+        consoleView.getConsole().getFile().putUserData(BashFile.LANGUAGE_CONSOLE_MARKER, true);
 
         return consoleView;
     }
