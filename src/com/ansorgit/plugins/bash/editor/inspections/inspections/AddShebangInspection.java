@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddShebangInspection.java, Class: AddShebangInspection
- * Last modified: 2010-04-19
+ * Last modified: 2010-05-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,9 @@ public class AddShebangInspection extends AbstractBashInspection {
         if (file instanceof BashFile) {
             BashFile bashFile = (BashFile) file;
 
-            if (!bashFile.hasShebangLine()) {
+            Boolean isLanguageConsole = file.getUserData(BashFile.LANGUAGE_CONSOLE_MARKER);
+
+            if ((isLanguageConsole == null || !isLanguageConsole) && !bashFile.hasShebangLine()) {
                 return new ProblemDescriptor[]{
                         manager.createProblemDescriptor(file, getShortName(), new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
                 };

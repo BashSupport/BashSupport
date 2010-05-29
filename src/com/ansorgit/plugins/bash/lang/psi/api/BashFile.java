@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFile.java, Class: BashFile
- * Last modified: 2009-12-04
+ * Last modified: 2010-05-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
@@ -28,6 +29,8 @@ import com.intellij.psi.PsiFile;
  * @author Joachim Ansorg
  */
 public interface BashFile extends PsiFile, BashPsiElement {
+    static final Key<Boolean> LANGUAGE_CONSOLE_MARKER = new Key<Boolean>("Language console marker");
+
     boolean hasShebangLine();
 
     PsiElement[] functionDefinitions();
