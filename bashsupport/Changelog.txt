@@ -1,6 +1,6 @@
 2010-05-29:
- - "Add shebang" quickfix not shown any more for the Bash repl console
- - Shortcut "Alt+Enter" for the repl console run action
+ - "Add shebang" quickfix is not displayed for a script in the Bash REPL
+ - Shortcut "Ctrl+Enter" for the repl console run action
 
 2010-05-27:
  - Slightly Improved error reporting

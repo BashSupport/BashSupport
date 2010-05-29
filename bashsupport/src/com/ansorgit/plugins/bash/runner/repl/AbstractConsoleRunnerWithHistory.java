@@ -192,7 +192,7 @@ abstract class AbstractConsoleRunnerWithHistory {
                         (lookup == null || !lookup.isCompletion()));
             }
         };
-        myRunAction.registerCustomShortcutSet(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK, null);
+        myRunAction.registerCustomShortcutSet(KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK, null);
 
         //EmptyAction.setupAction(myRunAction, "Console.Execute", null);
         toolbarActions.add(myRunAction);
