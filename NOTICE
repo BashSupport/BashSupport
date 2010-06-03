@@ -13,3 +13,4 @@ External code (based on other plugins' code, also noted in the class javadoc):
    o com.ansorgit.plugins.bash.editor.formatting.processor.BashIndentProcessor
    o com.ansorgit.plugins.bash.editor.formatting.processor.BashSpacingProcessor
    o com.ansorgit.plugins.bash.runner.repl.AbstractConsoleRunnerWithHistory
+   o nu.studer.idea.errorreporting by Etienne Studer, licensed under the terms of the Apache License 2.0

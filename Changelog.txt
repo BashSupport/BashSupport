@@ -1,3 +1,6 @@
+2010-06-03:
+ - Integrated custom exception reporting tool by Etienne Studer  
+
 2010-05-29:
  - "Add shebang" quickfix is not displayed for a script in the Bash REPL
  - Shortcut "Ctrl+Enter" for the repl console run action
