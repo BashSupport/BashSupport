@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddReplAction.java, Class: AddReplAction
- * Last modified: 2010-05-26
+ * Last modified: 2010-06-03
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
 
 public class AddReplAction extends AnAction {
@@ -58,8 +59,11 @@ public class AddReplAction extends AnAction {
         if (module != null) {
             try {
                 Project project = module.getProject();
-                BashConsoleRunner consoleRunner = new BashConsoleRunner(project, project.getBaseDir().getPath());
-                consoleRunner.initAndRun();
+                VirtualFile baseDir = project.getBaseDir();
+                if (baseDir != null) {
+                    BashConsoleRunner consoleRunner = new BashConsoleRunner(project, baseDir.getPath());
+                    consoleRunner.initAndRun();
+                }
             } catch (Exception ex) {
                 log.warn("Error running bash repl", ex);
             }
