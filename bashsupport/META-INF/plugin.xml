@@ -243,7 +243,8 @@
                         serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
 
 
-        <!-- Error reporter -->
+        <!-- Error reporter
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
+        -->
     </extensions>
 </idea-plugin>
