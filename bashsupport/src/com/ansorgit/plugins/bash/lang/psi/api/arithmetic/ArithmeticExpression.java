@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticExpression.java, Class: ArithmeticExpression
- * Last modified: 2010-04-17
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.util.List;
  * Time: 10:56:51 AM
  */
 public interface ArithmeticExpression extends BashPsiElement {
-    public enum Type {
+    enum Type {
         NoOperands,
         TwoOperands,
         PrefixOperand,
@@ -38,23 +38,23 @@ public interface ArithmeticExpression extends BashPsiElement {
         Unsupported
     }
 
-    public Type getType();
+    Type getType();
 
-    public boolean isStatic();
+    boolean isStatic();
 
     /**
      * The contained subexpressions.
      *
      * @return The list of contained subexpressions. Can be an empty list.
      */
-    public List<ArithmeticExpression> subexpressions();
+    List<ArithmeticExpression> subexpressions();
 
     /**
      * Computes the numeric value of this expression. This only is possible if this expressions is static.
      *
      * @return The numeric value. If not isStatic an IllegalStateException is thrown.
      */
-    public long computeNumericValue();
+    long computeNumericValue();
 
     /**
      * Tries to find a parent expression.
@@ -62,8 +62,8 @@ public interface ArithmeticExpression extends BashPsiElement {
      * @return The parent arithmetic expression. If not available, null is returned.
      */
     @Nullable
-    public ArithmeticExpression findParentExpression();
+    ArithmeticExpression findParentExpression();
 
     @Nullable
-    public IElementType findOperator();
+    IElementType findOperator();
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractExpression.java, Class: AbstractExpression
- * Last modified: 2010-04-17
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,15 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         return isStatic;
     }
 
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.isStatic = null;
+    }
+
     public List<ArithmeticExpression> subexpressions() {
+        //fixme cache this?
         return Arrays.asList(findChildrenByClass(ArithmeticExpression.class));
     }
 
@@ -123,8 +131,8 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
 
     public ArithmeticExpression findParentExpression() {
         PsiElement context = getParent();
-        if (context instanceof AbstractExpression) {
-            return (AbstractExpression) context;
+        if (context instanceof ArithmeticExpression) {
+            return (ArithmeticExpression) context;
         }
 
         return null;
