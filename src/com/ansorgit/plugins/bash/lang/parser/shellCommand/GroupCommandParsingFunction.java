@@ -58,7 +58,7 @@ public class GroupCommandParsingFunction implements ParsingFunction {
             return false;
         }
 
-        if (!Parsing.list.parseCompoundList(builder, true, false, false)) {
+        if (!Parsing.list.parseCompoundList(builder, true, false)) {
             //ParserUtil.error(group, "parser.unexpected.token");
             group.drop();
             return false;
