@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashStringImpl.java, Class: BashStringImpl
- * Last modified: 2010-04-24
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
-import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,16 +53,7 @@ public class BashStringImpl extends BashPsiElementImpl implements BashString, Ba
     }
 
     public boolean isStatic() {
-        PsiElement child = getFirstChild();
-        while (child != null) {
-            if (child instanceof BashVar || child instanceof BashSubshellCommand) {
-                return false;
-            }
-
-            child = child.getNextSibling();
-        }
-
-        return true;
+        return BashPsiUtils.isStaticWordExpr(getFirstChild());
     }
 
     @Override
