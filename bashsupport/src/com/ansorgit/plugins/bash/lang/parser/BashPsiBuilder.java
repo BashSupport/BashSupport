@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-05-27
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
+    private boolean whitespaceEnabled = false;
 
     /**
      * A hack to let whitespace tokens be delivered by the builder on demand.
@@ -61,7 +62,14 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      * @return True if the operation has been successful.
      */
     public boolean enableWhitespace() {
-        return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
+        //optimization to avoid as many reflective calls as possible
+        if (!whitespaceEnabled) {
+            whitespaceEnabled = true;
+
+            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
+        }
+
+        return true;
     }
 
     /**
@@ -73,7 +81,13 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      * @return True if successful.
      */
     public boolean disableWhitespace() {
-        return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
+        //optimization to avoid as many reflective calls as possible
+        if (whitespaceEnabled) {
+            whitespaceEnabled = false;
+            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
+        }
+
+        return true;
     }
 
     /**

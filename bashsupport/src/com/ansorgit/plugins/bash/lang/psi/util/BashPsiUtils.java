@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-05-09
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.FileViewProvider;
@@ -239,5 +241,17 @@ public class BashPsiUtils {
         }
 
         return TextRange.from(child.getTextOffset() - parent.getTextOffset(), child.getTextLength());
+    }
+
+    public static boolean isStaticWordExpr(PsiElement child) {
+        while (child != null) {
+            if (child instanceof BashVar || child instanceof BashSubshellCommand) {
+                return false;
+            }
+
+            child = child.getNextSibling();
+        }
+
+        return true;
     }
 }
