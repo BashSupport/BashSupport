@@ -62,7 +62,7 @@ public class BacktickParsingFunction implements ParsingFunction {
 
             //parse compound list
             if (!empty) {
-                if (!Parsing.list.parseCompoundList(builder, true, false, false)) {
+                if (!Parsing.list.parseCompoundList(builder, true, false)) {
                     ParserUtil.error(backquote, "parser.shell.expectedCommands");
                     return false;
                 }

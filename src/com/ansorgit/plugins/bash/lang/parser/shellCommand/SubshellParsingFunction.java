@@ -55,7 +55,7 @@ public class SubshellParsingFunction implements ParsingFunction {
         builder.advanceLexer(); //after the start
 
         //parse compound list
-        if (!Parsing.list.parseCompoundList(builder, true, false, false)) {
+        if (!Parsing.list.parseCompoundList(builder, true, false)) {
             ParserUtil.error(builder, "parser.shell.expectedCommands");
             subshell.drop();
             return false;

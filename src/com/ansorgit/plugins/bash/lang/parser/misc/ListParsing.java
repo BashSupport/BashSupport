@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
- * Last modified: 2010-05-27
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class ListParsing implements ParsingTool {
         final PsiBuilder.Marker start = builder.mark();
         try {
             builder.enterNewErrorLevel(false);
-            return parseCompoundList(builder, optionalTerminator, true, false);
+            return parseCompoundList(builder, optionalTerminator, false);
         } finally {
             start.rollbackTo();
             builder.leaveLastErrorLevel();
@@ -81,7 +81,7 @@ public class ListParsing implements ParsingTool {
      * @return
      */
     public boolean parseCompoundList(BashPsiBuilder builder, boolean markAsFoldable) {
-        return parseCompoundList(builder, false, false, markAsFoldable);
+        return parseCompoundList(builder, false, markAsFoldable);
     }
 
     /*
@@ -98,7 +98,7 @@ public class ListParsing implements ParsingTool {
         ;
     */
 
-    public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean testMode, boolean markAsFoldable) {
+    public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean markAsFoldable) {
         PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : null;
 
         builder.eatOptionalNewlines(1);
@@ -136,7 +136,7 @@ public class ListParsing implements ParsingTool {
     }
 
     public boolean parseList(BashPsiBuilder builder) {
-        return parseCompoundList(builder, false, false, false);
+        return parseCompoundList(builder, false, false);
     }
 
     /*
@@ -158,6 +158,7 @@ public class ListParsing implements ParsingTool {
 
         if (!Parsing.pipeline.parsePipelineCommand(builder)) {
             composedMarker.drop();
+            builder.error("Expected a command.");
             return false;
         }
 
