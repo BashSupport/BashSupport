@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLineErrorFilter.java, Class: BashLineErrorFilter
- * Last modified: 2010-01-26
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import com.intellij.openapi.project.Project;
 public class BashLineErrorFilter extends RegexpFilter implements Filter {
     //e.g. /home/user/test.sh: line 13: notHere: command not found
     private static final String FILTER_REGEXP =
-            RegexpFilter.FILE_PATH_MACROS + ": [^ ]+ " + RegexpFilter.LINE_MACROS + ":";
+            RegexpFilter.FILE_PATH_MACROS + ": [a-zA-Z]+ " + RegexpFilter.LINE_MACROS + ": .+";
 
     public BashLineErrorFilter(Project project) {
         //: line (\d+):

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: EvaluateStaticArithExprInspection.java, Class: EvaluateStaticArithExprInspection
- * Last modified: 2010-05-11
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateArithExprQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -75,8 +76,14 @@ public class EvaluateStaticArithExprInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitArithmeticExpression(ArithmeticExpression expression) {
+                if (!isOnTheFly) {
+                    return;
+                }
+
+                boolean isParenthesisExpr = expression instanceof ParenthesesExpression;
+
                 List<ArithmeticExpression> subexpressions = expression.subexpressions();
-                if (isOnTheFly && subexpressions.size() > 1 && expression.isStatic()) {
+                if (subexpressions.size() > 1 && (expression.isStatic()) || isParenthesisExpr) {
                     ArithmeticExpression parent = expression.findParentExpression();
                     if (parent == null || !parent.isStatic()) {
                         try {
