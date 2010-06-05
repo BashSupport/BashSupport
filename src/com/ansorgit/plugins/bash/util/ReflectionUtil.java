@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ReflectionUtil.java, Class: ReflectionUtil
- * Last modified: 2010-03-24
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,13 @@
 package com.ansorgit.plugins.bash.util;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -36,6 +39,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class ReflectionUtil {
     private static Logger log = Logger.getInstance("#bash.ReflectionUtil");
+
+    private static Map<Pair<Class<?>, String>, Field> fieldCache = new HashMap<Pair<Class<?>, String>, Field>();
 
     /**
      * Changes a value of a short member using a certain variable name.
@@ -52,13 +57,18 @@ public class ReflectionUtil {
         boolean result = false;
 
         try {
-            final Field field = aClass.getDeclaredField(name);
-            field.setAccessible(true);
+            Pair<Class<?>, String> mapKey = new Pair<Class<?>, String>(aClass, name);
+            Field field = fieldCache.get(mapKey);
+            if (field == null) {
+                field = aClass.getDeclaredField(name);
+                field.setAccessible(true);
+
+                fieldCache.put(mapKey, field);
+            }
+
             field.setShort(owner, value);
             result = true;
-        } catch (NoSuchFieldException e) {
-            log.warn("No such field", e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             log.warn("Illegal access", e);
         }
 
