@@ -158,3 +158,4 @@ Bugs (indentation marks fixed bugs):
 - search scope for variables in included scripts
 - Not working: declare -r next_number=p$(printf "%02d" $((10#${number:1} + 1)))
 - inspection to check custom-base number literals to check for invalid digit characters, e.g. 10#A
+- Bad code green : for f in 1 2 3; do { echo 1 } done    

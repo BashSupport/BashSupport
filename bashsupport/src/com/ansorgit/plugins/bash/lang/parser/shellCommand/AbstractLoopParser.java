@@ -36,7 +36,6 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class AbstractLoopParser implements ParsingTool, ParsingFunction {
-    //private static final Logger log = Logger.getInstance("#bash.AbstractLoopParsing");
     private final IElementType startToken;
     private final IElementType commandMarker;
 

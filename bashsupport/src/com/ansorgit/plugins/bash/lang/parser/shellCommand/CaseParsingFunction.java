@@ -192,7 +192,7 @@ public class CaseParsingFunction implements ParsingFunction {
 
         //hack to check if we have some commands in the pattern
         if (builder.getTokenType() != CASE_END && builder.getTokenType() != ESAC_KEYWORD) {
-            boolean parsed = Parsing.list.parseCompoundList(builder, true, false, true);
+            boolean parsed = Parsing.list.parseCompoundList(builder, true, true);
             if (!parsed) {
                 //ParserUtil.error(builder, "parser.unexpected.token");
                 casePattern.drop();
