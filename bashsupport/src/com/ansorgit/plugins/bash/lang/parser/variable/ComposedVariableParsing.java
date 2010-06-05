@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ComposedVariableParsing.java, Class: ComposedVariableParsing
- * Last modified: 2010-02-10
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.variable;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -35,7 +35,7 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author Joachim Ansorg
  */
-public class ComposedVariableParsing extends DefaultParsingFunction {
+public class ComposedVariableParsing implements ParsingFunction {
     private static TokenSet acceptedStarts = TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
 
     public boolean isValid(BashPsiBuilder builder) {
