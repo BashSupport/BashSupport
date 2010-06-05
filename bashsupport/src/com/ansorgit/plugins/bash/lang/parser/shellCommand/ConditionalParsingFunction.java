@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ConditionalParsingFunction.java, Class: ConditionalParsingFunction
- * Last modified: 2010-04-24
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
@@ -35,7 +35,7 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author Joachim Ansorg
  */
-public class ConditionalParsingFunction extends DefaultParsingFunction {
+public class ConditionalParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalParsingFunction");
 
     private static final TokenSet conditionalRejects = TokenSet.create(_EXPR_CONDITIONAL, _BRACKET_KEYWORD);
