@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsingTest.java, Class: ListParsingTest
- * Last modified: 2010-03-16
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class ListParsingTest extends MockPsiTest {
     private MockFunction compoundListParsingTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.list.parseCompoundList(builder, false, false, false);
+            return Parsing.list.parseCompoundList(builder, false, false);
         }
     };
 

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2010-05-27
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -152,7 +152,8 @@ public class ParserUtil {
     public static boolean checkNextOrError(BashPsiBuilder builder, IElementType expected, @PropertyKey(resourceBundle = BUNDLE) String message, PsiBuilder.Marker marker) {
         final IElementType next = getTokenAndAdvance(builder);
         if (next != expected) {
-            error(marker, message);
+            marker.drop();
+            error(builder, message);
             return false;
         }
 

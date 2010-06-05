@@ -62,6 +62,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
              |    FOR WORD newline_list IN list_terminator newline_list '{' compound_list '}'
         */
 
+
         log.assertTrue(builder.getTokenType() == ShellCommandParsing.FOR_KEYWORD);
 
         if (isArithmeticForLoop(builder)) {
