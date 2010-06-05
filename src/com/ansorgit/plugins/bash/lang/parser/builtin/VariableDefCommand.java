@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VariableDefCommand.java, Class: VariableDefCommand
- * Last modified: 2010-04-20
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -34,7 +34,7 @@ import com.intellij.psi.tree.IElementType;
  *
  * @author Joachim Ansorg
  */
-abstract class VariableDefCommand extends DefaultParsingFunction {
+abstract class VariableDefCommand implements ParsingFunction {
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
     private final String commandName;

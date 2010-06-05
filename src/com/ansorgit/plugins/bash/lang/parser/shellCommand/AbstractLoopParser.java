@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractLoopParser.java, Class: AbstractLoopParser
- * Last modified: 2010-03-24
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -35,7 +35,7 @@ import com.intellij.psi.tree.IElementType;
  *
  * @author Joachim Ansorg
  */
-public class AbstractLoopParser extends DefaultParsingFunction implements ParsingTool {
+public class AbstractLoopParser implements ParsingTool, ParsingFunction {
     //private static final Logger log = Logger.getInstance("#bash.AbstractLoopParsing");
     private final IElementType startToken;
     private final IElementType commandMarker;

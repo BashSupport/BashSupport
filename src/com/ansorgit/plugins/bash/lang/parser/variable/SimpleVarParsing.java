@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleVarParsing.java, Class: SimpleVarParsing
- * Last modified: 2010-02-09
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser.variable;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 
 /**
@@ -28,7 +28,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
  *
  * @author Joachim Ansorg
  */
-public class SimpleVarParsing extends DefaultParsingFunction {
+public class SimpleVarParsing implements ParsingFunction {
     //static final Logger log = Logger.getInstance("#bash.varParsingFunction");
 
     public boolean isValid(BashPsiBuilder builder) {

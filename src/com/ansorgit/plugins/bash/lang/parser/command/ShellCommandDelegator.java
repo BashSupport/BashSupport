@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShellCommandDelegator.java, Class: ShellCommandDelegator
- * Last modified: 2010-05-11
+ * Last modified: 2010-06-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser.command;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.DefaultParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 
 /**
  * This simply delegates the parsing to the shellcommands. This way internal shell commands
@@ -31,7 +31,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
  *
  * @author Joachim Ansorg
  */
-public class ShellCommandDelegator extends DefaultParsingFunction {
+public class ShellCommandDelegator implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         return Parsing.shellCommand.isValid(builder);
     }
