@@ -1,3 +1,6 @@
+2010-06-06:
+ - Version 0.9.12-maia
+
 2010-06-05:
  - Fixed parsing of for loops with optional command end after a command group
  - Fixed static evaluation quickfix to offer result for "$(((1+2)))"

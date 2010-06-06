@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-06-03
+  ~ Last modified: 2010-06-06
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,10 +18,9 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.12-maia</version>
+    <version>0.9.13-maia</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
     <idea-version since-build="91.15" until-build="98.999"/>
-
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
 
@@ -51,25 +50,39 @@
                 <li>Code formatter (turned off by default)</li>
                 <li>Bash repl</li>
             </ul>
-
-            <br>
-            <b>Plugin contest 2009</b>
-            <hr>
-            <p>
-                The plugin was started in 2009. All contained features are submitted to the contest.
-                The source code package contains further information in the files README.txt and NOTICE.<br>
-                The source code repository is online at
-                <a href="http://code.google.com/p/bashsupport/source/checkout">code.google.com</a><br>
-
-                Documentation is available at
-                <a href="http://www.ansorg-it.com/en/products_bashsupport.html">the authors website</a> in English and
-                German.
-            </p>
   </html>
   ]]></description>
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.12-maia:</b>
+       <ul>
+            <li>Fixed parsing of for loops with optional command end after a command group
+            </li><li>Fixed static evaluation quickfix to offer result for "$(((1+2)))"
+            </li><li>Performance improvements, especially for offline code analysis
+            </li><li>Cached oftenly performed calculation in arithmetic evaluation
+            </li><li>Integrated custom exception reporting tool by Etienne Studer
+            </li><li>"Add shebang" quickfix is not displayed for a script in the Bash REPL
+            </li><li>Shortcut "Ctrl+Enter" for the repl console run action
+            </li><li>Slightly Improved error reporting
+            </li><li>Parser improvements for function definitions
+            </li><li>Properly resetting PSI element caches now
+            </li><li>Improved parsing of composed arithmetic number literals (e.g. 123$a)
+            </li><li>Hex, octal and custom-base literals in arithmetic expressions
+            </li><li>Variable name completion in evaluating heredocs
+            </li><li>Improved some inspection/quickfix messages
+            </li><li>Improved evaluation of static arithmetic expressions
+            </li><li>Improved parser (correctly parses "a=1 ((1))" now)
+            </li><li>Less error markers in faulty case commands
+            </li><li>Fixed error marker handling, no large red blocks any more
+            </li><li>Inspection to detect invalid filedescriptors (only the range &0 to &9 is valid)
+            </li><li>Support for the % operator in arithmetic expressions
+            </li><li>The quick documentation lookup (Ctrl+Q) now tries
+               to read the current system's info page for an external command,
+               if it is available (needs the commands "info" in the path,
+               optionally "txt2html" to turn the plain text into html).
+       </ul>
+
        <b>Changes in version 0.9.11-maia:</b>
        <ul>
           <li>Fixed compilation for Java 5 plattforms</li>
@@ -77,31 +90,14 @@
           <li>Some speed improvements</li>
        </ul>
 
-       <b>Changes in version 0.9.10-maia:</b>
+       <b>Recent changes:</b>
        <ul>
           <li>Support for the "readonly" command</li>
           <li>New inspection to detect changes to read-only variables</li>
           <li>New inspection to detect changes to shell read-only variables, $EUID for example</li>
           <li>New inspection which detects integer division with a remainder</li>
-          <li>"Show documentation" fixed for internal commands in a subshell element</li>
           <li>Fixed variable renaming of ${a} variables</li>
-          <li>Possible fix for an exception caused by appending newlines at the end of a file</li>
-          <li>Added missing textedit box to manage custom shebang lines</li>
-          <li>Fixed keywords as unquoted parameters to commands</li>
-          <li>Fixed errorneous whitespace inserted before a renamed variable</li>
-          <li>Fixed exception at startup ("Directory index is not initialized yet for Project")</li>
-          <li>Parser and lexer improvements, especially for redirects</li>
           <li>Compatibility with RubyMine 2.0.2</li>
-       </ul>
-
-       <b>Changes in version 0.9.9-maia:</b>
-       <ul>
-          <li>Compatible with the latest 9.0.2 EAP</li>
-          <li>Formatter is turned off by default now</li>
-       </ul>
-
-       <b>Recent changes:</b>
-       <ul>
           <li> Fixed for heredoc folding and highlighting                                                     </li>
           <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
           <li> Removed global settings, these are project settings now</li>
@@ -242,9 +238,7 @@
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
                         serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
 
-
-        <!-- Error reporter
+        <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
-        -->
     </extensions>
 </idea-plugin>
