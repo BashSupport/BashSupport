@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ResolveProcessor.java, Class: ResolveProcessor
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface ResolveProcessor extends PsiScopeProcessor {
     @Nullable
-    public PsiElement getBestResult(boolean firstResult, PsiElement referenceElement);
+    PsiElement getBestResult(boolean firstResult, PsiElement referenceElement);
 
     @Nullable
-    public Iterable<PsiElement> getResults();
+    Iterable<PsiElement> getResults();
 
     boolean hasResults();
 

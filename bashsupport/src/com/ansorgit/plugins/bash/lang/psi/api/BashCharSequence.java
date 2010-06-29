@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCharSequence.java, Class: BashCharSequence
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public interface BashCharSequence extends BashPsiElement {
      *
      * @return The string value without marks
      */
-    public String getUnwrappedCharSequence();
+    String getUnwrappedCharSequence();
 
     /**
      * Returns whether this char sequence is static or whether its value depends on runtime information.
@@ -37,5 +37,5 @@ public interface BashCharSequence extends BashPsiElement {
      *
      * @return True if its value is known at write-time.
      */
-    public boolean isStatic();
+    boolean isStatic();
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ShiftExpressionsImpl.java, Class: ShiftExpressionsImpl
- * Last modified: 2010-04-17
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ public class ShiftExpressionsImpl extends AbstractExpression implements ShiftExp
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.SHIFT_RIGHT) {
-            return currentValue >> nextExpressionValue.longValue();
+            return currentValue >> nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_SHIFT_LEFT) {
-            return currentValue << nextExpressionValue.longValue();
+            return currentValue << nextExpressionValue;
         }
 
         return null;

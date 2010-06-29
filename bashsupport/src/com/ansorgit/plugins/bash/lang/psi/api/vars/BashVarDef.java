@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDef.java, Class: BashVarDef
- * Last modified: 2010-04-20
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -31,20 +32,20 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIdentifierOwner, NavigationItem {
-    public String getName();
+public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIdentifierOwner, NavigationItem, PsiReference {
+    String getName();
 
     /**
      * Returns true if this variable definition defines an array variable.
      *
      * @return True if an array variable is being defined
      */
-    public boolean isArray();
+    boolean isArray();
 
     /**
      * @return True if this definition defines a ready-only variable
      */
-    public boolean isReadonly();
+    boolean isReadonly();
 
     /**
      * Returns true if this variable definition if only for the following statement.
@@ -53,7 +54,7 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
      *
      * @return True if this command is only local.
      */
-    public boolean isCommandLocal();
+    boolean isCommandLocal();
 
     /**
      * The psi element which is the identifier of the assignment.
@@ -61,7 +62,7 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
      * @return The name element
      */
     @NotNull
-    public PsiElement findAssignmentWord();
+    PsiElement findAssignmentWord();
 
     /**
      * Returns whether this variable definition is a local variable in a function.
@@ -70,10 +71,12 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
      *
      * @return True if it's local in a function
      */
-    public boolean isFunctionScopeLocal();
+    boolean isFunctionScopeLocal();
+
+    PsiElement findFunctionScope();
 
     /**
      * @return True if this is a variable definition with assignment, e.g. "export a=1"
      */
-    public boolean hasAssignmentValue();
+    boolean hasAssignmentValue();
 }

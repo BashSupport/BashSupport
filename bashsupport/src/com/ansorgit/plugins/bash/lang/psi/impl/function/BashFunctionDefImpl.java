@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionDefImpl.java, Class: BashFunctionDefImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.Icons;
 import com.intellij.util.IncorrectOperationException;
@@ -64,7 +62,9 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
     }
 
     public PsiElement setName(@NotNull @NonNls String name) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(name)) return null;
+        if (StringUtil.isEmpty(name)) {
+            return null;
+        }
         //fixme validate name
 
         log.debug("renaming function");
@@ -113,7 +113,9 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
 
     public String getDefinedName() {
         final BashSymbol symbol = getNameSymbol();
-        if (symbol == null) return "";
+        if (symbol == null) {
+            return "";
+        }
 
         return symbol.getNameString();
     }
@@ -121,20 +123,6 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
     @Override
     public Icon getIcon(int flags) {
         return Icons.METHOD_ICON;
-    }
-
-    @Override
-    public boolean processDeclarations(PsiScopeProcessor processor,
-                                       ResolveState resolveState,
-                                       PsiElement lastParent,
-                                       PsiElement place) {
-        //log.info("processDeclarations for function def in function " + getDefinedName());
-        if (!processor.execute(this, resolveState)) {
-            return false;
-        }
-
-        //process all children inside of the body
-        return body().processDeclarations(processor, resolveState, lastParent, place);
     }
 
     public int getTextOffset() {

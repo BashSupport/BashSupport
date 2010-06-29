@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-04-21
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +55,6 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public class BashVarImpl extends BashPsiElementImpl implements BashVar {
-    //private static final Logger log = Logger.getInstance("#bash.BashVarImpl");
-
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
     }
@@ -76,17 +75,14 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
     @Override
     public PsiReference getReference() {
-        //log.debug("getReference");
         return this;
     }
 
     public PsiElement getElement() {
-        //log.debug("getElement");
         return this;
     }
 
     public TextRange getRangeInElement() {
-        //log.debug("getRangeInElement");
         if (isSingleWord()) {
             return TextRange.from(0, getReferencedName().length());
         }
@@ -105,8 +101,12 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
             return null;
         }
 
-        final BashVarProcessor processor = new BashVarProcessor(varName, this);
-        return BashResolveUtil.treeWalkUp(processor, this, null, this, false, true);
+        BashVarProcessor processor = new BashVarProcessor(this, true);
+        if (!PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial())) {
+            return processor.getBestResult(false, this);
+        }
+
+        return null;
     }
 
     public String getCanonicalText() {
@@ -187,7 +187,6 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
     public String getReferencedName() {
         final String text = getText();
-        //log.debug("getReferencedName. text: " + text);
 
         return isSingleWord() ? text : text.substring(1);
     }

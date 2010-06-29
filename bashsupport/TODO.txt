@@ -154,8 +154,9 @@ Bugs (indentation marks fixed bugs):
 - Support for "let"
 - Support for "eval"
 - Inspection to replace `expr 1 + 2` with $((1 + 2))
-- Inspection / quickfix fo r $RANDOM to insert a random number
+- Inspection / quickfix for $RANDOM to insert a random number
 - search scope for variables in included scripts
 - Not working: declare -r next_number=p$(printf "%02d" $((10#${number:1} + 1)))
 - inspection to check custom-base number literals to check for invalid digit characters, e.g. 10#A
-- Bad code green : for f in 1 2 3; do { echo 1 } done    
+- Bad code green : one line: for f in 1 2 3; do { echo 1 } done
+    - Inspection to detect local usage outside of a function

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashWord.java, Class: BashWord
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,5 +27,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  * Time: 10:35:20
  */
 public interface BashWord extends BashPsiElement, BashCharSequence {
-    public boolean isWrappable();
+    boolean isWrappable();
 }

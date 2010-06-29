@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPipelineImpl.java, Class: BashPipelineImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashPipeline;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashDelegatingElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
  * Date: Dec 3, 2009
  * Time: 10:46:40 AM
  */
-public class BashPipelineImpl extends BashDelegatingElementImpl implements BashPipeline {
+public class BashPipelineImpl extends BashPsiElementImpl implements BashPipeline {
     public BashPipelineImpl(final ASTNode astNode) {
         super(astNode, "pipeline command");
     }

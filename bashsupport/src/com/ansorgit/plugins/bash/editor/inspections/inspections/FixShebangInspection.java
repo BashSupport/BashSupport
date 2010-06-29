@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FixShebangInspection.java, Class: FixShebangInspection
- * Last modified: 2010-04-21
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,9 +48,6 @@ public class FixShebangInspection extends AbstractBashInspection {
 
     //fixme fix this for windows cygwin environments
     private static final String defaultCommands = "/bin/sh\n/bin/bash";
-
-    public FixShebangInspection() {
-    }
 
     @Pattern("[a-zA-Z_0-9.]+")
     @NotNull

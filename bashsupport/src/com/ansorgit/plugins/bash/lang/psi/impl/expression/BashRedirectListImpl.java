@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRedirectListImpl.java, Class: BashRedirectListImpl
- * Last modified: 2010-05-09
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,8 @@ package com.ansorgit.plugins.bash.lang.psi.impl.expression;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -37,11 +33,6 @@ import org.jetbrains.annotations.NotNull;
 public class BashRedirectListImpl extends BashPsiElementImpl implements BashRedirectList {
     public BashRedirectListImpl(final ASTNode astNode) {
         super(astNode, "BashRedirectList");
-    }
-
-    @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
     }
 
     @Override
