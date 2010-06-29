@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRunner.java, Class: BashRunner
- * Last modified: 2010-05-13
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
  * @author wibotwi, jansorg
  */
 public class BashRunner extends DefaultProgramRunner {
-    public BashRunner() {
-    }
 
     @NotNull
     public String getRunnerId() {

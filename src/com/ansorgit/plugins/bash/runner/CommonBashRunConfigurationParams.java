@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommonBashRunConfigurationParams.java, Class: CommonBashRunConfigurationParams
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,19 +26,19 @@ import java.util.Map;
  * @author wibotwi, jansorg
  */
 public interface CommonBashRunConfigurationParams {
-    public String getInterpreterOptions();
+    String getInterpreterOptions();
 
-    public void setInterpreterOptions(String options);
+    void setInterpreterOptions(String options);
 
-    public String getWorkingDirectory();
+    String getWorkingDirectory();
 
-    public void setWorkingDirectory(String workingDirectory);
+    void setWorkingDirectory(String workingDirectory);
 
-    public Map<String, String> getEnvs();
+    Map<String, String> getEnvs();
 
-    public void setEnvs(Map<String, String> envs);
+    void setEnvs(Map<String, String> envs);
 
-    public String getInterpreterPath();
+    String getInterpreterPath();
 
-    public void setInterpreterPath(String path);
+    void setInterpreterPath(String path);
 }

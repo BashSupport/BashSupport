@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashIfImpl.java, Class: BashIfImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,8 @@ package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashIf;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashKeywordDefaultImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Implementation of an if command.
@@ -43,10 +39,5 @@ public class BashIfImpl extends BashKeywordDefaultImpl implements BashIf {
 
     public PsiElement keywordElement() {
         return findChildByType(BashTokenTypes.IF_KEYWORD);
-    }
-
-    @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor psiScopeProcessor, @NotNull ResolveState resolveState, PsiElement lastParent, @NotNull PsiElement place) {
-        return BashPsiUtils.processChildDeclarations(this, psiScopeProcessor, resolveState, lastParent, place);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettingsPane.java, Class: BashProjectSettingsPane
- * Last modified: 2010-03-30
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,6 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox autocompleteInternalVars;
     private JCheckBox autocompleteInternalCommands;
     private JCheckBox enableFormatterCheckbox;
-
-    public BashProjectSettingsPane() {
-    }
 
     public void dispose() {
     }

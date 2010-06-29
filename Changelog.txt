@@ -1,3 +1,22 @@
+2010-06-29:
+ - Reworked and improved variable resolving
+
+2010-06-16:
+ - Fixed exception "Directory index is not initialized yet ..."
+
+2010-06-15:
+ - PSI resolve test cases
+
+2010-06-12:
+ - Code cleanup
+ - Removed dead code
+
+2010-06-09:
+ - Fixed scope of psi elements, previously a variable rename went through the whole module
+ - Improved support for local variable references
+ - New inspection to detect local variable definition on global level
+ - Quickfix to remove the local keyword from the command
+
 2010-06-06:
  - Version 0.9.12-maia
 

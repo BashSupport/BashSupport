@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IteratingExpansion.java, Class: IteratingExpansion
- * Last modified: 2010-03-24
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ class IteratingExpansion implements Expansion {
     private final List<String> values = new LinkedList<String>();
     private Iterator<String> valueIterator;
     private String currentValue;
-    private boolean isFirst = true;
     private int index = 0;
     private int count = 0;
     private boolean isFlipped = false;

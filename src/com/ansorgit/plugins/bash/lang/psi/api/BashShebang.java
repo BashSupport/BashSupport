@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashShebang.java, Class: BashShebang
- * Last modified: 2010-03-28
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ public interface BashShebang extends BashPsiElement {
     /**
      * @return The shell command given in the shebang line, e.g. /bin/sh
      */
-    public String shellCommand();
+    String shellCommand();
 
-    public void updateCommand(String command);
+    void updateCommand(String command);
 
     @NotNull
-    public TextRange commandRange();
+    TextRange commandRange();
 
     int getShellCommandOffset();
 }

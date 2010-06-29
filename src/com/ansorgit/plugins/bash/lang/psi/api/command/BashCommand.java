@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommand.java, Class: BashCommand
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,42 +43,42 @@ public interface BashCommand extends BashPsiElement, BashReference {
      *
      * @return True if this command is a function call.
      */
-    public boolean isFunctionCall();
+    boolean isFunctionCall();
 
     /**
      * Checks whether this command is a call of an bash-internal command, like "echo" or "cd".
      *
      * @return True if this commmand is an internal command.
      */
-    public boolean isInternalCommand();
+    boolean isInternalCommand();
 
     /**
      * Returns true if this command is a call to an external program.
      *
      * @return True if this is an external command.
      */
-    public boolean isExternalCommand();
+    boolean isExternalCommand();
 
     /**
      * Returns true if this command is a call to an external program.
      *
      * @return True if this only contains assignments without an actual command.
      */
-    public boolean isPureAssignment();
+    boolean isPureAssignment();
 
     /**
      * Returns true if this command is a variable declaring command (e.g. export or read)
      *
      * @return True if it declares variables visible on the outside
      */
-    public boolean isVarDefCommand();
+    boolean isVarDefCommand();
 
     /**
      * Returns whether an assignment expression is part of this simple command statement.
      *
      * @return True if one ore more assignments are done for the command.
      */
-    public boolean hasAssignments();
+    boolean hasAssignments();
 
     /**
      * Returns the element which represents the executed command.
@@ -86,17 +86,17 @@ public interface BashCommand extends BashPsiElement, BashReference {
      *
      * @return The element
      */
-    public PsiElement commandElement();
+    PsiElement commandElement();
 
     /**
      * Returns the elements which are parameters to the command
      */
-    public List<BashPsiElement> parameters();
+    List<BashPsiElement> parameters();
 
     /**
      * Returns the assignments which are available in this command
      */
-    public List<BashVarDef> assignments();
+    List<BashVarDef> assignments();
 
-    public String getReferencedName();
+    String getReferencedName();
 }
