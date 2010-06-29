@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: BashNumberImpl.java, Class: BashNumberImpl
- * Last modified: 2009-12-04
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * File: BashResolveStates.java, Class: BashResolveStates
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,22 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashNumber;
-import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.KeyWithDefaultValue;
 
 /**
- * Date: 11.04.2009
- * Time: 23:28:31
- *
- * @author Joachim Ansorg
+ * User: jansorg
+ * Date: 29.06.2010
+ * Time: 19:53:50
  */
-public class BashNumberImpl extends BashPsiElementImpl implements BashNumber {
-    public BashNumberImpl(ASTNode astNode) {
-        super(astNode, "BashNumber");
+public class BashResolveStates {
+    private BashResolveStates() {
     }
+
+    public static final Key<Boolean> RESOLVE_SUCCESS = new KeyWithDefaultValue<Boolean>("RESOLVE_SUCCESS") {
+        @Override
+        public Boolean getDefaultValue() {
+            return false;
+        }
+    };
 }

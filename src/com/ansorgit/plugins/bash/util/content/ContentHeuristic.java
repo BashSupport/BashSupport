@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ContentHeuristic.java, Class: ContentHeuristic
- * Last modified: 2010-02-28
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,5 +37,5 @@ interface ContentHeuristic {
      * @return A value in the range of [0,1] which is the probability that the file is a Bash script or include file.
      *         0 means that it's surely not a Bash script. 1 means that it's definitely a Bash file.
      */
-    public double isBashFile(File file, String data, Project project);
+    double isBashFile(File file, String data, Project project);
 }

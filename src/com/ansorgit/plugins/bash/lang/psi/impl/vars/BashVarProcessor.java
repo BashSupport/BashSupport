@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarProcessor.java, Class: BashVarProcessor
- * Last modified: 2010-01-28
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -33,25 +34,28 @@ import com.intellij.psi.util.PsiTreeUtil;
  * @author Joachim Ansorg
  */
 class BashVarProcessor extends BashAbstractProcessor {
-    //private static final Logger log = Logger.getInstance("#bash.BashVarProcessor");
-    private final String varName;
-    private final PsiElement startElement;
+    private BashVar startElement;
+    private boolean checkLocalness;
+    private String varName;
 
-    public BashVarProcessor(String varName, PsiElement startElement) {
-        this.varName = varName;
-        //resetResult();
+    public BashVarProcessor(BashVar startElement, boolean checkLocalness) {
         this.startElement = startElement;
+        this.checkLocalness = checkLocalness;
+        this.varName = startElement.getReferencedName();
     }
 
     public boolean execute(PsiElement psiElement, ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
-            final BashVarDef varDef = (BashVarDef) psiElement;
+            BashVarDef varDef = (BashVarDef) psiElement;
 
-            if (!varName.equals(varDef.getName())) {
-                return true; //proceed with the search
+            if (!varName.equals(varDef.getName()) || startElement.equals(psiElement)) {
+                //proceed with the search
+                return true;
             }
 
-            boolean isValid = varDef.isFunctionScopeLocal()
+            //we have the same name, so it's a possible hit
+            //now check the scope
+            boolean isValid = checkLocalness && varDef.isFunctionScopeLocal()
                     ? PsiTreeUtil.isAncestor(BashPsiUtils.findEnclosingBlock(varDef), startElement, false)
                     : !varDef.isCommandLocal();
 

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFacetLoader.java, Class: BashFacetLoader
- * Last modified: 2010-02-11
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,6 @@ public class BashFacetLoader implements ApplicationComponent {
 
     public static BashFacetLoader getInstance() {
         return ApplicationManager.getApplication().getComponent(BashFacetLoader.class);
-    }
-
-    public BashFacetLoader() {
     }
 
     public void initComponent() {

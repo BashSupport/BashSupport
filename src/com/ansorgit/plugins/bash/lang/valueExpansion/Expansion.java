@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: Expansion.java, Class: Expansion
- * Last modified: 2010-01-27
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ interface Expansion {
      *
      * @return The new state.
      */
-    public String findNext(boolean previousFlipped);
+    String findNext(boolean previousFlipped);
 
     /**
      * Returns if the last findNext call flipped this expansion, i.e. if this expansion is
@@ -40,12 +40,12 @@ interface Expansion {
      *
      * @return True if this expansion is currently back at the first element.
      */
-    public boolean isFlipped();
+    boolean isFlipped();
 
     /**
      * Returns whether there at least one more element in the current iteration of the available value.
      *
      * @return True if there one more value or false if the last returned value was the last one of the expansion.
      */
-    public boolean hasNext();
+    boolean hasNext();
 }

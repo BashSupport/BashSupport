@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2010-05-13
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,9 +59,9 @@ public class BashAnnotator implements Annotator {
         } else if (element instanceof BashHereDoc) {
             annotateHereDoc((BashHereDoc) element, annotationHolder);
         } else if (element instanceof BashHereDocStartMarker) {
-            annotateHereDocStart((BashHereDocStartMarker) element, annotationHolder);
+            annotateHereDocStart(element, annotationHolder);
         } else if (element instanceof BashHereDocEndMarker) {
-            annotateHereDocEnd((BashHereDocEndMarker) element, annotationHolder);
+            annotateHereDocEnd(element, annotationHolder);
         } else if (element instanceof BashFunctionDef) {
             functionAnnotator.annotate((BashFunctionDef) element, annotationHolder);
         } else if (element instanceof BashCommand) {
@@ -71,11 +71,11 @@ public class BashAnnotator implements Annotator {
         } else if (element instanceof BashVar) {
             BashVarAnnotator.annotateVar((BashVar) element, annotationHolder);
         } else if (element instanceof BashWord) {
-            annotateWord((BashWord) element, annotationHolder);
+            annotateWord(element, annotationHolder);
         } else if (element instanceof BashString) {
-            annotateString((BashString) element, annotationHolder);
+            annotateString(element, annotationHolder);
         } else if (element instanceof BashSubshellCommand) {
-            annotateSubshell((BashSubshellCommand) element, annotationHolder);
+            annotateSubshell(element, annotationHolder);
         }
     }
 

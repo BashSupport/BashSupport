@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHereDoc.java, Class: BashHereDoc
- * Last modified: 2010-01-31
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public interface BashHereDoc extends BashPsiElement {
      *
      * @return True if variables inside of the here document are highlighted and available.
      */
-    public boolean isEvaluatingVariables();
+    boolean isEvaluatingVariables();
 
     /**
      * Returns whether the command receives leading whitespace of the heredoc or not.
@@ -41,5 +41,5 @@ public interface BashHereDoc extends BashPsiElement {
      *
      * @return True if the leading whitespace is stripped before the text is passed on the command.
      */
-    public boolean isStrippingLeadingWhitespace();
+    boolean isStrippingLeadingWhitespace();
 }

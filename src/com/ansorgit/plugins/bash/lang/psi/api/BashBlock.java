@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashBlock.java, Class: BashBlock
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public interface BashBlock extends BashPsiElement {
-    public boolean isCommandGroup();
+    boolean isCommandGroup();
 
-    public PsiElement commandGroup();
+    PsiElement commandGroup();
 }

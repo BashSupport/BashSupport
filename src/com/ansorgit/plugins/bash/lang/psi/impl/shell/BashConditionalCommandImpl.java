@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashConditionalCommandImpl.java, Class: BashConditionalCommandImpl
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * User: jansorg
@@ -35,10 +30,5 @@ import org.jetbrains.annotations.NotNull;
 public class BashConditionalCommandImpl extends BashPsiElementImpl implements BashConditionalCommand {
     public BashConditionalCommandImpl(final ASTNode astNode) {
         super(astNode, "Bash conditional command");
-    }
-
-    @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor psiScopeProcessor, @NotNull ResolveState resolveState, PsiElement element, @NotNull PsiElement element1) {
-        return BashPsiUtils.processChildDeclarations(this, psiScopeProcessor, resolveState, element, element1);
     }
 }

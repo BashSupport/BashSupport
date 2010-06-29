@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: EvaluateStaticArithExprInspection.java, Class: EvaluateStaticArithExprInspection
- * Last modified: 2010-06-05
+ * File: EvaluateArithmeticExpressionInspection.java, Class: EvaluateArithmeticExpressionInspection
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import java.util.List;
  * Date: Nov 15, 2009
  * Time: 12:48:24 AM
  */
-public class EvaluateStaticArithExprInspection extends AbstractBashInspection {
+public class EvaluateArithmeticExpressionInspection extends AbstractBashInspection {
     @Pattern("[a-zA-Z_0-9.]+")
     @NotNull
     @Override
