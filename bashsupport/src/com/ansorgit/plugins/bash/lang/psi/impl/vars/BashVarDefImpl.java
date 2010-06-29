@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-04-20
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,15 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
@@ -39,6 +40,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +69,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return findAssignmentWord().getText();
     }
 
-    public PsiElement setName(@NonNls String newName) throws IncorrectOperationException {
+    public PsiElement setName(@NotNull @NonNls String newName) throws IncorrectOperationException {
         if (!BashIdentifierUtil.isValidIdentifier(newName)) {
             throw new IncorrectOperationException("can't have an empty name");
         }
@@ -99,7 +101,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
         ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-        return node != null ? node.getPsi() : getFirstChild();
+        return node != null ? node.getPsi() : firstChild;
     }
 
 
@@ -112,7 +114,21 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
             }
         }
 
-        return false;
+        //although this variable has no direct local command,
+        //it's still possible that an earlier usage of the local command declared this
+        //variable as function local
+
+        //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
+        //we would get an infinite recursion
+        final ResolveProcessor processor = new BashVarProcessor(this, false);
+        //final PsiElement element = BashResolveUtil.treeWalkUp(processor, this, this, this, false, true);
+        boolean foundResults = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
+        PsiElement element = foundResults ? processor.getBestResult(false, this) : null;
+
+        log.debug("isFunctionLocal: resolve result: " + this + " resolved to " + element);
+        return element instanceof BashVarDef
+                && !this.equals(element)
+                && ((BashVarDef) element).isFunctionScopeLocal();
     }
 
     public boolean hasAssignmentValue() {
@@ -169,20 +185,26 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
             return null;
         }
 
-        final BashVarProcessor processor = new BashVarProcessor(varName, this);
-        final PsiElement element = BashResolveUtil.treeWalkUp(processor, this, this, this, false, true);
 
-        log.debug("resolve result: " + this + " resolved to " + element);
-        return element;
+        PsiElement resolveScope = isFunctionScopeLocal() ? findFunctionScope() : this.getContainingFile();
+
+        BashVarProcessor processor = new BashVarProcessor(this, true);
+        if (!PsiTreeUtil.treeWalkUp(processor, this, resolveScope, ResolveState.initial())) {
+            return processor.getBestResult(false, this);
+        }
+
+        return null;
+    }
+
+    public PsiElement findFunctionScope() {
+        return PsiTreeUtil.getContextOfType(this, BashFunctionDef.class, true);
     }
 
     public String getCanonicalText() {
-        //fixme
         return null;
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        //log.debug("handleElementRename" + newName);
         return setName(newName);
     }
 
@@ -213,7 +235,6 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isSoft() {
-        //log.debug("isSoft");
         return false;
     }
 

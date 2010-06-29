@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFiledescriptor.java, Class: BashFiledescriptor
- * Last modified: 2010-05-10
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,5 +28,5 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface BashFiledescriptor extends BashPsiElement {
     @Nullable
-    public Integer descriptorAsInt();
+    Integer descriptorAsInt();
 }

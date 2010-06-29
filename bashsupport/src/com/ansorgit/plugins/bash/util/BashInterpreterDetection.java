@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashInterpreterDetection.java, Class: BashInterpreterDetection
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,13 @@ import java.util.List;
  * Time: 12:48:42 PM
  */
 public class BashInterpreterDetection {
-    private static final List<String> guessLocations = Lists.newArrayList("/bin/bash", "/usr/bin/bash",
-            "/usr/local/bin/bash", "/bin/sh", "/usr/bin/sh");
-
-    public BashInterpreterDetection() {
-    }
+    private static final List<String> guessLocations = Lists.newArrayList(
+            "/bin/bash",
+            "/usr/bin/bash",
+            "/usr/local/bin/bash",
+            "/bin/sh",
+            "/usr/bin/sh"
+    );
 
     public String findBestLocation() {
         for (String guessLocation : guessLocations) {

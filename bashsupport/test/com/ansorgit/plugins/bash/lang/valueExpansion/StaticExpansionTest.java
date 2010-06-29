@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: StaticExpansionTest.java, Class: StaticExpansionTest
- * Last modified: 2010-01-27
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by IntelliJ IDEA.
  * User: jansorg
  * Date: Nov 11, 2009
  * Time: 9:15:23 PM
- * To change this template use File | Settings | File Templates.
  */
 public class StaticExpansionTest {
     @Test

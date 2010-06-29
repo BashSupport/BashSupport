@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileType.java, Class: BashFileType
- * Last modified: 2010-04-16
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.roots.impl.DirectoryIndex;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.StringUtils;
@@ -138,6 +139,11 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
                     return false;
                 }
 
+                DirectoryIndex directoryIndex = DirectoryIndex.getInstance(project);
+                if (directoryIndex == null || !directoryIndex.isInitialized()) {
+                    return false;
+                }
+
                 Module module = ModuleUtil.findModuleForFile(file, project);
                 if (module == null) {
                     return false;
@@ -147,7 +153,6 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
                 if (facet == null) {
                     return false;
                 }
-
 
                 BashFacetConfiguration config = facet.getConfiguration();
                 FileMode mode = config.findMode(file);

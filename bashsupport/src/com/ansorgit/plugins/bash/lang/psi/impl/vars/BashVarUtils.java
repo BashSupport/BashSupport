@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarUtils.java, Class: BashVarUtils
- * Last modified: 2010-03-25
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -30,14 +28,25 @@ import com.intellij.psi.util.PsiTreeUtil;
  * Time: 7:50:10 PM
  */
 public class BashVarUtils {
+    /**
+     * Checks whether the given candidate is a valid reference to the variable definition. It is valid
+     * if both are global or if the candidate is in the local scope of the variable definition.
+     *
+     * @param childCandidate     The candidate element to check
+     * @param variableDefinition The reference definition
+     * @return True if the candidate is a valid reference to the definition
+     */
     public static boolean isInDefinedScope(PsiElement childCandidate, BashVarDef variableDefinition) {
-        PsiElement varDefContainer = BashPsiUtils.findEnclosingBlock(variableDefinition) instanceof BashFile
-                ? variableDefinition
-                : BashPsiUtils.findEnclosingBlock(variableDefinition);
+        if (variableDefinition.isFunctionScopeLocal()) {
+            //the reference is a local variable, check if the candidate is in its scope
+            return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
+        } else if (childCandidate instanceof BashVarDef && ((BashVarDef) childCandidate).isFunctionScopeLocal()) {
+            //the candidate is a local definition, check if we are in the
+            //fixme check this
+            return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
+        }
 
-        boolean varIsLocalDef = childCandidate instanceof BashVarDef && ((BashVarDef) childCandidate).isFunctionScopeLocal();
-
-        return !(variableDefinition.isFunctionScopeLocal() || varIsLocalDef)
-                || PsiTreeUtil.isAncestor(varDefContainer, childCandidate, false);
+        //none is a local variable
+        return true;
     }
 }

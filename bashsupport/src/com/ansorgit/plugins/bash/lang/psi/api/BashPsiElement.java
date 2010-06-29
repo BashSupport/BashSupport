@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiElement.java, Class: BashPsiElement
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,6 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 11.04.2009
@@ -31,5 +27,4 @@ import org.jetbrains.annotations.Nullable;
  * @author Joachim Ansorg
  */
 public interface BashPsiElement extends PsiElement {
-    boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState resolveState, @Nullable PsiElement parent, @NotNull PsiElement place);
 }

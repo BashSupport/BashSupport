@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiElementImpl.java, Class: BashPsiElementImpl
- * Last modified: 2010-05-26
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,15 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.NonClasspathDirectoryScope;
+import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,19 +42,18 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
     private final String name;
 
     public BashPsiElementImpl(final ASTNode astNode) {
+        this(astNode, null);
+    }
+
+    public BashPsiElementImpl(final ASTNode astNode, final String name) {
         super(astNode);
-        name = null;
+        this.name = name;
     }
 
     @NotNull
     @Override
     public Language getLanguage() {
         return BashFileType.BASH_LANGUAGE;
-    }
-
-    public BashPsiElementImpl(final ASTNode astNode, final String name) {
-        super(astNode);
-        this.name = name;
     }
 
     @Override
@@ -61,12 +64,22 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
     @NotNull
     @Override
     public SearchScope getUseScope() {
-        return new NonClasspathDirectoryScope(getProject().getBaseDir());
+        return new LocalSearchScope(getContainingFile());
     }
 
     @NotNull
     @Override
     public GlobalSearchScope getResolveScope() {
-        return new NonClasspathDirectoryScope(getProject().getBaseDir());
+        return GlobalSearchScope.fileScope(getContainingFile());
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
+    }
+
+    @Override
+    public PsiElement getContext() {
+        return super.getContext();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

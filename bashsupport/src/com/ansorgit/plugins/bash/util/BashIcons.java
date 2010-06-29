@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashIcons.java, Class: BashIcons
- * Last modified: 2010-03-15
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,17 +30,17 @@ import javax.swing.*;
  */
 public interface BashIcons {
     @NonNls
-    final String DATA_PATH = "/icons/";
+    String DATA_PATH = "/icons/";
 
-    final Icon BASH_LARGE_ICON = IconLoader.findIcon(DATA_PATH + "bash-64.png");
+    Icon BASH_LARGE_ICON = IconLoader.findIcon(DATA_PATH + "bash-64.png");
 
-    final Icon BASH_FILE_ICON = IconLoader.findIcon(DATA_PATH + "bash-16.png");
+    Icon BASH_FILE_ICON = IconLoader.findIcon(DATA_PATH + "bash-16.png");
 
-    final Icon FUNCTION_DEF_ICON = IconLoader.findIcon(DATA_PATH + "function-16.png");
+    Icon FUNCTION_DEF_ICON = IconLoader.findIcon(DATA_PATH + "function-16.png");
 
-    final Icon GLOBAL_VAR_ICON = IconLoader.findIcon(DATA_PATH + "global-var-16.png");
+    Icon GLOBAL_VAR_ICON = IconLoader.findIcon(DATA_PATH + "global-var-16.png");
 
-    final Icon BASH_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
+    Icon BASH_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
 
-    final Icon BOURNE_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
+    Icon BOURNE_VAR_ICON = IconLoader.findIcon(DATA_PATH + "bash-var-16.png");
 }

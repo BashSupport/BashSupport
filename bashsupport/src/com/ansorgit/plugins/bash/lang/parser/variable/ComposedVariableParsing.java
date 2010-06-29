@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ComposedVariableParsing.java, Class: ComposedVariableParsing
- * Last modified: 2010-06-05
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 public class ComposedVariableParsing implements ParsingFunction {
-    private static TokenSet acceptedStarts = TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
+    private static final TokenSet acceptedStarts =
+            TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
 
     public boolean isValid(BashPsiBuilder builder) {
         if (!ParserUtil.hasNextTokens(builder, DOLLAR)) {
