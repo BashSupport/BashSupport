@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: DuplicateFunctionDefInspection.java, Class: DuplicateFunctionDefInspection
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +22,19 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This inspection highlights duplicate function definitions.
@@ -78,22 +82,35 @@ public class DuplicateFunctionDefInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                PsiElement start = functionDef.getPrevSibling() != null
-                        ? functionDef.getPrevSibling()
-                        : functionDef.getContext();
+                BashFunctionProcessor p = new BashFunctionProcessor(functionDef.getName(), true);
 
-                BashFunctionProcessor p = new BashFunctionProcessor(functionDef.getName());
+                PsiElement start = functionDef.getContext() != null ? functionDef.getContext() : functionDef.getPrevSibling();
 
-                BashResolveUtil.walkThrough(p, start, functionDef.getContext(), functionDef, true, true);
-                PsiElement result = p.hasResults() ? p.getBestResult(true, functionDef) : null;
-                if (result != null) {
-                    String message = "The function '" + functionDef.getName() +
-                            "' is already defined on line " + BashPsiUtils.getElementLineNumber(result) + ".";
-                    holder.registerProblem(
-                            functionDef.getNameSymbol(),
-                            message,
-                            ProblemHighlightType.GENERIC_ERROR_OR_WARNING
-                    );
+                PsiTreeUtil.treeWalkUp(p, start, functionDef.getContainingFile(), ResolveState.initial());
+
+                List<PsiElement> results = new ArrayList(p.getResults());
+                results.remove(functionDef);
+
+                if (results.size() > 0) {
+                    //find the result which has the lowest textOffset in the file
+                    PsiElement firstFunctionDef = results.get(0);
+                    for (PsiElement e : results) {
+                        if (e.getTextOffset() < firstFunctionDef.getTextOffset()) {
+                            firstFunctionDef = e;
+                        }
+                    }
+
+
+                    if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
+                        String message = "The function '" + functionDef.getName() +
+                                "' is already defined on line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
+
+                        holder.registerProblem(
+                                functionDef.getNameSymbol(),
+                                message,
+                                ProblemHighlightType.GENERIC_ERROR_OR_WARNING
+                        );
+                    }
                 }
             }
         };

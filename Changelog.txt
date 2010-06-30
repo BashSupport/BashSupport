@@ -1,3 +1,7 @@
+2010-06-30:
+ - Refactoring to use the official API's psi walkThrough method
+ - More PSI test cases for command variants, variable variants, heredoc marker resolving
+
 2010-06-29:
  - Reworked and improved variable resolving
 

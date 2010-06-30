@@ -26,7 +26,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -81,7 +80,12 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     }
 
     public boolean isFunctionCall() {
-        return commandElement() == BashElementTypes.GENERIC_COMMAND_ELEMENT && internalResolve() != null;
+        PsiElement commandElement = commandElement();
+        if (commandElement == null || commandElement.getNode() == null) {
+            return false;
+        }
+
+        return commandElement.getNode().getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && internalResolve() != null;
     }
 
     public boolean isInternalCommand() {
@@ -231,7 +235,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
         List<Object> variants = Lists.newArrayList();
 
         BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor();
-        BashResolveUtil.treeWalkUp(processor, this, null, this, true, false);
+        PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
 
         variants.addAll(processor.getFunctionDefs());
 
