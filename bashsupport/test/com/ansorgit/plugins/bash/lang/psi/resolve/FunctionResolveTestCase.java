@@ -18,7 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
 
 /**
@@ -28,15 +31,42 @@ import junit.framework.Assert;
  */
 public class FunctionResolveTestCase extends AbstractResolveTest {
     public void testBasicFunctionResolve() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashFunctionDef);
+        checkFunctionReference();
+    }
+
+    private PsiReference checkFunctionReference() throws Exception {
+        PsiReference psiReference = configure();
+        Assert.assertTrue(psiReference.getElement() instanceof BashCommand);
+        BashCommand commandElement = (BashCommand) psiReference.getElement();
+
+        Assert.assertTrue(psiReference.resolve() instanceof BashFunctionDef);
+        Assert.assertTrue(commandElement.isFunctionCall());
+        Assert.assertFalse(commandElement.isInternalCommand());
+        Assert.assertFalse(commandElement.isVarDefCommand());
+        Assert.assertFalse(commandElement.isExternalCommand());
+        Assert.assertTrue(commandElement.isReferenceTo(psiReference.resolve()));
+
+        return psiReference;
     }
 
     public void testBasicFunctionResolveSelf() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashFunctionDef);
+        checkFunctionReference();
     }
 
     public void testBasicFunctionResolveInner() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashFunctionDef);
+        checkFunctionReference();
+    }
+
+    public void testBasicFunctionResolveToLaterDef() throws Exception {
+        checkFunctionReference();
+    }
+
+    public void testBasicFunctionResolveToFirstDef() throws Exception {
+        checkFunctionReference();
+
+        PsiReference element = configure();
+        PsiElement def = element.resolve();
+        Assert.assertTrue(def.getTextOffset() < element.getElement().getTextOffset());
     }
 
     protected String getTestDataPath() {

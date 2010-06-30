@@ -22,13 +22,16 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.*;
+import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -54,11 +57,7 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        if (!processor.execute(this, state)) {
-            return false;
-        }
-
-        return true;
+        return processor.execute(this, state);
     }
 
     @Override
@@ -103,9 +102,11 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
 
         final ResolveProcessor processor = new BasHereDocMarkerProcessor(getReferencedName(), otherEndsType);
         if (expectLater) {
-            BashPsiTreeUtils.treeWalkDown(processor, this, null, ResolveState.initial());
+            //BashPsiTreeUtils.treeWalkDown(processor, this, null, ResolveState.initial());
+            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
         } else {
-            BashResolveUtil.walkThrough(processor, this, null, this, true, false);
+            //BashResolveUtil.walkThrough(processor, this, null, this, true, false);
+            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
         }
 
         return processor.getBestResult(true, this);
