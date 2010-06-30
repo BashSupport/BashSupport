@@ -27,7 +27,6 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.google.common.base.Function;
@@ -149,7 +148,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
         //collect the previously declared variables
         final BashVarVariantsProcessor processor = new BashVarVariantsProcessor(this);
-        BashResolveUtil.treeWalkUp(processor, this, null, this, false, true);
+        PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
 
         variants.addAll(createPsiItems(processor.getVariables()));
 

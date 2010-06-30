@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAbstractProcessor.java, Class: BashAbstractProcessor
- * Last modified: 2009-12-04
+ * Last modified: 2010-06-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,9 @@ import com.google.common.collect.Multimap;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * The base class for psi processors.
  * <p/>
@@ -43,8 +46,8 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
         return findBestResult(results, firstResult, referenceElement);
     }
 
-    public Iterable<PsiElement> getResults() {
-        return results.values();
+    public Collection<PsiElement> getResults() {
+        return Collections.unmodifiableCollection(results.values());
     }
 
     public boolean hasResults() {
