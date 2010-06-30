@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -33,11 +32,16 @@ import com.intellij.psi.ResolveState;
  * @author Joachim Ansorg
  */
 public class BashFunctionProcessor extends BashAbstractProcessor {
-    private static final Logger log = Logger.getInstance("#bash.BashFunctionScopeProcessor");
     private final String symboleName;
+    private final boolean ignoreExecuteResult;
 
     public BashFunctionProcessor(String symboleName) {
+        this(symboleName, false);
+    }
+
+    public BashFunctionProcessor(String symboleName, boolean ignoreExecuteResult) {
         this.symboleName = symboleName;
+        this.ignoreExecuteResult = ignoreExecuteResult;
     }
 
     public boolean execute(PsiElement element, ResolveState resolveState) {
@@ -46,7 +50,7 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
 
             if (symboleName.equals(f.getName())) {
                 storeResult(element, BashPsiUtils.blockNestingLevel(f));
-                return false;
+                return ignoreExecuteResult ? true : false;
             }
         }
 
