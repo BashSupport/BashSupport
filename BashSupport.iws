@@ -11,34 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/variableVariants/VariableVariants.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocStartMarkerWithEval.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarker.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocStartMarker.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/commandVariants/CommandVariantsWithInner.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/function/BasicFunctionResolveToFirstDef.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/heredoc/AbstractHeredocMarker.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/heredoc/AbstractHeredocMarker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/commandVariants/CommandVariants.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/function/BasicFunctionResolveToLaterDef.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/variableVariants" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashResolveUtil.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VariableVariantsTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionResolveTestCase.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionResolveTestCase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/variableVariants/VariableVariantsWithFunctions.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/CommandVariantsTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiTreeUtils.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash" afterPath="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path="BashSupport-src.tar.gz" />
@@ -154,75 +128,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="DuplicateFunctionDefInspection.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="113" column="17" selection-start="4291" selection-end="4291" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1277930918000" expanded="false" signature="805:1568" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Changelog.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Changelog.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="88" selection-start="164" selection-end="164" vertical-scroll-proportion="0.051194537">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PsiTreeUtil.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/psi/util/PsiTreeUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="619" column="24" selection-start="22876" selection-end="22876" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashFunctionProcessor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="57" selection-start="1971" selection-end="1971" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1277930918000" expanded="false" signature="778:1085" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashAbstractProcessor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="68" selection-start="1764" selection-end="1764" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashVarVariantsProcessor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarVariantsProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="6" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashCommandImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="25" selection-start="2917" selection-end="2917" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -236,7 +142,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionResolveTestCase.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java" />
         <option value="$PROJECT_DIR$/testData/psi/resolve/function/BasicFunctionVariants.bash" />
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionVariantsTest.java" />
@@ -252,6 +157,7 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash" />
       </list>
     </option>
   </component>
@@ -1531,7 +1437,7 @@
       <recent name="$PROJECT_DIR$/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Plugin.Intellij IDEA">
+  <component name="RunManager" selected="JUnit.All in BashSupport">
     <configuration default="false" name="FunctionResolveTestCase.testBasicFunctionResolveToFirstDef" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -2397,7 +2303,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1045" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36511377" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
@@ -2408,11 +2314,11 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29685807" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32827735" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32827735" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32827735" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31598514" sideWeight="0.33706608" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33507073" sideWeight="0.0" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2766756" sideWeight="0.6641387" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2766756" sideWeight="0.6998917" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21715818" sideWeight="0.6998917" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29252437" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
@@ -2519,27 +2425,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="152" column="97" selection-start="5400" selection-end="5400" vertical-scroll-proportion="0.5116279">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/variableVariants/VariableVariantsWithFunctions.bash">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="10" selection-start="68" selection-end="68" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="13" selection-start="1014" selection-end="1014" vertical-scroll-proportion="0.26655897">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VariableVariantsTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="48" column="25" selection-start="1739" selection-end="1739" vertical-scroll-proportion="0.334471">
@@ -2575,13 +2460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="25" selection-start="2917" selection-end="2917" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/google-collect-1.0-src.zip!/com/google/common/collect/Multimap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="210" column="16" selection-start="7595" selection-end="7595" vertical-scroll-proportion="0.0">
@@ -2589,48 +2467,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarVariantsProcessor.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="6" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.0">
+        <state line="50" column="0" selection-start="2010" selection-end="2010" vertical-scroll-proportion="0.62562394">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java">
+    <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="68" selection-start="1764" selection-end="1764" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="57" selection-start="1971" selection-end="1971" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1277930918000" expanded="false" signature="778:1085" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/psi/util/PsiTreeUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="619" column="24" selection-start="22876" selection-end="22876" vertical-scroll-proportion="0.0">
+        <state line="2" column="88" selection-start="164" selection-end="164" vertical-scroll-proportion="0.049916804">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="17" selection-start="4291" selection-end="4291" vertical-scroll-proportion="0.0">
+        <state line="113" column="17" selection-start="4291" selection-end="4291" vertical-scroll-proportion="0.9234609">
           <folding>
-            <marker date="1277930918000" expanded="false" signature="805:1568" placeholder="..." />
+            <marker date="1277931011000" expanded="false" signature="805:1568" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Changelog.txt">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="88" selection-start="164" selection-end="164" vertical-scroll-proportion="0.051194537">
+        <state line="2" column="14" selection-start="25" selection-end="25" vertical-scroll-proportion="0.048465267">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-api/src/com/intellij/psi/util/PsiTreeUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="619" column="24" selection-start="22876" selection-end="22876" vertical-scroll-proportion="0.33117932">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="57" selection-start="1971" selection-end="1971" vertical-scroll-proportion="0.58804524">
+          <folding>
+            <marker date="1277931011000" expanded="false" signature="778:1085" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="68" selection-start="1764" selection-end="1764" vertical-scroll-proportion="0.50080776">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarVariantsProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="6" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.2907916">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="25" selection-start="2917" selection-end="2917" vertical-scroll-proportion="0.33117932">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="16" selection-start="2485" selection-end="2485" vertical-scroll-proportion="0.6365105">
           <folding />
         </state>
       </provider>
