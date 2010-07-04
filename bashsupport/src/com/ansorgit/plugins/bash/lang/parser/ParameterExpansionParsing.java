@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParameterExpansionParsing.java, Class: ParameterExpansionParsing
- * Last modified: 2010-04-21
+ * Last modified: 2010-07-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
         while (isValid && builder.getTokenType() != RIGHT_CURLY) {
             if (Parsing.var.isValid(builder)) {
                 isValid = Parsing.var.parse(builder);
+            } else if (Parsing.word.isComposedString(builder.getTokenType())) {
+                isValid = Parsing.word.parseComposedString(builder);
             } else {
                 IElementType next = ParserUtil.getTokenAndAdvance(builder);
                 isValid = validTokens.contains(next) || ParserUtil.isWordToken(next);

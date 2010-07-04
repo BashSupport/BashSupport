@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VariableVariantsTest.java, Class: VariableVariantsTest
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
+import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -73,6 +74,6 @@ public class VariableVariantsTest extends AbstractResolveTest {
     }
 
     protected String getTestDataPath() {
-        return getBasePath() + "/psi/resolve/variableVariants/";
+        return BashTestUtils.getBasePath() + "/psi/resolve/variableVariants/";
     }
 }
