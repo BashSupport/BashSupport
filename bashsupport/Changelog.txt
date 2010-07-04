@@ -1,3 +1,6 @@
+2010-07-01:
+ - Fixed method not found error in EvaluateExpansionInspection
+ 
 2010-06-30:
  - Refactoring to use the official API's psi walkThrough method
  - More PSI test cases for command variants, variable variants, heredoc marker resolving
