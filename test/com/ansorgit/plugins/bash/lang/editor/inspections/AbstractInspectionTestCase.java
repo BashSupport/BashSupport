@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: AbstractResolveTest.java, Class: AbstractResolveTest
+ * File: AbstractInspectionTestCase.java, Class: AbstractInspectionTestCase
  * Last modified: 2010-07-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +16,18 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.resolve;
+package com.ansorgit.plugins.bash.lang.editor.inspections;
 
-import com.intellij.psi.PsiReference;
+import com.ansorgit.plugins.bash.BashTestUtils;
+import com.intellij.testFramework.InspectionTestCase;
 
 /**
  * User: jansorg
- * Date: 15.06.2010
- * Time: 21:09:35
+ * Date: 01.07.2010
+ * Time: 18:48:20
  */
-public abstract class AbstractResolveTest extends com.intellij.testFramework.ResolveTestCase {
-    protected PsiReference configure() throws Exception {
-        return configureByFile(getTestName(false) + ".bash");
+public abstract class AbstractInspectionTestCase extends InspectionTestCase {
+    protected String getTestDataPath() {
+        return BashTestUtils.getBasePath() + "/psi/inspection/";
     }
-
 }
