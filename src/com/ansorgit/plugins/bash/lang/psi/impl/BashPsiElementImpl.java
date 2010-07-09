@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiElementImpl.java, Class: BashPsiElementImpl
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,10 +76,5 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
-    }
-
-    @Override
-    public PsiElement getContext() {
-        return super.getContext();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

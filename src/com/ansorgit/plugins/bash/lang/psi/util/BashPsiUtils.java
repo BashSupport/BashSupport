@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,13 +102,57 @@ public class BashPsiUtils {
     }
 
     /**
+     * Returns the broadest scope of the variable definition.
+     *
+     * @param varDef The element to check
+     * @return The containing block or null
+     */
+    public static BashFunctionDef findBroadestVarDefFunctionDefScope(PsiElement varDef) {
+        BashFunctionDef lastValidScope = null;
+
+        PsiElement element = varDef.getContext();
+        while (element != null) {
+            element = element.getContext();
+
+            if (element == null) {
+                return lastValidScope;
+            }
+
+            if (element instanceof BashFunctionDef) {
+                lastValidScope = (BashFunctionDef) element;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the broadest scope of the variable definition.
+     *
+     * @param varDef The element to check
+     * @return The containing block or null
+     */
+    public static BashFunctionDef findNextVarDefFunctionDefScope(PsiElement varDef) {
+        PsiElement element = varDef.getContext();
+        while (element != null) {
+            element = element.getContext();
+
+            if (element instanceof BashFunctionDef) {
+                return (BashFunctionDef) element;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the next logical block which contains this element.
      *
      * @param element The element to check
      * @return The containing block or null
      */
     public static PsiElement findEnclosingBlock(PsiElement element) {
-        while (element != null && element.getContext() != null) {
+        while (element != null) {
             element = element.getContext();
 
             if (isValidContainer(element)) {

@@ -6,35 +6,36 @@
     <option name="ANALYSIS_IN_BACKGROUND" value="true" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$KALISTICK_TECHBOX_DIR$/Source/intellij-idea/platform/lang-impl/src/com/intellij/execution/impl/ConsoleViewImpl.java" line="695" mnemonic="1" />
     <bookmark url="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/ListParsing.java" line="212" />
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/inspection" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarDefImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarDefImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarDefResolveTestCase.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarDefResolveTestCase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionResolveTestCase.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/FunctionResolveTestCase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsing.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/EvaluateExpansionInspection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/EvaluateExpansionInspection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.ipr" afterPath="$PROJECT_DIR$/BashSupport.ipr" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/varDef/ErrorGlobalVarDefFromFunction.bash" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testData/psi/resolve/varDef/GlobalVarDefFromFunction.bash" afterPath="$PROJECT_DIR$/testData/psi/resolve/varDef/GlobalVarDefFromFunction.bash" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/varDef/ValidVarDefFromNestedFunction.bash" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/resolve/var/NoResolveVarWithTwoLocalDefs.bash" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsingTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsingTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarProcessor.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarProcessor.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/testData/psi/resolve/varDef/VarDefFromNestedFunction.bash" afterPath="$PROJECT_DIR$/testData/psi/resolve/varDef/ErrorVarDefFromNestedFunction.bash" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iml" afterPath="$PROJECT_DIR$/BashSupport.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VariableVariantsTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VariableVariantsTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/CommandVariantsTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/CommandVariantsTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/BashTestUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections/AbstractInspectionTestCase.java" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
+    <ignored path="BashPlugin.iws" />
+    <ignored path="jflex.log" />
     <ignored path="BashSupport-src.zip" />
     <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
     <ignored path="BashSupport-src.tar.gz" />
-    <ignored path="BashPlugin.iws" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="jflex.log" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +58,21 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <line_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" line="100" class="com.ansorgit.plugins.bash.lang.psi.resolve.VarResolveTestCase" package="com.ansorgit.plugins.bash.lang.psi.resolve">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_any>
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -114,35 +130,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="BashHereDocStartMarkerImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/heredoc/BashHereDocStartMarkerImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="87" selection-start="2056" selection-end="2056" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParameterExpansionParsing.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsing.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="68" selection-start="2764" selection-end="2764" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParameterExpansionParsingTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsingTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="90" selection-start="2002" selection-end="2002" vertical-scroll-proportion="1.0238907">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -156,22 +144,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashResolveUtil.java" />
+        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/test.sh" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/var/VarWithTwoLocalDefs.bash" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/var/NoResolveVarWithTwoLocalDefs.bash" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashCommandImpl.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashAbstractProcessor.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/command/BashFunctionProcessor.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/DuplicateFunctionDefInspection.java" />
-        <option value="$PROJECT_DIR$/testData/psi/resolve/hereDoc/ResolveHereDocEndMarkerWithEval.bash" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/inspections/inspections/EvaluateExpansionInspection.java" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarDefImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/varDef/VarDefFromNestedFunction.bash" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/varDef/ValidVarDefFromNestedFunction.bash" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java" />
+        <option value="$PROJECT_DIR$/testData/psi/resolve/varDef/GlobalVarDefFromFunction.bash" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarDefResolveTestCase.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarProcessor.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections/EvaluateExpansionInspection.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/AbstractBashPsiTestCase.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/BashTestUtils.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections/AbstractInspectionTestCase.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/WordParsing.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsing.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsingTest.java" />
       </list>
     </option>
   </component>
@@ -710,7 +698,6 @@
       <sortByType ProjectPane="false" />
     </navigator>
     <panes>
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -718,16 +705,6 @@
               <option name="myItemId" value="BashSupport" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -792,6 +769,58 @@
               <option name="myItemId" value="psi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resolve" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="varDef" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testData" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resolve" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="var" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-googlecode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testData" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="psi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -844,32 +873,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="valueExpansion" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -896,10 +899,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -943,32 +942,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -983,64 +956,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
+              <option name="myItemId" value="META-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -1217,7 +1139,7 @@
     <property name="options.splitter.details.proportions" value="0.2944849" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="com.zeroturnaround.javarebel.idea.plugin.PluginSettingsComponent" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
@@ -1251,23 +1173,16 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.builtin" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/varDef" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/var" />
       <recent name="$PROJECT_DIR$/testData/psi/resolve/variableVariants" />
       <recent name="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
       <recent name="$PROJECT_DIR$/testData/psi/resolve/function" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/hereDoc" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/varDef" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.ansorgit.plugins.bash.lang.psi.resolve" />
       <recent name="com.ansorgit.plugins.bash.lang.psi" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
-    </key>
-    <key name="MoveMembersDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.BashTestUtils" />
-      <recent name="com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils" />
-      <recent name="com.ansorgit.plugins.bash.BashComponents" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.structureview.BashStructureViewModel" />
@@ -1276,19 +1191,19 @@
       <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
       <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
     </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.BashTestUtils" />
+      <recent name="com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils" />
+      <recent name="com.ansorgit.plugins.bash.BashComponents" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.ansorgit.plugins.bash" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.expression" />
       <recent name="com.ansorgit.plugins.bash.lang" />
       <recent name="com.ansorgit.plugins.bash.documentation" />
       <recent name="com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/var" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/function" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve" />
-      <recent name="$PROJECT_DIR$/resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="nu.studer" />
@@ -1297,9 +1212,16 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/var" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/function" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve" />
+      <recent name="$PROJECT_DIR$/resources" />
+    </key>
   </component>
   <component name="RunManager" selected="Plugin.Intellij IDEA">
-    <configuration default="false" name="CommandVariantsTest.testCommandVariants" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="VarDefResolveTestCase.testVarDefFromNestedFunction" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
@@ -1311,10 +1233,10 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.CommandVariantsTest" />
-      <option name="METHOD_NAME" value="testCommandVariants" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VarDefResolveTestCase" />
+      <option name="METHOD_NAME" value="testVarDefFromNestedFunction" />
       <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-Xmx384m" />
+      <option name="VM_PARAMETERS" value="-Xmx512m" />
       <option name="PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ENV_VARIABLES" />
@@ -1323,37 +1245,11 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="45765" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="CommandVariantsTest.testCommandVariantsWithInner" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="VarDefResolveTestCase" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
@@ -1365,55 +1261,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.CommandVariantsTest" />
-      <option name="METHOD_NAME" value="testCommandVariantsWithInner" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-Xmx384m" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="VariableVariantsTest" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VariableVariantsTest" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VarDefResolveTestCase" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-Xmx384m" />
@@ -1425,40 +1273,14 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="49482" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ParameterExpansionParsingTest" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="VarDefResolveTestCase.testGlobalVarDefFromFunction" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -1466,57 +1288,9 @@
       <module name="BashSupport" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.ParameterExpansionParsingTest" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-Xmx384m" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ParameterExpansionParsingTest.testParseAdvanced" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.ParameterExpansionParsingTest" />
-      <option name="METHOD_NAME" value="testParseAdvanced" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VarDefResolveTestCase" />
+      <option name="METHOD_NAME" value="testGlobalVarDefFromFunction" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-Xmx384m" />
       <option name="PARAMETERS" value="" />
@@ -1527,33 +1301,63 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="52577" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="VarDefResolveTestCase.testErrorVarDefFromNestedFunction" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="BashSupport" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VarDefResolveTestCase" />
+      <option name="METHOD_NAME" value="testErrorVarDefFromNestedFunction" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-Xmx384m" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="VarDefResolveTestCase.testErrorGlobalVarDefFromFunction" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.resolve.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="BashSupport" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.resolve.VarDefResolveTestCase" />
+      <option name="METHOD_NAME" value="testErrorGlobalVarDefFromFunction" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-Xmx384m" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1779,84 +1583,6 @@
         <option name="Make" enabled="false" />
       </method>
     </configuration>
-    <configuration default="false" name="All tests" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <option name="VM_PARAMETERS" value="-Didea.platform.prefix=Idea -Xmx512m -Xms512m" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="37166" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="48359" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="48359" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="JavaRebel Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="HereDocParsingTest.testSimpleHereDocs" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.parser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.parser.HereDocParsingTest" />
-      <option name="METHOD_NAME" value="testSimpleHereDocs" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="FormatterTest" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1911,98 +1637,6 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="PsiTests" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.PsiTests" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-Didea.platform.prefix=Idea" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="44165" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="45293" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="45293" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Intellij IDEA" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="BashSupport" />
-      <option name="VM_PARAMETERS" value="-XX:MaxPermSize=192m -Xmx256m -Xms128m -Dbashsupport.debug=false" />
-      <option name="PROGRAM_PARAMETERS" value="nosplash" />
-      <log_file path="$PROJECT_DIR$/../../../.IntelliJIdea90/system/plugins-sandbox/system/log/idea.log" checked="false" skipped="true" show_all="false" alias="IDEA LOG" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="40016" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="43130" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="43130" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=&#10;startup=0&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="JavaRebel" />
-      <ConfigurationWrapper RunnerId="JavaRebel Debug" />
-      <ConfigurationWrapper RunnerId="Profile " />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="All in BashSupport" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <extension name="snapshooter" />
@@ -2013,7 +1647,7 @@
       <option name="MAIN_CLASS_NAME" value="" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
-      <option name="VM_PARAMETERS" value="-Xmx384m" />
+      <option name="VM_PARAMETERS" value="-Xmx512m" />
       <option name="PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ENV_VARIABLES" />
@@ -2051,19 +1685,60 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="12">
-      <item index="0" class="java.lang.String" itemvalue="Bash.test.sh" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.All tests" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.HereDocParsingTest.testSimpleHereDocs" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.PsiTests" />
-      <item index="5" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.All in BashSupport" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.CommandVariantsTest.testCommandVariants" />
-      <item index="8" class="java.lang.String" itemvalue="JUnit.CommandVariantsTest.testCommandVariantsWithInner" />
-      <item index="9" class="java.lang.String" itemvalue="JUnit.VariableVariantsTest" />
-      <item index="10" class="java.lang.String" itemvalue="JUnit.ParameterExpansionParsingTest" />
-      <item index="11" class="java.lang.String" itemvalue="JUnit.ParameterExpansionParsingTest.testParseAdvanced" />
+    <configuration default="false" name="Intellij IDEA" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="BashSupport" />
+      <option name="VM_PARAMETERS" value="-XX:MaxPermSize=192m -Xmx384m -Xms128m -Dbashsupport.debug=false" />
+      <option name="PROGRAM_PARAMETERS" value="nosplash" />
+      <log_file path="$PROJECT_DIR$/../../../.IntelliJIdea90/system/plugins-sandbox/system/log/idea.log" checked="false" skipped="true" show_all="false" alias="IDEA LOG" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="40016" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="43130" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="43130" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;additional-options2=&#10;startup=0&#10;" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <ConfigurationWrapper RunnerId="JavaRebel" />
+      <ConfigurationWrapper RunnerId="JavaRebel Debug" />
+      <ConfigurationWrapper RunnerId="Profile " />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <list size="9">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.VarDefResolveTestCase.testVarDefFromNestedFunction" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.VarDefResolveTestCase" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.VarDefResolveTestCase.testGlobalVarDefFromFunction" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.VarDefResolveTestCase.testErrorVarDefFromNestedFunction" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.VarDefResolveTestCase.testErrorGlobalVarDefFromFunction" />
+      <item index="5" class="java.lang.String" itemvalue="Bash.test.sh" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.All in BashSupport" />
+      <item index="8" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -2157,40 +1832,42 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1045" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1920" height="1031" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36511377" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.36483517" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22848664" sideWeight="0.59323883" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2611051" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15613383" sideWeight="0.66293395" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29685807" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32827735" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2962555" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32827735" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23964165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31598514" sideWeight="0.33706608" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33507073" sideWeight="0.0" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24879357" sideWeight="0.6641387" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21685454" sideWeight="0.69555795" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29252437" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26380697" sideWeight="0.6629956" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270925" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32715133" sideWeight="0.59323883" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="100" y="100" width="1200" height="815" />
+      <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21638992" sideWeight="0.66483516" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Cycles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2611051" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270925" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295838" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32968035" sideWeight="0.6621924" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901832" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5195969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2213,7 +1890,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed unit tests, parsing of string in parameter substitutions" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed variable resolving once again" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -2226,8 +1903,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="System's info page lookup for ctrl+q" />
-    <MESSAGE value="refactoring documentation classes" />
     <MESSAGE value="fixed error marking, inspection for invalid filedescriptors" />
     <MESSAGE value=" - Improved evaluation of static arithmetic expressions&#10; - Improved parser (correctly parses &quot;a=1 ((1))&quot; now)&#10; - Less error markers in faulty case commands" />
     <MESSAGE value="bash interactive console, still experimental" />
@@ -2251,6 +1926,8 @@
     <MESSAGE value="more testcases and refactoring" />
     <MESSAGE value="tests passing again" />
     <MESSAGE value="Fixed unit tests, parsing of string in parameter substitutions" />
+    <MESSAGE value="version 0.9.13-maia" />
+    <MESSAGE value="fixed variable resolving once again" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2280,118 +1957,84 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/MockPsiTest.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="56" selection-start="3705" selection-end="3705" vertical-scroll-proportion="0.42192692">
-          <folding />
-        </state>
+        <state line="104" column="0" selection-start="3599" selection-end="3599" vertical-scroll-proportion="0.56552964" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/StringParsingState.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/varDef/ErrorVarDefFromNestedFunction.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="19" selection-start="1222" selection-end="1222" vertical-scroll-proportion="0.2845982">
-          <folding />
-        </state>
+        <state line="5" column="4" selection-start="57" selection-end="62" vertical-scroll-proportion="0.14071295" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/varDef/ValidVarDefFromNestedFunction.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="237" column="25" selection-start="7720" selection-end="7720" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="5" column="4" selection-start="62" selection-end="62" vertical-scroll-proportion="0.13586956" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashTokenRemapper.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="37" selection-start="2201" selection-end="2201" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="136" column="22" selection-start="4458" selection-end="4458" vertical-scroll-proportion="0.5052083" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="158" column="36" selection-start="6766" selection-end="6766" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="38" column="0" selection-start="1313" selection-end="1313" vertical-scroll-proportion="0.33333334" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections/AbstractInspectionTestCase.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/var/FunctionBeforeDefResolve.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state line="1" column="0" selection-start="24" selection-end="24" vertical-scroll-proportion="0.027173912" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1439" column="27" selection-start="71750" selection-end="71750" vertical-scroll-proportion="0.34285715">
-          <folding />
-        </state>
+        <state line="105" column="61" selection-start="3742" selection-end="3742" vertical-scroll-proportion="0.17708333" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/highlighting/BashBraceMatcher.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/documentation/SystemInfopageDocSourceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="41" selection-start="1748" selection-end="1748" vertical-scroll-proportion="0.34285715">
-          <folding />
-        </state>
+        <state line="39" column="35" selection-start="1308" selection-end="1308" vertical-scroll-proportion="0.42708334" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/HereDocParsing.java">
+    <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="38" selection-start="5979" selection-end="5979" vertical-scroll-proportion="0.44444445">
-          <folding />
-        </state>
+        <state line="1" column="38" selection-start="50" selection-end="50" vertical-scroll-proportion="0.025641026" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/WordParsing.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="64" selection-start="2218" selection-end="2218" vertical-scroll-proportion="0.4722222">
-          <folding />
-        </state>
+        <state line="96" column="51" selection-start="3996" selection-end="3996" vertical-scroll-proportion="0.47179487" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashLexer.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarDefResolveTestCase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="59" selection-start="1646" selection-end="1646" vertical-scroll-proportion="0.6018519">
-          <folding />
-        </state>
+        <state line="77" column="24" selection-start="2661" selection-end="2661" vertical-scroll-proportion="0.71192056" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/varDef/GlobalVarDefFromFunction.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="17" selection-start="9584" selection-end="9584" vertical-scroll-proportion="0.3595679">
-          <folding />
-        </state>
+        <state line="4" column="0" selection-start="32" selection-end="32" vertical-scroll-proportion="0.10344828" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/heredoc/BashHereDocStartMarkerImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarDefImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="87" selection-start="2056" selection-end="2056" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="130" column="0" selection-start="5306" selection-end="5306" vertical-scroll-proportion="0.33278146" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/formatting/processor/BashSpacingProcessorBasic.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/varDef/ErrorGlobalVarDefFromFunction.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="241" column="37" selection-start="10116" selection-end="10116" vertical-scroll-proportion="0.49074075">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsing.java">
+    <entry file="file://$PROJECT_DIR$/testData/psi/resolve/var/FunctionAfterDefResolve.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="68" selection-start="2764" selection-end="2764" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="1" selection-start="1" selection-end="1" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/ParameterExpansionParsingTest.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="90" selection-start="2002" selection-end="2002" vertical-scroll-proportion="1.0238907">
-          <folding />
-        </state>
+        <state line="55" column="17" selection-start="2268" selection-end="2268" vertical-scroll-proportion="0.59659094" />
       </provider>
     </entry>
   </component>
