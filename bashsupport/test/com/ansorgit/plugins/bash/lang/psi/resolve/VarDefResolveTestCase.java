@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VarDefResolveTestCase.java, Class: VarDefResolveTestCase
- * Last modified: 2010-07-01
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 
 /**
  * User: jansorg
@@ -30,15 +30,27 @@ import junit.framework.AssertionFailedError;
  * Time: 19:14:20
  */
 public class VarDefResolveTestCase extends AbstractResolveTest {
-    private void assertIsValidVarDef() throws Exception {
+    private BashVarDef assertIsValidVarDef() throws Exception {
         PsiReference ref = configure();
-        Assert.assertTrue(ref.resolve() instanceof BashVarDef);
-        Assert.assertFalse(ref.equals(ref.resolve()));
-        Assert.assertTrue(ref.isReferenceTo(ref.resolve()));
+        PsiElement element = ref.resolve();
+        Assert.assertTrue(element instanceof BashVarDef);
+        Assert.assertFalse(ref.equals(element));
+        Assert.assertTrue(ref.isReferenceTo(element));
+
+        return (BashVarDef) element;
+    }
+
+    private void assertIsInvalidVarDef() throws Exception {
+        PsiReference ref = configure();
+        Assert.assertNull(ref.resolve());
     }
 
     public void testGlobalVarDef() throws Exception {
-        assertIsValidVarDef();
+        BashVarDef ref = assertIsValidVarDef();
+
+        //we check on global level, our var def must not resolve this this var def again, because our ref element is after the var def
+        PsiElement varDefDef = ref.resolve();
+        Assert.assertNull("ref must not resolve to anything else: " + ref, varDefDef);
     }
 
     public void testGlobalVarDefWithLocal() throws Exception {
@@ -49,7 +61,11 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsValidVarDef();
     }
 
-    public void testVarDefFromNestedFunction() throws Exception {
+    public void testErrorVarDefFromNestedFunction() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
+    public void testValidVarDefFromNestedFunction() throws Exception {
         assertIsValidVarDef();
     }
 
@@ -57,13 +73,12 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsValidVarDef();
     }
 
+    public void testErrorGlobalVarDefFromFunction() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
     public void testLocalVarDefFromFunctionError() throws Exception {
-        try {
-            Assert.assertTrue(configure().resolve() instanceof BashVarDef);
-            Assert.fail("The variable resolved, but shouldn't");
-        } catch (AssertionFailedError e) {
-            //all's fine
-        }
+        assertIsInvalidVarDef();
     }
 
     protected String getTestDataPath() {

@@ -1,3 +1,9 @@
+2010-07-08:
+ - Fixed variable resolving once again 
+
+2010-07-05:
+ - Version 0.9.13-maia
+ 
 2010-07-01:
  - Fixed method not found error in EvaluateExpansionInspection
  
@@ -22,7 +28,7 @@
  - Fixed scope of psi elements, previously a variable rename went through the whole module
  - Improved support for local variable references
  - New inspection to detect local variable definition on global level
- - Quickfix to remove the local keyword from the command
+ - Quickfix to remove the local keyword from a global variable definition
 
 2010-06-06:
  - Version 0.9.12-maia

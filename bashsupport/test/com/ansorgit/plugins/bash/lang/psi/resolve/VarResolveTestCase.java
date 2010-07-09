@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VarResolveTestCase.java, Class: VarResolveTestCase
- * Last modified: 2010-07-01
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 
 /**
  * User: jansorg
@@ -31,74 +31,75 @@ import junit.framework.AssertionFailedError;
  */
 public class VarResolveTestCase extends AbstractResolveTest {
     public void testBasicResolve() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    private void assertIsWellDefinedVariable() throws Exception {
         Assert.assertTrue(configure().resolve() instanceof BashVarDef);
     }
 
     public void testBasicResolveCurly() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveCurlyWithDefault() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveCurlyWithDefaultString() throws Exception {
-        PsiReference psiReference = configure();
-        Assert.assertTrue(psiReference.resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testFunctionAfterDefResolve() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testFunctionBeforeDefResolve() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveArithmetic() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveArithmeticImplicit() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveLocalVar() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveLocalVarNested() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveForLoopVar() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveForLoopArithVar() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+        assertIsWellDefinedVariable();
     }
 
-    //fails
+    //invalid resolves
 
     public void testBasicResolveLocalVarGlobal() throws Exception {
         PsiReference psiReference = configure();
-        try {
-            Assert.assertTrue(psiReference.resolve() instanceof BashVarDef);
-            Assert.fail("The local variable must not be resolved on global level.");
-        } catch (AssertionFailedError e) {
-            //ok
-        }
+        Assert.assertNull("The local variable must not be resolved on global level.", psiReference.resolve());
     }
 
     public void testBasicResolveUnknownVariable() throws Exception {
         PsiReference psiReference = configure();
-        try {
-            Assert.assertTrue(psiReference.resolve() instanceof BashVarDef);
-            Assert.fail("The local variable must not be resolved on global level.");
-        } catch (AssertionFailedError e) {
-            //ok
-        }
+        Assert.assertNull("The local variable must not be resolved on global level.", psiReference.resolve());
+    }
+
+    public void testNoResolveVarWithTwoLocalDefs() throws Exception {
+        PsiReference psiReference = configure();
+
+        //must not resolve because the definition is local due to the previous definition
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found, because it is local", varDef);
     }
 
     protected String getTestDataPath() {

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,7 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -106,6 +103,13 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
 
 
     public boolean isFunctionScopeLocal() {
+        //var defs on global level can not be local
+        PsiElement enclosingBlock = BashPsiUtils.findEnclosingBlock(this);
+        if (enclosingBlock instanceof PsiFile) {
+            return false;
+        }
+
+        //check if the command is a local-var defining command, e.g. local
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
             final BashCommand parentCmd = (BashCommand) context;
@@ -121,11 +125,13 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
         //we would get an infinite recursion
         final ResolveProcessor processor = new BashVarProcessor(this, false);
-        //final PsiElement element = BashResolveUtil.treeWalkUp(processor, this, this, this, false, true);
-        boolean foundResults = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
-        PsiElement element = foundResults ? processor.getBestResult(false, this) : null;
+        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
+        PsiElement element = !walkOn ? processor.getBestResult(false, this) : null;
 
-        log.debug("isFunctionLocal: resolve result: " + this + " resolved to " + element);
+        if (log.isDebugEnabled()) {
+            log.debug("isFunctionLocal: resolve result: " + this + " resolved to " + element);
+        }
+
         return element instanceof BashVarDef
                 && !this.equals(element)
                 && ((BashVarDef) element).isFunctionScopeLocal();
@@ -185,8 +191,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
             return null;
         }
 
-
-        PsiElement resolveScope = isFunctionScopeLocal() ? findFunctionScope() : this.getContainingFile();
+        PsiElement resolveScope = isFunctionScopeLocal() ? findFunctionScope() : getContainingFile();
 
         BashVarProcessor processor = new BashVarProcessor(this, true);
         if (!PsiTreeUtil.treeWalkUp(processor, this, resolveScope, ResolveState.initial())) {
