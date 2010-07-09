@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SystemInfopageDocSource.java, Class: SystemInfopageDocSource
- * Last modified: 2010-05-08
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,6 +114,11 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     }
 
     String callTextToHtml(final String infoPageData) throws IOException {
+        if (txt2htmlExecutable == null) {
+            //cheap fallback
+            return "<html><body><pre>" + infoPageData + "</pre></body></html>";
+        }
+
         ProcessBuilder processBuilder = new ProcessBuilder(txt2htmlExecutable, "--infile", "-");
 
         CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData);
