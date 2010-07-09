@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-06-06
+  ~ Last modified: 2010-07-08
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -55,6 +55,17 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.13-maia:</b>
+       <ul>
+         <li>Fixed method not found error in EvaluateExpansionInspection                                </li>
+         <li>Reworked and improved variable resolving                                                   </li>
+         <li>Fixed exception "Directory index is not initialized yet ..."                               </li>
+         <li>Fixed scope of psi elements, previously a variable rename went through the whole module    </li>
+         <li>Improved support for local variable references                                             </li>
+         <li>New inspection to detect local variable definition on global level                         </li>
+         <li>Quickfix to remove the local keyword from a global variable definition                     </li>
+       </ul>
+
        <b>Changes in version 0.9.12-maia:</b>
        <ul>
             <li>Fixed parsing of for loops with optional command end after a command group
@@ -81,13 +92,6 @@
                to read the current system's info page for an external command,
                if it is available (needs the commands "info" in the path,
                optionally "txt2html" to turn the plain text into html).
-       </ul>
-
-       <b>Changes in version 0.9.11-maia:</b>
-       <ul>
-          <li>Fixed compilation for Java 5 plattforms</li>
-          <li>Fixed unsupported escape codes</li>
-          <li>Some speed improvements</li>
        </ul>
 
        <b>Recent changes:</b>
@@ -235,8 +239,10 @@
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
         <!-- Repl-->
+        <!--
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
                         serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
+        -->
 
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>

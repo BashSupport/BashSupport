@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-08
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,7 +198,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
 
         PsiElement result = internalResolve();
         if (isExternal && result == null) {
-            return this;
+            return null;
         }
 
         return result;
@@ -227,6 +227,10 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     }
 
     public boolean isReferenceTo(PsiElement element) {
+        if (element == this) {
+            return true;
+        }
+
         return element instanceof PsiNamedElement && Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName()) && resolve() == element;
 
     }
