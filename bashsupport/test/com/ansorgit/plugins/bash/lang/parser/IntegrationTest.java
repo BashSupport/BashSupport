@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-06-06
+ * Last modified: 2010-07-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -618,5 +618,16 @@ public class IntegrationTest extends MockPsiTest {
         mockTestFail(fileParsingTest,
                 ASSIGNMENT_WORD, EQ, WORD, EXPR_ARITH, NUMBER, _EXPR_ARITH);
 
+    }
+
+    @Test
+    public void testProcessSubstitution() {
+        //while read line ; do echo $line ; done < <(echo :)
+        mockTest(fileParsingTest, WHILE_KEYWORD, INTERNAL_COMMAND, WORD, SEMI, DO_KEYWORD, WORD, VARIABLE, SEMI,
+                DONE_KEYWORD, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, COLON, RIGHT_PAREN);
+
+
+        //echo <(echo a) $var
+        mockTest(fileParsingTest, WORD, LESS_THAN, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, VARIABLE);
     }
 }

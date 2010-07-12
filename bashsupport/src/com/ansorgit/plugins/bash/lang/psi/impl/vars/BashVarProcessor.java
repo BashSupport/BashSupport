@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarProcessor.java, Class: BashVarProcessor
- * Last modified: 2010-07-08
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,11 +38,17 @@ class BashVarProcessor extends BashAbstractProcessor {
     private BashVar startElement;
     private boolean checkLocalness;
     private String varName;
+    private boolean startElementIsVarDef;
+    private boolean ignoreGlobals;
 
     public BashVarProcessor(BashVar startElement, boolean checkLocalness) {
+        super(false);
+
         this.startElement = startElement;
         this.checkLocalness = checkLocalness;
         this.varName = startElement.getReferencedName();
+        this.startElementIsVarDef = startElement instanceof BashVarDef;
+        this.ignoreGlobals = false;
     }
 
     public boolean execute(PsiElement psiElement, ResolveState resolveState) {
@@ -56,9 +62,12 @@ class BashVarProcessor extends BashAbstractProcessor {
 
             //we have the same name, so it's a possible hit
             //now check the scope
-            boolean isValid = checkLocalness && varDef.isFunctionScopeLocal()
+            boolean varDefIsLocal = checkLocalness && varDef.isFunctionScopeLocal();
+            boolean isValid = varDefIsLocal
                     ? isValidLocalDefinition(varDef)
                     : isValidDefinition(varDef);
+
+            ignoreGlobals = isValid && varDefIsLocal;
 
             if (isValid) {
                 storeResult(varDef, BashPsiUtils.blockNestingLevel(varDef));
@@ -76,6 +85,10 @@ class BashVarProcessor extends BashAbstractProcessor {
 
         BashFunctionDef varDefScope = BashPsiUtils.findNextVarDefFunctionDefScope(varDef);
 
+        if (ignoreGlobals && varDefScope == null) {
+            return false;
+        }
+
         //first case: the definition is before the start element -> the definition is valid
         //second case: the definition is after the start element:
         //  - if startElement and varDef do NOT share a common scope -> varDef is only valid if it's inside of a function definition, i.e. global
@@ -85,8 +98,9 @@ class BashVarProcessor extends BashAbstractProcessor {
 
             BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
             if (startElementScope == null) {
-                //if the start element is on global level, then the var def has to be global, too 
-                return varDefScope == null;
+                //if the start element is on global level, then the var def has to be global, too, if the start element is a var def, also
+                //if it it just a variabale which references the definition, then varDef is a valid definition for it
+                return varDefScope == null || !startElementIsVarDef;
             }
 
             return varDefScope == null || varDefScope.equals(startElementScope) || !PsiTreeUtil.isAncestor(startElementScope, varDefScope, true);
@@ -94,7 +108,7 @@ class BashVarProcessor extends BashAbstractProcessor {
 
         //the found varDef is AFTER the startElement
         if (varDefScope == null) {
-            //if varDef is on global level, then it is only valid is startElement is inside of a function definition
+            //if varDef is on global level, then it is only valid if startElement is inside of a function definition
             return BashPsiUtils.findNextVarDefFunctionDefScope(startElement) != null;
         }
 
@@ -120,6 +134,9 @@ class BashVarProcessor extends BashAbstractProcessor {
     private boolean isValidLocalDefinition(BashVarDef varDef) {
         boolean validScope = PsiTreeUtil.isAncestor(BashPsiUtils.findEnclosingBlock(varDef), startElement, false);
 
+        //fixme: this is not entirely true, think of a function with a var redefinition of a local variable of the inner functions
+        //context (i.e. the outer function)
+        //for now, this is ok
         return validScope && varDef.getTextOffset() < startElement.getTextOffset();
     }
 

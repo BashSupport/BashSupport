@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarVariantsProcessor.java, Class: BashVarVariantsProcessor
- * Last modified: 2010-01-28
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,8 @@ class BashVarVariantsProcessor extends BashAbstractProcessor {
     private final BashVarImpl startElement;
 
     public BashVarVariantsProcessor(BashVarImpl startElement) {
+        super(false);
+
         this.startElement = startElement;
     }
 
