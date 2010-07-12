@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2010-07-08
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,22 +167,23 @@ public class BashPsiUtils {
         return element instanceof BashBlock || element instanceof BashFunctionDef || element instanceof BashFile;
     }
 
-    public static boolean processChildDeclarations(PsiElement parentContainer, PsiScopeProcessor processor, ResolveState resolveState, PsiElement parent, PsiElement place) {
+    public static boolean processChildDeclarations(PsiElement parentContainer, PsiScopeProcessor processor, ResolveState resolveState, PsiElement lastParent, PsiElement place) {
+        boolean hasResult = false;
+
         if (!processor.execute(parentContainer, resolveState)) {
             return false;
         }
 
         PsiElement child = parentContainer.getFirstChild();
         while (child != null) {
-            if (!child.processDeclarations(processor, resolveState, parent, place)) {
-                return false;
+            if (!child.equals(lastParent)) {
+                hasResult |= !child.processDeclarations(processor, resolveState, lastParent, place);
             }
 
             child = child.getNextSibling();
         }
 
-        return true;
-
+        return !hasResult;
     }
 
     public static int getElementLineNumber(PsiElement element) {
@@ -301,5 +302,38 @@ public class BashPsiUtils {
         }
 
         return true;
+    }
+
+    /**
+     * This tree walkup method does continue even if a valid definition has been found on an more-inner level.
+     * Bash is different in regard to the definitions, the most outer definitions count, not the most inner / the first one found.
+     *
+     * @param processor
+     * @param entrance
+     * @param maxScope
+     * @param state
+     * @return
+     */
+    public static boolean varResolveTreeWalkUp(@NotNull final PsiScopeProcessor processor,
+                                               @NotNull final BashVar entrance,
+                                               @Nullable final PsiElement maxScope,
+                                               @NotNull final ResolveState state) {
+        PsiElement prevParent = entrance;
+        PsiElement scope = entrance;
+
+        boolean hasResult = false;
+
+        while (scope != null) {
+            hasResult |= !scope.processDeclarations(processor, state, prevParent, entrance);
+
+            if (scope == maxScope) break;
+
+            //if we have results and it's local thwn
+
+            prevParent = scope;
+            scope = prevParent.getContext();
+        }
+
+        return !hasResult;
     }
 }

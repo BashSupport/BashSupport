@@ -1,5 +1,11 @@
+2010-07-12:
+ - Improved variable resolving if definitions on different levels are present
+ 
+2010-07-10:
+ - Implemented parsing of process substitution elements
+
 2010-07-08:
- - Fixed variable resolving once again 
+ - Fixed variable resolving once again
 
 2010-07-05:
  - Version 0.9.13-maia

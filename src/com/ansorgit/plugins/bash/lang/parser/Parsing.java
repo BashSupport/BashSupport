@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: Parsing.java, Class: Parsing
- * Last modified: 2010-04-21
+ * Last modified: 2010-07-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ public final class Parsing {
     public static final HereDocParsing hereDoc = new HereDocParsing();
     public static final BraceExpansionParsing braceExpansionParsing = new BraceExpansionParsing();
     public static final ParameterExpansionParsing parameterExpansionParsing = new ParameterExpansionParsing();
+    public static final ProcessSubstitutionParsing processSubstitutionParsing = new ProcessSubstitutionParsing();
 
     private Parsing() {
     }
