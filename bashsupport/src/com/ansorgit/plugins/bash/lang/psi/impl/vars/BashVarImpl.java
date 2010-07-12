@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarImpl.java, Class: BashVarImpl
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         }
 
         BashVarProcessor processor = new BashVarProcessor(this, true);
-        if (!PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial())) {
+        if (!BashPsiUtils.varResolveTreeWalkUp(processor, this, getContainingFile(), ResolveState.initial())) {
             return processor.getBestResult(false, this);
         }
 
@@ -127,7 +127,6 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        //throw new IncorrectOperationException("unimplemented");
         return null;
     }
 
@@ -135,8 +134,11 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         if (element instanceof BashVarDef) {
             BashVarDef def = (BashVarDef) element;
 
+            //the variable definition has to be of the same same,
+            //this variable has to be in the definition's scope and finally,
+            //the resolve of this variable has to be the definition (needed for local variable handling)
             return Comparing.equal(getName(), ((PsiNamedElement) element).getName())
-                    && BashVarUtils.isInDefinedScope(this, def);
+                    && BashVarUtils.isInDefinedScope(this, def);//&& def.isReferenceTo(resolve());
         }
 
         return false;

@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionVariantsProcessor.java, Class: BashFunctionVariantsProcessor
- * Last modified: 2009-12-04
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ class BashFunctionVariantsProcessor extends BashAbstractProcessor {
     private final List<BashFunctionDef> functionDefs = Lists.newArrayList();
 
     public BashFunctionVariantsProcessor() {
+        super(true);
     }
 
     public boolean execute(PsiElement element, ResolveState resolveState) {

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAbstractProcessor.java, Class: BashAbstractProcessor
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,12 @@ import java.util.Collections;
  */
 public abstract class BashAbstractProcessor implements PsiScopeProcessor, ResolveProcessor {
     private final Multimap<Integer, PsiElement> results = LinkedListMultimap.create();
+    private boolean preferNeigbourhood;
+
+
+    protected BashAbstractProcessor(boolean preferNeighbourhood) {
+        this.preferNeigbourhood = preferNeighbourhood;
+    }
 
     public void handleEvent(Event event, Object o) {
     }
@@ -77,9 +83,9 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
         }
 
         //if the first should not be used return the best element
-        int referenceLevel = referenceElement != null ? BashPsiUtils.blockNestingLevel(referenceElement) : 0;
+        int referenceLevel = preferNeigbourhood && (referenceElement != null) ? BashPsiUtils.blockNestingLevel(referenceElement) : 0;
 
-        //find the best suitable result rating
+        // find the best suitable result rating
         // The best one is as close as possible to the given referenceElement
         int bestRating = Integer.MAX_VALUE;
         int bestDelta = Integer.MAX_VALUE;
@@ -91,8 +97,24 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
             }
         }
 
-        //now get the correct result
-        return Iterators.getLast(results.get(bestRating).iterator());
+        //now get the best result
+        //if there are equal definitions on the same level we prefer the first if the neighbourhood is not preferred
+        if (preferNeigbourhood)
+            return Iterators.getLast(results.get(bestRating).iterator());
+        else {
+            //return the element which has the lowest textOffset
+            long smallestOffset = Integer.MAX_VALUE;
+            PsiElement bestElement = null;
+
+            for (PsiElement e : results.get(bestRating)) {
+                if (e.getTextOffset() < smallestOffset) {
+                    smallestOffset = e.getTextOffset();
+                    bestElement = e;
+                }
+            }
+
+            return bestElement;
+        }
     }
 
     public void reset() {

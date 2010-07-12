@@ -160,3 +160,4 @@ Bugs (indentation marks fixed bugs):
 - inspection to check custom-base number literals to check for invalid digit characters, e.g. 10#A
 - Bad code green : one line: for f in 1 2 3; do { echo 1 } done
     - Inspection to detect local usage outside of a function
+- support process substitution / i.e. named pipes "cat - < <(echo a)"

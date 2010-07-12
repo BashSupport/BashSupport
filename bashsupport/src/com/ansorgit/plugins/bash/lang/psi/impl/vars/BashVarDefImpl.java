@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-07-08
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,12 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
         //we would get an infinite recursion
         final ResolveProcessor processor = new BashVarProcessor(this, false);
-        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
+        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(this);
+        if (functionLocalScope == null) {
+            return false;
+        }
+
+        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, functionLocalScope, ResolveState.initial());
         PsiElement element = !walkOn ? processor.getBestResult(false, this) : null;
 
         if (log.isDebugEnabled()) {
@@ -194,7 +199,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         PsiElement resolveScope = isFunctionScopeLocal() ? findFunctionScope() : getContainingFile();
 
         BashVarProcessor processor = new BashVarProcessor(this, true);
-        if (!PsiTreeUtil.treeWalkUp(processor, this, resolveScope, ResolveState.initial())) {
+        if (!BashPsiUtils.varResolveTreeWalkUp(processor, this, resolveScope, ResolveState.initial())) {
             return processor.getBestResult(false, this);
         }
 
@@ -231,7 +236,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         BashVarDef def = (BashVarDef) element;
 
         String myName = getName();
-        return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);
+        return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);//&& def.isReferenceTo(resolve());
     }
 
     @NotNull
