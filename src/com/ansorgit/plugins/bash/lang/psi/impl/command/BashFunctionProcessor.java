@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionProcessor.java, Class: BashFunctionProcessor
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
     }
 
     public BashFunctionProcessor(String symboleName, boolean ignoreExecuteResult) {
+        super(true);
+
         this.symboleName = symboleName;
         this.ignoreExecuteResult = ignoreExecuteResult;
     }

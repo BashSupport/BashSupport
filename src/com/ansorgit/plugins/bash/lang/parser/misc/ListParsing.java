@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
- * Last modified: 2010-06-05
+ * Last modified: 2010-07-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,24 +52,6 @@ public class ListParsing implements ParsingTool {
 
     public boolean isSimpleListTerminator(IElementType token) {
         return token == LINE_FEED || token == null;
-    }
-
-    /**
-     * Returns whether the builder is at a position which starts a compound list.
-     *
-     * @param builder            The psi builder to use.
-     * @param optionalTerminator
-     * @return True if a compound list start here.
-     */
-    public boolean isCompoundList(BashPsiBuilder builder, final boolean optionalTerminator) {
-        final PsiBuilder.Marker start = builder.mark();
-        try {
-            builder.enterNewErrorLevel(false);
-            return parseCompoundList(builder, optionalTerminator, false);
-        } finally {
-            start.rollbackTo();
-            builder.leaveLastErrorLevel();
-        }
     }
 
 

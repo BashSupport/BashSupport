@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: WordParsing.java, Class: WordParsing
- * Last modified: 2010-05-11
+ * Last modified: 2010-07-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ public class WordParsing implements ParsingTool {
                 || Parsing.var.isValid(builder)
                 || Parsing.shellCommand.backtickParser.isValid(builder)
                 || Parsing.shellCommand.conditionalParser.isValid(builder)
+                || Parsing.processSubstitutionParsing.isValid(builder)
                 || tokenType == LEFT_CURLY;
     }
 
@@ -116,6 +117,9 @@ public class WordParsing implements ParsingTool {
                 processedTokens++;
             } else if (Parsing.shellCommand.conditionalParser.isValid(builder)) {
                 isOk = Parsing.shellCommand.conditionalParser.parse(builder);
+                processedTokens++;
+            } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
+                isOk = Parsing.processSubstitutionParsing.parse(builder);
                 processedTokens++;
             } else if (nextToken == LEFT_CURLY || nextToken == RIGHT_CURLY) {
                 //fixme, is this proper parsing?

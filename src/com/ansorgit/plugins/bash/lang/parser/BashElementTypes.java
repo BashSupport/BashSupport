@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,8 @@ public interface BashElementTypes {
     //redirect elements
     IElementType REDIRECT_LIST_ELEMENT = new BashElementType("redirect list");
     IElementType REDIRECT_ELEMENT = new BashElementType("redirect element");
+
+    IElementType PROCESS_SUBSTITUTION_ELEMENT = new BashElementType("process substitution element");
 
     //command elements
     IElementType SIMPLE_COMMAND_ELEMENT = new BashElementType("simple command element");

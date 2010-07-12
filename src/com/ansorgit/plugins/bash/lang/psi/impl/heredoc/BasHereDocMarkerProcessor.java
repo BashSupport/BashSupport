@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BasHereDocMarkerProcessor.java, Class: BasHereDocMarkerProcessor
- * Last modified: 2010-01-31
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ class BasHereDocMarkerProcessor extends BashAbstractProcessor {
     private final Class<? extends BashPsiElement> otherEndsType;
 
     public BasHereDocMarkerProcessor(String referencedName, Class<? extends BashPsiElement> otherEndsType) {
+        super(true);
+
         this.referencedName = referencedName;
         this.otherEndsType = otherEndsType;
     }

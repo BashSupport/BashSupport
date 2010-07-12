@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VarResolveTestCase.java, Class: VarResolveTestCase
- * Last modified: 2010-07-08
+ * Last modified: 2010-07-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
@@ -30,12 +32,18 @@ import junit.framework.Assert;
  * Time: 19:14:20
  */
 public class VarResolveTestCase extends AbstractResolveTest {
-    public void testBasicResolve() throws Exception {
-        assertIsWellDefinedVariable();
+    private BashVarDef assertIsWellDefinedVariable() throws Exception {
+        PsiReference start = configure();
+        PsiElement varDef = start.resolve();
+        Assert.assertNotNull(varDef);
+        Assert.assertTrue(varDef instanceof BashVarDef);
+        Assert.assertTrue(start.isReferenceTo(varDef));
+
+        return (BashVarDef) varDef;
     }
 
-    private void assertIsWellDefinedVariable() throws Exception {
-        Assert.assertTrue(configure().resolve() instanceof BashVarDef);
+    public void testBasicResolve() throws Exception {
+        assertIsWellDefinedVariable();
     }
 
     public void testBasicResolveCurly() throws Exception {
@@ -70,6 +78,12 @@ public class VarResolveTestCase extends AbstractResolveTest {
         assertIsWellDefinedVariable();
     }
 
+    public void testBasicResolveLocalVarToLocalDef() throws Exception {
+        BashVarDef def = assertIsWellDefinedVariable();
+        Assert.assertNotNull(BashPsiUtils.findNextVarDefFunctionDefScope(def));
+        Assert.assertTrue(def.isFunctionScopeLocal());
+    }
+
     public void testBasicResolveLocalVarNested() throws Exception {
         assertIsWellDefinedVariable();
     }
@@ -80,6 +94,32 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     public void testBasicResolveForLoopArithVar() throws Exception {
         assertIsWellDefinedVariable();
+    }
+
+    public void testResolveFunctionVarOnGlobal() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    public void testOverrideFunctionVarOnGlobal() throws Exception {
+        PsiElement varDef = assertIsWellDefinedVariable();
+        //the found var def has to be on global level
+        Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) == null);
+    }
+
+    public void testResolveFunctionVarToGlobalDef() throws Exception {
+        PsiElement varDef = assertIsWellDefinedVariable();
+        //the found var def has to be on global level
+        Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) == null);
+    }
+
+    public void testResolveFunctionVarToFirstOnSameLevel() throws Exception {
+        BashVar varDef = (BashVar) assertIsWellDefinedVariable();
+        Assert.assertTrue(varDef.resolve() == null);
+    }
+
+    public void testResolveFunctionVarToFirstOnSameLevelNonLocal() throws Exception {
+        BashVar varDef = (BashVar) assertIsWellDefinedVariable();
+        Assert.assertTrue(varDef.resolve() == null);
     }
 
     //invalid resolves
