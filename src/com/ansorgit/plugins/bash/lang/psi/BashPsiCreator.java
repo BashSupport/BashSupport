@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2010-05-10
+ * Last modified: 2010-07-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashShebangImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashSymbolImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashFiledescriptorImpl;
@@ -165,9 +162,11 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == SYMBOL_ELEMENT) {
             return new BashSymbolImpl(node);
         }
+
         if (elementType == PARSED_WORD_ELEMENT) {
             return new BashWordImpl(node);
         }
+
         if (elementType == EXPANSION_ELEMENT) {
             return new BashExpansionImpl(node);
         }
@@ -175,9 +174,11 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == ARITHMETIC_COMMAND) {
             return new BashCommandImpl(node);
         }
+
         if (elementType == INTERNAL_COMMAND_ELEMENT) {
             return new BashInternalCommandImpl(node);
         }
+
         if (elementType == GENERIC_COMMAND_ELEMENT) {
             return new BashGenericCommandImpl(node);
         }
@@ -185,9 +186,11 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == HEREDOC_START_MARKER_ELEMENT) {
             return new BashHereDocStartMarkerImpl(node);
         }
+
         if (elementType == HEREDOC_ELEMENT) {
             return new BashHereDocImpl(node);
         }
+
         if (elementType == HEREDOC_END_MARKER_ELEMENT) {
             return new BashHereDocEndMarkerImpl(node);
         }
@@ -195,56 +198,77 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == ARITH_ASSIGNMENT_ELEMENT) {
             return new AssignmentExpressionsImpl(node);
         }
+
         if (elementType == ARITH_BIT_AND_ELEMENT) {
             return new BitwiseAndExpressionsImpl(node);
         }
+
         if (elementType == ARITH_BIT_OR_ELEMENT) {
             return new BitwiseOrExpressionsImpl(node);
         }
+
         if (elementType == ARITH_BIT_XOR_ELEMENT) {
             return new BitwiseXorExpressionsImpl(node);
         }
+
         if (elementType == ARITH_EQUALITY_ELEMENT) {
             return new EqualityExprImpl(node);
         }
+
         if (elementType == ARITH_LOGIC_AND_ELEMENT) {
             return new LogicalAndImpl(node);
         }
+
         if (elementType == ARITH_LOGIC_OR_ELEMENT) {
             return new LogicalOrmpl(node);
         }
+
         if (elementType == ARITH_COMPUND_COMPARISION_ELEMENT) {
             return new CompoundComparisionExpressionsImpl(node);
         }
+
         if (elementType == ARITH_EXPONENT_ELEMENT) {
             return new ExponentExprImpl(node);
         }
+
         if (elementType == ARITH_NEGATION_ELEMENT) {
             return new NegationExpressionImpl(node);
         }
+
         if (elementType == ARITH_PARENS_ELEMENT) {
             return new ParenthesesExpressionsImpl(node);
         }
+
         if (elementType == ARITH_POST_INCR_ELEMENT) {
             return new PostIncrementExpressionsImpl(node);
         }
+
         if (elementType == ARITH_PRE_INC_ELEMENT) {
             return new PreIncrementExpressionsImpl(node);
         }
+
         if (elementType == ARITH_MULTIPLICACTION_ELEMENT) {
             return new ProductExpressionsImpl(node);
         }
+
         if (elementType == ARITH_SHIFT_ELEMENT) {
             return new ShiftExpressionsImpl(node);
         }
+
         if (elementType == ARITH_SIMPLE_ELEMENT) {
             return new SimpleExpressionsImpl(node);
         }
+
         if (elementType == ARITH_SUM_ELEMENT) {
             return new SumExpressionsImpl(node);
         }
+
         if (elementType == ARITH_TERNERAY_ELEMENT) {
             return new TernaryExpressionsImpl(node);
+        }
+
+        if (elementType == PROCESS_SUBSTITUTION_ELEMENT) {
+            return new BashProcessSubstitutionImpl(node);
         }
 
         log.warn("MISSING PSI for" + node);
