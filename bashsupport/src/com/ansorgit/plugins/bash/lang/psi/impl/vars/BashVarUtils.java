@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarUtils.java, Class: BashVarUtils
- * Last modified: 2010-06-30
+ * Last modified: 2010-07-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -44,6 +45,13 @@ public class BashVarUtils {
             //the candidate is a local definition, check if we are in the
             //fixme check this
             return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
+        } else if (childCandidate instanceof BashVar) {
+            BashVar var = (BashVar) childCandidate;
+            BashVarDef childCandidateDef = (BashVarDef) var.resolve();
+
+            if (childCandidateDef != null && childCandidateDef.isFunctionScopeLocal()) {
+                return isInDefinedScope(childCandidateDef, variableDefinition);
+            }
         }
 
         //none is a local variable
