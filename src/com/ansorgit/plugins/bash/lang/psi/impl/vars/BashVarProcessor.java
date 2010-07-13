@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarProcessor.java, Class: BashVarProcessor
- * Last modified: 2010-07-12
+ * Last modified: 2010-07-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,8 @@ class BashVarProcessor extends BashAbstractProcessor {
                     ? isValidLocalDefinition(varDef)
                     : isValidDefinition(varDef);
 
-            ignoreGlobals = isValid && varDefIsLocal;
+            //if we found a valid local variable definition we must ignore all (otherwise matching) global variable definitions
+            ignoreGlobals = ignoreGlobals || (isValid && varDefIsLocal);
 
             if (isValid) {
                 storeResult(varDef, BashPsiUtils.blockNestingLevel(varDef));
