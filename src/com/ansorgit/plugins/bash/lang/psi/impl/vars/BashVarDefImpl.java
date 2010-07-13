@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2010-07-12
+ * Last modified: 2010-07-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,7 +236,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         BashVarDef def = (BashVarDef) element;
 
         String myName = getName();
-        return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);//&& def.isReferenceTo(resolve());
+        return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);
     }
 
     @NotNull

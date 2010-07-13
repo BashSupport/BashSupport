@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: VarResolveTestCase.java, Class: VarResolveTestCase
- * Last modified: 2010-07-12
+ * Last modified: 2010-07-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +119,12 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     public void testResolveFunctionVarToFirstOnSameLevelNonLocal() throws Exception {
         BashVar varDef = (BashVar) assertIsWellDefinedVariable();
+        Assert.assertTrue(varDef.resolve() == null);
+    }
+
+    public void testResolveFunctionVarToLocalDef() throws Exception {
+        BashVar varDef = (BashVar) assertIsWellDefinedVariable();
+        Assert.assertTrue(BashPsiUtils.findBroadestVarDefFunctionDefScope(varDef) != null);
         Assert.assertTrue(varDef.resolve() == null);
     }
 
