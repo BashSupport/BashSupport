@@ -21,7 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticExprParser;
+import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
@@ -190,7 +190,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
         }
 
         while ((builder.getTokenType() != endToken) && !builder.eof()) {
-            if (!ArithmeticExprParser.instance.parse(builder)) {
+            if (!ArithmeticFactory.entryPoint().parse(builder)) {
                 return false;
             }
         }

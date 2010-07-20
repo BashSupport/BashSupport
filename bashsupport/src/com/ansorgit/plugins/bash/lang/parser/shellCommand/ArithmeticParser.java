@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticExprParser;
+import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -38,7 +38,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public final class ArithmeticParser implements ParsingFunction {
-    private ParsingFunction arithmeticExprParser = new ArithmeticExprParser();
+    private ParsingFunction arithmeticExprParser = ArithmeticFactory.entryPoint();
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == BashTokenTypes.EXPR_ARITH;

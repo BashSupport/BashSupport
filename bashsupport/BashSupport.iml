@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.clover" />
       <excludeFolder url="file://$MODULE_DIR$/generated_src" />
       <excludeFolder url="file://$MODULE_DIR$/javadoc" />
     </content>
@@ -29,6 +30,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="GroupLayout" level="project" />
   </component>
 </module>
 

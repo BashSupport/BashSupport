@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleExpressionsImpl.java, Class: SimpleExpressionsImpl
- * Last modified: 2010-05-27
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 import java.util.List;
 
@@ -40,7 +42,16 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
     }
 
     public LiteralType literalType() {
-        IElementType first = BashPsiUtils.nodeType(getFirstChild());
+        PsiElement firstChild = getFirstChild();
+        if (firstChild == null) {
+            return LiteralType.Other;
+        }
+
+        IElementType first = BashPsiUtils.nodeType(firstChild);
+        //prefix - or +
+        if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
+            first = BashPsiUtils.nodeType(firstChild.getNextSibling());
+        }
 
         if (first == BashTokenTypes.ARITH_HEX_NUMBER) {
             return LiteralType.HexLiteral;
@@ -57,21 +68,22 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
 
     @Override
     public boolean isStatic() {
-        //fixme check if we need thread-safeness
+        //fixme check if we need thread-safety
 
         if (isStatic == null) {
             //it can have one operator in front followed by a simple expression
             //or just contain a number
+
             ASTNode[] children = getNode().getChildren(null);
-            if (children.length > 1) {
-                isStatic = false;
-            } else {
+            isStatic = false;
+
+            if (children.length > 0) {
                 IElementType first = BashPsiUtils.nodeType(getFirstChild());
 
-                if (BashTokenTypes.arithmeticAdditionOps.contains(first)) {
+                if (children.length == 2 && BashTokenTypes.arithmeticAdditionOps.contains(first)) {
                     List<ArithmeticExpression> subexpressions = subexpressions();
-                    isStatic = subexpressions.size() == 1 && subexpressions.get(0).isStatic();
-                } else {
+                    isStatic = (subexpressions.size() == 1) && subexpressions.get(0).isStatic();
+                } else if (children.length == 1) {
                     isStatic = BashTokenTypes.arithLiterals.contains(first);
                 }
             }
@@ -94,32 +106,53 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
     @Override
     public long computeNumericValue() {
         if (isStatic()) {
-            String asString = getText();
+            ASTNode[] children = getNode().getChildren(null);
 
-            try {
-                switch (literalType()) {
-                    case DecimalLiteral:
-                        return Long.valueOf(asString);
-
-                    case HexLiteral:
-                        //we cut of the 0x prefix
-                        return Long.valueOf(asString.substring(2), 16);
-                    case BaseLiteral: {
-                        int baseDivider = asString.indexOf('#');
-                        String baseText = asString.subSequence(0, baseDivider).toString();
-
-                        return baseLiteralValue(Long.valueOf(baseText), asString.substring(baseDivider + 1));
-                    }
-
-                    case OctalLiteral:
-                        return Long.valueOf(asString.substring(0), 8);
-
-                    default:
-                        throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal");
+            if (children.length > 1) {
+                //probably a prefixed expression with + -
+                ASTNode first = children[0];
+                if (!(children[1].getPsi() instanceof ArithmeticExpression)) {
+                    throw new IllegalStateException("invalid expression found");
                 }
-            } catch (NumberFormatException e) {
-                //fixme
-                return 0;
+
+                AbstractExpression second = (AbstractExpression) children[1].getPsi();
+
+                IElementType nodeType = first.getElementType();
+                if (nodeType == BashTokenTypes.ARITH_MINUS) {
+                    return -1 * second.computeNumericValue();
+                } else if (nodeType == BashTokenTypes.ARITH_PLUS) {
+                    return second.computeNumericValue();
+                }
+
+                throw new IllegalStateException("Invalue state found (invalid prefix operator)");
+            } else {
+                String asString = getText();
+
+                try {
+                    switch (literalType()) {
+                        case DecimalLiteral:
+                            return Long.valueOf(asString);
+
+                        case HexLiteral:
+                            //we cut of the 0x prefix
+                            return Long.valueOf(asString.substring(2), 16);
+                        case BaseLiteral: {
+                            int baseDivider = asString.indexOf('#');
+                            String baseText = asString.subSequence(0, baseDivider).toString();
+
+                            return baseLiteralValue(Long.valueOf(baseText), asString.substring(baseDivider + 1));
+                        }
+
+                        case OctalLiteral:
+                            return Long.valueOf(asString.substring(0), 8);
+
+                        default:
+                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + literalType());
+                    }
+                } catch (NumberFormatException e) {
+                    //fixme
+                    return 0;
+                }
             }
         } else {
             throw new UnsupportedOperationException("unsupported");
