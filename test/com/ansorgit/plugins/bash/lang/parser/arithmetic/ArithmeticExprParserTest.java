@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import org.junit.Test;
+import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
 
 /**
  * User: jansorg
@@ -31,7 +32,7 @@ public class ArithmeticExprParserTest extends MockPsiTest {
     MockFunction exprParser = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return ArithmeticExprParser.instance.parse(psi);
+            return ArithmeticFactory.entryPoint().parse(psi);
         }
     };
 

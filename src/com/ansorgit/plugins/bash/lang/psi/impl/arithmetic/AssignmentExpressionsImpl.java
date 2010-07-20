@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AssignmentExpressionsImpl.java, Class: AssignmentExpressionsImpl
- * Last modified: 2010-02-07
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentExpression;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
 import java.util.List;
@@ -31,23 +32,23 @@ import java.util.List;
  * Time: 12:13:49 PM
  */
 public class AssignmentExpressionsImpl extends AbstractExpression implements AssignmentExpression {
-    @Override
-    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        throw new UnsupportedOperationException("unsupported");
+    public AssignmentExpressionsImpl(final ASTNode astNode) {
+        super(astNode, "ArithmeticAssignmentChain", Type.Unsupported);
     }
 
-    public AssignmentExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
+        throw new UnsupportedOperationException("compute is not unsupported");
     }
 
     @Override
     public long computeNumericValue() {
-        //find the child after the assignment sign
-        List<ArithmeticExpression> childs = subexpressions();
-        if (childs.size() != 2) {
-            throw new IllegalStateException("impossible state");
+        //the value is the value of the last assignment chain part
+        PsiElement child = getLastChild();
+        if (child instanceof ArithmeticExpression) {
+            return ((ArithmeticExpression) child).computeNumericValue();
         }
 
-        return childs.get(1).computeNumericValue();
+        throw new IllegalStateException("computeNumericValue is not supported in this configuration");
     }
 }

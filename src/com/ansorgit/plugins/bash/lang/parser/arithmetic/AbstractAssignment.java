@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractAssignment.java, Class: AbstractAssignment
- * Last modified: 2010-04-17
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
@@ -29,11 +31,13 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 6:31:03 PM
  */
 class AbstractAssignment implements ArithmeticParsingFunction {
+    private String description;
     private final ArithmeticParsingFunction next;
     private final TokenSet acceptedEqualTokens;
     private TokenSet acceptedWords = TokenSet.create(WORD, ASSIGNMENT_WORD);
 
-    public AbstractAssignment(ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
+    public AbstractAssignment(String description, ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
+        this.description = description;
         this.next = next;
         this.acceptedEqualTokens = acceptedEqualTokens;
     }
@@ -45,24 +49,15 @@ class AbstractAssignment implements ArithmeticParsingFunction {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
 
-        boolean ok = ParserUtil.conditionalRead(builder, acceptedWords)
-                && acceptedEqualTokens.contains(builder.getTokenType());
+        boolean ok = ParserUtil.conditionalRead(builder, acceptedWords);
 
-        if (ok) {
+        if (ok && acceptedEqualTokens.contains(builder.getTokenType())) {
             marker.done(VAR_DEF_ELEMENT);
-            builder.advanceLexer();    //eat the assignment operator
+            builder.advanceLexer();
         } else {
             marker.rollbackTo();
         }
 
         return next.parse(builder);
-    }
-
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return next.partialParsing(builder);
-    }
-
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return next.isValidPartial(builder);
     }
 }

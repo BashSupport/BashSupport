@@ -121,10 +121,10 @@ public interface BashTokenTypes {
 
     TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
 
-
     //arithmetic operators: plus
     IElementType ARITH_PLUS_PLUS = new BashElementType("++");//++
     IElementType ARITH_PLUS = new BashElementType("+");//+
+
     //arithmetic operators: minus
     IElementType ARITH_MINUS_MINUS = new BashElementType("--");//++
     IElementType ARITH_MINUS = new BashElementType("-");//+

@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParenExpr.java, Class: ParenExpr
- * Last modified: 2010-04-17
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses an optional parantheses expression. If not found it delegates to another function.
@@ -30,46 +31,27 @@ import com.intellij.lang.PsiBuilder;
  * Time: 10:21:56 PM
  */
 class ParenExpr implements ArithmeticParsingFunction {
-    private final ArithmeticParsingFunction delegate;
-
-    public static ArithmeticParsingFunction delegate(ArithmeticParsingFunction delegate) {
-        return new ParenExpr(delegate);
-    }
-
-    public ParenExpr(ArithmeticParsingFunction delegate) {
-        this.delegate = delegate;
-    }
-
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == LEFT_PAREN || delegate.isValid(builder);
+        return builder.getTokenType() == LEFT_PAREN;
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        PsiBuilder.Marker marker = builder.mark();
-        if (ParserUtil.conditionalRead(builder, LEFT_PAREN)) {
-            ArithmeticExprParser.instance.parse(builder);
-            boolean ok = ParserUtil.conditionalRead(builder, RIGHT_PAREN);
-
-            if (ok) {
-                marker.done(ARITH_PARENS_ELEMENT);
-            } else {
-                marker.drop();
-            }
-
-            //try partial parsing for the remaining tokens, we might have an operator as current token
-            return delegate.isValidPartial(builder) ? delegate.partialParsing(builder) : ok;
-        } else {
-            marker.drop();
+        if (!isValid(builder)) {
+            return false;
         }
 
-        return delegate.parse(builder);
-    }
+        //the marker has to contain the opening parenthesis
+        PsiBuilder.Marker marker = builder.mark();
 
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return delegate.partialParsing(builder);
-    }
+        builder.advanceLexer();
+        boolean ok = ArithmeticFactory.entryPoint().parse(builder) && ParserUtil.conditionalRead(builder, RIGHT_PAREN);
 
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return delegate.isValidPartial(builder);
+        if (ok) {
+            marker.done(ARITH_PARENS_ELEMENT);
+            return true;
+        }
+
+        marker.drop();
+        return false;
     }
 }

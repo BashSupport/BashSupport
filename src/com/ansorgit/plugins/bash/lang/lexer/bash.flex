@@ -81,6 +81,10 @@ import com.intellij.util.containers.Stack;
   //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
   private boolean inCaseBody = false;
 
+  //True if an arithmetic expression is expected as next token (e.g. in $((a-$((1+34)))) ) we need to
+  //discern between a simple ( and the start of a new subexpression
+  private boolean expectArithExpression = false;
+
   //Help data to parse (nested) strings.
   private final StringParsingState string = new StringParsingState();
 
@@ -363,10 +367,23 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   else {
                                     string.advanceToken();
                                     backToPreviousState();
-                                    return _EXPR_ARITH; }
+                                    return _EXPR_ARITH;
+                                  }
                                 }
 
   ")"                           { openParenths--; return RIGHT_PAREN; }
+
+  "$(("                         { yypushback(2); expectArithExpression = true; return DOLLAR; }
+  "(("                          { if (expectArithExpression) {
+                                    expectArithExpression = false;
+                                    goToState(S_ARITH);
+                                    return EXPR_ARITH;
+                                  } else {
+                                    yypushback(1);
+                                    openParenths++;
+                                    return LEFT_PAREN;
+                                  }
+                                }
 
   "("                           { openParenths++; return LEFT_PAREN; }
 
@@ -617,12 +634,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     ">"                           { return GREATER_THAN; }
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
-
-
-    <S_STRINGMODE> {
-      /* Arithmetic expression */
-        "(("                         { goToState(S_ARITH); return EXPR_ARITH; }
-    }
 
     <S_STRINGMODE> {
       /* Arithmetic expression */

@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ParenthesesExpressionsImpl.java, Class: ParenthesesExpressionsImpl
+ * File: AssignmentChainImpl.java, Class: AssignmentChainImpl
  * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,8 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentChain;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -30,23 +31,24 @@ import java.util.List;
  * Date: Feb 6, 2010
  * Time: 12:13:49 PM
  */
-public class ParenthesesExpressionsImpl extends AbstractExpression implements ParenthesesExpression {
-    public ParenthesesExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithParenExpr", Type.NoOperands);
-    }
-
+public class AssignmentChainImpl extends AbstractExpression implements AssignmentChain {
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        throw new UnsupportedOperationException("unsupported");
+        throw new UnsupportedOperationException("compute is not supported");
+    }
+
+    public AssignmentChainImpl(final ASTNode astNode) {
+        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
     }
 
     @Override
     public long computeNumericValue() {
+        //find the child after the assignment sign
         List<ArithmeticExpression> childs = subexpressions();
-        if (childs.size() != 1) {
+        if (childs.size() != 2) {
             throw new IllegalStateException("impossible state");
         }
 
-        return childs.get(0).computeNumericValue();
+        return childs.get(1).computeNumericValue();
     }
 }

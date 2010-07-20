@@ -1,3 +1,11 @@
+2010-07-20:
+ - Many improvements to arithmetic expression parsing
+ 
+2010-07-17:
+ - Fixed evaluation of advanced arithmetic expressions
+ - Improvements to the lexer
+ - More test cases
+
 2010-07-13:
  - Finally fixes the variable resolving issues (hopefully)
 

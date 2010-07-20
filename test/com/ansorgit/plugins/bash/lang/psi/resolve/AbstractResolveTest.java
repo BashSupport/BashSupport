@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractResolveTest.java, Class: AbstractResolveTest
- * Last modified: 2010-07-01
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,5 +29,4 @@ public abstract class AbstractResolveTest extends com.intellij.testFramework.Res
     protected PsiReference configure() throws Exception {
         return configureByFile(getTestName(false) + ".bash");
     }
-
 }
