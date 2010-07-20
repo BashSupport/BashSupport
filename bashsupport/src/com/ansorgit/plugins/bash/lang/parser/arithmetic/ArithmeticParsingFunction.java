@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticParsingFunction.java, Class: ArithmeticParsingFunction
- * Last modified: 2010-05-13
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.intellij.lang.PsiBuilder;
 
 /**
  * Extended parsing function for parsing of arithmetic expressions.
@@ -33,10 +34,10 @@ public interface ArithmeticParsingFunction extends ParsingFunction {
      * Does partial parsing, e.g. after an already parsed parenthesis expression. It
      * starts with an operator.
      *
-     * @param builder The builder to use.
+     * @param builder          The builder to use.
      * @return True if the parsing was successful.
      */
-    boolean partialParsing(BashPsiBuilder builder);
+//    boolean partialParsing(BashPsiBuilder builder);
 
     /**
      * Returns true if the following tokens start with a valid partial expression.
@@ -44,5 +45,5 @@ public interface ArithmeticParsingFunction extends ParsingFunction {
      * @param builder Streams the tokens
      * @return True if partial parsing may be valid.
      */
-    boolean isValidPartial(BashPsiBuilder builder);
+//    boolean isValidPartial(BashPsiBuilder builder);
 }

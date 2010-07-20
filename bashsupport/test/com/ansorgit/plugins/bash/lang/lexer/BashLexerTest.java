@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-05-26
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,6 +67,12 @@ public class BashLexerTest {
     public void testArithmeticExpr() {
         testTokenization("$((1))", DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
 
+        testTokenization("$((1,1))", DOLLAR, EXPR_ARITH, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((a=1,1))", DOLLAR, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((((1))))", DOLLAR, EXPR_ARITH, LEFT_PAREN, LEFT_PAREN, NUMBER, RIGHT_PAREN, RIGHT_PAREN, _EXPR_ARITH);
+
         testTokenization("$((-1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, NUMBER, _EXPR_ARITH);
 
         testTokenization("$((--1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
@@ -116,6 +122,12 @@ public class BashLexerTest {
         testTokenization("$((a<2))", DOLLAR, EXPR_ARITH, WORD, ARITH_LT, NUMBER, _EXPR_ARITH);
 
         testTokenization("$((a<=2))", DOLLAR, EXPR_ARITH, WORD, ARITH_LE, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((1+-45))", DOLLAR, EXPR_ARITH, NUMBER, ARITH_PLUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((1+(-45)))", DOLLAR, EXPR_ARITH, NUMBER, ARITH_PLUS, LEFT_PAREN, ARITH_MINUS, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+
+        testTokenization("$((1+---45))", DOLLAR, EXPR_ARITH, NUMBER, ARITH_PLUS, ARITH_MINUS, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
     }
 
     @Test

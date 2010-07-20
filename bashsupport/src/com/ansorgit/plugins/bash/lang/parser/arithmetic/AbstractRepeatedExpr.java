@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractRepeatedExpr.java, Class: AbstractRepeatedExpr
- * Last modified: 2010-05-11
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,31 +32,32 @@ import com.intellij.psi.tree.TokenSet;
  * Date: Feb 6, 2010
  * Time: 5:22:23 PM
  */
-abstract class AbstractRepeatedExpr implements ArithmeticParsingFunction {
-    private final ArithmeticParsingFunction next;
+class AbstractRepeatedExpr implements ArithmeticParsingFunction {
+    private final ArithmeticParsingFunction expressionParser;
     private final TokenSet operators;
     private final IElementType partMarker;
+    private int maxRepeats;
 
-    protected AbstractRepeatedExpr(ArithmeticParsingFunction next, TokenSet operators, IElementType partMarker) {
-        this.next = next;
+    AbstractRepeatedExpr(ArithmeticParsingFunction expressionParser, TokenSet operators, IElementType partMarker, int maxRepeats) {
+        this.expressionParser = expressionParser;
         this.operators = operators;
         this.partMarker = partMarker;
-    }
-
-    protected AbstractRepeatedExpr(ArithmeticParsingFunction next, TokenSet operators) {
-        this(next, operators, null);
-    }
-
-    protected AbstractRepeatedExpr(ArithmeticParsingFunction next, IElementType operator) {
-        this(next, TokenSet.create(operator), null);
-    }
-
-    protected AbstractRepeatedExpr(ArithmeticParsingFunction next, IElementType operator, IElementType marker) {
-        this(next, TokenSet.create(operator), marker);
+        this.maxRepeats = maxRepeats;
     }
 
     public boolean isValid(BashPsiBuilder builder) {
-        return next.isValid(builder);
+        if (expressionParser.isValid(builder)) {
+            return true;
+        }
+
+        PsiBuilder.Marker marker = builder.mark();
+
+        ArithmeticParsingFunction parenthesisParser = ArithmeticFactory.parenthesisParser();
+        boolean ok = parenthesisParser.isValid(builder) && parenthesisParser.parse(builder) && operators.contains(builder.getTokenType());
+
+        marker.rollbackTo();
+
+        return ok;
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -67,11 +68,17 @@ abstract class AbstractRepeatedExpr implements ArithmeticParsingFunction {
 
         //fixme fix with call to partialParsing
         do {
-            ok = next.parse(builder);
-            count++;
-        } while (ok && ParserUtil.conditionalRead(builder, operators));
+            if (expressionParser.isValid(builder)) {
+                ok = expressionParser.parse(builder);
+            }
+            else {
+                ok = ArithmeticFactory.parenthesisParser().parse(builder);
+            }
 
-        if (ok && count > 1 && partMarker != null) {
+            count++;
+        } while (ok && (maxRepeats <= 0 || count < maxRepeats) && ParserUtil.conditionalRead(builder, operators));
+
+        if (count > 1 && partMarker != null) {
             marker.done(partMarker);
         } else {
             marker.drop();
@@ -80,21 +87,21 @@ abstract class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         return ok;
     }
 
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return operators.contains(builder.getTokenType()) || next.isValidPartial(builder);
-    }
+//    public boolean isValidPartial(BashPsiBuilder builder) {
+//        return operators.contains(builder.getTokenType()) || next.isValidPartial(builder);
+//    }
 
-    public boolean partialParsing(BashPsiBuilder builder) {
-        boolean ok = operators.contains(builder.getTokenType());
-
-        if (ok) {
-            while (ok && ParserUtil.conditionalRead(builder, operators)) {
-                ok = next.parse(builder);
-            }
-        } else {
-            ok = next.partialParsing(builder);
-        }
-
-        return ok;
-    }
+//    public boolean partialParsing(BashPsiBuilder builder) {
+//        boolean ok = operators.contains(builder.getTokenType());
+//
+//        if (ok) {
+//            while (ok && ParserUtil.conditionalRead(builder, operators)) {
+//                ok = next.parse(builder);
+//            }
+//        } else {
+//            ok = next.partialParsing(builder);
+//        }
+//
+//        return ok;
+//    }
 }

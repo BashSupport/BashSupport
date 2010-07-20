@@ -267,6 +267,10 @@ public class BashPsiCreator implements BashElementTypes {
             return new TernaryExpressionsImpl(node);
         }
 
+        if (elementType == ARITH_ASSIGNMENT_CHAIN_ELEMENT) {
+            return new AssignmentChainImpl(node);
+        }
+
         if (elementType == PROCESS_SUBSTITUTION_ELEMENT) {
             return new BashProcessSubstitutionImpl(node);
         }

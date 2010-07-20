@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PreIncrementExpr.java, Class: PreIncrementExpr
- * Last modified: 2010-04-17
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,11 @@ import com.intellij.lang.PsiBuilder;
  * Time: 4:27:55 PM
  */
 class PreIncrementExpr implements ArithmeticParsingFunction {
-    private ArithmeticParsingFunction next = ParenExpr.delegate(new PostIncrementExpr());
+    private ArithmeticParsingFunction next;
+
+    PreIncrementExpr(ArithmeticParsingFunction next) {
+        this.next = next;
+    }
 
     public boolean isValid(BashPsiBuilder builder) {
         return arithmeticPreOps.contains(builder.getTokenType()) || next.isValid(builder);
@@ -51,11 +55,11 @@ class PreIncrementExpr implements ArithmeticParsingFunction {
         return ok;
     }
 
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return next.partialParsing(builder);
-    }
+//    public boolean partialParsing(BashPsiBuilder builder) {
+//        return next.partialParsing(builder);
+//    }
 
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return next.isValidPartial(builder);
-    }
+//    public boolean isValidPartial(BashPsiBuilder builder) {
+//        return next.isValidPartial(builder);
+//    }
 }

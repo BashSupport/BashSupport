@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2010-05-27
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         IElementType tokenType = builder.getTokenType();
         return tokenType == WORD
                 || arithLiterals.contains(tokenType)
+                || arithmeticAdditionOps.contains(builder.getTokenType())
                 || Parsing.var.isValid(builder);
     }
 
@@ -49,7 +50,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         } else if (Parsing.var.isValid(builder)) {
             ok = Parsing.var.parse(builder);
         } else {
-            //these are valid: 12$a , 12${a}56
+            //these are valid: 12, a. 12$a , 12${a}56
             IElementType tokenType = builder.getTokenType(); //no whitespace
             try {
                 builder.enableWhitespace();
@@ -64,7 +65,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                         ok = true;
                     } else if (Parsing.var.isValid(builder)) {
                         //fixme whitespace on?
-                        Parsing.var.parse(builder);
+                        ok = Parsing.var.parse(builder);
                     } else {
                         ok = false;
                         break;

@@ -99,7 +99,7 @@
     <option name="MAXIMUM_HEAP_SIZE" value="192" />
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="compAPI" />
+    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -788,6 +788,17 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/lib/google-collect-1.0-src.zip!/" />
+      </SOURCES>
+    </library>
+    <library name="GroupLayout">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/swing-layout.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/lib/swing-layout-javadoc.zip!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/swing-layout-src.zip!/" />
       </SOURCES>
     </library>
   </component>
