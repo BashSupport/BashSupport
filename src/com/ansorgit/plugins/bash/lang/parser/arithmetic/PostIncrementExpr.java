@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: PostIncrementExpr.java, Class: PostIncrementExpr
- * Last modified: 2010-04-17
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,18 +30,14 @@ import com.intellij.lang.PsiBuilder;
  * Time: 4:29:05 PM
  */
 class PostIncrementExpr implements ArithmeticParsingFunction {
-    private ArithmeticParsingFunction next = ParenExpr.delegate(new SimpleArithmeticExpr());
+    private ArithmeticParsingFunction next;
+    
+    PostIncrementExpr(ArithmeticParsingFunction next) {
+        this.next = next;
+    }
 
     public boolean isValid(BashPsiBuilder builder) {
         return next.isValid(builder);
-    }
-
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return next.partialParsing(builder);
-    }
-
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return next.isValidPartial(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -55,4 +51,12 @@ class PostIncrementExpr implements ArithmeticParsingFunction {
 
         return ok;
     }
+
+//    public boolean partialParsing(BashPsiBuilder builder) {
+//        return next.partialParsing(builder);
+//    }
+
+//    public boolean isValidPartial(BashPsiBuilder builder) {
+//        return next.isValidPartial(builder);
+//    }
 }

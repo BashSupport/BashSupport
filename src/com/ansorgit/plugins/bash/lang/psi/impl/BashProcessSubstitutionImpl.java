@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProcessSubstitutionImpl.java, Class: BashProcessSubstitutionImpl
- * Last modified: 2010-07-13
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,6 @@ import com.intellij.lang.ASTNode;
  */
 public class BashProcessSubstitutionImpl extends BashPsiElementImpl implements BashProcessSubstitution {
     public BashProcessSubstitutionImpl(final ASTNode astNode) {
-        super(astNode, "process substitution elekent");
+        super(astNode, "process substitution element");
     }
 }

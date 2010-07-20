@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: TernaryExpression.java, Class: TernaryExpression
- * Last modified: 2010-04-17
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,19 +30,23 @@ import com.intellij.lang.PsiBuilder;
  * Time: 4:29:05 PM
  */
 class TernaryExpression implements ArithmeticParsingFunction {
-    private ArithmeticParsingFunction logicalOr = ParenExpr.delegate(new LogicalOr());
+    private ArithmeticParsingFunction next;
+
+    TernaryExpression(ArithmeticParsingFunction next) {
+        this.next = next;
+    }
 
     public boolean isValid(BashPsiBuilder builder) {
-        return logicalOr.isValid(builder);
+        return next.isValid(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        boolean ok = logicalOr.parse(builder);
+        boolean ok = next.parse(builder);
 
         if (ok && ParserUtil.conditionalRead(builder, ARITH_QMARK)) {
-            ok = logicalOr.parse(builder);//check this
-            ok = ok && ParserUtil.conditionalRead(builder, ARITH_COLON) && logicalOr.parse(builder);
+            ok = next.parse(builder);//check this
+            ok = ok && ParserUtil.conditionalRead(builder, ARITH_COLON) && next.parse(builder);
 
             if (ok) {
                 marker.done(ARITH_TERNERAY_ELEMENT);
@@ -54,13 +58,5 @@ class TernaryExpression implements ArithmeticParsingFunction {
         }
 
         return ok;
-    }
-
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return logicalOr.partialParsing(builder);
-    }
-
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return logicalOr.isValidPartial(builder);
     }
 }
