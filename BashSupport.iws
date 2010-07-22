@@ -11,16 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="more test cases, fixed lexer, improve arithmetic parsing">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/BashInterpreterDetectionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iml" afterPath="$PROJECT_DIR$/BashSupport.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/ParamUtils.java" afterPath="" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
     <ignored path=".idea/workspace.xml" />
@@ -174,10 +166,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HereDocParsingTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="HereDocParsingTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.6299342">
+            <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Changelog.txt" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Changelog.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="21" selection-start="33" selection-end="33" vertical-scroll-proportion="0.024671054">
               <folding />
             </state>
           </provider>
@@ -220,11 +221,11 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentChainImpl.java" />
         <option value="$PROJECT_DIR$/TODO.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" />
-        <option value="$PROJECT_DIR$/Changelog.txt" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" />
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/BashInterpreterDetectionTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
         <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java" />
+        <option value="$PROJECT_DIR$/Changelog.txt" />
       </list>
     </option>
   </component>
@@ -1912,11 +1913,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashFileAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="26" selection-start="2149" selection-end="2149" vertical-scroll-proportion="0.99353796" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="140" column="0" selection-start="4821" selection-end="4821" vertical-scroll-proportion="0.44019935" />
@@ -1993,7 +1989,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.6299342">
+        <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Changelog.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="21" selection-start="33" selection-end="33" vertical-scroll-proportion="0.024671054">
           <folding />
         </state>
       </provider>
