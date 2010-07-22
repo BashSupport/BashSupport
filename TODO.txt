@@ -161,3 +161,4 @@ Bugs (indentation marks fixed bugs):
 - Bad code green : one line: for f in 1 2 3; do { echo 1 } done
     - Inspection to detect local usage outside of a function
 - support process substitution / i.e. named pipes "cat - < <(echo a)"
+- Adding a new file with the extension .bash adds file.bash.sh
