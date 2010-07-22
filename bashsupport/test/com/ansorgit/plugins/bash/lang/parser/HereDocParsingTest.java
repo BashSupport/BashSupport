@@ -73,13 +73,12 @@ public class HereDocParsingTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
     public void testComplicatedHereDocs() {
         //a <<END
         // $TEST ()
         //END
         mockTest(hereDoc,
-                Lists.newArrayList("a", "<<", "END", "\n", "$TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, VARIABLE, LINE_FEED, WORD);
+                Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
+                WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, DOLLAR, WORD, LINE_FEED, WORD);
     }
 }

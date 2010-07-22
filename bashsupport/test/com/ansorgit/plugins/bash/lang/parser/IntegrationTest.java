@@ -520,7 +520,6 @@ public class IntegrationTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
     public void testInvalidHereDoc() {
         //for f in 1; do echo <<EOF
         //  heredoccontent

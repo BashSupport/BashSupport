@@ -33,8 +33,6 @@ import org.jetbrains.annotations.Nullable;
  * @author Joachim Ansorg
  */
 public class HereDocParsing implements ParsingTool {
-    //private static final Logger log = Logger.getInstance("#bash.HereDocParsing");
-
     public boolean parseOptionalHereDocs(BashPsiBuilder builder) {
         if (!builder.getHereDocData().expectsHereDoc()) {
             return false;
@@ -78,6 +76,7 @@ public class HereDocParsing implements ParsingTool {
                     //read in the end marker line again
 
                     line.second.rollbackTo();
+
                     if (readLines > 1) {
                         builder.eatOptionalNewlines();
                         hereDocMarker.done(HEREDOC_ELEMENT);
@@ -101,6 +100,10 @@ public class HereDocParsing implements ParsingTool {
             }
 
             if (foundPrefixedEnd) {
+                if (hereDocMarker.isOpen()) {
+                    hereDocMarker.drop();
+                }
+                
                 ParserUtil.error(builder, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();//fixme check this
 
@@ -108,6 +111,7 @@ public class HereDocParsing implements ParsingTool {
             } else if (!foundExactEnd) {
                 //ParserUtil.error(hereDocMarker, "parser.heredoc.expectedEnd");
                 hereDocMarker.drop();
+
                 ParserUtil.error(builder, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();
 
@@ -122,6 +126,7 @@ public class HereDocParsing implements ParsingTool {
 
             builder.getHereDocData().removeExpectedEnd();
         }
+
         return false;
     }
 
@@ -145,7 +150,13 @@ public class HereDocParsing implements ParsingTool {
         builder.eatOptionalNewlines(-1, true);
 
         while (!builder.eof() && builder.getTokenType(true) != LINE_FEED) {
-            if (Parsing.var.isValid(builder)) {
+            //we have to do this because var.isValid does not preserver whitespace in all cases
+            //we make sure that we rollback after the check
+            PsiBuilder.Marker whitespaceMarker = builder.mark();
+            boolean isValidVariable = Parsing.var.isValid(builder);
+            whitespaceMarker.rollbackTo();
+
+            if (isValidVariable) {
                 //fixme check return value?
                 Parsing.var.parse(builder);
             }
