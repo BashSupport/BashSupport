@@ -18,6 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/generated_src" />
       <excludeFolder url="file://$MODULE_DIR$/javadoc" />
     </content>
+    <orderEntry type="library" name="Clover IDEA Plugin" level="application" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Google collections" level="project" />

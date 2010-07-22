@@ -41,13 +41,20 @@ public class BashInterpreterDetection {
 
     public String findBestLocation() {
         for (String guessLocation : guessLocations) {
-            File f = new File(guessLocation);
-
-            if (f.isFile() && f.canRead()) {
+            if (isSuitable(guessLocation)) {
                 return guessLocation;
             }
         }
 
         return "";
+    }
+
+    boolean isSuitable(String guessLocation) {
+        File f = new File(guessLocation);
+
+        if (f.isFile() && f.canRead()) {
+            return true;
+        }
+        return false;
     }
 }
