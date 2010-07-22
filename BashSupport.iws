@@ -11,77 +11,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="more test cases, fixed lexer, improve arithmetic parsing">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/ParenthesisProductStaticExpression.bash" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/BitwiseOr.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/BitwiseXor.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/value/NegativeComplicatedExpressionTest.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/PostIncrementExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/PostIncrementExpr.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/SimpleStaticExpression.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/structureview" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/value/ComplicatedExpressionTest.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/BashTokenTypes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/SimpleExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/SimpleExpressionsImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/ParenthesisSimpleStaticExpression.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/AssignmentChain.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleAssignmentExpr.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ExponentExpr.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/value/ExpressionTest.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleArithmeticExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleArithmeticExpr.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.ipr" afterPath="$PROJECT_DIR$/BashSupport.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ForLoopParsingFunction.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ForLoopParsingFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractAssignment.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractAssignment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/arithmetic/StaticValueComputationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticExprParserTest.java" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticExprParserTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/CompundComparisionExpr.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/ProductSimpleStaticExpression.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/ComplicatedStaticExpression.bash" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iml" afterPath="$PROJECT_DIR$/BashSupport.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/CombinationAssignment.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/arithmetic/AbstractArithExprTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentChainImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticFactory.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticExprParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/EqualityExpr.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/PreIncrementExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/PreIncrementExpr.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/value/ProductOfSumsTest.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/structureview/BashStructureViewModelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashProcessSubstitutionImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashProcessSubstitutionImpl.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/LogicalAnd.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/structureview" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticParsingFunction.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticParsingFunction.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ShiftExpr.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/TernaryExpression.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/TernaryExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParser.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ParenExpr.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/psi/arithmetic/static/MultipleParentStaticExpression.bash" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/arithmetic" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ParenthesesExpressionsImpl.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/ParenthesesExpressionsImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/BashInterpreterDetectionTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testData/structureview/StructureView.bash" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/MultiplicationExpr.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/LogicalOr.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/arithmetic/StaticExpressionTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/NegationExpr.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/BitwiseAnd.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AdditionExpr.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iml" afterPath="$PROJECT_DIR$/BashSupport.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/ParamUtils.java" afterPath="" />
     </list>
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
-    <ignored path="BashSupport-src.zip" />
-    <ignored path="BashSupport-src.tar.gz" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="BashPlugin.iws" />
-    <ignored path="jflex.log" />
+    <ignored path="BashSupport-src.tar.gz" />
     <ignored path="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java" />
+    <ignored path="BashSupport-src.zip" />
+    <ignored path="jflex.log" />
+    <ignored path="BashPlugin.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +41,7 @@
     <projectRebuild class="com.cenqua.clover.idea.config.ProjectRebuild">ASK</projectRebuild>
     <filteredHighlight>-4144960</filteredHighlight>
     <relativeInitString>false</relativeInitString>
-    <buildWithClover>false</buildWithClover>
+    <buildWithClover>true</buildWithClover>
     <lastProjectConfigTabSelected>0</lastProjectConfigTabSelected>
     <periodicRefresh>false</periodicRefresh>
     <notCoveredStripe>-65536</notCoveredStripe>
@@ -149,7 +96,7 @@
       <FILTER>com.ansorgit.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/BashSupport$All_tests.ic" NAME="All tests Coverage Results" MODIFIED="1265565268770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/BashSupport$All_in_BashSupport.ic" NAME="All in BashSupport Coverage Results" MODIFIED="1279647934217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/BashSupport$All_in_BashSupport.ic" NAME="All in BashSupport Coverage Results" MODIFIED="1279658927031" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/BashPlugin$com_ansorgit_plugins_bash_in_BashPlugin.ic" NAME="com.ansorgit.plugins.bash in BashPlugin Coverage Results" MODIFIED="1239714046605" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -160,47 +107,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" line="36" class="com.ansorgit.plugins.bash.lang.psi.resolve.VarResolveTestCase" package="com.ansorgit.plugins.bash.lang.psi.resolve">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" line="279" class="com.ansorgit.plugins.bash.lang.psi.BashPsiCreator" package="com.ansorgit.plugins.bash.lang.psi">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java" line="46" class="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.AssignmentExpressionsImpl" package="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any>
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -259,91 +165,28 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BashVarImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java">
+      <file leaf-file-name="BashLexerTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="0" selection-start="3498" selection-end="3498" vertical-scroll-proportion="0.0">
+            <state line="77" column="31" selection-start="3697" selection-end="3697" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BashPsiUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java">
+      <file leaf-file-name="HereDocParsingTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="326" column="0" selection-start="10727" selection-end="10727" vertical-scroll-proportion="0.0">
+            <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.6299342">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BashPsiCreator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java">
+      <file leaf-file-name="bash.flex" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="270" column="43" selection-start="9408" selection-end="9408" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AssignmentChain.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/AssignmentChain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="17" selection-start="886" selection-end="886" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AssignmentExpressionsImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="1703" selection-end="1703" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VarResolveTestCase.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="0" selection-start="1337" selection-end="1337" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AssignmentChainImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentChainImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="64" selection-start="1435" selection-end="1435" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Changelog.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Changelog.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="1" selection-start="67" selection-end="67" vertical-scroll-proportion="0.050933786">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashElementTypes.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="17" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BashPsiElementImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="0" selection-start="2461" selection-end="2461" vertical-scroll-proportion="0.0">
+            <state line="418" column="20" selection-start="14763" selection-end="14763" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -366,12 +209,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/TernaryExpression.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ForLoopParsingFunction.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/shellCommand/ArithmeticParser.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractRepeatedExpr.java" />
-        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/SimpleExpressionsImpl.java" />
-        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/arithmetic/StaticValueComputationTest.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleAssignmentExpr.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/AbstractAssignment.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/ArithmeticFactory.java" />
@@ -381,7 +218,13 @@
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java" />
         <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentChainImpl.java" />
+        <option value="$PROJECT_DIR$/TODO.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java" />
         <option value="$PROJECT_DIR$/Changelog.txt" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/BashInterpreterDetectionTest.java" />
+        <option value="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex" />
+        <option value="$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java" />
       </list>
     </option>
   </component>
@@ -920,53 +763,6 @@
       <sortByType ProjectPane="false" />
     </navigator>
     <panes>
-      <pane id="Favorites" />
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.ansorgit.plugins.bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.ansorgit.plugins.bash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="repl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Production">
@@ -1076,666 +872,51 @@
               <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
             </PATH_ELEMENT>
           </PATH>
+        </subPane>
+      </pane>
+      <pane id="Favorites" />
+      <pane id="PackagesPane">
+        <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="structureview" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
+              <option name="myItemId" value="com.ansorgit.plugins.bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resolve" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
+              <option name="myItemId" value="com.ansorgit.plugins.bash" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="value" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testData" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="structureview" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resolve" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="editor" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="psi" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="variable" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="command" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-googlecode" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bash" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lang" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="arithmetic" />
-              <option name="myItemType" value="com.cenqua.clover.idea.projectview.PsiDirectoryNodeWrapper" />
+              <option name="myItemId" value="repl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1748,7 +929,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="INTRODUCE_CONSTANT_NONNLS" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="448" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
@@ -1799,11 +980,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ansorgit.plugins.bash.util" />
       <recent name="com.ansorgit.plugins.bash.structureview" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.misc" />
       <recent name="com.ansorgit.plugins.bash.lang.parser.shellCommand" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.command" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.arithmetic" />
@@ -1825,19 +1006,19 @@
       <recent name="com.ansorgit.plugins.bash.lang.psi" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.shell" />
     </key>
-    <key name="MoveMembersDialog.RECENTS_KEY">
-      <recent name="com.ansorgit.plugins.bash.BashTestUtils" />
-      <recent name="com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils" />
-      <recent name="com.ansorgit.plugins.bash.BashComponents" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
-      <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
-    </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="com.ansorgit.plugins.bash.structureview.BashStructureViewModel" />
       <recent name="com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection" />
       <recent name="com.ansorgit.plugins.bash.documentation.SystemInfopageDocSource" />
       <recent name="com.ansorgit.plugins.bash.file.BashFileType" />
       <recent name="com.ansorgit.plugins.bash.runner.BashLineErrorFilter" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="com.ansorgit.plugins.bash.BashTestUtils" />
+      <recent name="com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils" />
+      <recent name="com.ansorgit.plugins.bash.BashComponents" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.misc.HereDocParsing" />
+      <recent name="com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl" />
@@ -1846,13 +1027,6 @@
       <recent name="com.ansorgit.plugins.bash.lang" />
       <recent name="com.ansorgit.plugins.bash.documentation" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/testData/psi/arithmetic/static" />
-      <recent name="$PROJECT_DIR$/testData/psi/arithmetic/value" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/varDef" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
-      <recent name="$PROJECT_DIR$/testData/psi/resolve/var" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="nu.studer" />
       <recent name="com.ansorgit.plugins.bash.lang.lexer" />
@@ -1860,63 +1034,15 @@
       <recent name="com.ansorgit.plugins.bash.lang.parser.command" />
       <recent name="com.ansorgit.plugins.bash.lang.psi.impl.command" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testData/psi/arithmetic/static" />
+      <recent name="$PROJECT_DIR$/testData/psi/arithmetic/value" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/varDef" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/commandVariants" />
+      <recent name="$PROJECT_DIR$/testData/psi/resolve/var" />
+    </key>
   </component>
   <component name="RunManager" selected="JUnit.All in BashSupport">
-    <configuration default="false" name="StaticValueComputationTest" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.psi.arithmetic.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="BashSupport" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.psi.arithmetic" />
-      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.psi.arithmetic.StaticValueComputationTest" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-Xmx384m" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="58848" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel">
-        <option name="bootstrapPath" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="useBootstrapDefaults" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JavaRebel Debug">
-        <option name="bootstrapPath" />
-        <option name="debugPort" value="41473" />
-        <option name="jrebelArgs" value="" />
-        <option name="loggingEnabled" value="false" />
-        <option name="transport" value="0" />
-        <option name="useBootstrapDefaults" value="true" />
-        <option name="DEBUG_PORT" value="41473" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Profile ">
-        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Profile " />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="ArithmeticParserTest.testParseParentheses" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -2091,6 +1217,54 @@
       <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.lang.lexer" />
       <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.lang.lexer.BashLexerTest" />
       <option name="METHOD_NAME" value="testArithmeticExpr" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-Xmx384m" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="41473" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="41473" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BashInterpreterDetectionTest.testFindBestLocation" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.ansorgit.plugins.bash.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="BashSupport" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="com.ansorgit.plugins.bash.util" />
+      <option name="MAIN_CLASS_NAME" value="com.ansorgit.plugins.bash.util.BashInterpreterDetectionTest" />
+      <option name="METHOD_NAME" value="testFindBestLocation" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-Xmx384m" />
       <option name="PARAMETERS" value="" />
@@ -2509,14 +1683,14 @@
     </configuration>
     <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Bash.test.sh" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.All in BashSupport" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.StaticValueComputationTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ArithmeticParserTest.testParseParentheses" />
-      <item index="5" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.StaticValueComputationTest.testNegativeComplicatedExpressionTest" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.VarResolveTestCase.testBasicResolveArithmetic" />
-      <item index="8" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testArithmeticExpr" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ArithmeticParserTest.testParseParentheses" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.StaticValueComputationTest.testNegativeComplicatedExpressionTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.VarResolveTestCase.testBasicResolveArithmetic" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.BashLexerTest.testArithmeticExpr" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.All in BashSupport" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.BashInterpreterDetectionTest.testFindBestLocation" />
+      <item index="8" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -2615,8 +1789,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.23898679" sideWeight="0.5" order="24" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22848664" sideWeight="0.59323883" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2610132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.116353884" sideWeight="0.7004405" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.115817696" sideWeight="0.7004405" order="1" side_tool="false" content_ui="tabs" x="580" y="211" width="239" height="589" />
       <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27973568" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -2624,15 +1797,14 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.0" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20594713" sideWeight="0.0" order="19" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297587" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23898679" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2605898" sideWeight="0.16740088" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33507073" sideWeight="0.0" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23646113" sideWeight="0.7004405" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32815012" sideWeight="0.7004405" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5737885" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2155496" sideWeight="0.7004405" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2918502" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Test Runs" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Test Runs" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32715133" sideWeight="0.59323883" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="100" y="100" width="1200" height="815" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -2641,10 +1813,12 @@
       <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow from here" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2155496" sideWeight="0.71255505" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Cycles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="23" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913268" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2610132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Analyze Dataflow to" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819384" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295838" sideWeight="0.5" order="22" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2738,114 +1912,88 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/ParsingChain.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashFileAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="1860" selection-end="1860" vertical-scroll-proportion="0.0">
+        <state line="63" column="26" selection-start="2149" selection-end="2149" vertical-scroll-proportion="0.99353796" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/file/BashFileType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="140" column="0" selection-start="4821" selection-end="4821" vertical-scroll-proportion="0.44019935" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/actions/NewBashActionBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="15" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.20454545" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/content/BashContentUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="13" selection-start="1157" selection-end="1157" vertical-scroll-proportion="0.2215909" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashInterpreterDetection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="16" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/util/BashInterpreterDetectionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="15" selection-start="1246" selection-end="1246" vertical-scroll-proportion="-20.625" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/BashStrings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="13" selection-start="1057" selection-end="1057" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/CompletionUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="13" selection-start="1154" selection-end="1154" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/ReflectionUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="13" selection-start="1225" selection-end="1225" vertical-scroll-proportion="0.23863636" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/Triple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="19" selection-start="896" selection-end="896" vertical-scroll-proportion="0.1875" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/VfsCompletionUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="-0.9261364" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/util/SystemPathUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="13" selection-start="1016" selection-end="1016" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/refactoring/BashRefactoringSupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="79" selection-start="1369" selection-end="1369" vertical-scroll-proportion="0.23863636" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/lexer/bash.flex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="418" column="20" selection-start="14763" selection-end="14763" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/WordParsing.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/lexer/BashLexerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="0" selection-start="4142" selection-end="4142" vertical-scroll-proportion="0.0">
+        <state line="77" column="31" selection-start="3697" selection-end="3697" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/arithmetic/SimpleArithmeticExpr.java">
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/HereDocParsingTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="0" selection-start="2174" selection-end="2174" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../tmp/Source/IntelliJ-maia/idea/platform/lang-impl/src/com/intellij/psi/impl/source/resolve/reference/impl/PsiMultiReference.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="0" selection-start="3540" selection-end="3540" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../tmp/Source/IntelliJ-maia/idea/platform/lang-impl/src/com/intellij/extapi/psi/PsiElementBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="0" selection-start="4508" selection-end="4508" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../tmp/Source/IntelliJ-maia/idea/platform/lang-api/src/com/intellij/psi/ResolveState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="1018" selection-end="1018" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/vars/BashVarImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="0" selection-start="3498" selection-end="3498" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/BashPsiElementImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2461" selection-end="2461" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/util/BashPsiUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="326" column="0" selection-start="10727" selection-end="10727" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashElementTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="17" selection-start="3687" selection-end="3687" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/BashPsiCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="270" column="43" selection-start="9408" selection-end="9408" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/api/arithmetic/AssignmentChain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="17" selection-start="886" selection-end="886" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentExpressionsImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1703" selection-end="1703" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="0" selection-start="1337" selection-end="1337" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/psi/impl/arithmetic/AssignmentChainImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="64" selection-start="1435" selection-end="1435" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Changelog.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="1" selection-start="67" selection-end="67" vertical-scroll-proportion="0.050933786">
+        <state line="75" column="16" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.6299342">
           <folding />
         </state>
       </provider>
