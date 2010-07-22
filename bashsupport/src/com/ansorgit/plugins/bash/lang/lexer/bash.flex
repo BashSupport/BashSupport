@@ -413,6 +413,12 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "++"                          { return ARITH_PLUS_PLUS; }
   "-"                           { return ARITH_MINUS; }
 
+  "--"/"-"
+                                { yypushback(1); return ARITH_MINUS; }
+
+  "--"/{WhiteSpace}+"-"
+                                { yypushback(1); return ARITH_MINUS; }
+
   "--"/({HexIntegerLiteral}|{BaseIntegerLiteral}|{BaseIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
                                 { yypushback(1); return ARITH_MINUS; }
 

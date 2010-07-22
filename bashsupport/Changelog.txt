@@ -1,3 +1,6 @@
+2010-07-21:
+ - Fixed new Bash script action if the extension .bash was used
+ 
 2010-07-20:
  - Many improvements to arithmetic expression parsing
  

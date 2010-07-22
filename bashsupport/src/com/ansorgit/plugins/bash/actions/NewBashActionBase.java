@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.actions;
 
+import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.CommonBundle;
 import com.intellij.ide.actions.CreateElementActionBase;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -28,6 +29,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -83,8 +85,11 @@ abstract class NewBashActionBase extends CreateElementActionBase {
                                                     @NonNls String templateName,
                                                     @NonNls String... parameters) throws IncorrectOperationException {
         log.debug("createFileFromTemplate");
-        final String ext = "." + DEFAULT_EXTENSION;
-        String filename = (className.endsWith(ext)) ? className : className + ext;
+
+        String usedExtension = FileUtil.getExtension(className);
+        boolean withExtension = BashFileType.extensionList.contains(usedExtension.toLowerCase());
+
+        String filename = withExtension ? className : className + "." + DEFAULT_EXTENSION;
         return BashTemplatesFactory.createFromTemplate(directory, className, filename);
     }
 
