@@ -19,9 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
@@ -31,13 +29,11 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 6:31:03 PM
  */
 class AbstractAssignment implements ArithmeticParsingFunction {
-    private String description;
     private final ArithmeticParsingFunction next;
     private final TokenSet acceptedEqualTokens;
     private TokenSet acceptedWords = TokenSet.create(WORD, ASSIGNMENT_WORD);
 
-    public AbstractAssignment(String description, ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
-        this.description = description;
+    public AbstractAssignment(ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
         this.next = next;
         this.acceptedEqualTokens = acceptedEqualTokens;
     }
