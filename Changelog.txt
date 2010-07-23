@@ -1,3 +1,6 @@
+2010-07-23:
+ - Fixed exception which occured while adding a REPL console
+ 
 2010-07-22:
  - Lexer improvements
 

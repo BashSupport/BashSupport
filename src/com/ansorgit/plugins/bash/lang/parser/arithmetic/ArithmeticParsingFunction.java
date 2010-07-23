@@ -18,9 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.intellij.lang.PsiBuilder;
 
 /**
  * Extended parsing function for parsing of arithmetic expressions.

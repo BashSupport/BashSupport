@@ -24,8 +24,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
-import java.util.List;
-
 /**
  * User: jansorg
  * Date: Feb 6, 2010
