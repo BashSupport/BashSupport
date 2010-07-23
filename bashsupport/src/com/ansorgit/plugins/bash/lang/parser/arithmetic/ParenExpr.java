@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses an optional parantheses expression. If not found it delegates to another function.

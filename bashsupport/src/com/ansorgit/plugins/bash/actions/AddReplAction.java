@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AddReplAction.java, Class: AddReplAction
- * Last modified: 2010-06-03
+ * Last modified: 2010-07-23
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,13 @@ public class AddReplAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         final Module m = getModule(e);
+
         final Presentation presentation = e.getPresentation();
         if (m == null) {
             presentation.setEnabled(false);
             return;
         }
+
         presentation.setEnabled(true);
 
         super.update(e);
@@ -90,11 +92,13 @@ public class AddReplAction extends AnAction {
                         break;
                     }
                 }
-                if (module == null) {
+
+                if (module == null && modules.length > 0) {
                     module = modules[0];
                 }
             }
         }
+
         return module;
     }
 }

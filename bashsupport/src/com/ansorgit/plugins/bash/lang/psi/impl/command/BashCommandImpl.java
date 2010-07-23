@@ -235,6 +235,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
 
     }
 
+    @org.jetbrains.annotations.NotNull
     public Object[] getVariants() {
         List<Object> variants = Lists.newArrayList();
 

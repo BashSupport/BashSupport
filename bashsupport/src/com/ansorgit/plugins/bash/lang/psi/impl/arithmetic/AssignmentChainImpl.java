@@ -20,7 +20,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentChain;
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 

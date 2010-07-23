@@ -50,8 +50,8 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
     private static ArithmeticParsingFunction logicalAnd = repeated(bitwiseOr, AND_AND, ARITH_LOGIC_AND_ELEMENT);
     private static ArithmeticParsingFunction logicalOr = repeated(logicalAnd, OR_OR, ARITH_LOGIC_OR_ELEMENT);
     private static TernaryExpression ternary = new TernaryExpression(logicalOr);
-    private static ArithmeticParsingFunction simpleAssignment = new AbstractAssignment("simple assignment", ternary, TokenSet.create(EQ));
-    private static ArithmeticParsingFunction assignmentCombination = new AbstractAssignment("assignment combination", simpleAssignment, arithmeticAssign);
+    private static ArithmeticParsingFunction simpleAssignment = new AbstractAssignment(ternary, TokenSet.create(EQ));
+    private static ArithmeticParsingFunction assignmentCombination = new AbstractAssignment(simpleAssignment, arithmeticAssign);
     private static ArithmeticParsingFunction assignmentChain = repeated(assignmentCombination, COMMA, ARITH_ASSIGNMENT_CHAIN_ELEMENT);
 
     public static ArithmeticParsingFunction entryPoint() {
