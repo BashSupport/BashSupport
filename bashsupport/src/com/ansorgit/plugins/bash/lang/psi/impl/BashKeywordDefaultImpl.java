@@ -91,6 +91,7 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
         return element == this;
     }
 
+    @NotNull
     public Object[] getVariants() {
         return new Object[0];
     }
