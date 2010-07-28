@@ -19,12 +19,17 @@
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.PsiRecursiveElementWalkingVisitor;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: jansorg
@@ -146,6 +151,31 @@ public class VarResolveTestCase extends AbstractResolveTest {
         //must not resolve because the definition is local due to the previous definition
         PsiElement varDef = psiReference.resolve();
         Assert.assertNull("The vardef should not be found, because it is local", varDef);
+    }
+
+    public void testBasicResolveUnknownGlobalVariable() throws Exception {
+        final PsiReference psiReference = configure();
+
+        //must not resolve because the definition is local due to the previous definition
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found, because it is undefined", varDef);
+
+        //the variable must not be a valid reference to the following var def
+
+        final AtomicInteger visited = new AtomicInteger(0);
+        psiReference.getElement().getContainingFile().acceptChildren(new PsiRecursiveElementVisitor() {
+            @Override
+            public void visitElement(PsiElement element) {
+                if (element instanceof BashVarDef) {
+                    visited.incrementAndGet();
+                    Assert.assertFalse("A var def must not be a valid definition for the variable used.",
+                            psiReference.isReferenceTo(element));
+                }
+
+                super.visitElement(element);
+            }
+        });
+        Assert.assertEquals(1, visited.get());
     }
 
     protected String getTestDataPath() {

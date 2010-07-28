@@ -125,7 +125,7 @@ Bugs (indentation marks fixed bugs):
 - Support tilde expansion
 - Support for Ctrl+J
 - export a[1]=1 is invalid, "declare a[1]=2" is valid though
-- no variable auto completion in here docs
+    - no variable auto completion in here docs
 - Bash v4: Inspection in v3 mode to warn about the ambiguous redirect &| if run on v4
 - Bash v4: declare keyword changes
 - Bash v4: read keyword changes

@@ -724,7 +724,7 @@
       <module fileurl="file://$PROJECT_DIR$/../PluginErrorReporting/PluginErrorReporting.iml" filepath="$PROJECT_DIR$/../PluginErrorReporting/PluginErrorReporting.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-95.311" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-95.429" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
