@@ -392,13 +392,13 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testArithmeticForLoopVarError() {
         //for (( a *2 < 4; 3 >= a; a = a*2 )) ; do hey $a; done;
-        //$a is here written as VAR, WORD which is an invalid combination
+        //$a is here written as DOLLAR, WORD which is an invalid combination
         //this has to be detected as an error
         mockTestError(fileParsingTest,
                 FOR_KEYWORD, EXPR_ARITH, WORD, ARITH_MULT, NUMBER, ARITH_LT, NUMBER, SEMI,
                 NUMBER, ARITH_GE, WORD, SEMI,
                 WORD, EQ, WORD, ARITH_MULT, NUMBER, _EXPR_ARITH,
-                DO_KEYWORD, WORD, DOLLAR, WORD, SEMI, DONE_KEYWORD, SEMI);
+                DO_KEYWORD, WORD, WHITESPACE, DOLLAR, WORD, SEMI, DONE_KEYWORD, SEMI);
     }
 
     @Test
@@ -628,5 +628,11 @@ public class IntegrationTest extends MockPsiTest {
 
         //echo <(echo a) $var
         mockTest(fileParsingTest, WORD, LESS_THAN, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, VARIABLE);
+    }
+
+    @Test
+    public void testVariableDollar() throws Exception {
+        //$a$
+        mockTest(fileParsingTest, VARIABLE, DOLLAR);
     }
 }

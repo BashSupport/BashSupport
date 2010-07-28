@@ -45,6 +45,9 @@ public class BashLexerTest {
     public void testVariables() {
         testTokenization("$abc", VARIABLE);
 
+        testTokenization("$a$", VARIABLE, DOLLAR);
+        testTokenization("$", DOLLAR);
+
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
@@ -179,6 +182,7 @@ public class BashLexerTest {
         testTokenization("a b \"a b \\\"\" \"a\" b",
                 WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD, WORD, STRING_END, WHITESPACE,
                 STRING_BEGIN, WORD, STRING_END, WHITESPACE, WORD);
+        testTokenization("\"a$\"", STRING_BEGIN, WORD, DOLLAR, STRING_END);
 
         testTokenization("\"$(\"hey there\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
         //        testTokenization("\"$(\"hey there\\\"\")\" \\\" \"$(\"hey there\")\" a",

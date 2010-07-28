@@ -41,10 +41,6 @@ public class ParameterExpansionParsing implements ParsingFunction {
         return builder.getTokenType() == LEFT_CURLY;
     }
 
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("Can't check with single element");
-    }
-
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
 

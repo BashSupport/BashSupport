@@ -23,9 +23,11 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.ArrayUtil;
 
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
@@ -36,6 +38,8 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 public class WordParsing implements ParsingTool {
+    private static final TokenSet singleDollarFollowups = TokenSet.create(STRING_END, WHITESPACE, LINE_FEED);
+
     /**
      * Checks whether the next tokens might belong to a word token.
      * The upcoming tokens are not remapped.
@@ -49,7 +53,7 @@ public class WordParsing implements ParsingTool {
 
     public boolean isWordToken(final BashPsiBuilder builder, final boolean enableRemapping) {
         final IElementType tokenType = builder.getTokenType(false, enableRemapping);
-        return isComposedString(tokenType)
+        boolean isWord = isComposedString(tokenType)
                 || Parsing.braceExpansionParsing.isValid(builder)
                 || BashTokenTypes.stringLiterals.contains(tokenType)
                 || Parsing.var.isValid(builder)
@@ -57,6 +61,23 @@ public class WordParsing implements ParsingTool {
                 || Parsing.shellCommand.conditionalParser.isValid(builder)
                 || Parsing.processSubstitutionParsing.isValid(builder)
                 || tokenType == LEFT_CURLY;
+
+        if (isWord) {
+            return true;
+        }
+
+        if (tokenType == DOLLAR) {
+            PsiBuilder.Marker marker = builder.mark();
+            try {
+                builder.advanceLexer();
+                IElementType next = builder.getTokenType();
+                return singleDollarFollowups.contains(next);
+            } finally {
+                marker.rollbackTo();
+            }
+        }
+
+        return false;
     }
 
     public static boolean isComposedString(IElementType tokenType) {
@@ -124,6 +145,9 @@ public class WordParsing implements ParsingTool {
             } else if (nextToken == LEFT_CURLY || nextToken == RIGHT_CURLY) {
                 //fixme, is this proper parsing?
                 //parsing token stream which is not a expansion but has curly brackets
+                builder.advanceLexer();
+                processedTokens++;
+            } else if (nextToken == DOLLAR) {
                 builder.advanceLexer();
                 processedTokens++;
             } else { //either whitespace or unknown token

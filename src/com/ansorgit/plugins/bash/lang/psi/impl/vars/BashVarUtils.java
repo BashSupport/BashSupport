@@ -18,8 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -51,6 +53,19 @@ public class BashVarUtils {
 
             if (childCandidateDef != null && childCandidateDef.isFunctionScopeLocal()) {
                 return isInDefinedScope(childCandidateDef, variableDefinition);
+            }
+
+            //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
+            if (variableDefinition.getTextOffset() > var.getTextOffset()) {
+                //it's an invalid reference if both variables are global and the definition is after
+                //the variable usage
+                
+                BashFunctionDef varScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(var);
+                BashFunctionDef varDefScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(variableDefinition);
+
+                if (varScope == null && varDefScope == null) {
+                    return false;
+                }
             }
         }
 

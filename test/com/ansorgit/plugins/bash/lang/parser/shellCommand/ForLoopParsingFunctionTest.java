@@ -57,5 +57,8 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
         // done
         mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
                 WORD, WHITESPACE, WORD, LINE_FEED, RIGHT_CURLY, SEMI, LINE_FEED, DONE_KEYWORD);
+
+        //for A do echo $A; done
+        mockTest(forLoop, FOR_KEYWORD, WORD, DO_KEYWORD, WHITESPACE, WORD, VARIABLE, SEMI, DONE_KEYWORD);
     }
 }

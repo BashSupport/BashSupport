@@ -81,19 +81,24 @@ public class ForLoopParsingFunction implements ParsingFunction {
             //mark the word as var
             ParserUtil.markTokenAndAdvance(builder, VAR_DEF_ELEMENT);
         } else {
-            ParserUtil.error(forLoop, "parser.shell.for.expectedWord");
+            forLoop.drop();
+            ParserUtil.error(builder, "parser.shell.for.expectedWord");
             return false;
         }
 
         builder.eatOptionalNewlines();
 
         //now either do, a block {} or IN
-        final IElementType afterLoopValue = ParserUtil.getTokenAndAdvance(builder);
-        if (afterLoopValue == ShellCommandParsing.DO_KEYWORD || afterLoopValue == ShellCommandParsing.LEFT_CURLY || afterLoopValue == ShellCommandParsing.SEMI) {
-            if (afterLoopValue == ShellCommandParsing.SEMI) {
-                builder.eatOptionalNewlines();
-            }
-        } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
+        final IElementType afterLoopValue = builder.getTokenType();
+        if (afterLoopValue == SEMI) {
+            builder.advanceLexer();
+            builder.eatOptionalNewlines();
+        }
+        /*else if (afterLoopValue == ShellCommandParsing.DO_KEYWORD || afterLoopValue == ShellCommandParsing.LEFT_CURLY) {
+            
+        }*/ else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
+            builder.advanceLexer();
+            
             //already after "in"
 
             //parse the optional word list
