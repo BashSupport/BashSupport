@@ -21,15 +21,15 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Created by IntelliJ IDEA.
  * User: jansorg
  * Date: Feb 8, 2010
  * Time: 9:55:14 PM
- * To change this template use File | Settings | File Templates.
  */
 public class BashIdentifierUtil {
     public static boolean isValidIdentifier(String name) {
         return StringUtils.stripToNull(name) != null && !name.contains(" ");
+    }
 
+    private BashIdentifierUtil() {
     }
 }
