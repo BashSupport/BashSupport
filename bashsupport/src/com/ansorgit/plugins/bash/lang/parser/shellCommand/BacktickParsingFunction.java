@@ -43,10 +43,6 @@ public class BacktickParsingFunction implements ParsingFunction {
         return !builder.getBackquoteData().isInBackquote() && builder.getTokenType() == BashTokenTypes.BACKQUOTE;
     }
 
-    private boolean isValid(IElementType token) {
-        throw new IllegalStateException("isValid(token) not supported");
-    }
-
     public boolean parse(BashPsiBuilder builder) {
         /*
           backquote: '`' compound_list '`'

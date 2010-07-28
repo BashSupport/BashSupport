@@ -42,24 +42,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BashPsiUtils {
     /**
-     * Returns the depth in the tree this element has.
-     *
-     * @param element The element to lookup
-     * @return The depth, 0 if it's at the top level
-     */
-    public static int nestingLevel(PsiElement element) {
-        int depth = 0;
-
-        PsiElement current = element.getContext();
-        while (current != null) {
-            depth++;
-            current = current.getContext();
-        }
-
-        return depth;
-    }
-
-    /**
      * Returns the depth in blocks this element has in the tree.
      *
      * @param element The element to lookup
@@ -75,30 +57,6 @@ public class BashPsiUtils {
         }
 
         return depth;
-    }
-
-    /**
-     * Returns the element after the given element. It may either be the next sibling or the
-     * next logical element after the given element (i.e. the element after the parent context).
-     * If it's the last element of the file null is retunred.
-     *
-     * @param element The element to check
-     * @return Next element or null
-     */
-    @Nullable
-    public static PsiElement elementAfter(PsiElement element) {
-        ASTNode node = element.getNode();
-        ASTNode next = node != null ? node.getTreeNext() : null;
-        return next != null ? next.getPsi() : null;
-        /*if (element == null) return null;
-
-        PsiElement next = element.getNextSibling();
-        if (next != null) {
-            return next;
-        }
-
-        //check parent
-        return elementAfter(element.getContext());*/
     }
 
     /**
@@ -170,16 +128,22 @@ public class BashPsiUtils {
     public static boolean processChildDeclarations(PsiElement parentContainer, PsiScopeProcessor processor, ResolveState resolveState, PsiElement lastParent, PsiElement place) {
         boolean hasResult = false;
 
+        if (parentContainer.equals(lastParent)) {
+            return true;
+        }
+
         if (!processor.execute(parentContainer, resolveState)) {
             return false;
         }
 
+        PsiElement lastChild = parentContainer;
         PsiElement child = parentContainer.getFirstChild();
         while (child != null) {
             if (!child.equals(lastParent)) {
-                hasResult |= !child.processDeclarations(processor, resolveState, lastParent, place);
+                hasResult |= !child.processDeclarations(processor, resolveState, lastChild, place);
             }
 
+            lastChild = child;
             child = child.getNextSibling();
         }
 
@@ -204,29 +168,9 @@ public class BashPsiUtils {
         return 0;
     }
 
-    @Nullable
-    public static BashPsiElement getCoveringRPsiElement(@NotNull final PsiElement psiElement) {
-        PsiElement current = psiElement;
-        while (current != null) {
-            if (current instanceof BashPsiElement) {
-                return (BashPsiElement) current;
-            }
-            current = current.getParent();
-        }
-        return null;
-    }
-
-    public static TextRange createRange(PsiElement node) {
-        return TextRange.from(node.getTextOffset(), node.getTextLength());
-    }
-
     public static IElementType nodeType(PsiElement element) {
         ASTNode node = element.getNode();
-        if (node == null) {
-            return null;
-        }
-
-        return node.getElementType();
+        return node == null ? null : node.getElementType();
     }
 
     public static PsiElement findNextSibling(PsiElement start, IElementType ignoreType) {
