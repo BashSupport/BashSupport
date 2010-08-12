@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-07-10
+ * Last modified: 2010-08-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -466,7 +465,7 @@ public class IntegrationTest extends MockPsiTest {
         //	if read pid > c; then
         //      a
         //	fi
-        mockTestError(fileParsingTest,
+        mockTestSuccessWithErrors(fileParsingTest,
                 IF_KEYWORD, INTERNAL_COMMAND, WORD, GREATER_THAN, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD);
@@ -604,11 +603,12 @@ public class IntegrationTest extends MockPsiTest {
     }
 
     @Test
-    public void testCheckErrorMarkers() {
+//    @Ignore("Ignored for now until we do a parser refactoring")
+public void testCheckErrorMarkers() {
         //this test makes sure that there's only only one marker at the right place
 
         //echo > &1 #invalid whitespace
-        mockTestError(fileParsingTest, WORD, GREATER_THAN, WHITESPACE, FILEDESCRIPTOR);
+        mockTestSuccessWithErrors(fileParsingTest, WORD, GREATER_THAN, WHITESPACE, FILEDESCRIPTOR);
     }
 
     @Test

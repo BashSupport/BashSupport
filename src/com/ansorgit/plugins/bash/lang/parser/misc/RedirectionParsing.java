@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: RedirectionParsing.java, Class: RedirectionParsing
- * Last modified: 2010-05-27
+ * Last modified: 2010-08-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,8 @@ public class RedirectionParsing implements ParsingTool {
             builder.advanceLexer(true); //first token
             secondToken = builder.getTokenType(true);
         } else {
-            secondToken = builder.getTokenType();
+            //same as firstToken because there is no number before the redirect token
+            secondToken = firstToken;
         }
 
         if (!redirectionSet.contains(secondToken)) {
@@ -169,10 +170,17 @@ public class RedirectionParsing implements ParsingTool {
         } else {
             marker.drop();
 
+            //we try to avoid further error marks here
             builder.error("Invalid redirect");
+            if (builder.getTokenType() != LINE_FEED) {
+                builder.advanceLexer();
+            }
+
+//            return false;
         }
 
-        return ok;
+        //an invalid redirect should not break the whole parsing, thus we return true here
+        return true;
     }
 
     private boolean handleHereDocRedirect(BashPsiBuilder builder) {
