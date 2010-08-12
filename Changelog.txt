@@ -1,3 +1,7 @@
+2010-08-12:
+ - Fixed redirection parsing
+ - Version 0.9.14-maia
+
 2010-07-28:
  - Fixed parsing of single $ characters, e.g. "$a$"
  - Improved parsing of for loops
@@ -21,7 +25,7 @@
  - More test cases
 
 2010-07-13:
- - Finally fixes the variable resolving issues (hopefully)
+ - Finally fixed the variable resolving issues (hopefully)
 
 2010-07-12:
  - Improved variable resolving if definitions on different levels are present

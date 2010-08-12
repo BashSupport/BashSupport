@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForLoopParsingFunction.java, Class: ForLoopParsingFunction
- * Last modified: 2010-06-05
+ * Last modified: 2010-08-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,12 +93,9 @@ public class ForLoopParsingFunction implements ParsingFunction {
         if (afterLoopValue == SEMI) {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
-        }
-        /*else if (afterLoopValue == ShellCommandParsing.DO_KEYWORD || afterLoopValue == ShellCommandParsing.LEFT_CURLY) {
-            
-        }*/ else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
+        } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
             builder.advanceLexer();
-            
+
             //already after "in"
 
             //parse the optional word list
