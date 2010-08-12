@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiTest.java, Class: MockPsiTest
- * Last modified: 2010-03-13
+ * Last modified: 2010-08-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,12 +123,38 @@ public abstract class MockPsiTest implements BashTokenTypes {
         mockTestFail(BashVersion.Bash_v3, f, elements);
     }
 
+    public void mockTestSuccessWithErrors(MockFunction f, IElementType... elements) {
+        mockTestSuccessWithErrors(BashVersion.Bash_v3, f, Collections.<String>emptyList(), elements);
+    }
+
+    public void mockTestSuccessWithErrors(MockFunction f, List<String> strings, IElementType... elements) {
+        mockTestSuccessWithErrors(BashVersion.Bash_v3, f, strings, elements);
+    }
+
+    public void mockTestSuccessWithErrors(BashVersion bashVersion, MockFunction f, List<String> strings, IElementType... elements) {
+        final MockPsiBuilder mockBuilder = builderFor(strings, elements);
+        BashPsiBuilder psi = new BashPsiBuilder(mockBuilder, bashVersion);
+
+        Assert.assertTrue(f.preCheck(psi));
+
+        boolean ok = f.apply(psi);
+
+        Assert.assertTrue("Parsing was not successful", ok);
+
+        Assert.assertEquals("Not all elements have been processed.", elements.length, mockBuilder.processedElements());
+        Assert.assertTrue("Post condition failed", f.postCheck(mockBuilder));
+
+        assertErrors(mockBuilder);
+
+    }
+
+
     public void mockTestFail(BashVersion version, MockFunction f, IElementType... elements) {
         MockPsiBuilder mockPsiBuilder = builderFor(Collections.<String>emptyList(), elements);
         BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(mockPsiBuilder, version);
 
         boolean ok = f.apply(bashPsiBuilder);
-        Assert.assertFalse(ok);
+        Assert.assertFalse("Expected the parsing to fail with a result of false.", ok);
     }
 
     public static abstract class MockFunction {

@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-07-10
+  ~ Last modified: 2010-08-12
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
     <category>Custom Languages</category>
     <version>0.9.14-maia</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
-    <idea-version since-build="91.15" until-build="98.999"/>
+
+    <!-- Requires IDEA 9.0.3 or later (for the fixed language console) -->
+    <idea-version since-build="95.429" until-build="98.999"/>
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
 
@@ -55,6 +57,16 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.14-maia:</b>
+       <ul>
+         <li>Now requires IDEA 9.0.3 or later</li>
+         <li>Improved parser</li>
+         <li>Fixed resolving of global variables                                         </li>
+         <li>Fixed new Bash script action if the extension .bash was used                </li>
+         <li>Improved variable resolving if definitions on different levels are present  </li>
+         <li>Implemented parsing of process substitution elements                        </li>
+       </ul>
+
        <b>Changes in version 0.9.13-maia:</b>
        <ul>
          <li>Fixed method not found error in EvaluateExpansionInspection                                </li>
@@ -64,34 +76,6 @@
          <li>Improved support for local variable references                                             </li>
          <li>New inspection to detect local variable definition on global level                         </li>
          <li>Quickfix to remove the local keyword from a global variable definition                     </li>
-       </ul>
-
-       <b>Changes in version 0.9.12-maia:</b>
-       <ul>
-            <li>Fixed parsing of for loops with optional command end after a command group
-            </li><li>Fixed static evaluation quickfix to offer result for "$(((1+2)))"
-            </li><li>Performance improvements, especially for offline code analysis
-            </li><li>Cached oftenly performed calculation in arithmetic evaluation
-            </li><li>Integrated custom exception reporting tool by Etienne Studer
-            </li><li>"Add shebang" quickfix is not displayed for a script in the Bash REPL
-            </li><li>Shortcut "Ctrl+Enter" for the repl console run action
-            </li><li>Slightly Improved error reporting
-            </li><li>Parser improvements for function definitions
-            </li><li>Properly resetting PSI element caches now
-            </li><li>Improved parsing of composed arithmetic number literals (e.g. 123$a)
-            </li><li>Hex, octal and custom-base literals in arithmetic expressions
-            </li><li>Variable name completion in evaluating heredocs
-            </li><li>Improved some inspection/quickfix messages
-            </li><li>Improved evaluation of static arithmetic expressions
-            </li><li>Improved parser (correctly parses "a=1 ((1))" now)
-            </li><li>Less error markers in faulty case commands
-            </li><li>Fixed error marker handling, no large red blocks any more
-            </li><li>Inspection to detect invalid filedescriptors (only the range &0 to &9 is valid)
-            </li><li>Support for the % operator in arithmetic expressions
-            </li><li>The quick documentation lookup (Ctrl+Q) now tries
-               to read the current system's info page for an external command,
-               if it is available (needs the commands "info" in the path,
-               optionally "txt2html" to turn the plain text into html).
        </ul>
 
        <b>Recent changes:</b>
