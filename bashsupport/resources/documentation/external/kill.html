@@ -1,0 +1,134 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: kill.html, Class: kill.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>KILL(1) Linux User's Manual KILL(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> kill - send a signal to a process
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       kill [ -signal | -s signal ] pid ...
+       kill [ -L | -V, --version ]
+       kill -l  [ signal ]
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       The  default  signal  for  kill is TERM. Use -l or -L to list available
+       signals.  Particularly useful signals include  HUP,  INT,  KILL,  STOP,
+       CONT,  and  0.   Alternate  signals  may be specified in three ways: -9
+       -SIGKILL -KILL.  Negative PID  values  may  be  used  to  choose  whole
+       process  groups;  see the PGID column in ps command output. A PID of -1
+       is special; it indicates all processes except the kill  process  itself
+       and init.
+</pre>
+<p><strong>SIGNALS</strong>
+</p><pre>
+       The  signals  listed  below  may  be available for use with kill.  When
+       known constant, numbers and default behavior are shown.
+
+       Name     Num   Action    Description
+       0          0   n/a       exit code indicates if a signal may be sent
+       ALRM      14   exit
+       HUP        1   exit
+       INT        2   exit
+       KILL       9   exit      cannot be blocked
+       PIPE      13   exit
+       POLL           exit
+       PROF           exit
+       TERM      15   exit
+       USR1           exit
+       USR2           exit
+       VTALRM         exit
+       STKFLT         exit      might not be implemented
+       PWR            ignore    might exit on some systems
+       WINCH          ignore
+       CHLD           ignore
+       URG            ignore
+       TSTP           stop      might interact with the shell
+       TTIN           stop      might interact with the shell
+       TTOU           stop      might interact with the shell
+       STOP           stop      cannot be blocked
+       CONT           restart   continue if stopped, otherwise ignore
+       ABRT       6   core
+       FPE        8   core
+       ILL        4   core
+       QUIT       3   core
+       SEGV      11   core
+       TRAP       5   core
+       SYS            core      might not be implemented
+       EMT            core      might not be implemented
+       BUS            core      core dump might fail
+       XCPU           core      core dump might fail
+       XFSZ           core      core dump might fail
+</pre>
+<p><strong>NOTES</strong>
+</p><pre>
+       Your shell (command line interpreter) may have a built-in kill command.
+       You  may  need  to run the command described here as /bin/kill to solve
+       the conflict.
+</pre>
+<p><strong>EXAMPLES</strong>
+</p><pre>
+       kill -9 -1
+              Kill all processes you can kill.
+
+       kill -l 11
+              Translate number 11 into a signal name.
+
+       kill -L
+              List the available signal choices in a nice table.
+
+       kill 123 543 2341 3453
+              Send the default signal, SIGTERM, to all those processes.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> pkill(1), skill(1), kill(2), renice(1), nice(1), signal(7), killall(1).
+</p>
+
+<p><strong>STANDARDS</strong>
+</p><pre>
+       This command meets appropriate standards. The  -L  flag  is  Linux-spe‐
+       cific.
+</pre>
+<p><strong>AUTHOR</strong>
+</p><pre>
+       Albert  Cahalan  &lt;<a href="mailto:albert@users.sf.net">albert@users.sf.net</a>&gt;  wrote kill in 1999 to replace a
+       bsdutils one that was not standards compliant. The util-linux one might
+       also work correctly.
+
+       Please send bug reports to &lt;<a href="mailto:procps-feedback@lists.sf.net">procps-feedback@lists.sf.net</a>&gt;
+
+Linux                          November 21, 1999                       KILL(1)
+</pre>
+</body>
+</html>

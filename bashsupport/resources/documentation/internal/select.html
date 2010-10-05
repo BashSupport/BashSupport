@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: select.html, Class: select.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>select: select NAME [in WORDS ... ;] do COMMANDS; done
+</p>
+
+<p> Select words from a list and execute commands.
+
+</p>
+
+<p> The WORDS are expanded, generating a list of words. The
+    set of expanded words is printed on the standard error, each
+    preceded by a number. If `in WORDS' is not present, `in "$@"'
+    is assumed. The PS3 prompt is then displayed and a line read
+    from the standard input. If the line consists of the number
+    corresponding to one of the displayed words, then NAME is set
+    to that word. If the line is empty, WORDS and the prompt are
+    redisplayed. If EOF is read, the command completes. Any other
+    value read causes NAME to be set to null. The line read is saved
+    in the variable REPLY. COMMANDS are executed after each selection
+    until a break command is executed.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns the status of the last command executed.</p>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: fc.html, Class: fc.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>fc: fc [-e ename] [-lnr] [first] [last] or fc -s [pat=rep] [command]
+</p>
+
+<p> Display or execute commands from the history list.
+
+</p>
+
+<p> fc is used to list or edit and re-execute commands from the history list.
+    FIRST and LAST can be numbers specifying the range, or FIRST can be a
+    string, which means the most recent command beginning with that
+    string.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -e ENAME select which editor to use. Default is FCEDIT, then EDITOR,
+        <p> then vi
+            -l list lines instead of editing
+            -n omit line numbers when listing
+            -r reverse the order of the lines (newest listed first)
+
+        </p>
+</dl>
+<p> With the `fc -s [pat=rep ...] [command]' format, COMMAND is
+    re-executed after the substitution OLD=NEW is performed.
+
+</p>
+
+<p> A useful alias to use with this is r='fc -s', so that typing `r cc'
+    runs the last command beginning with `cc' and typing `r' re-executes
+    the last command.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success or status of executed command; non-zero if an error occurs.</p>
+</dd></dl>
+</body>
+</html>

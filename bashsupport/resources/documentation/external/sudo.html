@@ -1,0 +1,585 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: sudo.html, Class: sudo.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p><strong>SUDO(8) MAINTENANCE COMMANDS SUDO(8)</strong>
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> sudo, sudoedit - execute a command as another user
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> sudo -h | -K | -k | -L | -V
+</p>
+
+<p> sudo -v [-AknS] [-a auth_type] [-p prompt]
+</p>
+<pre>
+       sudo -l[l] [-AknS] [-a auth_type] [-g groupname|<strong>gid] [-p prompt]
+    [-U username] [-u username|</strong>uid] [command]
+
+       sudo [-AbEHnPS] [-a auth_type] [-C fd] [-c class|-] [-g groupname|<strong>gid]
+    [-p prompt] [-r role] [-t type] [-u username|</strong>uid] [VAR=value]
+       [-i | -s] [command]
+
+       sudoedit [-AnS] [-a auth_type] [-C fd] [-c class|-] [-g groupname|<strong>gid]
+    [-p prompt] [-u username|</strong>uid] file ...
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       sudo allows a permitted user to execute a command as the superuser or
+       another user, as specified in the sudoers file.  The real and effective
+       uid and gid are set to match those of the target user as specified in
+       the passwd file and the group vector is initialized based on the group
+       file (unless the -P option was specified).  If the invoking user is
+       root or if the target user is the same as the invoking user, no
+       password is required.  Otherwise, sudo requires that users authenticate
+       themselves with a password by default (NOTE: in the default
+       configuration this is the user's password, not the root password).
+       Once a user has been authenticated, a timestamp is updated and the user
+       may then use sudo without a password for a short period of time (15
+       minutes unless overridden in sudoers).
+
+       When invoked as sudoedit, the -e option (described below), is implied.
+
+       sudo determines who is an authorized user by consulting the file
+       @sysconfdir@/sudoers.  By running sudo with the -v option, a user can
+       update the time stamp without running a command. The password prompt
+       itself will also time out if the user's password is not entered within
+       0 minutes (unless overridden via sudoers).
+
+       If a user who is not listed in the sudoers file tries to run a command
+       via sudo, mail is sent to the proper authorities, as defined at
+       configure time or in the sudoers file (defaults to root).  Note that
+       the mail will not be sent if an unauthorized user tries to run sudo
+       with the -l or -v option.  This allows users to determine for
+       themselves whether or not they are allowed to use sudo.
+
+       If sudo is run by root and the SUDO_USER environment variable is set,
+       sudo will use this value to determine who the actual user is.  This can
+       be used by a user to log commands through sudo even when a root shell
+       has been invoked.  It also allows the -e option to remain useful even
+       when being run via a sudo-run script or program.  Note however, that
+       the sudoers lookup is still done for root, not the user specified by
+       SUDO_USER.
+
+       sudo can log both successful and unsuccessful attempts (as well as
+       errors) to syslog(3), a log file, or both.  By default sudo will log
+       via syslog(3) but this is changeable at configure time or via the
+       sudoers file.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> sudo accepts the following command line options:
+</p>
+<pre>
+       -A          Normally, if sudo requires a password, it will read it from
+                   the current terminal.  If the -A (askpass) option is
+                   specified, a (possibly graphical) helper program is
+                   executed to read the user's password and output the
+                   password to the standard output.  If the SUDO_ASKPASS
+                   environment variable is set, it specifies the path to the
+                   helper program.  Otherwise, the value specified by the
+                   askpass option in sudoers(5) is used.
+
+       -a type     The -a (authentication type) option causes sudo to use the
+                   specified authentication type when validating the user, as
+                   allowed by /etc/login.conf.  The system administrator may
+                   specify a list of sudo-specific authentication methods by
+                   adding an "auth-sudo" entry in /etc/login.conf.  This
+                   option is only available on systems that support BSD
+                   authentication.
+
+       -b          The -b (background) option tells sudo to run the given
+                   command in the background.  Note that if you use the -b
+                   option you cannot use shell job control to manipulate the
+                   process.
+
+       -C fd       Normally, sudo will close all open file descriptors other
+                   than standard input, standard output and standard error.
+                   The -C (close from) option allows the user to specify a
+                   starting point above the standard error (file descriptor
+                   three).  Values less than three are not permitted.  This
+                   option is only available if the administrator has enabled
+                   the closefrom_override option in sudoers(5).
+
+       -c class    The -c (class) option causes sudo to run the specified
+                   command with resources limited by the specified login
+                   class.  The class argument can be either a class name as
+                   defined in /etc/login.conf, or a single '-' character.
+                   Specifying a class of - indicates that the command should
+                   be run restricted by the default login capabilities for the
+                   user the command is run as.  If the class argument
+                   specifies an existing user class, the command must be run
+                   as root, or the sudo command must be run from a shell that
+                   is already root.  This option is only available on systems
+                   with BSD login classes.
+
+       -E          The -E (preserve environment) option will override the
+                   env_reset option in sudoers(5)).  It is only available when
+                   either the matching command has the SETENV tag or the
+                   setenv option is set in sudoers(5).
+
+       -e          The -e (edit) option indicates that, instead of running a
+                   command, the user wishes to edit one or more files.  In
+                   lieu of a command, the string "sudoedit" is used when
+                   consulting the sudoers file.  If the user is authorized by
+                   sudoers the following steps are taken:
+
+                   1.  Temporary copies are made of the files to be edited
+                       with the owner set to the invoking user.
+
+                   2.  The editor specified by the SUDO_EDITOR, VISUAL or
+                       EDITOR environment variables is run to edit the
+                       temporary files.  If none of SUDO_EDITOR, VISUAL or
+                       EDITOR are set, the first program listed in the editor
+                       sudoers variable is used.
+
+                   3.  If they have been modified, the temporary files are
+                       copied back to their original location and the
+                       temporary versions are removed.
+
+                   If the specified file does not exist, it will be created.
+                   Note that unlike most commands run by sudo, the editor is
+                   run with the invoking user's environment unmodified.  If,
+                   for some reason, sudo is unable to update a file with its
+                   edited version, the user will receive a warning and the
+                   edited copy will remain in a temporary file.
+
+       -g group    Normally, sudo sets the primary group to the one specified
+                   by the passwd database for the user the command is being
+                   run as (by default, root).  The -g (group) option causes
+                   sudo to run the specified command with the primary group
+                   set to group.  To specify a gid instead of a group name,
+                   use <strong>gid. When running commands as a gid, many shells
+           require that the '</strong>' be escaped with a backslash ('\').  If
+                   no -u option is specified, the command will be run as the
+                   invoking user (not root).  In either case, the primary
+                   group will be set to group.
+
+       -H          The -H (HOME) option sets the HOME environment variable to
+                   the homedir of the target user (root by default) as
+                   specified in passwd(5).  By default, sudo does not modify
+                   HOME (see set_home and always_set_home in sudoers(5)).
+
+       -h          The -h (help) option causes sudo to print a usage message
+                   and exit.
+
+       -i [command]
+                   The -i (simulate initial login) option runs the shell
+                   specified in the passwd(5) entry of the target user as a
+                   login shell.  This means that login-specific resource files
+                   such as .profile or .login will be read by the shell.  If a
+                   command is specified, it is passed to the shell for
+                   execution.  Otherwise, an interactive shell is executed.
+                   sudo attempts to change to that user's home directory
+                   before running the shell.  It also initializes the
+                   environment, leaving DISPLAY and TERM unchanged, setting
+                   HOME, SHELL, USER, LOGNAME, and PATH, as well as the
+                   contents of /etc/environment on Linux and AIX systems.  All
+                   other environment variables are removed.
+
+       -K          The -K (sure kill) option is like -k except that it removes
+                   the user's timestamp entirely and may not be used in
+                   conjunction with a command or other option.  This option
+                   does not require a password.
+
+       -k          When used by itself, the -k (kill) option to sudo
+                   invalidates the user's timestamp by setting the time on it
+                   to the Epoch.  The next time sudo is run a password will be
+                   required.  This option does not require a password and was
+                   added to allow a user to revoke sudo permissions from a
+                   .logout file.
+
+                   When used in conjunction with a command or an option that
+                   may require a password, the -k option will cause sudo to
+                   ignore the user's timestamp file.  As a result, sudo will
+                   prompt for a password (if one is required by sudoers) and
+                   will not update the user's timestamp file.
+
+       -L          The -L (list defaults) option will list out the parameters
+                   that may be set in a Defaults line along with a short
+                   description for each.  This option is useful in conjunction
+                   with grep(1).
+
+       -l[l] [command]
+                   If no command is specified, the -l (list) option will list
+                   the allowed (and forbidden) commands for the invoking user
+                   (or the user specified by the -U option) on the current
+                   host.  If a command is specified and is permitted by
+                   sudoers, the fully-qualified path to the command is
+                   displayed along with any command line arguments.  If
+                   command is specified but not allowed, sudo will exit with a
+                   status value of 1.  If the -l option is specified with an l
+                   argument (i.e. -ll), or if -l is specified multiple times,
+                   a longer list format is used.
+
+       -n          The -n (non-interactive) option prevents sudo from
+                   prompting the user for a password.  If a password is
+                   required for the command to run, sudo will display an error
+                   messages and exit.
+
+       -P          The -P (preserve group vector) option causes sudo to
+                   preserve the invoking user's group vector unaltered.  By
+                   default, sudo will initialize the group vector to the list
+                   of groups the target user is in.  The real and effective
+                   group IDs, however, are still set to match the target user.
+
+       -p prompt   The -p (prompt) option allows you to override the default
+                   password prompt and use a custom one.  The following
+                   percent (`%') escapes are supported:
+
+                   %H  expanded to the local hostname including the domain
+                       name (on if the machine's hostname is fully qualified
+                       or the fqdn sudoers option is set)
+
+                   %h  expanded to the local hostname without the domain name
+
+                   %p  expanded to the user whose password is being asked for
+                       (respects the rootpw, targetpw and runaspw flags in
+                       sudoers)
+
+                   %U  expanded to the login name of the user the command will
+                       be run as (defaults to root)
+
+                   %u  expanded to the invoking user's login name
+
+                   %%  two consecutive % characters are collapsed into a
+                       single % character
+
+                   The prompt specified by the -p option will override the
+                   system password prompt on systems that support PAM unless
+                   the passprompt_override flag is disabled in sudoers.
+
+       -r role     The -r (role) option causes the new (SELinux) security
+                   context to have the role specified by role.
+
+       -S          The -S (stdin) option causes sudo to read the password from
+                   the standard input instead of the terminal device.
+
+       -s [command]
+                   The -s (shell) option runs the shell specified by the SHELL
+                   environment variable if it is set or the shell as specified
+                   in passwd(5).  If a command is specified, it is passed to
+                   the shell for execution.  Otherwise, an interactive shell
+                   is executed.
+
+       -t type     The -t (type) option causes the new (SELinux) security
+                   context to have the type specified by type.  If no type is
+                   specified, the default type is derived from the specified
+                   role.
+
+       -U user     The -U (other user) option is used in conjunction with the
+                   -l option to specify the user whose privileges should be
+                   listed.  Only root or a user with sudo ALL on the current
+                   host may use this option.
+
+       -u user     The -u (user) option causes sudo to run the specified
+                   command as a user other than root.  To specify a uid
+                   instead of a user name, use <strong>uid. When running commands as
+           a uid, many shells require that the '</strong>' be escaped with a
+                   backslash ('\').  Note that if the targetpw Defaults option
+                   is set (see sudoers(5)) it is not possible to run commands
+                   with a uid not listed in the password database.
+
+       -V          The -V (version) option causes sudo to print the version
+                   number and exit.  If the invoking user is already root the
+                   -V option will print out a list of the defaults sudo was
+                   compiled with as well as the machine's local network
+                   addresses.
+
+       -v          If given the -v (validate) option, sudo will update the
+                   user's timestamp, prompting for the user's password if
+                   necessary.  This extends the sudo timeout for another 15
+                   minutes (or whatever the timeout is set to in sudoers) but
+                   does not run a command.
+
+       --          The -- option indicates that sudo should stop processing
+                   command line arguments.  It is most useful in conjunction
+                   with the -s option.
+
+       Environment variables to be set for the command may also be passed on
+       the command line in the form of VAR=value, e.g.
+       LD_LIBRARY_PATH=/usr/local/pkg/lib.  Variables passed on the command
+       line are subject to the same restrictions as normal environment
+       variables with one important exception.  If the setenv option is set in
+       sudoers, the command to be run has the SETENV tag set or the command
+       matched is ALL, the user may set variables that would overwise be
+       forbidden.  See sudoers(5) for more information.
+</pre>
+<p><strong>RETURN VALUES</strong>
+</p><pre>
+       Upon successful execution of a program, the exit status from sudo will
+       simply be the exit status of the program that was executed.
+
+       Otherwise, sudo quits with an exit value of 1 if there is a
+       configuration/permission problem or if sudo cannot execute the given
+       command.  In the latter case the error string is printed to stderr.  If
+       sudo cannot stat(2) one or more entries in the user's PATH an error is
+       printed on stderr.  (If the directory does not exist or if it is not
+       really a directory, the entry is ignored and no error is printed.)
+       This should not happen under normal circumstances.  The most common
+       reason for stat(2) to return "permission denied" is if you are running
+       an automounter and one of the directories in your PATH is on a machine
+       that is currently unreachable.
+</pre>
+<p><strong>SECURITY NOTES</strong>
+</p>
+
+<p> sudo tries to be safe when executing external commands.
+</p>
+<pre>
+       There are two distinct ways to deal with environment variables.  By
+       default, the env_reset sudoers option is enabled.  This causes commands
+       to be executed with a minimal environment containing TERM, PATH, HOME,
+       SHELL, LOGNAME, USER and USERNAME in addition to variables from the
+       invoking process permitted by the env_check and env_keep sudoers
+       options.  There is effectively a whitelist for environment variables.
+
+       If, however, the env_reset option is disabled in sudoers, any variables
+       not explicitly denied by the env_check and env_delete options are
+       inherited from the invoking process.  In this case, env_check and
+       env_delete behave like a blacklist.  Since it is not possible to
+       blacklist all potentially dangerous environment variables, use of the
+       default env_reset behavior is encouraged.
+
+       In all cases, environment variables with a value beginning with () are
+       removed as they could be interpreted as bash functions.  The list of
+       environment variables that sudo allows or denies is contained in the
+       output of sudo -V when run as root.
+
+       Note that the dynamic linker on most operating systems will remove
+       variables that can control dynamic linking from the environment of
+       setuid executables, including sudo.  Depending on the operating system
+       this may include <u>RLD<em>, DYLD</u></em>, LD_<em>, LDR_</em>, LIBPATH, SHLIB_PATH, and
+       others.  These type of variables are removed from the environment
+       before sudo even begins execution and, as such, it is not possible for
+       sudo to preserve them.
+
+       To prevent command spoofing, sudo checks "." and "" (both denoting
+       current directory) last when searching for a command in the user's PATH
+       (if one or both are in the PATH).  Note, however, that the PATH
+       environment variable is further modified in Debian because of the use
+       of the SECURE_PATH build option.
+
+       sudo will check the ownership of its timestamp directory (@timedir@ by
+       default) and ignore the directory's contents if it is not owned by root
+       or if it is writable by a user other than root.  On systems that allow
+       non-root users to give away files via chown(2), if the timestamp
+       directory is located in a directory writable by anyone (e.g., /tmp), it
+       is possible for a user to create the timestamp directory before sudo is
+       run.  However, because sudo checks the ownership and mode of the
+       directory and its contents, the only damage that can be done is to
+       "hide" files by putting them in the timestamp dir.  This is unlikely to
+       happen since once the timestamp dir is owned by root and inaccessible
+       by any other user, the user placing files there would be unable to get
+       them back out.  To get around this issue you can use a directory that
+       is not world-writable for the timestamps (/var/adm/sudo for instance)
+       or create @timedir@ with the appropriate owner (root) and permissions
+       (0700) in the system startup files.
+
+       sudo will not honor timestamps set far in the future.  Timestamps with
+       a date greater than current_time + 2 * TIMEOUT will be ignored and sudo
+       will log and complain.  This is done to keep a user from creating
+       his/her own timestamp with a bogus date on systems that allow users to
+       give away files.
+
+       Please note that sudo will normally only log the command it explicitly
+       runs.  If a user runs a command such as sudo su or sudo sh, subsequent
+       commands run from that shell will not be logged, nor will sudo's access
+       control affect them.  The same is true for commands that offer shell
+       escapes (including most editors).  Because of this, care must be taken
+       when giving users access to commands via sudo to verify that the
+       command does not inadvertently give the user an effective root shell.
+       For more information, please see the PREVENTING SHELL ESCAPES section
+       in sudoers(5).
+</pre>
+<p><strong>ENVIRONMENT</strong>
+</p>
+
+<p> sudo utilizes the following environment variables:
+</p>
+<pre>
+       EDITOR          Default editor to use in -e (sudoedit) mode if neither
+                       SUDO_EDITOR nor VISUAL is set
+
+       HOME            In -s or -H mode (or if sudo was configured with the
+                       --enable-shell-sets-home option), set to homedir of the
+                       target user
+
+       PATH            Set to a sane value if the secure_path sudoers option
+                       is set.
+
+       SHELL           Used to determine shell to run with -s option
+
+       SUDO_ASKPASS    Specifies the path to a helper program used to read the
+                       password if no terminal is available or if the -A
+                       option is specified.
+
+       SUDO_COMMAND    Set to the command run by sudo
+
+       SUDO_EDITOR     Default editor to use in -e (sudoedit) mode
+
+       SUDO_GID        Set to the group ID of the user who invoked sudo
+
+       SUDO_PROMPT     Used as the default password prompt
+
+       SUDO_PS1        If set, PS1 will be set to its value for the program
+                       being run
+
+       SUDO_UID        Set to the user ID of the user who invoked sudo
+
+       SUDO_USER       Set to the login of the user who invoked sudo
+
+       USER            Set to the target user (root unless the -u option is
+                       specified)
+
+       VISUAL          Default editor to use in -e (sudoedit) mode if
+                       SUDO_EDITOR is not set
+</pre>
+<p><strong>FILES</strong>
+</p>
+
+<p> @sysconfdir@/sudoers List of who can run what
+</p>
+
+<p> @timedir@ Directory containing timestamps
+</p>
+<pre>
+       /etc/environment        Initial environment for -i mode on Linux and
+                               AIX
+</pre>
+<p><strong>EXAMPLES</strong>
+</p>
+
+<p> Note: the following examples assume suitable sudoers(5) entries.
+</p>
+
+<p> To get a file listing of an unreadable directory:
+</p>
+
+<p> $ sudo ls /usr/local/protected
+</p>
+<pre>
+       To list the home directory of user yaz on a machine where the file
+       system holding ~yaz is not exported as root:
+
+        $ sudo -u yaz ls ~yaz
+
+       To edit the index.html file as user www:
+
+        $ sudo -u www vi ~www/htdocs/index.html
+
+       To view system logs only accessible to root and users in the adm group:
+
+        $ sudo -g adm view /var/log/syslog
+
+       To run an editor as jim with a different primary group:
+
+        $ sudo -u jim -g audio vi ~jim/sound.txt
+
+       To shutdown a machine:
+
+        $ sudo shutdown -r +15 "quick reboot"
+
+       To make a usage listing of the directories in the /home partition.
+       Note that this runs the commands in a sub-shell to make the cd and file
+       redirection work.
+
+        $ sudo sh -c "cd /home ; du -s * | sort -rn &gt; USAGE"
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> grep(1), su(1), stat(2), login_cap(3), passwd(5), sudoers(5), visudo(8)
+</p>
+<pre>
+       The file /usr/share/doc/sudo/OPTIONS describes the options used for
+       building the Debian version of sudo, some of which change default
+       behaviors documented elsewhere in this document.
+</pre>
+<p><strong>AUTHORS</strong>
+</p><pre>
+       Many people have worked on sudo over the years; this version consists
+       of code written primarily by:
+
+               Todd C. Miller
+
+       See the HISTORY file in the sudo distribution or visit
+       <a href="http://www.sudo.ws/sudo/history.html">http://www.sudo.ws/sudo/history.html</a> for a short history of sudo.
+</pre>
+<p><strong>CAVEATS</strong>
+</p><pre>
+       There is no easy way to prevent a user from gaining a root shell if
+       that user is allowed to run arbitrary commands via sudo.  Also, many
+       programs (such as editors) allow the user to run commands via shell
+       escapes, thus avoiding sudo's checks.  However, on most systems it is
+       possible to prevent shell escapes with sudo's noexec functionality.
+       See the sudoers(5) manual for details.
+
+       It is not meaningful to run the cd command directly via sudo, e.g.,
+
+        $ sudo cd /usr/local/protected
+
+       since when the command exits the parent process (your shell) will still
+       be the same.  Please see the EXAMPLES section for more information.
+
+       If users have sudo ALL there is nothing to prevent them from creating
+       their own program that gives them a root shell regardless of any '!'
+       elements in the user specification.
+
+       Running shell scripts via sudo can expose the same kernel bugs that
+       make setuid shell scripts unsafe on some operating systems (if your OS
+       has a /dev/fd/ directory, setuid shell scripts are generally safe).
+</pre>
+<p><strong>BUGS</strong>
+</p><pre>
+       If you feel you have found a bug in sudo, please submit a bug report at
+       <a href="http://www.sudo.ws/sudo/bugs/">http://www.sudo.ws/sudo/bugs/</a>
+</pre>
+<p><strong>SUPPORT</strong>
+</p><pre>
+       Limited free support is available via the sudo-users mailing list, see
+       <a href="http://www.sudo.ws/mailman/listinfo/sudo-users">http://www.sudo.ws/mailman/listinfo/sudo-users</a> to subscribe or search
+       the archives.
+</pre>
+<p><strong>DISCLAIMER</strong>
+</p><pre>
+       sudo is provided ``AS IS'' and any express or implied warranties,
+       including, but not limited to, the implied warranties of
+       merchantability and fitness for a particular purpose are disclaimed.
+       See the LICENSE file distributed with sudo or
+       <a href="http://www.sudo.ws/sudo/license.html">http://www.sudo.ws/sudo/license.html</a> for complete details.
+
+1.7.2p1                         April 13, 2010                         SUDO(8)
+</pre>
+</body>
+</html>

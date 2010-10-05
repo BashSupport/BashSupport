@@ -1,0 +1,436 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: file.html, Class: file.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>FILE(1) BSD General Commands Manual FILE(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> file — determine file type
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+     file [-bchikLnNprsvz] [--mime-type] [--mime-encoding] [-f namefile]
+          [-F separator] [-m magicfiles] file
+     file -C [-m magicfile]
+     file [--help]
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> This manual page documents version 5.03 of the file command.
+</p>
+<pre>
+     file tests each argument in an attempt to classify it.  There are three
+     sets of tests, performed in this order: filesystem tests, magic tests,
+     and language tests.  The first test that succeeds causes the file type to
+     be printed.
+
+     The type printed will usually contain one of the words text (the file
+     contains only printing characters and a few common control characters and
+     is probably safe to read on an ASCII terminal), executable (the file con‐
+     tains the result of compiling a program in a form understandable to some
+     UNIX kernel or another), or data meaning anything else (data is usually
+     ‘binary’ or non-printable).  Exceptions are well-known file formats (core
+     files, tar archives) that are known to contain binary data.  When adding
+     local definitions to /etc/magic, make sure to preserve these keywords.
+     Users depend on knowing that all the readable files in a directory have
+     the word ‘text’ printed.  Don't do as Berkeley did and change ‘shell
+     commands text’ to ‘shell script’.
+
+     The filesystem tests are based on examining the return from a stat(2)
+     system call.  The program checks to see if the file is empty, or if it's
+     some sort of special file.  Any known file types appropriate to the sys‐
+     tem you are running on (sockets, symbolic links, or named pipes (FIFOs)
+     on those systems that implement them) are intuited if they are defined in
+     the system header file &lt;sys/stat.h&gt;.
+
+     The magic tests are used to check for files with data in particular fixed
+     formats.  The canonical example of this is a binary executable (compiled
+     program) a.out file, whose format is defined in &lt;elf.h&gt;, &lt;a.out.h&gt; and
+     possibly &lt;exec.h&gt; in the standard include directory.  These files have a
+     ‘magic number’ stored in a particular place near the beginning of the
+     file that tells the UNIX operating system that the file is a binary exe‐
+     cutable, and which of several types thereof.  The concept of a ‘magic’
+     has been applied by extension to data files.  Any file with some invari‐
+     ant identifier at a small fixed offset into the file can usually be
+     described in this way.  The information identifying these files is read
+     from /etc/magic and the the compiled magic file
+     /usr/share/misc/magic.mgc, or the files in the directory
+     /usr/share/misc/magic if the compiled file does not exist. In addition,
+     if $HOME/.magic.mgc or $HOME/.magic exists, it will be used in preference
+     to the system magic files.
+
+     If a file does not match any of the entries in the magic file, it is
+     examined to see if it seems to be a text file.  ASCII, ISO-8859-x, non-
+     ISO 8-bit extended-ASCII character sets (such as those used on Macintosh
+     and IBM PC systems), UTF-8-encoded Unicode, UTF-16-encoded Unicode, and
+     EBCDIC character sets can be distinguished by the different ranges and
+     sequences of bytes that constitute printable text in each set.  If a file
+     passes any of these tests, its character set is reported.  ASCII,
+     ISO-8859-x, UTF-8, and extended-ASCII files are identified as ‘text’
+     because they will be mostly readable on nearly any terminal; UTF-16 and
+     EBCDIC are only ‘character data’ because, while they contain text, it is
+     text that will require translation before it can be read.  In addition,
+     file will attempt to determine other characteristics of text-type files.
+     If the lines of a file are terminated by CR, CRLF, or NEL, instead of the
+     Unix-standard LF, this will be reported.  Files that contain embedded
+     escape sequences or overstriking will also be identified.
+
+     Once file has determined the character set used in a text-type file, it
+     will attempt to determine in what language the file is written.  The lan‐
+     guage tests look for particular strings (cf.  &lt;names.h&gt; ) that can appear
+     anywhere in the first few blocks of a file.  For example, the keyword .br
+     indicates that the file is most likely a troff(1) input file, just as the
+     keyword struct indicates a C program.  These tests are less reliable than
+     the previous two groups, so they are performed last.  The language test
+     routines also test for some miscellany (such as tar(1) archives).
+
+     Any file that cannot be identified as having been written in any of the
+     character sets listed above is simply said to be ‘data’.
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+     -b, --brief
+             Do not prepend filenames to output lines (brief mode).
+
+     -c, --checking-printout
+             Cause a checking printout of the parsed form of the magic file.
+             This is usually used in conjunction with the -m flag to debug a
+             new magic file before installing it.
+
+     -C, --compile
+             Write a magic.mgc output file that contains a pre-parsed version
+             of the magic file or directory.
+
+     -e, --exclude testname
+             Exclude the test named in testname from the list of tests made to
+             determine the file type. Valid test names are:
+
+             apptype
+                EMX application type (only on EMX).
+
+             text
+                Various types of text files (this test will try to guess the
+                text encoding, irrespective of the setting of the ‘encoding’
+                option).
+
+             encoding
+                Different text encodings for soft magic tests.
+
+             tokens
+                Looks for known tokens inside text files.
+
+             cdf
+                Prints details of Compound Document Files.
+
+             compress
+                Checks for, and looks inside, compressed files.
+
+             elf
+                Prints ELF file details.
+
+             soft
+                Consults magic files.
+
+             tar
+                Examines tar files.
+
+     -f, --files-from namefile
+             Read the names of the files to be examined from namefile (one per
+             line) before the argument list.  Either namefile or at least one
+             filename argument must be present; to test the standard input,
+             use ‘-’ as a filename argument.
+
+     -F, --separator separator
+             Use the specified string as the separator between the filename
+             and the file result returned. Defaults to ‘:’.
+
+     -h, --no-dereference
+             option causes symlinks not to be followed (on systems that sup‐
+             port symbolic links). This is the default if the environment
+             variable POSIXLY_CORRECT is not defined.
+
+     -i, --mime
+             Causes the file command to output mime type strings rather than
+             the more traditional human readable ones. Thus it may say
+             ‘text/plain; charset=us-ascii’ rather than ‘ASCII text’.  In
+             order for this option to work, file changes the way it handles
+             files recognized by the command itself (such as many of the text
+             file types, directories etc), and makes use of an alternative
+             ‘magic’ file.  (See the FILES section, below).
+
+     --mime-type, --mime-encoding
+             Like -i, but print only the specified element(s).
+
+     -k, --keep-going
+             Don't stop at the first match, keep going. Subsequent matches
+             will be have the string ‘\012- ’ prepended.  (If you want a new‐
+             line, see the ‘-r’ option.)
+
+     -L, --dereference
+             option causes symlinks to be followed, as the like-named option
+             in ls(1) (on systems that support symbolic links).  This is the
+             default if the environment variable POSIXLY_CORRECT is defined.
+
+     -m, --magic-file list
+             Specify an alternate list of files and directories containing
+             magic.  This can be a single item, or a colon-separated list.  If
+             a compiled magic file is found alongside a file or directory, it
+             will be used instead.
+
+     -n, --no-buffer
+             Force stdout to be flushed after checking each file.  This is
+             only useful if checking a list of files.  It is intended to be
+             used by programs that want filetype output from a pipe.
+
+     -N, --no-pad
+             Don't pad filenames so that they align in the output.
+
+     -p, --preserve-date
+             On systems that support utime(2) or utimes(2), attempt to pre‐
+             serve the access time of files analyzed, to pretend that file
+             never read them.
+
+     -r, --raw
+             Don't translate unprintable characters to \ooo.  Normally file
+             translates unprintable characters to their octal representation.
+
+     -s, --special-files
+             Normally, file only attempts to read and determine the type of
+             argument files which stat(2) reports are ordinary files.  This
+             prevents problems, because reading special files may have pecu‐
+             liar consequences.  Specifying the -s option causes file to also
+             read argument files which are block or character special files.
+             This is useful for determining the filesystem types of the data
+             in raw disk partitions, which are block special files.  This
+             option also causes file to disregard the file size as reported by
+             stat(2) since on some systems it reports a zero size for raw disk
+             partitions.
+
+     -v, --version
+             Print the version of the program and exit.
+
+     -z, --uncompress
+             Try to look inside compressed files.
+
+     -0, --print0
+             Output a null character ‘\0’ after the end of the filename. Nice
+             to cut(1) the output. This does not affect the separator which is
+             still printed.
+
+     --help  Print a help message and exit.
+</pre>
+<p><strong>FILES</strong>
+</p><pre>
+     /usr/share/misc/magic.mgc  Default compiled list of magic.
+     /usr/share/misc/magic      Directory containing default magic files.
+</pre>
+<p><strong>ENVIRONMENT</strong>
+</p><pre>
+     The environment variable MAGIC can be used to set the default magic file
+     name.  If that variable is set, then file will not attempt to open
+     $HOME/.magic.  file adds ‘.mgc’ to the value of this variable as appro‐
+     priate.  However, file has to exist in order for file.mime to be consid‐
+     ered.  The environment variable POSIXLY_CORRECT controls (on systems that
+     support symbolic links), whether file will attempt to follow symlinks or
+     not. If set, then file follows symlink, otherwise it does not. This is
+     also controlled by the -L and -h options.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> magic(5), strings(1), od(1), hexdump(1), file(1posix)
+</p>
+
+<p><strong>STANDARDS CONFORMANCE</strong>
+</p><pre>
+     This program is believed to exceed the System V Interface Definition of
+     FILE(CMD), as near as one can determine from the vague language contained
+     therein.  Its behavior is mostly compatible with the System V program of
+     the same name.  This version knows more magic, however, so it will pro‐
+     duce different (albeit more accurate) output in many cases.
+
+     The one significant difference between this version and System V is that
+     this version treats any white space as a delimiter, so that spaces in
+     pattern strings must be escaped.  For example,
+
+           &gt;10     string  language impress        (imPRESS data)
+
+     in an existing magic file would have to be changed to
+
+           &gt;10     string  language\ impress       (imPRESS data)
+
+     In addition, in this version, if a pattern string contains a backslash,
+     it must be escaped.  For example
+
+           0       string          \begindata      Andrew Toolkit document
+
+     in an existing magic file would have to be changed to
+
+           0       string          \\begindata     Andrew Toolkit document
+
+     SunOS releases 3.2 and later from Sun Microsystems include a file command
+     derived from the System V one, but with some extensions.  My version dif‐
+     fers from Sun's only in minor ways.  It includes the extension of the ‘&amp;’
+     operator, used as, for example,
+
+           &gt;16     long&amp;0x7fffffff &gt;0              not stripped
+</pre>
+<p><strong>MAGIC DIRECTORY</strong>
+</p><pre>
+     The magic file entries have been collected from various sources, mainly
+     USENET, and contributed by various authors.  Christos Zoulas (address
+     below) will collect additional or corrected magic file entries.  A con‐
+     solidation of magic file entries will be distributed periodically.
+
+     The order of entries in the magic file is significant.  Depending on what
+     system you are using, the order that they are put together may be incor‐
+     rect.
+</pre>
+<p><strong>EXAMPLES</strong>
+</p><pre>
+           $ file file.c file /dev/{wd0a,hda}
+           file.c:   C program text
+           file:     ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV),
+                     dynamically linked (uses shared libs), stripped
+           /dev/wd0a: block special (0/0)
+           /dev/hda: block special (3/0)
+
+           $ file -s /dev/wd0{b,d}
+           /dev/wd0b: data
+           /dev/wd0d: x86 boot sector
+
+           $ file -s /dev/hda{,1,2,3,4,5,6,7,8,9,10}
+           /dev/hda:   x86 boot sector
+           /dev/hda1:  Linux/i386 ext2 filesystem
+           /dev/hda2:  x86 boot sector
+           /dev/hda3:  x86 boot sector, extended partition table
+           /dev/hda4:  Linux/i386 ext2 filesystem
+           /dev/hda5:  Linux/i386 swap file
+           /dev/hda6:  Linux/i386 swap file
+           /dev/hda7:  Linux/i386 swap file
+           /dev/hda8:  Linux/i386 swap file
+           /dev/hda9:  empty
+           /dev/hda10: empty
+
+           $ file -i file.c file /dev/{wd0a,hda}
+           file.c:      text/x-c
+           file:        application/x-executable
+           /dev/hda:    application/x-not-regular-file
+           /dev/wd0a:   application/x-not-regular-file
+</pre>
+<p><strong>HISTORY</strong>
+</p><pre>
+     There has been a file command in every UNIX since at least Research
+     Version 4 (man page dated November, 1973).  The System V version intro‐
+     duced one significant major change: the external list of magic types.
+     This slowed the program down slightly but made it a lot more flexible.
+
+     This program, based on the System V version, was written by Ian Darwin
+     &lt;<a href="mailto:ian@darwinsys.com">ian@darwinsys.com</a>&gt; without looking at anybody else's source code.
+
+     John Gilmore revised the code extensively, making it better than the
+     first version.  Geoff Collyer found several inadequacies and provided
+     some magic file entries.  Contributions by the `&amp;' operator by Rob McMa‐
+     hon, <a href="mailto:cudcv@warwick.ac.uk">cudcv@warwick.ac.uk</a>, 1989.
+
+     Guy Harris, <a href="mailto:guy@netapp.com">guy@netapp.com</a>, made many changes from 1993 to the present.
+
+     Primary development and maintenance from 1990 to the present by Christos
+     Zoulas (<a href="mailto:christos@astron.com">christos@astron.com</a>).
+
+     Altered by Chris Lowth, <a href="mailto:chris@lowth.com">chris@lowth.com</a>, 2000: Handle the -i option to
+     output mime type strings, using an alternative magic file and internal
+     logic.
+
+     Altered by Eric Fischer (<a href="mailto:enf@pobox.com">enf@pobox.com</a>), July, 2000, to identify charac‐
+     ter codes and attempt to identify the languages of non-ASCII files.
+
+     Altered by Reuben Thomas (<a href="mailto:rrt@sc3d.org">rrt@sc3d.org</a>), 2007 to 2008, to improve MIME
+     support and merge MIME and non-MIME magic, support directories as well as
+     files of magic, apply many bug fixes and improve the build system.
+
+     The list of contributors to the ‘magic’ directory (magic files) is too
+     long to include here.  You know who you are; thank you.  Many contribu‐
+     tors are listed in the source files.
+</pre>
+<p><strong>LEGAL NOTICE</strong>
+</p><pre>
+     Copyright (c) Ian F. Darwin, Toronto, Canada, 1986-1999.  Covered by the
+     standard Berkeley Software Distribution copyright; see the file
+     LEGAL.NOTICE in the source distribution.
+
+     The files tar.h and is_tar.c were written by John Gilmore from his pub‐
+     lic-domain tar(1) program, and are not covered by the above license.
+</pre>
+<p><strong>BUGS</strong>
+</p><pre>
+     There must be a better way to automate the construction of the Magic file
+     from all the glop in Magdir.  What is it?
+
+     file uses several algorithms that favor speed over accuracy, thus it can
+     be misled about the contents of text files.
+
+     The support for text files (primarily for programming languages) is sim‐
+     plistic, inefficient and requires recompilation to update.
+
+     The list of keywords in ascmagic probably belongs in the Magic file.
+     This could be done by using some keyword like ‘*’ for the offset value.
+
+     Complain about conflicts in the magic file entries.  Make a rule that the
+     magic entries sort based on file offset rather than position within the
+     magic file?
+
+     The program should provide a way to give an estimate of ‘how good’ a
+     guess is.  We end up removing guesses (e.g.  ‘Fromas first 5 chars of
+     file) because’ they are not as good as other guesses (e.g.  ‘Newsgroups:’
+     versus ‘Return-Path:’ ).  Still, if the others don't pan out, it should
+     be possible to use the first guess.
+
+     This manual page, and particularly this section, is too long.
+</pre>
+<p><strong>RETURN CODE</strong>
+</p>
+
+<p> file returns 0 on success, and non-zero on error.
+</p>
+
+<p><strong>AVAILABILITY</strong>
+</p><pre>
+     You can obtain the original author's latest version by anonymous FTP on
+     ftp <a href="ftp://ftp.astron.com/">ftp.astron.com</a> in the directory /pub/file/file-X.YZ.tar.gz
+
+     This Debian version adds a number of new magic entries. It can be
+     obtained from every site carrying a Debian distribution (that is
+     ftp <a href="ftp://ftp.debian.org/">ftp.debian.org</a> and mirrors).
+
+BSD                             October 9, 2008                            BSD
+</pre>
+</body>
+</html>

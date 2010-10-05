@@ -1,0 +1,207 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: locate.html, Class: locate.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>locate(1) locate(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> locate - find files by name
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> locate [OPTION]... PATTERN...
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       locate  reads  one or more databases prepared by updatedb(8) and writes
+       file names matching at least one of the PATTERNs  to  standard  output,
+       one per line.
+
+       If  --regex is not specified, PATTERNs can contain globbing characters.
+       If any PATTERN contains no globbing characters, locate  behaves  as  if
+       the pattern were <em>PATTERN</em>.
+
+       By default, locate does not check whether files found in database still
+       exist.  locate can never report files created  after  the  most  recent
+       update of the relevant database.
+</pre>
+<p><strong>EXIT STATUS</strong>
+</p><pre>
+       locate  exits  with  status  0  if any match was found or if locate was
+       invoked with one of the --limit 0, --help,  --statistics  or  --version
+       options.   If  no  match  was  found  or a fatal error was encountered,
+       locate exits with status 1.
+
+       Errors encountered while reading a database are not fatal, search  con‐
+       tinues in other specified databases, if any.
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+       -b, --basename
+              Match  only  the base name against the specified patterns.  This
+              is the opposite of --wholename.
+
+       -c, --count
+              Instead of writing file names on standard output, write the num‐
+              ber of matching entries only.
+
+       -d, --database DBPATH
+              Replace  the  default database with DBPATH.  DBPATH is a :-sepa‐
+              rated list of database file names.  If more than one  --database
+              option  is  specified,  the resulting path is a concatenation of
+              the separate paths.
+
+              An empty database file name is replaced by the default database.
+              A  database file name - refers to the standard input.  Note that
+              a database can be read from the standard input only once.
+
+       -e, --existing
+              Print only entries that refer to  files  existing  at  the  time
+              locate is run.
+
+       -L, --follow
+              When  checking  whether files exist (if the --existing option is
+              specified), follow trailing symbolic links.  This causes  broken
+              symbolic links to be omitted from the output.
+
+              This  is  the  default  behavior.  The opposite can be specified
+              using --nofollow.
+
+       -h, --help
+              Write a summary of the available options to standard output  and
+              exit successfully.
+
+       -i, --ignore-case
+              Ignore case distinctions when matching patterns.
+
+       -l, --limit, -n LIMIT
+              Exit  successfully  after finding LIMIT entries.  If the --count
+              option is specified, the resulting  count  is  also  limited  to
+              LIMIT.
+
+       -m, --mmap
+              Ignored, for compatibility with BSD and GNU locate.
+
+       -P, --nofollow, -H
+              When  checking  whether files exist (if the --existing option is
+              specified), do not follow trailing symbolic links.  This  causes
+              broken symbolic links to be reported like other files.
+
+              This is the opposite of --follow.
+
+       -0, --null
+              Separate  the  entries  on  output using the ASCII NUL character
+              instead of writing each entry on a separate line.   This  option
+              is  designed  for interoperability with the --null option of GNU
+              xargs(1).
+
+       -S, --statistics
+              Write statistics about each read  database  to  standard  output
+              instead of searching for files and exit successfully.
+
+       -q, --quiet
+              Write  no  messages  about  errors encountered while reading and
+              processing databases.
+
+       -r, --regexp REGEXP
+              Search for a basic regexp REGEXP.  No PATTERNs  are  allowed  if
+              this  option  is used, but this option can be specified multiple
+              times.
+
+       --regex
+              Interpret all PATTERNs as extended regexps.
+
+       -s, --stdio
+              Ignored, for compatibility with BSD and GNU locate.
+
+       -V, --version
+              Write information about the version and  licence  of  locate  on
+              standard output and exit successfully.
+
+       -w, --wholename
+              Match only the whole path name against the specified patterns.
+
+              This  is  the  default  behavior.  The opposite can be specified
+              using --basename.
+</pre>
+<p><strong>EXAMPLES</strong>
+</p><pre>
+       To search for a file named exactly NAME (not <em>NAME</em>), use
+              locate -b '\NAME'
+       Because \ is a globbing character, this disables the implicit  replace‐
+       ment of NAME by <em>NAME</em>.
+</pre>
+<p><strong>FILES</strong>
+</p><pre>
+       /var/lib/mlocate/mlocate.db
+              The database searched by default.
+</pre>
+<p><strong>ENVIRONMENT</strong>
+</p><pre>
+       LOCATE_PATH
+              Path  to  additional databases, added after the default database
+              or the databases specified using the --database option.
+</pre>
+<p><strong>NOTES</strong>
+</p><pre>
+       The order in which the requested databases are  processed  is  unspeci‐
+       fied,  which  allows  locate  to reorder the database path for security
+       reasons.
+
+       locate attempts to be compatible to slocate (without the  options  used
+       for  creating  databases)  and  GNU locate, in that order.  This is the
+       reason for the impractical default --follow option and for the  confus‐
+       ing set of --regex and --regexp options.
+
+       The  short  spelling  of  the  -r option is incompatible to GNU locate,
+       where it corresponds to the --regex option.  Use the long option  names
+       to avoid confusion.
+
+       The  LOCATE_PATH  environment variable replaces the default database in
+       BSD and GNU locate, but it is added to other databases in  this  imple‐
+       mentation and slocate.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Miloslav Trmac &lt;<a href="mailto:mitr@redhat.com">mitr@redhat.com</a>&gt;
+</p>
+
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> updatedb(8)
+</p>
+
+<p>mlocate Jul 2005 locate(1)</p>
+
+</body>
+</html>

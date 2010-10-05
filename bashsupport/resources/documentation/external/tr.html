@@ -1,0 +1,175 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: tr.html, Class: tr.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>TR(1) User Commands TR(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> tr - translate or delete characters
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> tr [OPTION]... SET1 [SET2]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       Translate, squeeze, and/or delete characters from standard input, writ‐
+       ing to standard output.
+
+       -c, -C, --complement
+              first complement SET1
+
+       -d, --delete
+              delete characters in SET1, do not translate
+
+       -s, --squeeze-repeats
+              replace each input sequence of  a  repeated  character  that  is
+              listed in SET1 with a single occurrence of that character
+
+       -t, --truncate-set1
+              first truncate SET1 to length of SET2
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       SETs  are  specified  as  strings  of characters.  Most represent them‐
+       selves.  Interpreted sequences are:
+
+       \NNN   character with octal value NNN (1 to 3 octal digits)
+
+       \\     backslash
+
+       \a     audible BEL
+
+       \b     backspace
+
+       \f     form feed
+
+       \n     new line
+
+       \r     return
+
+       \t     horizontal tab
+
+       \v     vertical tab
+
+       CHAR1-CHAR2
+              all characters from CHAR1 to CHAR2 in ascending order
+
+       [CHAR*]
+              in SET2, copies of CHAR until length of SET1
+
+       [CHAR*REPEAT]
+              REPEAT copies of CHAR, REPEAT octal if starting with 0
+
+       [:alnum:]
+              all letters and digits
+
+       [:alpha:]
+              all letters
+
+       [:blank:]
+              all horizontal whitespace
+
+       [:cntrl:]
+              all control characters
+
+       [:digit:]
+              all digits
+
+       [:graph:]
+              all printable characters, not including space
+
+       [:lower:]
+              all lower case letters
+
+       [:print:]
+              all printable characters, including space
+
+       [:punct:]
+              all punctuation characters
+
+       [:space:]
+              all horizontal or vertical whitespace
+
+       [:upper:]
+              all upper case letters
+
+       [:xdigit:]
+              all hexadecimal digits
+
+       [=CHAR=]
+              all characters which are equivalent to CHAR
+
+       Translation occurs if -d is not given and both SET1  and  SET2  appear.
+       -t  may  be  used only when translating.  SET2 is extended to length of
+       SET1 by repeating its last character as necessary.   Excess  characters
+       of  SET2  are  ignored.  Only [:lower:] and [:upper:] are guaranteed to
+       expand in ascending order; used in SET2  while  translating,  they  may
+       only  be used in pairs to specify case conversion.  -s uses SET1 if not
+       translating nor deleting; else squeezing uses  SET2  and  occurs  after
+       translation or deletion.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Written by Jim Meyering.
+</p>
+
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report tr bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright  ©  2009  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The  full  documentation  for tr is maintained as a Texinfo manual.  If
+       the info and tr programs are properly installed at your site, the  com‐
+       mand
+
+              info coreutils 'tr invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                             TR(1)
+</pre>
+</body>
+</html>

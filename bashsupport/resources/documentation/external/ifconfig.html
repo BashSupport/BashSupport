@@ -1,0 +1,223 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: ifconfig.html, Class: ifconfig.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>IFCONFIG(8) Handbuch für Linuxprogrammierer IFCONFIG(8)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> ifconfig - Konfiguration einer Netzwerkskarte
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       ifconfig [Schnittstelle]
+       ifconfig Schnittstelle [AF-Typ] Optionen | Adresse ...
+</pre>
+<p><strong>BESCHREIBUNG</strong>
+</p><pre>
+       Ifconfig  wird  benutzt  um kernel-residente Netzwerksschnittstellen zu
+       konfigurieren.   Es  wird  zur  Systemstartzeit   verwendet,   um   die
+       Schnittstellen  nach  Notwendigkeit  zu initialisieren.  Danach wird es
+       üblicherweise nur zur Fehlersuche oder zur Verfeinerung der  Systemkon‐
+       figuration verwendet.
+
+       Wenn  keine Argumente angegeben werden, dann zeigt ifconfig den Zustand
+       der Augenblicklich aktiven Netzwerksschnittstellen.  Wird ein  einzelne
+       Schnittstellenargument  angegeben,  so  zeigt  es  nur  den Zustand der
+       angegebenen Netzwerksschnittstelle an.  Wird  ein  einzelne  -a  Option
+       angegeben,  zeigt  es  den Zustand aller Schnittstellen an, selbst wenn
+       diese  inaktiviert  sind.    Ansonsten   konfiguriert   ifconfig   eine
+       Schnittstelle.
+</pre>
+<p>Adressfamilien
+</p><pre>
+       Wird  das  erste  Argument  hinter dem Schnittstellennamen als der Name
+       einer unterstützten Adressfamilie erkannt, so wird diese  Adressfamilie
+       dazu  benutzt um alle Protokolladressen zu dekodieren und darzustellen.
+       Zur  Zeit  werden  u.A.  folgende  Adressfamilien  unterstützt.    inet
+       (TCP/IP,  standard),  inet6  (IPv6),  ax25  (AMPR  Packet  Radio),  ddp
+       (Appletalk Phase 2), ipx (Novell IPX) and netrom (AMPR Packet radio).
+</pre>
+<p><strong>OPTIONEN</strong>
+</p><pre>
+       Schnittstelle
+              Der Name einer Netzwerksschnittstelle.  Dies  ist  üblicherweise
+              ein  Treiber  gefolgt  von einer laufenden Nummer, z.B. eth0 für
+              die erste Ethernetschnittstelle
+
+       up     Diese Flagge aktiviert die  Schnittstelle.   Sie  wird  implizit
+              gesetzt, wenn eine Adresse einer Schnittstelle zugewiesen wird.
+
+       down   Durch  diese Flagge wird der Treiber für die Schnittstelle deak‐
+              tiviert.
+
+       [-]arp Schaltet das ARP-Protokoll auf  dieser  Schnittstelle  ein  oder
+              aus.
+
+       [-]promisc
+              Ein-/Ausschalten  des  promiscuous Modus der Schnittstelle.  Ist
+              er eingeschaltet, so werden alle Pakete vom  Netzwerk  empfangen
+              unabhängig davon ob sie an die Schnittstelle adressiert sind.
+
+       [-]allmulti
+              Ein-/Ausschalten des all-multicast Modus.  Ist er eingeschaltet,
+              so werden alle Multicastpakete vom Netzwerk empfangen unabhängig
+              davon, ob sie an die Schnittstelle adressiert sind oder nicht.
+
+       metric N
+              Dieses  Argument setzt den Metrik-Wert für die Schnittstelle auf
+              N.
+
+       mtu N  Dieses Argument  setzt  die  Maximum  Transfer  Unit  (MTU)  der
+              Schnittstelle,  das  ist  das größte Paket, dass gesendet werden
+              kann.
+
+       dstaddr addr
+              Setzt die IP-Adresse der Gegenseite für Punkt-zu-Punkt-Verbinun‐
+              gen  wie  z.B.   PPP.   Dieses Schlüsselwort ist überholt; statt
+              dessen sollte das pointopoint Schlüsselwort verwendet werden.
+
+       netmask Adr
+              Setzt die IP Netzwerksmaske für diese Schnittstelle.  Die  Vore‐
+              instellung ist abhängig von der IP-Adresse der Schnittstelle die
+              Maske für ein Klasse A, B oder C Netzwerk, kann aber  auf  jeden
+              beliebigen Wert gesetzt werden.
+
+       add Adr/Prefixlänge
+              Fügt der Schnittstelle eine IPv6-Adresse zu.
+
+       del addr/prefixlen
+              Entfernt eine IPv6-Adresse von der Schnittstelle.
+
+       tunnel aa.bb.cc.dd
+              Erzeugt  ein  neues  SIT  (IPv6-in-IPv4)  Gerät,  das Pakete zum
+              angegebenen Ziel tunnelt.
+
+       irq addr
+              Setzt die Interruptleitung, die von diesem Gerät  benutzt  wird.
+              Nicht  alle Geräte koennen ihre Interruptkonfiguration dynamisch
+              ändern.
+
+       io_addr Adr
+              Setzt die I/O-Basisadresse für dieses Gerät.
+
+       mem_start Adr
+              Setzt die Startadresse für shared memory der  von  diesem  Gerät
+              benutzt wird.  Dies wird nur von wenigen Geräten benötigt.
+
+       media Typ
+              Setzt  den physikalischen Anschluss oder den Mediumstyp, der vom
+              Gerät verwendet wird.  Nicht alle Geräte können  diese  Einstel‐
+              lung  ändern,  und  bei  denjenigen, bei denen dies möglich ist,
+              variieren die unterstützten Werte.  Typische Werte für Typ  sind
+              10base2 (thin Ethernet), 10baseT (twisted-pair 10Mbps Ethernet),
+              AUI (Externer Transceiver) und so weiter.  Der spezielle Medium‐
+              styp  auto  kann benutzt werden, damit der Treiber automatischen
+              den Typ des Mediums erkennt.  Wiederum unterstützen  dies  nicht
+              alle Treiber.
+
+       [-]broadcast [Adr]
+              Wird  das  Adressargument  gegeben, so wird die Protokolladresse
+              für Broadcast für diese Schnittstelle gesetzt.   Ansonsten  wird
+              die  IFF_BROADCAST  Flagge  für diese Schnittstelle gesetzt bzw.
+              gelöscht.
+
+       [-]pointopoint [Adr]
+              Dieses Schlüsselwort aktiviert den  Punkt-zu-Punkt  Modus  einer
+              Schnittstelle.   Das bedeutet, daß eine Verbindung zwischen zwei
+              Maschine direkt ist ohne daß weitere Maschinen mithören.
+              Wird auch ein Adressargument  gegeben,  so  wird  die  Protokol‐
+              ladrsse  auf  der  Gegenseite  der Verbindung gesetzt, genau wie
+              beim jetzt überholten dstaddr Schlüsselwort.  Ansonsten wird die
+              IFF_POINTOPOINT   Flagge  für  die  Schnittstelle  gesetzt  bzw.
+              gelöscht.
+
+       hw Klasse Adresse
+              Setzt  die  Hardwareadresse  dieser  Schnittstelle,   wenn   der
+              Gerätetreiber  diese  Operation  unterstützt.  Das Schlüsselwort
+              muß vom Namen der Hardwareklasse und der  ASCII-Darstellung  der
+              Hardwareadresse  gefolgt  werden.  Zur Zeit werden unter anderem
+              folgende Hardwareklassen  unterstützt:  ether  (Ethernet),  ax25
+              (AMPR AX.25), ARCnet and netrom (AMPR NET/ROM).
+
+       multicast
+              Setzt  die  Multicastflagge  der  Schnittstelle.  Dies sollte im
+              Normalfall nicht benötigt werden,  da  die  Treiber  die  Flagge
+              selbst setzen.
+
+       Adresse
+              Die IP-Adresse, die der Schnittstelle zugewiesen wird.
+
+       txqueuelen Länge
+              Setzt  die  Länge  der  Sendewarteschlange  des Geräts.  Es kann
+              nützlich sein, diesen Wert auf eine kleinen  Wert  für  langsame
+              Geräte  mit  hoher  Paketlaufzeit (Modems, ISDN) zu setzen um zu
+              verhindern, daß schnelle Großübertragungen interaktiven  Verkehr
+              wie Telnet zu sehr stören.
+</pre>
+<p><strong>BEMERKUNGEN</strong>
+</p><pre>
+       Seit  Kernel  Version  2.2  gibt  es  keine  expliziten Statistiken für
+       Schnittstellenaliase mehr.  Die  Statistiken  für  die  Originaladresse
+       werden mit allen Aliasen auf das gleiche Gerät geteilt.  Um Statistiken
+       per Adresse zu erhalten sollte explizite EInträge für die  Adresse  mit
+       dem ipchains(8) Kommando gemacht werden.
+</pre>
+<p><strong>DATEIEN</strong>
+</p><pre>
+       /proc/net/socket
+       /proc/net/dev
+       /proc/net/if_inet6
+</pre>
+<p><strong>FEHLER</strong>
+</p><pre>
+       Während AppleTalk DDP und IPX Adressen angezeigt werden, können sie mit
+       diesem Kommando nicht geändert werden.
+</pre>
+<p><strong>SIEHE AUCH</strong>
+</p><pre>
+       route(8),  netstat(8),  arp(8),  rarp(8),   ipchains(8),   iptables(8),
+       ifup(8), interfaces(5).
+</pre>
+<p><strong>AUTOREN</strong>
+</p><pre>
+       Fred N. van Kempen, &lt;<a href="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</a>&gt;
+       Alan Cox, &lt;<a href="mailto:Alan.Cox@linux.org">Alan.Cox@linux.org</a>&gt;
+       Phil Blundell, &lt;<a href="mailto:Philip.Blundell@pobox.com">Philip.Blundell@pobox.com</a>&gt;
+       Andi Kleen,
+</pre>
+<p>Übersetzung
+</p>
+
+<p> Ralf Bächle &lt;<a href="mailto:ralf@gnu.org">ralf@gnu.org</a>&gt;
+</p>
+
+<p>net-tools 2007-12-02 IFCONFIG(8)</p>
+
+</body>
+</html>

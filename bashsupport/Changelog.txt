@@ -1,0 +1,599 @@
+2010-08-12:
+ - Fixed redirection parsing
+ - Version 0.9.14-maia
+
+2010-07-28:
+ - Fixed parsing of single $ characters, e.g. "$a$"
+ - Improved parsing of for loops
+ - Fixed resolving of global variables
+
+2010-07-23:
+ - Fixed exception which occured while adding a REPL console
+ 
+2010-07-22:
+ - Lexer improvements
+
+2010-07-21:
+ - Fixed new Bash script action if the extension .bash was used
+ 
+2010-07-20:
+ - Many improvements to arithmetic expression parsing
+ 
+2010-07-17:
+ - Fixed evaluation of advanced arithmetic expressions
+ - Improvements to the lexer
+ - More test cases
+
+2010-07-13:
+ - Finally fixed the variable resolving issues (hopefully)
+
+2010-07-12:
+ - Improved variable resolving if definitions on different levels are present
+ 
+2010-07-10:
+ - Implemented parsing of process substitution elements
+
+2010-07-08:
+ - Fixed variable resolving, once again
+
+2010-07-05:
+ - Version 0.9.13-maia
+ 
+2010-07-01:
+ - Fixed method not found error in EvaluateExpansionInspection
+ 
+2010-06-30:
+ - Refactoring to use the official API's psi walkThrough method
+ - More PSI test cases for command variants, variable variants, heredoc marker resolving
+
+2010-06-29:
+ - Reworked and improved variable resolving
+
+2010-06-16:
+ - Fixed exception "Directory index is not initialized yet ..."
+
+2010-06-15:
+ - PSI resolve test cases
+
+2010-06-12:
+ - Code cleanup
+ - Removed dead code
+
+2010-06-09:
+ - Fixed scope of psi elements, previously a variable rename went through the whole module
+ - Improved support for local variable references
+ - New inspection to detect local variable definition on global level
+ - Quickfix to remove the local keyword from a global variable definition
+
+2010-06-06:
+ - Version 0.9.12-maia
+
+2010-06-05:
+ - Fixed parsing of for loops with optional command end after a command group
+ - Fixed static evaluation quickfix to offer result for "$(((1+2)))"
+ - Performance improvements, especially for offline code analysis
+ - Cached oftenly performed calculation in arithmetic evaluation
+
+2010-06-03:
+ - Integrated custom exception reporting tool by Etienne Studer
+
+2010-05-29:
+ - "Add shebang" quickfix is not displayed for a script in the Bash REPL
+ - Shortcut "Ctrl+Enter" for the repl console run action
+
+2010-05-27:
+ - Slightly Improved error reporting
+ - Parser improvements for function definitions
+ - Properly resetting PSI element caches now
+ - Improved parsing of composed arithmetic number literals (e.g. 123$a)
+
+2010-05-26:
+ - Hex, octal and custom-base literals in arithmetic expressions
+
+2010-05-13:
+ - Variable name completion in evaluating heredocs
+ - Some code cleanup and refactoring
+ - Improved some inspection/quickfix messages
+
+2010-05-12:
+ - Smaller performance improvements
+ - Improved bash console, still experimental
+
+2010-05-11:
+ - Improved evaluation of static arithmetic expressions
+ - Improved parser (correctly parses "a=1 ((1))" now)
+ - Less error markers in faulty case commands
+ 
+2010-05-10:
+ - Fixed error marker handling, no large red blocks any more
+ - Inspection to detect invalid filedescriptors (only the range &0 to &9 is valid)
+
+2010-05-08:
+  - Support for the % operator in arithmetic expressions
+  - Added a few more man pages 
+  - The quick documentation lookup (Ctrl+Q) now tries to read the current system's info page
+    for an external command, if it is available (needs the commands "info" in the path,
+    optionally "txt2html" to turn the plain text into html).
+
+2010-04-28:
+  - 0.9.11-maia
+
+2010-04-26:
+  - Fixed Java5 compilation
+  - Fixed unsupported escape codes
+
+2010-04-24:
+  - Some performance tuning
+
+  - 0.9.10-maia
+  - Added "&-" to the lexer
+  - Improved parsing and marking of redirect lists
+  - Improved parsing of conditional commands
+
+2010-04-23:
+  - Reworked redirect parsing
+  - Fixed ternary operator in arithmetic expressions
+   
+2010-04-22:
+  - Improved redirect parsing
+  - Fixed redirect marker error
+
+2010-04-21:
+  - New inspection to detect changes to shell read-only variables, $EUID for example
+  - Fixed variable renaming of ${a} variables
+
+2010-04-20:
+  - Support for the "readonly" command
+  - New inspection to detect changes to read-only variables
+  - Possible fix for an exception caused by appending newlines at the end of a file
+
+2010-04-19:
+  - Added missing textedit box to manage custom shebang lines
+
+2010-04-16:
+  - Fixed exception at startup ("Directory index is not initialized yet for Project")
+  - Fixed keywords as unquoted parameters to commands
+  - Fixed some unit tests 
+  - Fixed errorneous whitespace inserted before a renamed variable 
+  - New inspection which detects integer division with a remainder 
+
+2010-04-14:
+  - Fixed incorrectly inserted whitespace after renaming a variable
+  - "Show documentation" fixed for internal commands in a subshell element
+
+2010-03-30:
+  - Version 0.9.9-maia
+  - Fixed icon size
+  - Added setting to turn off the formatter (defualt is formatter turned off)
+
+2010-03-28:
+ - Version 0.9.8-maia
+ - Fixed shebang command completion
+ - New file icon added, remved old file icon which was taken from the KDE project
+
+2010-03-25:
+ - Update to Google collections 1.0
+
+2010-03-24:
+ - Updated documentation and copyright information
+
+2010-03-18:
+ - Improved parsing for shebang lines
+
+2010-03-15:
+ - Icons for path and variable completions
+
+2010-03-13:
+ - Fixes "export a" variables
+
+2010-03-10:
+ - Heredoc parsing fixes
+ - Heredoc folding fixes
+ 
+2010-03-09:
+ - Improved highlighting for heredocs, variables and other tokens are not highlighted any more
+
+2010-03-02:
+ - AddShebangQuickfix is now run in a separate write action
+
+2010-03-01:
+ - A process started withing a run script action is terminated when the stop button is pressed
+
+2010-02-28:
+ - The facet configuration tree is expanded by default now
+
+2010-02-19:
+ - Fixed ${!name}
+ - Fixed echo \> a
+ - Fixed nested evaluations inside of a parameter expansion block
+
+2010-02-18:
+ - Version 0.9.7-maia
+ - Variable rename does not insert whitespace any more
+
+2010-02-17:
+ - Finished the facet configuration, if you want to handle files without extension as Bash scripts
+   you have to add a Bash facet and configure your preferences
+ - Removed global settings, these are project settings now
+
+2010-02-16:
+ - More work on the facet configuration
+ 
+2010-02-10:
+ - Fixed "export a" like variables
+ - Fixed parsing of commands which only consist of an expansion
+
+2010-02-09:
+ - Fixed test cases
+ - Fixed rename of heredoc markers
+ - Fixed a marker error
+
+2010-02-08:
+ - Exported variables resolve again
+ - Code completion exception fix
+ - Renaming variables to invalid names fixed 
+
+2010-02-07:
+ - Finished arithmetic expression parsing
+ - New inspection and quickfix to replace a static expression with its result
+
+2010-02-06:
+ - Parsing of arithmetic expressions
+ - Support for variables in arithmetic expressions, e.g. in arithmetic for loops
+
+2010-01-30:
+ - Heredoc markers support Go to definition, rename and Search usages now
+ - Heredoc end markers parsing improved
+ - Formatting fixes for heredocs
+ - Highlight option for subshell commands
+
+2010-01-29:
+ - Color configuration for heredoc end marker
+ - Color configuration for heredoc start marker
+ - Improved parsing of heredocs
+ - Default colors for heredoc elements
+ - Improved color configuration dialog
+ - Better default colors
+ - Configuration option to enable "Guess file by content" for files without extension
+
+2010-01-28:
+ - Support for the local keyword
+ - Support for local var resolving
+ - Fixed duplicate var name suggeestions in completion popup
+
+2010-01-27:
+ - Updated JFlex version
+ - Fixed parsing of invalid calls of the export command
+ - Updated documentation
+ - Small improvement to parameter expansion parsing
+
+2010-01-26:
+ - Fixed heredoc parsing
+
+2010-01-25:
+ - Improved highlighting of unresolved variables
+ - Highlighting of variables inside of strings
+ - New inspection to unregister global variables
+
+2010-01-24:
+ - Hack to improve support for script files without extension, might fail on some editions of IntelliJ / WebIDE / RubyMine
+ - You can turn on debug mode by setting the environment variable bashsupport.debug to "true", useful for debugging
+
+2010-01-21:
+ - Support for simple variable substitutions, e.g. ${A}
+ - exported variables work again
+
+2010-01-18:
+ - Fixed || and && operators in conditional commands
+
+2010-01-10:
+ - Variables in substitution blocks are marked now as variable references 
+
+2009-12-28:
+ - Source code released, licensed under the terms of the Apache License 2.0
+
+2009-12-04:
+ - Version 0.9.6-maia
+
+2009-12-03:
+ - Code completion in file paths, works for absolute paths, relative in project and for ~/ and $HOME/
+ - Fixed pipeline command marking, now with proper Ctrl+W selection
+ - Fixed composed command marking, now with proper Ctrl+W selection
+
+2009-12-02:
+ - Improved variable parsing, especially for variable declaring commands
+ - Fixed lexer to properly parse expressions like ""$((1))""
+ - Bash v4 support for new case end markers ;& and ;;&
+ - Bash v4 support: Support the enhanced syntax of brace expansions, e.g. (001..010..3)
+
+2009-12-01:
+ - Fixed expansion parsing for certain cases
+ - Initial Bash v4 support, there's now a project wide setting to enable v4 support
+
+2009-11-26:
+  - Improved variable definition command parsing,
+    things like ">out a=1 b=notSeen export b=1" are now properly parsed.
+
+2009-11-17:
+  - Fixed the "Unusual shebang" inspection
+
+2009-11-15:
+  - Improved the expansion parsing (supports a prefix now)
+
+2009-11-14:
+  - Use only the api provided by RubyMine as well
+  - New inspection to replace an expansion with the evaluated result
+  - Fixed invalid shebang replacement inspection highlighting
+
+2009-11-10:
+  - Ctrl+Q on function definitions and calls now shows the comment block right
+    before the definition of the requested function
+
+2009-11-07:
+  - Version 0.9.5-maia
+  - Backquote formatting
+  - Variable substitution formatting
+
+2009-11-06:
+  - Formatting fixes
+  - code like "$ (a)" is now properly marked as invalid
+  
+2009-11-05:
+  - Regression: Commands defining variables did not work anymore
+  - Improved lexing of whitespace sensitive tokens (e.g. "[[ a    ]]")
+  - Basic formatter support, still needs work
+  - Unit tests for the formatting
+
+2009-11-02:
+  - Expressions like "[ $(uname -a) = 'SunOs' ]" are properly parsed now
+  - Inspection to check for missing file in inclusion (". missingFile")
+  - Inspection to detect recursive file inclusions (". a.txt" in file a.sh)
+
+2009-11-01:
+  - Fixed some false positives of the "Duplicate function definition" inspection.
+  - Compatibility with the other IntelliJ editions. 
+
+2009-10-31:
+  - Run configuration for Bash scripts. You can now run the scripts from within IntelliJ
+  - Added hyperlinks to run-configuration output
+  - Inspection to detect double function definitions
+  - New highlighting option for built-in variables
+  - Updated default colors for variables and built-in variables
+
+2009-10-30:
+  - Version 0.9.4-maia
+  - Documentation lookup working now for the read command
+
+2009-10-29:
+  - Added GUI setting to manage global variables
+  - Registered global variables are shown in autocompletion (project  level configuration)
+  - Added quickfix to register an unresolved variable as global variable (removes the error marker)
+  - Added quickfix to unregister an unresolved variable as global variable (add the error marker back in)
+
+2009-08-19:
+  - Slightly improved support for internal command's options. Fixes issues with read
+    command options.
+
+2009-08-07:
+  - Variables declared inside of for, select and while statements are now available on the outside
+  - Smaller performance improvements (var resolving, caching)
+
+  - Version 0.9.3
+  
+2009-08-06:
+  - Variables inside of conditional commands are resolved now
+  - Redirects after variable declarations using read, declare and export work now 
+  
+2009-08-04:
+  - Added documentation for Bash's break command
+  
+2009-08-01:
+  - Variable definitions are now found in function definitions, as well.
+  - Variable definitions contained in case commands are now found, too
+  - || and && are now correctly parsed inside of subshell expressions contained in strings
+
+2009-07-28:
+  - A valid shebang line may now have newlines in front
+  - Shebang highlighting works again
+  - Fixed parsing of line continuations
+  - Default formatting of "Shebang comment" is now comment formatting + bold font style
+
+2009-07-25:
+  - Version 0.9.2
+  
+2009-07-24:
+  - Support for shebang-like comments which are not the first line of a file
+  - Support for (simple) variable declarations inside of arithmetic expressions
+
+2009-07-15:
+  - Fixed lexing of "\\!"
+  - Fixed "assert" exception during string parsing
+  
+2009-06-27:
+  - Version 0.9.1
+
+2009-06-20:
+  - Fixed parsing of "$( ( echo a ) )", whitespace and parenths are now parsed
+  
+2009-06-06:
+  - $0, $1 etc. werden erkannt
+
+2009-05-31:
+  - "Fix unusual shebang lines" doesn't suggest alternatives for valid commands any more
+  - FixBacktick command inspection has now default level "warn"
+  - Highlighting of Strings works again
+  
+2009-05-30:
+  - Variables and $-syntax elements like subshells inside of strings are parsed
+
+2009-05-27:
+  - Version 0.9
+  - Removed usage of String.isEmpty() to make it work with Java 5 again
+  - Autocompletion for function names
+  - Fixed verbose logging
+  - Option in settings to turn on/off autocompletion for builtin variables, disabled by default
+  - Option in settings to turn on/off autocompletion for builtin commands, enabled by default
+
+2009-05-26:
+  - Autocompletion for variables, shows variables which have been defined previously
+  - Undeclared variables are marked as errors, names of built-in variables are checked first 
+
+2009-05-23:
+  - Support for variable defs by a "read" command
+
+2009-05-21:
+  - Version 0.8.7
+  - Shift+F1 now works for external commands, opens online man page in the browser
+  - Inspection "fix shebang" is now configurable. Needs some more usability work.
+  - New inspection to convert backtick commands into subshell command
+  - New inspection to convert subshell commands into backtick command, disabled by default
+  - New inspection "Convert into String", disabled by default
+  - Fixed Ctrl+Q for arithmetic for loops
+  - Fixed failing inspection init
+  - Removed verbose logging of file loading
+  - Refactored out "Add shebang" inspection
+
+2009-05-15:
+  - Converted old inspections into configurable inspections
+  - Fixed wrap body quickfix
+  
+  - Version 0.8.6
+
+2009-05-13:
+  - Support for variable references like ${a}
+  - Fixed verbose info messages
+
+2009-05-12:
+  - Fix for rename refactoring of a=1
+  - Support for a+=a
+  - Support for files without .sh/.bash extensions
+  
+  - Version 0.8.5
+  - Replaced ArrayDeque by LinkedList for Java 5 compatibility
+  - Fixed assignment parsing marker problem
+
+2009-05-06:
+  - Added find usages provider (Alt+F7), works for functions and variables
+  - Ctrl+Q for keywords if, while, for, if, case, select, time
+
+2009-05-05:
+  - Fixed command text range. Ctrl+Q now only works on the command element and shows the right
+    element name.
+  - Fixed Ctrl+Q for "." and ":"
+  
+2009-05-03:
+  - Version 0.8
+  - Added documentation for internal bash commands
+  - Added documentation for most common external commands (awk, sed, gcc, ...)
+  - Fixed Ctrl+Q for internal bash commands
+  
+2009-05-02:
+  - Fixed lexing of "=" in expansions
+  - Fixed lexing of "#a\n", it's now command followed by a line feed
+  - Fixed lexing \?
+  - Fixed lexing of "[ a  ]"
+  - Fixed lexing of "a$a" (now it's a word and a variable)
+  - Fixed parsing of "case $a ..."
+  - Shebang quickfix supports leading and trailing spaces in the command
+  - Internal refactoring, moving towards "chain of responsiblities" pattern
+
+  - Version 0.7.1 with the runner fix
+  - Removed program runner from config
+
+2009-05-01:
+  - Version 0.7
+  - Support assignments of the "export" command
+  - Added "Inline rename"
+  - Fixed lookup of variable definition (first occurence is used)
+
+2009-04-31:
+  - Fixed assignments like "i=1 j=2"
+  - Fixed "go to definition" for assignments, jumps now to the first assignment, if there's any 
+
+2009-04-30:
+  - Fixed "Create new Bash file" action
+  - Added "Fix shebang" quickfix
+  - Added "Fix function body curly brackets" quickfix
+
+2009-04-26:
+  - Versio 0.6.5
+  - Fixed some more parsing
+
+2009-04-21:
+  - Improved parsing (combined words, command groups, parameter expansion, here docs)
+  - All sample scripts are parsing now, all tests are passing
+  
+2009-04-18:
+  - Support for nested backquotes in conditional expressions, e.g. [ -z `test -z a` ]
+  - Fixed issues with whitespace, e.g. "a= a" is now an empy assignment and a command
+
+2009-04-17:
+  - Version 0.6
+  - Improved parsing of strings with embedded substrings (in subshell commands)
+  - Improved parsing of ${} constructs
+  
+2009-04-16:
+  - Fixed "Go to declaration" so local assignments are ignored, e.g. "a=1 echo $a"
+  - "Rename..." refactoring for functions
+  - "Rename..." refactoring for variables
+  - Minor improvement for code folding
+
+2009-04-15:
+  - Added basic support for "declare" variable declarations
+  - Support for multiline strings
+
+  - Version 0.5
+  - Added "Go to declaration" for variables
+  - Added "Highlight usages" for variables
+  - Variable declarations of for loops are used
+  - Variable declarations of for select loops are used
+  - Variable declaration highlighting
+  - Variable usage highlighting
+
+2009-04-14:
+  - Fixed parsing of \* character
+  
+2009-04-13:
+  - Fixed parsing of nested commands inside of a case statement
+  - Fixed parsing of arithmetic for loops
+  - Fixed parsing of $*
+  - Fixed parsing of tokens inside of assignment lists, e.g. a=(a=b)
+
+  - Version 0.4
+  - Support for $"a" und $'a'
+  - Fix: Parses supports now array assignments and assignment lists
+  - Parsing von a=(1,2,"3")
+
+2009-04-12:
+  - Structure view for bash files, shows functions
+  - Highlighting for internal bash commands
+  - Highlighting for external commands
+  - Go to definition works for function names, now
+  - Show quick definition works for functions now
+  - Beginnings of Ctrl+Q (Show documentation) support
+
+2009-04-12:
+  - Version 0.3
+
+2009-04-11:
+  - Support for proper backquote parsing
+  - Basic parsing for here docs
+  - Fixed parsing error for function definitions
+  - Custom highlighting for here documents
+  - Custom highlighting for backquotes
+  - Custom highlighting for String2 '...' 
+  - Statements like "echo a=b" are properly parsed now
+  - Statements like "echo [123]" are properly parsed now
+  - Shell commands with redirection list are now parsed properly
+  - Better case pattern matching
+
+2009-03-31:
+  - Version 0.2
+              
+2009-03-29:
+  - Improved parser for things like $((i=$(echo 12)))
+  
+2009-03-27:
+  - Syntax highlighting color configuration page
+  - Code folding support for case patter+command
+  - Version 0.1

@@ -1,0 +1,170 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: killall.html, Class: killall.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>KILLALL(1) User Commands KILLALL(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> killall - kill processes by name
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       killall [-Z,--context pattern] [-e,--exact] [-g,--process-group]
+       [-i,--interactive] [-o,--older-than TIME] [-q,--quiet] [-r,--regexp]
+       [-s,--signal signal] [-u,--user user] [-v,--verbose] [-w,--wait]
+       [-y,--younger-than TIME] [-I,--ignore-case] [-V,--version] [--] name
+       ...
+       killall -l
+       killall -V,--version
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       killall  sends  a  signal to all processes running any of the specified
+       commands. If no signal name is specified, SIGTERM is sent.
+
+       Signals can be specified either by name (e.g. -HUP or -SIGHUP )  or  by
+       number (e.g. -1) or by option -s.
+
+       If  the command name is not regular expression (option -r) and contains
+       a slash (/), processes executing that particular file will be  selected
+       for killing, independent of their name.
+
+       killall  returns  a  zero  return code if at least one process has been
+       killed for each listed command, or no commands were listed and at least
+       one process matched the -u and -Z search criteria. killall returns non-
+       zero otherwise.
+
+       A killall process never kills itself (but may kill other  killall  pro‐
+       cesses).
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+       -e, --exact
+              Require an exact match for very long names. If a command name is
+              longer than 15 characters, the  full  name  may  be  unavailable
+              (i.e. it is swapped out). In this case, killall will kill every‐
+              thing that matches within the first 15 characters. With -e, such
+              entries  are skipped.  killall prints a message for each skipped
+              entry if -v is specified in addition to -e,
+
+       -I, --ignore-case
+              Do case insensitive process name match.
+
+       -g, --process-group
+              Kill the process group to which the process  belongs.  The  kill
+              signal  is  only sent once per group, even if multiple processes
+              belonging to the same process group were found.
+
+       -i, --interactive
+              Interactively ask for confirmation before killing.
+
+       -l, --list
+              List all known signal names.
+
+       -o, --older-than
+              Match only processes that are older (started  before)  the  time
+              specified.   The  time  is specified as a float then a unit. The
+              units are  s,m,h,d,w,M,y  for  seconds,  minutes,  hours,  days,
+              weeks, Months and years respectively.
+
+       -q, --quiet
+              Do not complain if no processes were killed.
+
+       -r, --regexp
+              Interpret  process  name  pattern as an extended regular expres‐
+              sion.
+
+       -s, --signal
+              Send this signal instead of SIGTERM.
+
+       -u, --user
+              Kill only processes the specified user owns. Command  names  are
+              optional.
+
+       -v, --verbose
+              Report if the signal was successfully sent.
+
+       -V, --version
+              Display version information.
+
+       -w, --wait
+              Wait  for  all  killed processes to die. killall checks once per
+              second if any of the  killed  processes  still  exist  and  only
+              returns if none are left.  Note that killall may wait forever if
+              the signal was ignored, had no effect, or if the  process  stays
+              in zombie state.
+
+       -y, --younger-than
+              Match  only  processes  that  are older (started after) the time
+              specified.  The time is specified as a float then  a  unit.  The
+              units  are  s,m,h,d,w,M,y  for  seconds,  minutes,  hours, days,
+              weeks, Months and years respectively.
+
+       -Z, --context
+              (SELinux Only) Specify security  context:  kill  only  processes
+              having  security  context that match with given expended regular
+              expression pattern. Must precede other arguments on the  command
+              line. Command names are optional.
+</pre>
+<p><strong>FILES</strong>
+</p>
+
+<p> /proc location of the proc file system
+</p>
+
+<p><strong>KNOWN BUGS</strong>
+</p><pre>
+       Killing  by  file  only works for executables that are kept open during
+       execution, i.e. impure executables can't be killed this way.
+
+       Be warned that typing killall name may not have the desired  effect  on
+       non-Linux systems, especially when done by a privileged user.
+
+       killall  -w doesn't detect if a process disappears and is replaced by a
+       new process with the same PID between scans.
+
+       If processes change their name, killall may not be able to  match  them
+       correctly.
+</pre>
+<p><strong>AUTHORS</strong>
+</p><pre>
+       Werner  Almesberger &lt;<a href="mailto:werner@almesberger.net">werner@almesberger.net</a>&gt; wrote the original version
+       of psmisc. Since version 20 Craig  Small  &lt;<a href="mailto:csmall@small.dropbear.id.au">csmall@small.dropbear.id.au</a>&gt;
+       can be blamed.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> kill(1), fuser(1), pgrep(1), pidof(1), pkill(1), ps(1), kill(2).
+</p>
+
+<p>Linux 2009-12-18 KILLALL(1)</p>
+
+</body>
+</html>

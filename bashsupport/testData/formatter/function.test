@@ -1,0 +1,9 @@
+function a() {
+        a
+    b
+}
+-----
+function a() {
+  a
+  b
+}

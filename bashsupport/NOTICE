@@ -1,0 +1,16 @@
+Thanks to:
+----------
+    o The arc plugin. It gave me the first ideas how to create a custom language plugin
+    o The Clojure plugin. Very clean and crisp :) Gave me good directions how to proceed with the custom language
+      implementation.
+    o The Groovy plugin. Good source to start the formatter.
+    o The JavaScript plugin. Ideas for the more complex things.
+    o The IntelliJ batch custom language plugin. It provided me with the base for the run configuration setup.
+
+External code (based on other plugins' code, also noted in the class javadoc):
+   o com.ansorgit.plugins.bash.editor.formatting.BashBlock
+   o com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder
+   o com.ansorgit.plugins.bash.editor.formatting.processor.BashIndentProcessor
+   o com.ansorgit.plugins.bash.editor.formatting.processor.BashSpacingProcessor
+   o com.ansorgit.plugins.bash.runner.repl.AbstractConsoleRunnerWithHistory
+   o nu.studer.idea.errorreporting by Etienne Studer, licensed under the terms of the Apache License 2.0

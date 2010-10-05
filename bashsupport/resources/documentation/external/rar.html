@@ -1,0 +1,331 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: rar.html, Class: rar.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>RAR(1) RAR archiver RAR(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> rar - archive files with compression
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> rar &lt;command&gt; [-&lt;switch 1&gt; -&lt;switch N&gt;] archive [files...]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       This manual page documents briefly the rar archiver.
+       This  manual  page  was  written  for the Debian GNU/Linux distribution
+       because the original program does not have a manual page.
+       Commands and options described here are as of rar 3.0b5.
+
+       rar and unrar are programs for manipulation with .rar archives.
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+       After the program name comes a command and then optional switches  with
+       dashes before them.
+       A  summary  of commands is included below.  For a complete description,
+       run rar without options.
+
+       a      Add files to archive.
+
+       c      Add archive comment. Comment length is limited to 62000 bytes.
+
+       cf     Add files comment. File comments are displayed when the 'v' com‐
+              mand is given. File comment length is limited to 32767 bytes.
+
+       cw     Write archive comment to a specified file.
+
+       d      Delete files from archive.
+
+       e      Extract  files  to current directory. Does not create any subdi‐
+              rectories.
+
+       f      Freshen files in archive. Updates those files changed since they
+              were packed to the archive. This command will not add new to the
+              archive.
+
+       k      Lock archive. Any command which intend  to  change  the  archive
+              will be ignored.
+
+       l[t]   List content of archive [technical]. Files are listed as the 'v'
+              command with the exception of the file path. i.e.  the file name
+              is  displayed. Optional technical information displayed when 't'
+              modifier is used.
+
+       m[f]   Move to archive [files only]. Directories will not be removed if
+              'f' modifier is used and/or '-ed' switch is applied.
+
+       p      Print file to stdout.
+
+       r      Repair archive. For further details look in rar.txt.
+
+       rc     Reconstruct missing volumes using recovery volumes (.rev files).
+              You need to specify any existing volume as the archive name, for
+              example, 'rar rc backup.part03.rar'.
+
+       rr[N]  Add  data  recovery  record.  Optionally,  redundant information
+              (recovery record) may be added to an archive.
+
+       rv[N]  Create recovery volumes (.rev files), which can be later used to
+              reconstruct  missing  files  in  a volume set.  This command has
+              sense only for multivolume archives.  For further  details  look
+              in rar.txt.
+
+       s[name|-]
+              Convert  archive to or from SFX. The archive is merged with SFX-
+              module in the user's home directory.
+
+       t      Test archive files.
+
+       u      Update files in archive. Adds files not already in  the  archive
+              and updates files changed since they were packed to the archive.
+
+       v[t]   Verbosely list archive [technical]
+
+       x      Extract files with full path.
+</pre>
+<p><strong>SWITCHES</strong>
+</p><pre>
+       NOTE:  Every  switch  must be separated by a whitespace. They cannot be
+       put together.
+
+       -?     Display help on commands and switches. The same as when none  or
+              an illegal command line option is entered.
+
+       --     This  switch  tells to RAR that there is no more switches in the
+              command line. It could be useful, if either archive or file name
+              starts  from  '-' character. Without '--' switch such name would
+              be treated as switch.
+
+       -ac    Clear Archive attribute after compression or extraction (Windows
+              version only).
+
+       -ag[format]
+              Generate  archive name using the current date and time.  Appends
+              the current date string to an archive name when creating an  ar‐
+              chive.  Useful  for  daily backups.  For further details look in
+              rar.txt.
+
+       -ao    Add files with Archive attribute set (Windows version only).
+
+       -ap    Set path inside archive. This path is merged to file names  when
+              adding  files  to  an  archive  and removed from file names when
+              extracting.
+
+       -as    Synchronize archive contents. If this switch is  used  when  ar‐
+              chiving,  those archived files which are not present in the list
+              of the currently added files, will be deleted from  archive.  It
+              is convenient to use this switch in combination with -u (update)
+              to synchronize contents of an archive and  an  archiving  direc‐
+              tory.
+
+       -av    Put   authenticity   verification  (registered  versions  only).
+              Details in register.txt.
+
+       -av-   Disable AV checking or adding.
+
+       -cfg-  Disable read configuration and environment.
+
+       -cl    Convert file names to lower case.
+
+       -cu    Convert file names to upper case.
+
+       -c-    Disable comments show.
+
+       -df    Delete files after archiving. This switch  in  combination  with
+              the command "A" performs the same action as the command "M".
+
+       -dh    Open  shared  files.  Allows  to  process  files opened by other
+              applications for writing.
+
+       -ds    Do not sort files while adding to a solid archive.
+
+       -ed    Do not add empty directories.
+
+       -ee    Do not process extended attributes. Only for OS/2 versions.
+
+       -en    Do not add "end of archive" block.
+
+              This switch cannot be used with volumes, because the end of  ar‐
+              chive  block  contains  information important for correct volume
+              processing.
+
+       -ep    Exclude paths from names.
+
+       -ep1   Exclude base dir from names.
+
+       -ep2   Expand paths to full. Store full file paths (except a drive let‐
+              ter and leading path separator) when archiving.
+
+       -e&lt;attr&gt;
+              Specifies file exclude attributes mask.
+
+       -f     Freshen files. May be used with archive extraction or creation.
+
+       -hp&lt;password&gt;
+              Encrypt both file data and headers.  The password is case-sensi‐
+              tive. If you omit the password on the command line, you will  be
+              prompted with message "Enter password".
+
+       -idp   Disable percentage indicator.
+
+       -ieml[.][addr]
+              Send archive by email. Win32 version only.
+
+       -ierr  Send all messages to stderr.
+
+       -ilog  Log errors to file (registered versions only).
+
+       -inul  Disable all messages.
+
+       -isnd  Enable sound.
+
+       -k     Lock  archive.  Any  command which intends to change the archive
+              will be ignored.
+
+       -kb    Keep broken extracted files.
+
+       -m&lt;0..5&gt;
+              Set compression level (0-store...3-default...5-best). By default
+              rar uses -m3 method (Normal compression).
+
+       -mc&lt;par&gt;
+              Set  advanced  compression parameters.  For further details look
+              in rar.txt.
+
+       -md&lt;size&gt;
+              Set dictionary  size  in  Kb  (64,128,256,512,1024,2048,4097  or
+              a,b,c,d,e,f,g)
+
+       -ms[list]
+              Specify file types to store.
+
+       -o+    Overwrite existing files.
+
+       -o-    Do not overwrite existing files.
+
+       -ol    Save symbolic links as the link instead of the file.
+
+       -os    Save NTFS streams. Win32 version only.
+
+       -ow    Save file owner and group.
+
+       -p&lt;password&gt;
+              Encrypt  files  with the string &lt;password&gt; as password while ar‐
+              chiving.  The password is case-sensitive. If you omit the  pass‐
+              word  on  the  command  line,  you will be prompted with message
+              "Enter password".
+
+       -p-    Do not query password.
+
+       -r     Recurse subdirectories.
+
+       -r0    Similar to -r, but when used with the commands  'a',  'u',  'f',
+              'm' will recurse subdirectories only for wildcard names.
+
+       -ri&lt;p&gt;[:&lt;s&gt;]
+              Set priority and sleep time. Available only in RAR for Windows.
+
+       -rr[N] Add data recovery record.
+
+       -rv[N] Create recovery volumes.  -s Create solid archive.
+
+       -s&lt;N&gt;  Create  solid  groups using file count. Similar to -s, but reset
+              solid statistics after compressing &lt;N&gt; files.
+
+       -se    Create solid groups using extension. Similar to  -s,  but  reset
+              solid statistics if file extension is changed.
+
+       -sv    Create independent solid volumes. Similar to -s, but reset solid
+              statistics as soon as possible when starting a new volume.
+
+       -sv-   Create dependent solid volumes. Similar  to  -s,  but  reset  of
+              solid statistics is disabled.
+
+       -s-    Disable solid archiving.
+
+       -sfx[name]
+              Create  SFX  archives.  The archive is merged with SFX-module in
+              the user's home directory.
+
+       -t     Test files after archiving. This switch is especially useful  in
+              combination with the move command, so files will be deleted only
+              if archive had been successfully tested.
+
+       -tk    Keep original archive time. Prevents rar from modifying the  ar‐
+              chive date when changing an archive.
+
+       -tl    Set archive time to latest file. Forces rar to set the date of a
+              changed archive to the date of the newest file in the archive.
+
+       -u     Update files.
+
+       -v&lt;size&gt;[k|b|f]
+              Create volumes with size=&lt;size&gt;<em>1000 [</em>1024, *1].
+
+       -vd    Erase disk contents before creating volume.All files and  direc‐
+              tories  on  the  target  disk will be erased when '-vd' is used.
+              The switch applies only to removable media, the hard disk cannot
+              be erased using this switch.
+
+       -w&lt;path&gt;
+              Assign work directory.
+
+       -x&lt;file&gt;
+              Exclude  specified file. Wildcards may be used and you may spec‐
+              ify the switch '-x' several times.
+
+       -x@&lt;list&gt;
+              Exclude files in specified list file.
+
+       -x@    Read file names to exclude from stdin.
+
+       -y     Assume Yes on all queries.
+
+       -z&lt;file&gt;
+              Read archive comment from file.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The  program  is  documented  fully  in  rar.txt  which  you  find   in
+       /usr/share/doc/rar.
+</pre>
+<p><strong>AUTHOR</strong>
+</p><pre>
+       This  manual  page was written by Petr Cech &lt;<a href="mailto:cech@debian.org">cech@debian.org</a>&gt; according
+       to "rar -h" for the Debian GNU/Linux system (but may be  used  by  oth‐
+       ers).
+
+                                  22.04.2002                            RAR(1)
+</pre>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: su.html, Class: su.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>SU(1) Dienstprogramme für Benutzer SU(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> su - ändert die Benutzer-ID oder wechselt zu Root
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> su [Optionen] [Benutzername]
+</p>
+
+<p><strong>BESCHREIBUNG</strong>
+</p><pre>
+       Der Befehl su dient dazu, während einer Sitzung ein anderer Benutzer zu
+       werden. Wenn su ohne username aufgerufen wird, wechselt es
+       standardmäßig zu Root. Zusätzlich kann das Argument - angegeben werden.
+       Damit wird eine Umgebung zur Verfügung gestellt, die der entspricht,
+       die der Benutzer nach einer direkten Anmeldung erwartet.
+
+       Zusätzliche Argumente können nach dem Benutzername angegeben werden. In
+       diesem Fall werden sie an die Login-Shell des Benutzers weitergereicht.
+       Insbesondere führt das Argument -c dazu, dass das nächste Argument von
+       den meisten Interpretatoren als Befehl behandelt wird. Dieser Befehl
+       wird von der Shell ausgeführt, die in /etc/passwd für den Zielbenutzer
+       angegeben ist.
+
+       Sie können das Argument -- verwenden, um Optionen für su von Argumenten
+       für die Shell zu trennen.
+
+       Der Benutzer wird gegebenenfalls nach einem Passwort gefragt.
+       Unrichtige Passworteingaben werden eine Fehlermeldung erzeugen. Sowohl
+       erfolgreiche als auch misslungene Versuche werden protokolliert, um
+       Missbrauch des Systems zu entdecken.
+
+       The current environment is passed to the new shell. The value of $PATH
+       is reset to /bin:/usr/bin for normal users, or
+       /sbin:/bin:/usr/sbin:/usr/bin for the superuser. This may be changed
+       with the ENV_PATH and ENV_SUPATH definitions in /etc/login.defs.
+
+       Eine Subsystem-Anmeldung wird durch einen "*" als erstes Zeichen der
+       Login-Shell gekennzeichnet. Das angegebene Home-Verzeichnis wird als
+       Wurzel für das Dateisystem verwendet, auf welchem der Benutzer
+       tatsächlich angemeldet ist.
+</pre>
+<p><strong>OPTIONEN</strong>
+</p>
+
+<p> Die Optionen, die vom Befehl su unterstützt werden, sind:
+</p>
+<pre>
+       -c, --commandBEFEHL
+           Gibt einen Befehl an, der von der Shell mittels ihrer Option -c
+           ausgeführt wird.
+
+       -, -l, --login
+           Eine Umgebung wird zur Verfügung gestellt, die der entspricht, die
+           der Benutzer nach einer direkten Anmeldung erwartet.
+
+           Wenn - verwendet wird, muss es als die letzte Option von su
+           angegeben werden. Die übrigen Formen ((-l und --login) unterliegen
+           nicht dieser Beschränkung.
+
+       -s, --shellSHELL
+           Die Shell, die gestartet wird.
+
+           Die aufgerufene Shell wird bestimmt durch (höchste Priorität
+           zuerst):
+
+               Die Shell, die mit --shell angegeben wurde.
+
+               Falls --preserve-environment verwendet wird, die Shell, die
+               durch die Umgebungsvariable $SHELL festgelegt wird.
+
+               Die Shell, die in /etc/passwd für den Zielbenutzer angegeben
+               ist.
+
+               /bin/sh, falls durch die obigen Methoden keine Shell gefunden
+               werden kann.
+
+           Falls der Zielbenutzer eine beschränkte Shell hat (d.h. das Feld
+           für die Shell im Eintrag des Benutzers in /etc/passwd ist nicht in
+           /etc/shell) aufgeführt), wird die Option --shell und die
+           Umgebungsvariable $SHELL nicht beachtet, sofern su nicht von Root
+           aufgerufen wird.
+
+       -m, -p, --preserve-environment
+           Preserve the current environment, except for:
+
+           $PATH
+               reset according to the /etc/login.defs options ENV_PATH or
+               ENV_SUPATH (see below);
+
+           $IFS
+               reset to „&lt;space&gt;&lt;tab&gt;&lt;newline&gt;“, if it was set.
+
+           Falls der Zielbenutzer eine beschränkte Shell besitzt, hat diese
+           Option keinen Effekt (sofern su nicht von Root aufgerufen wird).
+
+           Note that the default behavior for the environment is the
+           following:
+
+               The $HOME, $SHELL, $USER, $LOGNAME, $PATH, and $IFS environment
+               variables are reset.
+
+               If --login is not used, the environment is copied, except for
+               the variables above.
+
+               If --login is used, the $TERM, $COLORTERM, $DISPLAY, and
+               $XAUTHORITY environment variables are copied if they were set.
+
+               Other environment might be set by PAM modules.
+</pre>
+<p><strong>WARNUNGEN</strong>
+</p><pre>
+       Diese Version von su hat viele Kompilierungsoptionen. Deren
+       Nützlichkeit hängt von den Anforderungen der jeweiligen Umgebung ab.
+</pre>
+<p><strong>CONFIGURATION</strong>
+</p><pre>
+       The following configuration variables in /etc/login.defs change the
+       behavior of this tool:
+
+       CONSOLE_GROUPS (string)
+           List of groups to add to the users supplementary groups set when
+           logging in on the console (as determined by the CONSOLE setting).
+           Default is none.
+
+           Use with caution - it is possible for users to gain permanent
+           access to these groups, even when not logged in on the console.
+
+       DEFAULT_HOME (boolean)
+           Indicate if login is allowed if we cant cd to the home directory.
+           Default in no.
+
+           If set to yes, the user will login in the root (/) directory if it
+           is not possible to cd to her home directory.
+
+       ENV_PATH (string)
+           If set, it will be used to define the PATH environment variable
+           when a regular user login. The value can be preceded by PATH=, or a
+           colon separated list of paths (for example /bin:/usr/bin). The
+           default value is PATH=/bin:/usr/bin.
+
+       ENV_SUPATH (string)
+           If set, it will be used to define the PATH environment variable
+           when the superuser login. The value can be preceded by PATH=, or a
+           colon separated list of paths (for example
+           /sbin:/bin:/usr/sbin:/usr/bin). The default value is
+           PATH=/bin:/usr/bin.
+
+       SULOG_FILE (string)
+           If defined, all su activity is logged to this file.
+
+       SU_NAME (string)
+           If defined, the command name to display when running "su -". For
+           example, if this is defined as "su" then a "ps" will display the
+           command is "-su". If not defined, then "ps" would display the name
+           of the shell actually being run, e.g. something like "-sh".
+
+       SYSLOG_SU_ENAB (boolean)
+           Enable "syslog" logging of su activity - in addition to sulog file
+           logging.
+</pre>
+<p><strong>DATEIEN</strong>
+</p><pre>
+       /etc/passwd
+           Informationen zu den Benutzerkonten.
+
+       /etc/shadow
+           Verschlüsselte Informationen zu den Benutzerkonten.
+
+       /etc/login.defs
+           Konfiguration des Shadow-Passwort-Systems
+</pre>
+<p><strong>SIEHE AUCH</strong>
+</p>
+
+<p> login(1), login.defs(5), sg(1), sh(1).
+</p>
+
+<p>Dienstprogramme für Benutzer 26.01.2010 SU(1)</p>
+
+</body>
+</html>

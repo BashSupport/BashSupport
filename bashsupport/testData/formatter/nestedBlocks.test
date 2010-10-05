@@ -1,0 +1,14 @@
+function a(  ) {
+    a
+    function b() {
+    b
+}
+}
+-----
+function a() {
+  a
+  function b() {
+    b
+  }
+
+}

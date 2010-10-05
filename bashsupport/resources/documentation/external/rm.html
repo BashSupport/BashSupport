@@ -1,0 +1,148 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: rm.html, Class: rm.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>RM(1) User Commands RM(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> rm - remove files or directories
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> rm [OPTION]... FILE...
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       This  manual  page  documents  the  GNU version of rm.  rm removes each
+       specified file.  By default, it does not remove directories.
+
+       If the -I or --interactive=once option is given,  and  there  are  more
+       than  three  files  or  the  -r,  -R, or --recursive are given, then rm
+       prompts the user for whether to proceed with the entire operation.   If
+       the response is not affirmative, the entire command is aborted.
+
+       Otherwise,  if  a file is unwritable, standard input is a terminal, and
+       the -f or --force  option  is  not  given,  or  the  -i  or  --interac‐
+       tive=always  option is given, rm prompts the user for whether to remove
+       the file.  If the response is not affirmative, the file is skipped.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> Remove (unlink) the FILE(s).
+</p>
+<pre>
+       -f, --force
+              ignore nonexistent files, never prompt
+
+       -i     prompt before every removal
+
+       -I     prompt once before removing  more  than  three  files,  or  when
+              removing  recursively.  Less intrusive than -i, while still giv‐
+              ing protection against most mistakes
+
+       --interactive[=WHEN]
+              prompt according to WHEN: never,  once  (-I),  or  always  (-i).
+              Without WHEN, prompt always
+
+       --one-file-system
+              when  removing  a hierarchy recursively, skip any directory that
+              is on a file system different from  that  of  the  corresponding
+              command line argument
+
+       --no-preserve-root
+              do not treat `/' specially
+
+       --preserve-root
+              do not remove `/' (default)
+
+       -r, -R, --recursive
+              remove directories and their contents recursively
+
+       -v, --verbose
+              explain what is being done
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       By default, rm does not remove directories.  Use the --recursive (-r or
+       -R) option to remove each listed directory, too, along with all of  its
+       contents.
+
+       To  remove a file whose name starts with a `-', for example `-foo', use
+       one of these commands:
+
+              rm -- -foo
+
+              rm ./-foo
+
+       Note that if you use rm to remove a file, it  is  usually  possible  to
+       recover the contents of that file.  If you want more assurance that the
+       contents are truly unrecoverable, consider using shred.
+</pre>
+<p><strong>AUTHOR</strong>
+</p><pre>
+       Written by Paul Rubin, David MacKenzie, Richard M.  Stallman,  and  Jim
+       Meyering.
+</pre>
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report rm bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright  ©  2009  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> unlink(1), unlink(2), chattr(1), shred(1)
+</p>
+<pre>
+       The  full  documentation  for rm is maintained as a Texinfo manual.  If
+       the info and rm programs are properly installed at your site, the  com‐
+       mand
+
+              info coreutils 'rm invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                             RM(1)
+</pre>
+</body>
+</html>

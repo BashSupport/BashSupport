@@ -1,0 +1,157 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: umount.html, Class: umount.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>UMOUNT(8) Linux Programmer's Manual UMOUNT(8)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> umount - unmount file systems
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> umount [-hV]
+</p>
+<pre>
+       umount -a [-dflnrv] [-t vfstype] [-O options]
+       umount [-dflnrv] {dir|device}...
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       The  umount command detaches the file system(s) mentioned from the file
+       hierarchy.  A file system is specified by giving the directory where it
+       has  been  mounted.  Giving the special device on which the file system
+       lives may also work, but is obsolete, mainly because it  will  fail  in
+       case this device was mounted on more than one directory.
+
+       Note  that  a  file  system cannot be unmounted when it is `busy' - for
+       example, when there are open files on it, or when some process has  its
+       working  directory  there,  or  when  a swap file on it is in use.  The
+       offending process could even be umount itself - it opens libc, and libc
+       in  its  turn may open for example locale files.  A lazy unmount avoids
+       this problem.
+
+       Options for the umount command:
+
+       -V     Print version and exit.
+
+       -h     Print help message and exit.
+
+       -v     Verbose mode.
+
+       -n     Unmount without writing in /etc/mtab.
+
+       -r     In case unmounting fails, try to remount read-only.
+
+       -d     In case the unmounted device was a loop device, also  free  this
+              loop device.
+
+       -i     Don't  call  the  /sbin/umount.&lt;filesystem&gt;  helper  even  if it
+              exists. By default /sbin/umount.&lt;filesystem&gt; helper is called if
+              one exists.
+
+       -a     All  of  the  file systems described in /etc/mtab are unmounted.
+              (With umount version 2.7 and later: the proc filesystem  is  not
+              unmounted.)
+
+       -t vfstype
+              Indicate  that  the actions should only be taken on file systems
+              of the specified type.  More than one type may be specified in a
+              comma separated list.  The list of file system types can be pre‐
+              fixed with no to specify the  file  system  types  on  which  no
+              action should be taken.
+
+       -O options
+              Indicate  that  the actions should only be taken on file systems
+              with the specified options in /etc/fstab.  More than one  option
+              type  may  be  specified in a comma separated list.  Each option
+              can be prefixed with no to specify options for which  no  action
+              should be taken.
+
+       -f     Force unmount (in case of an unreachable NFS system).  (Requires
+              kernel 2.1.116 or later.)
+
+       -l     Lazy unmount. Detach the filesystem from the filesystem  hierar‐
+              chy now, and cleanup all references to the filesystem as soon as
+              it is not busy anymore.  (Requires kernel 2.4.11 or later.)
+
+       --no-canonicalize
+              Don't canonicalize paths. For more details about this option see
+              the mount(8) man page.
+</pre>
+<p><strong>THE LOOP DEVICE</strong>
+</p><pre>
+       The  umount  command will free the loop device (if any) associated with
+       the mount, in case it finds the option `loop=...' in /etc/mtab, or when
+       the  -d  option was given.  Any pending loop devices can be freed using
+       `losetup -d', see losetup(8).
+</pre>
+<p><strong>NOTES</strong>
+</p>
+
+<p> The syntax of external umount helpers is:
+</p>
+
+<p> /sbin/umount.&lt;suffix&gt; {dir|device} [-nlfvr]
+</p>
+<pre>
+       where the &lt;suffix&gt; is filesystem type or a value from  "uhelper="  mtab
+       option.
+
+       The  uhelper (unprivileged umount helper) is possible to used when non-
+       root user wants to umount a mountpoint which  is  not  defined  in  the
+       /etc/fstab file (e.g devices mounted by HAL).
+</pre>
+<p><strong>FILES</strong>
+</p>
+
+<p> /etc/mtab table of mounted file systems
+</p>
+
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> umount(2), mount(8), losetup(8).
+</p>
+
+<p><strong>HISTORY</strong>
+</p>
+
+<p> A umount command appeared in Version 6 AT&amp;T UNIX.
+</p>
+
+<p><strong>AVAILABILITY</strong>
+</p><pre>
+       The  umount  command is part of the util-linux-ng package and is avail‐
+       able from <a href="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</a>
+
+Linux 2.0                        26 July 1997                        UMOUNT(8)
+</pre>
+</body>
+</html>

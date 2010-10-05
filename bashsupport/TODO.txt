@@ -1,0 +1,164 @@
+General list of to-do items. Indented items are already implemented / fixed.
+
+Planned features:
+-----------------
+  - Color configuration dialog
+- Formatting configuration dialog
+  - code formatting
+  - code folding (basic folding done)
+  - parser unit tests
+  - test with advanced bash scripts
+  - full arithmetic expressions support, includes arithmetic for loops
+  - subshell expressions
+- eval expressions
+  - here documents
+  - here strings
+  - line continuation with \
+  - variables: find usage
+  - variables: find definition
+  - variables: goto symbol
+  - support for case, select, ...
+  - Parser: Improve support for arithmetic for loop and arithmetic expressions
+  - No backtick evaluation in '' 
+  - PSI parsing, advanced parsing
+
+Possible features:
+------------------
+    - RMB: Run script in console...
+    - Run configuration for bash scripts
+    - Highlighting of backquotes in strings
+    - Intention to check for double function definition
+    - Intention to check for writes to built-in vars
+    - Local variables
+    - handle read-only vars
+    - Intention für brace expansions, z.B. ech{o,a}
+    - Module facet for configuration and file set?
+    - Better include support?
+    - Intention which detects writes to local variables
+    - Intention which detects writes to read-only variables
+    - Arithmetic expressions inspection: detect floating point operations
+- Bash console, provide bash support for windows.
+- Code formatting with its own configuration page
+- Intention to check for unused functions (needs index)
+- Intention to check for unused vars (needs index)
+- Inspection for external command if binary is there
+- Inspection for function call method params (possible?)
+- Intention/annotator to highlight builtin variables
+- "unset" builtin unterstützen
+- Support for collapse blocks. Very important would be to be able to collapse the initial comment (that is mostly the license agreement in many projects)
+- Also in the Ctrl+Q window: link to the web to some accepted documentation where the item is handled in more detail
+- Sourround with "for loop", "while loop", "case command", ...
+- Live templates for for / while / case / test for file / test for dir / ...
+- Regexp support
+- Find inspirations on http://lloydpuckitt.wordpress.com/
+- Diagram for file with include dependencies?
+- Built-in exception reporter
+- "Run before make" default should be "turned off" (for IntelliJ 9)
+
+Planned for 1.0:
+----------------
+- More advanced, context-sensitive code completion for keywords
+
+User comments:
+--------------
+  Would be nice if it had a separate highlighting option for `command` strings
+  (and also supported nesting "`command2`").
+
+Bugs (indentation marks fixed bugs):
+-------------------------------------
+    - No doc shown for function (should show the command before it)
+    - Backquotes in strings are not supported
+    - Support all pattern matching possibilities
+    - Besserer Support für "declare"
+    - Parsing von Bash-Patternexpansion {...}
+    - ech{o,a} expandiert zu "echo echa"
+    - Intentions für statische Expansions? (auswerten, anzeigen, als Kommentar darüber, ...)
+    - Es gibt eine Unterschied zwischen a{ a,b }, a{a,b }, a{a, b} und a{a,b}, nur das letzte wird expandiert
+    - Parsing von Kommando-Parametern überarbeiten, am Besten durchlaufen inklusive Leerzeichen,
+      um expansions etc. mizubekommen. Das Durchlaufen legt Strings an bzw. managed das Highlighting
+    - Vollständiges Lexing für Expansion, inkl Whitespace
+    - Support parameters to the shebang command
+    - Not supported: echo if in etc.
+    - Unsupported: Nested param expansions
+    - Not supported: : ${MINTMPKB:=1024}
+    - Nicht selektierbar: test -x $SDPTOOL || return 1
+    - Support doc for commands export, declare
+    - Support "a=2 export b=10", b is not defined atm
+    - no variables in arithmetic for loop
+    - there are 2 types of shebang inspection suggestions
+        1) when shebang is wrong to fix it
+        2) when shebang is ok to change it to the alternative one
+        how to remove at all the second fix? it's very irritating, cause shebang line is always underlined
+    - Better default colors for variables and elements
+    - $(echo a) should have "echo" as internal command
+    - support for command path completion
+    - Doesn't work: echo "${class//./_} [shape=box label=\"$class\"]"
+    - Unsupported: "local exitval=0"
+    - String not properly parsed: echo "The answer is $((6*7))"
+    - Not properly parsed: {a,b,c}{a,b,c}{a,b,c}
+    - variables in here docs are not highlighted
+    - not correctly parsed: a=$({1..9})
+    - "declare a b" doesn't resolve a b, but "declare a=1 b" does
+    - Die Variable a von "export a" erscheint nicht in den Completions
+    - Icon for global variables
+    - Icon for bash global variables
+    - Declare help page is missing
+    - local help page is missing
+    - code completion für ${<here>} geht nicht
+    - configuration option to turn "unknown variable" off
+    - Convert to quoted string for if [ "${CONSOLE_FONT}" ]; then
+    - Highlight option for global vars
+    - Variable loest nicht auf: export strange=1; echo $strange
+    - Add Bash facet with tree based configuration for include / exclude for files without extensions
+    - ctrl+q does not work in subshell commands
+    - ctrl+q does not work for functions any more
+    - Renaming NEW in "NEW=1; ${NEW:${NEW}}" loses track of the variables in the substitution blocks
+    - Support the "readonly" command
+    - Rework the redirect lexing and parsing, currently redirects into filehandles and files are not well parsed
+    - Bad code green: "echo > &1"
+    - "a=1 ((1))" is invalid, "((1))" is valid
+    - Add inspection to detect bad filehandles, e.g. &10
+    - documentation for mv
+    - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
+- Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
+- Support <<- which removes tab characters (parses, intention for this?)
+- Support tilde expansion
+- Support for Ctrl+J
+- export a[1]=1 is invalid, "declare a[1]=2" is valid though
+    - no variable auto completion in here docs
+- Bash v4: Inspection in v3 mode to warn about the ambiguous redirect &| if run on v4
+- Bash v4: declare keyword changes
+- Bash v4: read keyword changes
+- Bash v4: help command changes
+- Bash v4: see http://bash-hackers.org/wiki/doku.php/bash4
+- support getopts variable parameter
+- Icon for script variables
+- Fehlermeldungen: jump to line fuer deutsch geht nicht
+  /home/jansorg/_DISK2/JavaProjects/projects/messe-ffm/webcrawler/build_custom_nutch.sh: Zeile 51: exit: 'webcrawler/nutch' needs to be a directory.: Ein numerischer Parameter ist
+  erforderlich.
+- Improved man page formatting
+- Fix variables in array assignments a[$a]=1 , this needs a lexing refactoring
+- "make" is enabled for newly created Bash run configurations
+- Properly support <<-EOF and <<-"EOF"
+- Formatting of heredocs should not indent, maybe only for <<-
+- Quotation marks in heredocs mix up the parser, Strings are lexed, heredocs are parsed but not lexed,
+  thus the parser sees an incomplete string and can not parse the heredoc. This should be fixed somehow, probably
+  needs a lexer refactoring / rework.
+- Add shebang does not work for empty file
+- bash: insert string end after " is typed
+- Inspection to find incompatibilities with the old "sh" command
+- Extract local variable
+- Extract include script
+- Extract method
+- Support for "expr"
+- Support for "let"
+- Support for "eval"
+- Inspection to replace `expr 1 + 2` with $((1 + 2))
+- Inspection / quickfix for $RANDOM to insert a random number
+    - search scope for variables in included scripts
+- Not working: declare -r next_number=p$(printf "%02d" $((10#${number:1} + 1)))
+- inspection to check custom-base number literals to check for invalid digit characters, e.g. 10#A
+- Bad code green : one line: for f in 1 2 3; do { echo 1 } done
+    - Inspection to detect local usage outside of a function
+    - support process substitution / i.e. named pipes "cat - < <(echo a)"
+    - Adding a new file with the extension .bash adds file.bash.sh
