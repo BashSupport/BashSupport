@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: disown.html, Class: disown.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>disown: disown [-h] [-ar] [jobspec ...]
+</p>
+
+<p> Remove jobs from current shell.
+
+</p>
+
+<p> Removes each JOBSPEC argument from the table of active jobs. Without
+    any JOBSPECs, the shell uses its notion of the current job.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -a remove all jobs if JOBSPEC is not supplied
+        -h mark each JOBSPEC so that SIGHUP is not sent to the job if the
+        shell receives a SIGHUP
+        -r remove only running jobs
+
+    </dd>
+</dl>
+<p> Exit Status:<br/>
+    Returns success unless an invalid option or JOBSPEC is given.</p>
+
+</body>
+</html>

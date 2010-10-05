@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: zless.html, Class: zless.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p><strong>ZLESS(1) ZLESS(1)</strong>
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> zless - file perusal filter for crt viewing of compressed text
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> zless [ name ... ]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       Zless  is a filter which allows examination of compressed or plain text
+       files one screenful at a time on  a  soft-copy  terminal.   It  is  the
+       equivalent of setting the environment variable LESSOPEN to '|gzip -cdfq
+       --   %s',   and   the    environment    variable    LESSMETACHARS    to
+       "'&lt;space&gt;&lt;tab&gt;&lt;newline&gt;;*?"()&lt;&gt;[|&amp;^`#\$%=~'",  and  then  running less.
+       Less now provides similar, and more flexible, functionality through the
+       lessfile and lesspipe filters.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> zmore(1), less(1), lessfile(1), lesspipe(1)
+</p>
+
+<p><strong>BUGS</strong>
+</p><pre>
+       Zless  does not work with compressed data that is piped to it via stan‐
+       dard input; it requires that input files be specified as arguments.  If
+       you  really  want to use less in a pipe, then do the uncompress explic‐
+       itly and pipe to less instead of using zless.
+</pre>
+<p><strong>COPYRIGHT NOTICE</strong>
+</p><pre>
+       Copyright © 2006 Free Software Foundation, Inc.
+       Copyright © 1992, 1993 Jean-loup Gailly
+
+       Permission is granted to make and distribute verbatim  copies  of  this
+       manual  provided  the  copyright  notice and this permission notice are
+       preserved on all copies.
+
+       Permission is granted to copy and distribute modified versions of  this
+       manual  under  the  conditions  for verbatim copying, provided that the
+       entire resulting derived work is distributed under the terms of a  per‐
+       mission notice identical to this one.
+
+       Permission  is granted to copy and distribute translations of this man‐
+       ual into another language, under the above conditions for modified ver‐
+       sions,  except  that this permission notice may be stated in a transla‐
+       tion approved by the Foundation.
+
+                                                                      ZLESS(1)
+</pre>
+</body>
+</html>

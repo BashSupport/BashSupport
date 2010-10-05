@@ -1,0 +1,90 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: rmmod.html, Class: rmmod.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p><strong>RMMOD(8) RMMOD(8)</strong>
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> rmmod - simple program to remove a module from the Linux Kernel
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> rmmod [ -f ] [ -w ] [ -s ] [ -v ] [ modulename ]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       rmmod  is  a  trivial  program to remove a module from the kernel. Most
+       users will want to use modprobe(8) with the -r option instead.
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+       -v --verbose
+              Print messages about what the program is doing.   Usually  rmmod
+              prints messages only if something goes wrong.
+
+       -f --force
+              This  option can be extremely dangerous: it has no effect unless
+              CONFIG_MODULE_FORCE_UNLOAD was set when the kernel was compiled.
+              With  this  option, you can remove modules which are being used,
+              or which are not designed to be removed, or have been marked  as
+              unsafe (see lsmod(8)).
+
+       -w --wait
+              Normally,  rmmod will refuse to unload modules which are in use.
+              With this option, rmmod will isolate the module, and wait  until
+              the  module  is  no longer used. Nothing new will be able to use
+              the module, but it's up to you to make sure  the  current  users
+              eventually  finish  with  it.   See lsmod(8)) for information on
+              usage counts.
+
+       -s --syslog
+              Send errors to syslog instead of standard error.
+
+       -V --version
+              Show version of program and exit.
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p>
+
+<p> This manual page Copyright 2002, Rusty Russell, IBM Corporation.
+</p>
+
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> modprobe(8), insmod(8), lsmod(8)
+</p>
+
+<p><strong>2002-12-27 RMMOD(8)</strong>
+</p>
+
+</body>
+</html>

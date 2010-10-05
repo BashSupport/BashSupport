@@ -1,0 +1,264 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: xsltproc.html, Class: xsltproc.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>XSLTPROC(1) xsltproc Manual XSLTPROC(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> xsltproc - command line XSLT processor
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       xsltproc [[-V | --version] [-v | --verbose] [{-o | --output} {FILE |
+                DIRECTORY}] | --timing | --repeat | --debug | --novalid |
+                --noout | --maxdepth VALUE | --html | --encoding ENCODING  |
+                --param PARAMNAME PARAMVALUE  |
+                --stringparam PARAMNAME PARAMVALUE  | --nonet |
+                --path "PATH(S)" | --load-trace | --catalogs | --xinclude |
+                [--profile | --norman] | --dumpextensions | --nowrite |
+                --nomkdir | --writesubtree PATH | --nodtdattr] [STYLESHEET]
+                {XML-FILE | -}
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       xsltproc is a command line tool for applying XSLT stylesheets to XML
+       documents. It is part of libxslt(3), the XSLT C library for GNOME.
+       While it was developed as part of the GNOME project, it can operate
+       independently of the GNOME desktop.
+
+       xsltproc is invoked from the command line with the name of the
+       stylesheet to be used followed by the name of the file or files to
+       which the stylesheet is to be applied. It will use the standard input
+       if a filename provided is -
+
+       If a stylesheet is included in an XML document with a Stylesheet
+       Processing Instruction, no stylesheet need to be named at the command
+       line.  xsltproc will automatically detect the included stylesheet and
+       use it.
+
+       By default, output is to stdout. You can specify a file for output
+       using the -o or --output option.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> xsltproc accepts the following options (in alphabetical order):
+</p>
+<pre>
+       --catalogs
+           Use the SGML catalog specified in SGML_CATALOG_FILES to resolve the
+           location of external entities. By default, xsltproc looks for the
+           catalog specified in XML_CATALOG_FILES. If that is not specified,
+           it uses /etc/xml/catalog.
+
+       --debug
+           Output an XML tree of the transformed document for debugging
+           purposes.
+
+       --dumpextensions
+           Dumps the list of all registered extensions on stdout.
+
+       --html
+           The input document is an HTML file.
+
+       --load-trace
+           Display all the documents loaded during the processing to stderr.
+
+       --maxdepth VALUE
+           Adjust the maximum depth of the template stack before libxslt(3)
+           concludes it is in an infinite loop. The default is 3000.
+
+       --nodtdattr
+           Do not apply default attributes from the document´s DTD.
+
+       --nomkdir
+           Refuses to create directories.
+
+       --nonet
+           Do not use the Internet to fetch DTDs, entities or documents.
+
+       --noout
+           Do not output the result.
+
+       --novalid
+           Skip loading the document´s DTD.
+
+       --nowrite
+           Refuses to write to any file or resource.
+
+       -o or --output FILE | DIRECTORY
+           Direct output to the given FILE. Using the option with a DIRECTORY
+           directs the output files to the specified directory. This can be
+           useful for multiple outputs (also known as "chunking") or manpage
+           processing.
+
+           Important
+           The given directory must already exist.
+
+           Note
+           Make sure that FILE and DIRECTORY follow the “URI reference
+           computation” as described in <a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a> and laters. This means, that
+           e.g.  -o directory will maybe not work, but -o directory/ will.
+
+       --encoding ENCODING
+           Allow to specify the encoding for the input.
+
+       --param PARAMNAME PARAMVALUE
+           Pass a parameter of name PARAMNAME and value PARAMVALUE to the
+           stylesheet. You may pass multiple name/value pairs up to a maximum
+           of 32. If the value being passed is a string, you can use
+           --stringparam instead, to avoid additional quote characters that
+           appear in string expressions. Note: the XPath expression must be
+           UTF-8 encoded.
+
+       --path "PATH(S)"
+           Use the (space- or colon-separated) list of filesystem paths
+           specified by PATHS to load DTDs, entities or documents. Enclose
+           space-separated lists by quotation marks.
+
+       --profile or --norman
+           Output profiling information detailing the amount of time spent in
+           each part of the stylesheet. This is useful in optimizing
+           stylesheet performance.
+
+       --repeat
+           Run the transformation 20 times. Used for timing tests.
+
+       --stringparam PARAMNAME PARAMVALUE
+           Pass a parameter of name PARAMNAME and value PARAMVALUE where
+           PARAMVALUE is a string rather than a node identifier.  Note: The
+           string must be UTF-8 encoded.
+
+       --timing
+           Display the time used for parsing the stylesheet, parsing the
+           document and applying the stylesheet and saving the result.
+           Displayed in milliseconds.
+
+       -v or --verbose
+           Output each step taken by xsltproc in processing the stylesheet and
+           the document.
+
+       -V or --version
+           Show the version of libxml(3) and libxslt(3) used.
+
+       --writesubtree PATH
+           Allow file write only within the PATH subtree.
+
+       --xinclude
+           Process the input document using the XInclude specification. More
+           details on this can be found in the XInclude specification:
+           <a href="http://www.w3.org/TR/xinclude/">http://www.w3.org/TR/xinclude/</a>
+</pre>
+<p><strong>ENVIRONMENT</strong>
+</p><pre>
+       SGML_CATALOG_FILES
+           SGML catalog behavior can be changed by redirecting queries to the
+           user´s own set of catalogs. This can be done by setting the
+           SGML_CATALOG_FILES environment variable to a list of catalogs. An
+           empty one should deactivate loading the default /etc/sgml/catalog
+           catalog.
+
+       XML_CATALOG_FILES
+           XML catalog behavior can be changed by redirecting queries to the
+           user´s own set of catalogs. This can be done by setting the
+           XML_CATALOG_FILES environment variable to a list of catalogs. An
+           empty one should deactivate loading the default /etc/xml/catalog
+           catalog.
+</pre>
+<p><strong>DIAGNOSTICS</strong>
+</p><pre>
+       xsltproc return codes provide information that can be used when calling
+       it from scripts.
+
+       0
+           No error (normal operation)
+
+       1
+           No argument
+
+       2
+           Too many parameters
+
+       3
+           Unknown option
+
+       4
+           Failed to parse the stylesheet
+
+       5
+           Error in the stylesheet
+
+       6
+           Error in one of the documents
+
+       7
+           Unsupported xsl:output method
+
+       8
+           String parameter contains both quote and double-quotes
+
+       9
+           Internal processing error
+
+       10
+           Processing was stopped by a terminating message
+
+       11
+           Could not write the result to the output file
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> libxml(3), libxslt(3)
+</p>
+
+<p> More information can be found at
+</p>
+
+<p> · libxml(3) web page <a href="http://www.xmlsoft.org/">http://www.xmlsoft.org/</a>
+</p>
+
+<p> · W3C XSLT page <a href="http://www.w3.org/TR/xslt">http://www.w3.org/TR/xslt</a>
+</p>
+
+<p><strong>AUTHOR</strong>
+</p><pre>
+       John Fleck &lt;<a href="mailto:jfleck@inkstain.net">jfleck@inkstain.net</a>&gt;
+           Author.
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p>
+
+<p> Copyright © 2001, 2002
+</p>
+
+<p>libxslt $Date: 2008-04-21 16:28:56 +0200 (Mon, 21 Apr 2008) $ XSLTPROC(1)</p>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: who.html, Class: who.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>WHO(1) User Commands WHO(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> who - show who is logged on
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> who [OPTION]... [ FILE | ARG1 ARG2 ]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> Print information about users who are currently logged in.
+</p>
+<pre>
+       -a, --all
+              same as -b -d --login -p -r -t -T -u
+
+       -b, --boot
+              time of last system boot
+
+       -d, --dead
+              print dead processes
+
+       -H, --heading
+              print line of column headings
+
+       --ips  print  ips  instead  of  hostnames. with --lookup, canonicalizes
+              based on stored IP, if available, rather than stored hostname
+
+       -l, --login
+              print system login processes
+
+       --lookup
+              attempt to canonicalize hostnames via DNS
+
+       -m     only hostname and user associated with stdin
+
+       -p, --process
+              print active processes spawned by init
+
+       -q, --count
+              all login names and number of users logged on
+
+       -r, --runlevel
+              print current runlevel
+
+       -s, --short
+              print only name, line, and time (default)
+
+       -t, --time
+              print last system clock change
+
+       -T, -w, --mesg
+              add user's message status as +, - or ?
+
+       -u, --users
+              list users logged in
+
+       --message
+              same as -T
+
+       --writable
+              same as -T
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       If FILE is not specified, use /var/run/utmp.  /var/log/wtmp as FILE  is
+       common.   If  ARG1  ARG2  given, -m presumed: `am i' or `mom likes' are
+       usual.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Written by Joseph Arceneaux, David MacKenzie, and Michael Stone.
+</p>
+
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report who bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright © 2009 Free Software Foundation, Inc.   License  GPLv3+:  GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The full documentation for who is maintained as a Texinfo  manual.   If
+       the info and who programs are properly installed at your site, the com‐
+       mand
+
+              info coreutils 'who invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                            WHO(1)
+</pre>
+</body>
+</html>

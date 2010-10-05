@@ -1,0 +1,94 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: ldd.html, Class: ldd.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p><strong>LDD(1) LDD(1)</strong>
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> ldd - print shared library dependencies
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> ldd [OPTION]... FILE...
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       ldd  prints  the  shared  libraries  required by each program or shared
+       library specified on the command line.
+</pre>
+<p><strong>OPTIONS</strong>
+</p><pre>
+       --version
+              Print the version number of ldd.
+
+       -v --verbose
+              Print all information, including e.g. symbol versioning informa‐
+              tion.
+
+       -d --data-relocs
+              Perform relocations and report any missing objects (ELF only).
+
+       -r --function-relocs
+              Perform  relocations  for  both  data objects and functions, and
+              report any missing objects or functions (ELF only).
+
+       -u --unused
+              Print unused direct dependencies.
+
+       --help Usage information.
+</pre>
+<p><strong>BUGS</strong>
+</p>
+
+<p> ldd does not work on a.out shared libraries.
+</p>
+<pre>
+       ldd does not work with some extremely old  a.out  programs  which  were
+       built  before  ldd  support was added to the compiler releases.  If you
+       use ldd on one of these programs, the program will attempt to run  with
+       argc = 0 and the results will be unpredictable.
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Roland McGrath and Ulrich Drepper.
+</p>
+
+<p><strong>SEE ALSO</strong>
+</p>
+
+<p> ldconfig(8), ld.so(8).
+</p>
+
+<p> 30 October 2000 LDD(1)</p>
+
+</body>
+</html>

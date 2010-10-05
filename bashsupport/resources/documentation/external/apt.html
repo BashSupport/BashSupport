@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: apt.html, Class: apt.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>apt(1) apt(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> apt - annotation processing tool
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       apt  [-classpath classpath] [-sourcepath sourcepath] [-d directory] [-s
+       directory] [-factorypath path] [-factory class]  [-print]  [-nocompile]
+       [-Akey[=val] ...] [javac option] sourcefiles [@files]
+</pre>
+<p><strong>PARAMETERS</strong>
+</p><pre>
+       Options may be in any order. For a discussion of parameters which apply
+       to a specific option, see OPTIONS below.
+
+          sourcefiles
+             Zero or more source files to be processed.
+
+          @files
+             One or more files that list source files or other options
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p><pre>
+       The tool apt, annotation processing tool, includes a set of new reflec‐
+       tive APIs and supporting infrastructure to process program annotations.
+       The apt reflective APIs provide a build-time,  source-based,  read-only
+       view  of  program  structure.  These  reflective  APIs  are designed to
+       cleanly model the Java(TM) programming language's type system after the
+       addition  of  generics.  First, apt runs annotation processors that can
+       produce new source code and other files. Next, apt can  cause  compila‐
+       tion  of  both original and generated source files, easing development.
+       The reflective APIs and other APIs used to interact with the  tool  are
+       subpackages of com.sun.mirror.
+
+       A  fuller  discussion  of how the tool operates as well as instructions
+       for developing with apt are in Getting Started with apt. @
+       <a href="http://java.sun.com/javase/6/docs/technotes/guides/apt/Get">http://java.sun.com/javase/6/docs/technotes/guides/apt/Get</a>‐
+       tingStarted.html
+
+          Note:
+             The functionality of apt has been subsumed by the annotation-pro‐
+             cessing infrastructure that is now part of the javac(1) tool and
+             standardized for use by all Java compilers. This new infrastruc‐
+             ture relies on the language model and annotation-processing APIs
+             that are now part of the Java Platform. It is recommended that
+             new annotation processor development be based on the new APIs and
+             the javac tool.
+</pre>
+<p><strong>OPTIONS</strong>
+</p>
+
+<p> apt specific options
+</p><pre>
+          -s dir
+             Specify the directory root under which processor-generated source
+             files will be placed; files are placed in subdirectories based on
+             package namespace.
+
+          -nocompile
+             Do not compile source files to class files.
+
+          -print
+             Print out textual representation of specified types; perform no
+             annotation processing or compilation.
+
+          -A[key[=val]]
+             Options to pass to annotation processors -- these are not inter‐
+             preted by apt directly, but are made available for use by indi‐
+             vidual processors
+
+          -factorypath path
+             Specify where to find annotation processor factories; if this
+             option is used, the classpath is not searched for factories.
+
+          -factory classname
+             Name of annotation processor factory to use; bypasses default
+             discovery process
+</pre>
+<p> Options shared with javac
+</p><pre>
+          -d dir
+             Specify where to place processor and javac generated class files
+
+          -cp path or -classpath path
+             Specify where to find user class files and annotation processor
+             factories. If -factorypath is given, the classpath is not
+             searched for factories.
+
+       Consult the javac(1) man page for information on javac options.
+</pre>
+<p><strong>NOTES</strong>
+</p><pre>
+       The functionality of apt has been subsumed by the standard annota‐
+       tion-processing infrastructure now offered by javac. Support for apt
+       and its associated APIs may be discontinued in some future JDK release.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p>
+<ul>
+    <li>javac(1), java(1)
+    </li>
+</ul>
+<p> 20 Mar 2008 apt(1)</p>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: set.html, Class: set.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>set: set [--abefhkmnptuvxBCHP] [-o option-name] [arg ...]
+</p>
+
+<p> Set or unset values of shell options and positional parameters.
+
+</p>
+
+<p> Change the value of shell attributes and positional parameters, or
+    display the names and values of shell variables.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -a Mark variables which are modified or created for export.
+        -b Notify of job termination immediately.
+        -e Exit immediately if a command exits with a non-zero status.
+        -f Disable file name generation (globbing).
+        -h Remember the location of commands as they are looked up.
+        -k All assignment arguments are placed in the environment for a
+        <p> command, not just those that precede the command name.
+            -m Job control is enabled.
+            -n Read commands but do not execute them.
+            -o option-name
+        </p>
+
+        <p> Set the variable corresponding to option-name:
+        </p>
+
+        <p> allexport same as -a
+            braceexpand same as -B
+            emacs use an emacs-style line editing interface
+            errexit same as -e
+            errtrace same as -E
+            functrace same as -T
+            hashall same as -h
+            histexpand same as -H
+            history enable command history
+            ignoreeof the shell will not exit upon reading EOF
+            interactive-comments
+        </p>
+
+        <p> allow comments to appear in interactive commands
+            keyword same as -k
+            monitor same as -m
+            noclobber same as -C
+            noexec same as -n
+            noglob same as -f
+            nolog currently accepted but ignored
+            notify same as -b
+            nounset same as -u
+            onecmd same as -t
+            physical same as -P
+            pipefail the return value of a pipeline is the status of
+        </p>
+
+        <p> the last command to exit with a non-zero status,
+            or zero if no command exited with a non-zero status
+            posix change the behavior of bash where the default
+        </p>
+
+        <p> operation differs from the Posix standard to
+            match the standard
+            privileged same as -p
+            verbose same as -v
+            vi use a vi-style line editing interface
+            xtrace same as -x
+            -p Turned on whenever the real and effective user ids do not match.
+        </p>
+
+        <p> Disables processing of the $ENV file and importing of shell
+            functions. Turning this option off causes the effective uid and
+            gid to be set to the real uid and gid.
+            -t Exit after reading and executing one command.
+            -u Treat unset variables as an error when substituting.
+            -v Print shell input lines as they are read.
+            -x Print commands and their arguments as they are executed.
+            -B the shell will perform brace expansion
+            -C If set, disallow existing regular files to be overwritten
+        </p>
+
+        <p> by redirection of output.
+            -E If set, the ERR trap is inherited by shell functions.
+            -H Enable ! style history substitution. This flag is on
+        </p>
+
+        <p> by default when the shell is interactive.
+            -P If set, do not follow symbolic links when executing commands
+        </p>
+
+        <p> such as cd which change the current directory.
+            -T If set, the DEBUG trap is inherited by shell functions.
+        </p>
+        <ul>
+            <li>Assign any remaining arguments to the positional parameters.
+                The -x and -v options are turned off.
+
+            </li>
+        </ul>
+    </dd>
+</dl>
+<p> Using + rather than - causes these flags to be turned off. The
+    flags can also be used upon invocation of the shell. The current
+    set of flags may be found in $-. The remaining n ARGs are positional
+    parameters and are assigned, in order, to $1, $2, .. $n. If no
+    ARGs are given, all shell variables are printed.
+
+</p>
+
+<p> Exit Status:<br/>
+    Returns success unless an invalid option is given.</p>
+
+</body>
+</html>

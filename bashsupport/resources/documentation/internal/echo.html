@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: echo.html, Class: echo.html
+  ~ Last modified: 2010-01-27
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51"/>
+</head>
+<body>
+<p>echo: echo [-neE] [arg ...]
+</p>
+
+<p> Write arguments to the standard output.
+
+</p>
+
+<p> Display the ARGs on the standard output followed by a newline.
+
+</p>
+<dl>
+    <dt>Options</dt>
+    <dd> -n do not append a newline
+        -e enable interpretation of the following backslash escapes
+        -E explicitly suppress interpretation of backslash escapes
+
+    </dd>
+</dl>
+<p> `echo' interprets the following backslash-escaped characters:
+</p><pre>
+      \a        alert (bell)
+      \b        backspace
+      \c        suppress further output
+      \e        escape character
+      \f        form feed
+      \n        new line
+      \r        carriage return
+      \t        horizontal tab
+      \v        vertical tab
+      \\        backslash
+      \0nnn     the character whose ASCII code is NNN (octal).  NNN can be
+        0 to 3 octal digits
+      \xHH      the eight-bit character whose value is HH (hexadecimal).  HH
+        can be one or two hex digits
+</pre>
+
+<p> Exit Status:<br/>
+    Returns success unless a write error occurs.</p>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: dd.html, Class: dd.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>DD(1) User Commands DD(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> dd - convert and copy a file
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p><pre>
+       dd [OPERAND]...
+       dd OPTION
+</pre>
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> Copy a file, converting and formatting according to the operands.
+</p>
+<pre>
+       bs=BYTES
+              read and write BYTES bytes at a time (also see ibs=,obs=)
+
+       cbs=BYTES
+              convert BYTES bytes at a time
+
+       conv=CONVS
+              convert the file as per the comma separated symbol list
+
+       count=BLOCKS
+              copy only BLOCKS input blocks
+
+       ibs=BYTES
+              read BYTES bytes at a time (default: 512)
+
+       if=FILE
+              read from FILE instead of stdin
+
+       iflag=FLAGS
+              read as per the comma separated symbol list
+
+       obs=BYTES
+              write BYTES bytes at a time (default: 512)
+
+       of=FILE
+              write to FILE instead of stdout
+
+       oflag=FLAGS
+              write as per the comma separated symbol list
+
+       seek=BLOCKS
+              skip BLOCKS obs-sized blocks at start of output
+
+       skip=BLOCKS
+              skip BLOCKS ibs-sized blocks at start of input
+
+       status=noxfer
+              suppress transfer statistics
+
+       BLOCKS  and  BYTES may be followed by the following multiplicative suf‐
+       fixes: c =1, w =2,  b  =512,  kB  =1000,  K  =1024,  MB  =1000<em>1000, M
+    =1024</em>1024,  xM =M GB =1000<em>1000</em>1000, G =1024<em>1024</em>1024, and so on for
+       T, P, E, Z, Y.
+
+       Each CONV symbol may be:
+
+       ascii  from EBCDIC to ASCII
+
+       ebcdic from ASCII to EBCDIC
+
+       ibm    from ASCII to alternate EBCDIC
+
+       block  pad newline-terminated records with spaces to cbs-size
+
+       unblock
+              replace trailing spaces in cbs-size records with newline
+
+       lcase  change upper case to lower case
+
+       nocreat
+              do not create the output file
+
+       excl   fail if the output file already exists
+
+       notrunc
+              do not truncate the output file
+
+       ucase  change lower case to upper case
+
+       swab   swap every pair of input bytes
+
+       noerror
+              continue after read errors
+
+       sync   pad every input block with NULs  to  ibs-size;  when  used  with
+              block or unblock, pad with spaces rather than NULs
+
+       fdatasync
+              physically write output file data before finishing
+
+       fsync  likewise, but also write metadata
+
+       Each FLAG symbol may be:
+
+       append append  mode  (makes  sense  only  for output; conv=notrunc sug‐
+              gested)
+
+       direct use direct I/O for data
+
+       directory
+              fail unless a directory
+
+       dsync  use synchronized I/O for data
+
+       sync   likewise, but also for metadata
+
+       fullblock
+              accumulate full blocks of input (iflag only)
+
+       nonblock
+              use non-blocking I/O
+
+       noatime
+              do not update access time
+
+       noctty do not assign controlling terminal from file
+
+       nofollow
+              do not follow symlinks
+
+       Sending a USR1 signal to a running `dd' process makes it print I/O sta‐
+       tistics to standard error and then resume copying.
+
+              $ dd if=/dev/zero of=/dev/null&amp; pid=$!
+              $ kill -USR1 $pid; sleep 1; kill $pid
+
+              18335302+0  records  in  18335302+0 records out 9387674624 bytes
+              (9.4 GB) copied, 34.6279 seconds, 271 MB/s
+
+       Options are:
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+</pre>
+<p><strong>AUTHOR</strong>
+</p>
+
+<p> Written by Paul Rubin, David MacKenzie, and Stuart Kemp.
+</p>
+
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Report dd bugs to <a href="mailto:bug-coreutils@gnu.org">bug-coreutils@gnu.org</a>
+       GNU coreutils home page: &lt;<a href="http://www.gnu.org/software/coreutils/">http://www.gnu.org/software/coreutils/</a>&gt;
+       General help using GNU software: &lt;<a href="http://www.gnu.org/gethelp/">http://www.gnu.org/gethelp/</a>&gt;
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright © 2009 Free Software Foundation, Inc.   License  GPLv3+:  GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;.
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+</pre>
+<p><strong>SEE ALSO</strong>
+</p><pre>
+       The full documentation for dd is maintained as a  Texinfo  manual.   If
+       the  info and dd programs are properly installed at your site, the com‐
+       mand
+
+              info coreutils 'dd invocation'
+
+       should give you access to the complete manual.
+
+GNU coreutils 7.4                 March 2010                             DD(1)
+</pre>
+</body>
+</html>

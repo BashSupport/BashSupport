@@ -1,0 +1,149 @@
+<!--
+  ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+  ~ File: info.html, Class: info.html
+  ~ Last modified: 2010-05-08
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="generator" content="HTML::TextToHTML v2.51" />
+</head>
+<body>
+<p>INFO(1) User Commands INFO(1)
+</p>
+
+<p><strong>NAME</strong>
+</p>
+
+<p> info - read Info documents
+</p>
+
+<p><strong>SYNOPSIS</strong>
+</p>
+
+<p> info [OPTION]... [MENU-ITEM...]
+</p>
+
+<p><strong>DESCRIPTION</strong>
+</p>
+
+<p> Read documentation in Info format.
+</p>
+
+<p><strong>OPTIONS</strong>
+</p><pre>
+       -k, --apropos=STRING
+              look up STRING in all indices of all manuals.
+
+       -d, --directory=DIR
+              add DIR to INFOPATH.
+
+       --dribble=FILENAME
+              remember user keystrokes in FILENAME.
+
+       -f, --file=FILENAME
+              specify Info file to visit.
+
+       -h, --help
+              display this help and exit.
+
+       --index-search=STRING
+              go to node pointed by index entry STRING.
+
+       -n, --node=NODENAME
+              specify nodes in first visited Info file.
+
+       -o, --output=FILENAME
+              output selected nodes to FILENAME.
+
+       -R, --raw-escapes
+              output "raw" ANSI escapes (default).
+
+       --no-raw-escapes
+              output escapes as literal text.
+
+       --restore=FILENAME
+              read initial keystrokes from FILENAME.
+
+       -O, --show-options, --usage
+              go to command-line options node.
+
+       --subnodes
+              recursively output menu items.
+
+       --vi-keys
+              use vi-like and less-like key bindings.
+
+       --version
+              display version information and exit.
+
+       -w, --where, --location
+              print physical location of Info file.
+
+       The  first  non-option argument, if present, is the menu entry to start
+       from; it is searched for in all `dir' files along INFOPATH.  If  it  is
+       not  present,  info  merges  all `dir' files and shows the result.  Any
+       remaining arguments are treated as the names of menu items relative  to
+       the initial node visited.
+
+       For a summary of key bindings, type h within Info.
+</pre>
+<p><strong>EXAMPLES</strong>
+</p>
+
+<p> info show top-level dir menu
+</p>
+<pre>
+       info info
+              show the general manual for Info readers
+
+       info info-stnd
+              show the manual specific to this Info program
+
+       info emacs
+              start at emacs node from top-level dir
+
+       info emacs buffers
+              start at buffers node within emacs manual
+
+       info --show-options emacs
+              start at node with emacs' command line options
+
+       info --subnodes -o out.txt emacs
+              dump entire manual to out.txt
+
+       info -f ./foo.info
+              show file ./foo.info, not searching dir
+</pre>
+<p><strong>REPORTING BUGS</strong>
+</p><pre>
+       Email bug reports to <a href="mailto:bug-texinfo@gnu.org">bug-texinfo@gnu.org</a>, general questions and discus‐
+       sion     to     <a href="mailto:help-texinfo@gnu.org">help-texinfo@gnu.org</a>.      Texinfo      home      page:
+       <a href="http://www.gnu.org/software/texinfo/">http://www.gnu.org/software/texinfo/</a>
+</pre>
+<p><strong>COPYRIGHT</strong>
+</p><pre>
+       Copyright  ©  2008  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html">http://gnu.org/licenses/gpl.html</a>&gt;
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+info 4.13                       September 2008                         INFO(1)
+</pre>
+</body>
+</html>
