@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-06-05
+ * Last modified: 2010-10-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ForwardingPsiBuilder;
 import com.ansorgit.plugins.bash.util.ReflectionUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.containers.Stack;
 
@@ -45,6 +46,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
     private boolean whitespaceEnabled = false;
+    private Project project;
 
     /**
      * A hack to let whitespace tokens be delivered by the builder on demand.
@@ -211,10 +213,12 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final HereDocData hereDocData = new HereDocData();
     private final ParsingStateData parsingStateData = new ParsingStateData();
 
-    public BashPsiBuilder(final PsiBuilder wrappedBuilder, BashVersion bashVersion) {
+    public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
         super(wrappedBuilder);
+
+        this.project = project;
         this.bashVersion = bashVersion;
-        tokenRemapper = new BashTokenRemapper(this);
+        this.tokenRemapper = new BashTokenRemapper(this);
         setTokenTypeRemapper(tokenRemapper);
     }
 
@@ -281,6 +285,10 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         } else if (log.isDebugEnabled()) {
             log.debug("Supressed psi error: " + message);
         }
+    }
+
+    public Project getProject() {
+        return project;
     }
 
     /**

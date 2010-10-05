@@ -174,9 +174,11 @@
         <inspection_tool class="ArrayLengthInLoopCondition" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="AssertEqualsMayBeAssertSame" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="AssertsWithoutMessages" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AssignmentToCatchBlockParameter" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="AssignmentToForLoopParameter" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_checkForeachParameters" value="false" />
         </inspection_tool>
+        <inspection_tool class="AssignmentToStaticFieldFromInstanceMethod" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="BeforeClassOrAfterClassIsPublicStaticVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="BeforeOrAfterIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="CallToSimpleGetterInClass" enabled="true" level="WARNING" enabled_by_default="true">
@@ -185,7 +187,6 @@
         <inspection_tool class="CallToSimpleSetterInClass" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreSetterCallsOnOtherObjects" value="false" />
         </inspection_tool>
-        <inspection_tool class="CheckDtdRefs" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="CheckForOutOfMemoryOnLargeArrayAllocation" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="64" />
         </inspection_tool>
@@ -200,18 +201,17 @@
         <inspection_tool class="ClassInheritanceDepth" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="2" />
         </inspection_tool>
+        <inspection_tool class="ClassLoaderInstantiation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ClassNestingDepth" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="1" />
         </inspection_tool>
         <inspection_tool class="ClassReferencesSubclass" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="ComponentNotRegistered" enabled="false" level="WARNING" enabled_by_default="false">
-          <option name="CHECK_ACTIONS" value="true" />
-          <option name="IGNORE_NON_PUBLIC" value="true" />
-        </inspection_tool>
         <inspection_tool class="ConnectionResource" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ConstructorCount" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="5" />
         </inspection_tool>
+        <inspection_tool class="CyclicClassDependency" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CyclicPackageDependency" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="DeclareCollectionAsInterface" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreLocalVariables" value="false" />
           <option name="ignorePrivateMethodsAndFields" value="false" />
@@ -279,6 +279,7 @@
         <inspection_tool class="JpaORMDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="JpaQlInspection" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="JpaQueryApiInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="LoadLibraryWithNonConstantString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MethodCallInLoopCondition" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MethodCount" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="20" />
@@ -311,6 +312,7 @@
           <option name="ignoreLazyOperators" value="true" />
           <option name="ignoreObscureOperators" value="false" />
         </inspection_tool>
+        <inspection_tool class="RuntimeExecWithNonConstantString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SetupCallsSuperSetup" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SetupIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SimplifiableJUnitAssertion" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -324,6 +326,7 @@
         <inspection_tool class="SpringAopWarningsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="StaticSuite" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SystemOutErr" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SystemSetSecurityManager" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="TeardownCallsSuperTeardown" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="TeardownIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="TestCaseInProductCode" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -346,6 +349,7 @@
         <inspection_tool class="UnnecessaryConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UnnecessaryInterfaceModifier" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UnnecessarySuperConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UnsecureRandomNumberGeneration" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UnusedCatchParameter" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreCatchBlocksWithComments" value="false" />
           <option name="m_ignoreTestCases" value="false" />
@@ -724,7 +728,7 @@
       <module fileurl="file://$PROJECT_DIR$/../PluginErrorReporting/PluginErrorReporting.iml" filepath="$PROJECT_DIR$/../PluginErrorReporting/PluginErrorReporting.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-95.429" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-96.1190" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
@@ -745,19 +749,25 @@
             <SvnBranchConfiguration>
               <option name="branchMap">
                 <map>
-                  <entry key="file://$KALISTICK_TECHBOX_DIR$/Projekte/svn/branches">
+                  <entry key="https://bashsupport.googlecode.com/svn/branches">
                     <value>
-                      <list />
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1286302410056" />
+                          <option name="revision" value="115" />
+                          <option name="url" value="https://bashsupport.googlecode.com/svn/branches/ideaX" />
+                        </SvnBranchItem>
+                      </list>
                     </value>
                   </entry>
                 </map>
               </option>
               <option name="branchUrls">
                 <list>
-                  <option value="file://$KALISTICK_TECHBOX_DIR$/Projekte/svn/branches" />
+                  <option value="https://bashsupport.googlecode.com/svn/branches" />
                 </list>
               </option>
-              <option name="trunkUrl" value="file://$KALISTICK_TECHBOX_DIR$/Projekte/svn/trunk" />
+              <option name="trunkUrl" value="https://bashsupport.googlecode.com/svn/trunk" />
             </SvnBranchConfiguration>
           </value>
         </entry>
@@ -788,17 +798,6 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/lib/google-collect-1.0-src.zip!/" />
-      </SOURCES>
-    </library>
-    <library name="GroupLayout">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/swing-layout.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$PROJECT_DIR$/lib/swing-layout-javadoc.zip!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/swing-layout-src.zip!/" />
       </SOURCES>
     </library>
   </component>

@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-08-12
+  ~ Last modified: 2010-10-05
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,17 +18,17 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.14-maia</version>
+    <version>0.9.15-ideaX</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 9.0.3 or later (for the fixed language console) -->
-    <idea-version since-build="95.429" until-build="98.999"/>
+    <idea-version since-build="96.1190" until-build="98.999"/>
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[
   <html>
-    <h3>Bash support for IntelliJ 9</h3>
+    <h3>Bash support for IntelliJ X</h3>
     <br>
             <b>Features:</b><br>
             <ul>
@@ -57,6 +57,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.15-ideaX:</b>
+       <ul>
+         <li>Now requires IDEA X build 96.1190 or later</li>
+       </ul>
+
        <b>Changes in version 0.9.14-maia:</b>
        <ul>
          <li>Now requires IDEA 9.0.3 or later</li>
