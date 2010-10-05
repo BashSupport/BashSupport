@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashParser.java, Class: BashParser
- * Last modified: 2010-03-09
+ * Last modified: 2010-10-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class BashParser implements PsiParser {
 
     @NotNull
     public ASTNode parse(final IElementType root, final PsiBuilder psiBuilder) {
-        final BashPsiBuilder builder = new BashPsiBuilder(psiBuilder, version);
+        final BashPsiBuilder builder = new BashPsiBuilder(null, psiBuilder, version);
 
         if (debugMode) {
             log.info("Enabling parser's debug mode...");

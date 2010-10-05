@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiTest.java, Class: MockPsiTest
- * Last modified: 2010-08-12
+ * Last modified: 2010-10-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,7 +84,8 @@ public abstract class MockPsiTest implements BashTokenTypes {
 
     public void mockTest(BashVersion version, MockFunction f, int expectedCount, List<String> textTokens, IElementType... elements) {
         final MockPsiBuilder mockBuilder = builderFor(textTokens, elements);
-        BashPsiBuilder psi = new BashPsiBuilder(mockBuilder, version);
+        //fixme project
+        BashPsiBuilder psi = new BashPsiBuilder(null, mockBuilder, version);
 
         Assert.assertTrue(f.preCheck(psi));
 
@@ -106,7 +107,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
 
     public void mockTestError(BashVersion version, MockFunction f, boolean checkResult, List<String> textTokens, IElementType... elements) {
         MockPsiBuilder mockPsiBuilder = builderFor(textTokens, elements);
-        BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(mockPsiBuilder, version);
+        BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(null, mockPsiBuilder, version);
 
         boolean ok = f.apply(bashPsiBuilder);
         assertErrors(mockPsiBuilder);
@@ -133,7 +134,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
 
     public void mockTestSuccessWithErrors(BashVersion bashVersion, MockFunction f, List<String> strings, IElementType... elements) {
         final MockPsiBuilder mockBuilder = builderFor(strings, elements);
-        BashPsiBuilder psi = new BashPsiBuilder(mockBuilder, bashVersion);
+        BashPsiBuilder psi = new BashPsiBuilder(null, mockBuilder, bashVersion);
 
         Assert.assertTrue(f.preCheck(psi));
 
@@ -151,7 +152,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
 
     public void mockTestFail(BashVersion version, MockFunction f, IElementType... elements) {
         MockPsiBuilder mockPsiBuilder = builderFor(Collections.<String>emptyList(), elements);
-        BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(mockPsiBuilder, version);
+        BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(null, mockPsiBuilder, version);
 
         boolean ok = f.apply(bashPsiBuilder);
         Assert.assertFalse("Expected the parsing to fail with a result of false.", ok);

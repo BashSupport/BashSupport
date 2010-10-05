@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtilTest.java, Class: ParserUtilTest
- * Last modified: 2009-12-04
+ * Last modified: 2010-10-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,7 @@ public class ParserUtilTest {
 
     @Test
     public void testCheckNext() {
-        BashPsiBuilder b = new BashPsiBuilder(new MockPsiBuilder(
-                BashTokenTypes.BACKQUOTE, BashTokenTypes.BACKQUOTE), Bash_v3);
+        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(BashTokenTypes.BACKQUOTE, BashTokenTypes.BACKQUOTE), Bash_v3);
         Assert.assertTrue(ParserUtil.checkNextAndRollback(b, BashTokenTypes.BACKQUOTE));
         Assert.assertTrue(ParserUtil.checkNextAndRollback(b, BashTokenTypes.BACKQUOTE, BashTokenTypes.BACKQUOTE));
         Assert.assertFalse(ParserUtil.checkNextAndRollback(b, BashTokenTypes.WORD));

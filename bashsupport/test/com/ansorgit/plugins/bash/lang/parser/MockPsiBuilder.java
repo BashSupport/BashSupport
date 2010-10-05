@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-04-24
+ * Last modified: 2010-10-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.google.common.collect.Lists;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.ITokenTypeRemapper;
-import com.intellij.lang.LighterASTNode;
-import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.*;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
@@ -87,6 +85,10 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public int processedElements() {
         return elementPosition;
+    }
+
+    public Project getProject() {
+        return null;
     }
 
     public CharSequence getOriginalText() {
@@ -253,6 +255,10 @@ public class MockPsiBuilder implements PsiBuilder {
             doneMarkers.add(Pair.create(this, elementType));
         }
 
+        public void collapse(IElementType iElementType) {
+
+        }
+
         public void doneBefore(IElementType elementType, Marker marker) {
             finishMarker();
             doneMarkers.add(Pair.create(this, elementType));
@@ -267,6 +273,15 @@ public class MockPsiBuilder implements PsiBuilder {
             MockPsiBuilder.this.error("Marker@" + position + ": " + s);
             addedError = true;
             finishMarker();
+        }
+
+        public void errorBefore(String s, Marker marker) {
+            //fixme
+            error(s);
+        }
+
+        public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor whitespacesAndCommentsProcessor, WhitespacesAndCommentsProcessor whitespacesAndCommentsProcessor1) {
+
         }
     }
 }
