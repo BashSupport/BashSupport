@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashDocumentationProvider.java, Class: BashDocumentationProvider
- * Last modified: 2010-03-24
+ * Last modified: 2010-10-16
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ public class BashDocumentationProvider extends QuickDocumentationProvider {
     public String getQuickNavigateInfo(PsiElement psiElement) {
         log.info("getQuickNavigateInfo " + psiElement);
 
+        return null;
+    }
+
+    public String getQuickNavigateInfo(PsiElement psiElement, PsiElement psiElement1) {
         return null;
     }
 

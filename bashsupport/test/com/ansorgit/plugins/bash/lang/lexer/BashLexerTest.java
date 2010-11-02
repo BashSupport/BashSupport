@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-07-17
+ * Last modified: 2010-11-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -311,6 +311,8 @@ public class BashLexerTest {
                 DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, RIGHT_PAREN);
         testTokenization("$(($(echo \"$1\")))",
                 DOLLAR, EXPR_ARITH, DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, RIGHT_PAREN, _EXPR_ARITH);
+        testTokenization("`for d in`",
+                BACKQUOTE, FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, BACKQUOTE);
     }
 
     @Test

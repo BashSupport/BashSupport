@@ -274,11 +274,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   ")"                             { backToPreviousState(); return RIGHT_PAREN; }
 }
 
-<YYINITIAL, S_SUBSHELL> {
+<YYINITIAL, S_SUBSHELL, S_BACKQUOTE> {
   "in"                          { return IN_KEYWORD; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
 /* keywords and expressions */
   "case"                        { inCaseBody = false; goToState(S_CASE); return CASE_KEYWORD; }
 
