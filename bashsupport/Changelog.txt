@@ -1,3 +1,6 @@
+2010-11-23:
+ - Compilation fixes to work with 98.402
+
 2010-11-02:
  - Lexer fix for `for f in ...`
 

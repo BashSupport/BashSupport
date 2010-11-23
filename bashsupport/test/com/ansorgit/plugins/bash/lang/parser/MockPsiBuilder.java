@@ -29,6 +29,8 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
 import com.intellij.util.diff.FlyweightCapableTreeStructure;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -137,8 +139,7 @@ public class MockPsiBuilder implements PsiBuilder {
         StringBuilder details = new StringBuilder("Marker opened at:\n");
         try {
             throw new IllegalStateException();
-        }
-        catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             final StackTraceElement[] stack = e.getStackTrace();
             int length = stack.length;
             for (int i = 0; i < length && i < 10; ++i) {
@@ -192,6 +193,14 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public List<Pair<MockMarker, IElementType>> getDoneMarkers() {
         return doneMarkers;
+    }
+
+    public <T> T getUserDataUnprotected(@NotNull Key<T> tKey) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public <T> void putUserDataUnprotected(@NotNull Key<T> tKey, @Nullable T t) {
+
     }
 
     public final class MockMarker implements Marker {
@@ -280,7 +289,7 @@ public class MockPsiBuilder implements PsiBuilder {
             error(s);
         }
 
-        public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor whitespacesAndCommentsProcessor, WhitespacesAndCommentsProcessor whitespacesAndCommentsProcessor1) {
+        public void setCustomEdgeTokenBinders(@Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder, @Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder1) {
 
         }
     }
