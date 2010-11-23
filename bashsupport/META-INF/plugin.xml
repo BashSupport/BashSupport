@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.16-ideaX</version>
+    <version>0.9.15-ideaX</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg
     </vendor>
 
@@ -58,11 +58,6 @@
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 0.9.16-ideaX:</b>
-       <ul>
-         <li>Now requires IDEA X build 96.1190 or later</li>
-       </ul>
-
        <b>Changes in version 0.9.15-ideaX:</b>
        <ul>
          <li>Now requires IDEA X build 96.1190 or later</li>

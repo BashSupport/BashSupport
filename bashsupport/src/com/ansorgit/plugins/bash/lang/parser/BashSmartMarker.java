@@ -19,8 +19,9 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.WhitespacesAndCommentsProcessor;
+import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Wraps a PsiBuilder marker and keeps track whether it's still open or not.
@@ -79,8 +80,8 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
         delegate.collapse(iElementType);
     }
 
-    public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor first, WhitespacesAndCommentsProcessor second) {
-        delegate.setCustomEdgeProcessors(first, second);
+    public void setCustomEdgeTokenBinders(@Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder, @Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder1) {
+        delegate.setCustomEdgeTokenBinders(whitespacesAndCommentsBinder, whitespacesAndCommentsBinder1);
     }
 
     public void errorBefore(String s, PsiBuilder.Marker marker) {

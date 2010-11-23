@@ -22,6 +22,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.ITokenTypeRemapper;
 import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -74,6 +75,10 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
 
     public FlyweightCapableTreeStructure<LighterASTNode> getLightTree() {
         return originalPsiBuilder.getLightTree();
+    }
+
+    public Project getProject() {
+        return originalPsiBuilder.getProject();
     }
 
     public CharSequence getOriginalText() {
@@ -129,5 +134,13 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
         }
 
         return null;
+    }
+
+    public <T> T getUserDataUnprotected(@NotNull Key<T> tKey) {
+        return originalPsiBuilder.getUserDataUnprotected(tKey);
+    }
+
+    public <T> void putUserDataUnprotected(@NotNull Key<T> tKey, @Nullable T t) {
+        originalPsiBuilder.putUserDataUnprotected(tKey, t);
     }
 }

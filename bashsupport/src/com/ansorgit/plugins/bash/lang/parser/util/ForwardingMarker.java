@@ -19,8 +19,9 @@
 package com.ansorgit.plugins.bash.lang.parser.util;
 
 import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.WhitespacesAndCommentsProcessor;
+import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A forwarding marker implementation which is useful for enhancements which
@@ -66,15 +67,15 @@ public abstract class ForwardingMarker implements PsiBuilder.Marker {
         original.errorBefore(s, marker);
     }
 
-    public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor first, WhitespacesAndCommentsProcessor second) {
-        original.setCustomEdgeProcessors(first, second);
-    }
-
     public PsiBuilder.Marker precede() {
         return original.precede();
     }
 
     public void rollbackTo() {
         original.rollbackTo();
+    }
+
+    public void setCustomEdgeTokenBinders(@Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder, @Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder1) {
+        original.setCustomEdgeTokenBinders(whitespacesAndCommentsBinder, whitespacesAndCommentsBinder1);
     }
 }
