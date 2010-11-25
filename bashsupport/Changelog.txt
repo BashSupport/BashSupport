@@ -1,3 +1,6 @@
+2010-11-25:
+ - Version 0.9.16-ideaX
+
 2010-11-23:
  - Compilation fixes to work with 98.402
 
@@ -6,6 +9,7 @@
 
 2010-10-05:
  - Removed use of class DefaultRefactoring provider, restored compatibility with latest IDEA X EAPs
+ - Version 0.9.15-ideaX
  
 2010-08-12:
  - Fixed redirection parsing
