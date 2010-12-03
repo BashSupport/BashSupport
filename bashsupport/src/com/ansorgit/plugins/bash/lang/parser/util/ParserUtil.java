@@ -64,8 +64,7 @@ public class ParserUtil {
     public static IElementType getTokenAndAdvance(BashPsiBuilder builder, boolean showWhitespace) {
         try {
             return builder.getTokenType(showWhitespace);
-        }
-        finally {
+        } finally {
             if (!builder.eof()) {
                 builder.advanceLexer();
             }
@@ -200,8 +199,7 @@ public class ParserUtil {
             }
 
             return true;
-        }
-        finally {
+        } finally {
             start.rollbackTo();
         }
     }

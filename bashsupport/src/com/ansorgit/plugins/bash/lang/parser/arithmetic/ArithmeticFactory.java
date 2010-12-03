@@ -62,10 +62,6 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
         return parenExpr;
     }
 
-    private static ArithmeticParsingFunction maxRepeats(ArithmeticParsingFunction next, TokenSet operators, IElementType marker, int maxRepeats) {
-        return new AbstractRepeatedExpr(next, operators, marker, maxRepeats);
-    }
-
     private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, TokenSet operators, IElementType marker) {
         return new AbstractRepeatedExpr(next, operators, marker, -1);
     }

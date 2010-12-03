@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
+import com.intellij.persistence.PersistenceConsoleProvider;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -198,7 +199,19 @@ public interface BashTokenTypes {
     TokenSet variableSet = TokenSet.create(VARIABLE);
 
     //parameter expansion
-    IElementType PARAM_EXPANSION_OP = new BashElementType("Parameter expansion operator");
+    IElementType PARAM_EXPANSION_OP_UNKNOWN = new BashElementType("Parameter expansion operator (uknown)");
+    IElementType PARAM_EXPANSION_OP_EXCL = new BashElementType("Parameter expansion operator '!'");
+    IElementType PARAM_EXPANSION_OP_COLON_EQ = new BashElementType("Parameter expansion operator ':='");
+    IElementType PARAM_EXPANSION_OP_EQ = new BashElementType("Parameter expansion operator '='");
+    IElementType PARAM_EXPANSION_OP_COLON_MINUS = new BashElementType("Parameter expansion operator ':-'");
+    IElementType PARAM_EXPANSION_OP_MINUS = new BashElementType("Parameter expansion operator '-'");
+    IElementType PARAM_EXPANSION_OP_COLON_PLUS = new BashElementType("Parameter expansion operator ':+'");
+    IElementType PARAM_EXPANSION_OP_PLUS = new BashElementType("Parameter expansion operator '+'");
+    TokenSet paramExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_EXCL,
+            PARAM_EXPANSION_OP_COLON_EQ, PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON_MINUS,
+            PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_PLUS, PARAM_EXPANSION_OP_COLON_PLUS);
+    TokenSet paramExpansionAssignmentOps = TokenSet.create(PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON_EQ);
+
 
     // Special characters
     IElementType STRING_BEGIN = new BashElementType("string begin");

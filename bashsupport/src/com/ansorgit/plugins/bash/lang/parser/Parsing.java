@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.command.PipelineParsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.*;
+import com.ansorgit.plugins.bash.lang.parser.paramExpansion.ParameterExpansionParsing;
 import com.ansorgit.plugins.bash.lang.parser.variable.VarParsing;
 
 /**

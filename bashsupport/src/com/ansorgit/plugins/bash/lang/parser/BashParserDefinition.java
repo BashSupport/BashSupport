@@ -97,7 +97,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
                 || left == BashTokenTypes.RIGHT_CURLY
                 || right == BashTokenTypes.RIGHT_CURLY
 
-                || (left == BashTokenTypes.WORD && right == BashTokenTypes.PARAM_EXPANSION_OP)
+                || (left == BashTokenTypes.WORD && right == BashTokenTypes.PARAM_EXPANSION_OP_UNKNOWN)
 
                 || left == BashTokenTypes.LEFT_SQUARE
                 || right == BashTokenTypes.RIGHT_SQUARE
