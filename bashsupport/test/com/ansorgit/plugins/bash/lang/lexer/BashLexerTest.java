@@ -50,9 +50,9 @@ public class BashLexerTest {
 
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
-        testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
-        testTokenization("${!echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
-        testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
+        testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        testTokenization("${!echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, RIGHT_CURLY);
+        testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
         testTokenization("${echo} ${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("a=1 b=2 echo", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, INTERNAL_COMMAND);
         testTokenization("a=1 b=2", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
@@ -219,9 +219,9 @@ public class BashLexerTest {
         testTokenization("[ a  ]", EXPR_CONDITIONAL, WORD, WHITESPACE, _EXPR_CONDITIONAL);
         testTokenization("[ a | b ]", EXPR_CONDITIONAL, WORD, WHITESPACE, PIPE, WHITESPACE, WORD, _EXPR_CONDITIONAL);
         testTokenization("[[ a || b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, _BRACKET_KEYWORD);
-        testTokenization("${rdev%:*?}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, RIGHT_CURLY);
-        testTokenization("${@!-+}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, RIGHT_CURLY);
-        testTokenization("${a[@]}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP, RIGHT_SQUARE, RIGHT_CURLY);
+        testTokenization("${rdev%:*?}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
+        testTokenization("${@!-+}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_PLUS, RIGHT_CURLY);
+        testTokenization("${a[@]}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_SQUARE, RIGHT_CURLY);
         testTokenization("${\\ }", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         testTokenization("$\"\"", STRING_BEGIN, STRING_END);
@@ -340,11 +340,11 @@ public class BashLexerTest {
         testTokenization("}", RIGHT_CURLY);
         testTokenization("${1}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${a}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
-        testTokenization("${a%}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, RIGHT_CURLY);
-        testTokenization("${a%b}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
-        testTokenization("${#a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
+        testTokenization("${a%}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
+        testTokenization("${a%b}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        testTokenization("${#a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
         testTokenization("${a1}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
-        testTokenization("${/}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP, RIGHT_CURLY);
+        testTokenization("${/}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
     }
 
     @Test
@@ -385,6 +385,22 @@ public class BashLexerTest {
         testTokenization(" ]]", _BRACKET_KEYWORD);
         testTokenization("  ]]", WHITESPACE, _BRACKET_KEYWORD);
         testTokenization("[[  -f test.txt   ]]", BRACKET_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WHITESPACE, _BRACKET_KEYWORD);
+    }
+
+    @Test
+    public void testParameterSubstitution() {
+        testTokenization("${a=x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_EQ, WORD, RIGHT_CURLY);
+        testTokenization("${a:=x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_EQ, WORD, RIGHT_CURLY);
+
+        testTokenization("${a-x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, WORD, RIGHT_CURLY);
+        testTokenization("${a:-x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, RIGHT_CURLY);
+
+        testTokenization("${a+x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PLUS, WORD, RIGHT_CURLY);
+        testTokenization("${a:+x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_PLUS, WORD, RIGHT_CURLY);
+
+        testTokenization("${!a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, RIGHT_CURLY);
+
+        testTokenization("${a?x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
     }
 
     @Test
@@ -575,11 +591,10 @@ public class BashLexerTest {
     @Test
     public void testParamExpansion() {
         testTokenization("${a}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
-        testTokenization("${a:a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
-        testTokenization("${a:-a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
-        testTokenization("${a:.*}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, RIGHT_CURLY);
+        testTokenization("${a:a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        testTokenization("${a:-a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, RIGHT_CURLY);
+        testTokenization("${a:.*}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
     }
-
 
     @Test
     public void testArithmeticLiterals() throws Exception {

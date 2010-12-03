@@ -162,3 +162,5 @@ Bugs (indentation marks fixed bugs):
     - Inspection to detect local usage outside of a function
     - support process substitution / i.e. named pipes "cat - < <(echo a)"
     - Adding a new file with the extension .bash adds file.bash.sh
+
+- Bug: Format after var rename breaks source code

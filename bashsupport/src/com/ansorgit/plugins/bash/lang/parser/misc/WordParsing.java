@@ -80,7 +80,7 @@ public class WordParsing implements ParsingTool {
         return false;
     }
 
-    public static boolean isComposedString(IElementType tokenType) {
+    public boolean isComposedString(IElementType tokenType) {
         return tokenType == STRING_BEGIN;
     }
 
@@ -99,7 +99,7 @@ public class WordParsing implements ParsingTool {
      * @param builder         The builder
      * @param enableRemapping If the read tokens should be remapped.
      * @param reject          The tokens to reject. The tokens compared to this set are not yet remapped.
-     * @param accept
+     * @param accept          Additional tokens which are accepted
      * @return True if a valid word could be read.
      */
     public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept) {
@@ -164,10 +164,10 @@ public class WordParsing implements ParsingTool {
         return isOk && (processedTokens > 0);
     }
 
-    public static boolean parseComposedString(BashPsiBuilder builder) {
+    public boolean parseComposedString(BashPsiBuilder builder) {
         PsiBuilder.Marker stringStart = builder.mark();
 
-        builder.advanceLexer();//after STRING_START
+        builder.advanceLexer(); //after STRING_START
         while (builder.getTokenType() != STRING_END) {
             boolean ok = false;
             if (Parsing.word.isWordToken(builder)) {

@@ -16,8 +16,11 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser;
+package com.ansorgit.plugins.bash.lang.parser.parameterExpansion;
 
+import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Test;
 
 /**
@@ -39,21 +42,33 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         mockTest(expansionParser, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         //{B:-B}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testParseAssignment() throws Exception {
+        //{A=x}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_EQ, RIGHT_CURLY);
+
+        //{A:=x}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_EQ, RIGHT_CURLY);
     }
 
     @Test
     public void testParseAdvanced() {
         //{a:$(a $(b)/..)}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, DOLLAR, LEFT_PAREN, WORD,
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, DOLLAR, LEFT_PAREN, WORD,
                 WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN,
                 WORD, RIGHT_PAREN, RIGHT_CURLY);
 
         //{a:${a:a}}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, DOLLAR, LEFT_CURLY,
-                WORD, PARAM_EXPANSION_OP, WORD, RIGHT_CURLY, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, DOLLAR, LEFT_CURLY,
+                WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY, RIGHT_CURLY);
 
         //{a:"a"}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP, STRING_BEGIN, WORD, STRING_END, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, STRING_BEGIN, WORD, STRING_END, RIGHT_CURLY);
+
+        //{!a=x}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, PARAM_EXPANSION_OP_EQ, WORD, RIGHT_CURLY);
     }
 }

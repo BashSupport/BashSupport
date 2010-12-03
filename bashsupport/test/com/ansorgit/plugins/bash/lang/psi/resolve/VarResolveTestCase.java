@@ -133,6 +133,12 @@ public class VarResolveTestCase extends AbstractResolveTest {
         Assert.assertTrue(varDef.resolve() == null);
     }
 
+    public void testBasicResolveCurlyWithAssignment() throws Exception {
+        assertIsWellDefinedVariable();
+        //Assert.assertTrue(BashPsiUtils.findBroadestVarDefFunctionDefScope(varDef) != null);
+        //Assert.assertTrue(varDef.resolve() == null);
+    }
+
     //invalid resolves
 
     public void testBasicResolveLocalVarGlobal() throws Exception {

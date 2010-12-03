@@ -35,7 +35,7 @@ import java.util.List;
 public abstract class ParsingChain implements ParsingFunction {
     private final List<ParsingFunction> parsingFunctions = new LinkedList<ParsingFunction>();
 
-    protected void addParsingFunction(ParsingFunction f) {
+    protected final void addParsingFunction(ParsingFunction f) {
         parsingFunctions.add(f);
     }
 

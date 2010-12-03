@@ -580,8 +580,19 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_PARAM_EXPANSION> {
-  "#"|"-"|"+" |"!"|"%"|":"|"*"|"@"|"/"|"?"|"="|"."|"^"
-                                { return PARAM_EXPANSION_OP; }
+  "!"                           { return PARAM_EXPANSION_OP_EXCL; }
+  ":="                          { return PARAM_EXPANSION_OP_COLON_EQ; }
+  "="                           { return PARAM_EXPANSION_OP_EQ; }
+
+  ":-"                          { return PARAM_EXPANSION_OP_COLON_MINUS; }
+  "-"                           { return PARAM_EXPANSION_OP_MINUS; }
+
+  ":+"                          { return PARAM_EXPANSION_OP_COLON_PLUS; }
+  "+"                           { return PARAM_EXPANSION_OP_PLUS; }
+
+  "#"|"!"|"%"|":"|"*"|"@"|"/"|"?"|"."|"^"
+                                { return PARAM_EXPANSION_OP_UNKNOWN; }
+
   "["                           { return LEFT_SQUARE; }
   "]"                           { return RIGHT_SQUARE; }
   "{"                           { return LEFT_CURLY; }
