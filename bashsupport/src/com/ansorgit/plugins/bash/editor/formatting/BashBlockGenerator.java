@@ -75,31 +75,8 @@ public class BashBlockGenerator implements BashElementTypes {
         return (node.getText().trim().length() > 0);
     }
 
-
     private static ASTNode[] getBashChildren(final ASTNode node) {
-        //PsiElement psi = node.getPsi();
-        /*if (psi instanceof OuterLanguageElement) {
-            TextRange range = node.getTextRange();
-            ArrayList<ASTNode> childList = new ArrayList<ASTNode>();
-            PsiFile groovyFile = psi.getContainingFile().getViewProvider().getPsi(BashFileType.BASH_LANGUAGE);
-            if (groovyFile instanceof BashFile) {
-                addChildNodes(groovyFile, childList, range);
-            }
-            return childList.toArray(new ASTNode[childList.size()]);
-        } */
-
         return node.getChildren(null);
     }
 
-    /*private static void addChildNodes(PsiElement elem, ArrayList<ASTNode> childNodes, TextRange range) {
-        ASTNode node = elem.getNode();
-        if (range.contains(elem.getTextRange()) && node != null) {
-            childNodes.add(node);
-        } else {
-            for (PsiElement child : elem.getChildren()) {
-                addChildNodes(child, childNodes, range);
-            }
-        }
-
-    } */
 }

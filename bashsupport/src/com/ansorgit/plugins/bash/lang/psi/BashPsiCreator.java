@@ -37,9 +37,9 @@ import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashUntilImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashComposedVarImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashParameterExpansionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarDefImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarSubstitutionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashExpansionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashWordImpl;
@@ -143,8 +143,8 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == VAR_ELEMENT) {
             return new BashVarImpl(node);
         }
-        if (elementType == VAR_SUBSTITUTION_ELEMENT) {
-            return new BashVarSubstitutionImpl(node);
+        if (elementType == PARAM_EXPANSION_ELEMENT) {
+            return new BashParameterExpansionImpl(node);
         }
         if (elementType == VAR_COMPOSED_VAR_ELEMENT) {
             return new BashComposedVarImpl(node);

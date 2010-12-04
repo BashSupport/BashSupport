@@ -22,12 +22,14 @@ import com.ansorgit.plugins.bash.editor.formatting.BashBlock;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashCase;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashIf;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
 import com.intellij.formatting.Spacing;
@@ -37,10 +39,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BashSpacingProcessorBasic implements BashElementTypes, BashTokenTypes {
     private static final Logger log = Logger.getInstance("SpacingProcessorBasic");
     private static TokenSet commandSet = TokenSet.create(GENERIC_COMMAND_ELEMENT, INTERNAL_COMMAND_ELEMENT, SIMPLE_COMMAND_ELEMENT);
+    private static TokenSet subshellSet = TokenSet.create(SUBSHELL_COMMAND, ARITHMETIC_COMMAND, PARAM_EXPANSION_ELEMENT, VAR_COMPOSED_VAR_ELEMENT);
 
     private static final Spacing NO_SPACING_WITH_NEWLINE = Spacing.createSpacing(0, 0, 0, true, 1);
     private static final Spacing NO_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
@@ -108,8 +112,16 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         if (leftType == DOLLAR &&
                 (rightType == SUBSHELL_COMMAND
                         || rightType == ARITHMETIC_COMMAND
-                        || rightType == VAR_SUBSTITUTION_ELEMENT
+                        || rightType == PARAM_EXPANSION_ELEMENT
                         || rightType == VAR_COMPOSED_VAR_ELEMENT)) { // $(...)
+            return NO_SPACING;
+        }
+
+        if ((leftType == LEFT_PAREN || leftType == EXPR_ARITH) && subshellSet.contains(rightParentElement)) {
+            return NO_SPACING;
+        }
+
+        if ((rightType == RIGHT_PAREN || rightType == _EXPR_ARITH) && subshellSet.contains(leftParentElement)) {
             return NO_SPACING;
         }
 
@@ -119,8 +131,12 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
 
         //{} expressions
         if ((leftType == LEFT_CURLY || rightType == RIGHT_CURLY) &&
-                (leftPsi.getParent().getNode().getElementType() == VAR_SUBSTITUTION_ELEMENT ||
+                (leftPsi.getParent().getNode().getElementType() == PARAM_EXPANSION_ELEMENT ||
                         leftPsi.getParent().getNode().getElementType() == VAR_COMPOSED_VAR_ELEMENT)) {
+            return NO_SPACING;
+        }
+
+        if (isNodeInParameterExpansion(leftNode) && isNodeInParameterExpansion(rightNode)) {
             return NO_SPACING;
         }
 
@@ -243,13 +259,60 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             return true;
         }
 
-        PsiElement parent = node.getPsi().getParent();
+        PsiElement psiElement = node.getPsi();
+        PsiElement parent = psiElement != null ? psiElement.getParent() : null;
+
         while (parent != null) {
-            if (parent instanceof BashStringImpl) {
+            if (parent instanceof BashString) {
                 return true;
             }
 
             parent = parent.getParent();
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks whether a node is contained in a parameter expansion.
+     *
+     * @param node
+     * @return True if the on of the nodes is embedded in a string
+     */
+    private static boolean isNodeInParameterExpansion(ASTNode node) {
+        if (paramExpansionOperators.contains(node.getElementType())) {
+            return true;
+        }
+
+        PsiElement psiElement = node.getPsi();
+        PsiElement parent = psiElement != null ? psiElement.getParent() : null;
+
+        while (parent != null) {
+            if (parent instanceof BashParameterExpansion) {
+                return true;
+            }
+
+            parent = parent.getParent();
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Checks whether a node is contained in a parameter expansion.
+     *
+     * @param node
+     * @return True if the on of the nodes is embedded in a string
+     */
+    private static boolean hasParentNodeType(@NotNull ASTNode node, @NotNull IElementType parentNodeType) {
+        while (node != null) {
+            IElementType currentType = node.getElementType();
+            if (currentType == parentNodeType) {
+                return true;
+            }
+
+            node = node.getTreeParent();
         }
 
         return false;

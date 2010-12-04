@@ -35,10 +35,10 @@ import java.util.List;
  * @author Ilya.Sergey, Joachim Ansorg
  */
 @Ignore
-public class FormatterTest extends BashFormatterTestCase {
+public class DisabledFormatterTest extends BashFormatterTestCase {
     @Override
     protected String getBasePath() {
-        return "/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/testData/formatter/";
+        return "/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/testData/disabledFormatter/";
     }
 
     protected void setUp() throws Exception {
@@ -48,62 +48,10 @@ public class FormatterTest extends BashFormatterTestCase {
         myTempSettings.BRACE_STYLE = CodeStyleSettings.END_OF_LINE;
 
         BashProjectSettings projectSettings = BashProjectSettings.storedSettings(getProject());
-        projectSettings.setFormatterEnabled(true);
+        projectSettings.setFormatterEnabled(false);
     }
 
-    public void testCommand() throws Throwable {
-        doTest();
-    }
-
-    public void testCommandWithParams() throws Throwable {
-        doTest();
-    }
-
-    public void testFunction() throws Throwable {
-        doTest();
-    }
-
-    public void testNestedBlocks() throws Throwable {
-        doTest();
-    }
-
-    public void testStrings() throws Throwable {
-        doTest();
-    }
-
-    public void testIfThenElse() throws Throwable {
-        doTest();
-    }
-
-    public void testConditionalCommand() throws Throwable {
-        doTest();
-    }
-
-    public void testBracketKeyword() throws Throwable {
-        doTest();
-    }
-
-    public void testVariables() throws Throwable {
-        doTest();
-    }
-
-    public void testCase() throws Throwable {
-        doTest();
-    }
-
-    public void testBackticks() throws Throwable {
-        doTest();
-    }
-
-    public void testFullTest() throws Throwable {
-        doTest();
-    }
-
-    public void testHeredoc() throws Throwable {
-        doTest();
-    }
-
-    public void testParamExpansion() throws Throwable {
+    public void testDisabledFormatter() throws Throwable {
         doTest();
     }
 

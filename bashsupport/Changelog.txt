@@ -1,5 +1,6 @@
 2010-12-03:
  - Improved parsing of parameter substitutions, e.g. for ${a:=b} assignments and ${!a} indirect references
+ - Formatter fixes
 
 2010-11-25:
  - Version 0.9.16-ideaX
