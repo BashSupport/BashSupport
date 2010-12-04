@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "This is bash"   && :  $(echo "This is Bash as well")
+echo "some calculus:   $((12*456))"
+if [ -f "x" ];    then
+            echo "This is something!"
+fi
+
+${xyz:=345}
+-----
+#!/bin/bash
+echo "This is bash"   && :  $(echo "This is Bash as well")
+echo "some calculus:   $((12*456))"
+if [ -f "x" ];    then
+            echo "This is something!"
+fi
+
+${xyz:=345}

@@ -43,7 +43,7 @@ public interface BashElementTypes {
     IElementType VAR_ELEMENT = new BashElementType("variable");
     IElementType VAR_COMPOSED_VAR_ELEMENT = new BashElementType("composed variable, like subshell");
     IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
-    IElementType VAR_SUBSTITUTION_ELEMENT = new BashElementType("var substitution");
+    IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
 
     //misc
     IElementType EVALUATED_STRING_ELEMENT = new BashElementType("evaluated string");

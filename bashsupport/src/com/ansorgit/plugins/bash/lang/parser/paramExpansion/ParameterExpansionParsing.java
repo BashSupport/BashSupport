@@ -99,7 +99,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         IElementType endToken = ParserUtil.getTokenAndAdvance(builder);
         boolean validEnd = RIGHT_CURLY == endToken;
         if (validEnd && !markedAsVar) {
-            marker.done(VAR_SUBSTITUTION_ELEMENT);
+            marker.done(PARAM_EXPANSION_ELEMENT);
         } else {
             marker.drop();
         }

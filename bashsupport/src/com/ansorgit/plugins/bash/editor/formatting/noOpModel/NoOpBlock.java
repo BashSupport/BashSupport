@@ -26,11 +26,13 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * A no-op block used when the formatter feature is turned off.
+ * <p/>
  * User: jansorg
  * Date: Mar 30, 2010
  * Time: 9:29:43 PM
@@ -75,7 +77,7 @@ public class NoOpBlock implements Block {
     }
 
     public boolean isIncomplete() {
-        return false;
+        return true;
     }
 
     public boolean isLeaf() {
