@@ -34,7 +34,6 @@ import java.util.List;
  *
  * @author Ilya.Sergey, Joachim Ansorg
  */
-@Ignore
 public class FormatterTest extends BashFormatterTestCase {
     @Override
     protected String getBasePath() {
