@@ -18,11 +18,12 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.16-ideaX</version>
-    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg</vendor>
+    <version>0.9.17</version>
+    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg
+    </vendor>
 
-    <!-- Requires IDEA X -->
-    <idea-version since-build="98.402" until-build="98.999"/>
+    <!-- Requires IDEA 10.0 or later -->
+    <idea-version since-build="99.18"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -58,6 +59,13 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.17:</b>
+       <ul>
+         <li>Compatible with builds 99.18 or later, i.e. IntelliJ IDEA 10.0</li>
+         <li>Improved parsing of parameter substitutions, e.g. for ${a:=b} assignments and ${!a} indirect references</li>
+         <li>Formatter fixes</li>
+       </ul>
+
        <b>Changes in version 0.9.16-ideaX:</b>
        <ul>
          <li>Compatible with builds 98.402 or later</li>
@@ -211,6 +219,9 @@
         <lang.formatter language="Bash"
                         implementationClass="com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder"/>
 
+        <readWriteAccessDetector
+                implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
+
         <!--
         <codeStyleSettingsProvider implementation="org.jetbrains.plugins.clojure.formatter.codeStyle.ClojureCodeStyleSettingsProvider"/>
         -->
@@ -223,7 +234,8 @@
         <annotator language="Bash"
                    implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
-        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
+        <frameworkSupport
+                implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
         <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>

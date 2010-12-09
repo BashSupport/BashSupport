@@ -24,7 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
-import com.intellij.refactoring.RefactoringActionHandler;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Definition of the refactoring support available in this plugin.
@@ -41,45 +41,5 @@ public class BashRefactoringSupport extends RefactoringSupportProvider {
                 (element instanceof BashFunctionDef) ||
                 (element instanceof BashVar) ||
                 (element instanceof BashHereDocMarker);
-    }
-
-    public boolean isSafeDeleteAvailable(PsiElement element) {
-        return false;
-    }
-
-    public RefactoringActionHandler getIntroduceVariableHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getExtractMethodHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getIntroduceConstantHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getIntroduceFieldHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getIntroduceParameterHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getPullUpHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getPushDownHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getExtractModuleHandler() {
-        return null;
-    }
-
-    public RefactoringActionHandler getExtractSuperClassHandler() {
-        return null;
     }
 }

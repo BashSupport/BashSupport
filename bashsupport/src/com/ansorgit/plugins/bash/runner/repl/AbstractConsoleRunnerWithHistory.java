@@ -237,8 +237,7 @@ abstract class AbstractConsoleRunnerWithHistory {
             byte[] bytes = input.getBytes(charset.name());
             outputStream.write(bytes);
             outputStream.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             // ignore
         }
     }
@@ -254,7 +253,7 @@ abstract class AbstractConsoleRunnerWithHistory {
         final TextRange range = new TextRange(0, document.getTextLength());
 
         getLanguageConsole().getCurrentEditor().getSelectionModel().setSelection(range.getStartOffset(), range.getEndOffset());
-        getLanguageConsole().addCurrentToHistory(range, false);
+        getLanguageConsole().addCurrentToHistory(range, false, true);
         getLanguageConsole().setInputText("");
 
         if (!StringUtil.isEmptyOrSpaces(documentText)) {

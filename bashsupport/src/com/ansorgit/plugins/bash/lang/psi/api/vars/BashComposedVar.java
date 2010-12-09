@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 /**
  * A composed variable is a pattern in curly brackets, e.g. {ABC} . Usually a composed variable is
  * used as variable value, e.g. as ${ABC}.
+ * It can contain a parameter expansion element.
  * <p/>
  * User: jansorg
  * Date: Oct 29, 2009

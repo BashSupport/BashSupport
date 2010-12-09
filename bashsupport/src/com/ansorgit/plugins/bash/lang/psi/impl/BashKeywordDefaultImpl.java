@@ -37,10 +37,6 @@ import javax.swing.*;
  * @author Joachim Ansorg
  */
 public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implements PsiReference, BashKeyword {
-    public BashKeywordDefaultImpl(final ASTNode astNode) {
-        super(astNode);
-    }
-
     public BashKeywordDefaultImpl(final ASTNode astNode, final String name) {
         super(astNode, name);
     }
@@ -76,7 +72,7 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
     }
 
     public String getCanonicalText() {
-        return null;
+        return getText();
     }
 
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
@@ -84,7 +80,7 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
     }
 
     public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        return null;
+        throw new IncorrectOperationException("bindToElement not implemented");
     }
 
     public boolean isReferenceTo(PsiElement element) {

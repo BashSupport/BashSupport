@@ -212,8 +212,9 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return PsiTreeUtil.getContextOfType(this, BashFunctionDef.class, true);
     }
 
+    @NotNull
     public String getCanonicalText() {
-        return null;
+        return getReferencedName();
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {

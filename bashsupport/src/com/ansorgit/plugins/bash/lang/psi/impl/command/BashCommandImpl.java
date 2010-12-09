@@ -206,6 +206,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
         //fixme or better: add own implemenation for internal commands
     }
 
+    @NotNull
     public String getCanonicalText() {
         return getReferencedName();
     }
@@ -223,7 +224,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        return null;
+        throw new IncorrectOperationException("bindToElement not implemented");
     }
 
     public boolean isReferenceTo(PsiElement element) {

@@ -108,8 +108,9 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         return null;
     }
 
+    @NotNull
     public String getCanonicalText() {
-        return null;
+        return getReferencedName();
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
@@ -127,7 +128,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        return null;
+        throw new IncorrectOperationException("bindToElement not implemented");
     }
 
     public boolean isReferenceTo(PsiElement element) {
@@ -138,7 +139,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
             //this variable has to be in the definition's scope and finally,
             //the resolve of this variable has to be the definition (needed for local variable handling)
             return Comparing.equal(getName(), ((PsiNamedElement) element).getName())
-                    && BashVarUtils.isInDefinedScope(this, def);//&& def.isReferenceTo(resolve());
+                    && BashVarUtils.isInDefinedScope(this, def);
         }
 
         return false;
@@ -193,7 +194,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     /**
-     * A variable which is just a single word (ABC or def) can appear is a var substitution block (e.g. ${ABC}).
+     * A variable which is just a single word (ABC or def) can appear is a parameter substitution block (e.g. ${ABC}).
      *
      * @return True if this variable is just a single, composed word token
      */
