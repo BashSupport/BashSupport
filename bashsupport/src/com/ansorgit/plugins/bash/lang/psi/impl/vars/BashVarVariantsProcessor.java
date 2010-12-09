@@ -37,7 +37,6 @@ import java.util.Set;
  * @author Joachim Ansorg
  */
 class BashVarVariantsProcessor extends BashAbstractProcessor {
-    private static final Logger log = Logger.getInstance("#bash.BashVarVariantsProcessor");
     private final List<BashVarDef> variables = Lists.newLinkedList();
     private final Set<String> variableNames = Sets.newHashSet();
     private final BashVarImpl startElement;

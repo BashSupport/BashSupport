@@ -1,3 +1,6 @@
+2010-12-09:
+ - Find usages now is able to group by Read/Write access
+
 2010-12-03:
  - Improved parsing of parameter substitutions, e.g. for ${a:=b} assignments and ${!a} indirect references
  - Formatter fixes
