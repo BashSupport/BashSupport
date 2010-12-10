@@ -1,3 +1,7 @@
+2010-12-10:
+ - No inserted whitespace after certain rename refactorings
+ - Version 0.9.17
+
 2010-12-09:
  - Find usages now is able to group by Read/Write access
 

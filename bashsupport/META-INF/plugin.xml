@@ -18,10 +18,9 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.17</version>
+    <version>0.9.18</version>
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg
     </vendor>
-
     <!-- Requires IDEA 10.0 or later -->
     <idea-version since-build="99.18"/>
 
@@ -30,7 +29,7 @@
 
     <description><![CDATA[
   <html>
-    <h3>Bash support for IntelliJ X</h3>
+    <h3>Bash support for IntelliJ IDEA / RubyMine / PyCharm / WebIDE </h3>
     <br>
             <b>Features:</b><br>
             <ul>
@@ -218,6 +217,9 @@
 
         <lang.formatter language="Bash"
                         implementationClass="com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder"/>
+
+        <lang.tokenSeparatorGenerator language="Bash"
+                                      implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
 
         <readWriteAccessDetector
                 implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
