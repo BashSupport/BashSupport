@@ -22,14 +22,14 @@
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg
     </vendor>
     <!-- Requires IDEA 10.0 or later -->
-    <idea-version since-build="99.18"/>
+    <idea-version since-build="99.18" until-build="100.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[
   <html>
-    <h3>Bash support for IntelliJ IDEA / RubyMine / PyCharm / WebIDE </h3>
+    <h3>Bash support for the IntelliJ plattform</h3>
     <br>
             <b>Features:</b><br>
             <ul>
