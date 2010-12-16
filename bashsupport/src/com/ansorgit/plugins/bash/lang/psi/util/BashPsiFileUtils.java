@@ -66,8 +66,4 @@ public class BashPsiFileUtils {
 
         return null;
     }
-
-    public static boolean isSimpleFileName(String filePath) {
-        return !filePath.contains("/");
-    }
 }

@@ -128,8 +128,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         enableWhitespace();
         try {
             return getTokenType();
-        }
-        finally {
+        } finally {
             disableWhitespace();
         }
     }
@@ -144,8 +143,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
             enableWhitespace();
             try {
                 return getTokenType();
-            }
-            finally {
+            } finally {
                 disableWhitespace();
             }
         } finally {
@@ -162,8 +160,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         enableWhitespace();
         try {
             super.advanceLexer();
-        }
-        finally {
+        } finally {
             disableWhitespace();
         }
     }
@@ -247,7 +244,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         return hereDocData;
     }
 
-    public synchronized ParsingStateData getParsingState() {
+    public ParsingStateData getParsingState() {
         return parsingStateData;
     }
 

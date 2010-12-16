@@ -35,25 +35,6 @@ import org.jetbrains.annotations.NotNull;
 public class BashChangeUtil {
     private static final String TEMP_FILE_NAME = "__.sh";
 
-    /*public static void replaceText(final PsiFile file, final TextRange range, final String replacement) {
-        final Document document = file.getViewProvider().getDocument();
-        assert document != null;
-
-        document.replaceString(range.getStartOffset(), range.getEndOffset(), replacement);
-        PsiDocumentManager.getInstance(file.getProject()).commitDocument(document);
-        PsiDocumentManager.getInstance(file.getProject()).doPostponedOperationsAndUnblockDocument(document);
-    }
-
-    public static void replaceText(PsiElement element, String replacement) {
-        replaceText(element.getContainingFile(), element.getTextRange(), replacement);
-    }
-
-    public static void replaceText(PsiElement element, String replacement, TextRange rangeWithinElement) {
-        TextRange range = TextRange.from(element.getTextOffset() + rangeWithinElement.getStartOffset(), rangeWithinElement.getLength());
-        replaceText(element.getContainingFile(), range, replacement);
-    } */
-
-
     @NotNull
     private static PsiFile createFileFromText(@NotNull final Project project, @NotNull final String name, @NotNull final FileType fileType, @NotNull final String text) {
         return PsiFileFactory.getInstance(project).createFileFromText(name, fileType, text);

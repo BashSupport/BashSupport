@@ -70,6 +70,23 @@ public class HereDocParsingTest extends MockPsiTest {
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"", "END", "\"", "\n", "\"", "TEST", "\n", "END"),
                 WORD, REDIRECT_LESS_LESS_MINUS, STRING_BEGIN, WORD, STRING_END, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+
+        //a <<-'END'
+        // "TEST
+        //END
+        mockTest(hereDoc,
+                Lists.newArrayList("a", "<<-", "'END'", "\n", "\"", "TEST", "\n", "END"),
+                WORD, REDIRECT_LESS_LESS_MINUS, STRING2, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+    }
+
+    @Test
+    public void testEmbeddedVars() throws Exception {
+        //a << END
+        //$a
+        //END
+        mockTest(hereDoc,
+                Lists.newArrayList("a", "<<", "END", "\n", "$a", "\n", "END"),
+                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, VARIABLE, LINE_FEED, WORD);
     }
 
     @Test
