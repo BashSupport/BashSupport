@@ -1,3 +1,7 @@
+2010-12-16:
+ - Fixed parsing of HereDocs with single quote markers, i.e. started with <<'EOF
+ - Fixed parsing of variables in evaluating heredocs
+
 2010-12-10:
  - No inserted whitespace after certain rename refactorings
  - Version 0.9.17

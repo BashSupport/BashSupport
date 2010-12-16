@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Data container to track the advanced parsing state.
  * It can track whether the parser currently is in a heredoc or a simple command.
@@ -27,43 +29,30 @@ package com.ansorgit.plugins.bash.lang.parser;
  * Time: 7:12:36 PM
  */
 final class ParsingStateData {
-    private int inSimpleCommand = 0;
-    private int inHereDoc = 0;
-    private final Object lock = new Object();
+    private AtomicInteger inSimpleCommand = new AtomicInteger(0);
+    private AtomicInteger inHereDoc = new AtomicInteger(0);
 
     public void enterSimpleCommand() {
-        synchronized (lock) {
-            inSimpleCommand++;
-        }
+        inSimpleCommand.incrementAndGet();
     }
 
     public void leaveSimpleCommand() {
-        synchronized (lock) {
-            inSimpleCommand--;
-        }
+        inSimpleCommand.decrementAndGet();
     }
 
     public boolean isInSimpleCommand() {
-        synchronized (lock) {
-            return inSimpleCommand > 0;
-        }
+        return inSimpleCommand.get() > 0;
     }
 
     public void enterHereDoc() {
-        synchronized (lock) {
-            inHereDoc++;
-        }
+        inHereDoc.incrementAndGet();
     }
 
     public void leaveHereDoc() {
-        synchronized (lock) {
-            inHereDoc--;
-        }
+        inHereDoc.decrementAndGet();
     }
 
     public boolean isInHereDoc() {
-        synchronized (lock) {
-            return inHereDoc > 0;
-        }
+        return inHereDoc.get() > 0;
     }
 }

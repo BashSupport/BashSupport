@@ -103,7 +103,7 @@ public class HereDocParsing implements ParsingTool {
                 if (hereDocMarker.isOpen()) {
                     hereDocMarker.drop();
                 }
-                
+
                 ParserUtil.error(builder, "parser.heredoc.expectedEnd");
                 builder.getHereDocData().reset();//fixme check this
 
@@ -157,7 +157,6 @@ public class HereDocParsing implements ParsingTool {
             whitespaceMarker.rollbackTo();
 
             if (isValidVariable) {
-                //fixme check return value?
                 Parsing.var.parse(builder);
             }
 
@@ -166,7 +165,13 @@ public class HereDocParsing implements ParsingTool {
             }
 
             string.append(builder.getTokenText(true));
-            builder.advanceLexer(true);
+
+            if (!isValidVariable) {
+                //if we had a valid variable on this line the variable parser already advanced
+                //the token stream just after the variable tokens, i.e. we do not need to advance further
+                //in case of variable parsing
+                builder.advanceLexer(true);
+            }
         }
 
         return Pair.create(string.toString(), new BashSmartMarker(lineMarker));
@@ -187,6 +192,15 @@ public class HereDocParsing implements ParsingTool {
             markerText = builder.getTokenText();
             ParserUtil.markTokenAndAdvance(builder, HEREDOC_START_MARKER_ELEMENT);
             ParserUtil.getTokenAndAdvance(builder); //string end
+
+            evalMode = HereDocData.MarkerType.NoEval;
+        } else if (builder.getTokenType() == STRING2) {
+            markerText = builder.getTokenText();
+            if (markerText != null && markerText.startsWith("'") && markerText.endsWith("'")) {
+                markerText = markerText.substring(1, markerText.length() - 1);
+            }
+
+            ParserUtil.markTokenAndAdvance(builder, HEREDOC_START_MARKER_ELEMENT);
 
             evalMode = HereDocData.MarkerType.NoEval;
         } else {
