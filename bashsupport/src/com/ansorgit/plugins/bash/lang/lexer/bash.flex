@@ -241,7 +241,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    "unalias"                    |
    "wait"                       { return INTERNAL_COMMAND; }
 
-   <S_STRINGMODE, S_ARITH> {
+   <S_ARITH> {
        "&&"                         { return AND_AND; }
 
        "||"                         { return OR_OR; }
@@ -536,6 +536,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                               }
 
   "|"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? PIPE : WORD; }
+
+  "||"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? OR_OR : WORD; }
+
+  "&&"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? AND_AND : WORD; }
 
 
   "{"                         { string.advanceToken(); return LEFT_CURLY; }
