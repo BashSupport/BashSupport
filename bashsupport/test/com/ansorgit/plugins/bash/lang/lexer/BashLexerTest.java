@@ -210,6 +210,12 @@ public class BashLexerTest {
         testTokenization("\\>", WORD);
         testTokenization("\\<", WORD);
 
+        testTokenization("\"||\"", STRING_BEGIN, WORD, STRING_END);
+        testTokenization("\"$(||)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, OR_OR, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"&&\"", STRING_BEGIN, WORD, STRING_END);
+        testTokenization("\"$(&&)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, AND_AND, RIGHT_PAREN, STRING_END);
+
         testTokenization("a#%%", WORD);
 
         testTokenization("a#%%[0-9]", WORD);
