@@ -74,7 +74,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
 
     @NotNull
     public TokenSet getStringLiteralElements() {
-        return BashTokenTypes.stringLiterals;
+        return BashTokenTypes.editorStringLiterals;
     }
 
     public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode leftAst, ASTNode rightAst) {

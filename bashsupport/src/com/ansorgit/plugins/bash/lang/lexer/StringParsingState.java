@@ -31,7 +31,7 @@ import com.intellij.util.containers.Stack;
  *
  * @author Joachim Ansorg
  */
-public final class StringParsingState {
+final class StringParsingState {
     private final StringBuilder stringData = new StringBuilder(256);
 
     private static final class SubshellState {
