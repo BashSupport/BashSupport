@@ -36,7 +36,6 @@ import java.util.List;
  */
 class ShebangPathCompletionProvider extends BashCompletionProvider {
     public ShebangPathCompletionProvider() {
-        super(true);
     }
 
     @Override
@@ -46,12 +45,12 @@ class ShebangPathCompletionProvider extends BashCompletionProvider {
 
     @Override
     protected PsiElement findElement(PsiElement element) {
-        if (!(element instanceof BashShebang) && (element.getParent() instanceof BashShebang)) {
-            return element.getParent();
-        }
-
         if (element instanceof BashShebang) {
             return element;
+        }
+
+        if (element.getParent() != null) {
+            return findElement(element.getParent());
         }
 
         return null;
@@ -75,8 +74,8 @@ class ShebangPathCompletionProvider extends BashCompletionProvider {
         String shellcommand = shebang.shellCommand();
 
         int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
-        return (elementOffset > 0 && elementOffset < shellcommand.length())
+        return (elementOffset > 0 && elementOffset <= shellcommand.length())
                 ? shellcommand.substring(0, elementOffset)
-                : shellcommand;
+                : null;
     }
 }

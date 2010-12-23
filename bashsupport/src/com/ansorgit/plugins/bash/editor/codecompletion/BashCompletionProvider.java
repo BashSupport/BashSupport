@@ -36,8 +36,7 @@ import java.util.List;
  * Time: 12:27:29 AM
  */
 abstract class BashCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public BashCompletionProvider(boolean startInReadAction) {
-        super(startInReadAction);
+    public BashCompletionProvider() {
     }
 
     @Override
@@ -54,9 +53,14 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         }
 
         String originalText = findOriginalText(element);
-        final String currentText = findCurrentText(parameters, element);
+        String currentText = findCurrentText(parameters, element);
 
-        CompletionResultSet result = currentText != null && originalText.startsWith(currentText)
+        if (currentText == null) {
+            //completion is not possible at the current offset
+            return;
+        }
+
+        CompletionResultSet result = originalText.startsWith(currentText)
                 ? resultWithoutPrefix.withPrefixMatcher(currentText)
                 : resultWithoutPrefix;
 

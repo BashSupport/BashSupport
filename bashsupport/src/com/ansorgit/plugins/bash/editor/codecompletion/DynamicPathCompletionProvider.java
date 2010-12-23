@@ -44,7 +44,7 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
     private static final Set<String> homePrefixes = Sets.newHashSet("$HOME", "~");
 
     public DynamicPathCompletionProvider() {
-        super(true); //in a read action
+        super(); //in a read action
     }
 
     @Override
