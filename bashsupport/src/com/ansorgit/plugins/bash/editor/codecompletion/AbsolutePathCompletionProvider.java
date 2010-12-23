@@ -37,7 +37,7 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
     //private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
 
     public AbsolutePathCompletionProvider() {
-        super(true);
+        super();
     }
 
 
