@@ -162,7 +162,6 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     }
 
     public PsiElement getElement() {
-        //log.info("getElement");
         return this;
     }
 

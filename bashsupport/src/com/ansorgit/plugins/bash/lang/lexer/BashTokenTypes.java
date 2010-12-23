@@ -223,9 +223,10 @@ public interface BashTokenTypes {
     IElementType INTERNAL_COMMAND = new BashElementType("internal bash command");
 
     IElementType INTEGER_LITERAL = new BashElementType("int literal");
-    //fixme dot and colon?
+
     TokenSet stringLiterals = TokenSet.create(WORD, STRING2, INTEGER_LITERAL, COLON, INTERNAL_COMMAND);
-    //removed:
+    //used for editor actions, e.g. reference search, etc.
+    TokenSet editorStringLiterals = TokenSet.create(STRING2, INTEGER_LITERAL, COLON, INTERNAL_COMMAND);
 
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...

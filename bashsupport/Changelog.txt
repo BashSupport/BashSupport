@@ -1,5 +1,6 @@
 2010-12-23:
  - Fixed exception which occured while editing the shebang line of a script
+ - Inline renaming for variables in parameter expansion elements
 
 2010-12-16:
  - Fixed parsing of HereDocs with single quote markers, i.e. started with <<'EOF
