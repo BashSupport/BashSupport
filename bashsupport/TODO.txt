@@ -139,7 +139,7 @@ Bugs (indentation marks fixed bugs):
 - Improved man page formatting
 - Fix variables in array assignments a[$a]=1 , this needs a lexing refactoring
 - "make" is enabled for newly created Bash run configurations
-- Properly support <<-EOF and <<-"EOF"
+    - Properly support <<-EOF and <<-"EOF"
 - Formatting of heredocs should not indent, maybe only for <<-
 - Quotation marks in heredocs mix up the parser, Strings are lexed, heredocs are parsed but not lexed,
   thus the parser sees an incomplete string and can not parse the heredoc. This should be fixed somehow, probably
@@ -164,3 +164,5 @@ Bugs (indentation marks fixed bugs):
     - Adding a new file with the extension .bash adds file.bash.sh
 
 - Bug: Format after var rename breaks source code
+
+- Bug: a=1; ${a:=$a$a}, placing the caret after the last a and starting a rename triggers an IDEA bug
