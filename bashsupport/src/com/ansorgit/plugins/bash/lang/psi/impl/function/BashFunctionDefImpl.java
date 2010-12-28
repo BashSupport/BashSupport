@@ -23,10 +23,12 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.diagnostic.Logger;
@@ -37,12 +39,15 @@ import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Icons;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.util.Collection;
+import java.util.List;
 
 import static com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils.getElementLineNumber;
 
@@ -109,6 +114,22 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
         }
 
         return null;
+    }
+
+    @NotNull
+    public List<BashVar> findReferencedParameters() {
+        //call the visitor to find all uses of the parameter varaiables
+        Collection<BashVar> usedVariables = PsiTreeUtil.collectElementsOfType(this, BashVar.class);
+
+        List<BashVar> parameters = Lists.newLinkedList();
+
+        for (BashVar var : usedVariables) {
+            if (var.isParameterReference()) {
+                parameters.add(var);
+            }
+        }
+
+        return parameters;
     }
 
     public String getDefinedName() {

@@ -37,7 +37,6 @@ public class InspectionProvider implements InspectionToolProvider {
                 FunctionDefInspection.class,
                 AddShebangInspection.class,
                 WrapWordInStringInspection.class,
-                ConvertBackquoteInspection.class,
                 ConvertSubshellInspection.class,
                 DuplicateFunctionDefInspection.class,
                 MissingIncludeFileInspection.class,
@@ -50,7 +49,10 @@ public class InspectionProvider implements InspectionToolProvider {
                 ReadonlyVariableInspection.class,
                 InternalVariableInspection.class,
                 UnknownFiledescriptorInspection.class,
-                GlocalLocalVarDefInspection.class
+                GlocalLocalVarDefInspection.class,
+                SimpleVarUsageInspection.class,
+                UnusedFunctionParameterInspection.class,
+                ConvertBackquoteInspection.class //more unimportant inspection
                 //UnusedFunctionDefInspection.class
         };
     }

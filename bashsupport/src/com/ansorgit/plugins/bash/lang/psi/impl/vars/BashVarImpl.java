@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
@@ -41,6 +42,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -205,11 +207,21 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
     public boolean isBuiltinVar() {
         String name = getReferencedName();
-        return LanguageBuiltins.bashShellVars.contains(name)
-                || LanguageBuiltins.bourneShellVars.contains(name);
+        return LanguageBuiltins.bashShellVars.contains(name) || LanguageBuiltins.bourneShellVars.contains(name);
     }
 
-    public boolean isComposedVar() {
-        return isSingleWord() && getParent() instanceof BashComposedVar;
+    public boolean isParameterExpansion() {
+        return isSingleWord() && (getParent() instanceof BashComposedVar || getParent() instanceof BashParameterExpansion);
+    }
+
+    public boolean isParameterReference() {
+        if (LanguageBuiltins.bashShellParams.contains(getReferencedName())) {
+            return true;
+        }
+
+        //slower fallback which checks if the parameter is  a number
+        int numericValue = NumberUtils.toInt(getReferencedName(), -1);
+        return numericValue >= 0;
+
     }
 }

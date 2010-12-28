@@ -39,7 +39,7 @@ class BashVarAnnotator {
             //highlighting for built-in variables
             Annotation annotation = annotationHolder.createInfoAnnotation(bashVar, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_BUILTIN);
-        } else if (bashVar.isComposedVar()) {
+        } else if (bashVar.isParameterExpansion()) {
             //highlighting for composed variables
             Annotation annotation = annotationHolder.createInfoAnnotation(bashVar, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_COMPOSED);

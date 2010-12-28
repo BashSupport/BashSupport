@@ -47,6 +47,7 @@ public class BashLexerTest {
 
         testTokenization("$a$", VARIABLE, DOLLAR);
         testTokenization("$", DOLLAR);
+        //testTokenization("${?}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);

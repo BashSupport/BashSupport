@@ -41,5 +41,11 @@ public interface BashVar extends BashPsiElement, BashReference {
      *
      * @return True if this variable refers to a bash composed variable
      */
-    boolean isComposedVar();
+    boolean isParameterExpansion();
+
+    /**
+     * @return Returns true if this variable is a reference to a built-in parameter, e.g. $1 or $2 . This method
+     *         does return true for $0.
+     */
+    boolean isParameterReference();
 }
