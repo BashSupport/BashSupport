@@ -20,8 +20,11 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.Icons;
 import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
 
 /**
  * Lookup element which contains a simple path element.
@@ -33,6 +36,8 @@ import org.jetbrains.annotations.NotNull;
  * Time: 2:52:31 PM
  */
 final class PathLookupElement extends LookupElement {
+    private static final Icon textIcon = IconLoader.getIcon("/fileTypes/text.png");
+
     private final String path;
     private final boolean isFile;
 
@@ -43,8 +48,8 @@ final class PathLookupElement extends LookupElement {
 
     @Override
     public void renderElement(LookupElementPresentation presentation) {
-        presentation.setIcon(isFile ? Icons.FILE_ICON : Icons.DIRECTORY_CLOSED_ICON);
         super.renderElement(presentation);
+        presentation.setIcon(isFile ? textIcon : Icons.DIRECTORY_CLOSED_ICON);
     }
 
     @NotNull

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -26,13 +27,8 @@ import com.intellij.lang.ASTNode;
  * Date: Oct 29, 2009
  * Time: 8:19:49 PM
  */
-public class BashGenericCommandImpl extends BashCommandImpl implements BashGenericCommand {
+public class BashGenericCommandImpl extends BashPsiElementImpl implements BashGenericCommand {
     public BashGenericCommandImpl(ASTNode astNode) {
         super(astNode, "BashGenericCommand");
-    }
-
-    @Override
-    public boolean isInternalCommand() {
-        return false;
     }
 }

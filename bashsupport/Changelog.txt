@@ -1,6 +1,7 @@
 2010-12-28:
  - New inspection to convert a simple variable usage $a to the equivalent parameter expansion ${a}
  - New inspection to highlight unused parameter values for function calls
+ - New inspection to highlight unused function definitions
  - Bugfix: A duplicate function definition on the global level is highlighted again
 
 2010-12-23:

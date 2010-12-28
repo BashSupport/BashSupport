@@ -215,7 +215,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     public boolean isParameterReference() {
-        if (LanguageBuiltins.bashShellParams.contains(getReferencedName())) {
+        if (LanguageBuiltins.bashShellParamReferences.contains(getReferencedName())) {
             return true;
         }
 

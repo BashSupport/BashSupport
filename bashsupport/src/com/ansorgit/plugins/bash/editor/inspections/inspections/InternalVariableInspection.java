@@ -56,7 +56,7 @@ public class InternalVariableInspection extends AbstractBashInspection {
     @NotNull
     @Override
     public String getShortName() {
-        return "Change to a readonly shell variable";
+        return "Change to a builtin, read-only shell variable";
     }
 
     @Override
@@ -72,8 +72,8 @@ public class InternalVariableInspection extends AbstractBashInspection {
             public void visitVarDef(BashVarDef varDef) {
                 String name = varDef.getName();
 
-                if (LanguageBuiltins.readonlyShellVars.contains(name) && varDef.hasAssignmentValue()) {
-                    holder.registerProblem(varDef, "Change to a builtin, read-only shell variable", LocalQuickFix.EMPTY_ARRAY);
+                if (LanguageBuiltins.readonlyShellVars.contains(name)) {
+                    holder.registerProblem(varDef, getShortName(), LocalQuickFix.EMPTY_ARRAY);
                 }
             }
         };

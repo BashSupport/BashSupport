@@ -82,7 +82,7 @@ public interface BashCommand extends BashPsiElement, BashReference {
 
     /**
      * Returns the element which represents the executed command.
-     * i.e. "echo" of the statement "a=b echo a b c"
+     * e.g. "echo" of the statement "a=b echo a b c"
      *
      * @return The element
      */

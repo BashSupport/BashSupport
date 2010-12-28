@@ -59,9 +59,15 @@ public class ExpansionParsingTest extends MockPsiTest {
 
     @Test
     public void testParseInvalid() {
+        //{a..}
+        //mockTestFail(parser, LEFT_CURLY, WORD, WORD, WORD, RIGHT_CURLY);
+        //{ a}
         mockTestFail(parser, LEFT_CURLY, WHITESPACE, WORD, RIGHT_CURLY);
+        //{a }
         mockTestFail(parser, LEFT_CURLY, WORD, WHITESPACE, RIGHT_CURLY);
+        //{ }
         mockTestFail(parser, LEFT_CURLY, WHITESPACE, RIGHT_CURLY);
+        //a
         mockTestFail(parser, WORD);
     }
 }
