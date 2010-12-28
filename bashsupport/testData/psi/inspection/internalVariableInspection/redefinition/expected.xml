@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <description>Change to a builtin, read-only shell variable</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <description>Change to a builtin, read-only shell variable</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <description>Change to a builtin, read-only shell variable</description>
+    </problem>
+</problems>
+

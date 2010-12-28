@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.editor.inspections;
+package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.intellij.testFramework.InspectionTestCase;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <description>The file '/tmp/is/not/here.txt' does not exist.</description>
+    </problem>
+</problems>
+

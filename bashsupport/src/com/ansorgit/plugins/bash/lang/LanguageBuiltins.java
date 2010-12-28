@@ -37,7 +37,7 @@ public final class LanguageBuiltins {
 
     //variables which are references to parameters. This is just a reasonable default set, Bash doesn't seem to restrict
     //the range of valid parameter
-    public static final Collection<String> bashShellParams = Sets.newHashSet(
+    public static final Collection<String> bashShellParamReferences = Sets.newHashSet(
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"
     );
 
@@ -46,7 +46,6 @@ public final class LanguageBuiltins {
      */
     public static final Collection<String> bashShellVars = Sets.newHashSet(
             "$", "#", "*", "@", "-", "!", "_", "?",
-            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "BASH", "BASHOPTS", "BASHPID", "BASH_ALIASES", "BASH_ARGC",
             "BASH_ARGV", "BASH_CMDS", "BASH_COMMAND", "BASH_ENV",
             "BASH_EXECUTION_STRING", "BASH_LINENO", "BASH_REMATCH", "BASH_SOURCE",
@@ -67,6 +66,11 @@ public final class LanguageBuiltins {
             "REPLY", "SECONDS", "SHELL", "SHELLOPTS",
             "SHLVL", "TIMEFORMAT", "TMOUT", "TMPDIR", "UID");
 
+    //register the shell parameter names
+    static {
+        bashShellVars.addAll(bashShellParamReferences);
+    }
+
     public static final Collection<String> bashShellVars_v4 = Sets.newHashSet(
             "BASHPID", "PROMPT_DIRTRIM"
     );
@@ -75,6 +79,12 @@ public final class LanguageBuiltins {
             "BASH", "BASHOPTS", "BASHPID", "BASH_SUBSHELL", "BASH_VERSINFO", "BASH_VERSION", "EUID",
             "HOSTNAME", "HOSTTYPE", "OLDPWD", "PPID", "PWD", "UID"
     );
+
+    //add existing definitions to the read-only variable set
+    static {
+        readonlyShellVars.addAll(bashShellParamReferences);
+    }
+
 
     public static final Collection<String> commands = Sets.newHashSet(
             ".", ":", "alias", "bg", "bind", "break", "builtin", "cd", "caller",

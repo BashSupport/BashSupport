@@ -19,11 +19,14 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.util.Query;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -69,9 +72,14 @@ public class UnusedFunctionDefInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                PsiReference[] references = functionDef.getReferences();
-                if (references.length == 0) {
-                    holder.registerProblem(functionDef.getNameSymbol(), "Unused function definition", ProblemHighlightType.LIKE_UNUSED_SYMBOL);
+                //List<PsiReference> references = PsiReferenceService.getService().getReferences(functionDef, PsiReferenceService.Hints.NO_HINTS);
+
+                Query<PsiReference> search = ReferencesSearch.search(functionDef);
+                PsiReference first = search.findFirst();
+
+                BashSymbol nameSymbol = functionDef.getNameSymbol();
+                if (first == null && nameSymbol != null) {
+                    holder.registerProblem(nameSymbol, getShortName(), ProblemHighlightType.LIKE_UNUSED_SYMBOL);
                 }
             }
         };

@@ -52,8 +52,8 @@ public class InspectionProvider implements InspectionToolProvider {
                 GlocalLocalVarDefInspection.class,
                 SimpleVarUsageInspection.class,
                 UnusedFunctionParameterInspection.class,
-                ConvertBackquoteInspection.class //more unimportant inspection
-                //UnusedFunctionDefInspection.class
+                ConvertBackquoteInspection.class,
+                UnusedFunctionDefInspection.class
         };
     }
 }

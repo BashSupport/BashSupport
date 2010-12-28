@@ -81,6 +81,7 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
                 String commandName = bashCommand.getReferencedName();
                 if (commandName != null && commandName.equals(".")) {
                     List<BashPsiElement> params = bashCommand.parameters();
+
                     if (params.size() == 1) {
                         BashPsiElement firstParam = params.get(0);
                         if (firstParam instanceof BashCharSequence) {
@@ -94,7 +95,12 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
                                     File diskFile = new File(filename);
                                     boolean absoluteAndExists = diskFile.isAbsolute() && diskFile.exists();
                                     if (!absoluteAndExists) {
-                                        holder.registerProblem(firstParam, "The file '" + filename + "' does not exists.");
+                                        holder.registerProblem(firstParam, "The file '" + filename + "' does not exist.");
+                                    }
+
+                                    //print an error message if the given path is a directory
+                                    if (absoluteAndExists && diskFile.isDirectory()) {
+                                        holder.registerProblem(firstParam, "Unable to include a directory.");
                                     }
                                 }
                             }

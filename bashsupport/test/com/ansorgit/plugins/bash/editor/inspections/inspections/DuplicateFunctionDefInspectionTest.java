@@ -1,6 +1,4 @@
-package com.ansorgit.plugins.bash.lang.editor.inspections;
-
-import com.ansorgit.plugins.bash.editor.inspections.inspections.DuplicateFunctionDefInspection;
+package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 /**
  * User: jansorg

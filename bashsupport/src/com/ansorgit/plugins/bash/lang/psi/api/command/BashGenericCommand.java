@@ -25,5 +25,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  * Date: Oct 29, 2009
  * Time: 8:19:01 PM
  */
-public interface BashGenericCommand extends BashPsiElement, BashCommand {
+public interface BashGenericCommand extends BashPsiElement {
 }

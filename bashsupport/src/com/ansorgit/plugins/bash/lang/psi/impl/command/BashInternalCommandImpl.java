@@ -19,31 +19,16 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashInternalCommand;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 
 /**
  * User: jansorg
  * Date: Oct 29, 2009
  * Time: 8:19:49 PM
  */
-public class BashInternalCommandImpl extends BashCommandImpl implements BashInternalCommand {
+public class BashInternalCommandImpl extends BashPsiElementImpl implements BashInternalCommand {
     public BashInternalCommandImpl(ASTNode astNode) {
         super(astNode, "BashInternalCommand");
-    }
-
-    @Override
-    public boolean isInternalCommand() {
-        return true;
-    }
-
-    @Override
-    public boolean isExternalCommand() {
-        return false;
-    }
-
-    @Override
-    public PsiElement commandElement() {
-        return this;
     }
 }
