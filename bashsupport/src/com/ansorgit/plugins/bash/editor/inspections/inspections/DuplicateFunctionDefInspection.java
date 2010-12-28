@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -33,7 +34,6 @@ import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,11 +84,14 @@ public class DuplicateFunctionDefInspection extends AbstractBashInspection {
             public void visitFunctionDef(BashFunctionDef functionDef) {
                 BashFunctionProcessor p = new BashFunctionProcessor(functionDef.getName(), true);
 
-                PsiElement start = functionDef.getContext() != null ? functionDef.getContext() : functionDef.getPrevSibling();
+                boolean isOnGlobalLevel = BashPsiUtils.findNextVarDefFunctionDefScope(functionDef) == null;
+                PsiElement start = functionDef.getContext() != null && !isOnGlobalLevel
+                        ? functionDef.getContext()
+                        : functionDef.getPrevSibling();
 
                 PsiTreeUtil.treeWalkUp(p, start, functionDef.getContainingFile(), ResolveState.initial());
 
-                List<PsiElement> results = new ArrayList(p.getResults());
+                List<PsiElement> results = Lists.newArrayList(p.getResults());
                 results.remove(functionDef);
 
                 if (results.size() > 0) {

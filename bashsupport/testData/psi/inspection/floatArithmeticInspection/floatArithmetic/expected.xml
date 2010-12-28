@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Integer division with remainder. Maybe you
+            wanted floating point arithmetic (unsupported in Bash)?
+        </problem_class>
+        <description>Integer division with remainder found.</description>
+    </problem>
+</problems>
+

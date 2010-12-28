@@ -54,7 +54,7 @@ public class FloatArithmeticInspection extends AbstractBashInspection {
     @Nls
     @NotNull
     public String getDisplayName() {
-        return "An integer division with remainder. Maybe you wanted floating point arithmetic (unsupported in Bash)?";
+        return "Integer division with remainder. Maybe you wanted floating point arithmetic (unsupported in Bash)?";
     }
 
     @Override
