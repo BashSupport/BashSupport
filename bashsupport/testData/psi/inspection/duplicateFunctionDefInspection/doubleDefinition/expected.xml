@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>7</line>
+
+        <description>The function 'a' is already defined on line 3.</description>
+    </problem>
+</problems>
+
