@@ -23,11 +23,9 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.intellij.util.ArrayUtil;
 
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
@@ -155,7 +153,7 @@ public class WordParsing implements ParsingTool {
             }
         }
 
-        if (processedTokens > 1) {
+        if (processedTokens >= 1) {
             marker.done(PARSED_WORD_ELEMENT);
         } else {
             marker.drop();

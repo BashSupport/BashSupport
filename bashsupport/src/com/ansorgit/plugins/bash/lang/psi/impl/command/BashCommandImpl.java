@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
@@ -124,7 +125,6 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     }
 
     public List<BashPsiElement> parameters() {
-        //return Collections.emptyList();
         PsiElement cmd = commandElement();
         if (cmd == null) {
             return Collections.emptyList();
@@ -134,9 +134,10 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
 
         PsiElement nextSibling = cmd.getNextSibling();
         while (nextSibling != null) {
-            if (nextSibling instanceof BashPsiElement) {
+            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
                 result.add((BashPsiElement) nextSibling);
             }
+
             nextSibling = nextSibling.getNextSibling();
         }
 

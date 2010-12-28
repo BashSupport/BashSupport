@@ -76,7 +76,6 @@ public class UnresolvedVariableInspection extends AbstractBashInspection {
 
                     boolean isRegisteredAsGlobal = BashProjectSettings.storedSettings(bashVar.getProject()).getGlobalVariables().contains(varName);
                     if (!isRegisteredAsGlobal) {
-
                         holder.registerProblem(bashVar,
                                 "Unresolved variable",
                                 ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,

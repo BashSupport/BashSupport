@@ -36,8 +36,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -269,7 +267,11 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return isBash_v4 ? v3_var || bashShellVars_v4.contains(name) : v3_var;
     }
 
-    public boolean isComposedVar() {
+    public boolean isParameterExpansion() {
+        return false;
+    }
+
+    public boolean isParameterReference() {
         return false;
     }
 

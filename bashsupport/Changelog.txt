@@ -1,3 +1,7 @@
+2010-12-28:
+ - New inspection to convert a simple variable usage $a to the equivalent parameter expansion ${a}
+ - New inspection to highlight unused parameter values for function calls
+
 2010-12-23:
  - Fixed exception which occured while editing the shebang line of a script
  - Inline renaming for variables in parameter expansion elements

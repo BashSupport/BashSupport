@@ -35,12 +35,18 @@ public final class LanguageBuiltins {
             "CDPATH", "HOME", "IFS", "MAIL", "MAILPATH", "OPTARG", "OPTIND", "PATH", "PS1", "PS2"
     );
 
+    //variables which are references to parameters. This is just a reasonable default set, Bash doesn't seem to restrict
+    //the range of valid parameter
+    public static final Collection<String> bashShellParams = Sets.newHashSet(
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"
+    );
+
     /**
      * A set of built-in variables. The variables are stored without the marker character (i.e. $).
      */
     public static final Collection<String> bashShellVars = Sets.newHashSet(
             "$", "#", "*", "@", "-", "!", "_", "?",
-            "0", "1", "2", "3", "4", "5", "6", "8", "9",
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "BASH", "BASHOPTS", "BASHPID", "BASH_ALIASES", "BASH_ARGC",
             "BASH_ARGV", "BASH_CMDS", "BASH_COMMAND", "BASH_ENV",
             "BASH_EXECUTION_STRING", "BASH_LINENO", "BASH_REMATCH", "BASH_SOURCE",

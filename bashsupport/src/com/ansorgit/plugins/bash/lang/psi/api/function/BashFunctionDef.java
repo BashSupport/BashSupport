@@ -21,12 +21,16 @@ package com.ansorgit.plugins.bash.lang.psi.api.function;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDefContainer;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Date: 11.04.2009
@@ -59,4 +63,13 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
      * @return The comment psi element, if found. If unavailable null is returned.
      */
     PsiComment findAttachedComment();
+
+    /**
+     * The list of parameters used inside this function definition. Sub-functions are not searched for parameters
+     * uses.
+     *
+     * @return The list of parameter variable uses
+     */
+    @NotNull
+    List<BashVar> findReferencedParameters();
 }
