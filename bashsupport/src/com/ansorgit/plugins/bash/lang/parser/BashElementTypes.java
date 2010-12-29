@@ -45,8 +45,6 @@ public interface BashElementTypes {
     IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
 
-    //misc
-    IElementType EVALUATED_STRING_ELEMENT = new BashElementType("evaluated string");
     IElementType SYMBOL_ELEMENT = new BashElementType("named symbol");
 
     //redirect elements

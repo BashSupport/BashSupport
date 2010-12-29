@@ -40,11 +40,10 @@ public class ValueExpansionUtil {
      * Returns the evaluated expansion which is the result of evaluating the spec parameter.
      *
      * @param spec           The expansion specification, e.g. a{1,2,3}
-     * @param enhancedSyntax
+     * @param enhancedSyntax Whether the advanced Bash4 syntax should be supported or not
      * @return The result as a string. If the spec can not be evaluated null is returned.
      */
     public static String expand(String spec, boolean enhancedSyntax) {
-        //create the result
         return expand(split(spec, enhancedSyntax)).toString();
     }
 

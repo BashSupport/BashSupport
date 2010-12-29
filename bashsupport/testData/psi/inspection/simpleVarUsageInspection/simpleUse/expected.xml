@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <description>Simple variable usage</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <description>Simple variable usage</description>
+    </problem>
+</problems>
+
