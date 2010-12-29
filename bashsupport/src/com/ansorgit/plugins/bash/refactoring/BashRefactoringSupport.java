@@ -24,7 +24,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
-import com.intellij.refactoring.RefactoringActionHandler;
 
 /**
  * Definition of the refactoring support available in this plugin.
@@ -43,8 +42,8 @@ public class BashRefactoringSupport extends RefactoringSupportProvider {
                 (element instanceof BashHereDocMarker);
     }
 
-    @Override
-    public RefactoringActionHandler getIntroduceVariableHandler() {
-        return new BashIntroduceVariableHandler();
-    }
+//    @Override
+//    public RefactoringActionHandler getIntroduceVariableHandler() {
+//        return new BashIntroduceVariableHandler();
+//    }
 }

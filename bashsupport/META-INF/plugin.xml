@@ -58,43 +58,25 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.18:</b>
+       <ul>
+         <li>New inspection to convert a simple variable usage $a to the equivalent parameter expansion ${a}</li>
+         <li>New inspection to highlight unused parameter values for function calls</li>
+         <li>New inspection to highlight unused function definitions</li>
+         <li>Bugfix: A duplicate function definition on the global level is highlighted again</li>
+         <li>Fixed exception which occured while editing the shebang line of a script</li>
+         <li>Inline renaming of variables inside of parameter expansion elements</li>
+         <li>Fixed parsing of HereDocs with single quote markers, i.e. started with &lt;&lt;'EOF'</li>
+         <li>Fixed parsing of variables in evaluating heredocs</li>
+         <li>Compatible with the build number range of PyCharm 1.1</li>
+         <li>Bugfixes</li>
+       </ul>
+
        <b>Changes in version 0.9.17:</b>
        <ul>
          <li>Compatible with builds 99.18 or later, i.e. IntelliJ IDEA 10.0</li>
          <li>Improved parsing of parameter substitutions, e.g. for ${a:=b} assignments and ${!a} indirect references</li>
          <li>Formatter fixes</li>
-       </ul>
-
-       <b>Changes in version 0.9.16-ideaX:</b>
-       <ul>
-         <li>Compatible with builds 98.402 or later</li>
-         <li>Lexer fix for `for f in ...`</li>
-       </ul>
-
-       <b>Changes in version 0.9.15-ideaX:</b>
-       <ul>
-         <li>Now requires IDEA X build 96.1190 or later</li>
-       </ul>
-
-       <b>Changes in version 0.9.14-maia:</b>
-       <ul>
-         <li>Now requires IDEA 9.0.3 or later</li>
-         <li>Improved parser</li>
-         <li>Fixed resolving of global variables                                         </li>
-         <li>Fixed new Bash script action if the extension .bash was used                </li>
-         <li>Improved variable resolving if definitions on different levels are present  </li>
-         <li>Implemented parsing of process substitution elements                        </li>
-       </ul>
-
-       <b>Changes in version 0.9.13-maia:</b>
-       <ul>
-         <li>Fixed method not found error in EvaluateExpansionInspection                                </li>
-         <li>Reworked and improved variable resolving                                                   </li>
-         <li>Fixed exception "Directory index is not initialized yet ..."                               </li>
-         <li>Fixed scope of psi elements, previously a variable rename went through the whole module    </li>
-         <li>Improved support for local variable references                                             </li>
-         <li>New inspection to detect local variable definition on global level                         </li>
-         <li>Quickfix to remove the local keyword from a global variable definition                     </li>
        </ul>
 
        <b>Recent changes:</b>
@@ -105,7 +87,7 @@
           <li>New inspection which detects integer division with a remainder</li>
           <li>Fixed variable renaming of ${a} variables</li>
           <li>Compatibility with RubyMine 2.0.2</li>
-          <li> Fixed for heredoc folding and highlighting                                                     </li>
+          <li> Fixed for heredoc folding and highlighting</li>
           <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
           <li> Removed global settings, these are project settings now</li>
           <li> Arithmetic expressions are supported now, including variable declarations</li>
