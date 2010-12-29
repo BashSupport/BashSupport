@@ -24,7 +24,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,10 +36,8 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashStringImpl extends BashPsiElementImpl implements BashString, BashCharSequence {
-    private static final Logger log = Logger.getInstance("#bash.BashStringImpl");
-
     public BashStringImpl(ASTNode node) {
-        super(node, "Bash tring");
+        super(node, "Bash string");
     }
 
     public String getUnwrappedCharSequence() {

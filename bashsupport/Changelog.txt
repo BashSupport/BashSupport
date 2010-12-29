@@ -3,6 +3,7 @@
  - New inspection to highlight unused parameter values for function calls
  - New inspection to highlight unused function definitions
  - Bugfix: A duplicate function definition on the global level is highlighted again
+ - Changed file icon for path completions
 
 2010-12-23:
  - Fixed exception which occured while editing the shebang line of a script

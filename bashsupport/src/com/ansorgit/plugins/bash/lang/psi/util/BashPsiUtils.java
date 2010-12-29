@@ -244,6 +244,11 @@ public class BashPsiUtils {
                 return false;
             }
 
+            //a string may contain other composed elements, e.g. "$a" contains a wrapped word which contains the var
+            if (!isStaticWordExpr(child.getFirstChild())) {
+                return false;
+            }
+
             child = child.getNextSibling();
         }
 

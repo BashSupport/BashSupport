@@ -35,8 +35,8 @@ import org.jetbrains.annotations.NotNull;
  * Time: 10:36:06
  */
 public class BashWordImpl extends BashPsiElementImpl implements BashWord {
-    private final static TokenSet nonWrappableChilds = TokenSet.create(
-            BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
+    private final static TokenSet nonWrappableChilds =
+            TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
@@ -56,7 +56,14 @@ public class BashWordImpl extends BashPsiElementImpl implements BashWord {
     }
 
     public String getUnwrappedCharSequence() {
-        return getText();
+        String text = getText();
+
+        //if it is a single quoted string unqote it
+        if (isStatic() && text.length() >= 2 && text.startsWith("'")) {
+            return text.substring(1, text.length() - 1);
+        }
+
+        return text;
     }
 
     public boolean isStatic() {

@@ -89,7 +89,7 @@ public class RecursiveIncludeFileInspection extends AbstractBashInspection {
                             PsiFile file = BashPsiFileUtils.findRelativeFile(containingFile, filename);
 
                             if (file != null && file.equals(containingFile)) {
-                                holder.registerProblem(firstParam, "The included file '" + filename + "' also includes this file.");
+                                holder.registerProblem(firstParam, "A file should not include itself.");
                             }
                         }
                     }

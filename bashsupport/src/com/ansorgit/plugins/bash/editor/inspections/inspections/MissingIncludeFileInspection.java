@@ -79,11 +79,15 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
             @Override
             public void visitInternalCommand(BashCommand bashCommand) {
                 String commandName = bashCommand.getReferencedName();
-                if (commandName != null && commandName.equals(".")) {
+
+                if (".".equals(commandName)) {
                     List<BashPsiElement> params = bashCommand.parameters();
 
-                    if (params.size() == 1) {
+                    if (params.size() >= 1) {
                         BashPsiElement firstParam = params.get(0);
+
+                        //fixme support $PATH evaluation
+
                         if (firstParam instanceof BashCharSequence) {
                             BashCharSequence sequence = (BashCharSequence) firstParam;
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <description>Replace '123+123*2' with the evaluated result of '369'</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <description>Replace '123*123' with the evaluated result of '15129'</description>
+    </problem>
+</problems>
+

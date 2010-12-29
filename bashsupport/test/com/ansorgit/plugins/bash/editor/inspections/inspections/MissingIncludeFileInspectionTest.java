@@ -6,6 +6,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 21:23
  */
 public class MissingIncludeFileInspectionTest extends AbstractInspectionTestCase {
+    public void testOk() throws Exception {
+        doTest("missingIncludeFileInspection/ok", new MissingIncludeFileInspection());
+    }
+
     public void testMissingFile() throws Exception {
         doTest("missingIncludeFileInspection/missingFile", new MissingIncludeFileInspection());
     }
