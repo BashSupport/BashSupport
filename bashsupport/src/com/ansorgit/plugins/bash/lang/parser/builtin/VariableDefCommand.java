@@ -45,6 +45,7 @@ abstract class VariableDefCommand implements ParsingFunction {
      *
      * @param acceptFrontVarDef    If true then local variable definitions are accepted in front of the command. e.g. "a=1 export b=1" is a valid bash command, but only b is visible afterwards.
      * @param commandElementType
+     * @param commandText
      * @param acceptVarAssignments
      */
     protected VariableDefCommand(boolean acceptFrontVarDef, IElementType commandElementType, String commandText, boolean acceptVarAssignments) {
@@ -112,10 +113,11 @@ abstract class VariableDefCommand implements ParsingFunction {
     }
 
     private boolean readOptions(BashPsiBuilder builder) {
-        String text = builder.getTokenText();
+        builder.getTokenText();
+
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             boolean ok = Parsing.word.parseWord(builder);
-            text = builder.getTokenText();
+            builder.getTokenText();
 
             if (!ok) {
                 return false;
@@ -147,8 +149,7 @@ abstract class VariableDefCommand implements ParsingFunction {
             //return (next == BashTokenTypes.EQ || next == BashTokenTypes.WHITESPACE);
             //we either have a single word (no assignment) or a value assignment part
             return true;
-        }
-        finally {
+        } finally {
             start.rollbackTo();
         }
     }

@@ -48,10 +48,6 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         this.type = type;
     }
 
-    public Type getType() {
-        return type;
-    }
-
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {

@@ -6,7 +6,6 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
@@ -18,8 +17,6 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 19:40
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private static final Logger log = Logger.getInstance("#ParamExpansion");
-
     private static final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP_UNKNOWN);
 
     public boolean isValid(BashPsiBuilder builder) {

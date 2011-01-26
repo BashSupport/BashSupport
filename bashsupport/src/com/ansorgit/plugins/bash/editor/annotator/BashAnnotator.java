@@ -33,7 +33,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -50,7 +49,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashAnnotator implements Annotator {
-    private static final Logger log = Logger.getInstance("#bash.BashAnnotator");
     private final FunctionDefAnnotator functionAnnotator = new FunctionDefAnnotator();
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {

@@ -36,33 +36,6 @@ import static com.ansorgit.plugins.bash.lang.parser.util.ParserUtil.error;
  */
 //fixme refactor this
 public class RedirectionParsing implements ParsingTool {
-    /*
-     redirection	:
-         | number? '>' word
-         | number? '<' word
-         | number? GREATER_GREATER word
-         | number? LESS_LESS word
-         | number? LESS_LESS_LESS word
-         | number? GREATER_AND (number | word | '-')
-         | number? LESS_AND (word|number | '-')
-         | number? LESS_LESS_MINUS word
-         | number? LESS_GREATER word
-         | number? GREATER_BAR word
-         ;
-
-        bash 4 additional redirects:
-          &<<
-          >>& word
-          >& word
-     */
-    private static final TokenSet validBeforeWord = TokenSet.create(
-            GREATER_THAN, LESS_THAN, SHIFT_RIGHT, REDIRECT_LESS_LESS,
-            REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_LESS_MINUS,
-            REDIRECT_LESS_GREATER, REDIRECT_GREATER_BAR,
-            REDIRECT_AMP_GREATER_GREATER, REDIRECT_AMP_GREATER,
-            REDIRECT_GREATER_AMP
-    );
-
     private static final TokenSet validBeforeFiledescriptor = TokenSet.create(
             GREATER_THAN, LESS_THAN
     );
@@ -102,8 +75,7 @@ public class RedirectionParsing implements ParsingTool {
         try {
             builder.enterNewErrorLevel(false);
             return parseSingleRedirect(builder, true);
-        }
-        finally {
+        } finally {
             builder.leaveLastErrorLevel();
             marker.rollbackTo();
         }

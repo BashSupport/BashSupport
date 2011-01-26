@@ -68,6 +68,14 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testSquareBracketArithmeticExpr() {
+        testTokenization("$[1]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
+
+        //lexable, but bad syntac
+        testTokenization("$(([1]))", DOLLAR, EXPR_ARITH, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, _EXPR_ARITH);
+    }
+
+    @Test
     public void testArithmeticExpr() {
         testTokenization("$((1))", DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
 

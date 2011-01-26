@@ -58,7 +58,7 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
 
     @Override
     public String toString() {
-        return name == null ? super.toString() : name;
+        return "[PSI] " + (name == null ? super.toString() : name);
     }
 
     @NotNull

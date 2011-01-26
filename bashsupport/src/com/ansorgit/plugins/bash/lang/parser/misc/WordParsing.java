@@ -93,6 +93,8 @@ public class WordParsing implements ParsingTool {
     /**
      * Parses a word token. Several word tokens not seperated by whitespace are read
      * as a single word token.
+     * <p/>
+     * A word can be a combination of several tokens, words are seperated by whitespace.
      *
      * @param builder         The builder
      * @param enableRemapping If the read tokens should be remapped.
@@ -101,23 +103,29 @@ public class WordParsing implements ParsingTool {
      * @return True if a valid word could be read.
      */
     public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept) {
-        //a word can be a comnination of several tokens, words are seperated by whitespace
-
-        if (builder.getTokenType() == STRING_BEGIN) {
-            return parseComposedString(builder);
-        }
+        int processedTokens = 0;
+        boolean parsedStringFirst = false;
 
         PsiBuilder.Marker marker = builder.mark();
-        boolean isOk = true;
 
-        int processedTokens = 0;
+        // A string marker at the beginning does not necessarily mean
+        // that it is just the string more token may follow after it
+        if (builder.getTokenType() == STRING_BEGIN) {
+            if (!parseComposedString(builder)) {
+                marker.drop();
+                return false;
+            }
+
+            parsedStringFirst = true;
+        }
+
+        boolean isOk = true;
         while (isOk) {
             if (reject.contains(builder.getTokenType(true))) {
                 break;
             }
 
             final IElementType nextToken = builder.getTokenType(true, enableRemapping);
-
             if (nextToken == WHITESPACE) {
                 break;
             }
@@ -153,21 +161,30 @@ public class WordParsing implements ParsingTool {
             }
         }
 
-        if (processedTokens >= 1) {
-            marker.done(PARSED_WORD_ELEMENT);
-        } else {
+        if (!isOk || (processedTokens < 1 && !parsedStringFirst)) {
             marker.drop();
+            return false;
         }
 
-        return isOk && (processedTokens > 0);
+        //a single string should not be parsed as a combined word element
+        if (parsedStringFirst && processedTokens == 0) {
+            marker.drop();
+        } else {
+            marker.done(PARSED_WORD_ELEMENT);
+        }
+
+        return true;
     }
 
     public boolean parseComposedString(BashPsiBuilder builder) {
         PsiBuilder.Marker stringStart = builder.mark();
 
-        builder.advanceLexer(); //after STRING_START
+        //eat STRING_START
+        builder.advanceLexer(true);
+
         while (builder.getTokenType() != STRING_END) {
             boolean ok = false;
+
             if (Parsing.word.isWordToken(builder)) {
                 ok = Parsing.word.parseWord(builder);
             } else if (Parsing.var.isValid(builder)) {
