@@ -125,10 +125,6 @@ class MergingLexer extends LexerBase {
         }
     }
 
-    public Lexer getOriginal() {
-        return originalLexer;
-    }
-
     public void restore(LexerPosition position) {
         MyLexerPosition pos = (MyLexerPosition) position;
 

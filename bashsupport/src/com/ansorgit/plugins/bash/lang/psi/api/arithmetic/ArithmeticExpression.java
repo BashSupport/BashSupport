@@ -38,8 +38,6 @@ public interface ArithmeticExpression extends BashPsiElement {
         Unsupported
     }
 
-    Type getType();
-
     boolean isStatic();
 
     /**

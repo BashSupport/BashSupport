@@ -35,7 +35,7 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 9:16:36 PM
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
-    private final static TokenSet assignmentSeperators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
+    private final static TokenSet assignmentSeparators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
     private final static TokenSet validWordTokens = TokenSet.create(NUMBER);
 
     /**
@@ -108,6 +108,11 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     /**
      * Reads an optional list of assignments and redirects which
      * are before a command.
+     *
+     * @param builder
+     * @param markAsVarDef
+     * @param mode
+     * @return
      */
     public static boolean readAssignmentsAndRedirects(final BashPsiBuilder builder, boolean markAsVarDef, Mode mode) {
         boolean ok = false;
@@ -199,7 +204,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 }
 
                 final IElementType token = builder.getTokenType(true);
-                final boolean isEndToken = assignmentSeperators.contains(token);
+                final boolean isEndToken = assignmentSeparators.contains(token);
                 if (token != null && !isEndToken) {
                     if (!Parsing.word.parseWord(builder, true, TokenSet.EMPTY, validWordTokens)) {
                         ParserUtil.error(builder, "parser.unexpected.token");
@@ -230,6 +235,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * |    STRING
      * |    STRING2
      * |   "[ arith_expression "]"=(WORD|STRING|STRING2)
+     *
+     * @param builder
+     * @return
      */
     public static boolean parseAssignmentList(BashPsiBuilder builder) {
         final IElementType first = ParserUtil.getTokenAndAdvance(builder);

@@ -146,6 +146,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /*  If in an arithmetic expression */
 %state S_ARITH
 
+/*  If in an arithmetic expression */
+%state S_ARITH_SQUARE_MODE
+
 /*  If in a case */
 %state S_CASE
 
@@ -241,7 +244,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    "unalias"                    |
    "wait"                       { return INTERNAL_COMMAND; }
 
-   <S_ARITH> {
+   <S_ARITH, S_ARITH_SQUARE_MODE> {
        "&&"                         { return AND_AND; }
 
        "||"                         { return OR_OR; }
@@ -249,7 +252,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
-    <S_ARITH> {
+    <S_ARITH, S_ARITH_SQUARE_MODE> {
        {ArrayAssignmentWord} / "=("|"+=("   { goToState(S_ARRAYASSIGN); return ARRAY_ASSIGNMENT_WORD; }
        {AssignmentWord} / "=("|"+=("        { goToState(S_ARRAYASSIGN); return ASSIGNMENT_WORD; }
 
@@ -266,7 +269,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "="                             { return EQ; }
   "("                             { return LEFT_PAREN; }
 
-  <S_ARITH> {
+  <S_ARITH, S_ARITH_SQUARE_MODE> {
     ","                             { return COMMA; }
   }
 
@@ -355,13 +358,19 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-N"                         { return COND_OP; }
 }
 
-<S_ARITH, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
+<S_ARITH, S_ARITH_SQUARE_MODE, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
   /* If a subshell expression is found, return DOLLAR and move before the bracket */
   "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL); return DOLLAR; }
 }
 
 /*** Arithmetic expressions *************/
-<S_ARITH> {
+<S_ARITH_SQUARE_MODE> {
+  "["                           { return EXPR_ARITH_SQUARE; }
+
+  "]"                           { backToPreviousState(); return _EXPR_ARITH_SQUARE; }
+}
+
+<S_ARITH, S_ARITH_SQUARE_MODE> {
   "))"                          { if (openParenths > 0) {
                                     openParenths--; yypushback(1); return RIGHT_PAREN;}
                                   else {
@@ -663,6 +672,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
       /** Variables */
         {Variable}                    { return VARIABLE; }
     }
+
+    "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
 
     "["                           { return LEFT_SQUARE; }
     "]"                           { return RIGHT_SQUARE; }

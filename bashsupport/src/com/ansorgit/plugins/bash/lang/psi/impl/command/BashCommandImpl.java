@@ -31,7 +31,6 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
@@ -53,13 +52,11 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
-    private static final Logger log = Logger.getInstance("#bash.BashCommandImpl");
-
     private boolean isInternal;
     private boolean isExternal;
 
     public BashCommandImpl(ASTNode astNode) {
-        this(astNode, "bash command");
+        this(astNode, "Bash command");
     }
 
     public BashCommandImpl(ASTNode astNode, String name) {

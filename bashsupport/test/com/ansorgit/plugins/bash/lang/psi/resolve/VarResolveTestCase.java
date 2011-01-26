@@ -19,13 +19,11 @@
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
-import com.intellij.psi.PsiRecursiveElementWalkingVisitor;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
 
@@ -48,6 +46,10 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     public void testBasicResolve() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    public void testBasicResolveInsideString() throws Exception {
         assertIsWellDefinedVariable();
     }
 

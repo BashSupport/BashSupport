@@ -32,6 +32,15 @@ public class ArithmeticParserTest extends MockPsiTest {
     };
 
     @Test
+    public void testParseSquareMode() {
+        //[1]
+        mockTest(arithmeticTest, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
+
+        //[a + b]
+        mockTest(arithmeticTest, EXPR_ARITH_SQUARE, WORD, ARITH_MINUS, WORD, _EXPR_ARITH_SQUARE);
+    }
+
+    @Test
     public void testParse() throws Exception {
         //((1))
         mockTest(arithmeticTest, EXPR_ARITH, NUMBER, _EXPR_ARITH);

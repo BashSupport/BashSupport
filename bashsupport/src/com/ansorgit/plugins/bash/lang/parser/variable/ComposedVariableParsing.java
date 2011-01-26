@@ -36,8 +36,9 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 public class ComposedVariableParsing implements ParsingFunction {
-    private static final TokenSet acceptedStarts =
-            TokenSet.create(LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL);
+    private static final TokenSet acceptedStarts = TokenSet.create(
+            LEFT_CURLY, LEFT_PAREN, EXPR_ARITH, EXPR_CONDITIONAL, EXPR_ARITH_SQUARE
+    );
 
     public boolean isValid(BashPsiBuilder builder) {
         if (!ParserUtil.hasNextTokens(builder, DOLLAR)) {
@@ -48,8 +49,7 @@ public class ComposedVariableParsing implements ParsingFunction {
         try {
             ParserUtil.getTokenAndAdvance(builder); //DOLLAR
             return acceptedStarts.contains(builder.getTokenType(true));
-        }
-        finally {
+        } finally {
             marker.rollbackTo();
         }
     }

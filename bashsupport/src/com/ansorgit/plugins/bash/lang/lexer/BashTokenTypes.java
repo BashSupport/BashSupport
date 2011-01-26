@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import com.intellij.persistence.PersistenceConsoleProvider;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -84,6 +83,8 @@ public interface BashTokenTypes {
     // arithmetic expressions
     IElementType EXPR_ARITH = new BashElementType("((");//))
     IElementType _EXPR_ARITH = new BashElementType("))");//]] after a $((
+    IElementType EXPR_ARITH_SQUARE = new BashElementType("[ for arithmetic");
+    IElementType _EXPR_ARITH_SQUARE = new BashElementType("] for arithmetic");
 
     //conditional expressions
     IElementType EXPR_CONDITIONAL = new BashElementType("[ (left conditional)");//"[ "

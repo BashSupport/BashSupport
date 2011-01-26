@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -31,8 +30,6 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashBlockImpl extends BashPsiElementImpl implements BashBlock {
-    private static final Logger log = Logger.getInstance("#BashBlockImpl");
-
     public BashBlockImpl(ASTNode astNode) {
         super(astNode, "bash block impl");
     }

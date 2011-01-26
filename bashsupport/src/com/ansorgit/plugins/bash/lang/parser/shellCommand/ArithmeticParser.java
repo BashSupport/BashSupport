@@ -41,7 +41,8 @@ public final class ArithmeticParser implements ParsingFunction {
     private ParsingFunction arithmeticExprParser = ArithmeticFactory.entryPoint();
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == BashTokenTypes.EXPR_ARITH;
+        IElementType tokenType = builder.getTokenType();
+        return tokenType == BashTokenTypes.EXPR_ARITH || tokenType == BashTokenTypes.EXPR_ARITH_SQUARE;
     }
 
     /**
@@ -51,6 +52,10 @@ public final class ArithmeticParser implements ParsingFunction {
      * @return Whether the operation has been successful
      */
     public boolean parse(BashPsiBuilder builder) {
+        if (builder.getTokenType() == BashTokenTypes.EXPR_ARITH_SQUARE) {
+            return parse(builder, BashTokenTypes.EXPR_ARITH_SQUARE, BashTokenTypes._EXPR_ARITH_SQUARE);
+        }
+
         return parse(builder, BashTokenTypes.EXPR_ARITH, BashTokenTypes._EXPR_ARITH);
     }
 
@@ -73,7 +78,7 @@ public final class ArithmeticParser implements ParsingFunction {
         }
 
         final PsiBuilder.Marker arithmetic = builder.mark();
-        builder.advanceLexer();//after the start token
+        builder.advanceLexer(); //after the start token
 
         if (!arithmeticExprParser.parse(builder)) {
             arithmetic.drop();
