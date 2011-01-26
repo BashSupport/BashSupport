@@ -7,6 +7,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Inspects function calls and checks whether the given parameters are actually used in the function definition.
@@ -77,11 +79,16 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
                         List<BashPsiElement> callerParameters = bashCommand.parameters();
                         List<BashVar> usedParameters = functionDef.findReferencedParameters();
 
-                        List<String> definedParamNames = Lists.transform(usedParameters, new Function<BashVar, String>() {
+                        Set<String> definedParamNames = Sets.newHashSet(Lists.transform(usedParameters, new Function<BashVar, String>() {
                             public String apply(BashVar var) {
                                 return var.getReferencedName();
                             }
-                        });
+                        }));
+
+                        //if the parameter count variable is refernced consider all params as used
+                        if (definedParamNames.contains("*")) {
+                            return;
+                        }
 
                         for (int i = 0; i < callerParameters.size(); i++) {
                             String paramName = String.valueOf(i + 1);
