@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.codeInspection.LocalQuickFix;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
@@ -40,13 +41,13 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashQuickfix i
 
         //replace this position with the same value, we have to trigger a reparse somehow
         try {
-            file.getViewProvider().getDocument().replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
+            Document document = file.getViewProvider().getDocument();
+            document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
+            file.subtreeChanged();
         } catch (ReadOnlyModificationException e) {
             //ignore
         } catch (ReadOnlyFragmentModificationException e) {
             //ignore
         }
-
-        file.subtreeChanged();
     }
 }

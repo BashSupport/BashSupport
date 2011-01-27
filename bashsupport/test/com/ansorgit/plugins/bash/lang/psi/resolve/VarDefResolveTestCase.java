@@ -54,6 +54,13 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull("ref must not resolve to anything else: " + ref, varDefDef);
     }
 
+    public void testRedefineVarDef() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+        //the variable definition value has to be the remaining part of the line, otherwise the parsing of the value does
+        //not properly work
+        assertNull(varDef.getNextSibling());
+    }
+
     public void testGlobalVarDefWithLocal() throws Exception {
         assertIsValidVarDef();
     }
@@ -81,6 +88,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
     public void testLocalVarDefFromFunctionError() throws Exception {
         assertIsInvalidVarDef();
     }
+
 
     public void testLocalVarDefResolve() throws Exception {
         //the inner var def must not resolve to the global variable definition

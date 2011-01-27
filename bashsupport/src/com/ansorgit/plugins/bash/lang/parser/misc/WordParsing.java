@@ -94,6 +94,8 @@ public class WordParsing implements ParsingTool {
      * Parses a word token. Several word tokens not seperated by whitespace are read
      * as a single word token.
      * <p/>
+     * It accepts whitespace tokens in the beginning of the stream.
+     * <p/>
      * A word can be a combination of several tokens, words are seperated by whitespace.
      *
      * @param builder         The builder
@@ -104,33 +106,28 @@ public class WordParsing implements ParsingTool {
      */
     public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept) {
         int processedTokens = 0;
-        boolean parsedStringFirst = false;
+        int parsedStringParts = 0;
+        boolean firstStep = true;
+
+        //if no token has been parsed yet we do accept whitespace in the beginning
+        boolean isOk = true;
 
         PsiBuilder.Marker marker = builder.mark();
 
-        // A string marker at the beginning does not necessarily mean
-        // that it is just the string more token may follow after it
-        if (builder.getTokenType() == STRING_BEGIN) {
-            if (!parseComposedString(builder)) {
-                marker.drop();
-                return false;
-            }
-
-            parsedStringFirst = true;
-        }
-
-        boolean isOk = true;
         while (isOk) {
-            if (reject.contains(builder.getTokenType(true))) {
+            if (reject.contains(builder.getTokenType(!firstStep))) {
                 break;
             }
 
-            final IElementType nextToken = builder.getTokenType(true, enableRemapping);
+            final IElementType nextToken = builder.getTokenType(!firstStep, enableRemapping);
             if (nextToken == WHITESPACE) {
                 break;
             }
 
-            if (Parsing.braceExpansionParsing.isValid(builder)) {
+            if (nextToken == STRING_BEGIN) {
+                isOk = parseComposedString(builder);
+                parsedStringParts++;
+            } else if (Parsing.braceExpansionParsing.isValid(builder)) {
                 isOk = Parsing.braceExpansionParsing.parse(builder);
                 processedTokens++;
             } else if (accept.contains(nextToken) || stringLiterals.contains(nextToken)) {
@@ -159,15 +156,18 @@ public class WordParsing implements ParsingTool {
             } else { //either whitespace or unknown token
                 break;
             }
+
+            firstStep = false;
         }
 
-        if (!isOk || (processedTokens < 1 && !parsedStringFirst)) {
+        //either parsing failed or nothing has been found to parse
+        if (!isOk || (processedTokens == 0 && parsedStringParts == 0)) {
             marker.drop();
             return false;
         }
 
         //a single string should not be parsed as a combined word element
-        if (parsedStringFirst && processedTokens == 0) {
+        if (parsedStringParts >= 1 && processedTokens == 0) {
             marker.drop();
         } else {
             marker.done(PARSED_WORD_ELEMENT);
