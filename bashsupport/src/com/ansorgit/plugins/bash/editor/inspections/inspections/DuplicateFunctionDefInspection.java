@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -89,30 +90,36 @@ public class DuplicateFunctionDefInspection extends AbstractBashInspection {
                         ? functionDef.getContext()
                         : functionDef.getPrevSibling();
 
-                PsiTreeUtil.treeWalkUp(p, start, functionDef.getContainingFile(), ResolveState.initial());
+                if (start != null) {
+                    PsiTreeUtil.treeWalkUp(p, start, functionDef.getContainingFile(), ResolveState.initial());
 
-                List<PsiElement> results = Lists.newArrayList(p.getResults());
-                results.remove(functionDef);
+                    List<PsiElement> results = Lists.newArrayList(p.getResults());
+                    results.remove(functionDef);
 
-                if (results.size() > 0) {
-                    //find the result which has the lowest textOffset in the file
-                    PsiElement firstFunctionDef = results.get(0);
-                    for (PsiElement e : results) {
-                        if (e.getTextOffset() < firstFunctionDef.getTextOffset()) {
-                            firstFunctionDef = e;
+                    if (results.size() > 0) {
+                        //find the result which has the lowest textOffset in the file
+                        PsiElement firstFunctionDef = results.get(0);
+                        for (PsiElement e : results) {
+                            if (e.getTextOffset() < firstFunctionDef.getTextOffset()) {
+                                firstFunctionDef = e;
+                            }
                         }
-                    }
 
 
-                    if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
-                        String message = "The function '" + functionDef.getName() +
-                                "' is already defined on line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
+                        if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
+                            String message = "The function '" + functionDef.getName() +
+                                    "' is already defined on line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
 
-                        holder.registerProblem(
-                                functionDef.getNameSymbol(),
-                                message,
-                                ProblemHighlightType.GENERIC_ERROR_OR_WARNING
-                        );
+                            BashSymbol nameSymbol = functionDef.getNameSymbol();
+                            if (nameSymbol != null) {
+                                holder.registerProblem(
+                                        nameSymbol,
+                                        message,
+                                        ProblemHighlightType.GENERIC_ERROR_OR_WARNING
+                                );
+                            }
+
+                        }
                     }
                 }
             }

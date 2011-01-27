@@ -604,7 +604,7 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
 //    @Ignore("Ignored for now until we do a parser refactoring")
-public void testCheckErrorMarkers() {
+    public void testCheckErrorMarkers() {
         //this test makes sure that there's only only one marker at the right place
 
         //echo > &1 #invalid whitespace
@@ -634,5 +634,10 @@ public void testCheckErrorMarkers() {
     public void testVariableDollar() throws Exception {
         //$a$
         mockTest(fileParsingTest, VARIABLE, DOLLAR);
+    }
+
+    @Test
+    public void testComposedVarDefValue() {
+        mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, STRING_BEGIN, WORD, STRING_END, WORD, STRING_BEGIN, STRING_END);
     }
 }

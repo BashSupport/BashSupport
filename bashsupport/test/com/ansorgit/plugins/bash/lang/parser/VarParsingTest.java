@@ -70,6 +70,4 @@ public class VarParsingTest extends MockPsiTest {
         //${a a}
         //mockTestError(varParsingTest, DOLLAR, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
     }
-
-
 }
