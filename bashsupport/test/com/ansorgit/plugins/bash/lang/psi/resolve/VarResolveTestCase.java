@@ -141,6 +141,11 @@ public class VarResolveTestCase extends AbstractResolveTest {
         //Assert.assertTrue(varDef.resolve() == null);
     }
 
+
+    public void testResolveParamLength() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
     //invalid resolves
 
     public void testBasicResolveLocalVarGlobal() throws Exception {

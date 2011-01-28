@@ -208,9 +208,10 @@ public interface BashTokenTypes {
     IElementType PARAM_EXPANSION_OP_MINUS = new BashElementType("Parameter expansion operator '-'");
     IElementType PARAM_EXPANSION_OP_COLON_PLUS = new BashElementType("Parameter expansion operator ':+'");
     IElementType PARAM_EXPANSION_OP_PLUS = new BashElementType("Parameter expansion operator '+'");
+    IElementType PARAM_EXPANSION_OP_LENGTH = new BashElementType("Parameter expansion operator '#'");
     TokenSet paramExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_EXCL,
             PARAM_EXPANSION_OP_COLON_EQ, PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON_MINUS,
-            PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_PLUS, PARAM_EXPANSION_OP_COLON_PLUS);
+            PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_PLUS, PARAM_EXPANSION_OP_COLON_PLUS, PARAM_EXPANSION_OP_LENGTH);
     TokenSet paramExpansionAssignmentOps = TokenSet.create(PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON_EQ);
 
 

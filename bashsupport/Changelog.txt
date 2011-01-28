@@ -1,3 +1,6 @@
+2011-01-28:
+ - Issue #32: Length-function not supported: Expected a command
+
 2011-01-26:
  - Issue #34: Unresolved variable in string definition
  - Issue #35: Math calculations using square brackets not supported

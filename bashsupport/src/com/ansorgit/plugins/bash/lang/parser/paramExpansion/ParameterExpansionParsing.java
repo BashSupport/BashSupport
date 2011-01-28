@@ -18,6 +18,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP_UNKNOWN);
+    private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_LENGTH);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
@@ -35,10 +36,16 @@ public class ParameterExpansionParsing implements ParsingFunction {
             builder.advanceLexer(true);
         }
 
+        IElementType firstToken = builder.getTokenType(true);
+
+        //some tokens, like the length expansion '#' must not have a prefixes word character
+        if (prefixlessExpansionsOperators.contains(firstToken)) {
+            return parsePrefixlessExpansion(builder, marker);
+        }
+
         //the first token has to be a plain word token
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
-        IElementType firstToken = builder.getTokenType(true);
         if (!ParserUtil.isWordToken(firstToken)) {
             firstElementMarker.drop();
             marker.drop();
@@ -102,5 +109,34 @@ public class ParameterExpansionParsing implements ParsingFunction {
         }
 
         return validEnd && isValid;
+    }
+
+    private boolean parsePrefixlessExpansion(BashPsiBuilder builder, PsiBuilder.Marker marker) {
+        //eat the operator
+        builder.advanceLexer(true);
+
+        PsiBuilder.Marker varMarker = builder.mark();
+
+        IElementType next = ParserUtil.getTokenAndAdvance(builder, true);
+        if (next == WORD) {
+            varMarker.done(VAR_ELEMENT);
+
+            IElementType endToken = ParserUtil.getTokenAndAdvance(builder);
+            boolean validEnd = RIGHT_CURLY == endToken;
+
+            if (validEnd) {
+                marker.done(PARAM_EXPANSION_ELEMENT);
+            } else {
+                marker.drop();
+            }
+
+            return validEnd;
+        }
+
+        builder.error("Expected a variable");
+
+        varMarker.drop();
+        marker.drop();
+        return false;
     }
 }
