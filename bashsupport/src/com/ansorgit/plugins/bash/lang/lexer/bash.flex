@@ -603,7 +603,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   ":+"                          { return PARAM_EXPANSION_OP_COLON_PLUS; }
   "+"                           { return PARAM_EXPANSION_OP_PLUS; }
 
-  "#"|"!"|"%"|":"|"*"|"@"|"/"|"?"|"."|"^"
+  "#"                           { return PARAM_EXPANSION_OP_LENGTH; }
+  "!"|"%"|":"|"*"|"@"|"/"|"?"|"."|"^"
                                 { return PARAM_EXPANSION_OP_UNKNOWN; }
 
   "["                           { return LEFT_SQUARE; }

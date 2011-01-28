@@ -51,9 +51,9 @@ public class BashLexerTest {
 
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
-        testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WORD, RIGHT_CURLY);
         testTokenization("${!echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, RIGHT_CURLY);
-        testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
+        testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_LENGTH, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
         testTokenization("${echo} ${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("a=1 b=2 echo", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, INTERNAL_COMMAND);
         testTokenization("a=1 b=2", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
@@ -357,7 +357,7 @@ public class BashLexerTest {
         testTokenization("${a}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${a%}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
         testTokenization("${a%b}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
-        testTokenization("${#a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        testTokenization("${#a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WORD, RIGHT_CURLY);
         testTokenization("${a1}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("${/}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, RIGHT_CURLY);
     }
