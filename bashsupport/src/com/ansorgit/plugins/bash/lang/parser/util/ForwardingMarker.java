@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingMarker.java, Class: ForwardingMarker
- * Last modified: 2010-03-24
+ * Last modified: 2011-02-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser.util;
 
 import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.WhitespacesAndCommentsProcessor;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -63,5 +64,17 @@ public abstract class ForwardingMarker implements PsiBuilder.Marker {
 
     public void rollbackTo() {
         original.rollbackTo();
+    }
+
+    public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor first, WhitespacesAndCommentsProcessor second) {
+        original.setCustomEdgeProcessors(first, second);
+    }
+
+    public void errorBefore(String message, PsiBuilder.Marker marker) {
+        original.errorBefore(message, marker);
+    }
+
+    public void collapse(IElementType elementType) {
+        original.collapse(elementType);
     }
 }
