@@ -26,4 +26,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  * Time: 3:03:54 PM
  */
 public interface BashExpansion extends BashPsiElement, BashWord {
+    boolean isValidExpansion();
 }

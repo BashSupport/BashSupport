@@ -29,7 +29,15 @@ import java.util.List;
  * Date: Nov 11, 2009
  * Time: 8:23:15 PM
  */
-public class ExpansionUtilTest {
+public class ValueExpansionUtilTest {
+    @Test
+    public void testInvalidPatternExpand() {
+        Assert.assertFalse(ValueExpansionUtil.isValid("{a..}", false));
+        Assert.assertFalse(ValueExpansionUtil.isValid("a..}", false));
+
+        Assert.assertEquals("{a..}", ValueExpansionUtil.expand("{a..}", false));
+    }
+
     @Test
     public void testExpand() throws Exception {
         Assert.assertEquals("a", ValueExpansionUtil.expand("a", false));
