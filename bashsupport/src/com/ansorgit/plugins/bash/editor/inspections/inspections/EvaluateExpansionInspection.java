@@ -74,7 +74,7 @@ public class EvaluateExpansionInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitExpansion(BashExpansion expansion) {
-                if (isOnTheFly) {
+                if (isOnTheFly && expansion.isValidExpansion()) {
                     holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion, expansion.getProject()));
                 }
             }

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.valueExpansion;
 
 import com.intellij.openapi.util.text.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.ArrayList;
@@ -36,6 +37,20 @@ import java.util.List;
  * Time: 8:21:06 PM
  */
 public class ValueExpansionUtil {
+    public static boolean isValid(String spec, boolean enhancedSyntax) {
+        if (StringUtils.isEmpty(spec)) {
+            return false;
+        }
+
+        try {
+            split(spec, enhancedSyntax);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Returns the evaluated expansion which is the result of evaluating the spec parameter.
      *
@@ -44,6 +59,10 @@ public class ValueExpansionUtil {
      * @return The result as a string. If the spec can not be evaluated null is returned.
      */
     public static String expand(String spec, boolean enhancedSyntax) {
+        if (!isValid(spec, enhancedSyntax)) {
+            return spec;
+        }
+
         return expand(split(spec, enhancedSyntax)).toString();
     }
 
@@ -56,6 +75,11 @@ public class ValueExpansionUtil {
                 int endOffset = part.indexOf('}');
 
                 List<String> values = evaluateExpansionPattern(part.substring(0, endOffset), enhancedSyntax);
+                if (values.isEmpty()) {
+                    //invalid pattern, in this case the Bash shell returns the original pattern
+                    throw new IllegalArgumentException("Invalid pattern syntax in " + spec);
+                }
+
                 result.add(new IteratingExpansion(values));
 
                 if (endOffset + 1 < part.length()) {
