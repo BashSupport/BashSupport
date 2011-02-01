@@ -1,3 +1,6 @@
+2010-02-11:
+  - Version 0.9.15-maia
+
 2010-08-12:
  - Fixed redirection parsing
  - Version 0.9.14-maia

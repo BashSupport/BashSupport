@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ElementIconGutterProvider.java, Class: ElementIconGutterProvider
- * Last modified: 2010-03-24
+ * Last modified: 2011-02-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,5 +43,19 @@ class ElementIconGutterProvider extends GutterIconRenderer {
     @Override
     public Icon getIcon() {
         return element.getIcon(Iconable.ICON_FLAG_OPEN);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ElementIconGutterProvider)) {
+            return false;
+        }
+
+        return this.element == ((ElementIconGutterProvider) o).element && element.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return element != null ? element.hashCode() : 0;
     }
 }
