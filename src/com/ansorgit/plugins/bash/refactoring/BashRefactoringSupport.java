@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRefactoringSupport.java, Class: BashRefactoringSupport
- * Last modified: 2010-01-31
+ * Last modified: 2011-02-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.intellij.lang.refactoring.DefaultRefactoringSupportProvider;
+import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -33,9 +33,9 @@ import com.intellij.psi.PsiElement;
  *
  * @author Joachim Ansorg
  */
-public class BashRefactoringSupport extends DefaultRefactoringSupportProvider {
+public class BashRefactoringSupport extends RefactoringSupportProvider {
     @Override
-    public boolean doInplaceRenameFor(PsiElement element, PsiElement context) {
+    public boolean isInplaceRenameAvailable(PsiElement element, PsiElement context) {
         return (element instanceof BashVarDef) ||
                 (element instanceof BashFunctionDef) ||
                 (element instanceof BashVar) ||

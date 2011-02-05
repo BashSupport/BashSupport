@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: ForwardingPsiBuilder.java, Class: ForwardingPsiBuilder
- * Last modified: 2010-04-21
+ * Last modified: 2011-02-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.ITokenTypeRemapper;
 import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -129,5 +130,9 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
         }
 
         return null;
+    }
+
+    public Project getProject() {
+        return originalPsiBuilder.getProject();
     }
 }

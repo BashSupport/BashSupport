@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2010-06-05
+ * Last modified: 2011-02-01
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,8 +126,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         enableWhitespace();
         try {
             return getTokenType();
-        }
-        finally {
+        } finally {
             disableWhitespace();
         }
     }
@@ -142,8 +141,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
             enableWhitespace();
             try {
                 return getTokenType();
-            }
-            finally {
+            } finally {
                 disableWhitespace();
             }
         } finally {
@@ -160,8 +158,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         enableWhitespace();
         try {
             super.advanceLexer();
-        }
-        finally {
+        } finally {
             disableWhitespace();
         }
     }
