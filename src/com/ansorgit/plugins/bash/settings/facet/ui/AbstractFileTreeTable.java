@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractFileTreeTable.java, Class: AbstractFileTreeTable
- * Last modified: 2011-02-01
+ * Last modified: 2011-02-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -201,10 +201,6 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
 
 
     private static class MyModel<T> extends DefaultTreeModel implements TreeTableModel {
-        public void setTree(JTree jTree) {
-            //fixme for IDEA X
-        }
-
         private final Map<VirtualFile, T> myCurrentMapping = new HashMap<VirtualFile, T>();
         private final Class<T> myValueClass;
         private final String myValueTitle;
