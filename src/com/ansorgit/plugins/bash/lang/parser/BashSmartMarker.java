@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSmartMarker.java, Class: BashSmartMarker
- * Last modified: 2011-02-01
+ * Last modified: 2011-02-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.WhitespacesAndCommentsProcessor;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -73,18 +72,5 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
     public void error(String message) {
         open = false;
         delegate.error(message);
-    }
-
-    public void collapse(IElementType iElementType) {
-        delegate.collapse(iElementType);
-    }
-
-    public void setCustomEdgeProcessors(WhitespacesAndCommentsProcessor first, WhitespacesAndCommentsProcessor second) {
-        delegate.setCustomEdgeProcessors(first, second);
-    }
-
-    public void errorBefore(String s, PsiBuilder.Marker marker) {
-        open = false;
-        delegate.errorBefore(s, marker);
     }
 }

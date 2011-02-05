@@ -10,10 +10,23 @@
     <bookmark url="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/VarResolveTestCase.java" line="87" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
-    </list>
+    <list readonly="true" id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="" />
     <list id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
+    <list default="true" id="c62854a4-a189-4dc9-948b-55b991c4d0a4" name="Revert: Compatibility with RubyMine 3.0.x" comment="Branch for IDEA 95.* with reverted changes from the 97.* branch">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iml" afterPath="$PROJECT_DIR$/BashSupport.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.ipr" afterPath="$PROJECT_DIR$/BashSupport.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BashSupport.iws" afterPath="$PROJECT_DIR$/BashSupport.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Changelog.txt" afterPath="$PROJECT_DIR$/Changelog.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/annotator/ElementIconGutterProvider.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/annotator/ElementIconGutterProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashPsiBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashSmartMarker.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/BashSmartMarker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ForwardingMarker.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ForwardingMarker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ForwardingPsiBuilder.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ForwardingPsiBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/refactoring/BashRefactoringSupport.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/refactoring/BashRefactoringSupport.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashRunConfigurationProducer.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashRunConfigurationProducer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/AbstractFileTreeTable.java" afterPath="$PROJECT_DIR$/src/com/ansorgit/plugins/bash/settings/facet/ui/AbstractFileTreeTable.java" />
+    </list>
     <ignored path="jflex.log" />
     <ignored path="BashPlugin.iws" />
     <ignored path="BashSupport-src.zip" />
@@ -24,7 +37,7 @@
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="SHELVE" />
+    <option name="LAST_RESOLUTION" value="SWITCH" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CloverPlugin" class="com.cenqua.clover.idea.config.IdeaCloverConfig">
@@ -159,19 +172,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Changelog.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Changelog.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="plugin.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="17" selection-start="1009" selection-end="1009" vertical-scroll-proportion="0.4020979">
+            <state line="27" column="0" selection-start="1280" selection-end="1280" vertical-scroll-proportion="0.4703833">
               <folding />
             </state>
           </provider>
@@ -843,7 +847,26 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashSupport-google-idea9" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -890,46 +913,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-google-idea9" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BashSupport-google-idea9" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="META-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="336" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="429" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="INTRODUCE_CONSTANT_NONNLS" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="36" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
@@ -962,7 +952,7 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="886" />
     <property name="options.splitter.details.proportions" value="0.2944849" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
@@ -1331,6 +1321,22 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="SpecsRunConfiguration" factoryName="Specs">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="packagepath" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="sysFilter" value=".*" />
+      <setting name="exampleFilter" value=".*" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" adl_options="" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" browser_family="FIREFOX" class_name="" debugger_sdk="Module SDK" html_or_swf_file_path="" launcher_type="OSDefault" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" player_path="/usr/bin/flashplayer" port="0" run_mode="HtmlOrSwfFile" run_trusted="false" scope="Class" socket_policy_port="0" url_to_launch="http://">
       <method>
         <option name="AntTarget" enabled="false" />
@@ -1440,6 +1446,21 @@
       <RunnerSettings RunnerId="Profile ">
         <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
       </RunnerSettings>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="version" value="false" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1644,12 +1665,12 @@
       <method />
     </configuration>
     <list size="9">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testIfWithFaultyRedirect" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testCheckErrorMarkers" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testBash4Errors" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testSimpleListParsingWithErrors" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testRedirectErrors" />
-      <item index="5" class="java.lang.String" itemvalue="Bash.test.sh" />
+      <item index="0" class="java.lang.String" itemvalue="Bash.test.sh" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testIfWithFaultyRedirect" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.IntegrationTest.testCheckErrorMarkers" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testBash4Errors" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testSimpleListParsingWithErrors" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.RedirectionParsingTest.testRedirectErrors" />
       <item index="6" class="java.lang.String" itemvalue="JUnit.FormatterTest" />
       <item index="7" class="java.lang.String" itemvalue="JUnit.All in BashSupport" />
       <item index="8" class="java.lang.String" itemvalue="Plugin.Intellij IDEA" />
@@ -1717,12 +1738,18 @@
     </option>
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
+    <task id="Default" summary="Default task">
       <changelist id="1f8df892-6400-479e-aa9a-7d4f853d655e" name="Default" comment="" />
       <changelist id="32fa3d33-6358-42b1-a3c9-32b3983947b9" name="Failed commit: Default" comment="improved highlighting" />
       <created>1263928792015</created>
-      <updated>1263928792015</updated>
+      <updated>1296944995177</updated>
     </task>
+    <task active="true" id="LOCAL-00001" summary="Release">
+      <created>1296944995140</created>
+      <updated>1296944995185</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <option name="createChangelist" value="false" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1746,7 +1773,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1398" height="1017" extended-state="0" />
+    <frame x="0" y="0" width="1400" height="1020" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.23898679" sideWeight="0.5" order="24" side_tool="false" content_ui="tabs" x="27" y="361" width="1346" height="293" />
@@ -1761,7 +1788,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23898679" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32600537" sideWeight="0.2973568" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33507073" sideWeight="0.0" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32289335" sideWeight="0.7084257" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3231571" sideWeight="0.7084257" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5737885" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29157427" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32715133" sideWeight="0.59323883" order="2" side_tool="false" content_ui="tabs" />
@@ -1810,7 +1837,7 @@
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Compatibility with RubyMine 3.0.x" />
+    <option name="LAST_COMMIT_MESSAGE" value="Branch for IDEA 95.* with reverted changes from the 97.* branch" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1823,7 +1850,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="run action" />
     <MESSAGE value="fixed file name for windows checkouts" />
     <MESSAGE value="inlined default parsing function" />
     <MESSAGE value="Fixed for loop parsing" />
@@ -1848,6 +1874,7 @@
     <MESSAGE value="fixes" />
     <MESSAGE value="ffixes" />
     <MESSAGE value="Compatibility with RubyMine 3.0.x" />
+    <MESSAGE value="Branch for IDEA 95.* with reverted changes from the 97.* branch" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1877,19 +1904,11 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/misc/RedirectionParsing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="22" selection-start="5799" selection-end="5799" vertical-scroll-proportion="0.48863637" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/HereDocResolveTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1550" selection-end="1550" vertical-scroll-proportion="0.36688313" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/editor/annotator/ElementIconGutterProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="5" selection-start="1773" selection-end="1773" vertical-scroll-proportion="0.8507463" />
+        <state line="59" column="5" selection-start="1773" selection-end="1773" vertical-scroll-proportion="0.8507463">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/programs/share/RubyMine-3.0.1/lib/openapi.jar!/com/intellij/execution/junit/RuntimeConfigurationProducer.class">
@@ -1899,7 +1918,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/lang/parser/util/ForwardingPsiBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="135" column="47" selection-start="4126" selection-end="4126" vertical-scroll-proportion="0.8880597" />
+        <state line="135" column="47" selection-start="4126" selection-end="4126" vertical-scroll-proportion="0.8880597">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/psi/resolve/AbstractResolveTest.java">
@@ -1934,7 +1955,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/runner/BashRunConfigurationProducer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="44" selection-start="1972" selection-end="1972" vertical-scroll-proportion="0.2508711" />
+        <state line="53" column="44" selection-start="1972" selection-end="1972" vertical-scroll-proportion="0.2508711">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ansorgit/plugins/bash/refactoring/BashRefactoringSupport.java">
@@ -1947,14 +1970,32 @@
         <state line="51" column="56" selection-start="2048" selection-end="2048" vertical-scroll-proportion="0.5052265" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/parser/IntegrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="16" selection-start="2237" selection-end="2237" vertical-scroll-proportion="0.32656023">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Changelog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0" />
+        <state line="2" column="0" selection-start="41" selection-end="41" vertical-scroll-proportion="0.021770682">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/ansorgit/plugins/bash/lang/editor/inspections/AbstractInspectionTestCase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="33" selection-start="864" selection-end="864" vertical-scroll-proportion="0.4571843">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="17" selection-start="1009" selection-end="1009" vertical-scroll-proportion="0.4020979">
+        <state line="27" column="0" selection-start="1280" selection-end="1280" vertical-scroll-proportion="0.4703833">
           <folding />
         </state>
       </provider>
@@ -1974,11 +2015,6 @@
           </splitter-proportions>
         </settings>
       </state>
-      <state key="Copyright.UI">
-        <settings>
-          <splitter-proportions />
-        </settings>
-      </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
           <last-edited>BashSupport</last-edited>
@@ -1993,6 +2029,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>JQuery 1.5</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2004,7 +2041,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>RubyMine 3.0.1 (RM-97.133)</last-edited>
+          <last-edited>IDEA WS-95.503</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2037,11 +2074,6 @@
               </list>
             </option>
           </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions />
         </settings>
       </state>
     </states>

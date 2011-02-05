@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashRunConfigurationProducer.java, Class: BashRunConfigurationProducer
- * Last modified: 2011-02-01
+ * Last modified: 2011-02-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ package com.ansorgit.plugins.bash.runner;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.Location;
-import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.actions.ConfigurationContext;
+import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl;
 import com.intellij.execution.junit.RuntimeConfigurationProducer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -50,12 +50,12 @@ public class BashRunConfigurationProducer extends RuntimeConfigurationProducer i
     }
 
     @Override
-    protected RunnerAndConfigurationSettings createConfigurationByElement(Location location, ConfigurationContext configurationContext) {
+    protected RunnerAndConfigurationSettingsImpl createConfigurationByElement(Location location, ConfigurationContext configurationContext) {
         sourceFile = location.getPsiElement().getContainingFile();
 
         if (sourceFile != null && sourceFile.getFileType().equals(BashFileType.BASH_FILE_TYPE)) {
             Project project = sourceFile.getProject();
-            RunnerAndConfigurationSettings settings = cloneTemplateConfiguration(project, configurationContext);
+            RunnerAndConfigurationSettingsImpl settings = cloneTemplateConfiguration(project, configurationContext);
 
             VirtualFile file = sourceFile.getVirtualFile();
 
@@ -76,8 +76,7 @@ public class BashRunConfigurationProducer extends RuntimeConfigurationProducer i
                 runConfiguration.setModule(module);
             }
 
-            //fixme
-            //copyStepsBeforeRun(project, runConfiguration);
+            copyStepsBeforeRun(project, runConfiguration);
             return settings;
         }
 
