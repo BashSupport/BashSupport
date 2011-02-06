@@ -35,16 +35,23 @@ import org.junit.Test;
 public class VariableVariantsTest extends AbstractResolveTest {
     @Test
     public void testVariableVariants() throws Exception {
-        checkVariants(2);
+        checkVariants(2, configure());
     }
 
     @Test
     public void testVariableVariantsWithFunctions() throws Exception {
-        checkVariants(4);
+        checkVariants(4, configure());
     }
 
-    private void checkVariants(int expectedVariantsCount) throws Exception {
+    @Test
+    public void testVariableVariantsFromIncludeFile() throws Exception {
         PsiReference psiReference = configure();
+        addFile("include.bash");
+
+        checkVariants(4, psiReference);
+    }
+
+    private void checkVariants(int expectedVariantsCount, PsiReference psiReference) throws Exception {
         if (psiReference instanceof PsiMultiReference) {
             PsiMultiReference multiRef = (PsiMultiReference) psiReference;
 

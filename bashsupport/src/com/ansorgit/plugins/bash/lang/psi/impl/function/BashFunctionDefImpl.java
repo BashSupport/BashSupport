@@ -38,7 +38,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Icons;
 import com.intellij.util.IncorrectOperationException;
@@ -59,8 +58,6 @@ import static com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils.getElementLin
  */
 public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunctionDef {
     private static final Logger log = Logger.getInstance("#Bash.BashFunctionDefImpl");
-
-    private static TokenSet ignorableCommentTrailerTokens = TokenSet.create(BashTokenTypes.LINE_FEED);
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");

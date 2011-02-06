@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BashResolveStates.java, Class: BashResolveStates
- * Last modified: 2010-06-30
+ * File: AbstractResolveTest.java, Class: AbstractResolveTest
+ * Last modified: 2010-07-17
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,18 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.impl;
+package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.KeyWithDefaultValue;
+import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
 
 /**
  * User: jansorg
- * Date: 29.06.2010
- * Time: 19:53:50
+ * Date: 15.06.2010
+ * Time: 21:09:35
  */
-public class BashResolveStates {
-    private BashResolveStates() {
+public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
+    protected String getTestDataPath() {
+        return BashTestUtils.getBasePath() + "/psi/fileInclude/";
     }
-
-    public static final Key<Boolean> RESOLVE_SUCCESS = new KeyWithDefaultValue<Boolean>("RESOLVE_SUCCESS") {
-        @Override
-        public Boolean getDefaultValue() {
-            return false;
-        }
-    };
 }

@@ -90,11 +90,15 @@ public interface BashCommand extends BashPsiElement, BashReference {
 
     /**
      * Returns the elements which are parameters to the command
+     *
+     * @return
      */
     List<BashPsiElement> parameters();
 
     /**
      * Returns the assignments which are available in this command
+     *
+     * @return
      */
     List<BashVarDef> assignments();
 

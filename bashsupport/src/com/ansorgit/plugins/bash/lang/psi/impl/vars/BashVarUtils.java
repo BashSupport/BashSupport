@@ -56,10 +56,11 @@ public class BashVarUtils {
             }
 
             //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
-            if (variableDefinition.getTextOffset() > var.getTextOffset()) {
+            //this check is only valid if both are in the same file
+            if (variableDefinition.getContainingFile().equals(var.getContainingFile()) && variableDefinition.getTextOffset() > var.getTextOffset()) {
                 //it's an invalid reference if both variables are global and the definition is after
                 //the variable usage
-                
+
                 BashFunctionDef varScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(var);
                 BashFunctionDef varDefScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(variableDefinition);
 

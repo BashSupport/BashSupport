@@ -1,3 +1,6 @@
+2011-02-06:
+ - Variables defined in include files are also resolved now
+
 2011-01-28:
  - Issue #32: Length-function not supported: Expected a command
 
