@@ -306,20 +306,20 @@ public class BashPsiUtils {
     }
 
     @Nullable
-    public static PsiFile findIncludedFile(BashCommand bashCommand) {
+    public static BashFile findIncludedFile(BashCommand bashCommand) {
         String filename = findIncludedFilename(bashCommand);
         if (filename != null) {
             PsiFile containingFile = bashCommand.getContainingFile();
-            return BashPsiFileUtils.findRelativeFile(containingFile, filename);
+            return (BashFile) BashPsiFileUtils.findRelativeFile(containingFile, filename);
         }
 
         return null;
     }
 
-    public static void visitRecursively(BashVisitor visitor, PsiElement start) {
-        start.accept(visitor);
+    public static void visitRecursively(BashVisitor visitor, PsiElement element) {
+        element.accept(visitor);
 
-        for (PsiElement child : start.getChildren()) {
+        for (PsiElement child : element.getChildren()) {
             visitRecursively(visitor, child);
         }
     }

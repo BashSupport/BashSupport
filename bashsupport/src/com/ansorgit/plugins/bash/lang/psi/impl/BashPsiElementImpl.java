@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.lang.psi.FileInclusionCache;
+import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -76,7 +76,7 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
         //all files which include this element's file belong to the requested scope
         //fixme quite slow, fix with reverse index included file->including file
 
-        Set<PsiFile> includingFiles = FileInclusionCache.findIncludingFiles(getProject(), getContainingFile());
+        Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
         Collection<VirtualFile> virtualFiles = Collections2.transform(includingFiles, BashFunctions.psiToVirtualFile());
         return GlobalSearchScope.fileScope(getContainingFile()).union(GlobalSearchScope.filesScope(getProject(), virtualFiles));
     }
@@ -86,20 +86,16 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
     public GlobalSearchScope getResolveScope() {
         BashFile psiFile = (BashFile) getContainingFile();
 
-        GlobalSearchScope localFileScope = GlobalSearchScope.fileScope(getContainingFile());
+        GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(getContainingFile());
 
-        Set<PsiFile> includedFiles = psiFile.findIncludedFiles();
-        if (includedFiles.isEmpty()) {
-            return localFileScope;
-        }
-
+        Set<BashFile> includedFiles = psiFile.findIncludedFiles(true);
         Collection<VirtualFile> files = Collections2.transform(includedFiles, new Function<PsiFile, VirtualFile>() {
             public VirtualFile apply(PsiFile psiFile) {
                 return psiFile.getVirtualFile();
             }
         });
 
-        return localFileScope.uniteWith(GlobalSearchScope.filesScope(getProject(), files));
+        return currentFileScope.uniteWith(GlobalSearchScope.filesScope(getProject(), files));
     }
 
     @Override

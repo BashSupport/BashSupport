@@ -19,8 +19,8 @@ import java.util.Set;
  * Date: 06.02.11
  * Time: 20:36
  */
-public class FileInclusionCache {
-    private FileInclusionCache() {
+public class FileInclusionManager {
+    private FileInclusionManager() {
 
     }
 
@@ -38,7 +38,7 @@ public class FileInclusionCache {
         for (PsiFile currentFile : allFiles) {
             if (currentFile instanceof BashFile) {
                 BashFile bashFile = (BashFile) currentFile;
-                Set<PsiFile> includedFiles = bashFile.findIncludedFiles();
+                Set<BashFile> includedFiles = bashFile.findIncludedFiles(true);
 
                 if (includedFiles.contains(file)) {
                     includers.add(currentFile);
