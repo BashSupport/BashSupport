@@ -37,5 +37,8 @@ public interface BashFile extends PsiFile, BashPsiElement {
 
     PsiElement[] functionDefinitions();
 
-    Set<PsiFile> findIncludedFiles();
+    /**
+     * @param diveDeep
+     */
+    Set<BashFile> findIncludedFiles(boolean diveDeep);
 }
