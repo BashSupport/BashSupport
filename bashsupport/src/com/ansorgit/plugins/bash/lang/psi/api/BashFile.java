@@ -22,6 +22,8 @@ import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
+import java.util.Set;
+
 /**
  * Date: 11.04.2009
  * Time: 23:22:57
@@ -34,4 +36,6 @@ public interface BashFile extends PsiFile, BashPsiElement {
     boolean hasShebangLine();
 
     PsiElement[] functionDefinitions();
+
+    Set<PsiFile> findIncludedFiles();
 }

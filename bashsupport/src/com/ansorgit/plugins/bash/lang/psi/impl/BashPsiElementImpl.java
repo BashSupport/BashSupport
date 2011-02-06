@@ -19,18 +19,27 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.psi.FileInclusionCache;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.util.BashFunctions;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Date: 11.04.2009
@@ -64,13 +73,33 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
     @NotNull
     @Override
     public SearchScope getUseScope() {
-        return new LocalSearchScope(getContainingFile());
+        //all files which include this element's file belong to the requested scope
+        //fixme quite slow, fix with reverse index included file->including file
+
+        Set<PsiFile> includingFiles = FileInclusionCache.findIncludingFiles(getProject(), getContainingFile());
+        Collection<VirtualFile> virtualFiles = Collections2.transform(includingFiles, BashFunctions.psiToVirtualFile());
+        return GlobalSearchScope.fileScope(getContainingFile()).union(GlobalSearchScope.filesScope(getProject(), virtualFiles));
     }
 
     @NotNull
     @Override
     public GlobalSearchScope getResolveScope() {
-        return GlobalSearchScope.fileScope(getContainingFile());
+        BashFile psiFile = (BashFile) getContainingFile();
+
+        GlobalSearchScope localFileScope = GlobalSearchScope.fileScope(getContainingFile());
+
+        Set<PsiFile> includedFiles = psiFile.findIncludedFiles();
+        if (includedFiles.isEmpty()) {
+            return localFileScope;
+        }
+
+        Collection<VirtualFile> files = Collections2.transform(includedFiles, new Function<PsiFile, VirtualFile>() {
+            public VirtualFile apply(PsiFile psiFile) {
+                return psiFile.getVirtualFile();
+            }
+        });
+
+        return localFileScope.uniteWith(GlobalSearchScope.filesScope(getProject(), files));
     }
 
     @Override

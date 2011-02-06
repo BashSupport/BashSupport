@@ -103,4 +103,6 @@ public interface BashCommand extends BashPsiElement, BashReference {
     List<BashVarDef> assignments();
 
     String getReferencedName();
+
+    boolean isIncludeCommand();
 }

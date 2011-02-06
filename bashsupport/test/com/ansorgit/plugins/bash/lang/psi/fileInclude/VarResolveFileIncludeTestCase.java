@@ -61,34 +61,4 @@ public class VarResolveFileIncludeTestCase extends AbstractFileIncludeTest {
         Assert.assertNotNull("Variable is not properly resolved", def);
         Assert.assertTrue(def.getContainingFile().equals(includeFile));
     }
-
-    private void checkWithIncludeFile(String fileName, boolean assertDefInInclude) throws Exception {
-        PsiReference reference = configure();
-        Assert.assertNotNull(reference);
-
-        PsiFile includeFile = addFile(fileName);
-
-        //the var has to resolve to the definition in the included file
-        PsiElement def = reference.resolve();
-        Assert.assertNotNull("Variable is not properly resolved", def);
-
-        boolean defIsInIncludeFile = def.getContainingFile().equals(includeFile);
-        if (assertDefInInclude) {
-            Assert.assertTrue("The variable is not defined in the include file.", defIsInIncludeFile);
-        } else {
-            Assert.assertFalse("The variable must not be defined in the include file.", defIsInIncludeFile);
-        }
-    }
-
-    private void assertUnresolved(String includeFilePath) throws Exception {
-        PsiReference reference = configure();
-        Assert.assertNotNull(reference);
-
-        PsiFile includeFile = addFile(includeFilePath);
-        Assert.assertNotNull(includeFile);
-
-        //the var has to resolve to the definition in the included file
-        PsiElement def = reference.resolve();
-        Assert.assertNull("Variable must not be resolved", def);
-    }
 }
