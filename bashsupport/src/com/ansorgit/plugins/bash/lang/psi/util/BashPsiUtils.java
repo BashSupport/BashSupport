@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.FileViewProvider;
@@ -316,11 +317,35 @@ public class BashPsiUtils {
         return null;
     }
 
-    public static void visitRecursively(BashVisitor visitor, PsiElement element) {
+    /**
+     * Returns the commands of file which include the other file.
+     *
+     * @param file
+     * @param includedFile
+     * @return The list of commands, may be empty but wont be null
+     */
+    public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
+        final List<BashCommand> includeCommands = Lists.newLinkedList();
+
+        BashVisitor collecingVisitor = new BashVisitor() {
+            @Override
+            public void visitIncludeCommand(BashCommand bashCommand) {
+                if (includedFile.equals(findIncludedFile(bashCommand))) {
+                    includeCommands.add(bashCommand);
+                }
+            }
+        };
+
+        visitRecursively(file, collecingVisitor);
+
+        return includeCommands;
+    }
+
+    public static void visitRecursively(PsiElement element, BashVisitor visitor) {
         element.accept(visitor);
 
         for (PsiElement child : element.getChildren()) {
-            visitRecursively(visitor, child);
+            visitRecursively(child, visitor);
         }
     }
 }

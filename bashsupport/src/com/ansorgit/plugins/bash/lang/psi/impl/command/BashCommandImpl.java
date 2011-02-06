@@ -280,6 +280,10 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
             } else {
                 v.visitGenericCommand(this);
             }
+
+            if (isIncludeCommand()) {
+                v.visitIncludeCommand(this);
+            }
         } else {
             visitor.visitElement(this);
         }

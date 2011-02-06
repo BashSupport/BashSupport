@@ -54,7 +54,7 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         return findChildByClass(BashShebang.class) != null;
     }
 
-    public PsiElement[] functionDefinitions() {
+    public BashFunctionDef[] functionDefinitions() {
         return findChildrenByClass(BashFunctionDef.class);
     }
 
@@ -100,7 +100,7 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
             }
         };
 
-        BashPsiUtils.visitRecursively(visitor, this);
+        BashPsiUtils.visitRecursively(this, visitor);
     }
 
     @Override

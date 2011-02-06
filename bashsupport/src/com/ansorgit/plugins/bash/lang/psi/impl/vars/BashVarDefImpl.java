@@ -224,6 +224,10 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isReferenceTo(PsiElement element) {
+        if (this == element) {
+            return true;
+        }
+
         //local vars can't be resolved in the script
         if (isCommandLocal()) {
             return false;
