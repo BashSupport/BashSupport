@@ -22,16 +22,17 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 /**
  * PSI element for a Bash file
@@ -52,6 +53,38 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
     public PsiElement[] functionDefinitions() {
         return findChildrenByClass(BashFunctionDef.class);
+    }
+
+    public Set<PsiFile> findIncludedFiles() {
+        Set<PsiFile> result = Sets.newHashSet();
+        return findIncludedFiles(result);
+    }
+
+    private Set<PsiFile> findIncludedFiles(final Set<PsiFile> result) {
+        BashVisitor visitor = new BashVisitor() {
+            @Override
+            public void visitGenericCommand(BashCommand bashCommand) {
+                checkCommand(bashCommand);
+            }
+
+            @Override
+            public void visitInternalCommand(BashCommand bashCommand) {
+                checkCommand(bashCommand);
+            }
+
+            private void checkCommand(BashCommand bashCommand) {
+                if (bashCommand.isIncludeCommand()) {
+                    PsiFile includedFile = BashPsiUtils.findIncludedFile(bashCommand);
+                    if (includedFile != null && !result.contains(includedFile)) {
+                        result.add(includedFile);
+                        result.addAll(((BashFileImpl) includedFile).findIncludedFiles(result));
+                    }
+                }
+            }
+        };
+
+        BashPsiUtils.visitRecursively(visitor, this);
+        return result;
     }
 
     @Override

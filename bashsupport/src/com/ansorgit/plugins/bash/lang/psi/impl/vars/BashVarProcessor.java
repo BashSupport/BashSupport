@@ -21,12 +21,17 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Multimap;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+
+import java.util.Collection;
 
 /**
  * Date: 14.04.2009
@@ -34,7 +39,7 @@ import com.intellij.psi.util.PsiTreeUtil;
  *
  * @author Joachim Ansorg
  */
-class BashVarProcessor extends BashAbstractProcessor {
+class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private BashVar startElement;
     private boolean checkLocalness;
     private String varName;
@@ -64,8 +69,8 @@ class BashVarProcessor extends BashAbstractProcessor {
             //now check the scope
             boolean varDefIsLocal = checkLocalness && varDef.isFunctionScopeLocal();
             boolean isValid = varDefIsLocal
-                    ? isValidLocalDefinition(varDef)
-                    : isValidDefinition(varDef);
+                    ? isValidLocalDefinition(varDef, resolveState)
+                    : isValidDefinition(varDef, resolveState);
 
             //if we found a valid local variable definition we must ignore all (otherwise matching) global variable definitions
             ignoreGlobals = ignoreGlobals || (isValid && varDefIsLocal);
@@ -79,13 +84,12 @@ class BashVarProcessor extends BashAbstractProcessor {
         return true;
     }
 
-    private boolean isValidDefinition(BashVarDef varDef) {
+    private boolean isValidDefinition(BashVarDef varDef, ResolveState resolveState) {
         if (varDef.isCommandLocal()) {
             return false;
         }
 
         BashFunctionDef varDefScope = BashPsiUtils.findNextVarDefFunctionDefScope(varDef);
-
         if (ignoreGlobals && varDefScope == null) {
             return false;
         }
@@ -96,39 +100,65 @@ class BashVarProcessor extends BashAbstractProcessor {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
         boolean sameFiles = startElement.getContainingFile().equals(varDef.getContainingFile());
-        if (sameFiles && startElement.getTextOffset() >= varDef.getTextOffset()) {
-            //the var def is only valid if the varDef is NOT inside of a nested function (our rule is: more global is better)
-
-            BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
-            if (startElementScope == null) {
-                //if the start element is on global level, then the var def has to be global, too, if the start element is a var def, also
-                //if it it just a variabale which references the definition, then varDef is a valid definition for it
-                return varDefScope == null || !startElementIsVarDef;
-            }
-
-            return varDefScope == null || varDefScope.equals(startElementScope) || !PsiTreeUtil.isAncestor(startElementScope, varDefScope, true);
-        }
-
-        //the found varDef is AFTER the startElement or in a different file
-        if (varDefScope == null) {
-            if (!sameFiles) {
-                //if the def and the ref belong to different files then only global variables in the included file
-                //are valid definitions
-                return true;
-            }
-
-            //if varDef is on global level, then it is only valid if startElement is inside of a function definition
-            return BashPsiUtils.findNextVarDefFunctionDefScope(startElement) != null;
-        }
-
-        //varDef has a valid function def scope AND comes after the start element
-        //in this case it is only valid if start element is in a nested function definition inside of varDefScope
         BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
-        if (startElementScope != null) {
-            return PsiTreeUtil.isAncestor(varDefScope, startElementScope, true);
+
+        if (sameFiles) {
+            if (startElement.getTextOffset() >= varDef.getTextOffset()) {
+                return isDefinitionOffsetValid(varDefScope);
+            }
+
+            //the found varDef is AFTER the startElement
+            if (varDefScope == null) {
+                //if varDef is on global level, then it is only valid if startElement is inside of a function definition
+                return BashPsiUtils.findNextVarDefFunctionDefScope(startElement) != null;
+            }
+
+            //varDef has a valid function def scope AND comes after the start element
+            //in this case it is only valid if start element is in a nested function definition inside of varDefScope
+            if (startElementScope != null) {
+                return PsiTreeUtil.isAncestor(varDefScope, startElementScope, true);
+            }
+        } else {
+            //working on a definition in an included file (maybe even over several include-steps)
+            Multimap<VirtualFile, PsiElement> includedFiles = resolveState.get(visitedIncludeFiles);
+            Collection<PsiElement> includeCommands = includedFiles.get(varDef.getContainingFile().getVirtualFile());
+
+            if (includeCommands.isEmpty()) {
+                return false;
+            }
+
+            PsiElement includeCommand = includeCommands.iterator().next();
+            BashFunctionDef includeCommandScope = BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand);
+
+            //now check the offset of the include command
+            if (startElement.getTextOffset() >= includeCommand.getTextOffset()) {
+                return isDefinitionOffsetValid(includeCommandScope);
+            }
+
+            //the include command comes AFTER the start element
+            if (includeCommandScope == null) {
+                return BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand) != null;
+            }
+
+            if (startElementScope != null) {
+                return PsiTreeUtil.isAncestor(varDefScope, includeCommandScope, true);
+            }
         }
 
         return false;
+    }
+
+    private boolean isDefinitionOffsetValid(BashFunctionDef varDefScope) {
+        //the var def is only valid if the varDef is NOT inside of a nested function (our rule is: more global is better)
+
+        BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
+        if (startElementScope == null) {
+            //if the start element is on global level, then the var def has to be global, too, if the start element is a var def, also
+            //if it it just a variabale which references the definition, then varDef is a valid definition for it
+            return varDefScope == null || !startElementIsVarDef;
+        }
+
+        return varDefScope == null || varDefScope.equals(startElementScope) || !PsiTreeUtil.isAncestor(startElementScope, varDefScope, true);
     }
 
     /**
@@ -137,10 +167,11 @@ class BashVarProcessor extends BashAbstractProcessor {
      * <p/>
      * Also, the checked variable definition has to appear before the start element.
      *
-     * @param varDef The variable definition in question
+     * @param varDef       The variable definition in question
+     * @param resolveState
      * @return True if varDef is a valid local definition for startElement
      */
-    private boolean isValidLocalDefinition(BashVarDef varDef) {
+    private boolean isValidLocalDefinition(BashVarDef varDef, ResolveState resolveState) {
         boolean validScope = PsiTreeUtil.isAncestor(BashPsiUtils.findEnclosingBlock(varDef), startElement, false);
 
         //fixme: this is not entirely true, think of a function with a var redefinition of a local variable of the inner functions

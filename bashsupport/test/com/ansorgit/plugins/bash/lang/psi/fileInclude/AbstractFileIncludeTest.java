@@ -20,6 +20,10 @@ package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
+import org.junit.Assert;
 
 /**
  * User: jansorg
@@ -29,5 +33,37 @@ import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
 public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/fileInclude/";
+    }
+
+    protected PsiElement checkWithIncludeFile(String fileName, boolean assertDefInInclude) throws Exception {
+        PsiReference reference = configure();
+        Assert.assertNotNull(reference);
+
+        PsiFile includeFile = addFile(fileName);
+
+        //the var has to resolve to the definition in the included file
+        PsiElement def = reference.resolve();
+        Assert.assertNotNull("Variable is not properly resolved", def);
+
+        boolean defIsInIncludeFile = def.getContainingFile().equals(includeFile);
+        if (assertDefInInclude) {
+            Assert.assertTrue("The variable is not defined in the include file.", defIsInIncludeFile);
+        } else {
+            Assert.assertFalse("The variable must not be defined in the include file.", defIsInIncludeFile);
+        }
+
+        return def;
+    }
+
+    protected void assertUnresolved(String includeFilePath) throws Exception {
+        PsiReference reference = configure();
+        Assert.assertNotNull(reference);
+
+        PsiFile includeFile = addFile(includeFilePath);
+        Assert.assertNotNull(includeFile);
+
+        //the var has to resolve to the definition in the included file
+        PsiElement def = reference.resolve();
+        Assert.assertNull("Variable must not be resolved", def);
     }
 }

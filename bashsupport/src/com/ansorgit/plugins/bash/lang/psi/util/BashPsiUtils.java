@@ -18,8 +18,12 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -27,12 +31,15 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -281,5 +288,39 @@ public class BashPsiUtils {
         }
 
         return !hasResult;
+    }
+
+    @Nullable
+    public static String findIncludedFilename(BashCommand bashCommand) {
+        List<BashPsiElement> params = bashCommand.parameters();
+
+        if (params.size() == 1) {
+            BashPsiElement firstParam = params.get(0);
+
+            if (firstParam instanceof BashCharSequence) {
+                return ((BashCharSequence) firstParam).getUnwrappedCharSequence();
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static PsiFile findIncludedFile(BashCommand bashCommand) {
+        String filename = findIncludedFilename(bashCommand);
+        if (filename != null) {
+            PsiFile containingFile = bashCommand.getContainingFile();
+            return BashPsiFileUtils.findRelativeFile(containingFile, filename);
+        }
+
+        return null;
+    }
+
+    public static void visitRecursively(BashVisitor visitor, PsiElement start) {
+        start.accept(visitor);
+
+        for (PsiElement child : start.getChildren()) {
+            visitRecursively(visitor, child);
+        }
     }
 }
