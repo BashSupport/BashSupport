@@ -18,7 +18,16 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.testFramework.TestDataFile;
+import org.jetbrains.annotations.NonNls;
+
+import java.io.File;
 
 /**
  * User: jansorg
@@ -28,5 +37,17 @@ import com.intellij.psi.PsiReference;
 public abstract class AbstractResolveTest extends com.intellij.testFramework.ResolveTestCase {
     protected PsiReference configure() throws Exception {
         return configureByFile(getTestName(false) + ".bash");
+    }
+
+    protected PsiFile addFile(@TestDataFile @NonNls String filePath) throws Exception {
+        final String fullPath = getTestDataPath() + filePath;
+        final VirtualFile vFile = LocalFileSystem.getInstance().findFileByPath(fullPath.replace(File.separatorChar, '/'));
+        assertNotNull("file " + filePath + " not found", vFile);
+
+        String fileText = StringUtil.convertLineSeparators(VfsUtil.loadText(vFile));
+
+        final String fileName = vFile.getName();
+
+        return createFile(myModule, myFile.getVirtualFile().getParent(), fileName, fileText);
     }
 }

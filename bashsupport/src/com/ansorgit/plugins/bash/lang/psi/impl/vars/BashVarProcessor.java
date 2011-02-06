@@ -94,7 +94,9 @@ class BashVarProcessor extends BashAbstractProcessor {
         //second case: the definition is after the start element:
         //  - if startElement and varDef do NOT share a common scope -> varDef is only valid if it's inside of a function definition, i.e. global
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
-        if (startElement.getTextOffset() >= varDef.getTextOffset()) {
+        //this check is only valid if both elements are in the same file
+        boolean sameFiles = startElement.getContainingFile().equals(varDef.getContainingFile());
+        if (sameFiles && startElement.getTextOffset() >= varDef.getTextOffset()) {
             //the var def is only valid if the varDef is NOT inside of a nested function (our rule is: more global is better)
 
             BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
@@ -107,8 +109,14 @@ class BashVarProcessor extends BashAbstractProcessor {
             return varDefScope == null || varDefScope.equals(startElementScope) || !PsiTreeUtil.isAncestor(startElementScope, varDefScope, true);
         }
 
-        //the found varDef is AFTER the startElement
+        //the found varDef is AFTER the startElement or in a different file
         if (varDefScope == null) {
+            if (!sameFiles) {
+                //if the def and the ref belong to different files then only global variables in the included file
+                //are valid definitions
+                return true;
+            }
+
             //if varDef is on global level, then it is only valid if startElement is inside of a function definition
             return BashPsiUtils.findNextVarDefFunctionDefScope(startElement) != null;
         }

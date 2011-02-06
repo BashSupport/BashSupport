@@ -27,15 +27,12 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * User: jansorg
@@ -279,23 +276,10 @@ public class BashPsiUtils {
 
             if (scope == maxScope) break;
 
-            //if we have results and it's local thwn
-
             prevParent = scope;
             scope = prevParent.getContext();
         }
 
         return !hasResult;
-    }
-
-    /**
-     * Searches in the given range for a psi element of one of the given classes which is fitting into the given range.
-     *
-     * @param range
-     * @param classes
-     * @return
-     */
-    public static PsiElement findElementInRange(PsiFile file, TextRange range, List<Class<? extends PsiElement>> classes) {
-        return null;
     }
 }

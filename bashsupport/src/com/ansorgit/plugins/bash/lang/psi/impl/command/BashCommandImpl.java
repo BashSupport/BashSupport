@@ -21,21 +21,28 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.KeyWithDefaultValue;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +51,7 @@ import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Date: 12.04.2009
@@ -54,6 +62,13 @@ import java.util.List;
 public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
     private boolean isInternal;
     private boolean isExternal;
+
+    private static final Key<Set<VirtualFile>> visitedIncludeFiles = new KeyWithDefaultValue<Set<VirtualFile>>("visitedIncludeFiles") {
+        @Override
+        public Set<VirtualFile> getDefaultValue() {
+            return Sets.newHashSet();
+        }
+    };
 
     public BashCommandImpl(ASTNode astNode) {
         this(astNode, "Bash command");
@@ -301,5 +316,41 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand {
                 return null;
             }
         };
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        boolean result = super.processDeclarations(processor, state, lastParent, place);
+
+        if (isIncludeCommand()) {
+            //first process this element, then the included file's elements
+            List<BashPsiElement> params = parameters();
+            if (params.size() == 1) {
+                BashPsiElement firstParam = params.get(0);
+
+                if (firstParam instanceof BashCharSequence) {
+                    String filename = ((BashCharSequence) firstParam).getUnwrappedCharSequence();
+                    PsiFile containingFile = getContainingFile();
+                    PsiFile file = BashPsiFileUtils.findRelativeFile(containingFile, filename);
+
+                    Set<VirtualFile> visitedFiles = state.get(visitedIncludeFiles);
+                    visitedFiles.add(containingFile.getVirtualFile());
+
+                    if (file != null && !visitedFiles.contains(file.getVirtualFile())) {
+                        //mark the file as visited before the actual visit, otherwise we'll get a stack overflow
+                        visitedFiles.add(file.getVirtualFile());
+                        state = state.put(visitedIncludeFiles, visitedFiles);
+
+                        return file.processDeclarations(processor, state, lastParent, place);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private boolean isIncludeCommand() {
+        return ".".equals(getReferencedName()) || "source".equals(getReferencedName());
     }
 }
