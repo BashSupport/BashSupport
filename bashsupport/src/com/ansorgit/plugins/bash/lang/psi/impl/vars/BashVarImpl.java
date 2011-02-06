@@ -134,6 +134,10 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     }
 
     public boolean isReferenceTo(PsiElement element) {
+        if (this == element) {
+            return true;
+        }
+
         if (element instanceof BashVarDef) {
             BashVarDef def = (BashVarDef) element;
 

@@ -85,6 +85,10 @@ public class BashVisitor extends PsiElementVisitor {
         visitElement(bashCommand);
     }
 
+    public void visitIncludeCommand(BashCommand bashCommand) {
+        visitElement(bashCommand);
+    }
+
     public void visitExpansion(BashExpansion bashExpansion) {
         visitElement(bashExpansion);
     }

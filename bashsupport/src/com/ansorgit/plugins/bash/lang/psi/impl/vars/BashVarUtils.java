@@ -18,12 +18,14 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -57,20 +59,39 @@ public class BashVarUtils {
 
             //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
             //this check is only valid if both are in the same file
-            if (variableDefinition.getContainingFile().equals(var.getContainingFile()) && variableDefinition.getTextOffset() > var.getTextOffset()) {
-                //it's an invalid reference if both variables are global and the definition is after
-                //the variable usage
+            boolean sameFile = variableDefinition.getContainingFile().equals(var.getContainingFile());
+            if (sameFile) {
+                if (variableDefinition.getTextOffset() > var.getTextOffset()) {
+                    //it's an invalid reference if both variables are global and the definition is after
+                    //the variable usage
 
-                BashFunctionDef varScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(var);
-                BashFunctionDef varDefScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(variableDefinition);
+                    if (isGlobal(variableDefinition) && isGlobal(var)) {
+                        return false;
+                    }
+                }
+            } else {
+                //we need to find the include command and check the offset
+                //the include command must fullfil the same condition as the normal variable definition above:
+                //either var use and definition are both in functions or it the use is invalid
+                List<BashCommand> includeCommands = BashPsiUtils.findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
-                if (varScope == null && varDefScope == null) {
-                    return false;
+                //currently we do onyl support global include commands
+
+                for (BashCommand includeCommand : includeCommands) {
+                    if (includeCommand.getTextOffset() > var.getTextOffset()) {
+                        if (isGlobal(includeCommand) && isGlobal(var)) {
+                            return false;
+                        }
+                    }
                 }
             }
         }
 
         //none is a local variable
         return true;
+    }
+
+    private static boolean isGlobal(PsiElement element) {
+        return BashPsiUtils.findBroadestVarDefFunctionDefScope(element) == null;
     }
 }
