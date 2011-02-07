@@ -39,7 +39,7 @@ class ShebangPathCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected List<String> addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         return CompletionUtil.completeAbsolutePath(currentText);
     }
 

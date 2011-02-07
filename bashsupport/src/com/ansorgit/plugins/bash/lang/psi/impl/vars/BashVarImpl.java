@@ -28,26 +28,14 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.ansorgit.plugins.bash.util.BashIcons;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Date: 14.04.2009
@@ -153,40 +141,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
 
     @NotNull
     public Object[] getVariants() {
-        List<Object> variants = Lists.newArrayList();
-
-        //collect the previously declared variables
-        final BashVarVariantsProcessor processor = new BashVarVariantsProcessor(this);
-        PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-
-        variants.addAll(createPsiItems(processor.getVariables()));
-
-        if (BashProjectSettings.storedSettings(getProject()).isAutocompleteBuiltinVars()) {
-            variants.addAll(createItems(LanguageBuiltins.bashShellVars, BashIcons.BASH_VAR_ICON));
-            variants.addAll(createItems(LanguageBuiltins.bourneShellVars, BashIcons.BOURNE_VAR_ICON));
-        }
-
-        if (BashProjectSettings.storedSettings(getProject()).isAutcompleteGlobalVars()) {
-            variants.addAll(createItems(BashProjectSettings.storedSettings(getProject()).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON));
-        }
-
-        return variants.toArray();
-    }
-
-    private static Collection<LookupElement> createPsiItems(Collection<? extends PsiNamedElement> elements) {
-        return Collections2.transform(elements, new Function<PsiNamedElement, LookupElement>() {
-            public LookupElement apply(PsiNamedElement from) {
-                return LookupElementBuilder.create(from).setCaseSensitive(true);
-            }
-        });
-    }
-
-    private static Collection<LookupElement> createItems(Collection<String> globalVars, final Icon icon) {
-        return Lists.transform(Lists.newArrayList(globalVars), new Function<String, LookupElement>() {
-            public LookupElement apply(String from) {
-                return LookupElementBuilder.create(from).setCaseSensitive(true).setIcon(icon);
-            }
-        });
+        return PsiReference.EMPTY_ARRAY;
     }
 
     public boolean isSoft() {

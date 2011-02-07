@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Abstrace base class for completion providers in Bash files.
+ * Abstract base class for completion providers in Bash files.
  * <p/>
  * User: jansorg
  * Date: Dec 4, 2009
@@ -64,7 +64,7 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
                 ? resultWithoutPrefix.withPrefixMatcher(currentText)
                 : resultWithoutPrefix;
 
-        List<String> items = addBashCompletions(currentText, parameters, context, resultWithoutPrefix);
+        List<String> items = addBashCompletions(element, currentText, parameters, context, resultWithoutPrefix);
         for (String i : items) {
             result.addElement(new PathLookupElement(i, !i.endsWith("/")));
         }
@@ -91,7 +91,7 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         return element;
     }
 
-    protected abstract List<String> addBashCompletions(String currentText,
+    protected abstract List<String> addBashCompletions(PsiElement element, String currentText,
                                                        CompletionParameters parameters,
                                                        ProcessingContext context,
                                                        CompletionResultSet resultWithoutPrefix);
