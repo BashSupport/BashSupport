@@ -1,3 +1,7 @@
+2011-02-07:
+ - Variable completion from included files
+ - Reworked & improved autocompletion
+
 2011-02-06:
  - Support for include files and contained elements (find references, rename, go to defintion, ...)
 
