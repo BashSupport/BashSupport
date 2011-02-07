@@ -60,18 +60,22 @@ public class BashChangeUtil {
     }
 
     public static PsiElement createVariable(Project project, String name, boolean withBraces) {
-        if (withBraces) {
-            String text = "${" + name + "}";
+        try {
+            if (withBraces) {
+                String text = "${" + name + "}";
+                PsiElement command = createDummyBashFile(project, text).getFirstChild();
+
+                //fixme terrible code
+                return command.getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild().getNextSibling();
+            }
+
+            String text = "$" + name;
             PsiElement command = createDummyBashFile(project, text).getFirstChild();
 
-            //fixme terrible code
-            return command.getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild().getNextSibling();
+            return command.getFirstChild().getFirstChild();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception while trying to create replacement variable for '" + name + "' ", e);
         }
-
-        String text = "$" + name;
-        PsiElement command = createDummyBashFile(project, text).getFirstChild();
-
-        return command.getFirstChild().getFirstChild();
     }
 
     public static PsiElement createShebang(Project project, String command, boolean addNewline) {
