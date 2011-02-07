@@ -22,7 +22,7 @@ import java.util.Collection;
  * Date: 07.02.11
  * Time: 18:28
  */
-public class VariableNameCompletionProvider extends BashCompletionProvider {
+class VariableNameCompletionProvider extends BashCompletionProvider {
     @Override
     protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         BashVar varElement = PsiTreeUtil.getContextOfType(element, BashVar.class);

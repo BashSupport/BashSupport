@@ -19,7 +19,7 @@ import java.util.List;
  * Date: 07.02.11
  * Time: 18:38
  */
-public class CompletionProviderUtils {
+class CompletionProviderUtils {
     private CompletionProviderUtils() {
     }
 
