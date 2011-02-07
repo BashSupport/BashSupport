@@ -9,7 +9,7 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
  * Date: 07.02.11
  * Time: 20:31
  */
-public enum CompletionGrouping {
+enum CompletionGrouping {
     BuiltInVar,
     GlobalVar,
     NormalVar,

@@ -19,7 +19,7 @@ import java.util.Collection;
  * Date: 07.02.11
  * Time: 18:28
  */
-public class CommandNameCompletionProvider extends BashCompletionProvider {
+class CommandNameCompletionProvider extends BashCompletionProvider {
     @Override
     protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (currentText.startsWith("$")) {
