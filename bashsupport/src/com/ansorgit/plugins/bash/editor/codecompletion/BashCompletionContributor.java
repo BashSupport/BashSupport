@@ -41,6 +41,8 @@ public class BashCompletionContributor extends CompletionContributor {
     public BashCompletionContributor() {
         log.info("Created bash completion contributor");
 
+        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
+
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new AbsolutePathCompletionProvider());
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new DynamicPathCompletionProvider());
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new ShebangPathCompletionProvider());

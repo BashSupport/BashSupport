@@ -18,9 +18,12 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.0.0</version>
-    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com" logo="/ressources/bash-32.png">Joachim Ansorg
+    <version>0.9.19</version>
+    <vendor url="http://www.ansorg-it.com/"
+            email="mail@ansorg-it.com"
+            logo="/ressources/bash-32.png">Joachim Ansorg
     </vendor>
+
     <!-- Requires IDEA 10.0 or later -->
     <idea-version since-build="99.18" until-build="103.999"/>
 
@@ -212,6 +215,11 @@
 
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
+
+        <!--
+        <weigher key="completionSorting"
+                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
+        -->
 
         <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 

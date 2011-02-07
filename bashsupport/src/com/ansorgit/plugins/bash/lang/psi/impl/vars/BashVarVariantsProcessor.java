@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -36,12 +35,12 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-class BashVarVariantsProcessor extends BashAbstractProcessor {
+public class BashVarVariantsProcessor extends BashAbstractProcessor implements BashVarCollectorProcessor {
     private final List<BashVarDef> variables = Lists.newLinkedList();
     private final Set<String> variableNames = Sets.newHashSet();
-    private final BashVarImpl startElement;
+    private final PsiElement startElement;
 
-    public BashVarVariantsProcessor(BashVarImpl startElement) {
+    public BashVarVariantsProcessor(PsiElement startElement) {
         super(false);
 
         this.startElement = startElement;

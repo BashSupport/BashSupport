@@ -23,6 +23,7 @@ import com.google.common.collect.Sets;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +49,7 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected List<String> addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         String usedPrefix = findUsedPrefix(currentText);
         if (usedPrefix == null) {
             return Collections.emptyList();

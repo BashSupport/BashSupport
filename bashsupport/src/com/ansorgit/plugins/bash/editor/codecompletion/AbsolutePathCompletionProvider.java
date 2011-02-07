@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collections;
@@ -34,15 +35,12 @@ import java.util.List;
  * Time: 2:27:52 PM
  */
 class AbsolutePathCompletionProvider extends BashCompletionProvider {
-    //private static final Logger log = Logger.getInstance("AbsolutePathCompletionProvider");
-
     public AbsolutePathCompletionProvider() {
         super();
     }
 
-
     @Override
-    protected List<String> addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (!currentText.startsWith("/")) {
             return Collections.emptyList();
         }
