@@ -1,6 +1,8 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.PrioritizedLookupElement;
@@ -10,6 +12,7 @@ import com.intellij.psi.PsiNamedElement;
 
 import javax.swing.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * User: jansorg
@@ -42,5 +45,31 @@ public class CompletionProviderUtils {
                 return PrioritizedLookupElement.withGrouping(lookupElement, groupId);
             }
         });
+    }
+
+    static Collection<LookupElement> createPathItems(List<String> paths) {
+        Function<String, LookupElement> transformationFunction = new Function<String, LookupElement>() {
+            public LookupElement apply(String path) {
+                return new PathLookupElement(path, !path.endsWith("/"));
+            }
+        };
+
+        Predicate<String> isRelativePath = new Predicate<String>() {
+            public boolean apply(String path) {
+                return !path.startsWith("/");
+            }
+        };
+
+        Collection<String> relativePaths = Collections2.filter(paths, isRelativePath);
+        Collection<LookupElement> relativePathItems = Collections2.transform(relativePaths, transformationFunction);
+
+        Collection<String> absolutePaths = Collections2.filter(paths, Predicates.not(isRelativePath));
+        Collection<LookupElement> absolutePathItems = Collections2.transform(absolutePaths, transformationFunction);
+
+        Collection<LookupElement> result = Lists.newLinkedList();
+        result.addAll(wrapInGroup(CompletionGrouping.RelativeFilePath.ordinal(), relativePathItems));
+        result.addAll(wrapInGroup(CompletionGrouping.AbsoluteFilePath.ordinal(), absolutePathItems));
+
+        return result;
     }
 }

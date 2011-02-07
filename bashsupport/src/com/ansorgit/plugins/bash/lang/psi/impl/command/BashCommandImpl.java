@@ -29,7 +29,6 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -239,22 +238,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
     @org.jetbrains.annotations.NotNull
     public Object[] getVariants() {
-        List<Object> variants = Lists.newArrayList();
-
-        BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor();
-        PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-
-        variants.addAll(processor.getFunctionDefs());
-
-        if (BashProjectSettings.storedSettings(getProject()).isAutocompleteBuiltinCommands()) {
-            variants.addAll(LanguageBuiltins.commands);
-        }
-
-        if (BashProjectSettings.storedSettings(getProject()).isSupportBash4()) {
-            variants.addAll(LanguageBuiltins.commands_v4);
-        }
-
-        return variants.toArray();
+        return PsiReference.EMPTY_ARRAY;
     }
 
     public boolean isSoft() {

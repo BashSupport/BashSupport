@@ -27,7 +27,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -40,27 +39,26 @@ import java.util.Set;
  * Time: 10:32:06 PM
  */
 class DynamicPathCompletionProvider extends BashCompletionProvider {
-    //private static final Logger log = Logger.getInstance("RelativePathCompletionProvider");
     private static final Set<String> supportedPrefixes = Sets.newHashSet("$HOME", "~", ".");
     private static final Set<String> homePrefixes = Sets.newHashSet("$HOME", "~");
 
     public DynamicPathCompletionProvider() {
-        super(); //in a read action
     }
 
     @Override
-    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         String usedPrefix = findUsedPrefix(currentText);
         if (usedPrefix == null) {
-            return Collections.emptyList();
+            return;
         }
 
         String baseDir = findBaseDir(parameters, usedPrefix);
         if (baseDir == null) {
-            return Collections.emptyList();
+            return;
         }
 
-        return CompletionUtil.completeRelativePath(baseDir, usedPrefix, currentText.substring(usedPrefix.length()));
+        List<String> completions = CompletionUtil.completeRelativePath(baseDir, usedPrefix, currentText.substring(usedPrefix.length()));
+        resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
     }
 
     @Nullable

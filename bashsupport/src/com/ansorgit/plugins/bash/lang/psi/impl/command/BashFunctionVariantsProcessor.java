@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-class BashFunctionVariantsProcessor extends BashAbstractProcessor {
+public class BashFunctionVariantsProcessor extends BashAbstractProcessor {
     private static final Logger log = Logger.getInstance("#bash.BashFunctionScopeProcessor");
     private final List<BashFunctionDef> functionDefs = Lists.newArrayList();
 
@@ -43,9 +43,6 @@ class BashFunctionVariantsProcessor extends BashAbstractProcessor {
     }
 
     public boolean execute(PsiElement element, ResolveState resolveState) {
-        //resetResult();
-
-        log.debug("Looking at " + element);
         if (element instanceof BashFunctionDef) {
             final BashFunctionDef f = (BashFunctionDef) element;
             functionDefs.add(f);
