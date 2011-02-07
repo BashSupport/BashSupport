@@ -16,8 +16,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * User: jansorg
@@ -25,20 +23,16 @@ import java.util.List;
  * Time: 18:28
  */
 public class VariableNameCompletionProvider extends BashCompletionProvider {
-    // The order of the enum values is the reverse order of the grouping,
-    // e.g. lookup items with group Normal appear in the beginning of
-    // the grouped list
-    private static enum Groupings {
-        BuiltIn,
-        Global,
-        Normal,
-    }
-
     @Override
-    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         BashVar varElement = PsiTreeUtil.getContextOfType(element, BashVar.class);
+        boolean dollarPrefix = currentText != null && currentText.startsWith("$");
 
-        if (currentText != null && currentText.startsWith("$")) {
+        if (varElement == null && !dollarPrefix) {
+            return;
+        }
+
+        if (currentText != null && dollarPrefix) {
             Project project = element.getProject();
             addBuildInVariables(resultWithoutPrefix, project);
             addGlobalVariables(resultWithoutPrefix, project);
@@ -50,32 +44,29 @@ public class VariableNameCompletionProvider extends BashCompletionProvider {
             //not in a variable element, but collect all known variable names at this offset in the current file
             addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(element));
         }
-
-        //we already added the result on our own
-        return Collections.emptyList();
     }
 
     private void addCollectedVariables(PsiElement element, CompletionResultSet resultWithoutPrefix, BashVarCollectorProcessor processor) {
         PsiTreeUtil.treeWalkUp(processor, element, element.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
-        resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(Groupings.Normal.ordinal(), items));
+        resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));
     }
 
     private void addGlobalVariables(CompletionResultSet resultWithoutPrefix, Project project) {
         if (BashProjectSettings.storedSettings(project).isAutcompleteGlobalVars()) {
             Collection<LookupElement> globalVars = CompletionProviderUtils.createItems(BashProjectSettings.storedSettings(project).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON);
-            resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(Groupings.Global.ordinal(), globalVars));
+            resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalVar.ordinal(), globalVars));
         }
     }
 
     private void addBuildInVariables(CompletionResultSet result, Project project) {
         if (BashProjectSettings.storedSettings(project).isAutocompleteBuiltinVars()) {
             Collection<LookupElement> shellBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bashShellVars, BashIcons.BASH_VAR_ICON);
-            result.addAllElements(CompletionProviderUtils.wrapInGroup(Groupings.BuiltIn.ordinal(), shellBuiltIns));
+            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.BuiltInVar.ordinal(), shellBuiltIns));
 
             Collection<LookupElement> bashBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bourneShellVars, BashIcons.BOURNE_VAR_ICON);
-            result.addAllElements(CompletionProviderUtils.wrapInGroup(Groupings.BuiltIn.ordinal(), bashBuiltIns));
+            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.BuiltInVar.ordinal(), bashBuiltIns));
         }
     }
 }

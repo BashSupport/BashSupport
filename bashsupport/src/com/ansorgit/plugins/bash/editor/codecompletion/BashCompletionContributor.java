@@ -43,6 +43,8 @@ public class BashCompletionContributor extends CompletionContributor {
 
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
 
+        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new CommandNameCompletionProvider());
+
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new AbsolutePathCompletionProvider());
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new DynamicPathCompletionProvider());
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new ShebangPathCompletionProvider());

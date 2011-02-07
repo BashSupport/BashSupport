@@ -26,8 +26,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * Abstract base class for completion providers in Bash files.
  * <p/>
@@ -64,10 +62,7 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
                 ? resultWithoutPrefix.withPrefixMatcher(currentText)
                 : resultWithoutPrefix;
 
-        List<String> items = addBashCompletions(element, currentText, parameters, context, resultWithoutPrefix);
-        for (String i : items) {
-            result.addElement(new PathLookupElement(i, !i.endsWith("/")));
-        }
+        addBashCompletions(element, currentText, parameters, context, resultWithoutPrefix);
     }
 
     protected String findOriginalText(PsiElement element) {
@@ -91,8 +86,8 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         return element;
     }
 
-    protected abstract List<String> addBashCompletions(PsiElement element, String currentText,
-                                                       CompletionParameters parameters,
-                                                       ProcessingContext context,
-                                                       CompletionResultSet resultWithoutPrefix);
+    protected abstract void addBashCompletions(PsiElement element, String currentText,
+                                               CompletionParameters parameters,
+                                               ProcessingContext context,
+                                               CompletionResultSet resultWithoutPrefix);
 }

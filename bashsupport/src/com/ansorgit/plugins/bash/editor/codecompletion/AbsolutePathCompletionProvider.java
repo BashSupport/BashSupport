@@ -24,7 +24,6 @@ import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,15 +35,15 @@ import java.util.List;
  */
 class AbsolutePathCompletionProvider extends BashCompletionProvider {
     public AbsolutePathCompletionProvider() {
-        super();
     }
 
     @Override
-    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (!currentText.startsWith("/")) {
-            return Collections.emptyList();
+            return;
         }
 
-        return CompletionUtil.completeAbsolutePath(currentText);
+        List<String> completions = CompletionUtil.completeAbsolutePath(currentText);
+        resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
     }
 }

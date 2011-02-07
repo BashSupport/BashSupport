@@ -19,13 +19,8 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
-import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.ProcessingContext;
-
-import java.util.List;
 
 /**
  * This completion provider provides code completion for file / directory paths in the file.
@@ -34,13 +29,8 @@ import java.util.List;
  * Date: Dec 3, 2009
  * Time: 2:27:52 PM
  */
-class ShebangPathCompletionProvider extends BashCompletionProvider {
+class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
     public ShebangPathCompletionProvider() {
-    }
-
-    @Override
-    protected List<String> addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
-        return CompletionUtil.completeAbsolutePath(currentText);
     }
 
     @Override
