@@ -19,8 +19,11 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.CompletionUtil;
+import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 
@@ -35,6 +38,11 @@ import java.util.List;
  */
 class AbsolutePathCompletionProvider extends BashCompletionProvider {
     public AbsolutePathCompletionProvider() {
+    }
+
+    @Override
+    void addTo(CompletionContributor contributor) {
+        contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
     }
 
     @Override

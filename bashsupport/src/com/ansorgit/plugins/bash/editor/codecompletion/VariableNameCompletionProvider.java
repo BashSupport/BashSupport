@@ -6,8 +6,10 @@ import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarCollectorProcessor;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarVariantsProcessor;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
+import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -23,6 +25,15 @@ import java.util.Collection;
  * Time: 18:28
  */
 class VariableNameCompletionProvider extends BashCompletionProvider {
+    @Override
+    void addTo(CompletionContributor contributor) {
+        BashPsiPattern insideVar = new BashPsiPattern().inside(BashVar.class);
+        BashPsiPattern afterDollar = new BashPsiPattern().withText("$");
+
+        contributor.extend(CompletionType.BASIC, insideVar, this);
+        contributor.extend(CompletionType.BASIC, afterDollar, this);
+    }
+
     @Override
     protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         BashVar varElement = PsiTreeUtil.getContextOfType(element, BashVar.class);
