@@ -20,8 +20,11 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.collect.Sets;
+import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -43,6 +46,11 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
     private static final Set<String> homePrefixes = Sets.newHashSet("$HOME", "~");
 
     public DynamicPathCompletionProvider() {
+    }
+
+    @Override
+    void addTo(CompletionContributor contributor) {
+        contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
     }
 
     @Override

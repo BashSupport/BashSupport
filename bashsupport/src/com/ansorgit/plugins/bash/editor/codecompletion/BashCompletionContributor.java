@@ -22,9 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
-import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,13 +39,15 @@ public class BashCompletionContributor extends CompletionContributor {
     public BashCompletionContributor() {
         log.info("Created bash completion contributor");
 
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
+        new VariableNameCompletionProvider().addTo(this);
+
+        /*extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
 
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new CommandNameCompletionProvider());
 
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new AbsolutePathCompletionProvider());
         extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new DynamicPathCompletionProvider());
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new ShebangPathCompletionProvider());
+        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new ShebangPathCompletionProvider());*/
     }
 
     @Override

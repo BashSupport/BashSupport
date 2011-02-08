@@ -19,7 +19,10 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
+import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -31,6 +34,11 @@ import com.intellij.psi.PsiElement;
  */
 class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
     public ShebangPathCompletionProvider() {
+    }
+
+    @Override
+    void addTo(CompletionContributor contributor) {
+        contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
     }
 
     @Override
