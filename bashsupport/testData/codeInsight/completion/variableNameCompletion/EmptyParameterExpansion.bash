@@ -7,4 +7,4 @@ function functionWithLocal() {
 abIsOk1=1
 abIsOk2=1
 
-${a<caret>}
+${<caret>}

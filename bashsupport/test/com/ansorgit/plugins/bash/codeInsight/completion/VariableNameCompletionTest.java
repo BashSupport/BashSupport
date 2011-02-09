@@ -66,4 +66,23 @@ public class VariableNameCompletionTest extends AbstractCompletionTest {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }
     }
+
+
+    public void testSimpleParameterExpansion() throws Exception {
+        configure();
+
+        checkItems("abIsOk1", "abIsOk2");
+    }
+
+    public void testEmptyParameterExpansion() throws Exception {
+        configure();
+        checkItems("abIsOk1", "abIsOk2");
+    }
+
+    public void testParameterExpansionNoCommands() throws Exception {
+        BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
+
+        configure();
+        checkItems("echoVar");
+    }
 }

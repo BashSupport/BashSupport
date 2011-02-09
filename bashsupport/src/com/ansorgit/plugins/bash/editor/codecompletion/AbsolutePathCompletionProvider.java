@@ -19,10 +19,7 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.CompletionUtil;
-import com.intellij.codeInsight.completion.CompletionContributor;
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -46,12 +43,18 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (!currentText.startsWith("/")) {
             return;
         }
 
-        List<String> completions = CompletionUtil.completeAbsolutePath(currentText);
+        int invocationCount = parameters.getInvocationCount();
+
+        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, invocationCount >= 2);
         resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
+
+        if (invocationCount == 1) {
+            CompletionService.getCompletionService().setAdvertisementText("Press twice for hidden files");
+        }
     }
 }

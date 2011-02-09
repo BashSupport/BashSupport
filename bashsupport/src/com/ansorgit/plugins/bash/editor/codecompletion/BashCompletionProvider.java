@@ -44,24 +44,8 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
     protected final void addCompletions(@NotNull CompletionParameters parameters,
                                         ProcessingContext context,
                                         @NotNull CompletionResultSet resultWithoutPrefix) {
-        if (parameters.getOriginalPosition() == null) {
-            return;
-        }
 
-        PsiElement element = findElement(parameters.getOriginalPosition());
-        if (element == null) {
-            return;
-        }
-
-        String originalText = findOriginalText(element);
-        String currentText = findCurrentText(parameters, element);
-
-        if (currentText == null) {
-            //completion is not possible at the current offset
-            return;
-        }
-
-        addBashCompletions(element, currentText, parameters, context, resultWithoutPrefix);
+        addBashCompletions(findCurrentText(parameters, parameters.getPosition()), parameters, context, resultWithoutPrefix);
     }
 
     protected String findOriginalText(PsiElement element) {
@@ -85,8 +69,5 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         return element;
     }
 
-    protected abstract void addBashCompletions(PsiElement element, String currentText,
-                                               CompletionParameters parameters,
-                                               ProcessingContext context,
-                                               CompletionResultSet resultWithoutPrefix);
+    protected abstract void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix);
 }

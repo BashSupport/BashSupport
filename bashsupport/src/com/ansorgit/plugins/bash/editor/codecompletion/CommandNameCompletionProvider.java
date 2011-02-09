@@ -1,22 +1,19 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionVariantsProcessor;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
-import com.intellij.patterns.ObjectPattern;
-import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collection;
-
-import static com.ansorgit.plugins.bash.editor.codecompletion.BashPatterns.afterDollar;
 
 /**
  * User: jansorg
@@ -26,18 +23,29 @@ import static com.ansorgit.plugins.bash.editor.codecompletion.BashPatterns.after
 class CommandNameCompletionProvider extends BashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
-        ObjectPattern.Capture<PsiElement> pattern =
-                StandardPatterns.instanceOf(PsiElement.class).andNot(afterDollar);
+        BashPsiPattern pattern = new BashPsiPattern().inside(PsiElement.class);
+        //.andNot(new BashPsiPattern().withParent(BashWord.class).withParent(BashVar.class));
+
+//        StandardPatterns.instanceOf(PsiElement.class)
+        //              .andNot(new BashPsiPattern().withParent().withFirstChild())
+        //            .andNot(StandardPatterns.instanceOf(BashVar.class));
 
         contributor.extend(CompletionType.BASIC, pattern, this);
     }
 
     @Override
-    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         //this is still required, although the test cases fail
         //to check run the plugin in IDEA and do a completion after a single $ character, this method should
         //not be invoked if working properly
         if (currentText.startsWith("$")) {
+            return;
+        }
+
+        PsiElement element = parameters.getPosition();
+        PsiElement oiginalElement = parameters.getOriginalPosition();
+
+        if (element != null && element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion) {
             return;
         }
 
