@@ -27,7 +27,7 @@ import java.util.List;
  * Date: 08.02.11
  * Time: 19:24
  */
-public class AbstractCompletionTest extends PsiTestCase {
+abstract class AbstractCompletionTest extends PsiTestCase {
     @NonNls
     private static final String MARKER = "<caret>";
 
@@ -104,10 +104,19 @@ public class AbstractCompletionTest extends PsiTestCase {
         fileText = fileText.substring(0, offset) + fileText.substring(offset + MARKER.length());
 
         myFile = parentDir == null ? createFile(myModule, fileName, fileText) : createFile(myModule, parentDir, fileName, fileText);
+
+        /*PsiReference reference = myFile.findReferenceAt(offset - 1);
+        if (reference instanceof PsiMultiReference) {
+            PsiMultiReference multi = (PsiMultiReference) reference;
+            PsiReference first = multi.getReferences()[0];
+            return Pair.create(first.getElement(), offset);
+        } else if (reference instanceof PsiReference) {
+            //return Pair.create(reference.getElement(), offset + reference.getRangeInElement().getStartOffset());
+            return Pair.create(reference.getElement(), offset);
+        } */
+
         PsiElement element = myFile.findElementAt(offset - 1);
-
         assertNotNull("There is no PSI element at offset " + (offset - 1), element);
-
         return Pair.create(element, offset);
     }
 }

@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class BashVarUtils {
      * @param variableDefinition The reference definition
      * @return True if the candidate is a valid reference to the definition
      */
-    public static boolean isInDefinedScope(PsiElement childCandidate, BashVarDef variableDefinition) {
+    public static boolean isInDefinedScope(@NotNull PsiElement childCandidate, @NotNull BashVarDef variableDefinition) {
         if (variableDefinition.isFunctionScopeLocal()) {
             //the reference is a local variable, check if the candidate is in its scope
             return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
@@ -49,25 +50,24 @@ public class BashVarUtils {
             //the candidate is a local definition, check if we are in the
             //fixme check this
             return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
-        } else if (childCandidate instanceof BashVar) {
-            BashVar var = (BashVar) childCandidate;
-            BashVarDef childCandidateDef = (BashVarDef) var.resolve();
+        } else {
+            //we need to check the offset of top-level elements
 
-            if (childCandidateDef != null && childCandidateDef.isFunctionScopeLocal()) {
-                return isInDefinedScope(childCandidateDef, variableDefinition);
+            if (childCandidate instanceof BashVar) {
+                BashVar var = (BashVar) childCandidate;
+                BashVarDef childCandidateDef = (BashVarDef) var.resolve();
+
+                if (childCandidateDef != null && childCandidateDef.isFunctionScopeLocal()) {
+                    return isInDefinedScope(childCandidateDef, variableDefinition);
+                }
             }
 
             //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
             //this check is only valid if both are in the same file
-            boolean sameFile = variableDefinition.getContainingFile().equals(var.getContainingFile());
+            final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
             if (sameFile) {
-                if (variableDefinition.getTextOffset() > var.getTextOffset()) {
-                    //it's an invalid reference if both variables are global and the definition is after
-                    //the variable usage
-
-                    if (isGlobal(variableDefinition) && isGlobal(var)) {
-                        return false;
-                    }
+                if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
+                    return false;
                 }
             } else {
                 //we need to find the include command and check the offset
@@ -75,19 +75,26 @@ public class BashVarUtils {
                 //either var use and definition are both in functions or it the use is invalid
                 List<BashCommand> includeCommands = BashPsiUtils.findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
-                //currently we do onyl support global include commands
-
+                //currently we only support global include commands
                 for (BashCommand includeCommand : includeCommands) {
-                    if (includeCommand.getTextOffset() > var.getTextOffset()) {
-                        if (isGlobal(includeCommand) && isGlobal(var)) {
-                            return false;
-                        }
+                    if (!isValidGlobalOffset(childCandidate, includeCommand)) {
+                        return false;
                     }
                 }
             }
         }
 
         //none is a local variable
+        return true;
+    }
+
+    private static boolean isValidGlobalOffset(PsiElement childCandidate, PsiElement reference) {
+        if (reference.getTextOffset() > childCandidate.getTextOffset()) {
+            if (isGlobal(reference) && isGlobal(childCandidate)) {
+                return false;
+            }
+        }
+
         return true;
     }
 

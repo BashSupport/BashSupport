@@ -7,4 +7,5 @@ function includedFunction {
     echo $includedLocalVar
 }
 
-mIncludedVarIsOk2=
+myIncludedVarIsOk2=
+includedVarHasOtherPrefix=
