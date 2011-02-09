@@ -76,7 +76,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
             return TextRange.from(0, getReferencedName().length());
         }
 
-        return TextRange.from(1, getReferencedName().length()); //fixme make sure it has the end } ?
+        return TextRange.from(1, getReferencedName().length());
     }
 
     @Override
