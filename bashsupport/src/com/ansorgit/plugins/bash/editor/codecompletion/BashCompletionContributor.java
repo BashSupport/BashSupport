@@ -40,6 +40,7 @@ public class BashCompletionContributor extends CompletionContributor {
         log.info("Created bash completion contributor");
 
         new VariableNameCompletionProvider().addTo(this);
+        new CommandNameCompletionProvider().addTo(this);
 
         /*extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
 

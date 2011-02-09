@@ -15,6 +15,8 @@ class BashPatterns {
 
     }
 
+    public static BashPsiPattern afterDollar = new BashPsiPattern().withText("$");
+
     static class BashCharPattern extends CharPattern {
         private BashCharPattern() {
         }

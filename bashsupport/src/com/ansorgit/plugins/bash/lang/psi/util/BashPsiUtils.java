@@ -348,4 +348,41 @@ public class BashPsiUtils {
             visitRecursively(child, visitor);
         }
     }
+
+    public static boolean isValidReference(PsiElement childCandidate, PsiElement variableDefinition) {
+        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
+        if (sameFile) {
+            if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
+                return false;
+            }
+        } else {
+            //we need to find the include command and check the offset
+            //the include command must fullfil the same condition as the normal variable definition above:
+            //either var use and definition are both in functions or it the use is invalid
+            List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
+
+            //currently we only support global include commands
+            for (BashCommand includeCommand : includeCommands) {
+                if (!isValidGlobalOffset(childCandidate, includeCommand)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isValidGlobalOffset(PsiElement childCandidate, PsiElement reference) {
+        if (reference.getTextOffset() > childCandidate.getTextOffset()) {
+            if (isGlobal(reference) && isGlobal(childCandidate)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isGlobal(PsiElement element) {
+        return findBroadestVarDefFunctionDefScope(element) == null;
+    }
 }

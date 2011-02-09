@@ -61,16 +61,6 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
             return;
         }
 
-        /*CompletionResultSet result = originalText.startsWith(currentText)
-                ? resultWithoutPrefix.withPrefixMatcher(currentText)
-                : resultWithoutPrefix.withPrefixMatcher("");
-          */
-        if (resultWithoutPrefix.getPrefixMatcher().prefixMatches(currentText) && currentText.startsWith("$")) {
-            //workaround to make the test cases work, currently, for unknown reasons the test cases has a prefix matcher $x for completion
-            //of $x and the plugin at runtime has x as prefix matcher
-            resultWithoutPrefix = resultWithoutPrefix.withPrefixMatcher(currentText.substring(1));
-        }
-
         addBashCompletions(element, currentText, parameters, context, resultWithoutPrefix);
     }
 
