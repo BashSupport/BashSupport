@@ -56,7 +56,9 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
             resultLength += addCollectedVariables(original, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
         } else {
             //not in a variable element, but collect all known variable names at this offset in the current file
-            resultLength += addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(element));
+            PsiElement lookupElement = original != null ? original : element;
+
+            resultLength += addCollectedVariables(lookupElement, resultWithoutPrefix, new BashVarVariantsProcessor(lookupElement));
         }
 
         if (currentText != null && dollarPrefix && (invocationCount >= 2 || resultLength == 0)) {

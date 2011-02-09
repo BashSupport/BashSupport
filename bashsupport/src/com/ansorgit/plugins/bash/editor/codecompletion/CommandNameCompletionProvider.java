@@ -43,14 +43,15 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
         }
 
         PsiElement element = parameters.getPosition();
-        PsiElement oiginalElement = parameters.getOriginalPosition();
+        PsiElement originalElement = parameters.getOriginalPosition();
 
-        if (element != null && element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion) {
+        if (element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion) {
             return;
         }
 
-        BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor(element);
-        PsiTreeUtil.treeWalkUp(processor, element, element.getContainingFile(), ResolveState.initial());
+        PsiElement lookupElement = originalElement != null ? originalElement : element;
+        BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor(lookupElement);
+        PsiTreeUtil.treeWalkUp(processor, lookupElement, lookupElement.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> functionItems = CompletionProviderUtils.createPsiItems(processor.getFunctionDefs());
         resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));
@@ -59,7 +60,7 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
         //if no local elements were found, offer the global at the first invocation, if enabled
         int invocationCount = parameters.getInvocationCount();
         if (invocationCount >= 2 || functionItems.isEmpty()) {
-            Project project = element.getProject();
+            Project project = lookupElement.getProject();
 
             if (BashProjectSettings.storedSettings(project).isAutocompleteBuiltinCommands()) {
                 Collection<LookupElement> globals = CompletionProviderUtils.createItems(LanguageBuiltins.commands, BashIcons.GLOBAL_VAR_ICON);
