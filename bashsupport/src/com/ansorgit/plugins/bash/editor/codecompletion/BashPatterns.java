@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
  */
 class BashPatterns {
     private BashPatterns() {
-
     }
 
     public static BashPsiPattern afterDollar = new BashPsiPattern().withText("$");

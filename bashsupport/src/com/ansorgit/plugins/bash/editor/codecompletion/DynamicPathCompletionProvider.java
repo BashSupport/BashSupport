@@ -54,7 +54,7 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         String usedPrefix = findUsedPrefix(currentText);
         if (usedPrefix == null) {
             return;

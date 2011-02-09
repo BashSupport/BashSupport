@@ -1,6 +1,7 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarCollectorProcessor;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarVariantsProcessor;
@@ -27,27 +28,32 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
         BashPsiPattern insideVar = new BashPsiPattern().inside(BashVar.class);
-        //BashPsiPattern firstInParamExpansion = new BashPsiPattern().inside(BashParameterExpansion.class) .afterLeaf("{");
 
         contributor.extend(CompletionType.BASIC, insideVar, this);
         contributor.extend(CompletionType.BASIC, afterDollar, this);
-        //contributor.extend(CompletionType.BASIC, firstInParamExpansion, this);
     }
 
     @Override
-    protected void addBashCompletions(PsiElement element, String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
-        BashVar varElement = PsiTreeUtil.getContextOfType(element, BashVar.class);
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+        PsiElement element = parameters.getPosition();
+        PsiElement original = parameters.getOriginalPosition();
+
+        BashVar varElement = PsiTreeUtil.getContextOfType(original, BashVar.class);
         boolean dollarPrefix = currentText != null && currentText.startsWith("$");
 
-        if (varElement == null && !dollarPrefix) {
+        boolean insideExpansion = element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion;
+
+        if (varElement == null && !dollarPrefix && !insideExpansion) {
             return;
         }
 
         int invocationCount = parameters.getInvocationCount();
         int resultLength = 0;
 
+        //fixme Currently we only look into the current file if no original element is given, better: we should collect locals and the included vars from the original file
+
         if (varElement != null) {
-            resultLength += addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
+            resultLength += addCollectedVariables(original, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
         } else {
             //not in a variable element, but collect all known variable names at this offset in the current file
             resultLength += addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(element));

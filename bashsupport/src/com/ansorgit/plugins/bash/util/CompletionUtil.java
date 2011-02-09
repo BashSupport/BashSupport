@@ -44,12 +44,12 @@ public class CompletionUtil {
      * Prefix is path whose last entry may be a partial match. A match with "/etc/def" matches
      * all files and directories in /etc which start with "def".
      *
-     * @param prefix A path which is used to collect matching files.
+     * @param prefix        A path which is used to collect matching files.
+     * @param includeHidden
      * @return A list of full paths which match the prefix.
      */
-    public static
     @NotNull
-    List<String> completeAbsolutePath(@NotNull String prefix) {
+    public static List<String> completeAbsolutePath(@NotNull String prefix, boolean includeHidden) {
         File base = new File(prefix);
         if (!base.exists()) {
             base = base.getParentFile();
@@ -69,9 +69,13 @@ public class CompletionUtil {
         }
 
 
-        List<File> files = collectFiles(basePath, matchPrefix);
         List<String> result = Lists.newLinkedList();
-        for (File f : files) {
+
+        for (File f : collectFiles(basePath, matchPrefix)) {
+            if (f.isHidden() && !includeHidden) {
+                continue;
+            }
+
             if (f.isDirectory()) {
                 result.add(f.getAbsolutePath() + "/");
             } else {
@@ -94,7 +98,7 @@ public class CompletionUtil {
     public static List<String> completeRelativePath(@NotNull String baseDir, @NotNull String shownBaseDir, @NotNull String relativePath) {
         List<String> result = Lists.newLinkedList();
 
-        for (String path : completeAbsolutePath(baseDir + "/" + relativePath)) {
+        for (String path : completeAbsolutePath(baseDir + "/" + relativePath, false)) {
             if (path.startsWith(baseDir)) {
                 result.add(shownBaseDir + path.substring(baseDir.length()));
             }

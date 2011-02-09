@@ -41,22 +41,17 @@ public class BashCompletionContributor extends CompletionContributor {
 
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider().addTo(this);
-
-        /*extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new VariableNameCompletionProvider());
-
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new CommandNameCompletionProvider());
-
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new AbsolutePathCompletionProvider());
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new DynamicPathCompletionProvider());
-        extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), new ShebangPathCompletionProvider());*/
+        new AbsolutePathCompletionProvider().addTo(this);
     }
 
     @Override
     public void beforeCompletion(@NotNull CompletionInitializationContext context) {
         super.beforeCompletion(context);
 
-        fixComposedWordEndOffset(context);
-        fixShebangEndOffset(context);
+        context.setDummyIdentifier("ZZZ");
+
+        //fixComposedWordEndOffset(context);
+        //fixShebangEndOffset(context);
     }
 
     /**

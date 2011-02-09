@@ -31,7 +31,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     }
 
     public void testAutocompleteBuiltInEnabledCountOne() throws Exception {
-        //BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
+        BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
         configure();
         checkItems("echo123");
@@ -49,5 +49,10 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
 
         configure(2);
         checkItems("echo", "echo123");
+    }
+
+    public void testEmptyCompletion() throws Exception {
+        configure();
+        checkItems("myFunction");
     }
 }
