@@ -6,10 +6,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarCollectorProcessor;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarVariantsProcessor;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.intellij.codeInsight.completion.CompletionContributor;
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -18,6 +15,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collection;
+
+import static com.ansorgit.plugins.bash.editor.codecompletion.BashPatterns.afterDollar;
 
 /**
  * User: jansorg
@@ -28,10 +27,11 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
         BashPsiPattern insideVar = new BashPsiPattern().inside(BashVar.class);
-        BashPsiPattern afterDollar = new BashPsiPattern().withText("$");
+        //BashPsiPattern firstInParamExpansion = new BashPsiPattern().inside(BashParameterExpansion.class) .afterLeaf("{");
 
         contributor.extend(CompletionType.BASIC, insideVar, this);
         contributor.extend(CompletionType.BASIC, afterDollar, this);
+        //contributor.extend(CompletionType.BASIC, firstInParamExpansion, this);
     }
 
     @Override
@@ -43,25 +43,32 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
             return;
         }
 
-        if (currentText != null && dollarPrefix) {
+        int invocationCount = parameters.getInvocationCount();
+        int resultLength = 0;
+
+        if (varElement != null) {
+            resultLength += addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
+        } else {
+            //not in a variable element, but collect all known variable names at this offset in the current file
+            resultLength += addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(element));
+        }
+
+        if (currentText != null && dollarPrefix && (invocationCount >= 2 || resultLength == 0)) {
             Project project = element.getProject();
             addBuildInVariables(resultWithoutPrefix, project);
             addGlobalVariables(resultWithoutPrefix, project);
-        }
-
-        if (varElement != null) {
-            addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
         } else {
-            //not in a variable element, but collect all known variable names at this offset in the current file
-            addCollectedVariables(element, resultWithoutPrefix, new BashVarVariantsProcessor(element));
+            CompletionService.getCompletionService().setAdvertisementText("Press twice for global variables");
         }
     }
 
-    private void addCollectedVariables(PsiElement element, CompletionResultSet resultWithoutPrefix, BashVarCollectorProcessor processor) {
+    private int addCollectedVariables(PsiElement element, CompletionResultSet resultWithoutPrefix, BashVarCollectorProcessor processor) {
         PsiTreeUtil.treeWalkUp(processor, element, element.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
         resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));
+
+        return items.size();
     }
 
     private void addGlobalVariables(CompletionResultSet resultWithoutPrefix, Project project) {
