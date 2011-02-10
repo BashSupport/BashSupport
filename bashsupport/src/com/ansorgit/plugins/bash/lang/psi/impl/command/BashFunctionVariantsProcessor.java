@@ -47,7 +47,7 @@ public class BashFunctionVariantsProcessor extends BashAbstractProcessor {
         if (element instanceof BashFunctionDef) {
             final BashFunctionDef f = (BashFunctionDef) element;
 
-            if (BashPsiUtils.isValidReference(startElement, element)) {
+            if (BashPsiUtils.isValidReferenceScope(startElement, element)) {
                 functionDefs.add(f);
             }
         }

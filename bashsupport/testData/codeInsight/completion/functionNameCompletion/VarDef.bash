@@ -8,4 +8,4 @@ function myFunctionTwoIsOk {
     echo Two
 }
 
-myFunction<caret>=
+$myFunction<caret>=

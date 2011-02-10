@@ -349,7 +349,17 @@ public class BashPsiUtils {
         }
     }
 
-    public static boolean isValidReference(PsiElement childCandidate, PsiElement variableDefinition) {
+    public static boolean hasContext(PsiElement element, PsiElement contextCandidate) {
+        for (PsiElement ref = element; ref != null; ref = ref.getContext()) {
+            if (ref == contextCandidate) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
         final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
