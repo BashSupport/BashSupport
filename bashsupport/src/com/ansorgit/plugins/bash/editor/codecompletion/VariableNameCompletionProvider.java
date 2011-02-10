@@ -17,8 +17,6 @@ import com.intellij.util.ProcessingContext;
 
 import java.util.Collection;
 
-import static com.ansorgit.plugins.bash.editor.codecompletion.BashPatterns.afterDollar;
-
 /**
  * User: jansorg
  * Date: 07.02.11
@@ -27,10 +25,10 @@ import static com.ansorgit.plugins.bash.editor.codecompletion.BashPatterns.after
 class VariableNameCompletionProvider extends BashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
-        BashPsiPattern insideVar = new BashPsiPattern().inside(BashVar.class);
+        BashPsiPattern insideVar = new BashPsiPattern().withParent(BashVar.class);
 
         contributor.extend(CompletionType.BASIC, insideVar, this);
-        contributor.extend(CompletionType.BASIC, afterDollar, this);
+        //contributor.extend(CompletionType.BASIC, afterDollar, this);
     }
 
     @Override

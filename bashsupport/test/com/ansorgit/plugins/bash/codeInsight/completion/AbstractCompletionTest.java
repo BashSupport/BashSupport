@@ -28,7 +28,7 @@ import java.util.List;
  * Time: 21:11
  */
 public abstract class AbstractCompletionTest extends CompletionTestCase {
-    public static final String[] EMPTY = new String[0];
+    public static final String[] NO_COMPLETIONS = new String[0];
 
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/codeInsight/completion/" + getTestDir() + "/";
