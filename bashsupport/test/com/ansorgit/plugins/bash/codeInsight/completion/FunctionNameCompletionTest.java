@@ -22,7 +22,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     public void testDollarCompletion() throws Exception {
         configure();
 
-        checkItems(EMPTY);
+        checkItems(NO_COMPLETIONS);
     }
 
     public void testAutocompleteBuiltInDisabled() throws Exception {
@@ -54,5 +54,30 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     public void testEmptyCompletion() throws Exception {
         configure();
         checkItems("myFunction");
+    }
+
+    public void testVarCompletion() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
+
+    public void testParameterExpansion() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
+
+    public void testVarDef() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
+
+    public void testInnerFunctionCompletion() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
+
+    public void testGlobalFunctionCompletion() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
     }
 }

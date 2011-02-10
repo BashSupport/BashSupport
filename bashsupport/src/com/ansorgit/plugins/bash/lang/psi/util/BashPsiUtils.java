@@ -372,9 +372,9 @@ public class BashPsiUtils {
         return true;
     }
 
-    private static boolean isValidGlobalOffset(PsiElement childCandidate, PsiElement reference) {
-        if (reference.getTextOffset() > childCandidate.getTextOffset()) {
-            if (isGlobal(reference) && isGlobal(childCandidate)) {
+    private static boolean isValidGlobalOffset(PsiElement referenceElement, PsiElement definition) {
+        if (definition.getTextOffset() > referenceElement.getTextOffset()) {
+            if (isGlobal(referenceElement)) {
                 return false;
             }
         }
