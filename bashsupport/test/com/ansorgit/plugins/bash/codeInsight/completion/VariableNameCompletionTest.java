@@ -91,6 +91,12 @@ public class VariableNameCompletionTest extends AbstractCompletionTest {
         checkItems(NO_COMPLETIONS);
     }
 
+
+    public void testSelfReference() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
+
     //@Ignore
     /*public void testVarDefCompletion() throws Exception {
         configure();

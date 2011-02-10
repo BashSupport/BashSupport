@@ -35,33 +35,37 @@ public class BashVarUtils {
      * Checks whether the given candidate is a valid reference to the variable definition. It is valid
      * if both are global or if the candidate is in the local scope of the variable definition.
      *
-     * @param childCandidate     The candidate element to check
-     * @param variableDefinition The reference definition
+     * @param referenceElement The candidate element to check
+     * @param definition       The reference definition
      * @return True if the candidate is a valid reference to the definition
      */
-    public static boolean isInDefinedScope(@NotNull PsiElement childCandidate, @NotNull BashVarDef variableDefinition) {
-        if (variableDefinition.isFunctionScopeLocal()) {
+    public static boolean isInDefinedScope(@NotNull PsiElement referenceElement, @NotNull BashVarDef definition) {
+        if (definition.isFunctionScopeLocal()) {
             //the reference is a local variable, check if the candidate is in its scope
-            return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
-        } else if (childCandidate instanceof BashVarDef && ((BashVarDef) childCandidate).isFunctionScopeLocal()) {
+            return PsiTreeUtil.isAncestor(definition.findFunctionScope(), referenceElement, false);
+        } else if (referenceElement instanceof BashVarDef && ((BashVarDef) referenceElement).isFunctionScopeLocal()) {
             //the candidate is a local definition, check if we are in the
             //fixme check this
-            return PsiTreeUtil.isAncestor(variableDefinition.findFunctionScope(), childCandidate, false);
+            return PsiTreeUtil.isAncestor(definition.findFunctionScope(), referenceElement, false);
         } else {
             //we need to check the offset of top-level elements
+            if (referenceElement instanceof BashVar) {
+                BashVar var = (BashVar) referenceElement;
+                BashVarDef referecingDefinition = (BashVarDef) var.resolve();
 
-            if (childCandidate instanceof BashVar) {
-                BashVar var = (BashVar) childCandidate;
-                BashVarDef childCandidateDef = (BashVarDef) var.resolve();
-
-                if (childCandidateDef != null && childCandidateDef.isFunctionScopeLocal()) {
-                    return isInDefinedScope(childCandidateDef, variableDefinition);
+                if (referecingDefinition != null && referecingDefinition.isFunctionScopeLocal()) {
+                    return isInDefinedScope(referecingDefinition, definition);
                 }
+            }
+
+            //make sure that the reference is not a self-reference
+            if (BashPsiUtils.hasContext(referenceElement, definition)) {
+                return false;
             }
 
             //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
             //this check is only valid if both are in the same file
-            if (!BashPsiUtils.isValidReference(childCandidate, variableDefinition)) {
+            if (!BashPsiUtils.isValidReferenceScope(referenceElement, definition)) {
                 return false;
             }
         }
