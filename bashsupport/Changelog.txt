@@ -1,6 +1,8 @@
 2011-02-07:
  - Variable completion from included files
- - Reworked & improved autocompletion
+ - Improved autocompletion
+ - Autocompletion inside of ${}
+ - Globals and built-ins are now offered after second completion call, if enabled
 
 2011-02-06:
  - Support for include files and contained elements (find references, rename, go to defintion, ...)
