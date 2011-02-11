@@ -42,6 +42,8 @@ public class BashCompletionContributor extends CompletionContributor {
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider().addTo(this);
         new AbsolutePathCompletionProvider().addTo(this);
+        new ShebangPathCompletionProvider().addTo(this);
+        new DynamicPathCompletionProvider().addTo(this);
     }
 
     @Override

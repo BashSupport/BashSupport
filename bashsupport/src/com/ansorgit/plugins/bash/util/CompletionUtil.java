@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.util;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,12 +46,12 @@ public class CompletionUtil {
      * Prefix is path whose last entry may be a partial match. A match with "/etc/def" matches
      * all files and directories in /etc which start with "def".
      *
-     * @param prefix        A path which is used to collect matching files.
-     * @param includeHidden
+     * @param prefix A path which is used to collect matching files.
+     * @param accept
      * @return A list of full paths which match the prefix.
      */
     @NotNull
-    public static List<String> completeAbsolutePath(@NotNull String prefix, boolean includeHidden) {
+    public static List<String> completeAbsolutePath(@NotNull String prefix, Predicate<File> accept) {
         File base = new File(prefix);
         if (!base.exists()) {
             base = base.getParentFile();
@@ -71,15 +73,15 @@ public class CompletionUtil {
 
         List<String> result = Lists.newLinkedList();
 
-        for (File f : collectFiles(basePath, matchPrefix)) {
-            if (f.isHidden() && !includeHidden) {
+        for (File fileCandidate : collectFiles(basePath, matchPrefix)) {
+            if (!accept.apply(fileCandidate)) {
                 continue;
             }
 
-            if (f.isDirectory()) {
-                result.add(f.getAbsolutePath() + "/");
+            if (fileCandidate.isDirectory()) {
+                result.add(fileCandidate.getAbsolutePath() + "/");
             } else {
-                result.add(f.getAbsolutePath());
+                result.add(fileCandidate.getAbsolutePath());
             }
         }
 
@@ -98,7 +100,7 @@ public class CompletionUtil {
     public static List<String> completeRelativePath(@NotNull String baseDir, @NotNull String shownBaseDir, @NotNull String relativePath) {
         List<String> result = Lists.newLinkedList();
 
-        for (String path : completeAbsolutePath(baseDir + "/" + relativePath, false)) {
+        for (String path : completeAbsolutePath(baseDir + "/" + relativePath, Predicates.<File>alwaysTrue())) {
             if (path.startsWith(baseDir)) {
                 result.add(shownBaseDir + path.substring(baseDir.length()));
             }

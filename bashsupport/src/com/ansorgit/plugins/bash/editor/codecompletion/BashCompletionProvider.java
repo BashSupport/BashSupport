@@ -18,7 +18,8 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
-import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
@@ -26,6 +27,8 @@ import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 /**
  * Abstract base class for completion providers in Bash files.
@@ -39,6 +42,10 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
     }
 
     abstract void addTo(CompletionContributor contributor);
+
+    protected Predicate<File> createFileFilter() {
+        return Predicates.alwaysTrue();
+    }
 
     @Override
     protected final void addCompletions(@NotNull CompletionParameters parameters,
@@ -59,14 +66,6 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
         return (elementOffset >= 0) && (elementOffset < originalText.length())
                 ? originalText.substring(0, elementOffset)
                 : originalText;
-    }
-
-    protected PsiElement findElement(PsiElement element) {
-        if (!(element instanceof BashWord) && element.getParent() instanceof BashWord) {
-            return element.getParent();
-        }
-
-        return element;
     }
 
     protected abstract void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix);
