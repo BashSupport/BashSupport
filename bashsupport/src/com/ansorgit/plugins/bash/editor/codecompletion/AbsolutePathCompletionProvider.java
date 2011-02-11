@@ -19,11 +19,14 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.CompletionUtil;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -48,10 +51,19 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
             return;
         }
 
-        int invocationCount = parameters.getInvocationCount();
+        CompletionResultSet result = resultWithoutPrefix.withPrefixMatcher(currentText);
 
-        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, invocationCount >= 2);
-        resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
+        final int invocationCount = parameters.getInvocationCount();
+
+        Predicate<File> incovationCoundPredicate = new Predicate<File>() {
+            public boolean apply(File file) {
+                //accept hidden file with more than one invocation
+                return file.isHidden() ? invocationCount >= 2 : true;
+            }
+        };
+
+        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, Predicates.<File>and(createFileFilter(), incovationCoundPredicate));
+        result.addAllElements(CompletionProviderUtils.createPathItems(completions));
 
         if (invocationCount == 1) {
             CompletionService.getCompletionService().setAdvertisementText("Press twice for hidden files");

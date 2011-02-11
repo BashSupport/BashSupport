@@ -19,11 +19,13 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
+import com.google.common.base.Predicate;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
+
+import java.io.File;
 
 /**
  * This completion provider provides code completion for file / directory paths in the file.
@@ -38,20 +40,16 @@ class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
 
     @Override
     void addTo(CompletionContributor contributor) {
-        contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
+        contributor.extend(CompletionType.BASIC, new BashPsiPattern().inside(BashShebang.class), this);
     }
 
     @Override
-    protected PsiElement findElement(PsiElement element) {
-        if (element instanceof BashShebang) {
-            return element;
-        }
-
-        if (element.getParent() != null) {
-            return findElement(element.getParent());
-        }
-
-        return null;
+    protected Predicate<File> createFileFilter() {
+        return new Predicate<File>() {
+            public boolean apply(File file) {
+                return file.canExecute() && file.canRead();
+            }
+        };
     }
 
     @Override
@@ -68,12 +66,21 @@ class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
 
     @Override
     protected String findCurrentText(CompletionParameters parameters, PsiElement element) {
-        BashShebang shebang = (BashShebang) element;
-        String shellcommand = shebang.shellCommand();
+        PsiElement command = element;
+        while (command != null && !(command instanceof BashShebang)) {
+            command = command.getParent();
+        }
 
-        int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
-        return (elementOffset > 0 && elementOffset <= shellcommand.length())
-                ? shellcommand.substring(0, elementOffset)
-                : null;
+        if (command != null) {
+            BashShebang shebang = (BashShebang) command;
+            String shellcommand = shebang.shellCommand();
+
+            int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
+            return (elementOffset > 0 && elementOffset <= shellcommand.length())
+                    ? shellcommand.substring(0, elementOffset)
+                    : null;
+        }
+
+        return super.findCurrentText(parameters, element);
     }
 }

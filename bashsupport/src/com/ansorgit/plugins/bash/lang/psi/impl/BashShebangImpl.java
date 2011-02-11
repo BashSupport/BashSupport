@@ -112,4 +112,6 @@ public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
             visitor.visitElement(this);
         }
     }
+
+
 }
