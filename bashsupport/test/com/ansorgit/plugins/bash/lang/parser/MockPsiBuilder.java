@@ -130,6 +130,26 @@ public class MockPsiBuilder implements PsiBuilder {
         return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unkown";
     }
 
+    public void remapCurrentToken(IElementType iElementType) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void setWhitespaceSkippedCallback(WhitespaceSkippedCallback whitespaceSkippedCallback) {
+        throw new UnsupportedOperationException();
+    }
+
+    public IElementType lookAhead(int i) {
+        throw new UnsupportedOperationException();
+    }
+
+    public IElementType rawLookup(int i) {
+        throw new UnsupportedOperationException();
+    }
+
+    public int rawTokenTypeStart(int i) {
+        throw new UnsupportedOperationException();
+    }
+
     public int getCurrentOffset() {
         return elementPosition;
     }

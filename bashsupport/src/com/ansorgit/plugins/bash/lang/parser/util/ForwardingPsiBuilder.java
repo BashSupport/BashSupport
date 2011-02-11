@@ -18,10 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.util;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.ITokenTypeRemapper;
-import com.intellij.lang.LighterASTNode;
-import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
@@ -142,5 +139,25 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
 
     public <T> void putUserDataUnprotected(@NotNull Key<T> tKey, @Nullable T t) {
         originalPsiBuilder.putUserDataUnprotected(tKey, t);
+    }
+
+    public void remapCurrentToken(IElementType iElementType) {
+        originalPsiBuilder.remapCurrentToken(iElementType);
+    }
+
+    public void setWhitespaceSkippedCallback(WhitespaceSkippedCallback whitespaceSkippedCallback) {
+
+    }
+
+    public IElementType lookAhead(int i) {
+        return originalPsiBuilder.lookAhead(i);
+    }
+
+    public IElementType rawLookup(int i) {
+        return originalPsiBuilder.rawLookup(i);
+    }
+
+    public int rawTokenTypeStart(int i) {
+        return originalPsiBuilder.rawTokenTypeStart(i);
     }
 }

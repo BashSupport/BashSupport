@@ -35,6 +35,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
 
@@ -77,6 +78,12 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
         //fixme quite slow, fix with reverse index included file->including file
 
         Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
+        if (includingFiles.isEmpty()) {
+            //we should return a local search scope if we only have local references
+            //not return a local scope then inline renaming is not possible
+            return new LocalSearchScope(getContainingFile());
+        }
+
         Collection<VirtualFile> virtualFiles = Collections2.transform(includingFiles, BashFunctions.psiToVirtualFile());
         return GlobalSearchScope.fileScope(getContainingFile()).union(GlobalSearchScope.filesScope(getProject(), virtualFiles));
     }

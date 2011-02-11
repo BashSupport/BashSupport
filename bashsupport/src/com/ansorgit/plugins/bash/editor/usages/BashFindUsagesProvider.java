@@ -21,8 +21,10 @@ package com.ansorgit.plugins.bash.editor.usages;
 import com.ansorgit.plugins.bash.lang.lexer.BashLexer;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
@@ -54,8 +56,8 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         return new BashWordsScanner();
     }
 
-    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-        return psiElement instanceof PsiNamedElement;
+    public boolean canFindUsagesFor(@NotNull PsiElement psi) {
+        return psi instanceof BashVar || psi instanceof BashCommand || psi instanceof BashHereDocMarker;
     }
 
     public String getHelpId(@NotNull PsiElement psiElement) {
@@ -74,7 +76,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return "heredoc marker";
         }
 
-        return "";
+        return "unknown type";
     }
 
     @NotNull
