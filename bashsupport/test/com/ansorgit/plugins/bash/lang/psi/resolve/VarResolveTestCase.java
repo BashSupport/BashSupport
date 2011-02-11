@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.search.LocalSearchScope;
 import junit.framework.Assert;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,7 +47,9 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     public void testBasicResolve() throws Exception {
-        assertIsWellDefinedVariable();
+        BashVarDef varDef = assertIsWellDefinedVariable();
+
+        Assert.assertTrue("Not a local search scope, this will prevent inline renaming", varDef.getUseScope() instanceof LocalSearchScope);
     }
 
     public void testBasicResolveInsideString() throws Exception {
