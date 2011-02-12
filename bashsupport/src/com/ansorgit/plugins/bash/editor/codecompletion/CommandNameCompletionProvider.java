@@ -1,6 +1,8 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashInternalCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionVariantsProcessor;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
@@ -8,6 +10,8 @@ import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
+import com.intellij.patterns.ElementPattern;
+import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -23,12 +27,11 @@ import java.util.Collection;
 class CommandNameCompletionProvider extends BashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
-        BashPsiPattern pattern = new BashPsiPattern().inside(PsiElement.class);
-        //.andNot(new BashPsiPattern().withParent(BashWord.class).withParent(BashVar.class));
+        BashPsiPattern internal = new BashPsiPattern().withParent(BashInternalCommand.class);
+        BashPsiPattern generic = new BashPsiPattern().withParent(BashGenericCommand.class);
+        ElementPattern<PsiElement> internalOrGeneric = StandardPatterns.or(internal, generic);
 
-//        StandardPatterns.instanceOf(PsiElement.class)
-        //              .andNot(new BashPsiPattern().withParent().withFirstChild())
-        //            .andNot(StandardPatterns.instanceOf(BashVar.class));
+        BashPsiPattern pattern = new BashPsiPattern().withParent(internalOrGeneric);
 
         contributor.extend(CompletionType.BASIC, pattern, this);
     }

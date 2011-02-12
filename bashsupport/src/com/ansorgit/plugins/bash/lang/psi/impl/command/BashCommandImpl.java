@@ -199,7 +199,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
         PsiElement result = internalResolve();
         if (isExternal && result == null) {
-            return null;
+            return this;
         }
 
         return result;

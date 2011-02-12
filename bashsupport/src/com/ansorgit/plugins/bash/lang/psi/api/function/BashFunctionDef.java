@@ -21,10 +21,10 @@ package com.ansorgit.plugins.bash.lang.psi.api.function;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
+import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDefContainer;
 import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, NavigationItem, PsiNameIdentifierOwner, BashVarDefContainer {
+public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, NavigationItem, PsiNameIdentifierOwner, BashVarDefContainer, DocumentationAwareElement {
     /**
      * Returns the function body. A valid function definition always has a valid body.
      *
@@ -55,14 +55,6 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
 
     @Nullable
     BashSymbol getNameSymbol();
-
-    /**
-     * Tries to find an attached function comment which explains what this function does.
-     * A function comment has to be the previous token in the tree right before this function element.
-     *
-     * @return The comment psi element, if found. If unavailable null is returned.
-     */
-    PsiComment findAttachedComment();
 
     /**
      * The list of parameters used inside this function definition. Sub-functions are not searched for parameters

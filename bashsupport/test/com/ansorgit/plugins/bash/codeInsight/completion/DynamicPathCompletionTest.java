@@ -55,4 +55,14 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
             Assert.assertFalse("item must not begin with ~// : " + lookup, lookup.startsWith("~//"));
         }
     }
+
+    public void testNoFunctionCompletion() throws Exception {
+        configure();
+        Assert.assertTrue("No completions found", myItems.length > 0);
+
+        for (LookupElement item : myItems) {
+            String lookupString = item.getLookupString();
+            Assert.assertFalse("Completion of path must not offer function name: " + lookupString, lookupString.contains("myFunction"));
+        }
+    }
 }

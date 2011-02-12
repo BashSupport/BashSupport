@@ -31,4 +31,14 @@ public class BashGenericCommandImpl extends BashPsiElementImpl implements BashGe
     public BashGenericCommandImpl(ASTNode astNode) {
         super(astNode, "BashGenericCommand");
     }
+
+    @Override
+    public boolean canNavigate() {
+        return false;
+    }
+
+    @Override
+    public boolean canNavigateToSource() {
+        return false;
+    }
 }
