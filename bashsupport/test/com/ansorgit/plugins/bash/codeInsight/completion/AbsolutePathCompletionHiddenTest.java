@@ -23,6 +23,16 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
         checkItems(prefix + "SimpleCompletion.bash");
     }
 
+    public void testSimpleCompletionHiddenNoFirstCompletions() throws Throwable {
+        String prefix = getTestDataPath();
+        String data = String.format("%s.H<caret>", prefix);
+        configureByText(BashFileType.BASH_FILE_TYPE, data);
+
+        //there should be completions if no files were found
+        complete(1);
+        checkItems(prefix + ".HiddenFile.bash");
+    }
+
     public void testSimpleCompletionShowHidden() throws Throwable {
         String prefix = getTestDataPath();
         String data = String.format("%s<caret>", prefix);
@@ -34,7 +44,7 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
             checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/");
         } catch (AssertionFailedError e) {
             //fallback if the project is under version control
-            checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/", prefix + ".svn/");
+            checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/", prefix + ".svn/", prefix + ".HiddenFile.bash");
         }
     }
 }

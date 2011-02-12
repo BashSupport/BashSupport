@@ -25,6 +25,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -57,7 +58,7 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
             return;
         }
 
-        CompletionResultSet result = resultWithoutPrefix.withPrefixMatcher(currentText);
+        CompletionResultSet result = resultWithoutPrefix.withPrefixMatcher(new PathPrefixMatcher(currentText));
 
         final int invocationCount = parameters.getInvocationCount();
 
@@ -71,8 +72,37 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
         List<String> completions = CompletionUtil.completeAbsolutePath(currentText, Predicates.<File>and(createFileFilter(), incovationCoundPredicate));
         result.addAllElements(CompletionProviderUtils.createPathItems(completions));
 
+        int validResultCount = computeResultCount(completions, result);
+
+        if (validResultCount == 0 && invocationCount == 1) {
+            //do hidden-completion now
+            List<String> secondCompletions = CompletionUtil.completeAbsolutePath(currentText, createFileFilter());
+            result.addAllElements(CompletionProviderUtils.createPathItems(secondCompletions));
+        }
+
         if (invocationCount == 1) {
             CompletionService.getCompletionService().setAdvertisementText("Press twice for hidden files");
+        }
+    }
+
+    private static class PathPrefixMatcher extends PrefixMatcher {
+        public PathPrefixMatcher() {
+            super("");
+        }
+
+        protected PathPrefixMatcher(String prefix) {
+            super(prefix);
+        }
+
+        @Override
+        public boolean prefixMatches(@NotNull String name) {
+            return name.startsWith(getPrefix());
+        }
+
+        @NotNull
+        @Override
+        public PrefixMatcher cloneWithPrefix(@NotNull String prefix) {
+            return new PathPrefixMatcher(prefix);
         }
     }
 }

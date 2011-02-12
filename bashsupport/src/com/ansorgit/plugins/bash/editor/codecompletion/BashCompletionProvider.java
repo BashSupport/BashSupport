@@ -20,15 +20,13 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.intellij.codeInsight.completion.CompletionContributor;
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionProvider;
-import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Abstract base class for completion providers in Bash files.
@@ -69,4 +67,18 @@ abstract class BashCompletionProvider extends CompletionProvider<CompletionParam
     }
 
     protected abstract void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix);
+
+    protected int computeResultCount(List<String> completions, CompletionResultSet result) {
+        PrefixMatcher prefixMatcher = result.getPrefixMatcher();
+
+        int resultCount = 0;
+
+        for (String c : completions) {
+            if (prefixMatcher.prefixMatches(c)) {
+                resultCount++;
+            }
+        }
+
+        return resultCount;
+    }
 }
