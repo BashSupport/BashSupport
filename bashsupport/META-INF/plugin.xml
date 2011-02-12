@@ -21,7 +21,7 @@
     <version>0.9.19</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
-            logo="/ressources/bash-32.png">Joachim Ansorg
+            logo="/resources/icons/bash-32.png">Joachim Ansorg
     </vendor>
 
     <!-- Requires IDEA 10.0 or later -->
@@ -32,35 +32,26 @@
 
     <description><![CDATA[
   <html>
-    <h3>Bash support for the IntelliJ plattform</h3>
-    <br>
-            <b>Features:</b><br>
-            <ul>
-            <li> Support for Bash 3.2 and 4.0</li>
-            <li> Advanced syntax highlighting and configuration</li>
-            <li> Run Bash scripts within IDEA</li>
-            <li> Autocompletion for variables, functions and file paths</li>
-            <li> Inspections and quickfixes for common problems</li>
-            <li> Basic refactorings (rename variables, functions and heredoc markers)</li>
-            <li> Advanced navigation (structure view, go to declaration, ...)</li>
-            <li> Ctrl+Q (Quick documentation lookup) for internal commands, external commands and functions</li>
-            <li> Highlight usages in file for functions and variables</li>
-            <li> Code folding, line commenting / uncommenting, brace matching</li>
-            <li> Supports file extensions .sh, .bash and files without extension (configurable)</li>
-            <li> Advanced support for arithmetic expressions and brace expansions</li>
-            </ul>
-
-            <br>
-            <b>Experimental features:</b>
-            <ul>
-                <li>Code formatter (turned off by default)</li>
-                <li>Bash repl</li>
-            </ul>
+    Bash 4 support for InteliJ IDEA 10. Supported are, among other things, syntax highlighting,
+    rename refactoring, documentation lookup and various inspections with quickfixes.
   </html>
   ]]></description>
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.19:</b>
+       <ul>
+         <li>Documentation lookup for variable definitions, the comment before the definition is displayed, if available</li>
+         <li>Variable completion from included files</li>
+         <li>Autocompletion inside of ${}</li>
+         <li>Globals and built-ins are now offered after second completion call, if enabled</li>
+         <li>Support for include files and contained elements (find references, rename, go to defintion, ...)</li>
+         <li>Issue #32: Length-function not supported: Expected a command</li>
+         <li>Issue #34: Unresolved variable in string definition</li>
+         <li>Issue #35: Math calculations using square brackets not supported</li>
+         <li>Issue #36: Incorrect inspection of unused parameter when using $* inside function</li>
+       </ul>
+
        <b>Changes in version 0.9.18:</b>
        <ul>
          <li>New inspection to convert a simple variable usage $a to the equivalent parameter expansion ${a}</li>
@@ -75,13 +66,6 @@
          <li>Bugfixes</li>
        </ul>
 
-       <b>Changes in version 0.9.17:</b>
-       <ul>
-         <li>Compatible with builds 99.18 or later, i.e. IntelliJ IDEA 10.0</li>
-         <li>Improved parsing of parameter substitutions, e.g. for ${a:=b} assignments and ${!a} indirect references</li>
-         <li>Formatter fixes</li>
-       </ul>
-
        <b>Recent changes:</b>
        <ul>
           <li>Support for the "readonly" command</li>
@@ -90,17 +74,17 @@
           <li>New inspection which detects integer division with a remainder</li>
           <li>Fixed variable renaming of ${a} variables</li>
           <li>Compatibility with RubyMine 2.0.2</li>
-          <li> Fixed for heredoc folding and highlighting</li>
-          <li> A process started withing a run script action is terminated when the stop button is pressed    </li>
-          <li> Removed global settings, these are project settings now</li>
-          <li> Arithmetic expressions are supported now, including variable declarations</li>
-          <li> Color configuration for heredoc start and end markers</li>
-          <li> New Bashsupport facet to configure which files without extensions are Bash scripts</li>
-          <li> Source code released, licensed under the terms of the Apache License 2.0</li>
-          <li> Path/file completion/</li>
-          <li> Configurable support for Bash version 4.0.</li>
-          <li> Expansions now can be replaced with the evaluated result.</li>
-          <li> Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
+          <li>Fixed for heredoc folding and highlighting</li>
+          <li>A process started withing a run script action is terminated when the stop button is pressed    </li>
+          <li>Removed global settings, these are project settings now</li>
+          <li>Arithmetic expressions are supported now, including variable declarations</li>
+          <li>Color configuration for heredoc start and end markers</li>
+          <li>New Bashsupport facet to configure which files without extensions are Bash scripts</li>
+          <li>Source code released, licensed under the terms of the Apache License 2.0</li>
+          <li>Path/file completion/</li>
+          <li>Configurable support for Bash version 4.0.</li>
+          <li>Expansions now can be replaced with the evaluated result.</li>
+          <li>Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
         </ul>
     </html>
     ]]>
