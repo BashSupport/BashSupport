@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
@@ -52,31 +51,8 @@ public class BashCompletionContributor extends CompletionContributor {
 
         context.setDummyIdentifier("ZZZ");
 
-        //fixComposedWordEndOffset(context);
+        fixComposedWordEndOffset(context);
         //fixShebangEndOffset(context);
-    }
-
-    /**
-     * If we're working on a BashShebang we fix the end offset of the replace action to include the full command
-     *
-     * @param context The current invocation context
-     */
-    private void fixShebangEndOffset(CompletionInitializationContext context) {
-        PsiElement element = context.getFile().findElementAt(context.getStartOffset());
-        if ((element == null)) {
-            return;
-        }
-
-        if (!(element instanceof BashShebang)) {
-            element = element.getParent();
-        }
-
-        if (element instanceof BashShebang) {
-            BashShebang shebang = (BashShebang) element;
-            if (shebang.shellCommand() != null) {
-                setNewEndOffset(context, element.getTextOffset() + shebang.commandRange().getEndOffset());
-            }
-        }
     }
 
     /**
@@ -84,7 +60,7 @@ public class BashCompletionContributor extends CompletionContributor {
      *
      * @param context The current invocation context
      */
-    private void fixComposedWordEndOffset(CompletionInitializationContext context) {
+    protected void fixComposedWordEndOffset(CompletionInitializationContext context) {
         PsiElement element = context.getFile().findElementAt(context.getStartOffset());
         if (element == null) {
             return;

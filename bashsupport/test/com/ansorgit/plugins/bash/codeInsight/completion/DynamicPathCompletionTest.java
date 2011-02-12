@@ -35,6 +35,16 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
         }
     }
 
+    public void testHomeVarHiddenCompletion() throws Throwable {
+        configure();
+        Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
+
+        for (LookupElement item : myItems) {
+            String lookup = item.getLookupString();
+            Assert.assertFalse("item must not contain ./. : " + lookup, lookup.contains("./."));
+        }
+    }
+
     public void testTildeCompletion() throws Throwable {
         configure();
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);

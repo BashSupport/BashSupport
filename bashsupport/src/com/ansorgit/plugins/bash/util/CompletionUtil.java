@@ -53,7 +53,10 @@ public class CompletionUtil {
     @NotNull
     public static List<String> completeAbsolutePath(@NotNull String prefix, Predicate<File> accept) {
         File base = new File(prefix);
-        if (!base.exists()) {
+
+        //a dot tricks Java into thinking dir/. is equal to dir and thus exists
+        boolean dotSuffix = prefix.endsWith(".") && !prefix.startsWith(".");
+        if (!base.exists() || dotSuffix) {
             base = base.getParentFile();
             if (base == null || !base.exists()) {
                 return Collections.emptyList();

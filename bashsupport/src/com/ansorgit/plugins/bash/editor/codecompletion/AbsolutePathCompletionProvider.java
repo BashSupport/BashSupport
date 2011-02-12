@@ -46,9 +46,6 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
         contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
     }
 
-    @Override
-    text
-
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (!currentText.startsWith("/")) {
             return;
