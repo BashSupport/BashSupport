@@ -80,4 +80,9 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         configure();
         checkItems(NO_COMPLETIONS);
     }
+
+    public void testNoNameCompletionInParam() throws Exception {
+        configure();
+        checkItems(NO_COMPLETIONS);
+    }
 }

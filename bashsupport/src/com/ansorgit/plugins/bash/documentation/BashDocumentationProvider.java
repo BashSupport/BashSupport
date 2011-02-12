@@ -38,12 +38,6 @@ import java.util.List;
 public class BashDocumentationProvider extends QuickDocumentationProvider {
     private static final Logger log = Logger.getInstance("#bash.BashDocumentationProvider");
 
-    public String getQuickNavigateInfo(PsiElement psiElement) {
-        log.info("getQuickNavigateInfo " + psiElement);
-
-        return null;
-    }
-
     public String getQuickNavigateInfo(PsiElement psiElement, PsiElement psiElement1) {
         return null;
     }

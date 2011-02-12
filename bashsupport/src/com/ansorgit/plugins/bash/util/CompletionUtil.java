@@ -122,6 +122,6 @@ public class CompletionUtil {
             }
         });
 
-        return Arrays.asList(filtered);
+        return filtered == null ? Collections.<File>emptyList() : Arrays.asList(filtered);
     }
 }

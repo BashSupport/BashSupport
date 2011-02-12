@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.function;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
@@ -47,8 +46,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
-
-import static com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils.getElementLineNumber;
 
 /**
  * Date: 11.04.2009
@@ -102,15 +99,7 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
     }
 
     public PsiComment findAttachedComment() {
-        PsiElement previous = getPrevSibling();
-        if (previous != null && previous.getNode() != null && previous.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
-            previous = previous.getPrevSibling();
-            if (previous instanceof PsiComment && BashPsiUtils.getElementEndLineNumber(previous) + 1 == getElementLineNumber(this)) {
-                return (PsiComment) previous;
-            }
-        }
-
-        return null;
+        return BashPsiUtils.findDocumentationElementComment(this);
     }
 
     @NotNull

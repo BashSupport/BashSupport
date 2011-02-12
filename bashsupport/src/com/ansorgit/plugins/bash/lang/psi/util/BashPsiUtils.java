@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
@@ -30,10 +31,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -394,5 +392,39 @@ public class BashPsiUtils {
 
     private static boolean isGlobal(PsiElement element) {
         return findBroadestVarDefFunctionDefScope(element) == null;
+    }
+
+    public static PsiComment findDocumentationElementComment(PsiElement element) {
+        PsiElement command = findParent(element, BashCommand.class);
+        if (command == null) {
+            command = findParent(element, BashFunctionDef.class);
+        }
+
+        if (command == null) {
+            return null;
+        }
+
+        PsiElement previous = command.getPrevSibling();
+
+        if (previous != null && previous.getNode() != null && previous.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
+            previous = previous.getPrevSibling();
+
+            if (previous instanceof PsiComment && BashPsiUtils.getElementEndLineNumber(previous) + 1 == getElementLineNumber(element)) {
+                return (PsiComment) previous;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static PsiElement findParent(PsiElement start, Class<? extends PsiElement> parentType) {
+        for (PsiElement current = start; current != null; current = current.getParent()) {
+            if (parentType.isInstance(current)) {
+                return current;
+            }
+        }
+
+        return null;
     }
 }

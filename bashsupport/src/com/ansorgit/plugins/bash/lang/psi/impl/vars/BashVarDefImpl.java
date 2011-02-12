@@ -291,4 +291,8 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
 
         return false;
     }
+
+    public PsiComment findAttachedComment() {
+        return BashPsiUtils.findDocumentationElementComment(this);
+    }
 }

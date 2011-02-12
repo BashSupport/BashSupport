@@ -18,8 +18,8 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
+import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
@@ -39,9 +39,9 @@ class FunctionPsiCommentSource implements DocumentationSource {
     private static final Logger log = Logger.getInstance("#bash.FunctionPsiCommentSource");
 
     public String documentation(PsiElement element, PsiElement originalElement) {
-        if (element instanceof BashFunctionDef) {
-            log.debug("Looking for doc for function def");
-            return functionDefComment(element);
+        if (element instanceof DocumentationAwareElement) {
+            log.debug("Looking for doc for doc aware psi element");
+            return psiElementDocumentation((DocumentationAwareElement) element);
         }
 
         if (element instanceof BashCommand) {
@@ -51,8 +51,8 @@ class FunctionPsiCommentSource implements DocumentationSource {
 
                 PsiElement function = command.resolve();
 
-                if (function instanceof BashFunctionDef) {
-                    return functionDefComment(function);
+                if (function instanceof DocumentationAwareElement) {
+                    return psiElementDocumentation((DocumentationAwareElement) function);
                 }
             }
         }
@@ -60,8 +60,8 @@ class FunctionPsiCommentSource implements DocumentationSource {
         return null;
     }
 
-    private String functionDefComment(PsiElement element) {
-        PsiComment psiComment = ((BashFunctionDef) element).findAttachedComment();
+    private String psiElementDocumentation(DocumentationAwareElement element) {
+        PsiComment psiComment = element.findAttachedComment();
         return psiComment != null ? cleanupComment(psiComment.getText()) : null;
     }
 
