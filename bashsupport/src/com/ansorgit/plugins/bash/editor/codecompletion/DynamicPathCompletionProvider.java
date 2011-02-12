@@ -18,13 +18,13 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
+import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -50,11 +50,17 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
 
     @Override
     void addTo(CompletionContributor contributor) {
-        contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
+        contributor.extend(CompletionType.BASIC, new BashPsiPattern().withParent(BashWord.class), this);
     }
 
     @Override
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+        //if we are in a combined word, get it
+        PsiElement parentElement = parameters.getPosition().getParent();
+        if (parentElement instanceof BashWord) {
+            currentText = findCurrentText(parameters, parentElement);
+        }
+
         String usedPrefix = findUsedPrefix(currentText);
         if (usedPrefix == null) {
             return;
@@ -65,7 +71,12 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
             return;
         }
 
-        List<String> completions = CompletionUtil.completeRelativePath(baseDir, usedPrefix, currentText.substring(usedPrefix.length()));
+        String relativePath = currentText.substring(usedPrefix.length());
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
+
+        List<String> completions = CompletionUtil.completeRelativePath(baseDir, usedPrefix, relativePath);
         resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
     }
 
