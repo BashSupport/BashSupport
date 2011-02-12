@@ -18,7 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.parser.util;
 
-import com.intellij.lang.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.ITokenTypeRemapper;
+import com.intellij.lang.LighterASTNode;
+import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
@@ -141,7 +144,7 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
         originalPsiBuilder.putUserDataUnprotected(tKey, t);
     }
 
-    public void remapCurrentToken(IElementType iElementType) {
+/*    public void remapCurrentToken(IElementType iElementType) {
         originalPsiBuilder.remapCurrentToken(iElementType);
     }
 
@@ -159,5 +162,5 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
 
     public int rawTokenTypeStart(int i) {
         return originalPsiBuilder.rawTokenTypeStart(i);
-    }
+    }*/
 }

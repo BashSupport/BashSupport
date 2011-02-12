@@ -130,6 +130,7 @@ public class MockPsiBuilder implements PsiBuilder {
         return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unkown";
     }
 
+    /*
     public void remapCurrentToken(IElementType iElementType) {
         throw new UnsupportedOperationException();
     }
@@ -148,7 +149,7 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public int rawTokenTypeStart(int i) {
         throw new UnsupportedOperationException();
-    }
+    } */
 
     public int getCurrentOffset() {
         return elementPosition;
