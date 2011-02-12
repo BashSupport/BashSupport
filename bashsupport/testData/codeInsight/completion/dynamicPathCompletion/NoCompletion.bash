@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./NO<caret>
+./NOTHINGHERE<caret>

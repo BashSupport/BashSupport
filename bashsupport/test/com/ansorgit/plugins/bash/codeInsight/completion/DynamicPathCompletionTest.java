@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
+import com.intellij.codeInsight.lookup.LookupElement;
 import org.junit.Assert;
 
 /**
@@ -26,10 +27,22 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testHomeVarCompletion() throws Throwable {
         configure();
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
+
+        for (LookupElement item : myItems) {
+            String lookup = item.getLookupString();
+            Assert.assertTrue("item does not begin with $HOME/ : " + lookup, lookup.startsWith("$HOME/"));
+            Assert.assertFalse("item must not begin with $HOME// : " + lookup, lookup.startsWith("$HOME//"));
+        }
     }
 
     public void testTildeCompletion() throws Throwable {
         configure();
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
+
+        for (LookupElement item : myItems) {
+            String lookup = item.getLookupString();
+            Assert.assertTrue("item does not begin with ~/ : " + lookup, lookup.startsWith("~/"));
+            Assert.assertFalse("item must not begin with ~// : " + lookup, lookup.startsWith("~//"));
+        }
     }
 }

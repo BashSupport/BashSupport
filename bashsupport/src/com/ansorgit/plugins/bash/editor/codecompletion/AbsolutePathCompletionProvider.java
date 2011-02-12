@@ -42,12 +42,21 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
 
     @Override
     void addTo(CompletionContributor contributor) {
+        //not in composed words, these will be completet by the DynamicPathCompletionProvider
         contributor.extend(CompletionType.BASIC, StandardPatterns.instanceOf(PsiElement.class), this);
     }
 
     @Override
+    text
+
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (!currentText.startsWith("/")) {
+            return;
+        }
+
+        PsiElement parentElement = parameters.getPosition().getParent();
+        String parentText = parentElement.getText();
+        if (parentText.startsWith("$HOME") || parentText.startsWith("~")) {
             return;
         }
 
