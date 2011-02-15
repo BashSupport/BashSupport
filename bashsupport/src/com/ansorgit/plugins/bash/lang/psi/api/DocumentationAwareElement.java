@@ -2,6 +2,8 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.psi.PsiComment;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: jansorg
@@ -16,5 +18,5 @@ public interface DocumentationAwareElement {
      *
      * @return The comment psi element, if found. If unavailable null is returned.
      */
-    PsiComment findAttachedComment();
+    List<PsiComment> findAttachedComment();
 }

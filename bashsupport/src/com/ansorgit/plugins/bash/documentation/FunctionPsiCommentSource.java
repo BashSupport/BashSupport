@@ -61,8 +61,18 @@ class FunctionPsiCommentSource implements DocumentationSource {
     }
 
     private String psiElementDocumentation(DocumentationAwareElement element) {
-        PsiComment psiComment = element.findAttachedComment();
-        return psiComment != null ? cleanupComment(psiComment.getText()) : null;
+        List<PsiComment> psiComments = element.findAttachedComment();
+        return psiComments != null ? cleanupComment(joinComments(psiComments)) : null;
+    }
+
+    private String joinComments(List<PsiComment> psiComments) {
+        StringBuilder command = new StringBuilder();
+
+        for (PsiComment comment : psiComments) {
+            command.append(comment.getText()).append("\n");
+        }
+
+        return command.toString();
     }
 
     private String cleanupComment(String text) {

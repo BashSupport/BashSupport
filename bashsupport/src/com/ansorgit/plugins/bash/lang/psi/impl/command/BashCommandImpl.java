@@ -151,7 +151,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
     @Override
     public PsiReference getReference() {
-        return this;
+        return isFunctionCall() ? this : null;
     }
 
     public String getReferencedName() {
@@ -233,7 +233,9 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
             return true;
         }
 
-        return element instanceof PsiNamedElement && Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName()) && resolve() == element;
+        return element instanceof PsiNamedElement
+                && Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName())
+                && resolve() == element;
     }
 
     @org.jetbrains.annotations.NotNull

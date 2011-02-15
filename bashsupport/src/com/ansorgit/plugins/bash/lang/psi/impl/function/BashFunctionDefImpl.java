@@ -98,8 +98,8 @@ public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunct
         return nameWord;
     }
 
-    public PsiComment findAttachedComment() {
-        return BashPsiUtils.findDocumentationElementComment(this);
+    public List<PsiComment> findAttachedComment() {
+        return BashPsiUtils.findDocumentationElementComments(this);
     }
 
     @NotNull

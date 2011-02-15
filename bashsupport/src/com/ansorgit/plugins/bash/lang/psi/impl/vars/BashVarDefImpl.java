@@ -42,6 +42,8 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 
 /**
@@ -292,7 +294,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         return false;
     }
 
-    public PsiComment findAttachedComment() {
-        return BashPsiUtils.findDocumentationElementComment(this);
+    public List<PsiComment> findAttachedComment() {
+        return BashPsiUtils.findDocumentationElementComments(this);
     }
 }
