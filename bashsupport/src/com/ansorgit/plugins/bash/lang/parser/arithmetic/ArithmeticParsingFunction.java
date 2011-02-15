@@ -28,20 +28,4 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
  * Time: 10:47:30 PM
  */
 public interface ArithmeticParsingFunction extends ParsingFunction {
-    /**
-     * Does partial parsing, e.g. after an already parsed parenthesis expression. It
-     * starts with an operator.
-     *
-     * @param builder          The builder to use.
-     * @return True if the parsing was successful.
-     */
-//    boolean partialParsing(BashPsiBuilder builder);
-
-    /**
-     * Returns true if the following tokens start with a valid partial expression.
-     *
-     * @param builder Streams the tokens
-     * @return True if partial parsing may be valid.
-     */
-//    boolean isValidPartial(BashPsiBuilder builder);
 }

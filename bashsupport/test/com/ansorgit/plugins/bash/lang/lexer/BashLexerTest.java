@@ -71,7 +71,11 @@ public class BashLexerTest {
     public void testSquareBracketArithmeticExpr() {
         testTokenization("$[1]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
 
-        //lexable, but bad syntac
+        testTokenization("$[1 ]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, WHITESPACE, _EXPR_ARITH_SQUARE);
+
+        testTokenization("$[1/${a}]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH_SQUARE);
+
+        //lexable, but bad syntax
         testTokenization("$(([1]))", DOLLAR, EXPR_ARITH, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, _EXPR_ARITH);
     }
 
@@ -80,6 +84,8 @@ public class BashLexerTest {
         testTokenization("$((1))", DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
 
         testTokenization("$((1,1))", DOLLAR, EXPR_ARITH, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
+
+        testTokenization("$((1/${a}))", DOLLAR, EXPR_ARITH, NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH);
 
         testTokenization("$((a=1,1))", DOLLAR, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
 
