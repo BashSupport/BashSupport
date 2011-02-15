@@ -54,18 +54,21 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet result) {
         //if we are in a combined word, get it
         PsiElement parentElement = parameters.getPosition().getParent();
         if (parentElement instanceof BashWord) {
             currentText = findCurrentText(parameters, parentElement);
         }
 
+        result = result.withPrefixMatcher(currentText);
+
         String usedPrefix = findUsedPrefix(currentText);
         if (usedPrefix == null) {
             return;
         }
 
+        //fixme shouldn't be needed
         String baseDir = findBaseDir(parameters, usedPrefix);
         if (baseDir == null) {
             return;
@@ -77,7 +80,7 @@ class DynamicPathCompletionProvider extends BashCompletionProvider {
         }
 
         List<String> completions = CompletionUtil.completeRelativePath(baseDir, usedPrefix, relativePath);
-        resultWithoutPrefix.addAllElements(CompletionProviderUtils.createPathItems(completions));
+        result.addAllElements(CompletionProviderUtils.createPathItems(completions));
     }
 
     @Nullable

@@ -37,11 +37,6 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
 
         BashVar varElement = PsiTreeUtil.getContextOfType(original, BashVar.class);
         boolean dollarPrefix = currentText != null && currentText.startsWith("$");
-        if (dollarPrefix) {
-            //fixme currently this seems to be necessary, but it shouldn't
-            result = result.withPrefixMatcher(currentText.substring(1));
-        }
-
         boolean insideExpansion = element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion;
 
         if (varElement == null && !dollarPrefix && !insideExpansion) {

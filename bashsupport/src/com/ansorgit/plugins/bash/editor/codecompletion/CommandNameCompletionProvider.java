@@ -37,7 +37,7 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
     }
 
     @Override
-    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet result) {
         //this is still required, although the test cases fail
         //to check run the plugin in IDEA and do a completion after a single $ character, this method should
         //not be invoked if working properly
@@ -57,7 +57,7 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
         PsiTreeUtil.treeWalkUp(processor, lookupElement, lookupElement.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> functionItems = CompletionProviderUtils.createPsiItems(processor.getFunctionDefs());
-        resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));
+        result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));
 
         //offer predefined and built-ins on the second invocation count
         //if no local elements were found, offer the global at the first invocation, if enabled
@@ -65,14 +65,19 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
         if (invocationCount >= 2 || functionItems.isEmpty()) {
             Project project = lookupElement.getProject();
 
+            //make sure to use the prefix text of the current lookup element, it might be a composed word
+            //element and we need to match the commands with that prefix to avoid illegal suggestions
+            String lookupPrefix = findCurrentText(parameters, lookupElement);
+            CompletionResultSet commandResult = result.withPrefixMatcher(lookupPrefix);
+
             if (BashProjectSettings.storedSettings(project).isAutocompleteBuiltinCommands()) {
                 Collection<LookupElement> globals = CompletionProviderUtils.createItems(LanguageBuiltins.commands, BashIcons.GLOBAL_VAR_ICON);
-                resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalCommand.ordinal(), globals));
+                commandResult.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalCommand.ordinal(), globals));
             }
 
             if (BashProjectSettings.storedSettings(project).isSupportBash4()) {
                 Collection<LookupElement> globals = CompletionProviderUtils.createItems(LanguageBuiltins.commands_v4, BashIcons.GLOBAL_VAR_ICON);
-                resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalCommand.ordinal(), globals));
+                commandResult.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalCommand.ordinal(), globals));
             }
         } else {
             CompletionService.getCompletionService().setAdvertisementText("Press twice for built-in commands");

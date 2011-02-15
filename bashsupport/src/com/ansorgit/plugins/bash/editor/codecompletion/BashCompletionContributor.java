@@ -21,9 +21,12 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.codeInsight.completion.OffsetMap;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
+
+import static com.intellij.codeInsight.completion.CompletionInitializationContext.IDENTIFIER_END_OFFSET;
+import static com.intellij.codeInsight.completion.CompletionInitializationContext.START_OFFSET;
 
 /**
  * Bash completion contributor.
@@ -33,11 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * Time: 2:35:32 PM
  */
 public class BashCompletionContributor extends CompletionContributor {
-    private static final Logger log = Logger.getInstance("BashCompletionContributor");
-
     public BashCompletionContributor() {
-        log.info("Created bash completion contributor");
-
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider().addTo(this);
         new AbsolutePathCompletionProvider().addTo(this);
@@ -47,10 +46,11 @@ public class BashCompletionContributor extends CompletionContributor {
 
     @Override
     public void beforeCompletion(@NotNull CompletionInitializationContext context) {
-        super.beforeCompletion(context);
-
         context.setDummyIdentifier("ZZZ");
+    }
 
+    @Override
+    public void duringCompletion(@NotNull CompletionInitializationContext context) {
         fixComposedWordEndOffset(context);
     }
 
@@ -72,11 +72,11 @@ public class BashCompletionContributor extends CompletionContributor {
 
         if (element instanceof BashWord) {
             int endOffset = element.getTextOffset() + element.getTextLength();
-            setNewEndOffset(context, endOffset);
+
+            OffsetMap offsetMap = context.getOffsetMap();
+            offsetMap.addOffset(START_OFFSET, element.getTextOffset());
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, endOffset);
         }
     }
 
-    private void setNewEndOffset(CompletionInitializationContext context, int endOffset) {
-        context.getOffsetMap().addOffset(CompletionInitializationContext.IDENTIFIER_END_OFFSET, endOffset);
-    }
 }

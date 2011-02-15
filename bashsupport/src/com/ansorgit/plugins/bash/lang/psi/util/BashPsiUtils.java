@@ -38,6 +38,8 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -394,27 +396,35 @@ public class BashPsiUtils {
         return findBroadestVarDefFunctionDefScope(element) == null;
     }
 
-    public static PsiComment findDocumentationElementComment(PsiElement element) {
+    public static List<PsiComment> findDocumentationElementComments(PsiElement element) {
         PsiElement command = findParent(element, BashCommand.class);
         if (command == null) {
             command = findParent(element, BashFunctionDef.class);
         }
 
         if (command == null) {
-            return null;
+            return Collections.emptyList();
         }
 
-        PsiElement previous = command.getPrevSibling();
+        int previousLine = getElementLineNumber(element);
 
-        if (previous != null && previous.getNode() != null && previous.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
-            previous = previous.getPrevSibling();
+        PsiElement current = command.getPrevSibling();
 
-            if (previous instanceof PsiComment && BashPsiUtils.getElementEndLineNumber(previous) + 1 == getElementLineNumber(element)) {
-                return (PsiComment) previous;
+        LinkedList<PsiComment> result = Lists.newLinkedList();
+
+        while (current != null && current.getNode() != null && current.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
+            current = current.getPrevSibling();
+
+            if (current instanceof PsiComment && BashPsiUtils.getElementEndLineNumber(current) + 1 == previousLine) {
+                result.add(0, (PsiComment) current);
+                previousLine = getElementLineNumber(current);
+                current = current.getPrevSibling();
+            } else {
+                break;
             }
         }
 
-        return null;
+        return result;
     }
 
     @Nullable
