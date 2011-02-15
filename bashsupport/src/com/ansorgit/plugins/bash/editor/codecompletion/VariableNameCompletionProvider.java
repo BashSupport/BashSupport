@@ -28,16 +28,19 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
         BashPsiPattern insideVar = new BashPsiPattern().withParent(BashVar.class);
 
         contributor.extend(CompletionType.BASIC, insideVar, this);
-        //contributor.extend(CompletionType.BASIC, afterDollar, this);
     }
 
     @Override
-    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
+    protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet result) {
         PsiElement element = parameters.getPosition();
         PsiElement original = parameters.getOriginalPosition();
 
         BashVar varElement = PsiTreeUtil.getContextOfType(original, BashVar.class);
         boolean dollarPrefix = currentText != null && currentText.startsWith("$");
+        if (dollarPrefix) {
+            //fixme currently this seems to be necessary, but it shouldn't
+            result = result.withPrefixMatcher(currentText.substring(1));
+        }
 
         boolean insideExpansion = element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion;
 
@@ -51,36 +54,36 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
         //fixme Currently we only look into the current file if no original element is given, better: we should collect locals and the included vars from the original file
 
         if (varElement != null) {
-            resultLength += addCollectedVariables(original, resultWithoutPrefix, new BashVarVariantsProcessor(varElement));
+            resultLength += addCollectedVariables(original, result, new BashVarVariantsProcessor(varElement));
         } else {
             //not in a variable element, but collect all known variable names at this offset in the current file
             PsiElement lookupElement = original != null ? original : element;
 
-            resultLength += addCollectedVariables(lookupElement, resultWithoutPrefix, new BashVarVariantsProcessor(lookupElement));
+            resultLength += addCollectedVariables(lookupElement, result, new BashVarVariantsProcessor(lookupElement));
         }
 
         if (currentText != null && dollarPrefix && (invocationCount >= 2 || resultLength == 0)) {
             Project project = element.getProject();
-            addBuildInVariables(resultWithoutPrefix, project);
-            addGlobalVariables(resultWithoutPrefix, project);
+            addBuildInVariables(result, project);
+            addGlobalVariables(result, project);
         } else {
             CompletionService.getCompletionService().setAdvertisementText("Press twice for global variables");
         }
     }
 
-    private int addCollectedVariables(PsiElement element, CompletionResultSet resultWithoutPrefix, BashVarCollectorProcessor processor) {
+    private int addCollectedVariables(PsiElement element, CompletionResultSet result, BashVarCollectorProcessor processor) {
         PsiTreeUtil.treeWalkUp(processor, element, element.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
-        resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));
+        result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));
 
         return items.size();
     }
 
-    private void addGlobalVariables(CompletionResultSet resultWithoutPrefix, Project project) {
+    private void addGlobalVariables(CompletionResultSet result, Project project) {
         if (BashProjectSettings.storedSettings(project).isAutcompleteGlobalVars()) {
             Collection<LookupElement> globalVars = CompletionProviderUtils.createItems(BashProjectSettings.storedSettings(project).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON);
-            resultWithoutPrefix.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalVar.ordinal(), globalVars));
+            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalVar.ordinal(), globalVars));
         }
     }
 

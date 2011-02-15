@@ -52,7 +52,6 @@ public class BashCompletionContributor extends CompletionContributor {
         context.setDummyIdentifier("ZZZ");
 
         fixComposedWordEndOffset(context);
-        //fixShebangEndOffset(context);
     }
 
     /**

@@ -640,4 +640,10 @@ public class IntegrationTest extends MockPsiTest {
     public void testComposedVarDefValue() {
         mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, STRING_BEGIN, WORD, STRING_END, WORD, STRING_BEGIN, STRING_END);
     }
+
+    @Test
+    public void testSquareArithmetic() {
+        //$[10/${num}]
+        mockTest(fileParsingTest, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH_SQUARE);
+    }
 }

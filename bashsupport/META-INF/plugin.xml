@@ -132,7 +132,7 @@
         -->
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
-            <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
+            <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
         </action>
 
 

@@ -618,7 +618,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 
 /** Match in all except of string */
-<YYINITIAL, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
   /* Matching in all states */
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
@@ -628,7 +628,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
@@ -682,7 +682,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARRAYASSIGN, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
 }    

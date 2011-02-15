@@ -15,7 +15,7 @@ public class VariableNameCompletionTest extends AbstractCompletionTest {
 
     public void testSimpleCompletion() throws Exception {
         configure();
-        checkItems("abIsOk", "aIsOk2");
+        checkItems("abIsOk1", "abIsOk2");
     }
 
     public void testIncludedVariables() throws Exception {
