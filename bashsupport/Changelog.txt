@@ -1,7 +1,11 @@
+2011-02-15:
+  - Improved autocompletion
+
 2011-02-12:
  - Documentation lookup for variable definitions, the comment before the definition is displayed, if available
  - Fixed documentation lookup for external command
  - Fixed some invalid autocompletion suggestions
+ - Version 0.9.19
 
 2011-02-07:
  - Variable completion from included files
