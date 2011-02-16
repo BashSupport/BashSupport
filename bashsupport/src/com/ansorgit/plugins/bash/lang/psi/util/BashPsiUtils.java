@@ -307,11 +307,14 @@ public class BashPsiUtils {
     }
 
     @Nullable
-    public static BashFile findIncludedFile(BashCommand bashCommand) {
+    public static PsiFile findIncludedFile(BashCommand bashCommand) {
         String filename = findIncludedFilename(bashCommand);
         if (filename != null) {
             PsiFile containingFile = bashCommand.getContainingFile();
-            return (BashFile) BashPsiFileUtils.findRelativeFile(containingFile, filename);
+
+            if (containingFile != null) {
+                return BashPsiFileUtils.findRelativeFile(containingFile, filename);
+            }
         }
 
         return null;
