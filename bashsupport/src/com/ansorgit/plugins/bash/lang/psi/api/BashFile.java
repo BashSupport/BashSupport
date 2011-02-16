@@ -42,6 +42,7 @@ public interface BashFile extends PsiFile, BashPsiElement {
 
     /**
      * @param diveDeep
+     * @param bashOnly
      */
-    Set<BashFile> findIncludedFiles(boolean diveDeep);
+    Set<PsiFile> findIncludedFiles(boolean diveDeep, boolean bashOnly);
 }

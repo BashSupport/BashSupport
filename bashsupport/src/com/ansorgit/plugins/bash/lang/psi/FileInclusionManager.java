@@ -38,7 +38,7 @@ public class FileInclusionManager {
         for (PsiFile currentFile : allFiles) {
             if (currentFile instanceof BashFile) {
                 BashFile bashFile = (BashFile) currentFile;
-                Set<BashFile> includedFiles = bashFile.findIncludedFiles(true);
+                Set<PsiFile> includedFiles = bashFile.findIncludedFiles(true, true);
 
                 if (includedFiles.contains(file)) {
                     includers.add(currentFile);

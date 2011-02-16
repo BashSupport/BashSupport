@@ -18,10 +18,10 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.19</version>
+    <version>0.9.20</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
-            logo="/resources/icons/bash-32.png">Joachim Ansorg
+            logo="resources/icons/bash-16.png">Joachim Ansorg
     </vendor>
 
     <!-- Requires IDEA 10.0 or later -->

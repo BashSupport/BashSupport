@@ -95,7 +95,7 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
 
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(getContainingFile());
 
-        Set<BashFile> includedFiles = psiFile.findIncludedFiles(true);
+        Set<PsiFile> includedFiles = psiFile.findIncludedFiles(true, true);
         Collection<VirtualFile> files = Collections2.transform(includedFiles, new Function<PsiFile, VirtualFile>() {
             public VirtualFile apply(PsiFile psiFile) {
                 return psiFile.getVirtualFile();

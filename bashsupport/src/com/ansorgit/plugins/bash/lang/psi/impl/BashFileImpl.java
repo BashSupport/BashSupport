@@ -28,10 +28,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,9 +55,9 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         return findChildrenByClass(BashFunctionDef.class);
     }
 
-    public Set<BashFile> findIncludedFiles(boolean diveDeep) {
-        Set<BashFile> result = Sets.newHashSet();
-        findIncludedFiles(result, diveDeep);
+    public Set<PsiFile> findIncludedFiles(boolean diveDeep, boolean bashOnly) {
+        Set<PsiFile> result = Sets.newHashSet();
+        findIncludedFiles(result, diveDeep, bashOnly);
 
         return result;
     }
@@ -70,9 +67,10 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
      *
      * @param result   The holder of the found included files
      * @param diveDeep
+     * @param bashOnly
      * @return
      */
-    private void findIncludedFiles(final Set<BashFile> result, final boolean diveDeep) {
+    private void findIncludedFiles(final Set<PsiFile> result, final boolean diveDeep, final boolean bashOnly) {
         //fixme cache or index this
 
         BashVisitor visitor = new BashVisitor() {
@@ -88,12 +86,17 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
             private void checkCommand(BashCommand bashCommand) {
                 if (bashCommand.isIncludeCommand()) {
-                    BashFile includedFile = BashPsiUtils.findIncludedFile(bashCommand);
+                    PsiFile includedFile = BashPsiUtils.findIncludedFile(bashCommand);
+
+                    if (bashOnly && !(includedFile instanceof BashFile)) {
+                        return;
+                    }
+
                     if (includedFile != null && !result.contains(includedFile)) {
                         result.add(includedFile);
 
-                        if (diveDeep) {
-                            ((BashFileImpl) includedFile).findIncludedFiles(result, true);
+                        if (diveDeep && includedFile instanceof BashFileImpl) {
+                            ((BashFileImpl) includedFile).findIncludedFiles(result, true, bashOnly);
                         }
                     }
                 }
