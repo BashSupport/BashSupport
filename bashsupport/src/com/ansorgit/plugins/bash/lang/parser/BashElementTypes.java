@@ -34,6 +34,8 @@ import com.intellij.psi.tree.IFileElementType;
 public interface BashElementTypes {
     IFileElementType FILE = new IFileElementType(BashFileType.BASH_LANGUAGE);
 
+    IElementType FILE_REFERENCE = new BashElementType("File reference");
+
     IElementType SHEBANG_ELEMENT = new BashElementType("shebang element");
 
     IElementType BLOCK_ELEMENT = new BashElementType("block element");
@@ -58,6 +60,7 @@ public interface BashElementTypes {
     IElementType VAR_DEF_ELEMENT = new BashElementType("assignment command element");
     IElementType INTERNAL_COMMAND_ELEMENT = new BashElementType("internal bash command");
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
+    IElementType INCLUDE_COMMAND_ELEMENT = new BashElementType("include command");
 
     //pipeline commands
     IElementType PIPELINE_COMMAND = new BashElementType("pipeline command");

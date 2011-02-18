@@ -18,12 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
-import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashFiledescriptor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
@@ -85,13 +83,18 @@ public class BashVisitor extends PsiElementVisitor {
         visitElement(bashCommand);
     }
 
-    public void visitIncludeCommand(BashCommand bashCommand) {
-        visitElement(bashCommand);
-    }
-
     public void visitExpansion(BashExpansion bashExpansion) {
         visitElement(bashExpansion);
     }
+
+    public void visitIncludeCommand(BashIncludeCommand fileReference) {
+        visitElement(fileReference);
+    }
+
+    public void visitFileReference(BashFileReference fileReference) {
+        visitElement(fileReference);
+    }
+
 
     /**
      * Visits a bash char sequence. A char sequence is a string which may consist of

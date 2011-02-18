@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -308,13 +309,8 @@ public class BashPsiUtils {
 
     @Nullable
     public static PsiFile findIncludedFile(BashCommand bashCommand) {
-        String filename = findIncludedFilename(bashCommand);
-        if (filename != null) {
-            PsiFile containingFile = bashCommand.getContainingFile();
-
-            if (containingFile != null) {
-                return BashPsiFileUtils.findRelativeFile(containingFile, filename);
-            }
+        if (bashCommand instanceof BashIncludeCommand) {
+            return ((BashIncludeCommand) bashCommand).getFileReference().findReferencedFile();
         }
 
         return null;
@@ -332,7 +328,7 @@ public class BashPsiUtils {
 
         BashVisitor collecingVisitor = new BashVisitor() {
             @Override
-            public void visitIncludeCommand(BashCommand bashCommand) {
+            public void visitIncludeCommand(BashIncludeCommand bashCommand) {
                 if (includedFile.equals(findIncludedFile(bashCommand))) {
                     includeCommands.add(bashCommand);
                 }

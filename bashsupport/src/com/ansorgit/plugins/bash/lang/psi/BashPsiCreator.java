@@ -135,6 +135,9 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == BashTokenTypes.FILEDESCRIPTOR) {
             return new BashFiledescriptorImpl(node);
         }
+        if (elementType == FILE_REFERENCE) {
+            return new BashFileReferenceImpl(node);
+        }
 
         //vars
         if (elementType == VAR_DEF_ELEMENT) {
@@ -153,6 +156,9 @@ public class BashPsiCreator implements BashElementTypes {
         //commands
         if (elementType == SIMPLE_COMMAND_ELEMENT) {
             return new BashCommandImpl(node);
+        }
+        if (elementType == INCLUDE_COMMAND_ELEMENT) {
+            return new BashIncludeCommandImpl(node);
         }
 
         //misc elements

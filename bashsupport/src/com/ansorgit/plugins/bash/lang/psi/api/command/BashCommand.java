@@ -46,6 +46,13 @@ public interface BashCommand extends BashPsiElement, BashReference {
     boolean isFunctionCall();
 
     /**
+     * Returns true if this command is an include command
+     *
+     * @return True if this is an include command
+     */
+    boolean isIncludeCommand();
+
+    /**
      * Checks whether this command is a call of an bash-internal command, like "echo" or "cd".
      *
      * @return True if this commmand is an internal command.
@@ -103,6 +110,4 @@ public interface BashCommand extends BashPsiElement, BashReference {
     List<BashVarDef> assignments();
 
     String getReferencedName();
-
-    boolean isIncludeCommand();
 }

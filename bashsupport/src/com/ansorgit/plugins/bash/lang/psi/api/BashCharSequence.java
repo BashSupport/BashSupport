@@ -18,6 +18,9 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.openapi.util.TextRange;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * User: jansorg
  * Date: Nov 2, 2009
@@ -38,4 +41,12 @@ public interface BashCharSequence extends BashPsiElement {
      * @return True if its value is known at write-time.
      */
     boolean isStatic();
+
+    /**
+     * Returns the range of the actual text content of this element.
+     *
+     * @return The range inside this element around the content elements
+     */
+    @NotNull
+    TextRange getTextContentRange();
 }

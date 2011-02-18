@@ -13,4 +13,8 @@ public class RecursiveIncludeFileInspectionTest extends AbstractInspectionTestCa
     public void testRecursiveInclusion() throws Exception {
         doTest("recursiveIncludeFileInspection/recursiveInclusion", new RecursiveIncludeFileInspection());
     }
+
+    public void testDeepRecursiveInclusion() throws Exception {
+        doTest("recursiveIncludeFileInspection/deepRecursiveInclusion", new RecursiveIncludeFileInspection());
+    }
 }
