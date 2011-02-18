@@ -266,10 +266,6 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
             } else {
                 v.visitGenericCommand(this);
             }
-
-            if (isIncludeCommand()) {
-                v.visitIncludeCommand(this);
-            }
         } else {
             visitor.visitElement(this);
         }
@@ -321,6 +317,6 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     }
 
     public boolean isIncludeCommand() {
-        return ".".equals(getReferencedName()) || "source".equals(getReferencedName());
+        return false;
     }
 }

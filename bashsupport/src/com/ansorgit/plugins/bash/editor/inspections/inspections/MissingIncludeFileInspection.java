@@ -19,10 +19,8 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -32,7 +30,6 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * User: jansorg
@@ -77,38 +74,24 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new BashVisitor() {
             @Override
-            public void visitInternalCommand(BashCommand bashCommand) {
-                String commandName = bashCommand.getReferencedName();
+            public void visitIncludeCommand(BashIncludeCommand bashCommand) {
+                //fixme support $PATH evaluation
 
-                if (".".equals(commandName)) {
-                    List<BashPsiElement> params = bashCommand.parameters();
+                BashFileReference fileReference = bashCommand.getFileReference();
+                PsiFile file = fileReference.findReferencedFile();
+                if (file == null && fileReference.isStatic()) {
+                    String filename = fileReference.getFilename();
 
-                    if (params.size() >= 1) {
-                        BashPsiElement firstParam = params.get(0);
+                    //check if it's an existing absolute file
+                    File diskFile = new File(filename);
+                    boolean absoluteAndExists = diskFile.isAbsolute() && diskFile.exists();
+                    if (!absoluteAndExists) {
+                        holder.registerProblem(fileReference, "The file '" + filename + "' does not exist.");
+                    }
 
-                        //fixme support $PATH evaluation
-
-                        if (firstParam instanceof BashCharSequence) {
-                            BashCharSequence sequence = (BashCharSequence) firstParam;
-
-                            if (sequence.isStatic()) {
-                                String filename = sequence.getUnwrappedCharSequence();
-                                PsiFile file = BashPsiFileUtils.findRelativeFile(bashCommand.getContainingFile(), filename);
-                                if (file == null) {
-                                    //check if it's an existing absolute file
-                                    File diskFile = new File(filename);
-                                    boolean absoluteAndExists = diskFile.isAbsolute() && diskFile.exists();
-                                    if (!absoluteAndExists) {
-                                        holder.registerProblem(firstParam, "The file '" + filename + "' does not exist.");
-                                    }
-
-                                    //print an error message if the given path is a directory
-                                    if (absoluteAndExists && diskFile.isDirectory()) {
-                                        holder.registerProblem(firstParam, "Unable to include a directory.");
-                                    }
-                                }
-                            }
-                        }
+                    //print an error message if the given path is a directory
+                    if (absoluteAndExists && diskFile.isDirectory()) {
+                        holder.registerProblem(fileReference, "Unable to include a directory.");
                     }
                 }
             }

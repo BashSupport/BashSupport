@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
@@ -68,5 +69,15 @@ public class BashWordImpl extends BashPsiElementImpl implements BashWord {
 
     public boolean isStatic() {
         return BashPsiUtils.isStaticWordExpr(getFirstChild());
+    }
+
+    @NotNull
+    public TextRange getTextContentRange() {
+        String text = getText();
+        if (text.startsWith("'") && text.endsWith("'")) {
+            return TextRange.from(1, getTextLength() - 2);
+        }
+
+        return TextRange.from(0, getTextLength());
     }
 }

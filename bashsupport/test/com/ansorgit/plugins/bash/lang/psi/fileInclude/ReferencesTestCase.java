@@ -25,7 +25,7 @@ public class ReferencesTestCase extends AbstractFileIncludeTest {
         PsiFile included = addFile("included.bash");
 
         PsiElement varDef = variableReference.resolve();
-        Assert.assertNotNull(varDef);
+        Assert.assertNotNull("The reference did not resolve", varDef);
         Assert.assertTrue("var def must resolve to the definition in included.bash", included.equals(varDef.getContainingFile()));
 
         Assert.assertTrue("The definition and usage scope must be valid", BashVarUtils.isInDefinedScope(variableReference.getElement(), (BashVarDef) varDef));

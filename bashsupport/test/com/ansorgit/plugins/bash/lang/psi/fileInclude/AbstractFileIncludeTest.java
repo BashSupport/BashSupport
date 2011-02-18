@@ -43,13 +43,13 @@ public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
 
         //the var has to resolve to the definition in the included file
         PsiElement def = reference.resolve();
-        Assert.assertNotNull("Variable is not properly resolved", def);
+        Assert.assertNotNull("Reference is not properly resolved", def);
 
         boolean defIsInIncludeFile = def.getContainingFile().equals(includeFile);
         if (assertDefInInclude) {
-            Assert.assertTrue("The variable is not defined in the include file.", defIsInIncludeFile);
+            Assert.assertTrue("The reference is not defined in the include file.", defIsInIncludeFile);
         } else {
-            Assert.assertFalse("The variable must not be defined in the include file.", defIsInIncludeFile);
+            Assert.assertFalse("The reference must not be defined in the include file.", defIsInIncludeFile);
         }
 
         return def;

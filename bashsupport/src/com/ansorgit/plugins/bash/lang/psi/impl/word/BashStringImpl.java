@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +52,11 @@ public class BashStringImpl extends BashPsiElementImpl implements BashString, Ba
 
     public boolean isStatic() {
         return BashPsiUtils.isStaticWordExpr(getFirstChild());
+    }
+
+    @NotNull
+    public TextRange getTextContentRange() {
+        return TextRange.create(1, getTextLength() - 1);
     }
 
     @Override

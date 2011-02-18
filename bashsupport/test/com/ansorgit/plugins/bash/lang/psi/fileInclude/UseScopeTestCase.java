@@ -24,6 +24,7 @@ public class UseScopeTestCase extends AbstractFileIncludeTest {
         PsiFile notIncluded = addFile("notIncluded.bash");
 
         PsiElement varDef = variableReference.resolve();
+        Assert.assertNotNull("Var must resolve", varDef);
         Assert.assertTrue("var def must resolve to the definition in included.bash", included.equals(varDef.getContainingFile()));
 
         SearchScope varDefUseScope = varDef.getUseScope();

@@ -31,4 +31,8 @@ public class BashInternalCommandImpl extends BashPsiElementImpl implements BashI
     public BashInternalCommandImpl(ASTNode astNode) {
         super(astNode, "BashInternalCommand");
     }
+
+    public BashInternalCommandImpl(ASTNode astNode, String description) {
+        super(astNode, description);
+    }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>6</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>7</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>8</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+
+    <problem>
+        <file>B.bash</file>
+        <line>3</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Recursive file inclusion</problem_class>
+        <description>Possible recursive inclusion</description>
+    </problem>
+</problems>
+

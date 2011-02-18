@@ -19,10 +19,10 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
+import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -31,7 +31,7 @@ import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * This inspection detects recursive file inclusion.
@@ -78,20 +78,17 @@ public class RecursiveIncludeFileInspection extends AbstractBashInspection {
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new BashVisitor() {
             @Override
-            public void visitInternalCommand(BashCommand bashCommand) {
-                if (".".equals(bashCommand.getReferencedName())) {
-                    List<BashPsiElement> params = bashCommand.parameters();
-                    if (params.size() == 1) {
-                        BashPsiElement firstParam = params.get(0);
-                        if (firstParam instanceof BashCharSequence) {
-                            String filename = ((BashCharSequence) firstParam).getUnwrappedCharSequence();
-                            PsiFile containingFile = bashCommand.getContainingFile();
-                            PsiFile file = BashPsiFileUtils.findRelativeFile(containingFile, filename);
+            public void visitIncludeCommand(BashIncludeCommand includeCommand) {
+                BashFileReference fileReference = includeCommand.getFileReference();
 
-                            if (file != null && file.equals(containingFile)) {
-                                holder.registerProblem(firstParam, "A file should not include itself.");
-                            }
-                        }
+                PsiFile referencedFile = fileReference.findReferencedFile();
+                if (includeCommand.getContainingFile().equals(referencedFile)) {
+                    holder.registerProblem(fileReference, "A file should not include itself.");
+                } else if (referencedFile instanceof BashFile) {
+                    //check for deep recursive inclusion
+                    Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(includeCommand.getProject(), referencedFile);
+                    if (includingFiles.contains(includeCommand.getContainingFile())) {
+                        holder.registerProblem(fileReference, "Possible recursive inclusion");
                     }
                 }
             }
