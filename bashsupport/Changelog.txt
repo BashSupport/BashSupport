@@ -1,3 +1,7 @@
+2011-02-18:
+  - Ctrl+B on file references (e.g. in include command) is supported now
+ - Issue #35: Math calculations using square brackets not supported
+
 2011-02-15:
   - Improved autocompletion
 
