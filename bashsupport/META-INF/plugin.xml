@@ -39,6 +39,15 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.20:</b>
+       <ul>
+         <li>Fixed detection of deep recursive file include loops</li>
+         <li>Ctrl+B on file references (e.g. in include command) is supported now</li>
+         <li>Issue #35: Math calculations using square brackets not supported</li>
+         <li>Improved autocompletion</li>
+         <li>Fixed exception if an included file was not a Bash file</li>
+       </ul>
+
        <b>Changes in version 0.9.19:</b>
        <ul>
          <li>Documentation lookup for variable definitions, the comment before the definition is displayed, if available</li>
