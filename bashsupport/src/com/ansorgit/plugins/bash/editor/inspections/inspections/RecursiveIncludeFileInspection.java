@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
@@ -86,8 +85,8 @@ public class RecursiveIncludeFileInspection extends AbstractBashInspection {
                     holder.registerProblem(fileReference, "A file should not include itself.");
                 } else if (referencedFile instanceof BashFile) {
                     //check for deep recursive inclusion
-                    Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(includeCommand.getProject(), referencedFile);
-                    if (includingFiles.contains(includeCommand.getContainingFile())) {
+                    Set<PsiFile> includedFiles = ((BashFile) referencedFile).findIncludedFiles(true, true);
+                    if (includedFiles.contains(includeCommand.getContainingFile())) {
                         holder.registerProblem(fileReference, "Possible recursive inclusion");
                     }
                 }
