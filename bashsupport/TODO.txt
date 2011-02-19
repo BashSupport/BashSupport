@@ -144,7 +144,7 @@ Bugs (indentation marks fixed bugs):
 - Quotation marks in heredocs mix up the parser, Strings are lexed, heredocs are parsed but not lexed,
   thus the parser sees an incomplete string and can not parse the heredoc. This should be fixed somehow, probably
   needs a lexer refactoring / rework.
-- Add shebang does not work for empty file
+    - Add shebang does not work for empty file
 - bash: insert string end after " is typed
 - Inspection to find incompatibilities with the old "sh" command
 - Extract local variable
