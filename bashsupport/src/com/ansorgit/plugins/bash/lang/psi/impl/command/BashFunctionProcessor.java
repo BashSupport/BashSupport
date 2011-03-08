@@ -52,7 +52,7 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
 
             if (symboleName.equals(f.getName())) {
                 storeResult(element, BashPsiUtils.blockNestingLevel(f));
-                return ignoreExecuteResult ? true : false;
+                return ignoreExecuteResult;
             }
         }
 

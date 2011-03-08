@@ -72,14 +72,15 @@ public class UnusedFunctionDefInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                //List<PsiReference> references = PsiReferenceService.getService().getReferences(functionDef, PsiReferenceService.Hints.NO_HINTS);
-
-                Query<PsiReference> search = ReferencesSearch.search(functionDef);
-                PsiReference first = search.findFirst();
-
                 BashSymbol nameSymbol = functionDef.getNameSymbol();
-                if (first == null && nameSymbol != null) {
-                    holder.registerProblem(nameSymbol, getShortName(), ProblemHighlightType.LIKE_UNUSED_SYMBOL);
+
+                if (nameSymbol != null) {
+                    Query<PsiReference> search = ReferencesSearch.search(functionDef, functionDef.getUseScope(), true);
+                    PsiReference first = search.findFirst();
+
+                    if (first == null) {
+                        holder.registerProblem(nameSymbol, getShortName(), ProblemHighlightType.LIKE_UNUSED_SYMBOL);
+                    }
                 }
             }
         };

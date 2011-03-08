@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -84,4 +85,11 @@ public class FileInclusionManager {
     }
 
 
+    public static Set<PsiFile> findIncludedFiles(PsiFile file) {
+        if (file instanceof BashFile) {
+            return ((BashFile) file).findIncludedFiles(true, true);
+        }
+
+        return Collections.emptySet();
+    }
 }

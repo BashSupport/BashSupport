@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
@@ -48,6 +49,7 @@ import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Date: 12.04.2009
@@ -187,6 +189,16 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
         boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
         if (!walkOn) {
             return processor.hasResults() ? processor.getBestResult(true, this) : null;
+        }
+
+        //we need to look into the files which include this command's containingFile.
+        //a function call might reference a command from one of the including files
+        Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
+        for (PsiFile file : includingFiles) {
+            walkOn = PsiTreeUtil.treeWalkUp(processor, file.getLastChild(), file, ResolveState.initial());
+            if (!walkOn) {
+                return processor.hasResults() ? processor.getBestResult(true, this) : null;
+            }
         }
 
         return null;
