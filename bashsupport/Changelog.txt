@@ -1,3 +1,6 @@
+2011-03-08:
+ - Fixed unused function inspection in files which reference elements in files which include the file
+
 2011-02-19:
  - Fixed detection of deep recursive file include loops
 

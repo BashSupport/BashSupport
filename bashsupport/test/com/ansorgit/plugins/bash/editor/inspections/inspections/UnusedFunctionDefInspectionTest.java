@@ -19,6 +19,16 @@ public class UnusedFunctionDefInspectionTest extends AbstractInspectionTestCase 
     }
 
     @Test
+    public void testOk3() throws Exception {
+        doTest("unusedFunctionDefInspection/ok3", new UnusedFunctionDefInspection());
+    }
+
+    @Test
+    public void testOk4() throws Exception {
+        doTest("unusedFunctionDefInspection/ok4", new UnusedFunctionDefInspection());
+    }
+
+    @Test
     public void testUnusedDef() throws Exception {
         doTest("unusedFunctionDefInspection/unusedDef", new UnusedFunctionDefInspection());
     }

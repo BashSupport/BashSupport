@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.util.BashFunctions;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -78,13 +79,17 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
         //fixme quite slow, fix with reverse index included file->including file
 
         Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
-        if (includingFiles.isEmpty()) {
+        Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(getContainingFile());
+
+        if (includingFiles.isEmpty() && includedFiles.isEmpty()) {
             //we should return a local search scope if we only have local references
             //not return a local scope then inline renaming is not possible
             return new LocalSearchScope(getContainingFile());
         }
 
-        Collection<VirtualFile> virtualFiles = Collections2.transform(includingFiles, BashFunctions.psiToVirtualFile());
+        Set<PsiFile> allFiles = Sets.union(includedFiles, includingFiles);
+
+        Collection<VirtualFile> virtualFiles = Collections2.transform(allFiles, BashFunctions.psiToVirtualFile());
         return GlobalSearchScope.fileScope(getContainingFile()).union(GlobalSearchScope.filesScope(getProject(), virtualFiles));
     }
 
