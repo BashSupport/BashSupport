@@ -68,6 +68,23 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testArrayVariables() throws Exception {
+        testTokenization("${PIPESTATUS[0]}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+
+        testTokenization("${#myVar[*]}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE, RIGHT_CURLY);
+
+        testTokenization("${myVar[0]:1}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+
+        testTokenization("${myVar[*]:1}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+
+        testTokenization("${myVar[@]:1}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+
+        testTokenization("a=( one to three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+
+        testTokenization("a=( one to [2]=three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
+    }
+
+    @Test
     public void testSquareBracketArithmeticExpr() {
         testTokenization("$[1]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
 
