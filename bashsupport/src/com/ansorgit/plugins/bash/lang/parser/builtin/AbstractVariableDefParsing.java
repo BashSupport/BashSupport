@@ -34,7 +34,7 @@ import com.intellij.psi.tree.IElementType;
  *
  * @author Joachim Ansorg
  */
-abstract class VariableDefCommand implements ParsingFunction {
+abstract class AbstractVariableDefParsing implements ParsingFunction {
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
     private final String commandName;
@@ -48,7 +48,7 @@ abstract class VariableDefCommand implements ParsingFunction {
      * @param commandText
      * @param acceptVarAssignments
      */
-    protected VariableDefCommand(boolean acceptFrontVarDef, IElementType commandElementType, String commandText, boolean acceptVarAssignments) {
+    protected AbstractVariableDefParsing(boolean acceptFrontVarDef, IElementType commandElementType, String commandText, boolean acceptVarAssignments) {
         this.acceptFrontVarDef = acceptFrontVarDef;
         this.commandElementType = commandElementType;
         this.commandName = commandText;

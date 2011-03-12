@@ -137,9 +137,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * Reads a single assignment
      *
      * @param builder      Provides the okens
-     * @param mode         Set to true if a variable assignment with "declore" is being processed atm.
-     * @param markAsVarDef
-     * @return True if the assignment has been read successfully
+     * @param mode         Set to true if a variable assignment with "declare" is being processed right now.
+     * @param markAsVarDef True if the assignments should be marked with a psi marker as such.
+     * @return True if the assignment has been read successfully.
      */
     public static boolean readAssignment(BashPsiBuilder builder, Mode mode, boolean markAsVarDef) {
         final PsiBuilder.Marker assignment = builder.mark();
@@ -225,10 +225,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     }
 
     /**
-     * Parses an assignment list like a=(1,2,3)
+     * Parses an assignment list like a=(1 2 3)
      * Grammar (selfmade):
-     * assignment_list ::=
-     * "(" array_assignment {"," assignment_value} ")"
+     * assignment_list ::= "(" array_assignment {" " {array_assignment}* ")"
      * <p/>
      * array_assignment ::=
      * WORD_EXPR
@@ -255,27 +254,30 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 if (!ok) {
                     return false;
                 }
-                //no we expect an equal sign
+
+                //now we expect an equal sign
                 final IElementType eqToken = ParserUtil.getTokenAndAdvance(builder);
                 if (eqToken != EQ) {
                     return false;
                 }
+
                 //continued below
             }
 
             if (Parsing.word.isWordToken(builder)) {
-                final boolean ok = Parsing.word.parseWordList(builder, false, true);
+                final boolean ok = Parsing.word.parseWord(builder, true);
+
                 if (!ok) {
                     return false;
                 }
             }
 
             //optional newlines after the comma
-            builder.eatOptionalNewlines();
+            builder.eatOptionalNewlines(-1, true);
 
             //if the next token is not a comma, we break the loop, cause we're at the last element
-            if (builder.getTokenType() == COMMA) {
-                builder.advanceLexer();
+            if (builder.getTokenType(true) == WHITESPACE) {
+                builder.advanceLexer(true);
             } else {
                 break;
             }

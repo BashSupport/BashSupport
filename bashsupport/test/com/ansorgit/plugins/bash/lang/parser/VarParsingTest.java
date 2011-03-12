@@ -36,6 +36,7 @@ public class VarParsingTest extends MockPsiTest {
 
     @Test
     public void testParse1() {
+        //$a
         mockTest(varParsingTest, VARIABLE);
     }
 

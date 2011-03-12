@@ -115,10 +115,14 @@ WordAfter =  {WordFirst} | "#" | "[" | "]" | "!"
 ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 ArithWordAfter =  {ArithWordFirst} | "#" | "[" | "]" | "!"
 
+ParamExpansionWordFirst = [a-zA-Z] | {EscapedChar}
+ParamExpansionWordAfter =  {ParamExpansionWordFirst} | [0-9]
+ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
+
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "~" | "*"
     | {EscapedChar}
-AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "[" | "]" | "!"
+AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
 
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
@@ -608,16 +612,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "#"                           { return PARAM_EXPANSION_OP_LENGTH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
-  "!"|"%"|":"|"/"|"?"|"."|"^"
-                                { return PARAM_EXPANSION_OP_UNKNOWN; }
+  "%"|"/"|"?"|"."|"^"           { return PARAM_EXPANSION_OP_UNKNOWN; }
 
   "["                           { return LEFT_SQUARE; }
   "]"                           { return RIGHT_SQUARE; }
+
   "{"                           { return LEFT_CURLY; }
   "}"                           { backToPreviousState(); return RIGHT_CURLY; }
+
   {EscapedChar}                 { return WORD; }
   {IntegerLiteral}              { return WORD; }
-  {AssignmentWord}              { return WORD; }
+  {ParamExpansionWord}          { return WORD; }
  }
 
 

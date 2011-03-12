@@ -228,6 +228,7 @@ public class MockPsiBuilder implements PsiBuilder {
         private final int position;
         private final String details;
         private boolean addedError = false;
+        boolean closed = false;
 
         private MockMarker(int originalPosition, String details) {
             this.position = originalPosition;
@@ -246,6 +247,12 @@ public class MockPsiBuilder implements PsiBuilder {
         }
 
         private void finishMarker() {
+            if (closed) {
+                throw new IllegalStateException("This marker is already closed (either dropped or done)!");
+            }
+
+            closed = true;
+
             if (MockPsiBuilder.this.markers.isEmpty() || MockPsiBuilder.this.markers.peek() != this) {
                 StringBuilder details = new StringBuilder();
                 Stack<MockMarker> markers = MockPsiBuilder.this.markers;

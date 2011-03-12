@@ -30,7 +30,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  *
  * @author Joachim Ansorg
  */
-class ReadonlyCommand extends VariableDefCommand implements ParsingTool {
+class ReadonlyCommand extends AbstractVariableDefParsing implements ParsingTool {
     ReadonlyCommand() {
         super(true, INTERNAL_COMMAND_ELEMENT, "readonly", true);
     }

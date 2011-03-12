@@ -131,7 +131,7 @@ public class WordParsing implements ParsingTool {
                 isOk = Parsing.braceExpansionParsing.parse(builder);
                 processedTokens++;
             } else if (accept.contains(nextToken) || stringLiterals.contains(nextToken)) {
-                builder.advanceLexer();
+                builder.advanceLexer(true);
                 processedTokens++;
             } else if (Parsing.var.isValid(builder)) {
                 isOk = Parsing.var.parse(builder);

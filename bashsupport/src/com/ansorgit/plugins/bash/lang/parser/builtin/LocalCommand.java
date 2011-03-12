@@ -30,7 +30,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  *
  * @author Joachim Ansorg
  */
-class LocalCommand extends VariableDefCommand implements ParsingTool {
+class LocalCommand extends AbstractVariableDefParsing implements ParsingTool {
     public LocalCommand() {
         super(true, INTERNAL_COMMAND_ELEMENT, "local", true);
     }

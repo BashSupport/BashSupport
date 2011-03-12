@@ -191,7 +191,8 @@ public class ParserUtil {
         final PsiBuilder.Marker start = builder.mark();
         try {
             for (IElementType t : tokens) {
-                if (t != builder.getTokenType(enableWhitespace)) {
+                IElementType next = builder.getTokenType(enableWhitespace);
+                if (t != next) {
                     return false;
                 }
 
