@@ -1,3 +1,6 @@
+2011-03-12:
+ - Improved array support
+
 2011-03-08:
  - Fixed unused function inspection in files which reference elements in files which include the file
 

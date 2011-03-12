@@ -128,23 +128,23 @@ public class CommandParsingTest extends MockPsiTest {
 
     @Test
     public void testParseAssignment1() {
-        //(1,2,3)
-        mockTest(assignmentListTest, LEFT_PAREN, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_PAREN);
+        //(1 2 3)
+        mockTest(assignmentListTest, LEFT_PAREN, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN);
 
         //([1]=2)
         mockTest(assignmentListTest, LEFT_PAREN, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, RIGHT_PAREN);
 
         //([1]=2,2,3)
-        mockTest(assignmentListTest, LEFT_PAREN, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN);
 
         //("a")
         mockTest(assignmentListTest, LEFT_PAREN, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
 
         //(a, "a")
-        mockTest(assignmentListTest, LEFT_PAREN, WORD, COMMA, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
 
         //(a, "a" "b" c d)
-        mockTest(assignmentListTest, LEFT_PAREN, WORD, COMMA, STRING_BEGIN, WORD, STRING_END, STRING_BEGIN, WORD, STRING_END, WORD, WORD, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, STRING_BEGIN, WORD, STRING_END, WORD, WORD, RIGHT_PAREN);
 
         //(
         // a
@@ -154,7 +154,7 @@ public class CommandParsingTest extends MockPsiTest {
         //(
         // a,
         // )
-        mockTest(assignmentListTest, LEFT_PAREN, LINE_FEED, WORD, COMMA, LINE_FEED, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, LINE_FEED, WORD, WHITESPACE, LINE_FEED, RIGHT_PAREN);
 
         //(
         // a=a
@@ -169,8 +169,8 @@ public class CommandParsingTest extends MockPsiTest {
                 LINE_FEED, RIGHT_PAREN);
 
         //now test as simple command
-        //a=([1]=2,2,3)
-        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_PAREN);
+        //a=([1]=2 2 3)
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN);
     }
 
     @Test
@@ -193,4 +193,9 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(simpleCommandTest, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, AT, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
     }
 
+    @Test
+    public void testParseArrayAssignment() throws Exception {
+        //a=(a [b]=x z)
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+    }
 }

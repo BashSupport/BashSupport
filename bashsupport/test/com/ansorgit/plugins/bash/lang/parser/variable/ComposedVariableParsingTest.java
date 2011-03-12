@@ -22,4 +22,19 @@ public class ComposedVariableParsingTest extends MockPsiTest {
         //$[1]
         mockTest(mockFunction, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
     }
+
+    @Test
+    public void testArrayParsing() throws Exception {
+        //${a[*]}
+        mockTest(mockFunction, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //${a[@]}
+        mockTest(mockFunction, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //${a[0]}
+        mockTest(mockFunction, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //${a[@]:1}
+        mockTest(mockFunction, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+    }
 }

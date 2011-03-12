@@ -30,7 +30,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  *
  * @author Joachim Ansorg
  */
-class ExportCommand extends VariableDefCommand implements ParsingTool {
+class ExportCommand extends AbstractVariableDefParsing implements ParsingTool {
     ExportCommand() {
         super(true, INTERNAL_COMMAND_ELEMENT, "export", true);
     }

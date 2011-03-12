@@ -30,7 +30,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  *
  * @author Joachim Ansorg
  */
-class DeclareCommand extends VariableDefCommand implements ParsingTool {
+class DeclareCommand extends AbstractVariableDefParsing implements ParsingTool {
     DeclareCommand() {
         super(true, INTERNAL_COMMAND_ELEMENT, "declare", true);
     }

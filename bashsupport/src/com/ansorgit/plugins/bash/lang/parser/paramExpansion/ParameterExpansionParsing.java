@@ -17,7 +17,7 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 19:40
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private static final TokenSet validTokens = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE, PARAM_EXPANSION_OP_UNKNOWN);
+    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN), paramExpansionOperators);
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_LENGTH);
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -62,23 +62,42 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         if (builder.getTokenType(true) != RIGHT_CURLY) {
             IElementType operator = builder.getTokenType(true);
-            if (!paramExpansionOperators.contains(operator)) {
-                firstElementMarker.drop();
-                marker.drop();
-                return false;
-            }
 
-            if (paramExpansionAssignmentOps.contains(operator)) {
-                //ParserUtil.markTokenAndAdvance(builder, VAR_DEF_ELEMENT);
-                firstElementMarker.done(VAR_DEF_ELEMENT);
-                builder.advanceLexer(true);
-            } else if (paramExpansionOperators.contains(operator)) {
-                //unknown operator
-                firstElementMarker.done(VAR_ELEMENT);
-                builder.advanceLexer(true);
+            //array reference
+            if (operator == LEFT_SQUARE) {
+                boolean hasSpecialOps = ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
+                        || ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
+                if (hasSpecialOps) {
+                    ParserUtil.getTokenAndAdvance(builder);
+                    ParserUtil.getTokenAndAdvance(builder);
+                    ParserUtil.getTokenAndAdvance(builder);
+                } else {
+                    boolean validArrayReference = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                    if (!validArrayReference) {
+                        firstElementMarker.drop();
+                        marker.drop();
+                        return false;
+                    }
+                }
             } else {
-                //something else, e.g. indirect variable reference
-                firstElementMarker.drop();
+                if (!paramExpansionOperators.contains(operator)) {
+                    firstElementMarker.drop();
+
+                    marker.drop();
+                    return false;
+                }
+
+                if (paramExpansionAssignmentOps.contains(operator)) {
+                    firstElementMarker.done(VAR_DEF_ELEMENT);
+                    builder.advanceLexer(true);
+                } else if (paramExpansionOperators.contains(operator)) {
+                    //unknown operator
+                    firstElementMarker.done(VAR_ELEMENT);
+                    builder.advanceLexer(true);
+                } else {
+                    //something else, e.g. indirect variable reference
+                    firstElementMarker.drop();
+                }
             }
 
             while (isValid && builder.getTokenType() != RIGHT_CURLY) {

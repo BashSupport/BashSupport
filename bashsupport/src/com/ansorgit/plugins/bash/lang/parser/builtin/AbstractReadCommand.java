@@ -26,7 +26,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
  * Date: 24.05.2009
  * Time: 13:37:14
  */
-abstract class AbstractReadCommand extends VariableDefCommand {
+abstract class AbstractReadCommand extends AbstractVariableDefParsing {
     public AbstractReadCommand(String command) {
         super(true, INTERNAL_COMMAND_ELEMENT, command, false);
     }

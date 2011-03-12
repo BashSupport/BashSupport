@@ -91,4 +91,13 @@ public class ExportCommandTest extends MockPsiTest {
                 GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, INTERNAL_COMMAND,
                 WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
     }
+
+    @Test
+    public void testArrayAssignment() throws Exception {
+        //export a=(1 2 3)
+        mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+
+        //export a=(1 [10]=2 3)
+        mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+    }
 }
