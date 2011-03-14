@@ -39,9 +39,9 @@ public class VarResolveTestCase extends AbstractResolveTest {
     private BashVarDef assertIsWellDefinedVariable() throws Exception {
         PsiReference start = configure();
         PsiElement varDef = start.resolve();
-        Assert.assertNotNull(varDef);
-        Assert.assertTrue(varDef instanceof BashVarDef);
-        Assert.assertTrue(start.isReferenceTo(varDef));
+        Assert.assertNotNull("Could not find a definition for the reference", varDef);
+        Assert.assertTrue("The definition is NOT a variable definition", varDef instanceof BashVarDef);
+        Assert.assertTrue("The reference is NOT a reference to the definition", start.isReferenceTo(varDef));
 
         return (BashVarDef) varDef;
     }
@@ -140,10 +140,19 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     public void testBasicResolveCurlyWithAssignment() throws Exception {
         assertIsWellDefinedVariable();
-        //Assert.assertTrue(BashPsiUtils.findBroadestVarDefFunctionDefScope(varDef) != null);
-        //Assert.assertTrue(varDef.resolve() == null);
     }
 
+    public void testArrayResolve1() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    public void testArrayResolve2() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    public void testArrayResolve3() throws Exception {
+        assertIsWellDefinedVariable();
+    }
 
     public void testResolveParamLength() throws Exception {
         assertIsWellDefinedVariable();

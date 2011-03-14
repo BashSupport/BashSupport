@@ -89,6 +89,18 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsInvalidVarDef();
     }
 
+    public void testArrayVarDef1() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
+    public void testArrayVarDef2() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
+    public void testArrayVarDef3() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
 
     public void testLocalVarDefResolve() throws Exception {
         //the inner var def must not resolve to the global variable definition
