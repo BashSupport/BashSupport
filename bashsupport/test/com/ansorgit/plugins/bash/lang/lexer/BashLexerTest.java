@@ -82,6 +82,8 @@ public class BashLexerTest {
         testTokenization("a=( one two three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
 
         testTokenization("a=( one two [2]=three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, LEFT_SQUARE, INTEGER_LITERAL, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
+
+        testTokenization("a[1]=", ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ);
     }
 
     @Test
