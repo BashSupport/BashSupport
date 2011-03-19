@@ -108,9 +108,9 @@ StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "," | "~" | "*"
+    | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
     | {EscapedChar}
-WordAfter =  {WordFirst} | "#" | "!"
+WordAfter =  {WordFirst} | "#" | "!" | "[" | "]"
 
 ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 ArithWordAfter =  {ArithWordFirst} | "#" | "[" | "]" | "!"
@@ -120,21 +120,22 @@ ParamExpansionWordAfter =  {ParamExpansionWordFirst} | [0-9]
 ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
 
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "~" | "*"
+    | "-" | "^" | "+" | "-" | "~" | "*" | "," | ";"
     | {EscapedChar}
 AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
+AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
 
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
 Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*"
 
+ArithExpr = ({ArithWord} | [0-9a-z+*-])+
+
 IntegerLiteral = [0] | ([1-9][0-9]*)
 BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
-
-AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
 
 CaseFirst=[^|)(# \n\r\f\t\f]
 CaseAfter=[^|)( \n\r\f\t\f]
@@ -265,10 +266,12 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "]"                     { backToPreviousState(); return RIGHT_SQUARE; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARITH, S_ARITH_SQUARE_MODE> {
-   {AssignmentWord} / "["             { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
-   {AssignmentWord} / "=("|"+=("      { goToState(S_ASSIGNMENT_LIST); return ASSIGNMENT_WORD; }
+<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE> {
+   /* The long followd-by match is necessary to have at least the same length as to global Word rule to make sure this rules matches */
+   {AssignmentWord} / "[" {ArithExpr} "]"
+                                      { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
 
+   {AssignmentWord} / "=("|"+=("      { goToState(S_ASSIGNMENT_LIST); return ASSIGNMENT_WORD; }
    {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }
    "="                                { return EQ; }
 }
@@ -283,6 +286,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "+="                            { return ADD_EQ; }
   "="                             { return EQ; }
 
+ "["                              { goToState(S_ARITH_ARRAY_MODE); return LEFT_SQUARE; }
   {AssignListWord}                { return WORD; }
 }
 
@@ -715,7 +719,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_CASE, S_TEST, S_SUBSHELL, S_BACKQUOTE> {
-  {Word}                          { return WORD; }
+  {Word}                       { return WORD; }
 }
 
 

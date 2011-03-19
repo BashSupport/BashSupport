@@ -536,7 +536,8 @@ public class BashLexerTest {
     @Test
     public void testAssignmentList() {
         testTokenization("a=(1)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
-        testTokenization("a=(a,b,c)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, COMMA, WORD, COMMA, WORD, RIGHT_PAREN);
+        testTokenization("a=(a b c)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+        testTokenization("a=(a,b,c)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
     }
 
     @Test
