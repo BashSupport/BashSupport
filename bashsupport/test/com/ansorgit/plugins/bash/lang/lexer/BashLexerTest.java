@@ -666,6 +666,10 @@ public class BashLexerTest {
         testTokenization("$((35#abcdefghijkl))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
     }
 
+    @Test
+    public void testSubshellExpr() {
+        testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+    }
 
     private void testTokenization(String code, IElementType... expectedTokens) {
         testTokenization(BashVersion.Bash_v3, code, expectedTokens);

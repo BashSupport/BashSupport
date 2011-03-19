@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -65,8 +67,16 @@ public class BashChangeUtil {
                 String text = "${" + name + "}";
                 PsiElement command = createDummyBashFile(project, text).getFirstChild();
 
-                //fixme terrible code
-                return command.getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild().getNextSibling();
+                final PsiElement[] result = new PsiElement[1];
+
+                BashPsiUtils.visitRecursively(command, new BashVisitor() {
+                    @Override
+                    public void visitVarUse(BashVar var) {
+                        result[0] = var;
+                    }
+                });
+
+                return result[0];
             }
 
             String text = "$" + name;

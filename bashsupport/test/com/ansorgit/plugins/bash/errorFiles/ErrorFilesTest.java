@@ -5,12 +5,15 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightTestCase;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import org.junit.Assert;
 
+import java.io.File;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * User: jansorg
@@ -26,18 +29,20 @@ public class ErrorFilesTest extends CodeInsightTestCase {
         return configureByFile(getTestName(false) + ".bash", null);
     }
 
-    //supers.bash triggered an empty stack exception
-    public void testSupers() throws Exception {
-        configure();
+    public void testAllFiles() throws Exception {
+        List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
 
-        assertNoParsingErrors();
-    }
+        int count = 0;
 
-    //supers.bash triggered an empty stack exception
-    public void testSupersSmall() throws Exception {
-        configure();
+        for (File file : files) {
+            LOG.info("Checking file: " + file.getAbsolutePath());
+            configureByFile(file.getName(), null);
+            assertNoParsingErrors();
 
-        assertNoParsingErrors();
+            count++;
+        }
+
+        Assert.assertTrue(count > 0);
     }
 
     private void assertNoParsingErrors() {
@@ -60,12 +65,14 @@ public class ErrorFilesTest extends CodeInsightTestCase {
     private String description(List<PsiErrorElement> errors) {
         StringBuilder builder = new StringBuilder();
 
+        builder.append("\n## File: " + getFile().getName());
         for (PsiErrorElement error : errors) {
             builder.append("\n\t").append(error.getErrorDescription());
             builder.append(": '").append(error.getText()).append("'").append(", line ").append(BashPsiUtils.getElementLineNumber(error));
+            //builder.append(", column ").append(error.getTgetTextOffset());
         }
 
-        builder.append("\n");
+        builder.append("\n\n");
         return builder.toString();
     }
 }

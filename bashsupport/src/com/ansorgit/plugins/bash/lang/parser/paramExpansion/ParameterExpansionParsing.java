@@ -67,7 +67,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
             //array reference
             if (operator == LEFT_SQUARE) {
-                //one of x[*] and x[@]
+                //one of x[*] or x[@]
                 boolean isSpecialReference = ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
