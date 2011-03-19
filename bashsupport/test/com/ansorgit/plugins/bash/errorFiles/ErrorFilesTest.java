@@ -62,7 +62,7 @@ public class ErrorFilesTest extends CodeInsightTestCase {
 
         for (PsiErrorElement error : errors) {
             builder.append("\n\t").append(error.getErrorDescription());
-            builder.append(": '").append(error.getText()).append("'");
+            builder.append(": '").append(error.getText()).append("'").append(", line ").append(BashPsiUtils.getElementLineNumber(error));
         }
 
         builder.append("\n");

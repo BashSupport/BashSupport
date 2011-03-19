@@ -194,7 +194,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         }
 
         int readNewlines = 0;
-        while (!eof() && getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
+        while (getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
             advanceLexer(withWhitespace);
             readNewlines++;
         }

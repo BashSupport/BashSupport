@@ -85,7 +85,7 @@ done
 
 classes=($(unique "${classes[@]}"))
 
-${.}
+#${.}
 
 #	(
 # Emit header
