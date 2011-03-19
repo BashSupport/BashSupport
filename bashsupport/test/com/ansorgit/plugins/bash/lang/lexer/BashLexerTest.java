@@ -485,6 +485,8 @@ public class BashLexerTest {
 
         //shebang line after first line
         testTokenization("echo; #!/bin/sh", INTERNAL_COMMAND, SEMI, WHITESPACE, SHEBANG);
+
+        testTokenization("TOMCAT_HOST_LIST[$index]=$LINE", ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE, EQ, VARIABLE);
     }
 
     @Test

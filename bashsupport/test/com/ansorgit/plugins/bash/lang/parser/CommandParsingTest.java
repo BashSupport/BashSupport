@@ -211,4 +211,10 @@ public class CommandParsingTest extends MockPsiTest {
         //a=(1 2 3)
         mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
     }
+
+    @Test
+    public void testArrayVar() throws Exception {
+        //TOMCAT_HOST_LIST[$index]=$LINE
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE, EQ, VARIABLE);
+    }
 }

@@ -33,19 +33,20 @@ public class ErrorFilesTest extends CodeInsightTestCase {
         List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
 
         int count = 0;
+        int errors = 0;
 
         for (File file : files) {
             LOG.info("Checking file: " + file.getAbsolutePath());
             configureByFile(file.getName(), null);
-            assertNoParsingErrors();
+            errors += assertNoParsingErrors();
 
             count++;
         }
 
-        Assert.assertTrue(count > 0);
+        Assert.assertTrue("There are errors", count == 0);
     }
 
-    private void assertNoParsingErrors() {
+    private int assertNoParsingErrors() {
         final List<PsiErrorElement> errors = Lists.newLinkedList();
 
         PsiFile file = getFile();
@@ -59,13 +60,17 @@ public class ErrorFilesTest extends CodeInsightTestCase {
         });
 
         int count = errors.size();
-        Assert.assertEquals("There should be no errors in the file. Found " + count + " errors: " + description(errors), 0, errors.size());
+        if (count > 0) {
+            System.out.println(description(errors));
+        }
+        return count;
     }
 
     private String description(List<PsiErrorElement> errors) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("\n## File: " + getFile().getName());
+        builder.append(", Errors: " + errors.size());
         for (PsiErrorElement error : errors) {
             builder.append("\n\t").append(error.getErrorDescription());
             builder.append(": '").append(error.getText()).append("'").append(", line ").append(BashPsiUtils.getElementLineNumber(error));

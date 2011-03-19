@@ -130,7 +130,7 @@ ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
 Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*"
 
-ArithExpr = ({ArithWord} | [0-9a-z+*-])+
+ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 
 IntegerLiteral = [0] | ([1-9][0-9]*)
 BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
