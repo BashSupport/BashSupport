@@ -59,12 +59,11 @@ public class BashLexerTest {
         testTokenization("a=1 b=2", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
         testTokenization("a+=a", ASSIGNMENT_WORD, ADD_EQ, WORD);
         testTokenization("if a; then PIDDIR=a$(a) a; fi", IF_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, THEN_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
+
         //line continuation token is ignored
         testTokenization("a=a\\\nb", ASSIGNMENT_WORD, EQ, WORD, WORD);
 
         testTokenization("[ $(uname -a) ]", EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
-
-        //testTokenization("a[$a]", ARRAY_ASSIGNMENT_WORD);//fixme
     }
 
     @Test
@@ -81,9 +80,11 @@ public class BashLexerTest {
 
         testTokenization("a=( one two three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
 
-        testTokenization("a=( one two [2]=three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, LEFT_SQUARE, INTEGER_LITERAL, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
+        testTokenization("a=( one two [2]=three)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
 
-        testTokenization("a[1]=", ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ);
+        testTokenization("a=(1 2 3)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+
+        testTokenization("a[1]=", ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ);
     }
 
     @Test
@@ -455,9 +456,9 @@ public class BashLexerTest {
         testTokenization("~", WORD);
         testTokenization("a~", WORD);
         testTokenization("\\$", WORD);
-        testTokenization("a[1]=2", ARRAY_ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
-        testTokenization("a[1]='2'", ARRAY_ASSIGNMENT_WORD, EQ, STRING2);
-        testTokenization("a[1+2]='2'", ARRAY_ASSIGNMENT_WORD, EQ, STRING2);
+        testTokenization("a[1]=2", ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL);
+        testTokenization("a[1]='2'", ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, STRING2);
+        testTokenization("a[1+2]='2'", ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, RIGHT_SQUARE, EQ, STRING2);
         testTokenization("esac;", WORD, SEMI);
 
         //"$(echo "123")"
@@ -534,7 +535,7 @@ public class BashLexerTest {
 
     @Test
     public void testAssignmentList() {
-        testTokenization("a=(1)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, INTEGER_LITERAL, RIGHT_PAREN);
+        testTokenization("a=(1)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
         testTokenization("a=(a,b,c)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, COMMA, WORD, COMMA, WORD, RIGHT_PAREN);
     }
 

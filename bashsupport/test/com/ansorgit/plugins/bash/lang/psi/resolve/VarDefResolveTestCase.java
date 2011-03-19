@@ -34,9 +34,10 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
     private BashVarDef assertIsValidVarDef() throws Exception {
         PsiReference ref = configure();
         PsiElement element = ref.resolve();
-        Assert.assertTrue(element instanceof BashVarDef);
-        Assert.assertFalse(ref.equals(element));
-        Assert.assertTrue(ref.isReferenceTo(element));
+        Assert.assertNotNull("The definition could not be resolved.", element);
+        Assert.assertTrue("The resolved definition is not a BashVarDef: " + element, element instanceof BashVarDef);
+        Assert.assertFalse("The variable must not resolve to itself.", ref.equals(element));
+        Assert.assertTrue("isReferenceTo is not working properly.", ref.isReferenceTo(element));
 
         return (BashVarDef) element;
     }
@@ -90,15 +91,15 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
     }
 
     public void testArrayVarDef1() throws Exception {
-        assertIsInvalidVarDef();
+        assertIsValidVarDef();
     }
 
     public void testArrayVarDef2() throws Exception {
-        assertIsInvalidVarDef();
+        assertIsValidVarDef();
     }
 
     public void testArrayVarDef3() throws Exception {
-        assertIsInvalidVarDef();
+        assertIsValidVarDef();
     }
 
 

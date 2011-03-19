@@ -110,7 +110,7 @@ SingleCharacter = [^\'] | {EscapedChar}
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "," | "~" | "*"
     | {EscapedChar}
-WordAfter =  {WordFirst} | "#" | "[" | "]" | "!"
+WordAfter =  {WordFirst} | "#" | "!"
 
 ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 ArithWordAfter =  {ArithWordFirst} | "#" | "[" | "]" | "!"
@@ -127,7 +127,6 @@ AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
-ArrayAssignmentWord = [a-zA-Z_][a-zA-Z0-9_]* "[" [0-9+*/-]+ "]"
 Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*"
 
 IntegerLiteral = [0] | ([1-9][0-9]*)
@@ -153,6 +152,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /*  If in an arithmetic expression */
 %state S_ARITH_SQUARE_MODE
 
+/*  If in an arithmetic expression in an array reference */
+%state S_ARITH_ARRAY_MODE
+
 /*  If in a case */
 %state S_CASE
 
@@ -162,8 +164,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /*  If in a arithmetic subshell */
 %state S_SUBSHELL
 
-/*  If in a assignment */
-%state S_ARRAYASSIGN
+/*  If in an array reference, e.g. a[0]=x */
+%state S_ARRAY
+
+/*  If in an array list init, e.g. a=(first second) */
+%state S_ASSIGNMENT_LIST
 
 /*  If currently a string is parsed */
 %xstate S_STRINGMODE
@@ -184,11 +189,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
   "[ "                          { goToState(S_TEST); return EXPR_CONDITIONAL; }
 
-  /** Strings */
-  <S_ARRAYASSIGN> {
-    {IntegerLiteral}            { return INTEGER_LITERAL; }
-  }
-
+/** Strings */
   "time"                        { return TIME_KEYWORD; }
 
 /** Builtin commands */
@@ -248,37 +249,45 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    "unalias"                    |
    "wait"                       { return INTERNAL_COMMAND; }
 
-   <S_ARITH, S_ARITH_SQUARE_MODE> {
+   <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
        "&&"                         { return AND_AND; }
 
        "||"                         { return OR_OR; }
    }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
-    <S_ARITH, S_ARITH_SQUARE_MODE> {
-       {ArrayAssignmentWord} / "=("|"+=("   { goToState(S_ARRAYASSIGN); return ARRAY_ASSIGNMENT_WORD; }
-       {AssignmentWord} / "=("|"+=("        { goToState(S_ARRAYASSIGN); return ASSIGNMENT_WORD; }
+<S_ARRAY> {
+    "["     { backToPreviousState(); goToState(S_ARITH_ARRAY_MODE); return LEFT_SQUARE; }
+}
 
-       {ArrayAssignmentWord} / "="|"+="   { return ARRAY_ASSIGNMENT_WORD; }
-       {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }
-       "="                                { return EQ; }
-   }
-   
+<S_ARITH_ARRAY_MODE> {
+    "]" / "=("|"+=("        { backToPreviousState(); goToState(S_ASSIGNMENT_LIST); return RIGHT_SQUARE; }
+    "]"                     { backToPreviousState(); return RIGHT_SQUARE; }
+}
+
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARITH, S_ARITH_SQUARE_MODE> {
+   {AssignmentWord} / "["             { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
+   {AssignmentWord} / "=("|"+=("      { goToState(S_ASSIGNMENT_LIST); return ASSIGNMENT_WORD; }
+
+   {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }
+   "="                                { return EQ; }
+}
+
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
    "+="                               { return ADD_EQ; }
 }
 
-<S_ARRAYASSIGN> {
+<S_ASSIGNMENT_LIST> {
+  "("                             { return LEFT_PAREN; }
+  ")"                             { backToPreviousState(); return RIGHT_PAREN; }
   "+="                            { return ADD_EQ; }
   "="                             { return EQ; }
-  "("                             { return LEFT_PAREN; }
-
-  <S_ARITH, S_ARITH_SQUARE_MODE> {
-    ","                             { return COMMA; }
-  }
 
   {AssignListWord}                { return WORD; }
-  ")"                             { backToPreviousState(); return RIGHT_PAREN; }
+}
+
+<S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
+  ","                             { return COMMA; }
 }
 
 <YYINITIAL, S_SUBSHELL, S_BACKQUOTE> {
@@ -362,7 +371,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-N"                         { return COND_OP; }
 }
 
-<S_ARITH, S_ARITH_SQUARE_MODE, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
+<S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
   /* If a subshell expression is found, return DOLLAR and move before the bracket */
   "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL); return DOLLAR; }
 }
@@ -374,7 +383,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "]"                           { backToPreviousState(); return _EXPR_ARITH_SQUARE; }
 }
 
-<S_ARITH, S_ARITH_SQUARE_MODE> {
+<S_ARITH_ARRAY_MODE> {
+  "]"                           { backToPreviousState(); return RIGHT_SQUARE; }
+}
+
+<S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
   "))"                          { if (openParenths > 0) {
                                     openParenths--; yypushback(1); return RIGHT_PAREN;}
                                   else {
@@ -627,7 +640,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 
 /** Match in all except of string */
-<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
   /* Matching in all states */
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
@@ -637,7 +650,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARRAYASSIGN, S_PARAM_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
@@ -691,11 +704,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_ARITH, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARRAYASSIGN, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
 }    
 
+
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY> {
+    {IntegerLiteral}            { return INTEGER_LITERAL; }
+}
 
 <YYINITIAL, S_CASE, S_TEST, S_SUBSHELL, S_BACKQUOTE> {
   {Word}                          { return WORD; }

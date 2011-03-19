@@ -56,7 +56,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
 
     private static final TokenSet accepted = TokenSet.create(
-            BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD, BashTokenTypes.ARRAY_ASSIGNMENT_WORD);
+            BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
     private static final Object[] EMPTY_VARIANTS = new Object[0];
 
 
@@ -79,7 +79,9 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isArray() {
-        return findAssignmentWord() == BashTokenTypes.ARRAY_ASSIGNMENT_WORD;
+        //fixme
+        return false;
+        //return findAssignmentWord() == BashTokenTypes.ARRAY_ASSIGNMENT_WORD;
     }
 
     /**

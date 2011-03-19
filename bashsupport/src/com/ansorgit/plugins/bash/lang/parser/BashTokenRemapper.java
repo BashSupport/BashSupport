@@ -37,7 +37,7 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
     //private static final Logger log = Logger.getInstance("#bash.BashTokenRemapper");
     private final BashPsiBuilder builder;
     private static final TokenSet mappedToWord = TokenSet.create(
-            ASSIGNMENT_WORD, ARRAY_ASSIGNMENT_WORD,
+            ASSIGNMENT_WORD,
             LEFT_SQUARE, BANG_TOKEN,
             IF_KEYWORD, THEN_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD,
             WHILE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,

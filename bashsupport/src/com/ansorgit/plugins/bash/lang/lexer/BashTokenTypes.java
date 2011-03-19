@@ -38,7 +38,7 @@ public interface BashTokenTypes {
     IElementType NUMBER = new BashElementType("number");
     IElementType WORD = new BashElementType("word");
     IElementType ASSIGNMENT_WORD = new BashElementType("assignment_word"); //"a" =2
-    IElementType ARRAY_ASSIGNMENT_WORD = new BashElementType("array_assignment_word");//"a[1]" =1
+    //IElementType ARRAY_ASSIGNMENT_WORD = new BashElementType("array_assignment_word");//"a[1]" =1
     IElementType DOLLAR = new BashElementType("$");
 
     IElementType LEFT_PAREN = new BashElementType("(");

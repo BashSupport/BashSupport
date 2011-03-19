@@ -89,14 +89,12 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
-                        || tokenType == ARRAY_ASSIGNMENT_WORD
                         || ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
                         || Parsing.var.isValid(builder);
 
             default:
-                return tokenType == ASSIGNMENT_WORD
-                        || tokenType == ARRAY_ASSIGNMENT_WORD; //fixme
+                return tokenType == ASSIGNMENT_WORD; //fixme
         }
     }
 
@@ -168,7 +166,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
             case StrictAssignmentMode: {
                 final IElementType assignmentWord = ParserUtil.getTokenAndAdvance(builder);
-                if (assignmentWord != ASSIGNMENT_WORD && assignmentWord != ARRAY_ASSIGNMENT_WORD) {
+                if (assignmentWord != ASSIGNMENT_WORD) {
                     ParserUtil.error(assignment, "parser.unexpected.token");
                     return false;
                 }
@@ -179,8 +177,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         }
 
         if (mode != Mode.SimpleMode) {
-            final IElementType eqToken = builder.getTokenType(true);
-            boolean hasAssignment = eqToken == EQ || eqToken == ADD_EQ;
+            if (builder.getTokenType() == LEFT_SQUARE) {
+                //this is an array assignment, e.g. a[1]=x
+                //parse the arithmetic expression in the array assignment square brackets
+                boolean valid = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                if (!valid) {
+                    ParserUtil.error(builder, "parser.unexpected.token");
+                    assignment.drop();
+                    return false;
+                }
+
+                //here the next token should be the EQ token, i.e. after the element reference part
+            }
+
+            final IElementType nextToken = builder.getTokenType(true);
+            boolean hasAssignment = nextToken == EQ || nextToken == ADD_EQ;
             if (!hasAssignment && mode == Mode.StrictAssignmentMode) {
                 ParserUtil.error(assignment, "parser.unexpected.token");
                 return false;

@@ -143,7 +143,7 @@ public class CommandParsingTest extends MockPsiTest {
         //(a, "a")
         mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
 
-        //(a, "a" "b" c d)
+        //(a "a" "b" c d)
         mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, STRING_BEGIN, WORD, STRING_END, WORD, WORD, RIGHT_PAREN);
 
         //(
@@ -197,5 +197,18 @@ public class CommandParsingTest extends MockPsiTest {
     public void testParseArrayAssignment() throws Exception {
         //a=(a [b]=x z)
         mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+
+        //valid syntax, but invalid semantic, should trigger an inspection warning
+        //a[1]=(a [b]=x z)
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+    }
+
+    @Test
+    public void testParseArrayVarAssign() throws Exception {
+        //a[1]=1
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL);
+
+        //a=(1 2 3)
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
     }
 }
