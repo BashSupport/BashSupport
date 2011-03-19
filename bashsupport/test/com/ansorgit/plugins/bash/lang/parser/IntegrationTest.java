@@ -603,7 +603,6 @@ public class IntegrationTest extends MockPsiTest {
     }
 
     @Test
-//    @Ignore("Ignored for now until we do a parser refactoring")
     public void testCheckErrorMarkers() {
         //this test makes sure that there's only only one marker at the right place
 
@@ -616,7 +615,6 @@ public class IntegrationTest extends MockPsiTest {
         //a=1 ((1))
         mockTestFail(fileParsingTest,
                 ASSIGNMENT_WORD, EQ, WORD, EXPR_ARITH, NUMBER, _EXPR_ARITH);
-
     }
 
     @Test

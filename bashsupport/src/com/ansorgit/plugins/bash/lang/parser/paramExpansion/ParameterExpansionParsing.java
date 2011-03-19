@@ -5,6 +5,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -57,6 +58,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //eat the first token
         builder.advanceLexer(true);
+
         boolean markedAsVar = false;
         boolean isValid = true;
 
@@ -65,9 +67,22 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
             //array reference
             if (operator == LEFT_SQUARE) {
-                boolean hasSpecialOps = ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
+                //one of x[*] and x[@]
+                boolean isSpecialReference = ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
-                if (hasSpecialOps) {
+
+                boolean isValidReference = ParserUtil.checkAndRollback(builder, new Function<BashPsiBuilder, Boolean>() {
+                    public Boolean apply(BashPsiBuilder builder) {
+                        return Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                    }
+                });
+
+                if (isSpecialReference || isValidReference) {
+                    firstElementMarker.done(VAR_ELEMENT);
+                }
+
+                //now parse the reference in the square brackets
+                if (isSpecialReference) {
                     ParserUtil.getTokenAndAdvance(builder);
                     ParserUtil.getTokenAndAdvance(builder);
                     ParserUtil.getTokenAndAdvance(builder);
@@ -121,6 +136,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         IElementType endToken = ParserUtil.getTokenAndAdvance(builder);
         boolean validEnd = RIGHT_CURLY == endToken;
+
         if (validEnd && !markedAsVar) {
             marker.done(PARAM_EXPANSION_ELEMENT);
         } else {

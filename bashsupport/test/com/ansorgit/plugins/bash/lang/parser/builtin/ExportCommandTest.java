@@ -98,6 +98,6 @@ public class ExportCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
 
         //export a=(1 [10]=2 3)
-        mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, WORD, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+        mockTest(parserFunction, Lists.newArrayList("export"), INTERNAL_COMMAND, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
     }
 }

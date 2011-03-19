@@ -61,6 +61,15 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     }
 
     @Test
+    public void testParseArrayVarRef() throws Exception {
+        //{a[1]}
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //{a[1*34-4]}
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, ARITH_MULT, NUMBER, ARITH_MINUS, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
+    }
+
+    @Test
     public void testParseInvalidLengthExpansion() throws Exception {
         //{# a}
         mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WHITESPACE, WORD, RIGHT_CURLY);

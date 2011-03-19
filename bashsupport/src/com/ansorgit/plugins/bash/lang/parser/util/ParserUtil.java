@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.util;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.util.BashStrings;
+import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -115,6 +116,25 @@ public class ParserUtil {
         }
 
         return true;
+    }
+
+    /**
+     * Turns off error reporting, then calls the function with the psi builder and then rolls back to the initial token position.
+     * The result of the function is return as result of this call.
+     *
+     * @param builder
+     * @param function
+     * @return
+     */
+    public static boolean checkAndRollback(BashPsiBuilder builder, Function<BashPsiBuilder, Boolean> function) {
+        final PsiBuilder.Marker start = builder.mark();
+        try {
+            builder.enterNewErrorLevel(false);
+            return function.apply(builder);
+        } finally {
+            builder.leaveLastErrorLevel();
+            start.rollbackTo();
+        }
     }
 
     /**

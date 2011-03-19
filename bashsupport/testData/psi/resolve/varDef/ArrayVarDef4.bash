@@ -1,2 +1,2 @@
 a=(one two)
-$<ref>a
+<ref>a[1]=2
