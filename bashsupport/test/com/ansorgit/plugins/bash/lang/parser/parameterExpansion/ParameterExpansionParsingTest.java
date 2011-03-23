@@ -57,7 +57,7 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testParseLengthExpansion() throws Exception {
         //{#a}
-        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, RIGHT_CURLY);
     }
 
     @Test
@@ -72,10 +72,10 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testParseInvalidLengthExpansion() throws Exception {
         //{# a}
-        mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, WHITESPACE, WORD, RIGHT_CURLY);
+        mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WHITESPACE, WORD, RIGHT_CURLY);
 
         //{#}
-        mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_LENGTH, RIGHT_CURLY);
+        mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
     }
 
     @Test
@@ -94,5 +94,22 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
 
         //{!a=x}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, PARAM_EXPANSION_OP_EQ, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testArithmeticArrayRefs() throws Exception {
+        //{var[1+2-var]}
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //{#var[1+2-var]}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+
+        //{#var[1+2-var]#[a-z]}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE,
+                PARAM_EXPANSION_OP_HASH, LEFT_SQUARE, WORD, PARAM_EXPANSION_OP_MINUS, WORD, RIGHT_SQUARE,
+                RIGHT_CURLY);
+
+        //{#A[1]}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
     }
 }

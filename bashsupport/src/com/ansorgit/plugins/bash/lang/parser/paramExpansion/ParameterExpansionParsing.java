@@ -18,8 +18,8 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 19:40
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN), paramExpansionOperators);
-    private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_LENGTH);
+    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, LEFT_SQUARE, RIGHT_SQUARE), paramExpansionOperators);
+    private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
@@ -41,7 +41,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //some tokens, like the length expansion '#' must not have a prefixes word character
         if (prefixlessExpansionsOperators.contains(firstToken)) {
-            return parsePrefixlessExpansion(builder, marker);
+            builder.advanceLexer(true);
+            firstToken = builder.getTokenType(true);
         }
 
         //the first token has to be a plain word token
