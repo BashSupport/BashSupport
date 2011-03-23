@@ -90,6 +90,11 @@ import com.intellij.util.containers.Stack;
 
   //helper
   long yychar = 0;
+
+  //parameter expansion parsing state
+  boolean paramExpansionHash = false;
+  boolean paramExpansionWord = false;
+  boolean paramExpansionOther = false;
 %}
 
 /***** Custom user code *****/
@@ -113,10 +118,11 @@ WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
 WordAfter =  {WordFirst} | "#" | "!" | "[" | "]"
 
 ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
-ArithWordAfter =  {ArithWordFirst} | "#" | "[" | "]" | "!"
+// No "[" | "]"
+ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
 
 ParamExpansionWordFirst = [a-zA-Z] | {EscapedChar}
-ParamExpansionWordAfter =  {ParamExpansionWordFirst} | [0-9] | "_" | "-"
+ParamExpansionWordAfter =  {ParamExpansionWordFirst} | [0-9] | "_"
 ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
 
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
@@ -629,20 +635,34 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
-  "#"                           { return PARAM_EXPANSION_OP_LENGTH; }
+  "#"                           { paramExpansionHash = paramExpansionWord && true; return PARAM_EXPANSION_OP_HASH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
-  "%"|"/"|"?"|"."|"^"           { return PARAM_EXPANSION_OP_UNKNOWN; }
+  "%"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_PERCENT; }
+  "/"|"?"|"."|"^"               { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
 
-  "["                           { return LEFT_SQUARE; }
+  "[" / [@*]                    { return LEFT_SQUARE; }
+  "["                           { if (!paramExpansionOther && (!paramExpansionWord || !paramExpansionHash)) {
+                                    // If we expect an array reference parse the next tokens as arithmetic expression
+                                    goToState(S_ARITH_ARRAY_MODE);
+                                  }
+
+                                  return LEFT_SQUARE;
+                                }
+
   "]"                           { return RIGHT_SQUARE; }
 
-  "{"                           { return LEFT_CURLY; }
-  "}"                           { backToPreviousState(); return RIGHT_CURLY; }
+  "{"                           { paramExpansionWord = false; paramExpansionHash = false; paramExpansionOther = false;
+                                  return LEFT_CURLY;
+                                }
+  "}"                           { paramExpansionWord = false; paramExpansionHash = false; paramExpansionOther = false;
+                                  backToPreviousState();
+                                  return RIGHT_CURLY;
+                                }
 
-  {EscapedChar}                 { return WORD; }
-  {IntegerLiteral}              { return WORD; }
-  {ParamExpansionWord}          { return WORD; }
+  {EscapedChar}                 { paramExpansionWord = true; return WORD; }
+  {IntegerLiteral}              { paramExpansionWord = true; return WORD; }
+  {ParamExpansionWord}          { paramExpansionWord = true; return WORD; }
  }
 
 

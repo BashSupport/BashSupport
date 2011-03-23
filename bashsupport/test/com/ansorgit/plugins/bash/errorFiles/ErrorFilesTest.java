@@ -43,7 +43,8 @@ public class ErrorFilesTest extends CodeInsightTestCase {
             count++;
         }
 
-        Assert.assertTrue("There are errors", count == 0);
+        Assert.assertTrue("No files parsed.", count > 0);
+        Assert.assertTrue("There are " + errors + " errors", errors == 0);
     }
 
     private int assertNoParsingErrors() {
