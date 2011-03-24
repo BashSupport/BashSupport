@@ -18,14 +18,14 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.20</version>
+    <version>0.9.21</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg
     </vendor>
 
     <!-- Requires IDEA 10.0 or later -->
-    <idea-version since-build="99.18" until-build="103.999"/>
+    <idea-version since-build="99.18" until-build="107.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -39,6 +39,13 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.21:</b>
+       <ul>
+         <li>(Almost) full support for arrays</li>
+         <li>Fixed unused function inspection in files which reference elements in files which include the current file</li>
+         <li>Compatible with PyCharm 1.2</li>
+       </ul>
+
        <b>Changes in version 0.9.20:</b>
        <ul>
          <li>Fixed detection of deep recursive file include loops</li>
