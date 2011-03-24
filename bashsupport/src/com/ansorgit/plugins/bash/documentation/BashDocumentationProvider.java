@@ -18,12 +18,12 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
-import com.google.common.collect.Lists;
 import com.intellij.lang.documentation.QuickDocumentationProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +45,8 @@ public class BashDocumentationProvider extends QuickDocumentationProvider {
     @Override
     public List<String> getUrlFor(PsiElement element, PsiElement originalElement) {
         log.info("getUrlFor " + element);
-        return Lists.newArrayList(DocumentationProvider.documentationUrl(element, originalElement));
+        String url = DocumentationProvider.documentationUrl(element, originalElement);
+        return url != null ? Collections.singletonList(url) : null;
     }
 
     /**

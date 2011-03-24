@@ -24,6 +24,7 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.testFramework.ResolveTestCase;
 import com.intellij.testFramework.TestDataFile;
 import org.jetbrains.annotations.NonNls;
 
@@ -34,7 +35,7 @@ import java.io.File;
  * Date: 15.06.2010
  * Time: 21:09:35
  */
-public abstract class AbstractResolveTest extends com.intellij.testFramework.ResolveTestCase {
+public abstract class AbstractResolveTest extends ResolveTestCase {
     protected PsiReference configure() throws Exception {
         return configureByFile(getTestName(false) + ".bash");
     }

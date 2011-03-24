@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.documentation;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -57,10 +58,12 @@ class DocumentationProvider {
      */
     static String documentation(PsiElement element, PsiElement originalElement) {
         log.info("documentation for " + element);
+
         for (DocumentationSource source : sourceList) {
             log.info("Trying with " + source);
+
             String doc = source.documentation(element, originalElement);
-            if (doc != null) {
+            if (StringUtils.stripToNull(doc) != null) {
                 return doc;
             }
         }
@@ -79,7 +82,7 @@ class DocumentationProvider {
         log.info("documentationUrl for " + element);
         for (DocumentationSource source : sourceList) {
             String url = source.documentationUrl(element, originalElement);
-            if (url != null) {
+            if (StringUtils.stripToNull(url) != null) {
                 return url;
             }
         }
