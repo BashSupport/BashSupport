@@ -41,14 +41,22 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //some tokens, like the length expansion '#' must not have a prefixes word character
         if (prefixlessExpansionsOperators.contains(firstToken)) {
+            IElementType operator = firstToken;
             builder.advanceLexer(true);
             firstToken = builder.getTokenType(true);
+
+            if (firstToken == WHITESPACE) {
+                builder.error("Expected variable.");
+                marker.drop();
+                return false;
+            }
         }
 
         //the first token has to be a plain word token
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
         if (!ParserUtil.isWordToken(firstToken)) {
+            builder.error("Expected a variable.");
             firstElementMarker.drop();
             marker.drop();
 
