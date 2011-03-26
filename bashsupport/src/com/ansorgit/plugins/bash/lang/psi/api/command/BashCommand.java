@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -93,6 +94,7 @@ public interface BashCommand extends BashPsiElement, BashReference {
      *
      * @return The element
      */
+    @Nullable
     PsiElement commandElement();
 
     /**

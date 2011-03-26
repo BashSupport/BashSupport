@@ -48,4 +48,11 @@ public interface BashVar extends BashPsiElement, BashReference {
      *         does return true for $0.
      */
     boolean isParameterReference();
+
+    /**
+     * Returns whether this variable has an attached array element reference.
+     *
+     * @return True if it is an array variable reference.
+     */
+    boolean isArrayUse();
 }

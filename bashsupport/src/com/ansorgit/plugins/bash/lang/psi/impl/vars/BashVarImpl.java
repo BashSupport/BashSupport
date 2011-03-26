@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
@@ -182,5 +184,16 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         int numericValue = NumberUtils.toInt(getReferencedName(), -1);
         return numericValue >= 0;
 
+    }
+
+    public boolean isArrayUse() {
+        ASTNode next = getNode().getTreeNext();
+
+        if (isParameterExpansion() && next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
+            ASTNode firstChild = next.getFirstChildNode();
+            return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
+        }
+
+        return false;
     }
 }

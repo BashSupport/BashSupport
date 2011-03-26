@@ -53,7 +53,9 @@ public class InspectionProvider implements InspectionToolProvider {
                 SimpleVarUsageInspection.class,
                 UnusedFunctionParameterInspection.class,
                 ConvertBackquoteInspection.class,
-                UnusedFunctionDefInspection.class
+                UnusedFunctionDefInspection.class,
+                SimpleArrayUseInspection.class,
+                ArrayUseOfSimpleVarInspection.class
         };
     }
 }

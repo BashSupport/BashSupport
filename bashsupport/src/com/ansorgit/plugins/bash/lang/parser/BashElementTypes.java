@@ -115,6 +115,7 @@ public interface BashElementTypes {
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
 
+    IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
 
     //heredoc
     IElementType HEREDOC_ELEMENT = new BashElementType("here doc element");
