@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.21</version>
+    <version>0.9.22</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg

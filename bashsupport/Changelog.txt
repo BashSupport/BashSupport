@@ -1,3 +1,7 @@
+2011-03-26:
+ - Inspection to detect array use of simple variables
+ - Inspection to detect simple use of array variables
+
 2011-03-22:
  - (Almost) full support for arrays
  - Version 0.9.21
