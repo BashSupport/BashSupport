@@ -42,21 +42,21 @@ public class DeclareCommandTest extends MockPsiTest {
     @Test
     public void testParse() {
         //declare a=1
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, WORD, EQ, WORD);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, WORD, EQ, WORD);
         //declare a=1 b c
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, WORD, EQ, WORD, WORD, WORD);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, WORD, EQ, WORD, WORD, WORD);
         //declare a=$b
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, WORD, EQ, VARIABLE);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, WORD, EQ, VARIABLE);
         //declare a=$(echo 123)
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, WORD, EQ, DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WORD, RIGHT_PAREN);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, WORD, EQ, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
         //declare $abc=$(echo 123)
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WORD, RIGHT_PAREN);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
         //declare $abc=()
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, RIGHT_PAREN);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, RIGHT_PAREN);
         //declare $abc=(a)
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
         //declare $abc=(a,b)
-        mockTest(declareParsing, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
     }
 
     @Test

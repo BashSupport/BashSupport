@@ -1,6 +1,6 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
@@ -19,8 +19,8 @@ public class IncludeCommand implements ParsingFunction, ParsingTool {
     private final Set<String> acceptedCommands = Sets.newHashSet(".", "source");
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == BashTokenTypes.INTERNAL_COMMAND
-                && acceptedCommands.contains(builder.getTokenText());
+        String tokenText = builder.getTokenText();
+        return LanguageBuiltins.isInternalCommand(tokenText) && acceptedCommands.contains(tokenText);
     }
 
     public boolean parse(BashPsiBuilder builder) {

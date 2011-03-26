@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
 import com.intellij.codeInspection.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -30,12 +31,20 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 /**
  * User: jansorg
  * Date: 01.07.2010
  * Time: 18:48:20
  */
 public abstract class AbstractInspectionTestCase extends InspectionTestCase {
+    protected AbstractInspectionTestCase(Class<?> inspectionClass) {
+        if (!Arrays.asList(new InspectionProvider().getInspectionClasses()).contains(inspectionClass)) {
+            throw new IllegalStateException("The inspection is not registered in the inspection provider");
+        }
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/inspection/";
     }

@@ -41,13 +41,13 @@ import java.util.Map;
  */
 public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements BashTokenTypes {
     private static final TokenSet lineCommentSet = TokenSet.create(COMMENT);
-    private static final TokenSet shebangCommentSet = TokenSet.EMPTY;//TokenSet.create(BashTokenTypes.SHEBANG);
+    private static final TokenSet shebangCommentSet = TokenSet.EMPTY;
     private static final TokenSet parenthesisSet = TokenSet.create(LEFT_PAREN, RIGHT_PAREN);
     private static final TokenSet curlySet = TokenSet.create(LEFT_CURLY, RIGHT_CURLY);
     private static final TokenSet bracketSet = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE);
     private static final TokenSet string2Set = TokenSet.create(BashTokenTypes.STRING2);
     private static final TokenSet numberSet = TokenSet.create(BashTokenTypes.NUMBER, INTEGER_LITERAL);
-    private static final TokenSet internalCommandSet = TokenSet.create(BashTokenTypes.INTERNAL_COMMAND);
+    //private static final TokenSet internalCommandSet = TokenSet.create(BashTokenTypes.INTERNAL_COMMAND);
     private static final TokenSet varUseSet = TokenSet.create(BashTokenTypes.VARIABLE);
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
 
@@ -226,7 +226,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
         fillMap(attributes, redirectionSet, REDIRECTION);
         //fixme bash4 redirects?
         fillMap(attributes, conditionalOperators, CONDITIONAL);
-        fillMap(attributes, internalCommandSet, INTERNAL_COMMAND);
+        //fixme internal command highlighting
+        //fillMap(attributes, internalCommandSet, INTERNAL_COMMAND);
         fillMap(attributes, varUseSet, VAR_USE);
         fillMap(attributes, badCharacterSet, BAD_CHARACTER);
     }

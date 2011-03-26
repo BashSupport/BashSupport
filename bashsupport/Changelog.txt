@@ -1,6 +1,7 @@
 2011-03-26:
  - Inspection to detect array use of simple variables
  - Inspection to detect simple use of array variables
+ - It is possible now to defined functions which have the same name as built-in Bash commands
 
 2011-03-22:
  - (Almost) full support for arrays

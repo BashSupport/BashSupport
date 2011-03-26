@@ -49,7 +49,7 @@ public class IntegrationTest extends MockPsiTest {
 
         mockTest(fileParsingTest,
                 IF_KEYWORD, EXPR_CONDITIONAL, COND_OP, WORD, _EXPR_CONDITIONAL, SEMI, THEN_KEYWORD, LINE_FEED,
-                INTERNAL_COMMAND, WORD, LINE_FEED,
+                WORD, WORD, LINE_FEED,
                 ELSE_KEYWORD, LINE_FEED,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, WHITESPACE, WORD, WORD, SEMI, RIGHT_CURLY, LINE_FEED,
                 FI_KEYWORD
@@ -224,7 +224,7 @@ public class IntegrationTest extends MockPsiTest {
         //f() { export a=1 b=2; }
         mockTest(fileParsingTest, Lists.newArrayList("f", "(", ")", "{", " ", "export"),
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, WHITESPACE,
-                INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, WORD, EQ, WORD,
+                WORD, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, WORD, EQ, WORD,
                 SEMI, WHITESPACE, RIGHT_CURLY);
     }
 
@@ -267,7 +267,7 @@ public class IntegrationTest extends MockPsiTest {
          */
         mockTest(fileParsingTest,
                 FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, INTEGER_LITERAL, LINE_FEED,
-                DO_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, DONE_KEYWORD
+                DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD
         );
 
         /*
@@ -278,7 +278,7 @@ public class IntegrationTest extends MockPsiTest {
          */
         mockTest(fileParsingTest,
                 FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, INTEGER_LITERAL, SEMI, LINE_FEED,
-                DO_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, DONE_KEYWORD
+                DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD
         );
     }
 
@@ -287,19 +287,19 @@ public class IntegrationTest extends MockPsiTest {
         //"case a in a) echo [ \"a\" ];; esac"
         mockTest(fileParsingTest,
                 CASE_KEYWORD, WORD, IN_KEYWORD, WORD,
-                RIGHT_PAREN, INTERNAL_COMMAND, EXPR_CONDITIONAL, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL, CASE_END,
+                RIGHT_PAREN, WORD, EXPR_CONDITIONAL, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL, CASE_END,
                 ESAC_KEYWORD);
     }
 
     @Test
     public void testPipelineWithConditional() {
         //echo && [ -z "hi" ]
-        mockTest(fileParsingTest, INTERNAL_COMMAND, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
 
         //for f in a; do echo && [ -z "hi" ]; done
         mockTest(fileParsingTest,
                 FOR_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI, DO_KEYWORD,
-                INTERNAL_COMMAND, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL,
+                WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL,
                 SEMI, DONE_KEYWORD);
     }
 
@@ -326,17 +326,17 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testBuildInCommandDeclare() {
         //declare $abc=()
-        mockTest(fileParsingTest, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, RIGHT_PAREN);
+        mockTest(fileParsingTest, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, RIGHT_PAREN);
         //declare $abc=(a)
-        mockTest(fileParsingTest, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
+        mockTest(fileParsingTest, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
         //declare $abc=(a,b)
-        mockTest(fileParsingTest, Lists.newArrayList("declare"), INTERNAL_COMMAND, VARIABLE, EQ, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
+        mockTest(fileParsingTest, Lists.newArrayList("declare"), WORD, VARIABLE, EQ, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
     }
 
     @Test
     public void testAssigmentCommands() {
         //echo a=a=b
-        mockTest(fileParsingTest, INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, ASSIGNMENT_WORD, WORD);
+        mockTest(fileParsingTest, WORD, ASSIGNMENT_WORD, EQ, ASSIGNMENT_WORD, WORD);
         //a=a=b
         mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, ASSIGNMENT_WORD, WORD);
         //a=b=c=d
@@ -346,9 +346,9 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testConditionalWithBackquote() {
         //[ `uname -s` = "SunOS" ]
-        mockTest(fileParsingTest, EXPR_CONDITIONAL, BACKQUOTE, INTERNAL_COMMAND, WORD, BACKQUOTE, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, EXPR_CONDITIONAL, BACKQUOTE, WORD, WORD, BACKQUOTE, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
         //[ $(uname -s) = "SunOS" ]
-        mockTest(fileParsingTest, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WORD, RIGHT_PAREN, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
     }
 
     @Test
@@ -446,7 +446,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, Lists.newArrayList("a", "#!/bin/sh"), WORD, COMMENT);
 
         //echo a; #!/bin/sh
-        mockTest(fileParsingTest, INTERNAL_COMMAND, WORD, SEMI, COMMENT);
+        mockTest(fileParsingTest, WORD, WORD, SEMI, COMMENT);
     }
 
     @Test
@@ -455,7 +455,7 @@ public class IntegrationTest extends MockPsiTest {
         //      a
         //	fi
         mockTest(fileParsingTest, Lists.newArrayList("if", "read", "pid"),
-                IF_KEYWORD, INTERNAL_COMMAND, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
+                IF_KEYWORD, WORD, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD);
     }
@@ -466,7 +466,7 @@ public class IntegrationTest extends MockPsiTest {
         //      a
         //	fi
         mockTestSuccessWithErrors(fileParsingTest,
-                IF_KEYWORD, INTERNAL_COMMAND, WORD, GREATER_THAN, SEMI, THEN_KEYWORD, LINE_FEED,
+                IF_KEYWORD, WORD, WORD, GREATER_THAN, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD);
     }
@@ -477,7 +477,7 @@ public class IntegrationTest extends MockPsiTest {
         //      a
         //	fi
         mockTest(fileParsingTest, Lists.newArrayList("if", "echo", "pid"),
-                IF_KEYWORD, INTERNAL_COMMAND, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
+                IF_KEYWORD, WORD, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD);
     }
@@ -488,7 +488,7 @@ public class IntegrationTest extends MockPsiTest {
         //      a
         //	fi
         mockTest(fileParsingTest, Lists.newArrayList("if", "echo", "pid"),
-                IF_KEYWORD, INTERNAL_COMMAND, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
+                IF_KEYWORD, WORD, WORD, GREATER_THAN, WORD, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD);
     }
@@ -498,7 +498,7 @@ public class IntegrationTest extends MockPsiTest {
         //make sure that the -p option is not taken as a variable name
         //$(read -p "")
         mockTest(fileParsingTest, Lists.newArrayList("$", "(", "read", " ", "-p", " "),
-                DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD,
+                DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD,
                 STRING_END, RIGHT_PAREN);
     }
 
@@ -545,7 +545,7 @@ public class IntegrationTest extends MockPsiTest {
         //}
         mockTest(fileParsingTest, Lists.newArrayList("doIt", "(", ")", "{", "\n", "export"),
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
-                INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WHITESPACE, STRING_BEGIN, WORD, STRING_END, LINE_FEED,
+                WORD, ASSIGNMENT_WORD, EQ, WHITESPACE, STRING_BEGIN, WORD, STRING_END, LINE_FEED,
                 RIGHT_CURLY);
     }
 
@@ -555,7 +555,7 @@ public class IntegrationTest extends MockPsiTest {
         //    echo in
         //}
         mockTest(fileParsingTest, Lists.newArrayList("a", "(", ")", "{", "\n", "echo", "in"),
-                WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED, INTERNAL_COMMAND, IN_KEYWORD, LINE_FEED,
+                WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED, WORD, IN_KEYWORD, LINE_FEED,
                 RIGHT_CURLY);
     }
 
@@ -591,7 +591,7 @@ public class IntegrationTest extends MockPsiTest {
         //fi
 
         mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, VARIABLE, _BRACKET_KEYWORD, LINE_FEED,
-                THEN_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, FI_KEYWORD);
+                THEN_KEYWORD, LINE_FEED, WORD, LINE_FEED, FI_KEYWORD);
 
         //if [[ -z "a" ]]
         //then
@@ -599,7 +599,7 @@ public class IntegrationTest extends MockPsiTest {
         //fi
 
         mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, WORD, STRING_END, _BRACKET_KEYWORD, LINE_FEED,
-                THEN_KEYWORD, LINE_FEED, INTERNAL_COMMAND, LINE_FEED, FI_KEYWORD);
+                THEN_KEYWORD, LINE_FEED, WORD, LINE_FEED, FI_KEYWORD);
     }
 
     @Test
@@ -620,7 +620,7 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testProcessSubstitution() {
         //while read line ; do echo $line ; done < <(echo :)
-        mockTest(fileParsingTest, WHILE_KEYWORD, INTERNAL_COMMAND, WORD, SEMI, DO_KEYWORD, WORD, VARIABLE, SEMI,
+        mockTest(fileParsingTest, WHILE_KEYWORD, WORD, WORD, SEMI, DO_KEYWORD, WORD, VARIABLE, SEMI,
                 DONE_KEYWORD, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, COLON, RIGHT_PAREN);
 
 

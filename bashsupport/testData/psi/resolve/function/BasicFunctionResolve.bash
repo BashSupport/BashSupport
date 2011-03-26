@@ -1,5 +1,5 @@
 function f() {
-    echo i am f
+    echo i am
 }
 
 <ref>f

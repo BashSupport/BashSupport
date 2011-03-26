@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
@@ -69,7 +70,9 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
                 ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode);
             }
 
-            return ok && (builder.getTokenType() == INTERNAL_COMMAND) && commandName.equals(builder.getTokenText());
+            //return ok && (builder.getTokenType() == INTERNAL_COMMAND) && commandName.equals(builder.getTokenText());
+            String currentTokenText = builder.getTokenText();
+            return ok && LanguageBuiltins.isInternalCommand(currentTokenText) && commandName.equals(currentTokenText);
         } finally {
             start.rollbackTo();
         }

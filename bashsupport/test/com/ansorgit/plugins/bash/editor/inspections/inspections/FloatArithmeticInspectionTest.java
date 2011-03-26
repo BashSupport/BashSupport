@@ -6,6 +6,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 16:50
  */
 public class FloatArithmeticInspectionTest extends AbstractInspectionTestCase {
+    public FloatArithmeticInspectionTest() {
+        super(FloatArithmeticInspection.class);
+    }
+
     public void testOk() throws Exception {
         doTest("floatArithmeticInspection/ok", new FloatArithmeticInspection());
     }

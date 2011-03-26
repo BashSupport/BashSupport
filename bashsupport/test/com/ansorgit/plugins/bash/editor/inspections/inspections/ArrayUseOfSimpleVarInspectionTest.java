@@ -8,6 +8,10 @@ import org.junit.Test;
  * Time: 19:47
  */
 public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCase {
+    public ArrayUseOfSimpleVarInspectionTest() {
+        super(ArrayUseOfSimpleVarInspection.class);
+    }
+
     @Test
     public void testSimpleAccess() throws Exception {
         doTest("arrayUseOfSimpleVarInspection/simpleVar", new ArrayUseOfSimpleVarInspection());

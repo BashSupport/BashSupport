@@ -78,19 +78,19 @@ public class ReadonlyCommandTest extends MockPsiTest {
     @Test
     public void testParse() {
         //export a=1
-        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD);
+        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), WORD, ASSIGNMENT_WORD, EQ, WORD);
         //export a
-        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), INTERNAL_COMMAND, WORD);
+        mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"), WORD, WORD);
         //export a=1 b=2
         mockTest(parserFunctionWithMarker, Lists.newArrayList("readonly"),
-                INTERNAL_COMMAND, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD);
+                WORD, ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD);
     }
 
     @Test
     public void testComplicated() {
         //>out a=1 export a=1
         mockTest(parserFunction, Lists.newArrayList(">", "out", " ", "a", "=", "1", " ", "readonly"),
-                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, INTERNAL_COMMAND,
+                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, WORD,
                 WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
     }
 }

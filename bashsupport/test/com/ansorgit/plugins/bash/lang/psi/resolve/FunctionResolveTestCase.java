@@ -62,6 +62,10 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         checkFunctionReference();
     }
 
+    public void testInternalCommandOverride() throws Exception {
+        checkFunctionReference();
+    }
+
     public void testBasicFunctionResolveToFirstDef() throws Exception {
         checkFunctionReference();
 
