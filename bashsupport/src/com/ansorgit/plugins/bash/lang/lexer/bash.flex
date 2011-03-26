@@ -196,67 +196,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
   "[ "                          { goToState(S_TEST); return EXPR_CONDITIONAL; }
 
-/** Strings */
   "time"                        { return TIME_KEYWORD; }
-
-/** Builtin commands */
-/*
-   "."                          |
-   ":"                          |
-   "alias"                      |
-   "bg"                         |
-   "bind"                       |
-   "break"                      |
-   "builtin"                    |
-   "cd"                         |
-   "caller"                     |
-   "command"                    |
-   "compgen"                    |
-   "complete"                   |
-   "continue"                   |
-   "declare"                    |
-   "typeset"                    |
-   "dirs"                       |
-   "disown"                     |
-   "echo"                       |
-   "enable"                     |
-   "eval"                       |
-   "exec"                       |
-   "exit"                       |
-   "export"                     |
-   "fc"                         |
-   "fg"                         |
-   "getopts"                    |
-   "hash"                       |
-   "help"                       |
-   "history"                    |
-   "jobs"                       |
-   "kill"                       |
-   "let"                        |
-   "local"                      |
-   "logout"                     |
-   "popd"                       |
-   "printf"                     |
-   "pushd"                      |
-   "pwd"                        |
-   "read"                       |
-   "readonly"                   |
-   "return"                     |
-   "set"                        |
-   "shift"                      |
-   "shopt"                      |
-   "unset"                      |
-   "source"                     |
-   "suspend"                    |
-   "test"                       |
-   "times"                      |
-   "trap"                       |
-   "type"                       |
-   "ulimit"                     |
-   "umask"                      |
-   "unalias"                    |
-   "wait"                       { return INTERNAL_COMMAND; }
-*/
 
    <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
        "&&"                         { return AND_AND; }
