@@ -6,6 +6,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 20:02
  */
 public class EvaluateExpansionInspectionTest extends AbstractInspectionTestCase {
+    public EvaluateExpansionInspectionTest() {
+        super(EvaluateExpansionInspection.class);
+    }
+
     public void testEvaluation() throws Exception {
         doTest("evaluateExpansionInspection/evaluation", withOnTheFly(new EvaluateExpansionInspection()));
     }

@@ -6,6 +6,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 16:50
  */
 public class AddShebangInspectionTest extends AbstractInspectionTestCase {
+    public AddShebangInspectionTest() {
+        super(AddShebangInspection.class);
+    }
+
     public void testOk() throws Exception {
         doTest("addShebangInspection/ok", new AddShebangInspection());
     }

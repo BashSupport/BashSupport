@@ -40,9 +40,9 @@ public class ReadCommandTest extends MockPsiTest {
 
     @Test
     public void testIsValid() {
-        mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND);
-        mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND, WORD);
-        mockTest(parserFunction, Lists.newArrayList("read"), INTERNAL_COMMAND, WORD, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("read"), WORD);
+        mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD, WORD, WORD);
     }
 
     @Test

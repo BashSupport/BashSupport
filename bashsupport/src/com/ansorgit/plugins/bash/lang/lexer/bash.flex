@@ -200,6 +200,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "time"                        { return TIME_KEYWORD; }
 
 /** Builtin commands */
+/*
    "."                          |
    ":"                          |
    "alias"                      |
@@ -255,6 +256,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    "umask"                      |
    "unalias"                    |
    "wait"                       { return INTERNAL_COMMAND; }
+*/
 
    <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
        "&&"                         { return AND_AND; }

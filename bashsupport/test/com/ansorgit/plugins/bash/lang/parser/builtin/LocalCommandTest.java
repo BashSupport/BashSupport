@@ -54,7 +54,7 @@ public class LocalCommandTest extends MockPsiTest {
     public void testParsing() {
         //   local local1=1
         mockTest(fileParser, Lists.newArrayList("local", " ", "local1"),
-                INTERNAL_COMMAND, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
+                WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
     }
 
     @Test
@@ -64,6 +64,6 @@ public class LocalCommandTest extends MockPsiTest {
         //}
         mockTest(fileParser, Lists.newArrayList("function", "a", "(", ")", "{", "\n", "local", " ", "local1"),
                 FUNCTION_KEYWORD, WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
-                INTERNAL_COMMAND, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, LINE_FEED, RIGHT_CURLY);
+                WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, LINE_FEED, RIGHT_CURLY);
     }
 }

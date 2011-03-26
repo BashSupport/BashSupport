@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.command;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
@@ -78,7 +79,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
         }
 
         final PsiBuilder.Marker cmdMarker = builder.mark();
-        final boolean internal = builder.getTokenType() == INTERNAL_COMMAND;
+        final boolean internal = LanguageBuiltins.isInternalCommand(builder.getTokenText());
 
         if (!Parsing.word.parseWord(builder)) {
             cmdMarker.drop();

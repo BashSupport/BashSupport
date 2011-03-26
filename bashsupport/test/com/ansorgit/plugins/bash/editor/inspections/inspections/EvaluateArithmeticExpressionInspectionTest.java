@@ -6,6 +6,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 12:33
  */
 public class EvaluateArithmeticExpressionInspectionTest extends AbstractInspectionTestCase {
+    public EvaluateArithmeticExpressionInspectionTest() {
+        super(EvaluateArithmeticExpressionInspection.class);
+    }
+
     public void testOk() throws Exception {
         doTest("evaluateArithmeticExpressionInspection/ok", withOnTheFly(new EvaluateArithmeticExpressionInspection()));
     }

@@ -22,36 +22,36 @@ public class IncludeCommandTest extends MockPsiTest {
     @Test
     public void testParseSimpleDot() throws Exception {
         //. a
-        mockTest(parserFunction, Lists.newArrayList("."), INTERNAL_COMMAND, WORD);
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, WORD);
 
         //. "a"
-        mockTest(parserFunction, Lists.newArrayList("."), INTERNAL_COMMAND, STRING_BEGIN, WORD, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, WORD, STRING_END);
 
         //. "a" abc def
-        mockTest(parserFunction, Lists.newArrayList("."), INTERNAL_COMMAND, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
     }
 
     @Test
     public void testParseSimpleSource() throws Exception {
         //source a
-        mockTest(parserFunction, Lists.newArrayList("source"), INTERNAL_COMMAND, WORD);
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, WORD);
 
         //source "a"
-        mockTest(parserFunction, Lists.newArrayList("source"), INTERNAL_COMMAND, STRING_BEGIN, WORD, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, WORD, STRING_END);
 
         //source "a" abc def
-        mockTest(parserFunction, Lists.newArrayList("source"), INTERNAL_COMMAND, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
     }
 
     @Test
     public void testParseErrors() {
         //.
-        mockTestFail(BashVersion.Bash_v4, parserFunction, INTERNAL_COMMAND);
+        mockTestFail(BashVersion.Bash_v4, parserFunction, WORD);
 
         //.
-        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("."), INTERNAL_COMMAND);
+        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("."), WORD);
 
         //source
-        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), INTERNAL_COMMAND);
+        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD);
     }
 }

@@ -98,7 +98,7 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(simpleCommandTest, 2, ASSIGNMENT_WORD, EQ, null);
 
         //a=1 b=2 echo
-        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, INTERNAL_COMMAND);
+        mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WORD);
 
         //a=1 b=2
         mockTest(simpleCommandTest, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
@@ -165,7 +165,7 @@ public class CommandParsingTest extends MockPsiTest {
         // $(echo 1)
         // )
         mockTest(assignmentListTest, LEFT_PAREN, LINE_FEED,
-                DOLLAR, LEFT_PAREN, INTERNAL_COMMAND, WORD, RIGHT_PAREN,
+                DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN,
                 LINE_FEED, RIGHT_PAREN);
 
         //now test as simple command
