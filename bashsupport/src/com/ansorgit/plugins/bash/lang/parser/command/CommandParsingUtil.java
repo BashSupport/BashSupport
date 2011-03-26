@@ -255,6 +255,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             return false;
         }
 
+        PsiBuilder.Marker marker = builder.mark();
+
         while (!builder.eof() && (builder.getTokenType() != RIGHT_PAREN)) {
             //optional newlines at the beginning
             builder.eatOptionalNewlines();
@@ -263,12 +265,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 //array value assignment to specific position
                 boolean ok = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                 if (!ok) {
+                    marker.drop();
                     return false;
                 }
 
                 //now we expect an equal sign
                 final IElementType eqToken = ParserUtil.getTokenAndAdvance(builder);
                 if (eqToken != EQ) {
+                    marker.drop();
                     return false;
                 }
 
@@ -279,6 +283,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 final boolean ok = Parsing.word.parseWord(builder, true);
 
                 if (!ok) {
+                    marker.drop();
                     return false;
                 }
             }
@@ -286,7 +291,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             //optional newlines after the comma
             builder.eatOptionalNewlines(-1, true);
 
-            //if the next token is not a comma, we break the loop, cause we're at the last element
+            //if the next token is not whitespcae, we break the loop, cause we're at the last element
             if (builder.getTokenType(true) == WHITESPACE) {
                 builder.advanceLexer(true);
             } else {
@@ -294,7 +299,13 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             }
         }
 
-        return ParserUtil.getTokenAndAdvance(builder) == RIGHT_PAREN;
+        if (!(ParserUtil.getTokenAndAdvance(builder) == RIGHT_PAREN)) {
+            marker.drop();
+            return false;
+        }
+
+        marker.done(VAR_ASSIGNMENT_LIST);
+        return true;
     }
 
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>2</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Array use of non-array variable
+        </problem_class>
+        <description>Array use of non-array variable</description>
+    </problem>
+</problems>
+

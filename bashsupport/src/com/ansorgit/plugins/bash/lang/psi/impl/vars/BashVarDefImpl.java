@@ -21,9 +21,11 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
@@ -41,6 +43,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -79,15 +82,41 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isArray() {
-        //fixme
+        //a variable can be declared as array variable in different ways:
+        // - using an array assignment a=(one two)
+        // - using declare -a
+
+        PsiElement assignmentValue = findAssignmentValue();
+
+        //check if we have an array assignment part
+        if (assignmentValue instanceof BashAssignmentList) {
+            return true;
+        }
+
+        //check for declare -a
+        PsiElement parentElement = getParent();
+        if (parentElement instanceof BashCommand) {
+            BashCommand command = (BashCommand) parentElement;
+
+            PsiElement commandElement = command.commandElement();
+            if (commandElement != null && "declare".equals(commandElement.getText())) {
+                List<BashPsiElement> parameters = command.parameters();
+
+                for (BashPsiElement param : parameters) {
+                    if ("-a".equals(param.getText())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
-        //return findAssignmentWord() == BashTokenTypes.ARRAY_ASSIGNMENT_WORD;
     }
 
     /**
      * Returns either a assignment word element or a array assignment word.
      *
-     * @return The element if available. Otherwise null.
+     * @return The element which represents the left part of the assignment.
      */
     @NotNull
     public PsiElement findAssignmentWord() {
@@ -97,12 +126,24 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
         }
 
         //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
-        //as parsed var
+        //a parsed var
         PsiElement firstChild = getFirstChild();
         ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
         ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
         return node != null ? node.getPsi() : firstChild;
+    }
+
+    @Nullable
+    protected PsiElement findAssignmentValue() {
+        /*ASTNode equalsToken = getNode().findChildByType(BashTokenTypes.EQ);
+        if (equalsToken != null) {
+            ASTNode treeNext = equalsToken.getTreeNext();
+            if (treeNext != null && treeNext!=)
+        } */
+
+        PsiElement last = getLastChild();
+        return last != this ? last : null;
     }
 
 
@@ -147,8 +188,7 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean hasAssignmentValue() {
-        PsiElement element = findAssignmentWord();
-        return element != null && BashPsiUtils.nodeType(element) == BashTokenTypes.ASSIGNMENT_WORD;
+        return findAssignmentValue() != null;
     }
 
     public boolean isCommandLocal() {
@@ -280,6 +320,10 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
     }
 
     public boolean isParameterReference() {
+        return false;
+    }
+
+    public boolean isArrayUse() {                                                                               //
         return false;
     }
 
