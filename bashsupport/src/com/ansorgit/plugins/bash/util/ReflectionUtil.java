@@ -24,8 +24,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class ReflectionUtil {
     private static Logger log = Logger.getInstance("#bash.ReflectionUtil");
 
-    private static Map<Pair<Class<?>, String>, Field> fieldCache = new HashMap<Pair<Class<?>, String>, Field>();
+    private static Map<Pair<Class<?>, String>, Field> fieldCache = new ConcurrentHashMap<Pair<Class<?>, String>, Field>();
 
     /**
      * Changes a value of a short member using a certain variable name.
@@ -58,7 +58,9 @@ public class ReflectionUtil {
 
         try {
             Pair<Class<?>, String> mapKey = new Pair<Class<?>, String>(aClass, name);
+
             Field field = fieldCache.get(mapKey);
+
             if (field == null) {
                 field = aClass.getDeclaredField(name);
                 field.setAccessible(true);
@@ -67,6 +69,7 @@ public class ReflectionUtil {
             }
 
             field.setShort(owner, value);
+
             result = true;
         } catch (Exception e) {
             log.warn("Illegal access", e);

@@ -106,12 +106,10 @@ public class PipelineParsing implements ParsingTool {
             return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
         }
 
-        if (hasTimespec) {
-            if (Parsing.list.isListTerminator(builder.getTokenType())) {
-                builder.advanceLexer(); //finished
-            } else {
-                return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
-            }
+        if (Parsing.list.isListTerminator(builder.getTokenType())) {
+            builder.advanceLexer(); //finished
+        } else {
+            return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
         }
 
         if (pipelineCommandMarker.isOpen()) {

@@ -22,7 +22,6 @@ import java.util.Set;
  */
 public class FileInclusionManager {
     private FileInclusionManager() {
-
     }
 
     /**
@@ -78,6 +77,7 @@ public class FileInclusionManager {
                 result.add(psiFile);
             }
         } else {
+            //directory
             for (VirtualFile file : child.getChildren()) {
                 collectSubtree(result, file, psiManager);
             }

@@ -4,7 +4,6 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,12 +19,7 @@ public class BashIncludeCommandImpl extends BashCommandImpl implements BashInclu
 
     @NotNull
     public BashFileReference getFileReference() {
-        PsiElement[] children = getChildren();
-        if (children.length == 0 || !(children[0] instanceof BashFileReference)) {
-            throw new IllegalStateException("File reference not found");
-        }
-
-        return (BashFileReference) children[0];
+        return findNotNullChildByClass(BashFileReference.class);
     }
 
     @Override

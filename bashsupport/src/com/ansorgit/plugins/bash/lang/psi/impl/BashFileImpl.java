@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -32,12 +33,15 @@ import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 
 /**
  * PSI implementation for a Bash file.
  */
 public class BashFileImpl extends PsiFileBase implements BashFile {
+    private List<PsiFile> includedFiles;
+
     public BashFileImpl(FileViewProvider viewProvider) {
         super(viewProvider, BashFileType.BASH_LANGUAGE);
     }
@@ -56,7 +60,8 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
     }
 
     public Set<PsiFile> findIncludedFiles(boolean diveDeep, boolean bashOnly) {
-        Set<PsiFile> result = Sets.newHashSet();
+        Set<PsiFile> result = Sets.newLinkedHashSet();
+
         findIncludedFiles(result, diveDeep, bashOnly);
 
         return result;
@@ -71,32 +76,38 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
      * @return
      */
     private void findIncludedFiles(final Set<PsiFile> result, final boolean diveDeep, final boolean bashOnly) {
-        //fixme cache or index this
+        //the unfiltered list of included files is cached
+        //because it is expensive to compute the list every time
+        if (includedFiles == null) {
+            final List<PsiFile> files = Lists.newLinkedList();
 
-        BashVisitor visitor = new BashVisitor() {
-            @Override
-            public void visitIncludeCommand(BashIncludeCommand includeCommand) {
-                checkCommand(includeCommand);
+            BashPsiUtils.visitRecursively(this, new BashVisitor() {
+                @Override
+                public void visitIncludeCommand(BashIncludeCommand includeCommand) {
+                    PsiFile includedFile = includeCommand.getFileReference().findReferencedFile();
+
+                    files.add(includedFile);
+                }
+            });
+
+            includedFiles = files;
+        }
+
+        for (PsiFile file : includedFiles) {
+            if (result.contains(file)) {
+                continue;
             }
 
-            private void checkCommand(BashIncludeCommand bashCommand) {
-                PsiFile includedFile = bashCommand.getFileReference().findReferencedFile();
-
-                if (bashOnly && !(includedFile instanceof BashFile)) {
-                    return;
-                }
-
-                if (includedFile != null && !result.contains(includedFile)) {
-                    result.add(includedFile);
-
-                    if (diveDeep && includedFile instanceof BashFileImpl) {
-                        ((BashFileImpl) includedFile).findIncludedFiles(result, true, bashOnly);
-                    }
-                }
+            if (bashOnly && !(file instanceof BashFile)) {
+                continue;
             }
-        };
 
-        BashPsiUtils.visitRecursively(this, visitor);
+            result.add(file);
+
+            if (diveDeep && file instanceof BashFileImpl) {
+                ((BashFileImpl) file).findIncludedFiles(result, true, bashOnly);
+            }
+        }
     }
 
     @Override
@@ -111,5 +122,12 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         } else {
             visitor.visitFile(this);
         }
+    }
+
+    @Override
+    public void subtreeChanged() {
+        this.includedFiles = null;
+
+        super.subtreeChanged();
     }
 }
