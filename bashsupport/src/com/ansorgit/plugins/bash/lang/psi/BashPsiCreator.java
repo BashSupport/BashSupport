@@ -181,10 +181,6 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashCommandImpl(node);
         }
 
-        if (elementType == INTERNAL_COMMAND_ELEMENT) {
-            return new BashInternalCommandImpl(node);
-        }
-
         if (elementType == GENERIC_COMMAND_ELEMENT) {
             return new BashGenericCommandImpl(node);
         }

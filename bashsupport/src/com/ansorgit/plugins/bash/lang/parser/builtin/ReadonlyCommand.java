@@ -32,6 +32,6 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  */
 class ReadonlyCommand extends AbstractVariableDefParsing implements ParsingTool {
     ReadonlyCommand() {
-        super(true, INTERNAL_COMMAND_ELEMENT, "readonly", true);
+        super(true, GENERIC_COMMAND_ELEMENT, "readonly", true);
     }
 }

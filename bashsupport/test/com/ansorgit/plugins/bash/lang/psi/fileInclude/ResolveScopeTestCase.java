@@ -35,7 +35,7 @@ public class ResolveScopeTestCase extends AbstractFileIncludeTest {
             Assert.assertFalse("The variable must not be defined in the include file.", defIsInIncludeFile);
         }
 
-        Assert.assertFalse(def.getContainingFile().equals(myFile));
+        Assert.assertFalse("Resolve returned invalid containing file.", def.getContainingFile().equals(myFile));
 
         //the search scope must contain all the included files but nothing else
         GlobalSearchScope resolveScope = reference.getElement().getResolveScope();
