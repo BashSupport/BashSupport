@@ -42,7 +42,7 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
 
         Assert.assertTrue(psiReference.resolve() instanceof BashFunctionDef);
         Assert.assertTrue(commandElement.isFunctionCall());
-        Assert.assertFalse(commandElement.isInternalCommand());
+        //Assert.assertFalse(commandElement.isInternalCommand());
         Assert.assertFalse(commandElement.isVarDefCommand());
         Assert.assertFalse(commandElement.isExternalCommand());
         Assert.assertTrue(commandElement.isReferenceTo(psiReference.resolve()));

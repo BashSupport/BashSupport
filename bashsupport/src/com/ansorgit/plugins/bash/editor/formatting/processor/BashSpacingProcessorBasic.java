@@ -31,7 +31,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.shell.BashCase;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashIf;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
-import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
 import com.intellij.formatting.Spacing;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
@@ -43,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class BashSpacingProcessorBasic implements BashElementTypes, BashTokenTypes {
     private static final Logger log = Logger.getInstance("SpacingProcessorBasic");
-    private static TokenSet commandSet = TokenSet.create(GENERIC_COMMAND_ELEMENT, INTERNAL_COMMAND_ELEMENT, SIMPLE_COMMAND_ELEMENT);
+    private static TokenSet commandSet = TokenSet.create(GENERIC_COMMAND_ELEMENT, SIMPLE_COMMAND_ELEMENT);
     private static TokenSet subshellSet = TokenSet.create(SUBSHELL_COMMAND, ARITHMETIC_COMMAND, PARAM_EXPANSION_ELEMENT, VAR_COMPOSED_VAR_ELEMENT);
 
     private static final Spacing NO_SPACING_WITH_NEWLINE = Spacing.createSpacing(0, 0, 0, true, 1);

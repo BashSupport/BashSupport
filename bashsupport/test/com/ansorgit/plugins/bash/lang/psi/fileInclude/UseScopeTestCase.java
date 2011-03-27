@@ -28,7 +28,7 @@ public class UseScopeTestCase extends AbstractFileIncludeTest {
         Assert.assertTrue("var def must resolve to the definition in included.bash", included.equals(varDef.getContainingFile()));
 
         SearchScope varDefUseScope = varDef.getUseScope();
-        Assert.assertTrue(varDefUseScope instanceof GlobalSearchScope);
+        Assert.assertTrue("Invalid type of scope: " + varDefUseScope, varDefUseScope instanceof GlobalSearchScope);
 
         GlobalSearchScope useScope = (GlobalSearchScope) varDefUseScope;
         Assert.assertTrue("The use scope must contain the original file itself.", useScope.contains(included.getVirtualFile()));

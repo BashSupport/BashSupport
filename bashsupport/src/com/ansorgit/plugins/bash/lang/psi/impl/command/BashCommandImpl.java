@@ -72,8 +72,10 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     }
 
     private void updateCache() {
-        isInternal = findChildByType(BashElementTypes.INTERNAL_COMMAND_ELEMENT) != null;
-        isExternal = findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT) != null;
+        PsiElement command = findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+
+        isInternal = command != null && LanguageBuiltins.isInternalCommand(command);
+        isExternal = command != null && !isInternal;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
         //internal resolve is expensive, so we should cache it
         //we have to listen to psi changes in the file, though
         //otherwise we might still have isExternal set to true even if a
-        //a target exists now, e.g. a bash function witht the right name
+        //a target exists now, e.g. a Bash function with the right name
         return isExternal && (internalResolve() == null);
     }
 
@@ -110,7 +112,8 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     }
 
     public boolean isVarDefCommand() {
-        return isInternalCommand() && (LanguageBuiltins.varDefCommands.contains(getReferencedName())
+        return isInternalCommand()
+                && (LanguageBuiltins.varDefCommands.contains(getReferencedName())
                 || LanguageBuiltins.localVarDefCommands.contains(getReferencedName()));
     }
 
@@ -119,11 +122,6 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     }
 
     public PsiElement commandElement() {
-        PsiElement element = findChildByType(BashElementTypes.INTERNAL_COMMAND_ELEMENT);
-        if (element != null) {
-            return element;
-        }
-
         return findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
     }
 
@@ -205,12 +203,13 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     }
 
     public PsiElement resolve() {
-        if (isInternalCommand()) {
+        PsiElement result = internalResolve();
+
+        if (isExternal && result == null) {
             return this;
         }
 
-        PsiElement result = internalResolve();
-        if (isExternal && result == null) {
+        if (isInternal && result == null) {
             return this;
         }
 

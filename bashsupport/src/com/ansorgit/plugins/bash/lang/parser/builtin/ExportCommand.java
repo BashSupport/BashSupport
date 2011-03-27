@@ -32,6 +32,6 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
  */
 class ExportCommand extends AbstractVariableDefParsing implements ParsingTool {
     ExportCommand() {
-        super(true, INTERNAL_COMMAND_ELEMENT, "export", true);
+        super(true, GENERIC_COMMAND_ELEMENT, "export", true);
     }
 }

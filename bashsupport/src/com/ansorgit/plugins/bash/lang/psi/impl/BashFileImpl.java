@@ -40,7 +40,9 @@ import java.util.Set;
  * PSI implementation for a Bash file.
  */
 public class BashFileImpl extends PsiFileBase implements BashFile {
-    private List<PsiFile> includedFiles;
+    //we cache the include commands itself to avoid broken state if currently missing file is
+    //added later on
+    private List<BashIncludeCommand> includeCommands;
 
     public BashFileImpl(FileViewProvider viewProvider) {
         super(viewProvider, BashFileType.BASH_LANGUAGE);
@@ -78,27 +80,24 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
     private void findIncludedFiles(final Set<PsiFile> result, final boolean diveDeep, final boolean bashOnly) {
         //the unfiltered list of included files is cached
         //because it is expensive to compute the list every time
-        if (includedFiles == null) {
-            final List<PsiFile> files = Lists.newLinkedList();
+
+        if (includeCommands == null) {
+            final List<BashIncludeCommand> commands = Lists.newLinkedList();
 
             BashPsiUtils.visitRecursively(this, new BashVisitor() {
                 @Override
                 public void visitIncludeCommand(BashIncludeCommand includeCommand) {
-                    PsiFile includedFile = includeCommand.getFileReference().findReferencedFile();
-
-                    files.add(includedFile);
+                    commands.add(includeCommand);
                 }
             });
 
-            includedFiles = files;
+            includeCommands = commands;
         }
 
-        for (PsiFile file : includedFiles) {
-            if (result.contains(file)) {
-                continue;
-            }
+        for (BashIncludeCommand includeCommand : includeCommands) {
+            PsiFile file = includeCommand.getFileReference().findReferencedFile();
 
-            if (bashOnly && !(file instanceof BashFile)) {
+            if (result.contains(file) || bashOnly && !(file instanceof BashFile)) {
                 continue;
             }
 
@@ -126,7 +125,7 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
     @Override
     public void subtreeChanged() {
-        this.includedFiles = null;
+        this.includeCommands = null;
 
         super.subtreeChanged();
     }

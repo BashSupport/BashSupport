@@ -58,7 +58,7 @@ public interface BashElementTypes {
     //command elements
     IElementType SIMPLE_COMMAND_ELEMENT = new BashElementType("simple command element");
     IElementType VAR_DEF_ELEMENT = new BashElementType("assignment command element");
-    IElementType INTERNAL_COMMAND_ELEMENT = new BashElementType("internal bash command");
+    //IElementType INTERNAL_COMMAND_ELEMENT = new BashElementType("internal bash command");
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
     IElementType INCLUDE_COMMAND_ELEMENT = new BashElementType("include command");
 
