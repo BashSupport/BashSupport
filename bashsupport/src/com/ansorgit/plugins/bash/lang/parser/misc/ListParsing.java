@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
@@ -81,16 +82,14 @@ public class ListParsing implements ParsingTool {
     */
 
     public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean markAsFoldable) {
-        PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : null;
+        PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : NullMarker.get();
 
         builder.eatOptionalNewlines(1);
         builder.eatOptionalNewlines();
 
         //this is the list0 parsing here
         if (!parseList1(builder, false, true)) {
-            if (optionalMarker != null) {
-                optionalMarker.drop();
-            }
+            optionalMarker.drop();
 
             return false;
         }
@@ -100,9 +99,7 @@ public class ListParsing implements ParsingTool {
 
         //in contrast to the grammar we assume that compound_list is terminated
         if (token == SEMI || token == LINE_FEED || token == AMP) {
-            if (optionalMarker != null) {
-                optionalMarker.done(BLOCK_ELEMENT);
-            }
+            optionalMarker.done(BLOCK_ELEMENT);
 
             builder.advanceLexer();
             builder.eatOptionalNewlines();
@@ -110,9 +107,7 @@ public class ListParsing implements ParsingTool {
             return true;
         }
 
-        if (optionalMarker != null) {
-            optionalMarker.done(BLOCK_ELEMENT);
-        }
+        optionalMarker.done(BLOCK_ELEMENT);
 
         return builder.eof() || optionalTerminator;
     }

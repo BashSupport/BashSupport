@@ -33,6 +33,7 @@ import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -343,8 +344,15 @@ public class BashPsiUtils {
     public static void visitRecursively(PsiElement element, BashVisitor visitor) {
         element.accept(visitor);
 
-        for (PsiElement child : element.getChildren()) {
-            visitRecursively(child, visitor);
+        // calling element.getChildren() is expensive,
+        // better iterate over the chilren
+        PsiElement child = element.getFirstChild();
+        while (child != null) {
+            if (child.getNode() instanceof CompositeElement) {
+                visitRecursively(child, visitor);
+            }
+
+            child = child.getNextSibling();
         }
     }
 
