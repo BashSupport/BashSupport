@@ -57,7 +57,10 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     }
 
     public boolean canFindUsagesFor(@NotNull PsiElement psi) {
-        return psi instanceof BashVar || psi instanceof BashCommand || psi instanceof BashHereDocMarker;
+        return psi instanceof BashVar
+                || psi instanceof BashCommand
+                || psi instanceof BashHereDocMarker
+                || psi instanceof BashFunctionDef;
     }
 
     public String getHelpId(@NotNull PsiElement psiElement) {
