@@ -120,7 +120,7 @@ Bugs (indentation marks fixed bugs):
     - Add inspection to detect bad filehandles, e.g. &10
     - documentation for mv
     - Heredoc parsing for <<"EOF" and <<EOF (highlight variables only in the second heredoc form)
-- Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
+    - Handle "a[a+1]=a" in a better way, support vars and arithmetic in the array index
 - Support <<- which removes tab characters (parses, intention for this?)
 - Support tilde expansion
 - Support for Ctrl+J
@@ -158,11 +158,11 @@ Bugs (indentation marks fixed bugs):
     - search scope for variables in included scripts
 - Not working: declare -r next_number=p$(printf "%02d" $((10#${number:1} + 1)))
 - inspection to check custom-base number literals to check for invalid digit characters, e.g. 10#A
-- Bad code green : one line: for f in 1 2 3; do { echo 1 } done
+    - Bad code green : one line: for f in 1 2 3; do { echo 1 } done
     - Inspection to detect local usage outside of a function
     - support process substitution / i.e. named pipes "cat - < <(echo a)"
     - Adding a new file with the extension .bash adds file.bash.sh
-
 - Bug: Format after var rename breaks source code
-
 - Bug: a=1; ${a:=$a$a}, placing the caret after the last a and starting a rename triggers an IDEA bug
+
+- Implement stubs and include index to speed up variable resolving
