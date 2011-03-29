@@ -1,3 +1,6 @@
+2011-03-29:
+ - Find usages enabled on function definitions
+
 2011-03-27:
  - Improved performance of parsing files which contain include files
 
