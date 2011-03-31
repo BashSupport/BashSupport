@@ -619,17 +619,20 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_BACKQUOTE> {
+<S_PARAM_EXPANSION> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
     \'{SingleCharacter}*\'        { return STRING2; }
+}
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             { return LINE_FEED; }
 
     /* Backquote expression */
     `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+}
 
 
   /* Bash reserved keywords */

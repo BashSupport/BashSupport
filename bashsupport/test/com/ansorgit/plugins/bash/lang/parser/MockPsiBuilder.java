@@ -293,7 +293,7 @@ public class MockPsiBuilder implements PsiBuilder {
         }
 
         public void collapse(IElementType iElementType) {
-
+            done(iElementType);
         }
 
         public void doneBefore(IElementType elementType, Marker marker) {
