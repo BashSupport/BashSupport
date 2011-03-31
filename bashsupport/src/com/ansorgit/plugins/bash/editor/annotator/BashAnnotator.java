@@ -115,6 +115,9 @@ public class BashAnnotator implements Annotator {
         } else if (bashCommand.isExternalCommand()) {
             cmdElement = bashCommand.commandElement();
             attributesKey = BashSyntaxHighlighter.EXTERNAL_COMMAND;
+        } else if (bashCommand.isInternalCommand()) {
+            cmdElement = bashCommand.commandElement();
+            attributesKey = BashSyntaxHighlighter.INTERNAL_COMMAND;
         }
 
         if (cmdElement != null && attributesKey != null) {

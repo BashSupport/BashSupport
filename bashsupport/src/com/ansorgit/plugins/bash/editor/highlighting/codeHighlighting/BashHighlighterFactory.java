@@ -41,7 +41,6 @@ public class BashHighlighterFactory implements ProjectComponent {
 
     public void projectOpened() {
         myRegistrar.registerTextEditorHighlightingPass(new RemoveHighlightingFactory(), TextEditorHighlightingPassRegistrar.Anchor.AFTER, HighlighterLayer.ADDITIONAL_SYNTAX, false, true);
-        //myRegistrar.registerTextEditorHighlightingPass(new HeredocVarHighlightingFactory(), TextEditorHighlightingPassRegistrar.Anchor.LAST, HighlighterLayer.ADDITIONAL_SYNTAX, false, false);
     }
 
     public void projectClosed() {
