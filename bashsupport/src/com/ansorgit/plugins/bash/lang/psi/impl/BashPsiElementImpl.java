@@ -78,7 +78,7 @@ public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements
         //all files which include this element's file belong to the requested scope
         //fixme quite slow, fix with reverse index included file->including file
 
-        Set<PsiFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
+        Set<BashFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(getContainingFile());
 
         if (includingFiles.isEmpty() && includedFiles.isEmpty()) {

@@ -86,7 +86,6 @@ public class HereDocParsing implements ParsingTool {
 
                     line = readLine(builder);
 
-                    //noinspection ConstantConditions
                     line.second.done(HEREDOC_END_MARKER_ELEMENT);
 
                     //don't eat the newline after the end token, it's the command separator (needed in loops, etc)
