@@ -47,7 +47,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
     private static final TokenSet bracketSet = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE);
     private static final TokenSet string2Set = TokenSet.create(BashTokenTypes.STRING2);
     private static final TokenSet numberSet = TokenSet.create(BashTokenTypes.NUMBER, INTEGER_LITERAL);
-    //private static final TokenSet internalCommandSet = TokenSet.create(BashTokenTypes.INTERNAL_COMMAND);
     private static final TokenSet varUseSet = TokenSet.create(BashTokenTypes.VARIABLE);
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
 
@@ -133,11 +132,11 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
         TextAttributesKey.createTextAttributesKey(STRING2_ID, STRING2_ATTRIB);
         TextAttributesKey.createTextAttributesKey(REDIRECTION_ID, REDIRECTION_ATTRIB);
         TextAttributesKey.createTextAttributesKey(CONDITIONAL_ID, CONDITIONAL_ATTRIB);
-        TextAttributesKey.createTextAttributesKey(INTERNAL_COMMAND_ID, INTERNAL_COMMAND_ATTRIB);
         TextAttributesKey.createTextAttributesKey(VAR_USE_ID, VAR_USE_ATTRIB);
         TextAttributesKey.createTextAttributesKey(BAD_CHARACTER_ID, HighlighterColors.BAD_CHARACTER.getDefaultAttributes());
 
         //psi highlighting
+        TextAttributesKey.createTextAttributesKey(INTERNAL_COMMAND_ID, INTERNAL_COMMAND_ATTRIB);
         TextAttributesKey.createTextAttributesKey(STRING_ID, STRING_ATTRIB);
         TextAttributesKey.createTextAttributesKey(HERE_DOC_ID, HERE_DOC_ATTRIB);
         TextAttributesKey.createTextAttributesKey(HERE_DOC_START_ID, HERE_DOC_START_ATTRIB);
@@ -161,11 +160,11 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
     public static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey(NUMBER_ID);
     public static final TextAttributesKey REDIRECTION = TextAttributesKey.createTextAttributesKey(REDIRECTION_ID);
     public static final TextAttributesKey CONDITIONAL = TextAttributesKey.createTextAttributesKey(CONDITIONAL_ID);
-    public static final TextAttributesKey INTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey(INTERNAL_COMMAND_ID);
     public static final TextAttributesKey VAR_USE = TextAttributesKey.createTextAttributesKey(VAR_USE_ID);
     public static final TextAttributesKey BAD_CHARACTER = TextAttributesKey.createTextAttributesKey(BAD_CHARACTER_ID);
 
     //psi highlighting
+    public static final TextAttributesKey INTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey(INTERNAL_COMMAND_ID);
     public static final TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey(STRING_ID);
     public static final TextAttributesKey BACKQUOTE = TextAttributesKey.createTextAttributesKey(BACKQUOTE_COMMAND_ID);
     public static final TextAttributesKey HERE_DOC = TextAttributesKey.createTextAttributesKey(HERE_DOC_ID);
@@ -226,8 +225,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase implements Bash
         fillMap(attributes, redirectionSet, REDIRECTION);
         //fixme bash4 redirects?
         fillMap(attributes, conditionalOperators, CONDITIONAL);
-        //fixme internal command highlighting
-        //fillMap(attributes, internalCommandSet, INTERNAL_COMMAND);
         fillMap(attributes, varUseSet, VAR_USE);
         fillMap(attributes, badCharacterSet, BAD_CHARACTER);
     }
