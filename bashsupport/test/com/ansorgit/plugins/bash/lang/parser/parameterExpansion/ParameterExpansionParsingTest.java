@@ -112,4 +112,16 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         //{#A[1]}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
     }
+
+    @Test
+    public void testComposedDefaultValue() throws Exception {
+        //{a-"(x)"}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, STRING_BEGIN, WORD, STRING_END, RIGHT_CURLY);
+
+        //{a-(x)} is a valid expression, same as {a-"(x)"}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_CURLY);
+
+        //${x-`$[1]`}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE, RIGHT_CURLY);
+    }
 }

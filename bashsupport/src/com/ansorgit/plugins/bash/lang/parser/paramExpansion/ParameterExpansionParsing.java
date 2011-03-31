@@ -4,7 +4,9 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.misc.WordParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -18,7 +20,7 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 19:40
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, LEFT_SQUARE, RIGHT_SQUARE), paramExpansionOperators);
+    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN), paramExpansionOperators);
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -129,9 +131,10 @@ public class ParameterExpansionParsing implements ParsingFunction {
                     isValid = Parsing.var.parse(builder);
                 } else if (Parsing.word.isComposedString(builder.getTokenType())) {
                     isValid = Parsing.word.parseComposedString(builder);
+                } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
+                    isValid = Parsing.shellCommand.backtickParser.parse(builder);
                 } else {
-                    IElementType next = ParserUtil.getTokenAndAdvance(builder);
-                    isValid = validTokens.contains(next) || ParserUtil.isWordToken(next);
+                    isValid = readComposedValue(builder);
                 }
             }
         } else {
@@ -155,32 +158,24 @@ public class ParameterExpansionParsing implements ParsingFunction {
         return validEnd && isValid;
     }
 
-    private boolean parsePrefixlessExpansion(BashPsiBuilder builder, PsiBuilder.Marker marker) {
-        //eat the operator
-        builder.advanceLexer(true);
+    private boolean readComposedValue(BashPsiBuilder builder) {
+        PsiBuilder.Marker marker = builder.mark();
 
-        PsiBuilder.Marker varMarker = builder.mark();
+        int count = 0;
+        IElementType next = builder.getTokenType(true);
+        while (validTokens.contains(next) || ParserUtil.isWordToken(next)) {
+            builder.advanceLexer(true);
+            count++;
 
-        IElementType next = ParserUtil.getTokenAndAdvance(builder, true);
-        if (next == WORD) {
-            varMarker.done(VAR_ELEMENT);
-
-            IElementType endToken = ParserUtil.getTokenAndAdvance(builder);
-            boolean validEnd = RIGHT_CURLY == endToken;
-
-            if (validEnd) {
-                marker.done(PARAM_EXPANSION_ELEMENT);
-            } else {
-                marker.drop();
-            }
-
-            return validEnd;
+            next = builder.getTokenType(true);
         }
 
-        builder.error("Expected a variable");
+        if (count > 0) {
+            marker.collapse(WORD);
+        } else {
+            marker.drop();
+        }
 
-        varMarker.drop();
-        marker.drop();
-        return false;
+        return count > 0;
     }
 }
