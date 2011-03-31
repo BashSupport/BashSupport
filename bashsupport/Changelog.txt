@@ -1,3 +1,6 @@
+2011-03-31:
+ - Lexer fixes to parse ${_a}
+
 2011-03-29:
  - Find usages enabled on function definitions
 

@@ -121,8 +121,8 @@ ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 // No "[" | "]"
 ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
 
-ParamExpansionWordFirst = [a-zA-Z] | {EscapedChar}
-ParamExpansionWordAfter =  {ParamExpansionWordFirst} | [0-9] | "_"
+ParamExpansionWordFirst = [a-zA-Z0-9_] | {EscapedChar}
+ParamExpansionWordAfter =  {ParamExpansionWordFirst}
 ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
 
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
