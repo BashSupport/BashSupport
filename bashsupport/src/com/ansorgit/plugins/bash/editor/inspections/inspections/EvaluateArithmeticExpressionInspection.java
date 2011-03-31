@@ -83,8 +83,10 @@ public class EvaluateArithmeticExpressionInspection extends AbstractBashInspecti
                 boolean isParenthesisExpr = expression instanceof ParenthesesExpression;
 
                 List<ArithmeticExpression> subexpressions = expression.subexpressions();
-                if (subexpressions.size() > 1 && (expression.isStatic()) || isParenthesisExpr) {
+                if (subexpressions.size() > 1 && (expression.isStatic() || isParenthesisExpr)) {
                     ArithmeticExpression parent = expression.findParentExpression();
+
+                    //run only if the parent is not a static expression itself
                     if (parent == null || !parent.isStatic()) {
                         try {
                             String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + expression.computeNumericValue() + "'";

@@ -111,5 +111,6 @@ public interface BashCommand extends BashPsiElement, BashReference {
      */
     List<BashVarDef> assignments();
 
+    @Nullable
     String getReferencedName();
 }
