@@ -39,6 +39,19 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 0.9.22:</b>
+       <ul>
+        <li>Restored documentation lookup for internal and external commands</li>
+        <li>#47: Lexer fixed to parse ${_a}</li>
+        <li>#46: Default value with parentheses not parsed correctly</li>
+        <li>Find usages enabled on function definitions</li>
+        <li>Improved performance of parsing files which contain include files</li>
+        <li>Inspection to detect array use of simple variables</li>
+        <li>Inspection to detect simple use of array variables</li>
+        <li>It is possible now to define functions which have the same name as built-in Bash commands</li>
+        <li>Inspection to mark functions which override built-in Bash commands</li>
+       </ul>
+
        <b>Changes in version 0.9.21:</b>
        <ul>
          <li>(Almost) full support for arrays</li>

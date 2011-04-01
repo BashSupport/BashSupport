@@ -63,6 +63,46 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     private boolean isInternal;
     private boolean isExternal;
 
+    private PsiReference commandReference = new PsiReference() {
+        public PsiElement getElement() {
+            return BashCommandImpl.this;
+        }
+
+        public TextRange getRangeInElement() {
+            return BashCommandImpl.this.getRangeInElement();
+        }
+
+        public PsiElement resolve() {
+            return getElement();
+        }
+
+        @NotNull
+        public String getCanonicalText() {
+            return BashCommandImpl.this.getCanonicalText();
+        }
+
+        public PsiElement handleElementRename(String s) throws IncorrectOperationException {
+            throw new IncorrectOperationException();
+        }
+
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            throw new IncorrectOperationException();
+        }
+
+        public boolean isReferenceTo(PsiElement element) {
+            return false;
+        }
+
+        @NotNull
+        public Object[] getVariants() {
+            return EMPTY_ARRAY;
+        }
+
+        public boolean isSoft() {
+            return true;
+        }
+    };
+
     public BashCommandImpl(ASTNode astNode) {
         this(astNode, "Bash command");
     }
@@ -153,7 +193,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
     @Override
     public PsiReference getReference() {
-        return isFunctionCall() ? this : null;
+        return isFunctionCall() ? this : commandReference;
     }
 
     @Nullable
