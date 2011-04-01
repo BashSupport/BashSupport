@@ -1,3 +1,7 @@
+2011-04-01:
+ - Restored documentation lookup for internal and external commands
+ - Version 0.9.22
+
 2011-03-31:
  - #47: Lexer fixes to parse ${_a}
  - #46: Default value with parentheses not parsed correctly

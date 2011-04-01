@@ -32,6 +32,7 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -58,7 +59,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     public boolean canFindUsagesFor(@NotNull PsiElement psi) {
         return psi instanceof BashVar
-                || psi instanceof BashCommand
+                || (psi instanceof BashCommand && ((BashCommand) psi).isFunctionCall())
                 || psi instanceof BashHereDocMarker
                 || psi instanceof BashFunctionDef;
     }
@@ -71,6 +72,9 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     public String getType(@NotNull PsiElement element) {
         if (element instanceof BashFunctionDef) {
             return "function";
+        }
+        if (element instanceof BashCommand) {
+            return ((BashCommand) element).isFunctionCall() ? "function" : "generic command";
         }
         if (element instanceof BashVarDef) {
             return "variable";
@@ -88,8 +92,11 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return "";
         }
 
-        String name = ((PsiNamedElement) element).getName();
-        return name != null ? name : "";
+        if (element instanceof BashCommand) {
+            return StringUtils.stripToEmpty(((BashCommand) element).getReferencedName());
+        }
+
+        return StringUtils.stripToEmpty(((PsiNamedElement) element).getName());
     }
 
     @NotNull
