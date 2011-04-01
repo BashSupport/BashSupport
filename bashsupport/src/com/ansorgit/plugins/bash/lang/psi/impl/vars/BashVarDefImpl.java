@@ -58,10 +58,9 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, BashVar {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
 
-    private static final TokenSet accepted = TokenSet.create(
-            BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
-    private static final Object[] EMPTY_VARIANTS = new Object[0];
+    private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
 
+    private static final Object[] EMPTY_VARIANTS = new Object[0];
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
