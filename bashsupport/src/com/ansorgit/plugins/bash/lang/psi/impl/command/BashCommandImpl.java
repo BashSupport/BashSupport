@@ -40,7 +40,10 @@ import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.FakePsiElement;
+import com.intellij.psi.impl.source.DummyHolder;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -63,45 +66,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
     private boolean isInternal;
     private boolean isExternal;
 
-    private PsiReference commandReference = new PsiReference() {
-        public PsiElement getElement() {
-            return BashCommandImpl.this;
-        }
-
-        public TextRange getRangeInElement() {
-            return BashCommandImpl.this.getRangeInElement();
-        }
-
-        public PsiElement resolve() {
-            return getElement();
-        }
-
-        @NotNull
-        public String getCanonicalText() {
-            return BashCommandImpl.this.getCanonicalText();
-        }
-
-        public PsiElement handleElementRename(String s) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public boolean isReferenceTo(PsiElement element) {
-            return false;
-        }
-
-        @NotNull
-        public Object[] getVariants() {
-            return EMPTY_ARRAY;
-        }
-
-        public boolean isSoft() {
-            return true;
-        }
-    };
+    private PsiReference commandReference = new SelfReference();
 
     public BashCommandImpl(ASTNode astNode) {
         this(astNode, "Bash command");
@@ -250,16 +215,14 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
         PsiElement result = internalResolve();
 
         if (isExternal && result == null) {
-            return this;
+            return null;
         }
 
         if (isInternal && result == null) {
-            return this;
+            return null;
         }
 
         return result;
-        //fixme for doc provider we should return null for internal commands
-        //fixme or better: add own implemenation for internal commands
     }
 
     @NotNull
@@ -373,5 +336,45 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
     public boolean isIncludeCommand() {
         return false;
+    }
+
+    private class SelfReference implements PsiReference {
+        public PsiElement getElement() {
+            return BashCommandImpl.this;
+        }
+
+        public TextRange getRangeInElement() {
+            return TextRange.from(0, getElement().getTextLength());
+        }
+
+        public PsiElement resolve() {
+            return BashCommandImpl.this;
+        }
+
+        @NotNull
+        public String getCanonicalText() {
+            return BashCommandImpl.this.getCanonicalText();
+        }
+
+        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
+            throw new IncorrectOperationException();
+        }
+
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            throw new IncorrectOperationException();
+        }
+
+        public boolean isReferenceTo(PsiElement element) {
+            return false;
+        }
+
+        @NotNull
+        public Object[] getVariants() {
+            return EMPTY_ARRAY;
+        }
+
+        public boolean isSoft() {
+            return true;
+        }
     }
 }

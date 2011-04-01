@@ -5,11 +5,9 @@ import com.intellij.psi.PsiComment;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
  * User: jansorg
  * Date: 12.02.11
  * Time: 11:56
- * To change this template use File | Settings | File Templates.
  */
 public interface DocumentationAwareElement {
     /**
