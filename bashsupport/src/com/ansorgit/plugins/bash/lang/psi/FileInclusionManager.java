@@ -28,7 +28,8 @@ public class FileInclusionManager {
     private FileInclusionManager() {
     }
 
-    public static Set<PsiFile> findIncludedFiles(PsiFile file) {
+    @NotNull
+    public static Set<PsiFile> findIncludedFiles(@NotNull PsiFile file) {
         if (file instanceof BashFile) {
             return ((BashFile) file).findIncludedFiles(true, true);
         }
@@ -44,7 +45,8 @@ public class FileInclusionManager {
      * @param file
      * @return
      */
-    public static Set<BashFile> findIncludingFiles(Project project, PsiFile file) {
+    @NotNull
+    public static Set<BashFile> findIncludingFiles(@NotNull Project project, @NotNull PsiFile file) {
         //fixme this method is slow and should be replaced with an index lookup when available
         List<BashFile> allFiles = findAllFiles(project, file);
 
@@ -62,7 +64,7 @@ public class FileInclusionManager {
     }
 
     @NotNull
-    private static List<BashFile> findAllFiles(Project project, @NotNull PsiFile file) {
+    private static List<BashFile> findAllFiles(@NotNull Project project, @NotNull PsiFile file) {
         VirtualFile virtualFile = file.getVirtualFile();
         if (virtualFile == null) {
             return Collections.emptyList();
@@ -71,12 +73,14 @@ public class FileInclusionManager {
         List<BashFile> files = Lists.newLinkedList();
 
         Module module = ProjectRootManager.getInstance(project).getFileIndex().getModuleForFile(virtualFile);
-        findAllFiles(files, module, project);
+        if (module != null) {
+            findAllFiles(files, module, project);
+        }
 
         return files;
     }
 
-    private static void findAllFiles(@NotNull List<BashFile> result, Module module, Project project) {
+    private static void findAllFiles(@NotNull List<BashFile> result, @NotNull Module module, @NotNull Project project) {
         final VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
         PsiManager psiManager = PsiManager.getInstance(project);
 
