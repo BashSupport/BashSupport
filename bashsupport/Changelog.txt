@@ -1,3 +1,6 @@
+2011-04-11:
+ - Bug: NPE occurred when editing files which are not part of the current project
+
 2011-04-01:
  - Restored documentation lookup for internal and external commands
  - Version 0.9.22
