@@ -39,7 +39,7 @@
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 0.9.23:</b>
+       <b>Changes in version 0.9.23:</b>                                                              Prague
        <ul>
         <li>Fixed exception which occurred when editing external files</li>
        </ul>
