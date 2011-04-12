@@ -165,5 +165,4 @@ Bugs (indentation marks fixed bugs):
 - Bug: Format after var rename breaks source code
 - Bug: a=1; ${a:=$a$a}, placing the caret after the last a and starting a rename triggers an IDEA bug
 
-- Implement stubs and include index to speed up variable resolving
 - Improve the repl console, better colors, iso support

@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>0.9.23</version>
+    <version>1.0</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg
@@ -39,7 +39,12 @@
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 0.9.23:</b>                                                              Prague
+       <b>Changes in version 1.0:</b>
+       <ul>
+        <li></li>
+       </ul>
+
+       <b>Changes in version 0.9.23:</b>
        <ul>
         <li>Fixed exception which occurred when editing external files</li>
        </ul>
