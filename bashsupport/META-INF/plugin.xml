@@ -173,7 +173,7 @@
         <!-- A subset of the REPL actions that should be displayed in the panel toolbar. -->
         <group id="Bash.REPL.Group"
                class="com.intellij.openapi.actionSystem.DefaultActionGroup"
-               text="Bash REPL" description="Bash" popup="true">
+               text="Bash REPL" description="Bash" popup="false">
 
             <action id="com.ansorgit.plugins.bash.actions.AddReplAction"
                     class="com.ansorgit.plugins.bash.actions.AddReplAction" text="Add new Bash console"
