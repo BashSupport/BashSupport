@@ -76,7 +76,6 @@ public class BashConfigurationType implements ConfigurationType {
 
         @Override
         public RunConfiguration createTemplateConfiguration(Project project) {
-
             BashRunConfiguration configuration = new BashRunConfiguration(new RunConfigurationModule(project), this, "");
             configuration.setInterpreterPath(new BashInterpreterDetection().findBestLocation());
             return configuration;

@@ -24,14 +24,13 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.filters.TextConsoleBuilder;
+import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.InvalidDataException;
-import com.intellij.openapi.util.JDOMExternalizerUtil;
-import com.intellij.openapi.util.WriteExternalException;
+import com.intellij.openapi.util.*;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -71,6 +70,16 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
     @Override
     protected ModuleBasedConfiguration createInstance() {
         return new BashRunConfiguration(getConfigurationModule(), getFactory(), getName());
+    }
+
+    @Override
+    public void createAdditionalTabComponents(AdditionalTabComponentManager manager, ProcessHandler startedProcess) {
+
+    }
+
+    @Override
+    public boolean excludeCompileBeforeLaunchOption() {
+        return true;
     }
 
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {

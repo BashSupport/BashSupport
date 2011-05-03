@@ -76,8 +76,6 @@ public class BashRunConfigurationProducer extends RuntimeConfigurationProducer i
                 runConfiguration.setModule(module);
             }
 
-            //fixme
-            //copyStepsBeforeRun(project, runConfiguration);
             return settings;
         }
 
