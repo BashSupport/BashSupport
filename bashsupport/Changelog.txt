@@ -1,3 +1,7 @@
+2011-05-17:
+ - Fixed compatibility with IntelliJ IDEA 10.5
+ - The Bash REPL now uses Enter instead of Ctrl+Enter
+
 2011-05-03:
  - Removed Java options tab from Bash run configuration settings
 

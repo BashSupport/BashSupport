@@ -97,10 +97,10 @@ public abstract class AbstractCompletionTest extends CompletionTestCase {
 
     protected void complete(final int time) {
         //make sure with "false" that no auto-insertion of the completion is performed
-        new CodeCompletionHandlerBase(CompletionType.BASIC, false, true).invokeCompletion(myProject, myEditor, myFile, time);
+        new CodeCompletionHandlerBase(CompletionType.BASIC, false, true).invokeCompletion(myProject, myEditor, time, true);
 
         LookupImpl lookup = (LookupImpl) LookupManager.getActiveLookup(myEditor);
         myItems = lookup == null ? null : lookup.getItems().toArray(LookupElement.EMPTY_ARRAY);
-        myPrefix = lookup == null ? "" : lookup.getItems().get(0).getPrefixMatcher().getPrefix();
+        myPrefix = lookup == null ? "" : lookup.itemMatcher(lookup.getItems().get(0)).getPrefix();
     }
 }

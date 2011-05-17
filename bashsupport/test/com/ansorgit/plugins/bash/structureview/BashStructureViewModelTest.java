@@ -19,12 +19,17 @@
 package com.ansorgit.plugins.bash.structureview;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.intellij.codeInsight.CodeInsightTestCase;
+import com.intellij.ide.structureView.StructureViewBuilder;
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.structureView.newStructureView.StructureViewComponent;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
+import com.intellij.lang.LanguageStructureViewBuilder;
+import com.intellij.openapi.fileEditor.FileEditor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.testFramework.StructureViewTestCase;
 import junit.framework.Assert;
 
 /**
@@ -32,7 +37,32 @@ import junit.framework.Assert;
  * Date: 17.07.2010
  * Time: 10:32:04
  */
-public class BashStructureViewModelTest extends StructureViewTestCase {
+public class BashStructureViewModelTest extends CodeInsightTestCase {
+    protected interface Test {
+        void test(StructureViewComponent component);
+    }
+
+    protected void doTest(final Test test) {
+        assert myFile != null : "configure first";
+
+        final VirtualFile vFile = myFile.getVirtualFile();
+        assert vFile != null : "no virtual file for " + myFile;
+
+        final FileEditor fileEditor = FileEditorManager.getInstance(getProject()).getSelectedEditor(vFile);
+        assert fileEditor != null : "editor not opened for " + vFile;
+
+        final StructureViewBuilder builder = LanguageStructureViewBuilder.INSTANCE.getStructureViewBuilder(myFile);
+        assert builder != null : "no builder for " + myFile;
+
+        StructureViewComponent component = null;
+        try {
+            component = (StructureViewComponent) builder.createStructureView(fileEditor, myProject);
+            test.test(component);
+        } finally {
+            if (component != null) Disposer.dispose(component);
+        }
+    }
+
     public void testStructureView() throws Exception {
         VirtualFile file = configure();
         Assert.assertNotNull(file);
