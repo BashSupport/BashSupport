@@ -86,7 +86,7 @@ public class VariableNameCompletionTest extends AbstractCompletionTest {
         checkItems("echoVar");
     }
 
-    public void testWithingComment() throws Exception {
+    public void testWithinComment() throws Exception {
         configure();
         checkItems(NO_COMPLETIONS);
     }

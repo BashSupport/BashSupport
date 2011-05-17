@@ -99,8 +99,8 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
         }
 
         @Override
-        public void inspectionStarted(LocalInspectionToolSession session) {
-            delegate.inspectionStarted(session);
+        public void inspectionStarted(LocalInspectionToolSession session, boolean isOnTheFly) {
+            delegate.inspectionStarted(session, isOnTheFly);
         }
 
         @Override

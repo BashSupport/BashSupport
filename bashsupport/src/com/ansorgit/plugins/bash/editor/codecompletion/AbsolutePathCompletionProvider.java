@@ -62,14 +62,15 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
 
         final int invocationCount = parameters.getInvocationCount();
 
-        Predicate<File> incovationCoundPredicate = new Predicate<File>() {
+        Predicate<File> incovationCountPredicate = new Predicate<File>() {
             public boolean apply(File file) {
                 //accept hidden file with more than one invocation
-                return file.isHidden() ? invocationCount >= 2 : true;
+                //return file.isHidden() ? invocationCount >= 2 : true;
+                return (file.isHidden() && (invocationCount >= 2)) || ((invocationCount == 1) && !file.isHidden());
             }
         };
 
-        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, Predicates.<File>and(createFileFilter(), incovationCoundPredicate));
+        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, Predicates.<File>and(createFileFilter(), incovationCountPredicate));
         result.addAllElements(CompletionProviderUtils.createPathItems(completions));
 
         int validResultCount = computeResultCount(completions, result);
