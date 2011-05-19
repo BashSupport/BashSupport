@@ -1,3 +1,6 @@
+2011-05-19:
+ - Version 1.0
+
 2011-05-17:
  - Fixed compatibility with IntelliJ IDEA 10.5
  - The Bash REPL now uses Enter instead of Ctrl+Enter
