@@ -48,7 +48,7 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
     }
 
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
-        if (!currentText.startsWith("/")) {
+        if (currentText == null || !currentText.startsWith("/")) {
             return;
         }
 
