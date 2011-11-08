@@ -96,10 +96,4 @@ public class VariableNameCompletionTest extends AbstractCompletionTest {
         configure();
         checkItems(NO_COMPLETIONS);
     }
-
-    //@Ignore
-    /*public void testVarDefCompletion() throws Exception {
-        configure();
-        checkItems("myVar");
-    } */
 }
