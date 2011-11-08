@@ -1,26 +1,29 @@
-/*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+/*******************************************************************************
+ * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiFileUtils.java, Class: BashPsiFileUtils
- * Last modified: 2010-05-11
+ * Last modified: 2011-07-17 20:00
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ ******************************************************************************/
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * User: jansorg
@@ -36,6 +39,7 @@ public class BashPsiFileUtils {
      * @param relativePath The relative path as a string
      * @return The psi file or null if nothing has been found
      */
+    @Nullable
     public static PsiFile findRelativeFile(PsiFile start, String relativePath) {
         PsiDirectory startDirectory = start.getContainingFile().getContainingDirectory();
         if (startDirectory == null || StringUtil.isEmptyOrSpaces(relativePath)) {
@@ -45,15 +49,15 @@ public class BashPsiFileUtils {
         //fixme handle escaped / chars!
         PsiDirectory currentDir = startDirectory;
 
-        //fixme support win \ dividers?
-        String[] parts = relativePath.split("/");
-        String filePart = parts.length > 0 ? parts[parts.length - 1] : "";
+        List<String> parts = StringUtil.split(relativePath, "/");
+        String filePart = parts.size() > 0 ? parts.get(parts.size() - 1) : "";
 
-        for (int i = 0, partsLength = parts.length - 1; (i < partsLength) && (currentDir != null); i++) {
-            String part = parts[i];
-            if (part.equals(".")) {
+        for (int i = 0, partsLength = parts.size() - 1; (i < partsLength) && (currentDir != null); i++) {
+            String part = parts.get(i);
+
+            if (".".equals(part)) {
                 //ignore this
-            } else if (part.equals("..")) {
+            } else if ("..".equals(part)) {
                 currentDir = currentDir.getParentDirectory();
             } else {
                 currentDir = currentDir.findSubdirectory(part);

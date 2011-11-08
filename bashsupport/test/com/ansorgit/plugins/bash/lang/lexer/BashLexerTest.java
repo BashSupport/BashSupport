@@ -241,6 +241,9 @@ public class BashLexerTest {
         testTokenization("\"$((1))\"",
                 STRING_BEGIN, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH, STRING_END);
 
+        // "$("s/(/")" , the subshell command should be parsed as a word
+        testTokenization("\"$(\"s/(/\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
+
         testTokenization("\\.", WORD);
         testTokenization("\\n", WORD);
         testTokenization("\\>", WORD);
@@ -427,6 +430,7 @@ public class BashLexerTest {
         testTokenization(" ]]", _BRACKET_KEYWORD);
         testTokenization("  ]]", WHITESPACE, _BRACKET_KEYWORD);
         testTokenization("[[  -f test.txt   ]]", BRACKET_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WHITESPACE, _BRACKET_KEYWORD);
+        testTokenization("[[ !(a) ]]", BRACKET_KEYWORD, BANG_TOKEN, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
     }
 
     @Test

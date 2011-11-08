@@ -495,14 +495,14 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "$"                         { return DOLLAR; }
 
 
-  "("                        { if (string.isInSubshell()) {
+  "("                        { if (string.isInSubshell() && !string.isInSubstring()) {
                                     if (!string.isFreshSubshell()) string.enterSubshellParenth();
                                     string.advanceToken();
                                     return LEFT_PAREN;
                                 }
                                 else {
                                     string.advanceToken();
-                                    return WORD;
+                                    return STRING_CHAR;
                                 }
                               }
 
@@ -516,11 +516,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                 }
                               }
 
-  "|"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? PIPE : WORD; }
+  "|"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? PIPE : STRING_CHAR; }
 
-  "||"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? OR_OR : WORD; }
+  "||"                        { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? OR_OR : WORD; }
 
-  "&&"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? AND_AND : WORD; }
+  "&&"                        { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? AND_AND : WORD; }
 
 
   "{"                         { string.advanceToken(); return LEFT_CURLY; }
@@ -619,20 +619,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_BACKQUOTE> {
-<S_PARAM_EXPANSION> {
+<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
     \'{SingleCharacter}*\'        { return STRING2; }
-}
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             { return LINE_FEED; }
 
     /* Backquote expression */
     `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
-}
 
 
   /* Bash reserved keywords */
