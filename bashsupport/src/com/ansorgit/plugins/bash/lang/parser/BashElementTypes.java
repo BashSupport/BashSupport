@@ -80,6 +80,8 @@ public interface BashElementTypes {
     IElementType FUNCTION_DEF_COMMAND = new BashElementType("function definition shell command");
     IElementType GROUP_COMMAND = new BashElementType("group command");
 
+    IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");
+
     //arithmetic commands
     IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
 

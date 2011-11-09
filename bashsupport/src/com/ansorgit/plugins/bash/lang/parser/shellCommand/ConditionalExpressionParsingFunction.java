@@ -35,14 +35,13 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author Joachim Ansorg
  */
-public class ConditionalParsingFunction implements ParsingFunction {
+public class ConditionalExpressionParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalParsingFunction");
 
-    private static final TokenSet conditionalRejects = TokenSet.create(_EXPR_CONDITIONAL, _BRACKET_KEYWORD);
+    private static final TokenSet conditionalRejects = TokenSet.create(_EXPR_CONDITIONAL);
 
     public boolean isValid(BashPsiBuilder builder) {
-        IElementType token = builder.getTokenType();
-        return token == EXPR_CONDITIONAL || token == BRACKET_KEYWORD;
+        return builder.getTokenType() == EXPR_CONDITIONAL;
     }
 
     /**
@@ -52,7 +51,7 @@ public class ConditionalParsingFunction implements ParsingFunction {
      * @return Success or failure of the parsing.
      */
     public boolean parse(final BashPsiBuilder builder) {
-        log.assertTrue(builder.getTokenType() == EXPR_CONDITIONAL || builder.getTokenType() == BRACKET_KEYWORD);
+        log.assertTrue(builder.getTokenType() == EXPR_CONDITIONAL);
 
         final PsiBuilder.Marker command = builder.mark();
         try {
@@ -63,25 +62,24 @@ public class ConditionalParsingFunction implements ParsingFunction {
     }
 
     /**
-     * Parses a conidional expression .
+     * Parses a conidional expression, this may either be a test expression or a conditional command.
      *
      * @param builder Provides the tokens
      * @return Success or failure.
      */
     private boolean parseConditionalExpression(BashPsiBuilder builder) {
         final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
-        final boolean simpleMode = firstToken == EXPR_CONDITIONAL;
 
-        //fixme
         boolean success = true;
+
         IElementType tokenType = builder.getTokenType();
         while (!isEndToken(tokenType) && success) {
-            if (conditionalOperators.contains(tokenType) || ParserUtil.isWordToken(tokenType)) {
+            if (ParserUtil.isWordToken(tokenType)) {
                 builder.advanceLexer();
             } else if (Parsing.word.isWordToken(builder, true)) {
                 success = Parsing.word.parseWord(builder, true, conditionalRejects, TokenSet.EMPTY);
             } else {
-                success = false;
+                success = ConditionalParsingUtil.readTestExpression(builder, conditionalRejects);
             }
 
             tokenType = builder.getTokenType();
@@ -89,12 +87,7 @@ public class ConditionalParsingFunction implements ParsingFunction {
 
         //read trailing whitespace, might occur before the closing expression
 
-        if (simpleMode && builder.getTokenType() == _EXPR_CONDITIONAL) {
-            builder.advanceLexer();
-            return true;
-        }
-
-        if (!simpleMode && builder.getTokenType() == _BRACKET_KEYWORD) {
+        if (builder.getTokenType() == _EXPR_CONDITIONAL) {
             builder.advanceLexer();
             return true;
         }
@@ -104,6 +97,6 @@ public class ConditionalParsingFunction implements ParsingFunction {
     }
 
     private boolean isEndToken(IElementType tokenType) {
-        return tokenType == _EXPR_CONDITIONAL || tokenType == _BRACKET_KEYWORD;
+        return tokenType == _EXPR_CONDITIONAL;
     }
 }

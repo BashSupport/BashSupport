@@ -56,7 +56,7 @@ public class WordParsing implements ParsingTool {
                 || BashTokenTypes.stringLiterals.contains(tokenType)
                 || Parsing.var.isValid(builder)
                 || Parsing.shellCommand.backtickParser.isValid(builder)
-                || Parsing.shellCommand.conditionalParser.isValid(builder)
+                || Parsing.shellCommand.conditionalExpressionParser.isValid(builder)
                 || Parsing.processSubstitutionParsing.isValid(builder)
                 || tokenType == LEFT_CURLY;
 
@@ -139,8 +139,8 @@ public class WordParsing implements ParsingTool {
             } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
                 isOk = Parsing.shellCommand.backtickParser.parse(builder);
                 processedTokens++;
-            } else if (Parsing.shellCommand.conditionalParser.isValid(builder)) {
-                isOk = Parsing.shellCommand.conditionalParser.parse(builder);
+            } else if (Parsing.shellCommand.conditionalExpressionParser.isValid(builder)) {
+                isOk = Parsing.shellCommand.conditionalExpressionParser.parse(builder);
                 processedTokens++;
             } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
                 isOk = Parsing.processSubstitutionParsing.parse(builder);

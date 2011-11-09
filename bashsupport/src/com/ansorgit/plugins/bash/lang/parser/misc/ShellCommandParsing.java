@@ -54,7 +54,8 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
         addParsingFunction(subshellParser);
         addParsingFunction(groupCommandParser);
         addParsingFunction(arithmeticParser);
-        addParsingFunction(conditionalParser);
+        addParsingFunction(conditionalCommandParser);
+        addParsingFunction(conditionalExpressionParser);
     }
 
     public final CaseParsingFunction caseParser = new CaseParsingFunction();
@@ -67,7 +68,9 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
 
     public final ArithmeticParser arithmeticParser = new ArithmeticParser();
 
-    public final ParsingFunction conditionalParser = new ConditionalParsingFunction();
+    public final ParsingFunction conditionalExpressionParser = new ConditionalExpressionParsingFunction();
+
+    public final ParsingFunction conditionalCommandParser = new ConditionalCommandParsingFunction();
 
     public final ParsingFunction ifParser = new IfParsingFunction();
 
