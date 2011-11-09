@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import junit.framework.AssertionFailedError;
 
 /**
  * User: jansorg
@@ -39,12 +38,6 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
         configureByText(BashFileType.BASH_FILE_TYPE, data);
 
         complete(2);
-
-        try {
-            checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/");
-        } catch (AssertionFailedError e) {
-            //fallback if the project is under version control
-            checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/", prefix + ".svn/", prefix + ".HiddenFile.bash");
-        }
+        checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/");
     }
 }

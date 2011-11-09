@@ -37,22 +37,22 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
     private static ArithmeticParsingFunction simpleExpression = new SimpleArithmeticExpr();
     private static ArithmeticParsingFunction postIncrement = new PostIncrementExpr(simpleExpression);
     private static ArithmeticParsingFunction preIncrement = new PreIncrementExpr(postIncrement);
-    private static ArithmeticParsingFunction negation = repeated(preIncrement, arithmeticNegationOps, ARITH_NEGATION_ELEMENT);
-    private static ArithmeticParsingFunction exponent = repeated(negation, ARITH_EXPONENT, ARITH_EXPONENT_ELEMENT);
-    private static ArithmeticParsingFunction multiplication = repeated(exponent, arithmeticProduct, ARITH_MULTIPLICACTION_ELEMENT);
-    private static ArithmeticParsingFunction addition = repeated(multiplication, arithmeticAdditionOps, ARITH_SUM_ELEMENT);
-    private static ArithmeticParsingFunction shift = repeated(addition, arithmeticShiftOps, ARITH_SHIFT_ELEMENT);
-    private static ArithmeticParsingFunction compoundComparision = repeated(shift, arithmeticCmpOp, ARITH_COMPUND_COMPARISION_ELEMENT);
-    private static ArithmeticParsingFunction equality = repeated(compoundComparision, arithmeticEqualityOps, ARITH_EQUALITY_ELEMENT);
-    private static ArithmeticParsingFunction bitwiseAnd = repeated(equality, ARITH_BITWISE_AND, ARITH_BIT_AND_ELEMENT);
-    private static ArithmeticParsingFunction bitwiseXor = repeated(bitwiseAnd, ARITH_BITWISE_XOR, ARITH_BIT_XOR_ELEMENT);
-    private static ArithmeticParsingFunction bitwiseOr = repeated(bitwiseXor, PIPE, ARITH_BIT_OR_ELEMENT);
-    private static ArithmeticParsingFunction logicalAnd = repeated(bitwiseOr, AND_AND, ARITH_LOGIC_AND_ELEMENT);
-    private static ArithmeticParsingFunction logicalOr = repeated(logicalAnd, OR_OR, ARITH_LOGIC_OR_ELEMENT);
+    private static ArithmeticParsingFunction negation = repeated(preIncrement, arithmeticNegationOps, ARITH_NEGATION_ELEMENT, "negation");
+    private static ArithmeticParsingFunction exponent = repeated(negation, ARITH_EXPONENT, ARITH_EXPONENT_ELEMENT, "exponent");
+    private static ArithmeticParsingFunction multiplication = repeated(exponent, arithmeticProduct, ARITH_MULTIPLICACTION_ELEMENT, "mulitplication");
+    private static ArithmeticParsingFunction addition = repeated(multiplication, arithmeticAdditionOps, ARITH_SUM_ELEMENT, "addition");
+    private static ArithmeticParsingFunction shift = repeated(addition, arithmeticShiftOps, ARITH_SHIFT_ELEMENT, "shift");
+    private static ArithmeticParsingFunction compoundComparision = repeated(shift, arithmeticCmpOp, ARITH_COMPUND_COMPARISION_ELEMENT, "compoundComparision");
+    private static ArithmeticParsingFunction equality = repeated(compoundComparision, arithmeticEqualityOps, ARITH_EQUALITY_ELEMENT, "equality");
+    private static ArithmeticParsingFunction bitwiseAnd = repeated(equality, ARITH_BITWISE_AND, ARITH_BIT_AND_ELEMENT, "bitwiseAnd");
+    private static ArithmeticParsingFunction bitwiseXor = repeated(bitwiseAnd, ARITH_BITWISE_XOR, ARITH_BIT_XOR_ELEMENT, "bitwiseXor");
+    private static ArithmeticParsingFunction bitwiseOr = repeated(bitwiseXor, PIPE, ARITH_BIT_OR_ELEMENT, "bitwiseOr");
+    private static ArithmeticParsingFunction logicalAnd = repeated(bitwiseOr, AND_AND, ARITH_LOGIC_AND_ELEMENT, "bitwiseAnd");
+    private static ArithmeticParsingFunction logicalOr = repeated(logicalAnd, OR_OR, ARITH_LOGIC_OR_ELEMENT, "logicalOr");
     private static TernaryExpression ternary = new TernaryExpression(logicalOr);
     private static ArithmeticParsingFunction simpleAssignment = new AbstractAssignment(ternary, TokenSet.create(EQ));
     private static ArithmeticParsingFunction assignmentCombination = new AbstractAssignment(simpleAssignment, arithmeticAssign);
-    private static ArithmeticParsingFunction assignmentChain = repeated(assignmentCombination, COMMA, ARITH_ASSIGNMENT_CHAIN_ELEMENT);
+    private static ArithmeticParsingFunction assignmentChain = repeated(assignmentCombination, COMMA, ARITH_ASSIGNMENT_CHAIN_ELEMENT, "assignmentChain");
 
     public static ArithmeticParsingFunction entryPoint() {
         return assignmentChain;
@@ -62,11 +62,11 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
         return parenExpr;
     }
 
-    private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, TokenSet operators, IElementType marker) {
-        return new AbstractRepeatedExpr(next, operators, marker, -1);
+    private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, TokenSet operators, IElementType marker, String debugInfo) {
+        return new AbstractRepeatedExpr(next, operators, marker, -1, debugInfo);
     }
 
-    private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, IElementType operator, IElementType marker) {
-        return repeated(next, TokenSet.create(operator), marker);
+    private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, IElementType operator, IElementType marker, String debugInfo) {
+        return repeated(next, TokenSet.create(operator), marker, debugInfo);
     }
 }

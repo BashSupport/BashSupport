@@ -75,7 +75,6 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
         }
 
         startMarker.drop();
-
         return false;
     }
 
@@ -84,7 +83,7 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
 
         int counter = 0;
 
-        PsiBuilder.Marker marker = builder.mark();
+        //PsiBuilder.Marker marker = builder.mark();
 
         while (ok) {
             IElementType token = builder.getTokenType();
@@ -116,11 +115,11 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
             }
         }
 
-        if (ok) {
+        /*if (ok) {
             marker.done(CONDITIONAL_EXPRESSION);
         } else {
             marker.drop();
-        }
+        } */
 
         return ok;
     }

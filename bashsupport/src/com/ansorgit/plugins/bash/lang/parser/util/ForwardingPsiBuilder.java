@@ -28,8 +28,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
-
 /**
  * A PsiBuilder implementation which delegates all method to another PsiBuilder.
  * This is helpful for enhancements to PsiBuilder which base on an existing psi builder.
@@ -120,17 +118,18 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
     private final static Class[] EMPTY = new Class[0];
 
     public LighterASTNode getLatestDoneMarker() {
+        return originalPsiBuilder.getLatestDoneMarker();
         //this method was added after the initial 9.0 release by JetBrains,
         //thus we have to call the delegate with reflection to avoid incompatibility with older releases
 
-        try {
+        /*try {
             Method declaredMethod = originalPsiBuilder.getClass().getMethod("getLatedDoneMarker", EMPTY);
             return (LighterASTNode) declaredMethod.invoke(originalPsiBuilder);
         } catch (Exception e) {
             //ignore this
         }
 
-        return null;
+        return null;*/
     }
 
     public <T> T getUserDataUnprotected(@NotNull Key<T> tKey) {
@@ -146,7 +145,7 @@ public abstract class ForwardingPsiBuilder implements PsiBuilder {
     }
 
     public void setWhitespaceSkippedCallback(WhitespaceSkippedCallback whitespaceSkippedCallback) {
-
+        originalPsiBuilder.setWhitespaceSkippedCallback(whitespaceSkippedCallback);
     }
 
     public IElementType lookAhead(int i) {

@@ -81,6 +81,7 @@ public final class ArithmeticParser implements ParsingFunction {
         builder.advanceLexer(); //after the start token
 
         if (!arithmeticExprParser.parse(builder)) {
+            builder.getTokenType();
             arithmetic.drop();
             ParserUtil.error(builder, "parser.unexpected.token");
             return false;

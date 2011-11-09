@@ -37,12 +37,14 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
     private final TokenSet operators;
     private final IElementType partMarker;
     private int maxRepeats;
+    private final String debugInfo;
 
-    AbstractRepeatedExpr(ArithmeticParsingFunction expressionParser, TokenSet operators, IElementType partMarker, int maxRepeats) {
+    AbstractRepeatedExpr(ArithmeticParsingFunction expressionParser, TokenSet operators, IElementType partMarker, int maxRepeats, String debugInfo) {
         this.expressionParser = expressionParser;
         this.operators = operators;
         this.partMarker = partMarker;
         this.maxRepeats = maxRepeats;
+        this.debugInfo = debugInfo;
     }
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -53,7 +55,9 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         PsiBuilder.Marker marker = builder.mark();
 
         ArithmeticParsingFunction parenthesisParser = ArithmeticFactory.parenthesisParser();
-        boolean ok = parenthesisParser.isValid(builder) && parenthesisParser.parse(builder) && operators.contains(builder.getTokenType());
+        boolean ok = parenthesisParser.isValid(builder)
+                && parenthesisParser.parse(builder)
+                && operators.contains(builder.getTokenType());
 
         marker.rollbackTo();
 
@@ -66,7 +70,6 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         int count = 0;
         boolean ok;
 
-        //fixme fix with call to partialParsing
         do {
             if (expressionParser.isValid(builder)) {
                 ok = expressionParser.parse(builder);
@@ -86,21 +89,8 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         return ok;
     }
 
-//    public boolean isValidPartial(BashPsiBuilder builder) {
-//        return operators.contains(builder.getTokenType()) || next.isValidPartial(builder);
-//    }
-
-//    public boolean partialParsing(BashPsiBuilder builder) {
-//        boolean ok = operators.contains(builder.getTokenType());
-//
-//        if (ok) {
-//            while (ok && ParserUtil.conditionalRead(builder, operators)) {
-//                ok = next.parse(builder);
-//            }
-//        } else {
-//            ok = next.partialParsing(builder);
-//        }
-//
-//        return ok;
-//    }
+    @Override
+    public String toString() {
+        return "RepeatedExpr:" + debugInfo + ": " + super.toString();
+    }
 }

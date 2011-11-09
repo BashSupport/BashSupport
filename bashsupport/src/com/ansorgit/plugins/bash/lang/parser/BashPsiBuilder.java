@@ -86,6 +86,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         //optimization to avoid as many reflective calls as possible
         if (whitespaceEnabled) {
             whitespaceEnabled = false;
+
             return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
         }
 
@@ -120,16 +121,24 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         }
     }
 
+    @Override
+    public IElementType getTokenType() {
+        return super.getTokenType();
+    }
+
     public IElementType getTokenType(boolean withWhitespace) {
         if (!withWhitespace) {
             return getTokenType();
         }
 
+        //Marker beforeToken = mark();
         enableWhitespace();
         try {
             return getTokenType();
         } finally {
             disableWhitespace();
+            //beforeToken.rollbackTo();
+            //getTokenType();
         }
     }
 
