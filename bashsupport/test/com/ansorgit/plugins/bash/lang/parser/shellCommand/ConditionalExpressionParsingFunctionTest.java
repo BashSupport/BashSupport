@@ -26,4 +26,34 @@ public class ConditionalExpressionParsingFunctionTest extends MockPsiTest {
         //[ -f x ]
         mockTest(conditionalFunction, EXPR_CONDITIONAL, COND_OP, WHITESPACE, WORD, _EXPR_CONDITIONAL);
     }
+
+    @Test
+    public void testAdvancedExpressions() throws Exception {
+        //[ -z a ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, COND_OP, WORD, _EXPR_CONDITIONAL);
+        //[ a ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, WORD, _EXPR_CONDITIONAL);
+        //[ $a ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, VARIABLE, _EXPR_CONDITIONAL);
+        //[ $(a) = a ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, EQ, WORD, _EXPR_CONDITIONAL);
+        //[ `echo a` ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, BACKQUOTE, WORD, WORD, BACKQUOTE, _EXPR_CONDITIONAL);
+        //[ \${a} ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, WHITESPACE, WORD, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, _EXPR_CONDITIONAL);
+        //[ a  ] 
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, WORD, WHITESPACE, _EXPR_CONDITIONAL);
+        //[ a  ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, WORD, WHITESPACE, _EXPR_CONDITIONAL);
+        //[[ $(a)  ]]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, _EXPR_CONDITIONAL);
+    }
+
+    @Test
+    public void testConditionalError() {
+        //[ if a; then b; fi ]
+        mockTestError(conditionalFunction, EXPR_CONDITIONAL, IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, WORD, SEMI, FI_KEYWORD, _EXPR_CONDITIONAL);
+    }
+
 }
+
