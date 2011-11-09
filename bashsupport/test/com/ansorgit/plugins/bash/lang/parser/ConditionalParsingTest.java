@@ -30,7 +30,7 @@ public class ConditionalParsingTest extends MockPsiTest {
     private final MockFunction conditionalCommandParserTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.conditionalParser.parse(builder);
+            return Parsing.shellCommand.conditionalExpressionParser.parse(builder);
         }
     };
 
