@@ -33,7 +33,8 @@ import org.junit.Assert;
  */
 public abstract class AbstractArithExprTest extends CodeInsightTestCase {
     protected ArithmeticExpression configureTopArithExpression() throws Exception {
-        configure();
+        VirtualFile file = configure();
+        setupCursorAndSelection(myEditor);
 
         PsiFile psi = getFile();
 
@@ -53,7 +54,7 @@ public abstract class AbstractArithExprTest extends CodeInsightTestCase {
     }
 
     protected VirtualFile configure() throws Exception {
-        return configureByFile(getTestName(false) + ".bash", null);
+        return configureByFile(getTestName(false) + ".bash", "");
     }
 
     protected String getTestDataPath() {

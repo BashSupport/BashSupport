@@ -72,7 +72,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                     }
 
                     //next, including whitespace
-                    tokenType = builder.getTokenType(true);
+                    tokenType = builder.getTokenType();
                 }
                 while (ok && (tokenType == WORD || arithLiterals.contains(tokenType) || Parsing.var.isValid(builder)));
             } finally {
@@ -87,13 +87,5 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         }
 
         return ok;
-    }
-
-    public boolean partialParsing(BashPsiBuilder builder) {
-        return false;
-    }
-
-    public boolean isValidPartial(BashPsiBuilder builder) {
-        return false;
     }
 }

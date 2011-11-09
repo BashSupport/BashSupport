@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import org.junit.Test;
-import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
 
 /**
  * User: jansorg
@@ -47,5 +46,10 @@ public class ArithmeticExprParserTest extends MockPsiTest {
         mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER);
         mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, NUMBER);
         mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, NUMBER, VARIABLE);
+    }
+
+    @Test
+    public void testWhitespace() throws Exception {
+        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, NUMBER);
     }
 }

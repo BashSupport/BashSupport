@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NonNls;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -83,11 +84,18 @@ public abstract class AbstractCompletionTest extends CompletionTestCase {
             }
         });
 
+        for (Iterator<String> iterator = texts.iterator(); iterator.hasNext(); ) {
+            String item = iterator.next();
+            if (item.contains(".svn")) {
+                iterator.remove();
+            }
+        }
+
         List<String> expected = Arrays.asList(values);
 
         assertEquals("Unexpected number of completions: " + texts, values.length, texts.size());
 
-        ArrayList<String> remaining = Lists.newArrayList(expected);
+        ArrayList<String> remaining = Lists.newArrayList(values);
         remaining.removeAll(texts);
 
         assertTrue("Not all completions were found, left over: " + remaining, texts.containsAll(expected) && expected.containsAll(texts));
@@ -97,7 +105,7 @@ public abstract class AbstractCompletionTest extends CompletionTestCase {
 
     protected void complete(final int time) {
         //make sure with "false" that no auto-insertion of the completion is performed
-        new CodeCompletionHandlerBase(CompletionType.BASIC, false, true, true).invokeCompletion(myProject, myEditor, time, true);
+        new CodeCompletionHandlerBase(CompletionType.BASIC, false, false, true).invokeCompletion(myProject, myEditor, time, true);
 
         LookupImpl lookup = (LookupImpl) LookupManager.getActiveLookup(myEditor);
         myItems = lookup == null ? null : lookup.getItems().toArray(LookupElement.EMPTY_ARRAY);
