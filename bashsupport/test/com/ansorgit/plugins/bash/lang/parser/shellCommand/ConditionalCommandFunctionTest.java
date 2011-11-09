@@ -34,6 +34,22 @@ public class ConditionalCommandFunctionTest extends MockPsiTest {
 
         //[[ a || b && c ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, OR_OR, WORD, AND_AND, WORD, _BRACKET_KEYWORD);
+
+        //[[ -z "" ]]
+        mockTest(conditionalFunction, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, STRING_END, _BRACKET_KEYWORD);
+        //[[ a ]]
+        mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, _BRACKET_KEYWORD);
+        //[[ $(echo a) ]]
+        mockTest(conditionalFunction, BRACKET_KEYWORD, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, WHITESPACE, _BRACKET_KEYWORD);
+    }
+
+
+    @Test
+    public void testErrors() throws Exception {
+        //fixme: [ ]
+        //mockTest(conditionalCommandParserTest, EXPR_CONDITIONAL, WHITESPACE, _EXPR_CONDITIONAL);
+        //fixme:[[ ]]
+        //mockTestError(conditionalCommandParserTest, BRACKET_KEYWORD, _BRACKET_KEYWORD);
     }
 
     @Test

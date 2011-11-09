@@ -1,3 +1,6 @@
+2011-11-08:
+ - Fixed parsing of conditional commands [[ x ]] and test expressions [ x ]
+
 2011-08-12:
  - Fixed Exception is file path completion provider
 

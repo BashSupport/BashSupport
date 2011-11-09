@@ -25,6 +25,7 @@ public class ConditionalParsingUtil {
             } else if (builder.getTokenType() == BashTokenTypes.COND_OP) {
                 builder.advanceLexer();
             } else {
+                ok = false;
                 break;
             }
         }
