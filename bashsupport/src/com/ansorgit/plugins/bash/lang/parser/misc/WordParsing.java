@@ -115,14 +115,12 @@ public class WordParsing implements ParsingTool {
         PsiBuilder.Marker marker = builder.mark();
 
         while (isOk) {
-            if (reject.contains(builder.getTokenType(!firstStep))) {
+            final IElementType rawCurrentToken = builder.rawLookup(0);
+            if (!firstStep && (rawCurrentToken == WHITESPACE || reject.contains(rawCurrentToken))) {
                 break;
             }
 
-            final IElementType nextToken = builder.getTokenType(!firstStep, enableRemapping);
-            if (nextToken == WHITESPACE) {
-                break;
-            }
+            final IElementType nextToken = builder.getTokenType(false, enableRemapping);
 
             if (nextToken == STRING_BEGIN) {
                 isOk = parseComposedString(builder);

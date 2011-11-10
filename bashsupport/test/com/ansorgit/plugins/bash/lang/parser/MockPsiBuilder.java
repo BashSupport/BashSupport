@@ -132,19 +132,22 @@ public class MockPsiBuilder implements PsiBuilder {
 
 
     public void remapCurrentToken(IElementType iElementType) {
+        //fixme
         throw new UnsupportedOperationException();
     }
 
     public void setWhitespaceSkippedCallback(WhitespaceSkippedCallback whitespaceSkippedCallback) {
+        //fixme
         throw new UnsupportedOperationException();
     }
 
     public IElementType lookAhead(int i) {
+        //fixme
         throw new UnsupportedOperationException();
     }
 
-    public IElementType rawLookup(int i) {
-        throw new UnsupportedOperationException();
+    public IElementType rawLookup(int lookAhead) {
+        return elementPosition + lookAhead < elements.size() ? elements.get(elementPosition + lookAhead) : null;
     }
 
     public int rawTokenTypeStart(int i) {
@@ -182,10 +185,12 @@ public class MockPsiBuilder implements PsiBuilder {
     }
 
     public ASTNode getTreeBuilt() {
+        //fixme
         return null;
     }
 
     public FlyweightCapableTreeStructure<LighterASTNode> getLightTree() {
+        //fixme
         return null;
     }
 

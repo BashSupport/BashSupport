@@ -542,6 +542,11 @@ public class BashLexerTest {
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
                 WHITESPACE, WORD, RIGHT_PAREN, SEMI, WORD, WHITESPACE, ESAC_KEYWORD);
         //fixme should be AMP instead of WORD in the last part
+
+        testTokenization("case a in a=a) echo a;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
+                WHITESPACE, WORD, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+
     }
 
     @Test
