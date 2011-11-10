@@ -28,6 +28,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.containers.Stack;
+import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The PsiBuilder which has been enhanced to be more helpful for Bash parsing.
@@ -41,12 +43,21 @@ import com.intellij.util.containers.Stack;
  */
 public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
-    private final short originalWhitespaceIndex = BashTokenTypes.WHITESPACE.getIndex();
+    private static final short originalWhitespaceIndex = BashTokenTypes.WHITESPACE.getIndex();
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
     private boolean whitespaceEnabled = false;
     private Project project;
+
+    public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
+        super(wrappedBuilder);
+
+        this.project = project;
+        this.bashVersion = bashVersion;
+        this.tokenRemapper = new BashTokenRemapper(this);
+        setTokenTypeRemapper(tokenRemapper);
+    }
 
     /**
      * A hack to let whitespace tokens be delivered by the builder on demand.
@@ -100,6 +111,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      * @param remapping      If true the returned token is remapped
      * @return The token for the given conditions.
      */
+    @Nullable
     public IElementType getTokenType(boolean withWhitespace, boolean remapping) {
         if (!remapping) {
             return getTokenType(withWhitespace);
@@ -108,40 +120,45 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         return getRemappingTokenType(withWhitespace);
     }
 
+    @Nullable
     public String getTokenText(boolean enableWhitespace) {
-        if (!enableWhitespace) {
-            return getTokenText();
+        if (enableWhitespace && rawLookup(0) == BashTokenTypes.WHITESPACE) {
+            int startOffset = rawTokenTypeStart(0);
+            if (startOffset == -1) {
+                //first token
+                startOffset = 0;
+            }
+
+            int length = rawTokenTypeStart(1) - startOffset;
+            if (length == 1) {
+                return "";
+            }
+
+            return StringUtils.repeat(" ", length);
         }
 
-        try {
-            enableWhitespace();
-            return getTokenText();
-        } finally {
-            disableWhitespace();
-        }
+        return getTokenText();
     }
 
-    @Override
-    public IElementType getTokenType() {
-        return super.getTokenType();
-    }
-
+    @Nullable
     public IElementType getTokenType(boolean withWhitespace) {
         if (!withWhitespace) {
             return getTokenType();
         }
 
+        return rawLookup(0);
         //Marker beforeToken = mark();
-        enableWhitespace();
+        /*enableWhitespace();
         try {
             return getTokenType();
         } finally {
             disableWhitespace();
             //beforeToken.rollbackTo();
             //getTokenType();
-        }
+        } */
     }
 
+    @Nullable
     public IElementType getRemappingTokenType(boolean withWhitespace) {
         getParsingState().enterSimpleCommand();
         try {
@@ -149,12 +166,13 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
                 return getTokenType();
             }
 
-            enableWhitespace();
+            /*enableWhitespace();
             try {
                 return getTokenType();
             } finally {
                 disableWhitespace();
-            }
+            } */
+            return rawLookup(0);
         } finally {
             getParsingState().leaveSimpleCommand();
         }
@@ -218,15 +236,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final BackquoteData backquoteData = new BackquoteData();
     private final HereDocData hereDocData = new HereDocData();
     private final ParsingStateData parsingStateData = new ParsingStateData();
-
-    public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
-        super(wrappedBuilder);
-
-        this.project = project;
-        this.bashVersion = bashVersion;
-        this.tokenRemapper = new BashTokenRemapper(this);
-        setTokenTypeRemapper(tokenRemapper);
-    }
 
     public void remapShebangToComment() {
         tokenRemapper.setMapShebangToComment(true);
