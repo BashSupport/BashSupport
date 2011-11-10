@@ -153,6 +153,8 @@ public class CaseParsingFunction implements ParsingFunction {
 
     /**
      * Parses a pattern list.
+     *
+     * @param builder
      */
     CaseParseResult parsePatternList(BashPsiBuilder builder) {
         /*
