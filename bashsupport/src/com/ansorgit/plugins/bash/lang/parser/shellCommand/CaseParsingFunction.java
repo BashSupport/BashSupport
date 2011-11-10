@@ -147,6 +147,11 @@ public class CaseParsingFunction implements ParsingFunction {
             return false;
         }
 
+        //eat optional semicolon at the end
+        if (builder.getTokenType() == SEMI) {
+            builder.advanceLexer();
+        }
+
         caseCommand.done(CASE_COMMAND);
         return true;
     }

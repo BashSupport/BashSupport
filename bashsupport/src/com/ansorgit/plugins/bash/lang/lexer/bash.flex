@@ -144,7 +144,7 @@ HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
 CaseFirst=[^|)(# \n\r\f\t\f]
-CaseAfter=[^|)( \n\r\f\t\f]
+CaseAfter=[^|)( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
@@ -443,7 +443,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                     return SEMI;
                                  }
                                }
-  
+
   ";;&"                        { goToState(S_CASE_PATTERN);
                                  if (!isBash4) {
                                     yypushback(1);

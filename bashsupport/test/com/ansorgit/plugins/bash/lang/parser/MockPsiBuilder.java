@@ -50,18 +50,11 @@ public class MockPsiBuilder implements PsiBuilder {
 
     private List<Pair<MockMarker, IElementType>> doneMarkers = Lists.newLinkedList();
 
-    private StringBuilder resultText = new StringBuilder();
-
     private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespace);
     private TokenSet enforcedCommentTokens = BashTokenTypes.comments;
 
     int elementPosition = 0;
     private ITokenTypeRemapper tokenRemapper = null;
-
-    public MockPsiBuilder(List<IElementType> elements) {
-        this.elements = elements;
-        this.textTokens = Lists.newLinkedList();
-    }
 
     public MockPsiBuilder(IElementType... data) {
         this.elements = new ArrayList<IElementType>();
@@ -150,8 +143,23 @@ public class MockPsiBuilder implements PsiBuilder {
         return elementPosition + lookAhead < elements.size() ? elements.get(elementPosition + lookAhead) : null;
     }
 
-    public int rawTokenTypeStart(int i) {
-        throw new UnsupportedOperationException();
+    public int rawTokenTypeStart(int lookAhead) {
+        int requestedPos = elementPosition + lookAhead;
+        if (requestedPos >= textTokens.size()) {
+            log.error("Invalid request for rawTokenTypeStart!");
+            return -1;
+        }
+
+        if (requestedPos == 0) {
+            return -1;
+        }
+
+        int offset = 0;
+        for (int i = 0; i <= requestedPos; ++i) {
+            offset += textTokens.get(i).length();
+        }
+
+        return offset;
     }
 
     public int getCurrentOffset() {
@@ -211,10 +219,6 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public <T> void putUserData(Key<T> tKey, T t) {
         userData.put(tKey, t);
-    }
-
-    public String resultText() {
-        return resultText.toString();
     }
 
     public List<Pair<MockMarker, IElementType>> getDoneMarkers() {

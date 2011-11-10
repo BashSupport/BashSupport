@@ -106,6 +106,14 @@ public class CaseParsingTest extends MockPsiTest {
     }
 
     @Test
+    public void testCaseSimple8() {
+        //case a in a) echo a;; esac;
+        mockTest(caseTest,
+                CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
+                ESAC_KEYWORD, SEMI);
+    }
+
+    @Test
     public void testCaseError1() {
         //case a in ;; esac
         mockTestError(caseTest,
