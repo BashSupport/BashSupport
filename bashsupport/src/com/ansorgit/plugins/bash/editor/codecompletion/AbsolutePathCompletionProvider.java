@@ -66,7 +66,7 @@ class AbsolutePathCompletionProvider extends BashCompletionProvider {
             public boolean apply(File file) {
                 //accept hidden file with more than one invocation
                 //return file.isHidden() ? invocationCount >= 2 : true;
-                return (file.isHidden() && (invocationCount >= 2)) || ((invocationCount == 1) && !file.isHidden());
+                return (file.isHidden() && (invocationCount >= 2)) || ((invocationCount >= 1) && !file.isHidden());
             }
         };
 

@@ -38,6 +38,6 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
         configureByText(BashFileType.BASH_FILE_TYPE, data);
 
         complete(2);
-        checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/");
+        checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/", prefix + ".HiddenFile.bash");
     }
 }
