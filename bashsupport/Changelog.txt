@@ -1,8 +1,13 @@
-2011-11-08:
+2011-11-10:
+ - Fixed parsing of the semicolon in "case ... esac;"
+ - Fixed hidden files in absolute path completion
+
+2011-11-09:
  - Fixed parsing of conditional commands [[ x ]] and test expressions [ x ]
+ - Compatibility with IntelliJ 11 EAP
 
 2011-08-12:
- - Fixed Exception is file path completion provider
+ - Fixed Exception in file path completion provider
 
 2011-05-19:
  - Version 1.0
