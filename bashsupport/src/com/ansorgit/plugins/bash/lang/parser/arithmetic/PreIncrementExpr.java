@@ -54,12 +54,4 @@ class PreIncrementExpr implements ArithmeticParsingFunction {
 
         return ok;
     }
-
-//    public boolean partialParsing(BashPsiBuilder builder) {
-//        return next.partialParsing(builder);
-//    }
-
-//    public boolean isValidPartial(BashPsiBuilder builder) {
-//        return next.isValidPartial(builder);
-//    }
 }

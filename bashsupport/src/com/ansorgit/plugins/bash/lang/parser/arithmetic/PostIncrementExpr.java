@@ -42,6 +42,7 @@ class PostIncrementExpr implements ArithmeticParsingFunction {
 
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
+
         boolean ok = next.parse(builder);
         if (ok && ParserUtil.conditionalRead(builder, arithmeticPostOps)) {
             marker.done(ARITH_POST_INCR_ELEMENT);
@@ -51,12 +52,4 @@ class PostIncrementExpr implements ArithmeticParsingFunction {
 
         return ok;
     }
-
-//    public boolean partialParsing(BashPsiBuilder builder) {
-//        return next.partialParsing(builder);
-//    }
-
-//    public boolean isValidPartial(BashPsiBuilder builder) {
-//        return next.isValidPartial(builder);
-//    }
 }

@@ -147,15 +147,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         }
 
         return rawLookup(0);
-        //Marker beforeToken = mark();
-        /*enableWhitespace();
-        try {
-            return getTokenType();
-        } finally {
-            disableWhitespace();
-            //beforeToken.rollbackTo();
-            //getTokenType();
-        } */
     }
 
     @Nullable
@@ -166,12 +157,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
                 return getTokenType();
             }
 
-            /*enableWhitespace();
-            try {
-                return getTokenType();
-            } finally {
-                disableWhitespace();
-            } */
             return rawLookup(0);
         } finally {
             getParsingState().leaveSimpleCommand();
@@ -179,16 +164,15 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     }
 
     public void advanceLexer(boolean useWhitespace) {
-        if (!useWhitespace) {
+        if (useWhitespace) {
+            enableWhitespace();
+            try {
+                advanceLexer();
+            } finally {
+                disableWhitespace();
+            }
+        } else {
             super.advanceLexer();
-            return;
-        }
-
-        enableWhitespace();
-        try {
-            super.advanceLexer();
-        } finally {
-            disableWhitespace();
         }
     }
 
@@ -214,16 +198,29 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     }
 
     public boolean eatOptionalNewlines(int maxNewlines, boolean withWhitespace) {
-        boolean hasNewline = (getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED);
-
         if (maxNewlines < 0) {
             maxNewlines = Integer.MAX_VALUE;
         }
 
-        int readNewlines = 0;
-        while (getTokenType(withWhitespace) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
-            advanceLexer(withWhitespace);
-            readNewlines++;
+        boolean hasNewline;
+        int readNewlines;
+
+        if (withWhitespace) {
+            //read whitespace tokens
+            hasNewline = rawLookup(0) == BashTokenTypes.LINE_FEED;
+            readNewlines = 0;
+            while (rawLookup(0) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
+                advanceLexer();
+                readNewlines++;
+            }
+        } else {
+            //do not read whitespace tokens, step over it
+            hasNewline = getTokenType() == BashTokenTypes.LINE_FEED;
+            readNewlines = 0;
+            while (getTokenType() == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
+                advanceLexer();
+                readNewlines++;
+            }
         }
 
         return hasNewline;

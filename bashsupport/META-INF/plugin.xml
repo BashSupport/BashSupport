@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta1</version>
+    <version>1.1beta2</version>
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg
@@ -39,6 +39,17 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta2:</b>
+       <ul>
+
+       </ul>
+
+       <b>Changes in version 1.1beta1:</b>
+       <ul>
+        <li>Compatible with IntelliJ 11 EAP or later</li>
+        <li>Parser improvements</li>
+       </ul>
+
        <b>Changes in version 1.0:</b>
        <ul>
         <li>Compatible with IntelliJ 10.5 or later</li>

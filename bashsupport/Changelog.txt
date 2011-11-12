@@ -1,6 +1,9 @@
+2011-11-xx:
+
 2011-11-10:
  - Fixed parsing of the semicolon in "case ... esac;"
  - Fixed hidden files in absolute path completion
+ - Version 1.0beta1
 
 2011-11-09:
  - Fixed parsing of conditional commands [[ x ]] and test expressions [ x ]

@@ -33,7 +33,7 @@ public class BashPsiBuilderTest extends MockPsiTest {
         builder.advanceLexer(true);
         Assert.assertEquals(WORD, builder.getTokenType(true));
 
-        builder.advanceLexer(false);
+        builder.advanceLexer();
         Assert.assertEquals(NUMBER, builder.getTokenType(false));
     }
 }

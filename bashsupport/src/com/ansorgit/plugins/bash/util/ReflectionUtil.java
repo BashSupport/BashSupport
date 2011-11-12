@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class ReflectionUtil {
     private static Logger log = Logger.getInstance("#bash.ReflectionUtil");
 
-    private static Map<Pair<Class<?>, String>, Field> fieldCache = new ConcurrentHashMap<Pair<Class<?>, String>, Field>();
+    private static final Map<Pair<Class<?>, String>, Field> fieldCache = new ConcurrentHashMap<Pair<Class<?>, String>, Field>();
 
     /**
      * Changes a value of a short member using a certain variable name.

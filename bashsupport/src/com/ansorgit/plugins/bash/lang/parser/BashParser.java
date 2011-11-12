@@ -23,6 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,15 +42,17 @@ public class BashParser implements PsiParser {
     private static final Logger log = Logger.getInstance("BashParser");
     private static final String debugKey = "bashsupport.debug";
     private static final boolean debugMode = "true".equals(System.getProperty(debugKey)) || "true".equals(System.getenv(debugKey));
+    private final Project project;
     private final BashVersion version;
 
-    public BashParser(BashVersion version) {
+    public BashParser(Project project, BashVersion version) {
+        this.project = project;
         this.version = version;
     }
 
     @NotNull
     public ASTNode parse(final IElementType root, final PsiBuilder psiBuilder) {
-        final BashPsiBuilder builder = new BashPsiBuilder(psiBuilder.getProject(), psiBuilder, version);
+        final BashPsiBuilder builder = new BashPsiBuilder(project, psiBuilder, version);
 
         if (debugMode) {
             log.info("Enabling parser's debug mode...");
