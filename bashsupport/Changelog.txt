@@ -1,4 +1,5 @@
-2011-11-xx:
+2011-11-12:
+ - Parser fixes
 
 2011-11-10:
  - Fixed parsing of the semicolon in "case ... esac;"
