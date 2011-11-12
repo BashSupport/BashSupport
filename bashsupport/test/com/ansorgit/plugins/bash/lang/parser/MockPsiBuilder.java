@@ -50,8 +50,8 @@ public class MockPsiBuilder implements PsiBuilder {
 
     private List<Pair<MockMarker, IElementType>> doneMarkers = Lists.newLinkedList();
 
-    private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespace);
-    private TokenSet enforcedCommentTokens = BashTokenTypes.comments;
+    private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespaceTokens);
+    private TokenSet enforcedCommentTokens = BashTokenTypes.commentTokens;
 
     int elementPosition = 0;
     private ITokenTypeRemapper tokenRemapper = null;

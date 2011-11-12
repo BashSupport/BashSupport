@@ -33,7 +33,7 @@ public interface BashTokenTypes {
 
     // common types
     IElementType WHITESPACE = TokenType.WHITE_SPACE;
-    TokenSet whitespace = TokenSet.create(WHITESPACE);
+    TokenSet whitespaceTokens = TokenSet.create(WHITESPACE);
 
     IElementType NUMBER = new BashElementType("number");
     IElementType WORD = new BashElementType("word");
@@ -54,7 +54,7 @@ public interface BashTokenTypes {
     IElementType COMMENT = new BashElementType("Comment");
     IElementType SHEBANG = new BashElementType("Shebang");
 
-    TokenSet comments = TokenSet.create(COMMENT);
+    TokenSet commentTokens = TokenSet.create(COMMENT);
 
     // bash reserved keywords, in alphabetic order
     IElementType BANG_TOKEN = new BashElementType("!"); //!

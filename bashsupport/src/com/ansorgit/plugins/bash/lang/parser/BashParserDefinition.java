@@ -50,7 +50,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
     }
 
     public PsiParser createParser(Project project) {
-        return new BashParser(findLanguageLevel(project));
+        return new BashParser(project, findLanguageLevel(project));
     }
 
     private BashVersion findLanguageLevel(Project project) {
@@ -64,12 +64,12 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
 
     @NotNull
     public TokenSet getWhitespaceTokens() {
-        return BashTokenTypes.whitespace;
+        return BashTokenTypes.whitespaceTokens;
     }
 
     @NotNull
     public TokenSet getCommentTokens() {
-        return BashTokenTypes.comments;
+        return BashTokenTypes.commentTokens;
     }
 
     @NotNull

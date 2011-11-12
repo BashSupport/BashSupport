@@ -44,7 +44,7 @@ class MergingLexer extends LexerBase {
     private int myTokenStart;
 
     /**
-     * Create a merging lexer which works with the merge definitions given in the mergeTuples paramter.
+     * Create a merging lexer which works with the merge definitions given in the mergeTuples parameter.
      *
      * @param original    The original lexer, used as a delegate
      * @param mergeTuples The token merge definitions.

@@ -50,7 +50,7 @@ public class BashBraceMatcher implements PairedBraceMatcher {
 
     public boolean isPairedBracesAllowedBeforeType(@NotNull final IElementType lbraceType, @Nullable final IElementType tokenType) {
         return BashTokenTypes.WHITESPACE == tokenType
-                || BashTokenTypes.comments.contains(tokenType)
+                || BashTokenTypes.commentTokens.contains(tokenType)
                 || tokenType == BashTokenTypes.SEMI
                 || tokenType == BashTokenTypes.COMMA
                 || tokenType == BashTokenTypes.RIGHT_PAREN

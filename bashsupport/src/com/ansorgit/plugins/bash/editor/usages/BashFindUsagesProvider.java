@@ -48,7 +48,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL);
 
         public BashWordsScanner() {
-            super(new BashLexer(), identifierTokenSet, BashTokenTypes.comments, literals);
+            super(new BashLexer(), identifierTokenSet, BashTokenTypes.commentTokens, literals);
             setMayHaveFileRefsInLiterals(true);
         }
     }
