@@ -47,7 +47,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
 
     protected void assertErrors(MockPsiBuilder psi) {
         printErrors(psi);
-        Assert.assertTrue("There are no parsing errors", psi.hasErrors());
+        Assert.assertTrue("Expecting parsing errors, but there are none.", psi.hasErrors());
     }
 
     private void printErrors(MockPsiBuilder psi) {

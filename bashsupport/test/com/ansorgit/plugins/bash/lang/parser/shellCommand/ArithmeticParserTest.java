@@ -171,4 +171,10 @@ public class ArithmeticParserTest extends MockPsiTest {
         //((1 %= 1))
         mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_ASS_MOD, NUMBER, _EXPR_ARITH);
     }
+
+    @Test
+    public void testOperatorErrors() throws Exception {
+        //((${x}++))
+        mockTestError(arithmeticTest, EXPR_ARITH, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, ARITH_PLUS_PLUS, _EXPR_ARITH);
+    }
 }
