@@ -24,15 +24,15 @@
             logo="resources/icons/bash-16.png">Joachim Ansorg
     </vendor>
 
-    <!-- Requires IDEA 10.0 or later -->
-    <idea-version since-build="110.291" until-build="110.999"/>
+    <!-- Requires IDEA 11.0 or later -->
+    <idea-version since-build="111.0" until-build="111.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[
   <html>
-    Bash 4 support for InteliJ IDEA 10. Supported are, among other things, syntax highlighting,
+    Bash 4 support for InteliJ IDEA 11. Supported are, among other things, syntax highlighting,
     rename refactoring, documentation lookup and various inspections with quickfixes.
   </html>
   ]]></description>
@@ -41,7 +41,8 @@
     <html>
        <b>Changes in version 1.1beta2:</b>
        <ul>
-
+            <li>Compatible with the IntelliJ IDEA 11 beta2 (build 111+)
+            <li>Parser fixes</li>
        </ul>
 
        <b>Changes in version 1.1beta1:</b>
