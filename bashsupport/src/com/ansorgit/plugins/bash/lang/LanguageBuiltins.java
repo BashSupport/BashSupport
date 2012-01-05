@@ -119,4 +119,7 @@ public final class LanguageBuiltins {
     public static final Collection<String> readonlyVarDefCommands = Sets.newHashSet(
             "readonly"
     );
+    public static final Collection<String> arithmeticCommands = Sets.newHashSet(
+            "let"
+    );
 }

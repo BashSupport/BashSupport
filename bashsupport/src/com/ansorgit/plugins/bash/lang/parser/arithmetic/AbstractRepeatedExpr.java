@@ -38,6 +38,7 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
     private final IElementType partMarker;
     private int maxRepeats;
     private final String debugInfo;
+    private final boolean checkWhitespace;
 
     AbstractRepeatedExpr(ArithmeticParsingFunction expressionParser, TokenSet operators, IElementType partMarker, int maxRepeats, String debugInfo) {
         this.expressionParser = expressionParser;
@@ -45,6 +46,8 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         this.partMarker = partMarker;
         this.maxRepeats = maxRepeats;
         this.debugInfo = debugInfo;
+
+        this.checkWhitespace = operators.contains(WHITESPACE);
     }
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -57,7 +60,7 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
         ArithmeticParsingFunction parenthesisParser = ArithmeticFactory.parenthesisParser();
         boolean ok = parenthesisParser.isValid(builder)
                 && parenthesisParser.parse(builder)
-                && operators.contains(builder.getTokenType());
+                && operators.contains(builder.getTokenType(checkWhitespace));
 
         marker.rollbackTo();
 
