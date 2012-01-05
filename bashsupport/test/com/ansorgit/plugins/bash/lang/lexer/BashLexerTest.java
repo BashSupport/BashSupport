@@ -333,6 +333,7 @@ public class BashLexerTest {
         testTokenization(".", WORD);
         testTokenization(". /home/user/bashrc", WORD, WHITESPACE, WORD);
         testTokenization(". /home/user/bashrc$a", WORD, WHITESPACE, WORD, VARIABLE);
+        testTokenization(". x >& x", WORD, WHITESPACE, WORD, WHITESPACE, REDIRECT_GREATER_AMP, WHITESPACE, WORD);
     }
 
     @Test

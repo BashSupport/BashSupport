@@ -29,6 +29,13 @@ public class IncludeCommandTest extends MockPsiTest {
 
         //. "a" abc def
         mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
+
+        //. x >& y
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, WORD, REDIRECT_GREATER_AMP, WORD);
+
+        //fixme
+        //>& x . x
+        //mockTest(parserFunction, Lists.newArrayList(">&", "x", "."), REDIRECT_GREATER_AMP, WORD, WORD, WORD);
     }
 
     @Test

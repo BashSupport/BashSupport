@@ -1,3 +1,6 @@
+2012-02-05:
+ - Redirects after include command are supported now
+
 2011-11-29:
  - Version 1.0beta2
 
