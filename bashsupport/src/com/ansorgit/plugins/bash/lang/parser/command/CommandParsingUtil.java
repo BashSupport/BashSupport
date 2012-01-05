@@ -98,7 +98,16 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         }
     }
 
+    public static boolean readOptionalAssignmentOrRedirects(BashPsiBuilder builder, Mode asssignmentMode, boolean markAsVarDef) {
+        boolean ok = true;
 
+        while (ok && isAssignmentOrRedirect(builder, asssignmentMode)) {
+            ok = readAssignmentsAndRedirects(builder, markAsVarDef, asssignmentMode);
+        }
+
+        return ok;
+    }
+    
     public static boolean isAssignmentOrRedirect(BashPsiBuilder builder, Mode assignmentMode) {
         return isAssignment(builder, assignmentMode) || Parsing.redirection.isRedirect(builder);
     }

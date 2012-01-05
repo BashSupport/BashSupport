@@ -581,6 +581,9 @@ public class IntegrationTest extends MockPsiTest {
         //exec 9 <& 0 < /etc/fstab
         mockTest(fileParsingTest, WORD, INTEGER_LITERAL, WHITESPACE, REDIRECT_LESS_AMP, WHITESPACE, INTEGER_LITERAL,
                 LESS_THAN, WHITESPACE, WORD);
+
+        //. x >& /dev/null
+        mockTest(fileParsingTest, WORD, WHITESPACE, WORD, REDIRECT_GREATER_AMP, WORD);
     }
 
     @Test

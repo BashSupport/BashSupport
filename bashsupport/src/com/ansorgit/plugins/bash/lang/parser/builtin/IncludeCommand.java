@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 
@@ -44,6 +45,13 @@ public class IncludeCommand implements ParsingFunction, ParsingTool {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker mark = builder.mark();
 
+
+        boolean ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        if (!ok) {
+            mark.drop();
+            return false;
+        }
+
         //eat the "." or "source" part
         builder.advanceLexer();
 
@@ -64,6 +72,12 @@ public class IncludeCommand implements ParsingFunction, ParsingTool {
         }
 
         //optional parameters
+
+        ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        if (!ok) {
+            mark.drop();
+            return false;
+        }
 
         mark.done(INCLUDE_COMMAND_ELEMENT);
 
