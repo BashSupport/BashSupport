@@ -77,6 +77,7 @@ public class LetCommandTest extends MockPsiTest {
     public void testParse() {
         //let a=1
         mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
+
         //let a=1+1
         mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, ARITH_PLUS, NUMBER);
 

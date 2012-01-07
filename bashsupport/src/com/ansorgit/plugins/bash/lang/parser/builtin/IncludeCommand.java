@@ -34,7 +34,7 @@ import java.util.Set;
  * Date: 18.02.11
  * Time: 19:37
  */
-public class IncludeCommand implements ParsingFunction, ParsingTool {
+class IncludeCommand implements ParsingFunction, ParsingTool {
     private final Set<String> acceptedCommands = Sets.newHashSet(".", "source");
 
     public boolean isValid(BashPsiBuilder builder) {

@@ -425,15 +425,27 @@ public class BashLexerTest {
     @Test
     public void testConditional() {
         testTokenization("[ 1 = \"$backgrounded\" ]", EXPR_CONDITIONAL, WORD, WHITESPACE, COND_OP, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, _EXPR_CONDITIONAL);
+
+        testTokenization("[ 1 == 1 ]", EXPR_CONDITIONAL, WORD, WHITESPACE, COND_OP_EQ_EQ, WHITESPACE, WORD, _EXPR_CONDITIONAL);
+
+        testTokenization("[ 1 =~ 1 ]", EXPR_CONDITIONAL, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _EXPR_CONDITIONAL);
     }
 
     @Test
     public void testBracket() {
-        testTokenization("[[ -f test.txt ]]", BRACKET_KEYWORD, WORD, WHITESPACE, WORD, _BRACKET_KEYWORD);
-        testTokenization(" ]]", _BRACKET_KEYWORD);
-        testTokenization("  ]]", WHITESPACE, _BRACKET_KEYWORD);
-        testTokenization("[[  -f test.txt   ]]", BRACKET_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WHITESPACE, _BRACKET_KEYWORD);
-        testTokenization("[[ !(a) ]]", BRACKET_KEYWORD, BANG_TOKEN, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
+        testTokenization("[[ -f test.txt ]]", BRACKET_KEYWORD, COND_OP, WHITESPACE, WORD, _BRACKET_KEYWORD);
+        testTokenization(" ]]", WHITESPACE, RIGHT_SQUARE, RIGHT_SQUARE);
+        testTokenization("  ]]", WHITESPACE, WHITESPACE, RIGHT_SQUARE, RIGHT_SQUARE);
+        testTokenization("[[  -f test.txt   ]]", BRACKET_KEYWORD, WHITESPACE, COND_OP, WHITESPACE, WORD, WHITESPACE, WHITESPACE, _BRACKET_KEYWORD);
+        testTokenization("[[ !(a) ]]", BRACKET_KEYWORD, COND_OP_NOT, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
+
+        testTokenization("[[ a && b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, _BRACKET_KEYWORD);
+        testTokenization("[[ a || b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, _BRACKET_KEYWORD);
+
+        testTokenization("[[ -z \"\" ]]", BRACKET_KEYWORD, COND_OP, WHITESPACE, STRING_BEGIN, STRING_END, _BRACKET_KEYWORD);
+
+        testTokenization("[[ a == b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_EQ_EQ, WHITESPACE, WORD, _BRACKET_KEYWORD);
+        testTokenization("[[ a =~ b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
     }
 
     @Test

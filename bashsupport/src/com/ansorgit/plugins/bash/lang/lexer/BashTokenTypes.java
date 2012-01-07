@@ -237,7 +237,10 @@ public interface BashTokenTypes {
 
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...
-    TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, BANG_TOKEN);
+    IElementType COND_OP_EQ_EQ = new BashElementType("cond_op ==");
+    IElementType COND_OP_REGEX = new BashElementType("cond_op =~");
+    IElementType COND_OP_NOT = new BashElementType("cond_op !");
+    TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, BANG_TOKEN, COND_OP_EQ_EQ, COND_OP_REGEX);
 
     //redirects
     IElementType REDIRECT_LESS_LESS = new BashElementType("<<");

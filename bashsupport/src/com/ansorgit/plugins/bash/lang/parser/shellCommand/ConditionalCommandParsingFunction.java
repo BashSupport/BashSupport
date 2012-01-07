@@ -66,7 +66,7 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
             ok = parseExpression(builder);
         }
 
-        ok &= builder.getTokenType() == _BRACKET_KEYWORD;
+        ok &= (builder.getTokenType() == _BRACKET_KEYWORD);
 
         if (ok) {
             builder.advanceLexer();
@@ -83,8 +83,6 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
 
         int counter = 0;
 
-        //PsiBuilder.Marker marker = builder.mark();
-
         while (ok) {
             IElementType token = builder.getTokenType();
 
@@ -93,7 +91,7 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
                 builder.advanceLexer();
                 ok = parseExpression(builder);
                 ok &= ParserUtil.conditionalRead(builder, RIGHT_PAREN);
-            } else if (token == BANG_TOKEN) {
+            } else if (token == COND_OP_NOT) {
                 builder.advanceLexer();
                 ok = parseExpression(builder);
             } else if (counter >= 1 && token == OR_OR) {
@@ -115,13 +113,6 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
             }
         }
 
-        /*if (ok) {
-            marker.done(CONDITIONAL_EXPRESSION);
-        } else {
-            marker.drop();
-        } */
-
         return ok;
     }
-
 }

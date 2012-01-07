@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
@@ -68,7 +69,7 @@ public class ConditionalExpressionParsingFunction implements ParsingFunction {
      * @return Success or failure.
      */
     private boolean parseConditionalExpression(BashPsiBuilder builder) {
-        final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
+        ParserUtil.getTokenAndAdvance(builder);
 
         boolean success = true;
 

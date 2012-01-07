@@ -11,6 +11,9 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 21:20
  */
 public class ConditionalParsingUtil {
+    private static TokenSet operators = TokenSet.create(BashTokenTypes.COND_OP, BashTokenTypes.COND_OP_EQ_EQ, BashTokenTypes.COND_OP_REGEX);
+    private static TokenSet regExpEndTokens = TokenSet.create(BashTokenTypes.WHITESPACE, BashTokenTypes._BRACKET_KEYWORD);
+
     private ConditionalParsingUtil() {
     }
 
@@ -22,7 +25,20 @@ public class ConditionalParsingUtil {
         while (ok && !endTokens.contains(builder.getTokenType())) {
             if (Parsing.word.isWordToken(builder)) {
                 ok = Parsing.word.parseWord(builder);
-            } else if (builder.getTokenType() == BashTokenTypes.COND_OP) {
+            } else if (builder.getTokenType() == BashTokenTypes.COND_OP_NOT) {
+                builder.advanceLexer();
+                ok = readTestExpression(builder, endTokens);
+            } else if (builder.getTokenType() == BashTokenTypes.COND_OP_REGEX) {
+                builder.advanceLexer();
+
+                //eat optional whitespace in front
+                if (builder.getTokenType(true) == BashTokenTypes.WHITESPACE) {
+                    builder.advanceLexer(true);
+                }
+
+                //parse the regex
+                ok = parseRegularExpression(builder);
+            } else if (operators.contains(builder.getTokenType())) {
                 builder.advanceLexer();
             } else {
                 ok = false;
@@ -33,4 +49,15 @@ public class ConditionalParsingUtil {
         return ok;
     }
 
+    public static boolean parseRegularExpression(BashPsiBuilder builder) {
+        int count = 0;
+
+        //simple solution: read to the next whitespace, unless we are in [] brackets
+        while (!builder.eof() && !regExpEndTokens.contains(builder.getTokenType(true))) {
+            builder.advanceLexer(true);
+            count++;
+        }
+
+        return count > 0;
+    }
 }

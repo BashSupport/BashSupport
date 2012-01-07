@@ -153,6 +153,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* If in a conditional expression */
 %state S_TEST
 
+/* If in a conditional command  [[  ]]*/
+%state S_TEST_COMMAND
+
 /*  If in an arithmetic expression */
 %state S_ARITH
 
@@ -266,19 +269,34 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "then"                        { return THEN_KEYWORD; }
   "until"                       { return UNTIL_KEYWORD; }
   "while"                       { return WHILE_KEYWORD; }
-  "[[ "                         { return BRACKET_KEYWORD; }
-  " ]]"                         { return _BRACKET_KEYWORD; }
+  "[[ "                         { goToState(S_TEST_COMMAND); return BRACKET_KEYWORD; }
 }
 /***************** _______ END OF INITIAL STAATE _______ **************************/
 
+<S_TEST_COMMAND> {
+  " ]]"                         { backToPreviousState(); return _BRACKET_KEYWORD; }
+  "&&"                          { return AND_AND; }
+  "||"                          { return OR_OR; }
+}
+
 <S_TEST> {
   " ]"                         { backToPreviousState(); return _EXPR_CONDITIONAL; }
+}
+
+<S_TEST, S_TEST_COMMAND> {
   {WhiteSpace}                 { return WHITESPACE; }
   {ContinuedLine}+             { /* ignored */ }
 
-/** Test / conditional expressions */
+  /*** Test / conditional expressions ***/
+
+  /* param expansion operators */
+  "=="                         { return COND_OP_EQ_EQ; }
+
+  /* regex operator */
+  "=~"                         { return COND_OP_REGEX; }
+
   /* misc */
-  "!"                          |
+  "!"                          { return COND_OP_NOT; }
   "-a"                         |
   "-o"                         |
   "-eq"                        |
@@ -326,7 +344,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-N"                         { return COND_OP; }
 }
 
-<S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_TEST, S_PARAM_EXPANSION, S_SUBSHELL> {
+<S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION, S_SUBSHELL> {
   /* If a subshell expression is found, return DOLLAR and move before the bracket */
   "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL); return DOLLAR; }
 }
@@ -619,7 +637,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {ContinuedLine}+             { /* ignored */ }
 }
 
-<YYINITIAL, S_TEST, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
@@ -673,7 +691,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
 }    
@@ -683,7 +701,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {IntegerLiteral}            { return INTEGER_LITERAL; }
 }
 
-<YYINITIAL, S_CASE, S_TEST, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_TEST, S_TEST_COMMAND, S_SUBSHELL, S_BACKQUOTE> {
   {Word}                       { return WORD; }
 }
 
