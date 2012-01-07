@@ -39,6 +39,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta3:</b>
+       <ul>
+            <li>Parser improvements</li>
+       </ul>
+
        <b>Changes in version 1.1beta2:</b>
        <ul>
             <li>Compatible with the IntelliJ IDEA 11 beta2 (build 111+)

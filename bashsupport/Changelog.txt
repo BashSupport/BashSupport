@@ -2,6 +2,7 @@
  - Fixed parsing of ${@} and ${?}
  - Fixed unevaluated strings in a subshell
  - Error message for postfix / prefix operators on variable values in arithmetic expressions, e.g. $(( ${x}++ ))
+ - Version 1.1beta3
 
 2012-01-06:
  - Basic support for regular expressions in conditional command, e.g. [[ a =~ e* ]]
@@ -11,7 +12,7 @@
  - Redirects after include command are supported now
 
 2011-11-29:
- - Version 1.0beta2
+ - Version 1.1beta2
 
 2011-11-12:
  - Parser fixes
@@ -19,7 +20,7 @@
 2011-11-10:
  - Fixed parsing of the semicolon in "case ... esac;"
  - Fixed hidden files in absolute path completion
- - Version 1.0beta1
+ - Version 1.1beta1
 
 2011-11-09:
  - Fixed parsing of conditional commands [[ x ]] and test expressions [ x ]
