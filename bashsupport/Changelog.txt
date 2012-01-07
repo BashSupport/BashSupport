@@ -1,6 +1,7 @@
 2012-01-07:
  - Fixed parsing of ${@} and ${?}
  - Fixed unevaluated strings in a subshell
+ - Error message for postfix / prefix operators on variable values in arithmetic expressions, e.g. $(( ${x}++ ))
 
 2012-01-06:
  - Basic support for regular expressions in conditional command, e.g. [[ a =~ e* ]]

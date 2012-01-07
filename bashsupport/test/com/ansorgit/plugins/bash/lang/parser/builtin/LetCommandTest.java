@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -74,6 +75,7 @@ public class LetCommandTest extends MockPsiTest {
     }
 
     @Test
+    @Ignore
     public void testParse() {
         //let a=1
         mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
