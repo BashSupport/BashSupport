@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,14 +31,15 @@ import java.util.List;
  * Time: 10:56:51 AM
  */
 public interface ArithmeticExpression extends BashPsiElement {
+
+
     enum Type {
         NoOperands,
         TwoOperands,
         PrefixOperand,
         PostfixOperand,
-        Unsupported
+        Unsupported;
     }
-
     boolean isStatic();
 
     /**
@@ -61,6 +63,13 @@ public interface ArithmeticExpression extends BashPsiElement {
      */
     @Nullable
     ArithmeticExpression findParentExpression();
+
+    /**
+     * Returns the operator element if an operator is found in this expression.
+     * @return
+     */
+    @Nullable
+    PsiElement findOperatorElement();
 
     @Nullable
     IElementType findOperator();

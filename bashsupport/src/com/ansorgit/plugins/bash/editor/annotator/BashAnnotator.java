@@ -21,6 +21,9 @@ package com.ansorgit.plugins.bash.editor.annotator;
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.IncrementExpression;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -74,6 +77,19 @@ public class BashAnnotator implements Annotator {
             annotateString(element, annotationHolder);
         } else if (element instanceof BashSubshellCommand) {
             annotateSubshell(element, annotationHolder);
+        } else if (element instanceof IncrementExpression) {
+            annotateArithmeticIncrement((IncrementExpression)element, annotationHolder);
+        }
+    }
+
+    private void annotateArithmeticIncrement(IncrementExpression element, AnnotationHolder annotationHolder) {
+        ArithmeticExpression first = element.subexpressions().get(0);
+
+        if (first instanceof SimpleExpression && !(first.getFirstChild() instanceof BashVar)) {
+            PsiElement operator = element.findOperatorElement();
+            if (operator != null) {
+                annotationHolder.createErrorAnnotation(operator, "This error only works on a variable and not on a value.");
+            }
         }
     }
 

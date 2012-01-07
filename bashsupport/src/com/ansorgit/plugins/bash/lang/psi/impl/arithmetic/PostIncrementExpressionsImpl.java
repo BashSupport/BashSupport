@@ -18,17 +18,19 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.PostIncrementExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import sun.tools.tree.PostIncExpression;
 
 /**
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 12:13:49 PM
  */
-public class PostIncrementExpressionsImpl extends AbstractExpression {
+public class PostIncrementExpressionsImpl extends AbstractExpression implements PostIncrementExpression {
     public PostIncrementExpressionsImpl(final ASTNode astNode) {
-        super(astNode, "ArithPostIncrement", Type.Unsupported);
+        super(astNode, "ArithPostIncrement", Type.PostfixOperand);
     }
 
     @Override

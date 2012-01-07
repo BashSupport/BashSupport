@@ -140,6 +140,11 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
      * @return The operator, if available. Null otherwise.
      */
     public IElementType findOperator() {
+        return BashPsiUtils.nodeType(findOperatorElement());
+    }
+
+    @Override
+    public PsiElement findOperatorElement() {
         List<ArithmeticExpression> childs = subexpressions();
         int childSize = childs.size();
         if (childSize == 0) {
@@ -149,16 +154,16 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
         ArithmeticExpression firstChild = childs.get(0);
 
         if (type == Type.PostfixOperand) {
-            return BashPsiUtils.nodeType(BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE));
+            return BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE);
         } else if (type == Type.PrefixOperand) {
-            return BashPsiUtils.nodeType(BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE));
+            return BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE);
         } else if (type == Type.TwoOperands) {
             int i = 1;
             while (i < childSize) {
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(childs.get(i), BashTokenTypes.WHITESPACE);
                 if (opElement != null) {
                     //found
-                    return BashPsiUtils.nodeType(opElement);
+                    return opElement;
                 }
 
                 i++;
@@ -167,4 +172,6 @@ public abstract class AbstractExpression extends BashPsiElementImpl implements A
 
         return null;
     }
+
+
 }

@@ -25,5 +25,5 @@ package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
  * Date: Feb 6, 2010
  * Time: 10:57:11 AM
  */
-public interface PreIncrementExpression extends ArithmeticExpression {
+public interface PreIncrementExpression extends IncrementExpression {
 }

@@ -260,8 +260,7 @@
 
         <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 
-        <annotator language="Bash"
-                   implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
+        <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
         <frameworkSupport
                 implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>

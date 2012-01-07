@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.PreIncrementExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -27,7 +28,7 @@ import com.intellij.psi.tree.IElementType;
  * Date: Feb 6, 2010
  * Time: 12:13:49 PM
  */
-public class PreIncrementExpressionsImpl extends AbstractExpression {
+public class PreIncrementExpressionsImpl extends AbstractExpression implements PreIncrementExpression {
     public PreIncrementExpressionsImpl(final ASTNode astNode) {
         super(astNode, "ArithPreIncrement", Type.PrefixOperand);
     }
