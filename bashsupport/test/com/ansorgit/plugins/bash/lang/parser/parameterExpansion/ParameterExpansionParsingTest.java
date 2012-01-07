@@ -43,9 +43,6 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
 
         //{B:-B}
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
-
-        //{B:-B}
-        mockTest(expansionParser, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
     }
 
     @Test

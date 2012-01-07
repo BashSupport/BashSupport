@@ -37,12 +37,25 @@ public class ConditionalCommandFunctionTest extends MockPsiTest {
 
         //[[ -z "" ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, STRING_END, _BRACKET_KEYWORD);
+
         //[[ a ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, _BRACKET_KEYWORD);
+
         //[[ $(echo a) ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, WHITESPACE, _BRACKET_KEYWORD);
     }
 
+    @Test
+    public void testRegExp() throws Exception {
+        //[[ a =~ abc ]]
+        mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
+
+        //[[ a =~ ..e*x ]]
+        //mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
+
+        //[[ a =~ ^$ ]]
+        //mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
+    }
 
     @Test
     public void testErrors() throws Exception {
@@ -55,6 +68,6 @@ public class ConditionalCommandFunctionTest extends MockPsiTest {
     @Test
     public void testNegationOperator() {
         //[[ !(a) ]]
-        mockTest(conditionalFunction, BRACKET_KEYWORD, BANG_TOKEN, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
+        mockTest(conditionalFunction, BRACKET_KEYWORD, COND_OP_NOT, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
     }
 }

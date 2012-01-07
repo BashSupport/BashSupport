@@ -15,7 +15,7 @@ import com.intellij.psi.tree.TokenSet;
  * let Argument [Argument ...]
  * Each argument is evaluated as an arithmetic expression
  */
-public class LetCommand implements ParsingFunction, ParsingTool {
+class LetCommand implements ParsingFunction, ParsingTool {
     private TokenSet END_TOKENS = TokenSet.create(SEMI, LINE_FEED);
     @Override
     public boolean isValid(BashPsiBuilder builder) {

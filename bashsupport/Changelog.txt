@@ -1,3 +1,7 @@
+2012-02-06:
+ - Basic support for regular expressions in conditional command, e.g. [[ a =~ e* ]]
+ - Fixed negation in conditional expressions, e.g. [ ! -f "test.txt" ]
+
 2012-02-05:
  - Redirects after include command are supported now
 
