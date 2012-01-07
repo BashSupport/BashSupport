@@ -599,7 +599,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
   "%"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_PERCENT; }
-  "/"|"?"|"."|"^"               { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
+  "?"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_QMARK; }
+  "."                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_DOT; }
+  "/"|"^"                       { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
 
   "[" / [@*]                    { return LEFT_SQUARE; }
   "["                           { if (!paramExpansionOther && (!paramExpansionWord || !paramExpansionHash)) {
@@ -640,8 +642,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
-    "$"\'{SingleCharacter}*\'     |
-    \'{SingleCharacter}*\'        { return STRING2; }
+    <S_STRINGMODE> {
+        "$"\'{SingleCharacter}*\'     |
+        \'{SingleCharacter}*\'        { return STRING2; }
+    }
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             { return LINE_FEED; }

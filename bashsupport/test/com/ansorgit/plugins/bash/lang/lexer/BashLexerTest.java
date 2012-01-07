@@ -334,6 +334,9 @@ public class BashLexerTest {
         testTokenization(". /home/user/bashrc", WORD, WHITESPACE, WORD);
         testTokenization(". /home/user/bashrc$a", WORD, WHITESPACE, WORD, VARIABLE);
         testTokenization(". x >& x", WORD, WHITESPACE, WORD, WHITESPACE, REDIRECT_GREATER_AMP, WHITESPACE, WORD);
+
+        testTokenization("\"$('')\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING2, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$('(')\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING2, RIGHT_PAREN, STRING_END);
     }
 
     @Test
@@ -464,6 +467,8 @@ public class BashLexerTest {
         testTokenization("${a?x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
 
         testTokenization("${a-(none)}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_CURLY);
+
+        testTokenization("${@}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_AT, RIGHT_CURLY);
     }
 
     @Test
