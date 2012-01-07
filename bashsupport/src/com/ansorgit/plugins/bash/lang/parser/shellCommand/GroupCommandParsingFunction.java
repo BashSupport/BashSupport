@@ -57,8 +57,8 @@ public class GroupCommandParsingFunction implements ParsingFunction {
 
         if (!Parsing.list.parseCompoundList(builder, true, false)) {
             //ParserUtil.error(group, "parser.unexpected.token");
-            group.drop();
-            return false;
+            //group.drop();
+            //return false;
         }
 
         //check the closing curly bracket

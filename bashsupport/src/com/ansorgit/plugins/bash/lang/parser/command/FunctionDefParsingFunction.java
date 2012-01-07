@@ -108,7 +108,7 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         //optional newlines before the body
         final boolean newlinesAtBegin = builder.eatOptionalNewlines();
 
-        //if we don't have on ore more newlines we need a command group, i.e. {...}
+        //if we don't have one or more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
         if (!newlinesAtBegin && !isGroup) {
             function.drop();
