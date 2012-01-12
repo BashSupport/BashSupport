@@ -23,11 +23,14 @@ import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashFunctionDefElementType;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashIncludeCommandElementType;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashStubFileElementType;
+import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarDefElementType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.IStubFileElementType;
@@ -41,7 +44,6 @@ import com.intellij.psi.tree.IStubFileElementType;
  * @author Joachim Ansorg
  */
 public interface BashElementTypes {
-    //IFileElementType FILE = new IFileElementType(BashFileType.BASH_LANGUAGE);
     IStubFileElementType FILE = new BashStubFileElementType();
 
     IElementType FILE_REFERENCE = new BashElementType("File reference");
@@ -67,9 +69,9 @@ public interface BashElementTypes {
 
     //command elements
     IElementType SIMPLE_COMMAND_ELEMENT = new BashElementType("simple command element");
-    IElementType VAR_DEF_ELEMENT = new BashElementType("assignment command element");
+    BashStubElementType<BashVarDefStub, BashVarDef> VAR_DEF_ELEMENT = new BashVarDefElementType();
+
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
-    //IElementType INCLUDE_COMMAND_ELEMENT = new BashElementType("include command");
     BashStubElementType<BashIncludeCommandStub, BashIncludeCommand> INCLUDE_COMMAND_ELEMENT = new BashIncludeCommandElementType();
 
     //pipeline commands
@@ -88,12 +90,11 @@ public interface BashElementTypes {
     IElementType SUBSHELL_COMMAND = new BashElementType("subshell shellcommand");
     IElementType BACKQUOTE_COMMAND = new BashElementType("backquote shellcommand");
 
-    //IElementType FUNCTION_DEF_COMMAND = new BashElementType("function definition shell command");
     BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
 
     IElementType GROUP_COMMAND = new BashElementType("group command");
 
-    IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");
+    //IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");
 
     //arithmetic commands
     IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
@@ -104,7 +105,7 @@ public interface BashElementTypes {
     IElementType ARITH_BIT_OR_ELEMENT = new BashElementType("arithmetic bitwise or");
     IElementType ARITH_BIT_XOR_ELEMENT = new BashElementType("arithmetic bitwise xor");
     IElementType ARITH_BIT_AND_ELEMENT = new BashElementType("arithmetic bitwise and");
-    IElementType ARITH_COMBINATION_ASSIGNMENT_ELEMENT = new BashElementType("arith assignment");
+    //IElementType ARITH_COMBINATION_ASSIGNMENT_ELEMENT = new BashElementType("arith assignment");
     IElementType ARITH_COMPUND_COMPARISION_ELEMENT = new BashElementType("arith compund comparision");
     IElementType ARITH_EQUALITY_ELEMENT = new BashElementType("arithmetic equality");
     IElementType ARITH_EXPONENT_ELEMENT = new BashElementType("arithmetic exponent");
@@ -116,7 +117,7 @@ public interface BashElementTypes {
     IElementType ARITH_PRE_INC_ELEMENT = new BashElementType("arithmetic pre incr");
     IElementType ARITH_SHIFT_ELEMENT = new BashElementType("arithmetic shift");
     IElementType ARITH_SIMPLE_ELEMENT = new BashElementType("arithmetic simple");
-    IElementType ARITH_SIMPLE_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic simple assignment");
+    //IElementType ARITH_SIMPLE_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic simple assignment");
     IElementType ARITH_TERNERAY_ELEMENT = new BashElementType("arithmetic ternary operator");
 
     IElementType ARITH_PARENS_ELEMENT = new BashElementType("arithmetic parenthesis expr");

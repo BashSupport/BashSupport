@@ -28,7 +28,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -38,6 +41,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -55,7 +59,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  *
  * @author Joachim Ansorg
  */
-public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, BashVar {
+public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub>  {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
 
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
@@ -64,6 +68,10 @@ public class BashVarDefImpl extends BashPsiElementImpl implements BashVarDef, Ba
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
+    }
+
+    public BashVarDefImpl(@NotNull BashVarDefStub stub, @NotNull IStubElementType nodeType) {
+        super(stub, nodeType, "Bash var def");
     }
 
     public String getName() {

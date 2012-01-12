@@ -1,5 +1,6 @@
 2012-01-12:
  - Parsing performance improved
+ - Indexing of variable definitions, function definitions, script includes, reverse script includes and file names
 
 2012-01-07:
  - Fixed parsing of ${@} and ${?}
