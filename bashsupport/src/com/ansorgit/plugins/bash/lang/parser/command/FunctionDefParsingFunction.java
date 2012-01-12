@@ -38,7 +38,7 @@ import com.intellij.psi.tree.IElementType;
 public class FunctionDefParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         boolean withKeyword = builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD;
-        return withKeyword || ParserUtil.checkNextAndRollback(builder, BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
+        return withKeyword || ParserUtil.hasNextTokens(builder, false, BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
 
     }
 

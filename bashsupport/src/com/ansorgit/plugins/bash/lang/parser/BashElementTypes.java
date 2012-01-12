@@ -20,8 +20,17 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
+import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashFunctionDefElementType;
+import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashIncludeCommandElementType;
+import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashStubFileElementType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IStubFileElementType;
 
 /**
  * The available Bash parser element types.
@@ -32,7 +41,8 @@ import com.intellij.psi.tree.IFileElementType;
  * @author Joachim Ansorg
  */
 public interface BashElementTypes {
-    IFileElementType FILE = new IFileElementType(BashFileType.BASH_LANGUAGE);
+    //IFileElementType FILE = new IFileElementType(BashFileType.BASH_LANGUAGE);
+    IStubFileElementType FILE = new BashStubFileElementType();
 
     IElementType FILE_REFERENCE = new BashElementType("File reference");
 
@@ -59,7 +69,8 @@ public interface BashElementTypes {
     IElementType SIMPLE_COMMAND_ELEMENT = new BashElementType("simple command element");
     IElementType VAR_DEF_ELEMENT = new BashElementType("assignment command element");
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
-    IElementType INCLUDE_COMMAND_ELEMENT = new BashElementType("include command");
+    //IElementType INCLUDE_COMMAND_ELEMENT = new BashElementType("include command");
+    BashStubElementType<BashIncludeCommandStub, BashIncludeCommand> INCLUDE_COMMAND_ELEMENT = new BashIncludeCommandElementType();
 
     //pipeline commands
     IElementType PIPELINE_COMMAND = new BashElementType("pipeline command");
@@ -76,7 +87,10 @@ public interface BashElementTypes {
     IElementType CONDITIONAL_COMMAND = new BashElementType("conditional shellcommand");
     IElementType SUBSHELL_COMMAND = new BashElementType("subshell shellcommand");
     IElementType BACKQUOTE_COMMAND = new BashElementType("backquote shellcommand");
-    IElementType FUNCTION_DEF_COMMAND = new BashElementType("function definition shell command");
+
+    //IElementType FUNCTION_DEF_COMMAND = new BashElementType("function definition shell command");
+    BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
+
     IElementType GROUP_COMMAND = new BashElementType("group command");
 
     IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");

@@ -1,3 +1,6 @@
+2012-01-12:
+ - Parsing performance improved
+
 2012-01-07:
  - Fixed parsing of ${@} and ${?}
  - Fixed unevaluated strings in a subshell

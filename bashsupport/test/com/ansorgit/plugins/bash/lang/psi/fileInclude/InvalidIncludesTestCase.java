@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
+import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
@@ -39,6 +40,6 @@ public class InvalidIncludesTestCase extends AbstractFileIncludeTest {
         PsiFile file = ref.getElement().getContainingFile();
         Assert.assertTrue(file instanceof BashFile);
 
-        return ((BashFile) file).findIncludedFiles(true, justBashFiles);
+        return FileInclusionManager.findIncludedFiles(file, true, justBashFiles);
     }
 }

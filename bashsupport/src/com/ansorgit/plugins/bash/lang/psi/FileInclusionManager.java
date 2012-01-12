@@ -18,8 +18,14 @@
 
 package com.ansorgit.plugins.bash.lang.psi;
 
+import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.google.common.collect.Lists;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
+import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
+import com.ansorgit.plugins.bash.util.BashFunctions;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
@@ -28,11 +34,11 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: jansorg
@@ -44,78 +50,75 @@ public class FileInclusionManager {
     }
 
     @NotNull
-    public static Set<PsiFile> findIncludedFiles(@NotNull PsiFile file) {
-        if (file instanceof BashFile) {
-            return ((BashFile) file).findIncludedFiles(true, true);
+    public static Set<PsiFile> findIncludedFiles(@NotNull PsiFile sourceFile, boolean diveDeep, boolean bashOnly) {
+        if (!(sourceFile instanceof BashFile)) {
+            return Collections.emptySet();
         }
 
-        return Collections.emptySet();
+        Set<PsiFile> includersTodo = Sets.newHashSet(sourceFile.getContainingFile());
+        Set<PsiFile> includersDone = Sets.newHashSet();
+
+        Set<PsiFile> allIncludedFiles = Sets.newHashSet();
+
+        while (!includersTodo.isEmpty()) {
+            Iterator<PsiFile> iterator = includersTodo.iterator();
+            PsiFile file = iterator.next();
+            iterator.remove();
+
+            includersDone.add(file);
+
+            GlobalSearchScope moduleScope = BashSearchScopes.moduleScope(file);
+            Collection<BashIncludeCommand> commands = StubIndex.getInstance().get(BashIncludeCommandIndex.KEY, file.getName(), file.getProject(), moduleScope);
+            for (BashIncludeCommand command : commands) {
+                if (command.getFileReference().isStatic()) {
+                    PsiFile referencedFile = command.getFileReference().findReferencedFile();
+                    if (bashOnly && !(referencedFile instanceof BashFile)) {
+                        continue;
+                    }
+
+                    if (referencedFile != null) {
+                        allIncludedFiles.add(referencedFile);
+
+                        if (!includersDone.contains(referencedFile)) {
+                            //the include commands of this command have to be collected, too
+                            includersTodo.add(referencedFile);
+                        }
+                    }
+                }
+            }
+
+            if (!diveDeep) {
+                //the first iteratopm is the original source
+                break;
+            }
+        }
+
+        return allIncludedFiles;
     }
 
     /**
      * Finds all files which include the given file.
      * The bash files of the module are checked if they include the file.
      *
-     * @param project
-     * @param file
+     * @param project The project
+     * @param file    The file for which the includers should be found.
      * @return
      */
     @NotNull
-    public static Set<BashFile> findIncludingFiles(@NotNull Project project, @NotNull PsiFile file) {
-        //fixme this method is slow and should be replaced with an index lookup when available
-        List<BashFile> allFiles = findAllFiles(project, file);
+    public static Set<BashFile> findIncluders(@NotNull Project project, @NotNull PsiFile file) {
+        GlobalSearchScope searchScope = BashSearchScopes.moduleScope(file);
 
         Set<BashFile> includers = Sets.newHashSet();
 
-        for (BashFile currentFile : allFiles) {
-            Set<PsiFile> includedFiles = currentFile.findIncludedFiles(true, true);
+        Collection<BashIncludeCommand> includeCommands = StubIndex.getInstance().get(BashIncludedFilenamesIndex.KEY, file.getName(), project, searchScope);
+        for (BashIncludeCommand command : includeCommands) {
+            BashFile includer = (BashFile) command.getContainingFile();
 
-            if (includedFiles.contains(file)) {
-                includers.add(currentFile);
+            if (!file.equals(includer)) {
+                includers.add(includer);
             }
         }
 
         return includers;
-    }
-
-    @NotNull
-    private static List<BashFile> findAllFiles(@NotNull Project project, @NotNull PsiFile file) {
-        VirtualFile virtualFile = file.getVirtualFile();
-        if (virtualFile == null) {
-            return Collections.emptyList();
-        }
-
-        List<BashFile> files = Lists.newLinkedList();
-
-        Module module = ProjectRootManager.getInstance(project).getFileIndex().getModuleForFile(virtualFile);
-        if (module != null) {
-            findAllFiles(files, module, project);
-        }
-
-        return files;
-    }
-
-    private static void findAllFiles(@NotNull List<BashFile> result, @NotNull Module module, @NotNull Project project) {
-        final VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
-        PsiManager psiManager = PsiManager.getInstance(project);
-
-        for (VirtualFile root : contentRoots) {
-            collectSubtree(result, root, psiManager);
-        }
-    }
-
-
-    private static void collectSubtree(List<BashFile> result, VirtualFile child, PsiManager psiManager) {
-        if (child.isDirectory()) {
-            //directory
-            for (VirtualFile file : child.getChildren()) {
-                collectSubtree(result, file, psiManager);
-            }
-        } else {
-            PsiFile psiFile = psiManager.findFile(child);
-            if (psiFile instanceof BashFile) {
-                result.add((BashFile) psiFile);
-            }
-        }
     }
 }

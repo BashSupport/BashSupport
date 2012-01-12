@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
+import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
 /**
  * Date: 26.03.2009
@@ -34,17 +35,33 @@ import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
 public class ParserUtilTest {
     @Test
     public void testIsWordToken() {
-        Assert.assertTrue(ParserUtil.isWordToken(BashTokenTypes.WORD));
+        Assert.assertTrue(ParserUtil.isWordToken(WORD));
 
-        Assert.assertFalse(ParserUtil.isWordToken(BashTokenTypes.VARIABLE));
-        Assert.assertFalse(ParserUtil.isWordToken(BashTokenTypes.FOR_KEYWORD));
+        Assert.assertFalse(ParserUtil.isWordToken(VARIABLE));
+        Assert.assertFalse(ParserUtil.isWordToken(FOR_KEYWORD));
     }
 
     @Test
     public void testCheckNext() {
-        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(BashTokenTypes.BACKQUOTE, BashTokenTypes.BACKQUOTE), Bash_v3);
-        Assert.assertTrue(ParserUtil.checkNextAndRollback(b, BashTokenTypes.BACKQUOTE));
-        Assert.assertTrue(ParserUtil.checkNextAndRollback(b, BashTokenTypes.BACKQUOTE, BashTokenTypes.BACKQUOTE));
-        Assert.assertFalse(ParserUtil.checkNextAndRollback(b, BashTokenTypes.WORD));
+        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(BACKQUOTE, BACKQUOTE), Bash_v3);
+        Assert.assertTrue(ParserUtil.hasNextTokens(b, false, BACKQUOTE));
+        Assert.assertTrue(ParserUtil.hasNextTokens(b, false, BACKQUOTE, BACKQUOTE));
+        Assert.assertFalse(ParserUtil.hasNextTokens(b, false, WORD));
+    }
+
+    @Test
+    public void testLookahead() {
+        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(WORD, WHITESPACE, WHITESPACE,  NUMBER), Bash_v3);
+        Assert.assertEquals(WORD, b.lookAhead(0));
+        Assert.assertEquals(NUMBER, b.lookAhead(1));
+    }
+
+    @Test
+    public void testLookaheadRaw() {
+        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(WORD, WHITESPACE, WHITESPACE,  NUMBER), Bash_v3);
+        Assert.assertEquals(WORD, b.rawLookup(0));
+        Assert.assertEquals(WHITESPACE, b.rawLookup(1));
+        Assert.assertEquals(WHITESPACE, b.rawLookup(2));
+        Assert.assertEquals(NUMBER, b.rawLookup(3));
     }
 }

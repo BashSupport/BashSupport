@@ -23,8 +23,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
@@ -37,6 +39,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Icons;
 import com.intellij.util.IncorrectOperationException;
@@ -53,11 +57,15 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class BashFunctionDefImpl extends BashPsiElementImpl implements BashFunctionDef {
+public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
     private static final Logger log = Logger.getInstance("#Bash.BashFunctionDefImpl");
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");
+    }
+
+    public BashFunctionDefImpl(@NotNull BashFunctionDefStub stub, @NotNull IStubElementType nodeType) {
+        super(stub, nodeType, null);
     }
 
     public PsiElement setName(@NotNull @NonNls String name) throws IncorrectOperationException {

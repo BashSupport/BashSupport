@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 
 import java.util.Set;
 
@@ -30,7 +31,7 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-public interface BashFile extends PsiFile, BashPsiElement {
+public interface BashFile extends PsiFile, BashPsiElement, PsiFileWithStubSupport {
     Key<Boolean> LANGUAGE_CONSOLE_MARKER = new Key<Boolean>("Language console marker");
 
     boolean hasShebangLine();
@@ -39,10 +40,4 @@ public interface BashFile extends PsiFile, BashPsiElement {
      * @return
      */
     BashFunctionDef[] functionDefinitions();
-
-    /**
-     * @param diveDeep
-     * @param bashOnly
-     */
-    Set<PsiFile> findIncludedFiles(boolean diveDeep, boolean bashOnly);
 }

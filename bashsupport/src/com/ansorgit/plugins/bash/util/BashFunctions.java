@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.util;
 
 import com.google.common.base.Function;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
 /**
@@ -32,6 +33,14 @@ public class BashFunctions {
         return new Function<PsiFile, VirtualFile>() {
             public VirtualFile apply(PsiFile psiFile) {
                 return psiFile.getVirtualFile();
+            }
+        };
+    }
+
+    public static Function<? super PsiElement, PsiFile> psiToContainingFile() {
+        return new Function<PsiElement, PsiFile>() {
+            public PsiFile apply(PsiElement psi) {
+                return psi.getContainingFile();
             }
         };
     }

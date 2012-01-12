@@ -28,6 +28,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -38,6 +39,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
+import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -49,69 +51,12 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-public abstract class BashPsiElementImpl extends ASTWrapperPsiElement implements BashPsiElement {
-    private final String name;
-
+public abstract class BashPsiElementImpl extends BashBaseElementImpl<StubElement> implements BashPsiElement {
     public BashPsiElementImpl(final ASTNode astNode) {
-        this(astNode, null);
+        super(astNode);
     }
 
     public BashPsiElementImpl(final ASTNode astNode, final String name) {
-        super(astNode);
-        this.name = name;
-    }
-
-    @NotNull
-    @Override
-    public Language getLanguage() {
-        return BashFileType.BASH_LANGUAGE;
-    }
-
-    @Override
-    public String toString() {
-        return "[PSI] " + (name == null ? super.toString() : name);
-    }
-
-    @NotNull
-    @Override
-    public SearchScope getUseScope() {
-        //all files which include this element's file belong to the requested scope
-        //fixme quite slow, fix with reverse index included file->including file
-
-        Set<BashFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
-        Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(getContainingFile());
-
-        if (includingFiles.isEmpty() && includedFiles.isEmpty()) {
-            //we should return a local search scope if we only have local references
-            //not return a local scope then inline renaming is not possible
-            return new LocalSearchScope(getContainingFile());
-        }
-
-        Set<PsiFile> allFiles = Sets.union(includedFiles, includingFiles);
-
-        Collection<VirtualFile> virtualFiles = Collections2.transform(allFiles, BashFunctions.psiToVirtualFile());
-        return GlobalSearchScope.fileScope(getContainingFile()).union(GlobalSearchScope.filesScope(getProject(), virtualFiles));
-    }
-
-    @NotNull
-    @Override
-    public GlobalSearchScope getResolveScope() {
-        BashFile psiFile = (BashFile) getContainingFile();
-
-        GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(getContainingFile());
-
-        Set<PsiFile> includedFiles = psiFile.findIncludedFiles(true, true);
-        Collection<VirtualFile> files = Collections2.transform(includedFiles, new Function<PsiFile, VirtualFile>() {
-            public VirtualFile apply(PsiFile psiFile) {
-                return psiFile.getVirtualFile();
-            }
-        });
-
-        return currentFileScope.uniteWith(GlobalSearchScope.filesScope(getProject(), files));
-    }
-
-    @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
+        super(astNode, name);
     }
 }
