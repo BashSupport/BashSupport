@@ -10,10 +10,15 @@ import com.intellij.psi.stubs.StubIndexKey;
  * Time: 22:46
  */
 public class BashIncludeCommandIndex extends StringStubIndexExtension<BashIncludeCommand> {
-    public static final StubIndexKey<String, BashIncludeCommand> KEY = StubIndexKey.createIndexKey("bash.includeCommand");
+    public static final StubIndexKey<String, BashIncludeCommand> KEY = StubIndexKey.createIndexKey("bash.includers");
 
     @Override
     public StubIndexKey<String, BashIncludeCommand> getKey() {
         return KEY;
+    }
+
+    @Override
+    public int getVersion() {
+        return BashIndexVersion.VERSION;
     }
 }

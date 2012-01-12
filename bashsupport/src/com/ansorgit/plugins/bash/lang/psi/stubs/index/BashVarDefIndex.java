@@ -1,7 +1,7 @@
 package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
 
@@ -10,11 +10,11 @@ import com.intellij.psi.stubs.StubIndexKey;
  * Date: 11.01.12
  * Time: 22:46
  */
-public class BashIncludedFilenamesIndex extends StringStubIndexExtension<BashIncludeCommand> {
-    public static final StubIndexKey<String, BashIncludeCommand> KEY = StubIndexKey.createIndexKey("bash.included");
+public class BashVarDefIndex extends StringStubIndexExtension<BashVarDef> {
+    public static final StubIndexKey<String, BashVarDef> KEY = StubIndexKey.createIndexKey("bash.vardef");
 
     @Override
-    public StubIndexKey<String, BashIncludeCommand> getKey() {
+    public StubIndexKey<String, BashVarDef> getKey() {
         return KEY;
     }
 
