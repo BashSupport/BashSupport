@@ -282,5 +282,14 @@
 
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
+
+        <!-- stubs -->
+        <stubElementTypeHolder class="com.ansorgit.plugins.bash.lang.parser.BashElementTypes"/>
+
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex"/>
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex"/>
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex"/>
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
     </extensions>
 </idea-plugin>

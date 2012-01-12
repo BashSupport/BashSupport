@@ -27,7 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -42,6 +42,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +61,7 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, Keys {
+public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<T> implements BashCommand, Keys {
     private boolean isInternal;
     private boolean isExternal;
 
@@ -73,6 +75,12 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
         super(astNode, name);
 
         updateCache();
+    }
+
+    public BashCommandImpl(@NotNull T stub, @NotNull IStubElementType nodeType, @Nullable String name) {
+        super(stub, nodeType, name);
+
+//        updateCache();
     }
 
     private void updateCache() {
@@ -91,11 +99,16 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
     public boolean isFunctionCall() {
         PsiElement commandElement = commandElement();
-        if (commandElement == null || commandElement.getNode() == null) {
+        if (commandElement == null) {
             return false;
         }
 
-        return commandElement.getNode().getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && internalResolve() != null;
+        ASTNode node = commandElement.getNode();
+        if (node == null) {
+            return false;
+        }
+
+        return node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && internalResolve() != null;
     }
 
     public boolean isInternalCommand() {
@@ -197,7 +210,7 @@ public class BashCommandImpl extends BashPsiElementImpl implements BashCommand, 
 
         //we need to look into the files which include this command's containingFile.
         //a function call might reference a command from one of the including files
-        Set<BashFile> includingFiles = FileInclusionManager.findIncludingFiles(getProject(), getContainingFile());
+        Set<BashFile> includingFiles = FileInclusionManager.findIncluders(getProject(), getContainingFile());
         for (BashFile file : includingFiles) {
             walkOn = PsiTreeUtil.treeWalkUp(processor, file.getLastChild(), file, ResolveState.initial());
             if (!walkOn) {

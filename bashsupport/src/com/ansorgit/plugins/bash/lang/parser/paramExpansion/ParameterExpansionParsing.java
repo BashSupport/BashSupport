@@ -105,8 +105,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
             //array reference
             if (operator == LEFT_SQUARE) {
                 //one of x[*] or x[@]
-                boolean isSpecialReference = ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
-                        || ParserUtil.hasNextTokens(builder, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
+                boolean isSpecialReference = ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
+                        || ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
                 boolean isValidReference = ParserUtil.checkAndRollback(builder, new Function<BashPsiBuilder, Boolean>() {
                     public Boolean apply(BashPsiBuilder builder) {

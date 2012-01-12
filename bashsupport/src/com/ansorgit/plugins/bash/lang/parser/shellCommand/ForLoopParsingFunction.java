@@ -45,7 +45,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
     }
 
     private boolean isArithmeticForLoop(BashPsiBuilder builder) {
-        return ParserUtil.hasNextTokens(builder, FOR_KEYWORD, EXPR_ARITH);
+        return ParserUtil.hasNextTokens(builder, false, FOR_KEYWORD, EXPR_ARITH);
     }
 
     public boolean parse(BashPsiBuilder builder) {

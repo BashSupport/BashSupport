@@ -21,18 +21,27 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.stubs.IStubElementType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * User: jansorg
  * Date: 18.02.11
  * Time: 20:17
  */
-public class BashIncludeCommandImpl extends BashCommandImpl implements BashIncludeCommand {
+public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandStub> implements BashIncludeCommand, StubBasedPsiElement<BashIncludeCommandStub> {
     public BashIncludeCommandImpl(ASTNode astNode) {
         super(astNode, "Bash include command");
+    }
+
+    public BashIncludeCommandImpl(@NotNull BashIncludeCommandStub stub, @NotNull IStubElementType nodeType) {
+        super(stub, nodeType, null);
     }
 
     @NotNull

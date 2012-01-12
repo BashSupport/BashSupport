@@ -24,15 +24,18 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -61,14 +64,6 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         return findChildrenByClass(BashFunctionDef.class);
     }
 
-    public Set<PsiFile> findIncludedFiles(boolean diveDeep, boolean bashOnly) {
-        Set<PsiFile> result = Sets.newLinkedHashSet();
-
-        findIncludedFiles(result, diveDeep, bashOnly);
-
-        return result;
-    }
-
     /**
      * Returns the included files and all included subfiles.
      *
@@ -84,12 +79,10 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         if (includeCommands == null) {
             final List<BashIncludeCommand> commands = Lists.newLinkedList();
 
-            BashPsiUtils.visitRecursively(this, new BashVisitor() {
-                @Override
-                public void visitIncludeCommand(BashIncludeCommand includeCommand) {
-                    commands.add(includeCommand);
-                }
-            });
+            PsiFile file = getContainingFile();
+            Collection<BashIncludeCommand> indexedCommands = StubIndex.getInstance().get(BashIncludeCommandIndex.KEY, file.getName(), getProject(), GlobalSearchScope.allScope(getProject()));
+
+            commands.addAll(indexedCommands);
 
             includeCommands = commands;
         }

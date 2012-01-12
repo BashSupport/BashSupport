@@ -41,7 +41,7 @@ public class ComposedVariableParsing implements ParsingFunction {
     );
 
     public boolean isValid(BashPsiBuilder builder) {
-        if (!ParserUtil.hasNextTokens(builder, DOLLAR)) {
+        if (!ParserUtil.hasNextTokens(builder, false, DOLLAR)) {
             return false;
         }
 

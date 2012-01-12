@@ -91,31 +91,10 @@ public class ParserUtil {
      */
     public static void markTokenAndAdvance(PsiBuilder builder, IElementType markAs) {
         final PsiBuilder.Marker marker = builder.mark();
+
         builder.advanceLexer();
+
         marker.done(markAs);
-    }
-
-    /**
-     * Checks whether the next tokens equal a certain list of expected tokens.
-     *
-     * @param builder  Provides the tokens.
-     * @param expected The expected tokens.
-     * @return True if all expected tokens appear in the builder token stream in exactly the same order.
-     */
-    public static boolean checkNextAndRollback(BashPsiBuilder builder, IElementType... expected) {
-        final PsiBuilder.Marker start = builder.mark();
-        try {
-            for (final IElementType expectedToken : expected) {
-                final IElementType next = getTokenAndAdvance(builder);
-                if (next != expectedToken) {
-                    return false;
-                }
-            }
-        } finally {
-            start.rollbackTo();
-        }
-
-        return true;
     }
 
     /**
@@ -157,6 +136,7 @@ public class ParserUtil {
      * Advances to the next token if the current token is of the specified type.
      *
      * @param builder To read from
+     * @param tokens
      * @return True if the token has been red.
      */
     public static boolean conditionalRead(PsiBuilder builder, TokenSet tokens) {
@@ -186,7 +166,7 @@ public class ParserUtil {
      * @return True if the token is a valid word token.
      */
     public static boolean isWordToken(IElementType token) {
-        return BashTokenTypes.stringLiterals.contains(token);// || token == BashTokenTypes.VARIABLE;
+        return BashTokenTypes.stringLiterals.contains(token);
     }
 
     /**
@@ -199,30 +179,15 @@ public class ParserUtil {
         return tokenType == BashTokenTypes.WORD;
     }
 
-    public static boolean hasNextTokens(BashPsiBuilder builder, IElementType... tokens) {
-        return hasNextTokens(builder, false, tokens);
-    }
-
     public static boolean hasNextTokens(BashPsiBuilder builder, boolean enableWhitespace, IElementType... tokens) {
-        if (tokens.length == 1) {
-            return tokens[0] == builder.getTokenType(enableWhitespace);
-        }
-
-        final PsiBuilder.Marker start = builder.mark();
-        try {
-            for (IElementType t : tokens) {
-                IElementType next = builder.getTokenType(enableWhitespace);
-                if (t != next) {
-                    return false;
-                }
-
-                builder.advanceLexer(enableWhitespace);
+        for (int i = 0, tokensLength = tokens.length; i < tokensLength; i++) {
+            IElementType lookAheadToken = enableWhitespace ? builder.rawLookup(i) : builder.lookAhead(i);
+            if (lookAheadToken != tokens[i]) {
+                return false;
             }
-
-            return true;
-        } finally {
-            start.rollbackTo();
         }
+
+        return true;
     }
 
     /**

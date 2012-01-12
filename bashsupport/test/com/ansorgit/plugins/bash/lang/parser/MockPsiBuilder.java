@@ -134,9 +134,22 @@ public class MockPsiBuilder implements PsiBuilder {
         throw new UnsupportedOperationException();
     }
 
-    public IElementType lookAhead(int i) {
-        //fixme
-        throw new UnsupportedOperationException();
+    public IElementType lookAhead(int lookAhead) {
+        int indexPos = elementPosition;
+        int elementCounter = 0;
+        int length = elements.size();
+
+        while (indexPos < length && elementCounter < lookAhead) {
+            indexPos++;
+
+            while (indexPos < length && elements.get(indexPos) == BashTokenTypes.WHITESPACE) {
+                indexPos++;
+            }
+
+            elementCounter++;
+        }
+
+        return indexPos < length ? elements.get(indexPos) : null;
     }
 
     public IElementType rawLookup(int lookAhead) {
