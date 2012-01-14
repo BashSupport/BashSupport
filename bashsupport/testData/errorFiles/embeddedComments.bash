@@ -1,0 +1,9 @@
+a=(
+	SIGHUP #1
+	SIGINT  #2 (^C)
+	SIGQUIT # 3 (^\)
+	SIGABRT # 6
+	SIGPIPE # 13
+	SIGALRM # 14
+	SIGTERM # 15
+)

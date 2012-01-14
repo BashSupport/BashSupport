@@ -1,5 +1,7 @@
 2012-01-14:
  - Parser fixes for nested strings
+ - Improved support for substitution operators in parameter expansion, e.g. ${var:-value if var is null}
+ - The bash library bashinator now parses without syntax errors
 
 2012-01-12:
  - Parsing performance improved

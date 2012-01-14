@@ -4,14 +4,14 @@
         <file>A.bash</file>
         <line>4</line>
 
-        <description>The function 'a' is already defined on line 3.</description>
+        <description>The function 'a' is already defined at line 3.</description>
     </problem>
 
     <problem>
         <file>A.bash</file>
         <line>11</line>
 
-        <description>The function 'a' is already defined on line 3.</description>
+        <description>The function 'a' is already defined at line 3.</description>
     </problem>
 </problems>
 

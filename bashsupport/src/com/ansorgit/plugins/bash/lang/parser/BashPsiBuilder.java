@@ -311,6 +311,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @return The new marker.
      */
+    @Override
     public Marker mark() {
         return new BashPsiMarker(getOriginalPsiBuilder().mark());
     }
@@ -332,6 +333,14 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final class BashPsiMarker extends ForwardingMarker implements Marker {
         protected BashPsiMarker(final Marker original) {
             super(original);
+        }
+
+        @Override
+        public void doneBefore(IElementType type, Marker beforeCandidate) {
+            //IntelliJ's API assumes that before is a StartMarker and not another implementation
+            //thus we have to pass the original marker
+            Marker before = beforeCandidate instanceof ForwardingMarker ? ((ForwardingMarker) beforeCandidate).getOriginal() : beforeCandidate;
+            super.doneBefore(type, before);
         }
 
         @Override

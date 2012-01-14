@@ -108,7 +108,7 @@ public class DuplicateFunctionDefInspection extends AbstractBashInspection {
 
                         if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
                             String message = "The function '" + functionDef.getName() +
-                                    "' is already defined on line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
+                                    "' is already defined at line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
 
                             BashSymbol nameSymbol = functionDef.getNameSymbol();
                             if (nameSymbol != null) {

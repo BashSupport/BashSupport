@@ -106,7 +106,7 @@ ContinuedLine = "\\" {LineTerminator}
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
-Comments = {Comment}({Comment}{LineTerminator})*
+Comments = {Comment}{LineTerminator}({Comment}{LineTerminator})+
 
 EscapedChar = "\\" [^\n]
 StringStart = "$\"" | "\""
@@ -196,9 +196,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 %%
 /***************************** INITIAL STAATE ************************************/
-<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL> {
+<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST> {
   {Shebang}                     { return SHEBANG; }
-  {Comments}                    { return COMMENT; }
+  {Comment}                     { return COMMENT; }
 }
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
@@ -355,6 +355,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 /*** Arithmetic expressions *************/
+<S_ARITH> {
+    "["                           { return LEFT_SQUARE; }
+    "]"                           { return RIGHT_SQUARE; }
+}
+
 <S_ARITH_SQUARE_MODE> {
   "["                           { return EXPR_ARITH_SQUARE; }
 
@@ -616,6 +621,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   ":+"                          { return PARAM_EXPANSION_OP_COLON_PLUS; }
   "+"                           { return PARAM_EXPANSION_OP_PLUS; }
 
+  ":?"                          { return PARAM_EXPANSION_OP_COLON_QMARK; }
+
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
   "#"                           { paramExpansionHash = paramExpansionWord && true; return PARAM_EXPANSION_OP_HASH; }
@@ -710,9 +717,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
 
-    "["                           { return LEFT_SQUARE; }
-    "]"                           { return RIGHT_SQUARE; }
-
     "\\"                          { return BACKSLASH; }
 }
 
@@ -728,8 +732,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <YYINITIAL, S_CASE, S_TEST, S_TEST_COMMAND, S_SUBSHELL, S_BACKQUOTE> {
   {Word}                       { return WORD; }
+  {WordAfter}+            { return WORD; }
 }
-
 
 /** END */
   .                               { return BAD_CHARACTER; }

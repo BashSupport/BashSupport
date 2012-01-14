@@ -39,6 +39,10 @@ public abstract class ForwardingMarker implements PsiBuilder.Marker {
         this.original = original;
     }
 
+    public PsiBuilder.Marker getOriginal() {
+        return original;
+    }
+
     public void done(IElementType type) {
         original.done(type);
     }
