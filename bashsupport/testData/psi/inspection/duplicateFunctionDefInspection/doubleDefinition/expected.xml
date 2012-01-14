@@ -4,7 +4,7 @@
         <file>A.bash</file>
         <line>7</line>
 
-        <description>The function 'a' is already defined on line 3.</description>
+        <description>The function 'a' is already defined at line 3.</description>
     </problem>
 </problems>
 

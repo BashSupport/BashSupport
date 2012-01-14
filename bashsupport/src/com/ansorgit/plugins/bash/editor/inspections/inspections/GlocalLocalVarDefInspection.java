@@ -90,8 +90,9 @@ public class GlocalLocalVarDefInspection extends AbstractBashInspection {
                             }
 
                             if (!isInFunction) {
-                                holder.registerProblem(varDef.getContext(),
-                                        "Local must be used in a function",
+                                PsiElement problemHolder = varDef.getContext();
+                                holder.registerProblem(problemHolder,
+                                        "'local' must be used in a function",
                                         ProblemHighlightType.GENERIC_ERROR,
                                         new RemoveLocalQuickfix(varDef));
                             }

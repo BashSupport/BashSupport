@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.misc.WordParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
@@ -34,11 +35,14 @@ import com.intellij.psi.tree.TokenSet;
  * User: jansorg
  * Date: 03.12.10
  * Time: 19:40
+ *
+ * fixme rewrite this parsing function, it doesn't support all cases yet is too complicated to maintain
  */
 public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN), paramExpansionOperators);
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
     private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_QMARK);
+    private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS, PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
@@ -83,7 +87,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         //the first token has to be a plain word token
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
-        if (!ParserUtil.isWordToken(firstToken)) {
+        if (firstToken != DOLLAR && !ParserUtil.isWordToken(firstToken)) {
             builder.error("Expected a variable.");
             firstElementMarker.drop();
             marker.drop();
@@ -98,6 +102,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         boolean markedAsVar = false;
         boolean isValid = true;
+        boolean readFurther = true;
 
         if (builder.getTokenType(true) != RIGHT_CURLY) {
             IElementType operator = builder.getTokenType(true);
@@ -131,6 +136,38 @@ public class ParameterExpansionParsing implements ParsingFunction {
                         return false;
                     }
                 }
+            } else if (substitutionOperators.contains(operator)) {
+                //operators which perform substitution on the variable value, e.g. operator :-
+                // the operator ":-" means that the variable in front is replaced with the value after the operator if it is null
+
+                //eat the operator so it's not included in the replacement value
+                firstElementMarker.done(VAR_ELEMENT);
+                markedAsVar = true;
+
+                builder.advanceLexer(true);
+
+                //eat all tokens until we reach the closing } bracket
+                readFurther = false;
+
+                boolean wordIsOk = true;
+
+                //fixme refactor this
+
+                PsiBuilder.Marker replacementValueMarker = builder.mark();
+                while (builder.getTokenType() != RIGHT_CURLY && wordIsOk && !builder.eof()) {
+                    if (Parsing.word.isWordToken(builder)) {
+                        //we have to accept variables, substitutions, etc. as well as substitution value
+                        wordIsOk = Parsing.word.parseWord(builder, false, TokenSet.create(RIGHT_CURLY), TokenSet.EMPTY);
+                    } else {
+                        builder.advanceLexer();
+                    }
+                }
+
+                if (builder.getTokenType() == RIGHT_CURLY) {
+                    replacementValueMarker.collapse(WORD);
+                } else {
+                    replacementValueMarker.drop();
+                }
             } else {
                 if (!paramExpansionOperators.contains(operator)) {
                     firstElementMarker.drop();
@@ -142,17 +179,19 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 if (paramExpansionAssignmentOps.contains(operator)) {
                     firstElementMarker.done(VAR_DEF_ELEMENT);
                     builder.advanceLexer(true);
+                    markedAsVar = true;
                 } else if (paramExpansionOperators.contains(operator)) {
                     //unknown operator
                     firstElementMarker.done(VAR_ELEMENT);
                     builder.advanceLexer(true);
+                    markedAsVar = true;
                 } else {
                     //something else, e.g. indirect variable reference
                     firstElementMarker.drop();
                 }
             }
 
-            while (isValid && builder.getTokenType() != RIGHT_CURLY) {
+            while (readFurther && isValid && builder.getTokenType() != RIGHT_CURLY) {
                 if (Parsing.var.isValid(builder)) {
                     isValid = Parsing.var.parse(builder);
                 } else if (Parsing.word.isComposedString(builder.getTokenType())) {

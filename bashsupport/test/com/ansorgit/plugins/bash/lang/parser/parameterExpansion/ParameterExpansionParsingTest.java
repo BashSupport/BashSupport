@@ -48,7 +48,34 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_QMARK, RIGHT_CURLY);
 
         //{B:-B}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, RIGHT_CURLY);
+
+        //{$}
+        mockTest(expansionParser, LEFT_CURLY, DOLLAR, RIGHT_CURLY);
+
+        //{$:-x} means the pid with substitution operator
+        mockTest(expansionParser, LEFT_CURLY, DOLLAR, PARAM_EXPANSION_OP_COLON_MINUS, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testParseSubstitution() throws Exception {
+        //{B:-a b c}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+
+        //{B:+a b c}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_PLUS, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+
+        //{B:?a b c}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_QMARK, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+
+        //{B:=a b c}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_EQ, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testParseSubstitution2() throws Exception {
+        //{B:-${a}}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_CURLY);
     }
 
     @Test

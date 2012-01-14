@@ -60,5 +60,8 @@ public class IncludeCommandTest extends MockPsiTest {
 
         //source
         mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD);
+
+        //source=x
+        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
     }
 }

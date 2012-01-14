@@ -310,7 +310,8 @@ public class BashLexerTest {
         testTokenization("a%b", WORD);
         testTokenization("a%b}", WORD, RIGHT_CURLY);
         testTokenization("echo level%%[a-zA-Z]*", WORD, WHITESPACE, WORD);
-        testTokenization("tr [:upper:]", WORD, WHITESPACE, LEFT_SQUARE, WORD);
+        testTokenization("tr [:upper:]", WORD, WHITESPACE, WORD);
+        testTokenization("[!\"$2\"]", WORD, STRING_BEGIN, VARIABLE, STRING_END, WORD);
     }
 
     @Test
@@ -348,6 +349,8 @@ public class BashLexerTest {
         testTokenization("((1 == 1 ? 0 : 0))",
                 EXPR_ARITH, NUMBER, WHITESPACE, ARITH_EQ, WHITESPACE, NUMBER, WHITESPACE, ARITH_QMARK,
                 WHITESPACE, NUMBER, WHITESPACE, ARITH_COLON, WHITESPACE, NUMBER, _EXPR_ARITH);
+
+        testTokenization("a=(\na #this is a comment\nb)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, LINE_FEED, WORD, WHITESPACE, COMMENT, LINE_FEED, WORD, RIGHT_PAREN);
     }
 
     @Test
@@ -431,8 +434,8 @@ public class BashLexerTest {
     @Test
     public void testBracket() {
         testTokenization("[[ -f test.txt ]]", BRACKET_KEYWORD, COND_OP, WHITESPACE, WORD, _BRACKET_KEYWORD);
-        testTokenization(" ]]", WHITESPACE, RIGHT_SQUARE, RIGHT_SQUARE);
-        testTokenization("  ]]", WHITESPACE, WHITESPACE, RIGHT_SQUARE, RIGHT_SQUARE);
+        testTokenization(" ]]", WHITESPACE, WORD);
+        testTokenization("  ]]", WHITESPACE, WHITESPACE, WORD);
         testTokenization("[[  -f test.txt   ]]", BRACKET_KEYWORD, WHITESPACE, COND_OP, WHITESPACE, WORD, WHITESPACE, WHITESPACE, _BRACKET_KEYWORD);
         testTokenization("[[ !(a) ]]", BRACKET_KEYWORD, COND_OP_NOT, LEFT_PAREN, WORD, RIGHT_PAREN, _BRACKET_KEYWORD);
 
@@ -452,6 +455,8 @@ public class BashLexerTest {
 
         testTokenization("${a-x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, WORD, RIGHT_CURLY);
         testTokenization("${a:-x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, RIGHT_CURLY);
+
+        testTokenization("${a:?x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_QMARK, WORD, RIGHT_CURLY);
 
         testTokenization("${a+x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PLUS, WORD, RIGHT_CURLY);
         testTokenization("${a:+x}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_PLUS, WORD, RIGHT_CURLY);

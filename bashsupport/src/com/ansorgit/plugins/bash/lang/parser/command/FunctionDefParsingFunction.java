@@ -111,19 +111,25 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         //if we don't have one or more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
         if (!newlinesAtBegin && !isGroup) {
-            function.drop();
+            //function.drop();
+            //mark the definition header (i.e. the function name) as function definition, so resolving works as expected
+            function.done(BashElementTypes.FUNCTION_DEF_COMMAND);
 
             ParserUtil.errorToken(builder, "parser.unexpected.token");
-            return false;
+            return true;
         }
 
         //parse function body
         final PsiBuilder.Marker body = builder.mark();
         boolean parsed = Parsing.shellCommand.parse(builder);
         if (!parsed) {
+            //PsiBuilder.Marker beforeBody = body.precede();
+            //body.drop();
+            //beforeBody.drop();
+            function.doneBefore(FUNCTION_DEF_COMMAND, body);
             body.drop();
-            function.drop();
-            return false;
+
+            return true;
         }
 
         if (!isGroup && builder.getTokenType() == BashTokenTypes.SEMI) {
@@ -131,8 +137,8 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         }
 
         body.done(BashElementTypes.BLOCK_ELEMENT);
-
         function.done(BashElementTypes.FUNCTION_DEF_COMMAND);
+
         return true;
     }
 }

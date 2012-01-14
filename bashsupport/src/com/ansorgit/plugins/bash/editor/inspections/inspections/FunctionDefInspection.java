@@ -67,7 +67,7 @@ public class FunctionDefInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                if (isOnTheFly && !functionDef.hasCommandGroup()) {
+                if (isOnTheFly && !functionDef.hasCommandGroup() && functionDef.body() != null) {
                     holder.registerProblem(functionDef.body(), getShortName(), new FunctionBodyQuickfix(functionDef));
                 }
             }
