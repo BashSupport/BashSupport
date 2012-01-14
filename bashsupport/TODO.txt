@@ -39,8 +39,8 @@ Possible features:
     - Arithmetic expressions inspection: detect floating point operations
 - Bash console, provide bash support for windows.
 - Code formatting with its own configuration page
-- Intention to check for unused functions (needs index)
-- Intention to check for unused vars (needs index)
+    - Intention to check for unused functions (needs index)
+    - Intention to check for unused vars (needs index)
 - Inspection for external command if binary is there
 - Inspection for function call method params (possible?)
 - Intention/annotator to highlight builtin variables

@@ -1,3 +1,6 @@
+2012-01-14:
+ - Parser fixes for nested strings
+
 2012-01-12:
  - Parsing performance improved
  - Indexing of variable definitions, function definitions, script includes, reverse script includes and file names

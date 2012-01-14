@@ -220,31 +220,20 @@ public class BashLexerTest {
         testTokenization("a b \"a b \\\"\" \"a\" b",
                 WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD, WORD, STRING_END, WHITESPACE,
                 STRING_BEGIN, WORD, STRING_END, WHITESPACE, WORD);
-        testTokenization("\"a$\"", STRING_BEGIN, WORD, DOLLAR, STRING_END);
+        testTokenization("\"a$\"", STRING_BEGIN, WORD, STRING_END);
 
-        testTokenization("\"$(\"hey there\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
-        //        testTokenization("\"$(\"hey there\\\"\")\" \\\" \"$(\"hey there\")\" a",
-        //                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, STRING_END, STRING_BEGIN, WORD, STRING_END);
-        testTokenization("\"$(echo \\\"\\\")\"",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD,
-                WHITESPACE, WORD, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(echo \\\"\\\")\" a",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, WORD, RIGHT_PAREN, STRING_END,
-                WHITESPACE, WORD);
+        testTokenization("\"$(\"hey there\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(echo \\\"\\\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(echo \\\"\\\")\" a", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, STRING_END, WHITESPACE, WORD);
 
-        testTokenization("\"$(echo || echo)\"",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(echo && echo)\"",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(abc)\"",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(1)\"",
-                STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$((1))\"",
-                STRING_BEGIN, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH, STRING_END);
+        testTokenization("\"$(echo || echo)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(echo && echo)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(abc)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(1)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, INTEGER_LITERAL, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$((1))\"", STRING_BEGIN, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH, STRING_END);
 
         // "$("s/(/")" , the subshell command should be parsed as a word
-        testTokenization("\"$(\"s/(/\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(\"s/(/\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN, STRING_END);
 
         testTokenization("\\.", WORD);
         testTokenization("\\n", WORD);
@@ -305,10 +294,12 @@ public class BashLexerTest {
         testTokenization("\\!", WORD);
         //fixme: line continuation, check with spec
         //testTokenization("abc\\\nabc", WORD);
+    }
 
-        //subshells
-        testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,
-                RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+    @Test
+    public void testSubshellString() throws Exception {
+        testTokenization("\"$( )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+
         testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,
                 RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
     }
@@ -335,8 +326,11 @@ public class BashLexerTest {
         testTokenization(". /home/user/bashrc$a", WORD, WHITESPACE, WORD, VARIABLE);
         testTokenization(". x >& x", WORD, WHITESPACE, WORD, WHITESPACE, REDIRECT_GREATER_AMP, WHITESPACE, WORD);
 
+        testTokenization("''", STRING2);
         testTokenization("\"$('')\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING2, RIGHT_PAREN, STRING_END);
         testTokenization("\"$('(')\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING2, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$'(')\"", STRING_BEGIN, WORD, STRING_END);
     }
 
     @Test
@@ -489,8 +483,8 @@ public class BashLexerTest {
         testTokenization("esac;", WORD, SEMI);
 
         //"$(echo "123")"
-        testTokenization("\"$(echo 123)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(\"123\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(echo 123)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(\"123\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN,WORD, STRING_END, RIGHT_PAREN, STRING_END);
         //testTokenization("\"$( \"a\")\"", BashElementTypes.STRING_ELEMENT);
         //testTokenization("\"$( \"123\")\"", BashElementTypes.STRING_ELEMENT);
         //testTokenization("\"$(echo \"123\")\"", BashElementTypes.STRING_ELEMENT);
