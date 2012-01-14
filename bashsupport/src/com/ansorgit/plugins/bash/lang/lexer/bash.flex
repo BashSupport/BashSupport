@@ -171,8 +171,13 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /*  If in a case pattern */
 %state S_CASE_PATTERN
 
-/*  If in a arithmetic subshell */
+/*  If in a subshell */
 %state S_SUBSHELL
+
+/*  If in the start of a subshell pre expression, i.e. after DOLLAR of $( . The same rules apply as for S_SUBSHELL except that the first ( expression does not open up a new subshell expression
+    This is done by switching into the S_SUBSHELL state right after the first LEFT_PAREN token encountered.
+*/
+%state S_SUBSHELL_PREFIXED
 
 /*  If in an array reference, e.g. a[0]=x */
 %state S_ARRAY
@@ -346,7 +351,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION, S_SUBSHELL> {
   /* If a subshell expression is found, return DOLLAR and move before the bracket */
-  "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL); return DOLLAR; }
+  "$("/[^(]                     { yypushback(1); goToState(S_SUBSHELL_PREFIXED); return DOLLAR; }
 }
 
 /*** Arithmetic expressions *************/
@@ -445,8 +450,16 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {ArithWord}                   { return WORD; }
 }
 
+<S_SUBSHELL_PREFIXED> {
+  "("                           { backToPreviousState(); goToState(S_SUBSHELL); return LEFT_PAREN; }
+}
+
 <S_SUBSHELL> {
-  ")"                           { backToPreviousState(); return RIGHT_PAREN; }
+  "("                           { goToState(S_SUBSHELL); return LEFT_PAREN; }
+}
+
+<S_SUBSHELL> {
+  ")"                           { backToPreviousState(); if (string != null && string.isInSubshell()) {string.leaveSubshell();} return RIGHT_PAREN; }
 }
 
 <S_CASE> {
@@ -483,18 +496,30 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* string literals */
  <S_STRINGMODE> {
-  {EscapedChar}                 { return WORD; }
-
   \"                            { if (string.isNewAllowed()) {
-                                    string.enterSubstring(); return STRING_CHAR;
+                                    string.enterSubstring(); return STRING_BEGIN; //fixme
                                   } else if (string.isInSubstring()) {
                                     string.leaveSubstring(); return STRING_CHAR;
                                   } else {
-                                    backToPreviousState();
-                                    return STRING_END;
+                                    backToPreviousState(); return STRING_END;
                                   }
                                 }
 
+  {Variable}                  { return VARIABLE; }
+
+  /* Backquote expression inside of evaluated strings */
+  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+
+  "$(("                       { yypushback(2); return DOLLAR; }
+  "$"/"("                     { string.enterSubshell(); return DOLLAR; }
+  "("                         { if (string.isFreshSubshell()) { goToState(S_SUBSHELL); return LEFT_PAREN; } else return STRING_CHAR; }
+
+  {EscapedChar}               { return WORD; }
+  [^\"]                       { string.advanceToken(); return STRING_CHAR; }
+
+
+
+/*********
   "$(("                       { yypushback(2); return DOLLAR; }
   "$("                        { string.enterSubshell(); yypushback(1); return DOLLAR; }
 
@@ -505,9 +530,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                                 return STRING_CHAR;
                               }
-
-  /* Backquote expression */
-  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
   {Variable}                  { return VARIABLE; }
   "$"                         { return DOLLAR; }
@@ -546,7 +568,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   " "                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? WHITESPACE : STRING_CHAR; }
 
   [^\"]                       { string.advanceToken(); return STRING_CHAR; }
-}  
+************/
+}
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
   /* Bash 4 */
@@ -642,10 +665,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
-    <S_STRINGMODE> {
-        "$"\'{SingleCharacter}*\'     |
-        \'{SingleCharacter}*\'        { return STRING2; }
-    }
+    "$"\'{SingleCharacter}*\'     |
+    \'{SingleCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             { return LINE_FEED; }
