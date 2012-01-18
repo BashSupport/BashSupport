@@ -225,7 +225,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE> {
    /* The long followd-by match is necessary to have at least the same length as to global Word rule to make sure this rules matches */
    {AssignmentWord} / "[" {ArithExpr} "]"
-                                      { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
+                                      { goToState(S_ARITH_ARRAY_MODE); return ASSIGNMENT_WORD; }
 
    {AssignmentWord} / "=("|"+=("      { goToState(S_ASSIGNMENT_LIST); return ASSIGNMENT_WORD; }
    {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }

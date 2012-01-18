@@ -34,19 +34,24 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
-    //private static final Logger log = Logger.getInstance("#bash.BashTokenRemapper");
-    private final BashPsiBuilder builder;
     private static final TokenSet mappedToWord = TokenSet.create(
             ASSIGNMENT_WORD,
-            LEFT_SQUARE, BANG_TOKEN,
+            LEFT_SQUARE, RIGHT_SQUARE,
+            BANG_TOKEN,
             IF_KEYWORD, THEN_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD,
             WHILE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
-            IN_KEYWORD, FUNCTION_KEYWORD, CASE_KEYWORD, ESAC_KEYWORD, SELECT_KEYWORD,
-            UNTIL_KEYWORD, TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
-            EQ, AT);
+            IN_KEYWORD,
+            FUNCTION_KEYWORD,
+            CASE_KEYWORD, ESAC_KEYWORD,
+            SELECT_KEYWORD,
+            UNTIL_KEYWORD,
+            TIME_KEYWORD,
+            BRACKET_KEYWORD, _BRACKET_KEYWORD,
+            EQ,
+            AT);
 
+    private final BashPsiBuilder builder;
     private boolean remapShebangToComment = false;
-
 
     public BashTokenRemapper(final BashPsiBuilder builder) {
         this.builder = builder;

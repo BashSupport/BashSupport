@@ -1,3 +1,6 @@
+2012-01-18:
+ - Parser fix for "unset todo_list[$todo_id]"
+
 2012-01-14:
  - Parser fixes for nested strings
  - Improved support for substitution operators in parameter expansion, e.g. ${var:-value if var is null}

@@ -164,9 +164,13 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
                 } else if (mode == FileMode.auto()) {
                     return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 //ignore this
                 LOG.warn("Could not check the file type due to exception", e);
+
+                if (e instanceof Error) {
+                    throw (Error)e;
+                }
             }
         }
 

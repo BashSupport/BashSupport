@@ -312,6 +312,8 @@ public class BashLexerTest {
         testTokenization("echo level%%[a-zA-Z]*", WORD, WHITESPACE, WORD);
         testTokenization("tr [:upper:]", WORD, WHITESPACE, WORD);
         testTokenization("[!\"$2\"]", WORD, STRING_BEGIN, VARIABLE, STRING_END, WORD);
+
+        testTokenization("unset todo_list[$todo_id]", WORD, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE);
     }
 
     @Test
