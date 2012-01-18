@@ -19,6 +19,7 @@
     <name>BashSupport</name>
     <category>Custom Languages</category>
     <version>1.1beta4</version>
+
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg
@@ -42,8 +43,8 @@
        <b>Changes in version 1.1beta4:</b>
        <ul>
             <li>Fixed parsing of nested strings (regression in 1.1beta3)</li>
-            <li>Parser improvements</li>
             <li>Performance improvements</li>
+            <li>Parser improvements</li>
        </ul>
 
        <b>Changes in version 1.1beta3:</b>

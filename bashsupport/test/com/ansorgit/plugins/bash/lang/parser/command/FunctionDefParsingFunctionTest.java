@@ -36,6 +36,6 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
         //function a b {
         //echo
         //}
-        mockTestError(f, FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
+        mockTestSuccessWithErrors(f, FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
     }
 }

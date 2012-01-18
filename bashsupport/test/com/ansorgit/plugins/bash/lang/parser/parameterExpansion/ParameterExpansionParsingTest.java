@@ -60,16 +60,16 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testParseSubstitution() throws Exception {
         //{B:-a b c}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_MINUS, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_CURLY);
 
         //{B:+a b c}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_PLUS, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_PLUS, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_CURLY);
 
         //{B:?a b c}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_QMARK, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_QMARK, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_CURLY);
 
         //{B:=a b c}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_EQ, WORD, WHITESPACE, WORD, WHILE_KEYWORD, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON_EQ, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_CURLY);
     }
 
     @Test
