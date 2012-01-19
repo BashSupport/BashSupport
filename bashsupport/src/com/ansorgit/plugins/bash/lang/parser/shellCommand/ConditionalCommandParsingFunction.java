@@ -52,14 +52,14 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
      */
     @Override
     public boolean parse(BashPsiBuilder builder) {
-        IElementType token = builder.getTokenType(false);
+        IElementType token = builder.getTokenType();
         log.assertTrue(token == BRACKET_KEYWORD);
 
         PsiBuilder.Marker startMarker = builder.mark();
         builder.advanceLexer();
 
         boolean ok;
-        if (builder.getTokenType(false) == _BRACKET_KEYWORD) {
+        if (builder.getTokenType() == _BRACKET_KEYWORD) {
             builder.error("Empty expression is not allowed");
             ok = false;
         } else {

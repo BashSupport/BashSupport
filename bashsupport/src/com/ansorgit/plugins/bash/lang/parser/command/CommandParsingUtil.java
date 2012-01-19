@@ -107,7 +107,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
         return ok;
     }
-    
+
     public static boolean isAssignmentOrRedirect(BashPsiBuilder builder, Mode assignmentMode) {
         return isAssignment(builder, assignmentMode) || Parsing.redirection.isRedirect(builder);
     }
@@ -182,6 +182,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 break;
             }
             default:
+                assignment.drop();
                 throw new IllegalStateException("Invalid parsing mode found");
         }
 
@@ -207,7 +208,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             }
 
             if (hasAssignment) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
             }
 
             // now parse the assignment if it's available
@@ -266,7 +267,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
         PsiBuilder.Marker marker = builder.mark();
 
-        while (!builder.eof() && (builder.getTokenType() != RIGHT_PAREN)) {
+        while (!builder.eof() && (builder.getTokenType(true) != RIGHT_PAREN)) {
             //optional newlines at the beginning
             builder.eatOptionalNewlines();
 
@@ -300,12 +301,12 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             //optional newlines after the comma
             builder.eatOptionalNewlines(-1, true);
 
-            //if the next token is not whitespcae, we break the loop, cause we're at the last element
-            if (builder.getTokenType(true) == WHITESPACE) {
-                builder.advanceLexer(true);
-            } else {
+            //if the next token is not whitespace, we break the loop, cause we're at the last element
+            if (builder.getTokenType(true) != WHITESPACE) {
                 break;
             }
+
+            builder.advanceLexer();
         }
 
         if (!(ParserUtil.getTokenAndAdvance(builder) == RIGHT_PAREN)) {

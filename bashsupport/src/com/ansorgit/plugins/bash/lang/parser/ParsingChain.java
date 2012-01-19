@@ -54,8 +54,9 @@ public abstract class ParsingChain implements ParsingFunction {
         if (builder.eof()) return false;
 
         for (ParsingFunction f : parsingFunctions) {
-            if (f.isValid(builder))
+            if (f.isValid(builder)) {
                 return f.parse(builder);
+            }
         }
 
         return false;

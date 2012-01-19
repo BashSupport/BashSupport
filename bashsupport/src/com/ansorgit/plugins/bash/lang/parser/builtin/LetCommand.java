@@ -40,7 +40,7 @@ class LetCommand implements ParsingFunction, ParsingTool {
         boolean ok = false;
 
         while (builder.getTokenType(true) == WHITESPACE) {
-            builder.advanceLexer(true);
+            //builder.advanceLexer(true);
 
             ok = arithParser.parse(builder);
         }

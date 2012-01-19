@@ -39,19 +39,10 @@ import com.intellij.psi.tree.IElementType;
  */
 public class ProcessSubstitutionParsing implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
-        if (builder.getTokenType() == LESS_THAN || builder.getTokenType() == GREATER_THAN) {
-            PsiBuilder.Marker marker = builder.mark();
+        IElementType first = builder.rawLookup(0);
+        IElementType second = builder.rawLookup(1);
 
-            try {
-                builder.advanceLexer(true);
-
-                return builder.getTokenType(true) == LEFT_PAREN;
-            } finally {
-                marker.rollbackTo();
-            }
-        }
-
-        return false;
+        return (first == LESS_THAN || first == GREATER_THAN) && second == LEFT_PAREN;
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -65,7 +56,7 @@ public class ProcessSubstitutionParsing implements ParsingFunction {
         builder.advanceLexer(); // first token
 
         IElementType second = builder.getTokenType(true);
-        builder.advanceLexer(true);
+        builder.advanceLexer(); //second token (i.e. LEFT_PAREN)
 
         if (second != LEFT_PAREN) {
             marker.drop();

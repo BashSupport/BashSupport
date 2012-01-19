@@ -121,7 +121,6 @@ public class PipelineParsing implements ParsingTool {
 
     private boolean parsePipelineOrError(BashPsiBuilder builder, PsiBuilder.Marker marker, IElementType markerCommand) {
         if (!parsePipleline(builder, marker, markerCommand)) {
-            //ParserUtil.error(marker, "parser.pipeline.expected.pipeline");
             marker.drop();
             return false;
         }
@@ -155,14 +154,18 @@ public class PipelineParsing implements ParsingTool {
         }
 
         //successfully parse the command with optional piped commands
-        if (result && containsPipeline) {
+        if (!result) {
+            return false;
+        }
+
+        if (containsPipeline) {
             marker.done(markerCommand);
-        } else if (result) {
+        } else {
             //successful, but no pipeline
             marker.drop();
         }
 
-        return result;
+        return true;
     }
 
     boolean isTimespec(BashPsiBuilder builder) {

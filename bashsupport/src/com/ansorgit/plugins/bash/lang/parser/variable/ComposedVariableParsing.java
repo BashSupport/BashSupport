@@ -41,25 +41,19 @@ public class ComposedVariableParsing implements ParsingFunction {
     );
 
     public boolean isValid(BashPsiBuilder builder) {
-        if (!ParserUtil.hasNextTokens(builder, false, DOLLAR)) {
-            return false;
-        }
+        IElementType first = builder.rawLookup(0);
+        IElementType second = builder.rawLookup(1);
 
-        PsiBuilder.Marker marker = builder.mark();
-        try {
-            ParserUtil.getTokenAndAdvance(builder); //DOLLAR
-            return acceptedStarts.contains(builder.getTokenType(true));
-        } finally {
-            marker.rollbackTo();
-        }
+        return first == DOLLAR && acceptedStarts.contains(second);
     }
 
     public boolean parse(BashPsiBuilder builder) {
         final PsiBuilder.Marker varMarker = builder.mark();
-        builder.advanceLexer(true);
+        builder.advanceLexer(); //DOLAR token
 
         final IElementType nextToken = builder.getTokenType(true);
         if (nextToken == WHITESPACE) {
+            varMarker.drop();
             return false;
         }
 
@@ -68,7 +62,7 @@ public class ComposedVariableParsing implements ParsingFunction {
             Parsing.parameterExpansionParsing.parse(builder);
         } else if (Parsing.shellCommand.arithmeticParser.isValid(builder)) {
             Parsing.shellCommand.arithmeticParser.parse(builder);
-        } else if (nextToken == LEFT_PAREN) {
+        } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
             Parsing.shellCommand.subshellParser.parse(builder);
         } else {
             ParserUtil.error(varMarker, "parser.unexpected.token");

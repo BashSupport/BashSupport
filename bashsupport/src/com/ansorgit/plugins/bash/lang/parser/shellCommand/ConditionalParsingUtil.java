@@ -33,7 +33,7 @@ public class ConditionalParsingUtil {
 
                 //eat optional whitespace in front
                 if (builder.getTokenType(true) == BashTokenTypes.WHITESPACE) {
-                    builder.advanceLexer(true);
+                    builder.advanceLexer();
                 }
 
                 //parse the regex
@@ -53,8 +53,8 @@ public class ConditionalParsingUtil {
         int count = 0;
 
         //simple solution: read to the next whitespace, unless we are in [] brackets
-        while (!builder.eof() && !regExpEndTokens.contains(builder.getTokenType(true))) {
-            builder.advanceLexer(true);
+        while (!builder.eof() && !regExpEndTokens.contains(builder.rawLookup(0))) {
+            builder.advanceLexer();
             count++;
         }
 

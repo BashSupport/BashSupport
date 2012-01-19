@@ -57,16 +57,16 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         if (builder.getTokenType(true) == PARAM_EXPANSION_OP_EXCL) {
             //indirect variable reference
-            builder.advanceLexer(true);
+            builder.advanceLexer();
         }
 
         IElementType firstToken = builder.getTokenType(true);
         if (singleExpansionOperators.contains(firstToken)) {
-            builder.advanceLexer(true);
+            builder.advanceLexer();
             firstToken = builder.getTokenType(true);
 
             if (firstToken == RIGHT_CURLY) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
                 marker.done(PARAM_EXPANSION_ELEMENT);
                 return true;
             }
@@ -74,7 +74,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         //some tokens, like the length expansion '#' must not have a prefixes word character
         if (prefixlessExpansionsOperators.contains(firstToken)) {
-            builder.advanceLexer(true);
+            builder.advanceLexer();
             firstToken = builder.getTokenType(true);
 
             if (firstToken == WHITESPACE) {
@@ -98,7 +98,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
         //the first element is a word token, now check if it is a var use or var def token
 
         //eat the first token
-        builder.advanceLexer(true);
+        //fixme
+        builder.advanceLexer();
 
         boolean markedAsVar = false;
         boolean isValid = true;
@@ -144,7 +145,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 firstElementMarker.done(VAR_ELEMENT);
                 markedAsVar = true;
 
-                builder.advanceLexer(true);
+                builder.advanceLexer();
 
                 //eat all tokens until we reach the closing } bracket
                 readFurther = false;
@@ -178,12 +179,12 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
                 if (paramExpansionAssignmentOps.contains(operator)) {
                     firstElementMarker.done(VAR_DEF_ELEMENT);
-                    builder.advanceLexer(true);
+                    builder.advanceLexer();
                     markedAsVar = true;
                 } else if (paramExpansionOperators.contains(operator)) {
                     //unknown operator
                     firstElementMarker.done(VAR_ELEMENT);
-                    builder.advanceLexer(true);
+                    builder.advanceLexer();
                     markedAsVar = true;
                 } else {
                     //something else, e.g. indirect variable reference
@@ -227,9 +228,10 @@ public class ParameterExpansionParsing implements ParsingFunction {
         PsiBuilder.Marker marker = builder.mark();
 
         int count = 0;
+
         IElementType next = builder.getTokenType(true);
         while (validTokens.contains(next) || ParserUtil.isWordToken(next)) {
-            builder.advanceLexer(true);
+            builder.advanceLexer();
             count++;
 
             next = builder.getTokenType(true);

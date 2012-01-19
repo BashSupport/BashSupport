@@ -151,9 +151,14 @@ public class HereDocParsing implements ParsingTool {
         while (!builder.eof() && builder.getTokenType(true) != LINE_FEED) {
             //we have to do this because var.isValid does not preserver whitespace in all cases
             //we make sure that we rollback after the check
+            boolean isValidVariable;
+
             PsiBuilder.Marker whitespaceMarker = builder.mark();
-            boolean isValidVariable = Parsing.var.isValid(builder);
-            whitespaceMarker.rollbackTo();
+            try {
+                isValidVariable = Parsing.var.isValid(builder);
+            } finally {
+                whitespaceMarker.rollbackTo();
+            }
 
             if (isValidVariable) {
                 Parsing.var.parse(builder);
@@ -165,11 +170,11 @@ public class HereDocParsing implements ParsingTool {
 
             string.append(builder.getTokenText(true));
 
-            if (!isValidVariable) {
+            if (!isValidVariable && builder.getTokenType() != WHITESPACE) {
                 //if we had a valid variable on this line the variable parser already advanced
                 //the token stream just after the variable tokens, i.e. we do not need to advance further
                 //in case of variable parsing
-                builder.advanceLexer(true);
+                builder.advanceLexer();
             }
         }
 

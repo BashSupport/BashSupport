@@ -27,10 +27,10 @@ public class BashPsiBuilderTest extends MockPsiTest {
         BashPsiBuilder builder = new BashPsiBuilder(null, builderFor(Collections.<String>emptyList(), NUMBER, WHITESPACE, WORD, WHITESPACE, NUMBER), BashVersion.Bash_v4);
         Assert.assertEquals(NUMBER, builder.getTokenType());
 
-        builder.advanceLexer(true);
+        builder.advanceLexer();
         Assert.assertEquals(WHITESPACE, builder.getTokenType(true));
 
-        builder.advanceLexer(true);
+        builder.advanceLexer();
         Assert.assertEquals(WORD, builder.getTokenType(true));
 
         builder.advanceLexer();

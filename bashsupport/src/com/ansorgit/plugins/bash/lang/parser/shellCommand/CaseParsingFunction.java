@@ -211,9 +211,9 @@ public class CaseParsingFunction implements ParsingFunction {
         if (hasEndMarker) {
             builder.advanceLexer();
 
-            IElementType nextToken = builder.getTokenType(true);
+            IElementType nextToken = builder.rawLookup(0);
             if (builder.isBash4() && nextToken == AMP) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
             }
         }
 
