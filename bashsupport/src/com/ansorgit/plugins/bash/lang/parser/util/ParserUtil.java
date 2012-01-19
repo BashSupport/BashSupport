@@ -80,7 +80,14 @@ public class ParserUtil {
      * @return The current token.
      */
     public static IElementType getTokenAndAdvance(BashPsiBuilder builder) {
-        return getTokenAndAdvance(builder, false);
+        IElementType tokenType = builder.getTokenType();
+
+        //no EOF
+        if (tokenType != null) {
+            builder.advanceLexer();
+        }
+
+        return tokenType;
     }
 
     /**

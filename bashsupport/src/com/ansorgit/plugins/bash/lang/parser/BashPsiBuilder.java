@@ -47,7 +47,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
-    private boolean whitespaceEnabled = false;
+    private volatile boolean whitespaceEnabled = false;
     private Project project;
 
     public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
@@ -74,16 +74,16 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @return True if the operation has been successful.
      */
-    public boolean enableWhitespace() {
-        //optimization to avoid as many reflective calls as possible
-        if (!whitespaceEnabled) {
-            whitespaceEnabled = true;
-
-            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
-        }
-
-        return true;
-    }
+//    private boolean enableWhitespace() {
+//        //optimization to avoid as many reflective calls as possible
+//        if (!whitespaceEnabled) {
+//            whitespaceEnabled = true;
+//
+//            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
+//        }
+//
+//        return true;
+//    }
 
     /**
      * A hack to disable whitespace parsing.
@@ -93,33 +93,22 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @return True if successful.
      */
-    public boolean disableWhitespace() {
-        //optimization to avoid as many reflective calls as possible
-        if (whitespaceEnabled) {
-            whitespaceEnabled = false;
-
-            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
-        }
-
-        return true;
-    }
+//    private boolean disableWhitespace() {
+//        //optimization to avoid as many reflective calls as possible
+//        if (whitespaceEnabled) {
+//            whitespaceEnabled = false;
+//
+//            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
+//        }
+//
+//        return true;
+//    }
 
     /**
-     * Overloaded method to provide whitespac tokens on demand.
      *
-     * @param withWhitespace If true whitespace tokens are not ignored. In this case the enableWhitespace hack is used to enable them.
-     * @param remapping      If true the returned token is remapped
-     * @return The token for the given conditions.
+     * @param enableWhitespace
+     * @return
      */
-    @Nullable
-    public IElementType getTokenType(boolean withWhitespace, boolean remapping) {
-        if (!remapping) {
-            return getTokenType(withWhitespace);
-        }
-
-        return getRemappingTokenType(withWhitespace);
-    }
-
     @Nullable
     public String getTokenText(boolean enableWhitespace) {
         if (enableWhitespace && rawLookup(0) == BashTokenTypes.WHITESPACE) {
@@ -142,31 +131,25 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
 
     @Nullable
     public IElementType getTokenType(boolean withWhitespace) {
-        if (!withWhitespace) {
-            return getTokenType();
-        }
-
-        return rawLookup(0);
+        return withWhitespace ? rawLookup(0) : getTokenType();
     }
 
     @Nullable
-    public IElementType getRemappingTokenType(boolean withWhitespace) {
-        getParsingState().enterSimpleCommand();
+    public IElementType getRemappingTokenType() {
         try {
-            if (!withWhitespace) {
-                return getTokenType();
-            }
+            getParsingState().enterSimpleCommand();
 
-            return rawLookup(0);
+            return getTokenType();
         } finally {
             getParsingState().leaveSimpleCommand();
         }
     }
 
+    /*
     public void advanceLexer(boolean useWhitespace) {
         if (useWhitespace) {
-            enableWhitespace();
             try {
+                enableWhitespace();
                 advanceLexer();
             } finally {
                 disableWhitespace();
@@ -174,7 +157,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         } else {
             super.advanceLexer();
         }
-    }
+    } */
 
     /**
      * Eats all the following newline tokens.

@@ -50,7 +50,8 @@ public class WordParsing implements ParsingTool {
     }
 
     public boolean isWordToken(final BashPsiBuilder builder, final boolean enableRemapping) {
-        final IElementType tokenType = builder.getTokenType(false, enableRemapping);
+        final IElementType tokenType = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
+
         boolean isWord = isComposedString(tokenType)
                 || Parsing.braceExpansionParsing.isValid(builder)
                 || BashTokenTypes.stringLiterals.contains(tokenType)
@@ -120,7 +121,7 @@ public class WordParsing implements ParsingTool {
                 break;
             }
 
-            final IElementType nextToken = builder.getTokenType(false, enableRemapping);
+            final IElementType nextToken = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
 
             if (nextToken == STRING_BEGIN) {
                 isOk = parseComposedString(builder);
@@ -129,7 +130,7 @@ public class WordParsing implements ParsingTool {
                 isOk = Parsing.braceExpansionParsing.parse(builder);
                 processedTokens++;
             } else if (accept.contains(nextToken) || stringLiterals.contains(nextToken)) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
                 processedTokens++;
             } else if (Parsing.var.isValid(builder)) {
                 isOk = Parsing.var.parse(builder);
@@ -178,7 +179,7 @@ public class WordParsing implements ParsingTool {
         PsiBuilder.Marker stringStart = builder.mark();
 
         //eat STRING_START
-        builder.advanceLexer(true);
+        builder.advanceLexer();
 
         while (builder.getTokenType() != STRING_END) {
             boolean ok = false;

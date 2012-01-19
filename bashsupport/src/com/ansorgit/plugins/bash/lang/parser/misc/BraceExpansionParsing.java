@@ -47,7 +47,7 @@ public class BraceExpansionParsing implements ParsingFunction {
 
         //read in the prefix
         while (validExpansionTokens.contains(builder.getTokenType(true))) {
-            builder.advanceLexer(true);
+            builder.advanceLexer();
         }
 
         //don't accept a prefix without the actual expansion block
@@ -57,7 +57,7 @@ public class BraceExpansionParsing implements ParsingFunction {
         }
 
         while (builder.getTokenType(true) == LEFT_CURLY) {
-            builder.advanceLexer(true); //eat the left curly
+            builder.advanceLexer(); //eat the left curly
 
             boolean isExpansion = builder.getTokenType(true) != WHITESPACE;
             if (!isExpansion) {
@@ -68,9 +68,9 @@ public class BraceExpansionParsing implements ParsingFunction {
             //fixme check if the last char before the right curly bracket is a whitespace or not
             //make sure we don't run into endless parsing or don't stop if there's a missing right curly bracket
             while (validExpansionTokens.contains(builder.getTokenType(true))) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
                 if (builder.getTokenType(true) == COMMA) {
-                    builder.advanceLexer(true);
+                    builder.advanceLexer();
                 }
             }
 
@@ -80,11 +80,11 @@ public class BraceExpansionParsing implements ParsingFunction {
             }
 
             //eat the right curly bracket
-            builder.advanceLexer(true);
+            builder.advanceLexer();
 
             //now read in all static suffix text
             while (builder.getTokenType(true) == WORD) {
-                builder.advanceLexer(true);
+                builder.advanceLexer();
             }
         }
 

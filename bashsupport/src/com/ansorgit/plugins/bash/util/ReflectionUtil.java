@@ -38,8 +38,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @author Joachim Ansorg
  */
 public class ReflectionUtil {
-    private static Logger log = Logger.getInstance("#bash.ReflectionUtil");
-
+    private static final Logger log = Logger.getInstance("#bash.ReflectionUtil");
     private static final Map<Pair<Class<?>, String>, Field> fieldCache = new ConcurrentHashMap<Pair<Class<?>, String>, Field>();
 
     /**
@@ -50,7 +49,7 @@ public class ReflectionUtil {
      * @param value The value to set to
      * @return True if the action was successful, false if was not successful.
      */
-    public static boolean setShort(@NotNull final Object owner, final String name, final short value) {
+    public synchronized static boolean setShort(@NotNull final Object owner, final String name, final short value) {
         checkArgument(StringUtil.isNotEmpty(name));
 
         final Class<?> aClass = owner.getClass();
@@ -72,7 +71,7 @@ public class ReflectionUtil {
 
             result = true;
         } catch (Exception e) {
-            log.warn("Illegal access", e);
+            log.error("Illegal access to property " + name, e);
         }
 
         return result;

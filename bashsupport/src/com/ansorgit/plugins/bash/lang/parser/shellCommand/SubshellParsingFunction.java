@@ -48,7 +48,7 @@ public class SubshellParsingFunction implements ParsingFunction {
             subshell:       '(' compound_list ')'
          */
 
-        log.assertTrue(builder.getTokenType() == BashTokenTypes.LEFT_PAREN);
+        log.assertTrue(isValid(builder));
 
         final PsiBuilder.Marker subshell = builder.mark();
 

@@ -58,7 +58,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                     ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
                     ok = true;
                 } else if (arithLiterals.contains(tokenType)) {
-                    builder.advanceLexer(true);
+                    builder.advanceLexer();
                     ok = true;
                 } else if (Parsing.var.isValid(builder)) {
                     //fixme whitespace on?

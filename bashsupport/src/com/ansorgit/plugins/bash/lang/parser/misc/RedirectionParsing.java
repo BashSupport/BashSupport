@@ -94,8 +94,8 @@ public class RedirectionParsing implements ParsingTool {
         //after a int as first token no whitespace may appear
         IElementType secondToken;
         if (firstIsInt) {
-            builder.advanceLexer(true); //first token
-            secondToken = builder.getTokenType(true);
+            builder.advanceLexer(); //first token
+            secondToken = builder.rawLookup(0);
         } else {
             //same as firstToken because there is no number before the redirect token
             secondToken = firstToken;
@@ -129,6 +129,7 @@ public class RedirectionParsing implements ParsingTool {
 
             if (!handleHereDocRedirect(builder)) {
                 //marker.error("Expected heredoc marker");
+                marker.drop();
                 return false;
             }
 
