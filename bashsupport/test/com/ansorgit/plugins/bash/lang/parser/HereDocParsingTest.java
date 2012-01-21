@@ -87,6 +87,13 @@ public class HereDocParsingTest extends MockPsiTest {
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$a", "\n", "END"),
                 WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, VARIABLE, LINE_FEED, WORD);
+
+        //a << END
+        //${a}
+        //END
+        mockTest(hereDoc,
+                Lists.newArrayList("a", "<<", "END", "\n", "$", "{", "a", "}", "\n", "END"),
+                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, LINE_FEED, WORD);
     }
 
     @Test

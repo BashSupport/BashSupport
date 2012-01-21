@@ -173,6 +173,8 @@ public class BashLexerTest {
         testTokenization("$((1+---45))", DOLLAR, EXPR_ARITH, NUMBER, ARITH_PLUS, ARITH_MINUS, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
 
         testTokenization("$(((1 << 10)))", DOLLAR, EXPR_ARITH, LEFT_PAREN, NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+
+        testTokenization("$((1 < \"1\"))", DOLLAR, EXPR_ARITH, NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END, _EXPR_ARITH);
     }
 
     @Test
@@ -497,7 +499,7 @@ public class BashLexerTest {
 
         //"$(echo "123")"
         testTokenization("\"$(echo 123)\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN, STRING_END);
-        testTokenization("\"$(\"123\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN,WORD, STRING_END, RIGHT_PAREN, STRING_END);
+        testTokenization("\"$(\"123\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN, STRING_END);
         //testTokenization("\"$( \"a\")\"", BashElementTypes.STRING_ELEMENT);
         //testTokenization("\"$( \"123\")\"", BashElementTypes.STRING_ELEMENT);
         //testTokenization("\"$(echo \"123\")\"", BashElementTypes.STRING_ELEMENT);
