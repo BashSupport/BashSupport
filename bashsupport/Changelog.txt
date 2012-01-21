@@ -4,6 +4,8 @@
  - Fixed exception in BashSearchScopes.moduleSearchScope
  - Improved here-doc parsing
  - Fixed parsing of string and subexpressions in arithmetic expressions
+ - Fixed parsing of [ ] conditional expression
+ - Enabled debug mode for beta releases
 
 2012-01-18:
  - Parser fix for "unset todo_list[$todo_id]"

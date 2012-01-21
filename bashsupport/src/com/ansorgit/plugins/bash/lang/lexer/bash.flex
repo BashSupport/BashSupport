@@ -97,6 +97,9 @@ import com.intellij.util.containers.Stack;
   boolean paramExpansionHash = false;
   boolean paramExpansionWord = false;
   boolean paramExpansionOther = false;
+
+  //conditional expressions
+  private boolean emptyConditionalCommand = false;
 %}
 
 /***** Custom user code *****/
@@ -204,7 +207,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
-  "[ "                          { goToState(S_TEST); return EXPR_CONDITIONAL; }
+  "[ ]"                         { yypushback(1); goToState(S_TEST); emptyConditionalCommand = true; return EXPR_CONDITIONAL; }
+  "[ "                          { goToState(S_TEST); emptyConditionalCommand = false; return EXPR_CONDITIONAL; }
 
   "time"                        { return TIME_KEYWORD; }
 
@@ -287,7 +291,16 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_TEST> {
-  " ]"                         { backToPreviousState(); return _EXPR_CONDITIONAL; }
+  "]"                          { if (emptyConditionalCommand) {
+                                    emptyConditionalCommand = false;
+                                    backToPreviousState();
+                                    return _EXPR_CONDITIONAL;
+                                 } else {
+                                    emptyConditionalCommand = false;
+                                    return WORD;
+                                 }
+                               }
+  " ]"                         { backToPreviousState(); emptyConditionalCommand = false; return _EXPR_CONDITIONAL; }
 }
 
 <S_TEST, S_TEST_COMMAND> {

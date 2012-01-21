@@ -3,6 +3,7 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -25,6 +26,9 @@ public class ConditionalExpressionParsingFunctionTest extends MockPsiTest {
 
         //[ -f x ]
         mockTest(conditionalFunction, EXPR_CONDITIONAL, COND_OP, WHITESPACE, WORD, _EXPR_CONDITIONAL);
+
+        //[ ]
+        mockTest(conditionalFunction, EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
     }
 
     @Test
