@@ -50,6 +50,9 @@ public class ConditionalCommandParsingFunctionTest extends MockPsiTest {
         //[[ a =~ abc ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
 
+        //[[ $(break_request) =~ Denied ]]
+        mockTest(conditionalFunction, BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
+
         //[[ a =~ ..e*x ]]
         //mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);
 

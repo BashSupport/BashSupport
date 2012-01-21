@@ -47,7 +47,11 @@ public class BashLexerTest {
 
         testTokenization("$a$", VARIABLE, DOLLAR);
         testTokenization("$", DOLLAR);
-        //testTokenization("${?}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+        testTokenization("$-", VARIABLE);
+        testTokenization("$_", VARIABLE);
+        testTokenization("$@", VARIABLE);
+        testTokenization("$*", VARIABLE);
+        testTokenization("$?", VARIABLE);
 
         testTokenization("$(echo)", DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
         testTokenization("${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
@@ -265,6 +269,8 @@ public class BashLexerTest {
 
         testTokenization("$''", STRING2);
         testTokenization("$'abc'", STRING2);
+
+        testTokenization("\"(( $1 ))\"", STRING_BEGIN, WORD, VARIABLE, WORD, STRING_END);
 
         //multiline strings
         testTokenization("\"a\nb\nc\"", STRING_BEGIN, WORD, STRING_END);
