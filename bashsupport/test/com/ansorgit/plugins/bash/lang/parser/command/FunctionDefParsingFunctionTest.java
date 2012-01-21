@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.command;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class FunctionDefParsingFunctionTest extends MockPsiTest {
@@ -32,6 +33,7 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
     };
 
     @Test
+    @Ignore
     public void testFunctionDefError() throws Exception {
         //function a b {
         //echo

@@ -63,26 +63,11 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
             return WORD;
         }
 
-        if (builder.getParsingState().isInHereDoc() && remappedInHereDoc(elementType)) {
-            return WORD;
-        }
-
         if (remapShebangToComment && elementType == SHEBANG) {
             return COMMENT;
         }
 
         return elementType;
-    }
-
-    private boolean remappedInHereDoc(IElementType elementType) {
-        boolean evaluating = builder.getHereDocData().isCurrentlyEvaluating();
-        //fixme we need to enable variable expansion here somehow if we're in avaluation mode
-        //i.e. ${a}
-        if ((elementType == WHITESPACE) || (evaluating && elementType == BashTokenTypes.VARIABLE)) {
-            return false;
-        }
-
-        return elementType != BashTokenTypes.LINE_FEED;
     }
 
     private boolean remappedToWord(final IElementType element) {

@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.util.ForwardingMarker;
 import com.ansorgit.plugins.bash.lang.parser.util.ForwardingPsiBuilder;
-import com.ansorgit.plugins.bash.util.ReflectionUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -43,11 +42,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
-    private static final short originalWhitespaceIndex = BashTokenTypes.WHITESPACE.getIndex();
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
-    private volatile boolean whitespaceEnabled = false;
     private Project project;
 
     public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
@@ -58,51 +55,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
         this.tokenRemapper = new BashTokenRemapper(this);
         setTokenTypeRemapper(tokenRemapper);
     }
-
-    /**
-     * A hack to let whitespace tokens be delivered by the builder on demand.
-     * It changes the internal, unique index of the token so it's not filtered out any more.
-     * <p/>
-     * IntelliJ filters out the whitespace tokens.
-     * <p/>
-     * This method relies on the implementation of an token type. It changes the
-     * internal index (which is used for equals, ...) to a value not available in other tokens.
-     * This way we can trick the parser to deliver the whitespace tokens to use.
-     * <p/>
-     * In some areas Bash is whitespace sensitive, so we need to access these tokens in certain
-     * places.
-     *
-     * @return True if the operation has been successful.
-     */
-//    private boolean enableWhitespace() {
-//        //optimization to avoid as many reflective calls as possible
-//        if (!whitespaceEnabled) {
-//            whitespaceEnabled = true;
-//
-//            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", (short) -1);
-//        }
-//
-//        return true;
-//    }
-
-    /**
-     * A hack to disable whitespace parsing.
-     * If restores the original value of the whitespace token.
-     * <p/>
-     * This reverses the effect done by enableWhitespace .
-     *
-     * @return True if successful.
-     */
-//    private boolean disableWhitespace() {
-//        //optimization to avoid as many reflective calls as possible
-//        if (whitespaceEnabled) {
-//            whitespaceEnabled = false;
-//
-//            return ReflectionUtil.setShort(BashTokenTypes.WHITESPACE, "myIndex", originalWhitespaceIndex);
-//        }
-//
-//        return true;
-//    }
 
     /**
      *
@@ -144,20 +96,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
             getParsingState().leaveSimpleCommand();
         }
     }
-
-    /*
-    public void advanceLexer(boolean useWhitespace) {
-        if (useWhitespace) {
-            try {
-                enableWhitespace();
-                advanceLexer();
-            } finally {
-                disableWhitespace();
-            }
-        } else {
-            super.advanceLexer();
-        }
-    } */
 
     /**
      * Eats all the following newline tokens.
@@ -219,14 +157,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
 
     public void remapShebangToComment() {
         tokenRemapper.setMapShebangToComment(true);
-    }
-
-    public void enterHereDoc() {
-        getParsingState().enterHereDoc();
-    }
-
-    public void leaveHereDoc() {
-        getParsingState().leaveHereDoc();
     }
 
     /**

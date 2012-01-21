@@ -52,4 +52,13 @@ public class ArithmeticExprParserTest extends MockPsiTest {
     public void testWhitespace() throws Exception {
         mockTest(exprParser, NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, NUMBER);
     }
+
+    @Test
+    public void testComplexExpressions() throws Exception {
+        //1 < "x"
+        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END);
+
+        //1 < $(a)
+        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+    }
 }

@@ -38,17 +38,7 @@ public class HereDocParsing implements ParsingTool {
             return false;
         }
 
-        try {
-            builder.enterHereDoc();
-
-            if (!doParsing(builder)) {
-                return false;
-            }
-        } finally {
-            builder.leaveHereDoc();
-        }
-
-        return true;
+        return doParsing(builder);
     }
 
     private boolean doParsing(BashPsiBuilder builder) {
@@ -62,6 +52,7 @@ public class HereDocParsing implements ParsingTool {
 
             boolean foundPrefixedEnd = false;
             boolean foundExactEnd = false;
+
             Pair<String, BashSmartMarker> line = readLine(builder);
 
             int readLines = 1;
@@ -141,15 +132,15 @@ public class HereDocParsing implements ParsingTool {
             return null;
         }
 
-        //fixme buggy: Doesn't work with different whitespace
         StringBuilder string = new StringBuilder();
 
         PsiBuilder.Marker lineMarker = builder.mark();
 
         builder.eatOptionalNewlines(-1, true);
 
+        PsiBuilder.Marker elementMarker = builder.mark();
         while (!builder.eof() && builder.getTokenType(true) != LINE_FEED) {
-            //we have to do this because var.isValid does not preserver whitespace in all cases
+            //we have to do this because var.isValid does not preservere whitespace in all cases
             //we make sure that we rollback after the check
             boolean isValidVariable;
 
@@ -161,7 +152,12 @@ public class HereDocParsing implements ParsingTool {
             }
 
             if (isValidVariable) {
+                //collapse all elements before into a WORD token
+                elementMarker.collapse(WORD);
+
                 Parsing.var.parse(builder);
+
+                elementMarker = builder.mark();
             }
 
             if (string.length() > 0) { //isEmpty is JDK6
@@ -177,6 +173,7 @@ public class HereDocParsing implements ParsingTool {
                 builder.advanceLexer();
             }
         }
+        elementMarker.collapse(WORD);
 
         return Pair.create(string.toString(), new BashSmartMarker(lineMarker));
     }
