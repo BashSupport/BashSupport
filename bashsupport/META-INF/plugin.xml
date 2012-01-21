@@ -40,6 +40,13 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta5:</b>
+       <ul>
+            <li>Parser fixes</li>
+            <li>Enabled debug mode for beta releases to get better catch parsing exceptions</li>
+            <li>Fixed several parsing exceptions</li>
+       </ul>
+
        <b>Changes in version 1.1beta4:</b>
        <ul>
             <li>Fixed parsing of nested strings (regression in 1.1beta3)</li>
