@@ -35,13 +35,18 @@ import com.intellij.psi.tree.TokenSet;
  * User: jansorg
  * Date: 03.12.10
  * Time: 19:40
- *
+ * <p/>
  * fixme rewrite this parsing function, it doesn't support all cases yet is too complicated to maintain
  */
 public class ParameterExpansionParsing implements ParsingFunction {
-    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN), paramExpansionOperators);
+    private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN,
+            LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN), paramExpansionOperators);
+
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
-    private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_QMARK);
+
+    private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
+            PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_STAR, NUMBER);
+
     private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS, PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
     public boolean isValid(BashPsiBuilder builder) {
@@ -51,26 +56,23 @@ public class ParameterExpansionParsing implements ParsingFunction {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
 
-        ParserUtil.getTokenAndAdvance(builder);
+        ParserUtil.getTokenAndAdvance(builder); //opening { bracket
 
-        //fixme check token type, only certain tokens are allowed
+        if (singleExpansionOperators.contains(builder.rawLookup(0)) && builder.rawLookup(1) == RIGHT_CURLY) {
+            //fixme handle variable marking, i.e. $- etc.
+            ParserUtil.getTokenAndAdvance(builder); //the single value token
+            ParserUtil.getTokenAndAdvance(builder); //the closing }
+            marker.done(PARAM_EXPANSION_ELEMENT);
+            return true;
+        }
 
         if (builder.getTokenType(true) == PARAM_EXPANSION_OP_EXCL) {
             //indirect variable reference
             builder.advanceLexer();
         }
 
+        //fixme check token type, only certain tokens are allowed
         IElementType firstToken = builder.getTokenType(true);
-        if (singleExpansionOperators.contains(firstToken)) {
-            builder.advanceLexer();
-            firstToken = builder.getTokenType(true);
-
-            if (firstToken == RIGHT_CURLY) {
-                builder.advanceLexer();
-                marker.done(PARAM_EXPANSION_ELEMENT);
-                return true;
-            }
-        }
 
         //some tokens, like the length expansion '#' must not have a prefixes word character
         if (prefixlessExpansionsOperators.contains(firstToken)) {

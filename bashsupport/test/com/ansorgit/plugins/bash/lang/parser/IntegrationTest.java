@@ -647,4 +647,16 @@ public class IntegrationTest extends MockPsiTest {
         //$[10/${num}]
         mockTest(fileParsingTest, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH_SQUARE);
     }
+
+    @Test
+    public void testSubshell() throws Exception {
+        //classes=("" "")
+        mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, LEFT_PAREN, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END, RIGHT_PAREN);
+    }
+
+    @Test
+    public void testSpecialVars() throws Exception {
+        //echo $-
+        //mockTest(fileParsingTest, WORD, WHITESPACE, DOLLAR, );
+    }
 }

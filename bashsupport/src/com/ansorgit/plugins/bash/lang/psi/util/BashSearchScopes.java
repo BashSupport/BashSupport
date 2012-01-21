@@ -17,7 +17,6 @@ import java.util.Collections;
  */
 public class BashSearchScopes {
     private BashSearchScopes() {
-
     }
 
     public static GlobalSearchScope moduleScope(PsiFile file) {
@@ -27,6 +26,10 @@ public class BashSearchScopes {
         }
 
         Module module = ProjectRootManager.getInstance(file.getProject()).getFileIndex().getModuleForFile(virtualFile);
+        if (module == null) {
+            return GlobalSearchScope.fileScope(file);
+        }
+
         return GlobalSearchScope.moduleScope(module);
     }
 

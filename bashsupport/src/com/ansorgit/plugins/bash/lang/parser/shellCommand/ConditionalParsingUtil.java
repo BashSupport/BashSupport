@@ -33,7 +33,7 @@ public class ConditionalParsingUtil {
 
                 //eat optional whitespace in front
                 if (builder.getTokenType(true) == BashTokenTypes.WHITESPACE) {
-                    builder.advanceLexer();
+                    //builder.advanceLexer();
                 }
 
                 //parse the regex

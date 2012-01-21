@@ -1,3 +1,8 @@
+2012-01-21:
+ - Lexer fixes
+ - Parser fixes
+ - Fixed exception in BashSearchScopes.moduleSearchScope
+
 2012-01-18:
  - Parser fix for "unset todo_list[$todo_id]"
 

@@ -85,6 +85,8 @@ import com.intellij.util.containers.Stack;
   //discern between a simple ( and the start of a new subexpression
   private boolean expectArithExpression = false;
 
+  private boolean startNewArithExpression = false;
+
   //Help data to parse (nested) strings.
   private final StringParsingState string = new StringParsingState();
 
@@ -134,7 +136,7 @@ AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
-Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*"
+Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*" | "$-" | "$_"
 
 ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 
@@ -372,8 +374,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
   "))"                          { if (openParenths > 0) {
-                                    openParenths--; yypushback(1); return RIGHT_PAREN;}
-                                  else {
+                                    openParenths--;
+                                    yypushback(1);
+                                    return RIGHT_PAREN;
+                                  } else {
                                     string.advanceToken();
                                     backToPreviousState();
                                     return _EXPR_ARITH;
@@ -382,10 +386,13 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ")"                           { openParenths--; return RIGHT_PAREN; }
 
-  "$(("                         { yypushback(2); expectArithExpression = true; return DOLLAR; }
+  "$(("                         { yypushback(2); expectArithExpression = true; startNewArithExpression = true; return DOLLAR; }
   "(("                          { if (expectArithExpression) {
                                     expectArithExpression = false;
-                                    goToState(S_ARITH);
+                                    if (startNewArithExpression) {
+                                        goToState(S_ARITH);
+                                    }
+
                                     return EXPR_ARITH;
                                   } else {
                                     yypushback(1);
@@ -515,65 +522,12 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   /* Backquote expression inside of evaluated strings */
   `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
-  "$(("                       { yypushback(2); return DOLLAR; }
+  "$(("                       { yypushback(2); expectArithExpression = true; startNewArithExpression = false; goToState(S_ARITH); return DOLLAR; }
   "$"/"("                     { string.enterSubshell(); return DOLLAR; }
   "("                         { if (string.isFreshSubshell()) { goToState(S_SUBSHELL); return LEFT_PAREN; } else return STRING_CHAR; }
 
   {EscapedChar}               { return WORD; }
   [^\"]                       { string.advanceToken(); return STRING_CHAR; }
-
-
-
-/*********
-  "$(("                       { yypushback(2); return DOLLAR; }
-  "$("                        { string.enterSubshell(); yypushback(1); return DOLLAR; }
-
-  ")"                         { if (string.isInSubshell() && !string.isInSubstring()) {
-                                      string.leaveSubshell();
-                                      return RIGHT_PAREN;
-                                }
-
-                                return STRING_CHAR;
-                              }
-
-  {Variable}                  { return VARIABLE; }
-  "$"                         { return DOLLAR; }
-
-
-  "("                        { if (string.isInSubshell() && !string.isInSubstring()) {
-                                    if (!string.isFreshSubshell()) string.enterSubshellParenth();
-                                    string.advanceToken();
-                                    return LEFT_PAREN;
-                                }
-                                else {
-                                    string.advanceToken();
-                                    return STRING_CHAR;
-                                }
-                              }
-
-
- "|&"                         { string.advanceToken();
-                                if (isBash4) {
-                                    return (string.isInSubshell() && !string.isInSubstring()) ? PIPE_AMP : WORD;
-                                } else {
-                                    yypushback(1);
-                                    return (string.isInSubshell() && !string.isInSubstring()) ? PIPE : WORD;
-                                }
-                              }
-
-  "|"                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? PIPE : STRING_CHAR; }
-
-  "||"                        { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? OR_OR : WORD; }
-
-  "&&"                        { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? AND_AND : WORD; }
-
-
-  "{"                         { string.advanceToken(); return LEFT_CURLY; }
-
-  " "                         { string.advanceToken(); return (string.isInSubshell() && !string.isInSubstring()) ? WHITESPACE : STRING_CHAR; }
-
-  [^\"]                       { string.advanceToken(); return STRING_CHAR; }
-************/
 }
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
@@ -707,13 +661,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
 
-    <S_STRINGMODE> {
-      /* Arithmetic expression */
-        "(("                         { goToState(S_ARITH); return EXPR_ARITH; }
+    /* Arithmetic expression */
+    "(("                          { goToState(S_ARITH); return EXPR_ARITH; }
 
-      /** Variables */
-        {Variable}                    { return VARIABLE; }
-    }
+    {Variable}                    { return VARIABLE; }
 
     "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
 
