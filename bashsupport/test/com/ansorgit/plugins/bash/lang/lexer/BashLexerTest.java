@@ -258,6 +258,8 @@ public class BashLexerTest {
 
         testTokenization("echo level%%[a-zA-Z]*", WORD, WHITESPACE, WORD);
         testTokenization("[ \\${a} ]", EXPR_CONDITIONAL, WORD, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_CONDITIONAL);
+        testTokenization("[  ]", EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
+        testTokenization("[ ]", EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
         testTokenization("[ a  ]", EXPR_CONDITIONAL, WORD, WHITESPACE, _EXPR_CONDITIONAL);
         testTokenization("[ a | b ]", EXPR_CONDITIONAL, WORD, WHITESPACE, PIPE, WHITESPACE, WORD, _EXPR_CONDITIONAL);
         testTokenization("[[ a || b ]]", BRACKET_KEYWORD, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, _BRACKET_KEYWORD);
