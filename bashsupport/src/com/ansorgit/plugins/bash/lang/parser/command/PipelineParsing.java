@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser.command;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -33,6 +32,12 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class PipelineParsing implements ParsingTool {
+    private enum ParseState {
+        OK_PIPELINE,
+        OK_NO_PIPELINE,
+        ERROR,
+    }
+
     public boolean isPipelineCommand(BashPsiBuilder builder) {
         final PsiBuilder.Marker start = builder.mark();
         try {
@@ -79,7 +84,7 @@ public class PipelineParsing implements ParsingTool {
     */
 
     public boolean parsePipelineCommand(BashPsiBuilder builder) {
-        final BashSmartMarker pipelineCommandMarker = new BashSmartMarker(builder.mark());
+        PsiBuilder.Marker pipelineCommandMarker = builder.mark();
 
         boolean hasBang = false;
 
@@ -89,83 +94,64 @@ public class PipelineParsing implements ParsingTool {
             hasBang = true;
         }
 
-        final boolean hasTimespec = parseOptionalTimespec(builder);
+        parseOptionalTimespec(builder);
 
         if (!hasBang && builder.getTokenType() == BANG_TOKEN) {
             builder.advanceLexer(); //after the bang token we found
-            hasBang = true;
-        }
-
-        //if we have a bang token a pipeline has to follow
-        if (!hasBang && !hasTimespec) {
-            return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
-        }
-
-        //after a bang there's always a pipeline
-        if (hasBang) {
-            return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
         }
 
         if (Parsing.list.isListTerminator(builder.getTokenType())) {
-            builder.advanceLexer(); //finished
-        } else {
-            return parsePipelineOrError(builder, pipelineCommandMarker, PIPELINE_COMMAND);
-        }
-
-        if (pipelineCommandMarker.isOpen()) {
+            builder.advanceLexer();
             pipelineCommandMarker.drop();
+            return true;
         }
 
-        return true;
-    }
-
-    private boolean parsePipelineOrError(BashPsiBuilder builder, PsiBuilder.Marker marker, IElementType markerCommand) {
-        if (!parsePipleline(builder, marker, markerCommand)) {
-            marker.drop();
-            return false;
+        ParseState parseState = parsePipleline(builder);
+        switch (parseState) {
+            case OK_PIPELINE:
+                pipelineCommandMarker.done(PIPELINE_COMMAND);
+                return true;
+            case OK_NO_PIPELINE:
+                pipelineCommandMarker.drop();
+                return true;
+            case ERROR:
+                pipelineCommandMarker.drop();
+                return false;
+            default:
+                throw new IllegalStateException("Invalie switch/case value");
         }
-
-        //if successful the marker has been already used up in the parsePipeline command
-        return true;
     }
 
     /**
      * Parses a pipeline command. Marks if at least one pipeline is found. Does NOT mark
      * if just one command or an error has been found.
      *
-     * @param builder       The builder to use
-     * @param marker        The marker around the command
-     * @param markerCommand The marker to use
+     * @param builder The builder to use
      * @return True if no errors occured
      */
-    boolean parsePipleline(BashPsiBuilder builder, PsiBuilder.Marker marker, IElementType markerCommand) {
+    ParseState parsePipleline(BashPsiBuilder builder) {
         if (!Parsing.command.parse(builder)) {
-            return false;
+            return ParseState.ERROR;
         }
 
-        final boolean containsPipeline = pipeTokens.contains(builder.getTokenType());
+        boolean withPipeline = pipeTokens.contains(builder.getTokenType());
+        if (!withPipeline) {
+            return ParseState.OK_NO_PIPELINE;
+        }
 
         boolean result = true;
         while (result && pipeTokens.contains(builder.getTokenType())) {
-            builder.advanceLexer();
+            builder.advanceLexer(); //eat the pipe token
             builder.eatOptionalNewlines();
 
             result = Parsing.command.parse(builder);
         }
 
-        //successfully parse the command with optional piped commands
         if (!result) {
-            return false;
+            return ParseState.ERROR;
         }
 
-        if (containsPipeline) {
-            marker.done(markerCommand);
-        } else {
-            //successful, but no pipeline
-            marker.drop();
-        }
-
-        return true;
+        return ParseState.OK_PIPELINE;
     }
 
     boolean isTimespec(BashPsiBuilder builder) {
