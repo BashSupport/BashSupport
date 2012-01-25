@@ -1,5 +1,6 @@
 2012-01-25:
- - Hopefully fixes "marker not closed" exception
+ - Hopefully fixed "marker not closed" exception
+ - Better error messages for empty loop bodies
 
 2012-01-21:
  - Lexer fixes

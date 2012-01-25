@@ -51,17 +51,16 @@ public class ShellLoopParsingTest extends MockPsiTest {
     @Test
     public void testWhileLoopSimple() {
         //while a; do b; done
-        mockTest(whileLoopTester,
-                WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD);
+        mockTest(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD);
     }
 
     @Test
     public void testWhileLoopError1() {
         //while a; do ; done
-        mockTestError(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTestFail(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
 
         //while ; do ; done
-        mockTestError(whileLoopTester, WHILE_KEYWORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTestFail(whileLoopTester, WHILE_KEYWORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
     }
 
     @Test

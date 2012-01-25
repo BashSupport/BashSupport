@@ -54,28 +54,29 @@ public class AbstractLoopParser implements ParsingTool, ParsingFunction {
             UNTIL compound_list DO compound_list DONE
          */
 
-        final PsiBuilder.Marker loop = builder.mark();
+        final PsiBuilder.Marker loopMarker = builder.mark();
         builder.advanceLexer();
 
         if (!Parsing.list.parseCompoundList(builder, false)) {
-            loop.drop();
+            loopMarker.drop();
             return false;
         }
 
-        if (!ParserUtil.checkNextOrError(builder, ShellCommandParsing.DO_KEYWORD, "parser.shell.expectedDo", loop)) {
+        if (!ParserUtil.checkNextOrError(builder, loopMarker, ShellCommandParsing.DO_KEYWORD, "parser.shell.expectedDo")) {
             return false;
         }
 
         if (!Parsing.list.parseCompoundList(builder, true)) {
-            loop.drop();
+            //builder.error("x");
+            loopMarker.drop();
             return false;
         }
 
-        if (!ParserUtil.checkNextOrError(builder, ShellCommandParsing.DONE_KEYWORD, "parser.shell.expectedDone", loop)) {
+        if (!ParserUtil.checkNextOrError(builder, loopMarker, ShellCommandParsing.DONE_KEYWORD, "parser.shell.expectedDone")) {
             return false;
         }
 
-        loop.done(commandMarker);
+        loopMarker.done(commandMarker);
         return true;
     }
 }
