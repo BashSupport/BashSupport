@@ -135,7 +135,7 @@ public class ListParsing implements ParsingTool {
 
         if (!Parsing.pipeline.parsePipelineCommand(builder)) {
             composedMarker.drop();
-            builder.error("Expected a command.");
+            //builder.error("Expected a command.");
             return false;
         }
 

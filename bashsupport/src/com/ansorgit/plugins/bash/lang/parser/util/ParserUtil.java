@@ -155,7 +155,7 @@ public class ParserUtil {
         return false;
     }
 
-    public static boolean checkNextOrError(BashPsiBuilder builder, IElementType expected, @PropertyKey(resourceBundle = BUNDLE) String message, PsiBuilder.Marker marker) {
+    public static boolean checkNextOrError(BashPsiBuilder builder, PsiBuilder.Marker marker, IElementType expected, @PropertyKey(resourceBundle = BUNDLE) String message) {
         final IElementType next = getTokenAndAdvance(builder);
         if (next != expected) {
             marker.drop();

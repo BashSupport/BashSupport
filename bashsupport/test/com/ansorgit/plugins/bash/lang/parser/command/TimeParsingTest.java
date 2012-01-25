@@ -33,7 +33,7 @@ public class TimeParsingTest extends MockPsiTest {
     private final MockFunction timeTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return Parsing.pipeline.parseTimespec(psi);
+            return Parsing.pipeline.parseTimespecPart(psi);
         }
     };
 
