@@ -1,3 +1,6 @@
+2012-01-25:
+ - Hopefully fixes "marker not closed" exception
+
 2012-01-21:
  - Lexer fixes
  - Parser fixes
