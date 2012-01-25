@@ -40,8 +40,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ForLoopParsingFunction");
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == FOR_KEYWORD
-                || isArithmeticForLoop(builder);
+        return builder.getTokenType() == FOR_KEYWORD || isArithmeticForLoop(builder);
     }
 
     private boolean isArithmeticForLoop(BashPsiBuilder builder) {

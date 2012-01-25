@@ -123,9 +123,6 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         final PsiBuilder.Marker body = builder.mark();
         boolean parsed = Parsing.shellCommand.parse(builder);
         if (!parsed) {
-            //PsiBuilder.Marker beforeBody = body.precede();
-            //body.drop();
-            //beforeBody.drop();
             function.doneBefore(FUNCTION_DEF_COMMAND, body);
             body.drop();
 

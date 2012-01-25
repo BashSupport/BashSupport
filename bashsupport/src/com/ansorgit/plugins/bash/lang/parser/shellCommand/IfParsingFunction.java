@@ -90,7 +90,6 @@ public class IfParsingFunction implements ParsingFunction {
             //after the else keyword now
 
             if (!Parsing.list.parseCompoundList(builder, true)) {
-                //ParserUtil.error(ifCommand, "parser.shell.if.expectedCommands");
                 ifCommand.drop();
                 return false;
             }
