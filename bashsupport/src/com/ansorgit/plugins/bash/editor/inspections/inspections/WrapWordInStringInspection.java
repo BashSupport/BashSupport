@@ -21,8 +21,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.WordToDoublequotedStringQuickfix;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.WordToSinglequotedStringQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
@@ -72,7 +74,13 @@ public class WrapWordInStringInspection extends AbstractBashInspection {
         return new BashVisitor() {
             @Override
             public void visitCombinedWord(BashWord word) {
-                if (word.isWrappable()) {
+                PsiElement parent = word.getParent();
+                if (parent instanceof BashString) {
+                    return;
+                }
+
+                boolean wrappable = word.isWrappable();
+                if (wrappable) {
                     problemsHolder.registerProblem(word, getShortName(), new WordToDoublequotedStringQuickfix(word));
                     problemsHolder.registerProblem(word, getShortName(), new WordToSinglequotedStringQuickfix(word));
                 }

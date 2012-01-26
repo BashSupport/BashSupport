@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +54,8 @@ public class BashWordImpl extends BashPsiElementImpl implements BashWord {
     }
 
     public boolean isWrappable() {
-        return findChildByType(nonWrappableChilds) == null;
+        PsiElement[] children = getChildren();
+        return children.length > 1 && findChildByType(nonWrappableChilds) == null;
     }
 
     public String getUnwrappedCharSequence() {
