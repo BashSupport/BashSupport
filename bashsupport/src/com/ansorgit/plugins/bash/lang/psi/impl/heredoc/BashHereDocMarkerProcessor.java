@@ -31,11 +31,11 @@ import com.intellij.psi.ResolveState;
  * Date: Jan 30, 2010
  * Time: 12:55:10 PM
  */
-class BasHereDocMarkerProcessor extends BashAbstractProcessor {
+class BashHereDocMarkerProcessor extends BashAbstractProcessor {
     private final String referencedName;
     private final Class<? extends BashPsiElement> otherEndsType;
 
-    public BasHereDocMarkerProcessor(String referencedName, Class<? extends BashPsiElement> otherEndsType) {
+    public BashHereDocMarkerProcessor(String referencedName, Class<? extends BashPsiElement> otherEndsType) {
         super(true);
 
         this.referencedName = referencedName;

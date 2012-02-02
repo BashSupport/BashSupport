@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang;
 
 import com.google.common.collect.Sets;
-import com.intellij.psi.PsiElement;
 
 import java.util.Collection;
 
@@ -88,10 +87,6 @@ public final class LanguageBuiltins {
 
     public static boolean isInternalCommand(String commandName) {
         return commands.contains(commandName);
-    }
-
-    public static boolean isInternalCommand(PsiElement element) {
-        return element != null && commands.contains(element.getText());
     }
 
     public static final Collection<String> commands = Sets.newHashSet(
