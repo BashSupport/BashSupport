@@ -100,7 +100,7 @@ abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashH
             return null;
         }
 
-        final ResolveProcessor processor = new BasHereDocMarkerProcessor(getReferencedName(), otherEndsType);
+        final ResolveProcessor processor = new BashHereDocMarkerProcessor(getReferencedName(), otherEndsType);
         if (expectLater) {
             PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
         } else {

@@ -37,6 +37,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -62,8 +63,8 @@ import java.util.Set;
  * @author Joachim Ansorg
  */
 public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<T> implements BashCommand, Keys {
-    private boolean isInternal;
-    private boolean isExternal;
+    private final static Key<Boolean> KEY_INTERNAL = new Key<Boolean>("internal");
+    private final static Key<Boolean> KEY_EXTERNAL = new Key<Boolean>("external");
 
     private PsiReference commandReference = new SelfReference();
 
@@ -74,27 +75,27 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     public BashCommandImpl(ASTNode astNode, String name) {
         super(astNode, name);
 
-        updateCache();
+        updateCache(astNode);
     }
 
     public BashCommandImpl(@NotNull T stub, @NotNull IStubElementType nodeType, @Nullable String name) {
         super(stub, nodeType, name);
-
-//        updateCache();
-    }
-
-    private void updateCache() {
-        PsiElement command = findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-
-        isInternal = command != null && LanguageBuiltins.isInternalCommand(command);
-        isExternal = command != null && !isInternal;
     }
 
     @Override
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        updateCache();
+        updateCache(getNode());
+    }
+
+    private void updateCache(ASTNode astNode) {
+        ASTNode command = astNode.findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+
+        boolean internal = command != null && LanguageBuiltins.isInternalCommand(command.getText());
+
+        KEY_INTERNAL.set(this, internal);
+        KEY_EXTERNAL.set(this, command != null && !internal);
     }
 
     public boolean isFunctionCall() {
@@ -112,7 +113,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     }
 
     public boolean isInternalCommand() {
-        return isInternal;
+        Boolean internal = KEY_INTERNAL.get(this);
+        return internal != null && internal;
     }
 
     public boolean isExternalCommand() {
@@ -120,7 +122,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         //we have to listen to psi changes in the file, though
         //otherwise we might still have isExternal set to true even if a
         //a target exists now, e.g. a Bash function with the right name
-        return isExternal && (internalResolve() == null);
+        Boolean external = KEY_EXTERNAL.get(this);
+        return external != null && external && (internalResolve() == null);
     }
 
     public boolean isPureAssignment() {
@@ -224,11 +227,11 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     public PsiElement resolve() {
         PsiElement result = internalResolve();
 
-        if (isExternal && result == null) {
+        if (isExternalCommand() && result == null) {
             return null;
         }
 
-        if (isInternal && result == null) {
+        if (isInternalCommand() && result == null) {
             return null;
         }
 
@@ -237,7 +240,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
 
     @NotNull
     public String getCanonicalText() {
-        return getReferencedName();
+        String referencedName = getReferencedName();
+        return referencedName != null ? referencedName : "";
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {

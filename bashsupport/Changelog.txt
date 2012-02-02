@@ -1,3 +1,9 @@
+2012-02-02:
+ - Possible fix for exception "StringIndexOutOfBoundsException"
+
+2012-01-26:
+ - Less inspection warnings
+
 2012-01-25:
  - Hopefully fixed "marker not closed" exception
  - Better error messages for empty loop bodies
