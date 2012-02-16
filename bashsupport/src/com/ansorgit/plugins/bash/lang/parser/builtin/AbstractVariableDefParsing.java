@@ -63,19 +63,19 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
     public final boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();
-        try {
-            //if accepted, read in command local var defs
-            boolean ok = true;
-            if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode)) {
-                ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode);
-            }
 
-            //return ok && (builder.getTokenType() == INTERNAL_COMMAND) && commandName.equals(builder.getTokenText());
-            String currentTokenText = builder.getTokenText();
-            return ok && LanguageBuiltins.isInternalCommand(currentTokenText) && commandName.equals(currentTokenText);
-        } finally {
-            start.rollbackTo();
+        //if accepted, read in command local var defs
+        boolean ok = true;
+        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode)) {
+            ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode);
         }
+
+        //return ok && (builder.getTokenType() == INTERNAL_COMMAND) && commandName.equals(builder.getTokenText());
+        String currentTokenText = builder.getTokenText();
+
+        start.rollbackTo();
+
+        return ok && LanguageBuiltins.isInternalCommand(currentTokenText) && commandName.equals(currentTokenText);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -138,22 +138,22 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
         final PsiBuilder.Marker start = builder.mark();
 
-        try {
-            if (builder.getTokenType() == BashTokenTypes.ASSIGNMENT_WORD) {
-                builder.advanceLexer();
-            } else if (Parsing.word.isWordToken(builder)) {
-                if (!Parsing.word.parseWord(builder)) {
-                    return false;
-                }
-            }
+        if (builder.getTokenType() == BashTokenTypes.ASSIGNMENT_WORD) {
+            builder.advanceLexer();
+        } else if (Parsing.word.isWordToken(builder)) {
+            if (!Parsing.word.parseWord(builder)) {
+                start.rollbackTo();
 
-            //EQ or whitespace expected
-            //IElementType next = builder.getTokenType(true);
-            //return (next == BashTokenTypes.EQ || next == BashTokenTypes.WHITESPACE);
-            //we either have a single word (no assignment) or a value assignment part
-            return true;
-        } finally {
-            start.rollbackTo();
+                return false;
+            }
         }
+
+        //EQ or whitespace expected
+        //IElementType next = builder.getTokenType(true);
+        //return (next == BashTokenTypes.EQ || next == BashTokenTypes.WHITESPACE);
+        //we either have a single word (no assignment) or a value assignment part
+
+        start.rollbackTo();
+        return true;
     }
 }

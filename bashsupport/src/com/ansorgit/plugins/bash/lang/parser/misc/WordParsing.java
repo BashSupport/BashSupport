@@ -67,13 +67,13 @@ public class WordParsing implements ParsingTool {
 
         if (tokenType == DOLLAR) {
             PsiBuilder.Marker marker = builder.mark();
-            try {
-                builder.advanceLexer();
-                IElementType next = builder.getTokenType();
-                return singleDollarFollowups.contains(next);
-            } finally {
-                marker.rollbackTo();
-            }
+            builder.advanceLexer();
+
+            IElementType next = builder.getTokenType();
+
+            marker.rollbackTo();
+
+            return singleDollarFollowups.contains(next);
         }
 
         return false;

@@ -57,7 +57,6 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
     }
 
     /**
-     *
      * @param enableWhitespace
      * @return
      */
@@ -262,6 +261,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
                 original.error(errorMessage);
             } else {
                 drop();
+
                 if (log.isDebugEnabled()) {
                     log.debug("Marker: suppressed error " + errorMessage);
                 }

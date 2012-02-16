@@ -59,11 +59,10 @@ public class BashSpacingProcessor extends BashVisitor {
 
             spacingProcessor.doInit();
             return spacingProcessor.getResult();
-        } catch (Exception e) {
-            LOG.error(e);
-            return null;
         } finally {
-            spacingProcessor.clear();
+            if (spacingProcessor != null) {
+                spacingProcessor.clear();
+            }
         }
     }
 

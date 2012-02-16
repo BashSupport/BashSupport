@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -131,11 +132,11 @@ public class ListParsing implements ParsingTool {
     public boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand) {
         //used only to mark composed commands which combine several commands, not for single commands
         //or a command list
-        PsiBuilder.Marker composedMarker = builder.mark();
+        PsiBuilder.Marker m = builder.mark();
+        BashSmartMarker composedMarker = new BashSmartMarker(m);
 
         if (!Parsing.pipeline.parsePipelineCommand(builder)) {
             composedMarker.drop();
-            //builder.error("Expected a command.");
             return false;
         }
 

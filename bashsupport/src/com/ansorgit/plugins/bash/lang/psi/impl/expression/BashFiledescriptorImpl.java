@@ -54,7 +54,7 @@ public class BashFiledescriptorImpl extends BashPsiElementImpl implements BashFi
 
         try {
             return Integer.valueOf(text.substring(1));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return null;
         }
     }

@@ -66,7 +66,7 @@ public class AddReplAction extends AnAction {
                     BashConsoleRunner consoleRunner = new BashConsoleRunner(project, baseDir.getPath());
                     consoleRunner.initAndRun();
                 }
-            } catch (Exception ex) {
+            } catch (com.intellij.execution.ExecutionException ex) {
                 log.warn("Error running bash repl", ex);
             }
         }

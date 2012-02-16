@@ -145,11 +145,8 @@ public class HereDocParsing implements ParsingTool {
             boolean isValidVariable;
 
             PsiBuilder.Marker whitespaceMarker = builder.mark();
-            try {
-                isValidVariable = Parsing.var.isValid(builder);
-            } finally {
-                whitespaceMarker.rollbackTo();
-            }
+            isValidVariable = Parsing.var.isValid(builder);
+            whitespaceMarker.rollbackTo();
 
             if (isValidVariable) {
                 //collapse all elements before into a WORD token

@@ -125,52 +125,43 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             return false;
         } else if (StringUtils.isEmpty(file.getExtension())) {
             BashFacet facet = null;
-            try {
-                //no extensions, special checks (looking at the content, etc)
+            //no extensions, special checks (looking at the content, etc)
 
-                //guess project
-                Project project = ProjectUtil.guessProjectForFile(file);
-                if (project == null) {
-                    return false;
-                }
+            //guess project
+            Project project = ProjectUtil.guessProjectForFile(file);
+            if (project == null) {
+                return false;
+            }
 
-                DumbServiceImpl dumbService = DumbServiceImpl.getInstance(project);
-                if (dumbService == null || dumbService.isDumb()) {
-                    return false;
-                }
+            DumbServiceImpl dumbService = DumbServiceImpl.getInstance(project);
+            if (dumbService == null || dumbService.isDumb()) {
+                return false;
+            }
 
-                DirectoryIndex directoryIndex = DirectoryIndex.getInstance(project);
-                if (directoryIndex == null || !directoryIndex.isInitialized()) {
-                    return false;
-                }
+            DirectoryIndex directoryIndex = DirectoryIndex.getInstance(project);
+            if (directoryIndex == null || !directoryIndex.isInitialized()) {
+                return false;
+            }
 
-                Module module = ModuleUtil.findModuleForFile(file, project);
-                if (module == null) {
-                    return false;
-                }
+            Module module = ModuleUtil.findModuleForFile(file, project);
+            if (module == null) {
+                return false;
+            }
 
-                facet = BashFacet.getInstance(module);
-                if (facet == null) {
-                    return false;
-                }
+            facet = BashFacet.getInstance(module);
+            if (facet == null) {
+                return false;
+            }
 
-                BashFacetConfiguration config = facet.getConfiguration();
-                FileMode mode = config.findMode(file);
+            BashFacetConfiguration config = facet.getConfiguration();
+            FileMode mode = config.findMode(file);
 
-                if (mode == FileMode.accept()) {
-                    return true;
-                } else if (mode == FileMode.ignore()) {
-                    return false;
-                } else if (mode == FileMode.auto()) {
-                    return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
-                }
-            } catch (Throwable e) {
-                //ignore this
-                LOG.warn("Could not check the file type due to exception", e);
-
-                if (e instanceof Error) {
-                    throw (Error)e;
-                }
+            if (mode == FileMode.accept()) {
+                return true;
+            } else if (mode == FileMode.ignore()) {
+                return false;
+            } else if (mode == FileMode.auto()) {
+                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
             }
         }
 

@@ -1,3 +1,9 @@
+2012-02-16:
+ - Fixed the possible cause of the unbalanced markers
+
+2012-02-09:
+ - 1.1beta6
+
 2012-02-02:
  - Possible fix for exception "StringIndexOutOfBoundsException"
 

@@ -72,13 +72,14 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         PsiBuilder.Marker marker = builder.mark();
-        try {
-            builder.enterNewErrorLevel(false);
-            return parseSingleRedirect(builder, true);
-        } finally {
-            builder.leaveLastErrorLevel();
-            marker.rollbackTo();
-        }
+        builder.enterNewErrorLevel(false);
+
+        boolean result = parseSingleRedirect(builder, true);
+
+        builder.leaveLastErrorLevel();
+
+        marker.rollbackTo();
+        return result;
     }
 
     public boolean parseSingleRedirect(BashPsiBuilder builder) {

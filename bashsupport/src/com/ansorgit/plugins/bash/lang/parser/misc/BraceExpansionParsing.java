@@ -35,11 +35,11 @@ public class BraceExpansionParsing implements ParsingFunction {
 
     public boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker start = builder.mark();
-        try {
-            return parse(builder);
-        } finally {
-            start.rollbackTo();
-        }
+
+        boolean result = parse(builder);
+
+        start.rollbackTo();
+        return result;
     }
 
     public boolean parse(BashPsiBuilder builder) {

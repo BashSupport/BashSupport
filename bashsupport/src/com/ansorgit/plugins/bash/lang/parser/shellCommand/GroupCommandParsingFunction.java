@@ -38,11 +38,11 @@ import com.intellij.psi.tree.IElementType;
 public class GroupCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        try {
-            return ParserUtil.conditionalRead(builder, LEFT_CURLY) && ParserUtil.isWhitespace(builder.getTokenType(true));
-        } finally {
-            marker.rollbackTo();
-        }
+
+        boolean result = ParserUtil.conditionalRead(builder, LEFT_CURLY) && ParserUtil.isWhitespace(builder.getTokenType(true));
+
+        marker.rollbackTo();
+        return result;
     }
 
     public boolean parse(BashPsiBuilder builder) {
