@@ -63,13 +63,13 @@ public class ParserUtil {
      * @return
      */
     public static IElementType getTokenAndAdvance(BashPsiBuilder builder, boolean showWhitespace) {
-        try {
-            return builder.getTokenType(showWhitespace);
-        } finally {
-            if (!builder.eof()) {
-                builder.advanceLexer();
-            }
+        IElementType tokenType = builder.getTokenType(showWhitespace);
+
+        if (!builder.eof()) {
+            builder.advanceLexer();
         }
+
+        return tokenType;
     }
 
     /**
@@ -114,13 +114,14 @@ public class ParserUtil {
      */
     public static boolean checkAndRollback(BashPsiBuilder builder, Function<BashPsiBuilder, Boolean> function) {
         final PsiBuilder.Marker start = builder.mark();
-        try {
-            builder.enterNewErrorLevel(false);
-            return function.apply(builder);
-        } finally {
-            builder.leaveLastErrorLevel();
-            start.rollbackTo();
-        }
+        builder.enterNewErrorLevel(false);
+
+        Boolean result = function.apply(builder);
+
+        builder.leaveLastErrorLevel();
+        start.rollbackTo();
+
+        return result;
     }
 
     /**

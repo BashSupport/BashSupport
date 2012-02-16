@@ -44,28 +44,32 @@ public class PipelineParsing implements ParsingTool {
 
     public boolean isPipelineCommand(BashPsiBuilder builder) {
         final PsiBuilder.Marker start = builder.mark();
-        try {
-            if (isPipeline(builder)) {
-                return true;
-            }
 
-            final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
-            final IElementType secondToken = builder.getTokenType();
+        boolean result = isPipelineCommandNoRollback(builder);
 
-            if ((firstToken == TIME_KEYWORD && secondToken == BANG_TOKEN) || (firstToken == BANG_TOKEN && secondToken == TIME_KEYWORD)) {
-                builder.advanceLexer();
-                return isPipeline(builder);
-            }
+        start.rollbackTo();
 
-            if (firstToken == TIME_KEYWORD) {
-                return Parsing.list.isListTerminator(secondToken) || isPipeline(builder);
-            }
+        return result;
+    }
 
-            return firstToken == BANG_TOKEN && isPipeline(builder);
-
-        } finally {
-            start.rollbackTo();
+    private boolean isPipelineCommandNoRollback(BashPsiBuilder builder) {
+        if (isPipeline(builder)) {
+            return true;
         }
+
+        final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
+        final IElementType secondToken = builder.getTokenType();
+
+        if ((firstToken == TIME_KEYWORD && secondToken == BANG_TOKEN) || (firstToken == BANG_TOKEN && secondToken == TIME_KEYWORD)) {
+            builder.advanceLexer();
+            return isPipeline(builder);
+        }
+
+        if (firstToken == TIME_KEYWORD) {
+            return Parsing.list.isListTerminator(secondToken) || isPipeline(builder);
+        }
+
+        return firstToken == BANG_TOKEN && isPipeline(builder);
     }
 
     boolean isPipeline(BashPsiBuilder builder) {
@@ -142,6 +146,7 @@ public class PipelineParsing implements ParsingTool {
                 builder.error("Expected a command.");
                 return false;
             default:
+                pipelineCommandMarker.drop();
                 throw new IllegalStateException("Invalid switch/case value: " + parseState);
         }
     }

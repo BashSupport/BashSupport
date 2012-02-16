@@ -47,33 +47,33 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
     }
 
     public void drop() {
-        open = false;
         delegate.drop();
+        open = false;
     }
 
     public void rollbackTo() {
-        open = false;
         delegate.rollbackTo();
+        open = false;
     }
 
     public void done(IElementType type) {
-        open = false;
         delegate.done(type);
+        open = false;
     }
 
     public void doneBefore(IElementType type, PsiBuilder.Marker before) {
-        open = false;
         delegate.doneBefore(type, before);
+        open = false;
     }
 
     public void doneBefore(IElementType type, PsiBuilder.Marker before, String errorMessage) {
-        open = false;
         delegate.doneBefore(type, before, errorMessage);
+        open = false;
     }
 
     public void error(String message) {
-        open = false;
         delegate.error(message);
+        open = false;
     }
 
     public void collapse(IElementType iElementType) {
@@ -84,8 +84,8 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
         delegate.setCustomEdgeTokenBinders(whitespacesAndCommentsBinder, whitespacesAndCommentsBinder1);
     }
 
-    public void errorBefore(String s, PsiBuilder.Marker marker) {
+    public void errorBefore(String message, PsiBuilder.Marker marker) {
+        delegate.errorBefore(message, marker);
         open = false;
-        delegate.errorBefore(s, marker);
     }
 }

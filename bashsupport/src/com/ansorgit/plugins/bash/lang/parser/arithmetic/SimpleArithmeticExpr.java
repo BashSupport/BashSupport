@@ -20,9 +20,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.misc.WordParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
@@ -45,7 +43,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
 
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        boolean ok = false;
+        boolean ok;
 
         if (arithmeticAdditionOps.contains(builder.getTokenType())) {
             builder.advanceLexer(); //eat the prefix - or + token

@@ -88,12 +88,8 @@ public class EvaluateArithmeticExpressionInspection extends AbstractBashInspecti
 
                     //run only if the parent is not a static expression itself
                     if (parent == null || !parent.isStatic()) {
-                        try {
-                            String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + expression.computeNumericValue() + "'";
-                            holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
-                        } catch (Exception e) {
-                            //fixme
-                        }
+                        String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + expression.computeNumericValue() + "'";
+                        holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
                     }
                 }
             }

@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta5</version>
+    <version>1.1beta6</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -26,7 +26,7 @@
     </vendor>
 
     <!-- Requires IDEA 11.0 or later -->
-    <idea-version since-build="111.0" until-build="111.999"/>
+    <idea-version since-build="111.0" until-build="117.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -40,6 +40,15 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta6:</b>
+       <ul>
+         <li>Compatibility with 11.1 EAP</li>
+         <li>Possible fix for exception "StringIndexOutOfBoundsException"   </li>
+         <li>Less inspection warnings                                       </li>
+         <li>Hopefully fixed "marker not closed" exception                  </li>
+         <li>Better error messages for empty loop bodies                    </li>
+       </ul>
+
        <b>Changes in version 1.1beta5:</b>
        <ul>
             <li>Parser fixes</li>

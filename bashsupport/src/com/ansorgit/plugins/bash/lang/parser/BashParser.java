@@ -41,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 public class BashParser implements PsiParser {
     private static final Logger log = Logger.getInstance("BashParser");
     private static final String debugKey = "bashsupport.debug";
-    private static final boolean debugMode = true; //"true".equals(System.getProperty(debugKey)) || "true".equals(System.getenv(debugKey));
+    private static final boolean debugMode = "true".equals(System.getProperty(debugKey)) || "true".equals(System.getenv(debugKey));
     private final Project project;
     private final BashVersion version;
 

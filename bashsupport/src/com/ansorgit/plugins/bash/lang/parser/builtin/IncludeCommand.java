@@ -24,8 +24,6 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
-import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
@@ -48,12 +46,11 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        PsiBuilder.Marker mark = builder.mark();
-
+        PsiBuilder.Marker commandMarker = builder.mark();
 
         boolean ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
         if (!ok) {
-            mark.drop();
+            commandMarker.drop();
             return false;
         }
 
@@ -65,7 +62,7 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
         boolean wordResult = Parsing.word.parseWord(builder, false);
         if (!wordResult) {
             fileMarker.drop();
-            mark.drop();
+            commandMarker.drop();
             builder.error("Expected file name");
             return false;
         }
@@ -80,11 +77,11 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
 
         ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
         if (!ok) {
-            mark.drop();
+            commandMarker.drop();
             return false;
         }
 
-        mark.done(INCLUDE_COMMAND_ELEMENT);
+        commandMarker.done(INCLUDE_COMMAND_ELEMENT);
 
         return true;
     }
