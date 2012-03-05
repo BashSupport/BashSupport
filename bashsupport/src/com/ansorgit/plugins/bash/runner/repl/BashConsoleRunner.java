@@ -25,15 +25,11 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.console.LanguageConsoleViewImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
-import com.intellij.execution.process.CommandLineArgumentsProvider;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.AbstractConsoleRunnerWithHistory;
 import com.intellij.execution.runners.ConsoleExecuteActionHandler;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * ConsoleRunner implementation to run a bash shell in a window.
@@ -43,24 +39,8 @@ import java.util.Map;
  * Time: 00:45:23
  */
 public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory<LanguageConsoleViewImpl> {
-    private final String workingDir;
-
     public BashConsoleRunner(Project myProject, String workingDir) {
-        super(myProject, "Bash", new CommandLineArgumentsProvider() {
-            public String[] getArguments() {
-                return new String[]{};
-            }
-
-            public boolean passParentEnvs() {
-                return true;
-            }
-
-            public Map<String, String> getAdditionalEnvs() {
-                return Collections.emptyMap();
-            }
-        }, workingDir);
-
-        this.workingDir = workingDir;
+        super(myProject, "Bash", workingDir);
     }
 
     @Override
@@ -72,25 +52,26 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory<Language
     }
 
     @Override
-    protected Process createProcess(CommandLineArgumentsProvider provider) throws ExecutionException {
+    protected Process createProcess() throws ExecutionException {
         GeneralCommandLine commandLine = new GeneralCommandLine();
 
         BashInterpreterDetection detect = new BashInterpreterDetection();
         //fixme make this configurable
         commandLine.setExePath(detect.findBestLocation());
 
-        if (workingDir != null) {
-            commandLine.setWorkDirectory(workingDir);
+        if (getWorkingDir() != null) {
+            commandLine.setWorkDirectory(getWorkingDir());
         }
 
-        commandLine.addParameters(provider.getArguments());
+        //fixme
+        //commandLine.addParameters(provider.getArguments());
 
         return commandLine.createProcess();
     }
 
     @Override
-    protected OSProcessHandler createProcessHandler(Process process, String commandLine) {
-        return new ColoredProcessHandler(process, commandLine);
+    protected OSProcessHandler createProcessHandler(Process process) {
+        return new ColoredProcessHandler(process, null);
     }
 
     @NotNull
