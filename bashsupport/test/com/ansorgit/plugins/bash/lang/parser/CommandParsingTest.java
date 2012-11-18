@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -216,5 +217,11 @@ public class CommandParsingTest extends MockPsiTest {
     public void testArrayVar() throws Exception {
         //TOMCAT_HOST_LIST[$index]=$LINE
         mockTest(simpleCommandTest, ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE, EQ, VARIABLE);
+    }
+
+
+    @Test
+    public void testEchoWithUmlauts() throws Exception {
+        mockTest(simpleCommandTest, Lists.newArrayList("echo", " ", "äöü"), WORD, WHITESPACE, WORD);
     }
 }

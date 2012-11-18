@@ -119,7 +119,7 @@ SingleCharacter = [^\'] | {EscapedChar}
 
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
-    | {EscapedChar}
+    | {EscapedChar} | [\u00C0-\u00FF]
 WordAfter =  {WordFirst} | "#" | "!" | "[" | "]"
 
 ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
@@ -696,9 +696,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <YYINITIAL, S_CASE, S_TEST, S_TEST_COMMAND, S_SUBSHELL, S_BACKQUOTE> {
   {Word}                       { return WORD; }
-  {WordAfter}+            { return WORD; }
+  {WordAfter}+                 { return WORD; }
 }
 
 /** END */
-  .                               { return BAD_CHARACTER; }
+  .                            { return BAD_CHARACTER; }
   

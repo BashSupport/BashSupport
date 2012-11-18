@@ -727,6 +727,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testUmlaut() throws Exception {
+        testTokenization("echo ä", WORD, WHITESPACE, WORD);
+    }
+
+    @Test
     public void testSubshellExpr() {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
     }

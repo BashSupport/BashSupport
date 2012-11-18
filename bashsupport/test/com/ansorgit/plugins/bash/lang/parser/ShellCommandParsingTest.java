@@ -65,13 +65,6 @@ public class ShellCommandParsingTest extends MockPsiTest {
         }
     };
 
-    private final MockFunction wordParserTest = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.word.parseWord(builder);
-        }
-    };
-
     @Test
     public void testIfCommand1() {
         mockTest(ifCommandParsingTester, IF_KEYWORD, WORD, SEMI,
