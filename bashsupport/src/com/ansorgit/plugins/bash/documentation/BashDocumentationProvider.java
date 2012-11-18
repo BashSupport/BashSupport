@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
-import com.intellij.lang.documentation.QuickDocumentationProvider;
+import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class BashDocumentationProvider extends QuickDocumentationProvider {
+public class BashDocumentationProvider extends AbstractDocumentationProvider {
     private static final Logger log = Logger.getInstance("#bash.BashDocumentationProvider");
 
     public String getQuickNavigateInfo(PsiElement psiElement, PsiElement psiElement1) {

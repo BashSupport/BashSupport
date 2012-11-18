@@ -18,11 +18,11 @@
 
 package com.ansorgit.plugins.bash.lang.editor.formatting;
 
+import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.base.BashFormatterTestCase;
 import com.ansorgit.plugins.bash.lang.base.TestUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import org.junit.Ignore;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ import java.util.List;
 public class DisabledFormatterTest extends BashFormatterTestCase {
     @Override
     protected String getBasePath() {
-        return "/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/testData/disabledFormatter/";
+        return BashTestUtils.getBasePath() + "/disabledFormatter/";
     }
 
     protected void setUp() throws Exception {

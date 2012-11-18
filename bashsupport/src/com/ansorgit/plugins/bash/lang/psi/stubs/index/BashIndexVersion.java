@@ -9,5 +9,5 @@ public final class BashIndexVersion {
     private BashIndexVersion() {
     }
 
-    public static int VERSION = 6;
+    public static int VERSION = 7;
 }

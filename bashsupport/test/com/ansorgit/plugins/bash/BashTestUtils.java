@@ -22,13 +22,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 
-/**
- * Created by IntelliJ IDEA.
- * User: jansorg
- * Date: 01.07.2010
- * Time: 18:50:47
- * To change this template use File | Settings | File Templates.
- */
 public class BashTestUtils {
     public static String getBasePath() {
         String configuredDir = StringUtils.stripToNull(System.getenv("BASHSUPPORT_TESTDATA"));
@@ -40,6 +33,6 @@ public class BashTestUtils {
             }
         }
 
-        return System.getenv("HOME") + "/Projekte/JavaProjekte/BashSupport-googlecode/testData";
+        return "/Volumes/750GB/Projekte/JavaProjekte/BashSupport-googlecode/testData";
     }
 }
