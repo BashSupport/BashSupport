@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -104,5 +103,17 @@ public class HereDocParsingTest extends MockPsiTest {
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
                 WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, DOLLAR, WORD, LINE_FEED, WORD);
+    }
+
+
+    @Test
+    public void testHereDocMarkerExclamation() throws Exception {
+        //  x << !
+        //   Text
+        // !
+
+        mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
+                WORD, REDIRECT_LESS_LESS, BANG_TOKEN, LINE_FEED, WORD, LINE_FEED, WORD
+        );
     }
 }

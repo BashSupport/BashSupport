@@ -196,6 +196,14 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             return NO_SPACING;
         }
 
+        if (leftType == VAR_DEF_ELEMENT && leftParentElement == VAR_COMPOSED_VAR_ELEMENT && rightNode == PARAM_EXPANSION_OP_COLON_EQ) {
+            return NO_SPACING;
+        }
+
+        if (leftParentElement == VAR_COMPOSED_VAR_ELEMENT && rightParentElement == VAR_COMPOSED_VAR_ELEMENT) {
+            return NO_SPACING;
+        }
+
         //generic commands and function calls
         if ((leftPsi instanceof BashCommand || leftPsi instanceof BashBlock) && ";".equals(rightNode.getText())) {
             return NO_SPACING;

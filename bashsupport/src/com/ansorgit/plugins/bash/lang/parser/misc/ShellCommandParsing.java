@@ -81,4 +81,6 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
     public final ParsingFunction groupCommandParser = new GroupCommandParsingFunction();
 
     public final ParsingFunction backtickParser = new BacktickParsingFunction();
+
+    public final ParsingFunction historyExpansionParser = new HistoryExpansionParsingFunction();
 }
