@@ -48,7 +48,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
             configure();
 
-            checkItems("PWD");
+            checkItems("PWD", "OLDPWD", "COMP_WORDBREAKS", "COMP_WORDS");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }
@@ -61,7 +61,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
             configure(2);
 
-            checkItems("PWD", "PWD_MINE");
+            checkItems("PWD", "PWD_MINE", "OLDPWD", "COMP_WORDBREAKS", "COMP_WORDS");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }

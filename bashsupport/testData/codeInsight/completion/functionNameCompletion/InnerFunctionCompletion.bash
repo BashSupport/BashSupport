@@ -1,10 +1,10 @@
 #!/bin/sh
 
-in<caret>
+innerF<caret>
 
 # echo in CC
-function functionInC() {
-    function inCInner() {
+function functionInnerFunC() {
+    function innnerFuncCInner() {
         echo inner
     }
 }

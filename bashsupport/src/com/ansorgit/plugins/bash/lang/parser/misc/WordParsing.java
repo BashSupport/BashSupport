@@ -59,6 +59,7 @@ public class WordParsing implements ParsingTool {
                 || Parsing.shellCommand.backtickParser.isValid(builder)
                 || Parsing.shellCommand.conditionalExpressionParser.isValid(builder)
                 || Parsing.processSubstitutionParsing.isValid(builder)
+                || Parsing.shellCommand.historyExpansionParser.isValid(builder)
                 || tokenType == LEFT_CURLY;
 
         if (isWord) {
@@ -74,6 +75,11 @@ public class WordParsing implements ParsingTool {
             marker.rollbackTo();
 
             return singleDollarFollowups.contains(next);
+        }
+
+        //accept single Bang tokens as word
+        if (tokenType == BANG_TOKEN && ParserUtil.isWhitespace(builder.rawLookup(1))) {
+            return true;
         }
 
         return false;
@@ -141,6 +147,9 @@ public class WordParsing implements ParsingTool {
             } else if (Parsing.shellCommand.conditionalExpressionParser.isValid(builder)) {
                 isOk = Parsing.shellCommand.conditionalExpressionParser.parse(builder);
                 processedTokens++;
+            } else if (Parsing.shellCommand.historyExpansionParser.isValid(builder)) {
+                isOk = Parsing.shellCommand.historyExpansionParser.parse(builder);
+                processedTokens++;
             } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
                 isOk = Parsing.processSubstitutionParsing.parse(builder);
                 processedTokens++;
@@ -150,6 +159,10 @@ public class WordParsing implements ParsingTool {
                 builder.advanceLexer();
                 processedTokens++;
             } else if (nextToken == DOLLAR) {
+                builder.advanceLexer();
+                processedTokens++;
+            } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespace(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
+                //either a single ! token with following whitespace or at the end of the file
                 builder.advanceLexer();
                 processedTokens++;
             } else { //either whitespace or unknown token

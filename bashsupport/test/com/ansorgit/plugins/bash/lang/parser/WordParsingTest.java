@@ -40,6 +40,11 @@ public class WordParsingTest extends MockPsiTest {
     }
 
     @Test
+    public void testSingleBangToken() throws Exception {
+        mockTest(wordTestParser, BANG_TOKEN);
+    }
+
+    @Test
     public void testParseWord2() {
         //$(echo a)
         mockTest(wordTestParser, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN);
