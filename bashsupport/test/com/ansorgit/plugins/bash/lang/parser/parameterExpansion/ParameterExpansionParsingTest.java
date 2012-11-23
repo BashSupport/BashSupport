@@ -157,4 +157,12 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         //${x-`$[1]`}
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE, RIGHT_CURLY);
     }
+
+
+    @Test
+    public void testParseReplace() throws Exception {
+        // {myvar/,/ }
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, WORD, PARAM_EXPANSION_OP_SLASH, WHITESPACE, RIGHT_CURLY);
+
+    }
 }

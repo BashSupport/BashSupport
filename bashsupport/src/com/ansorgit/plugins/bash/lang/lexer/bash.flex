@@ -126,7 +126,7 @@ ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
 // No "[" | "]"
 ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
 
-ParamExpansionWordFirst = [a-zA-Z0-9_] | {EscapedChar}
+ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar}
 ParamExpansionWordAfter =  {ParamExpansionWordFirst}
 ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
 
@@ -598,7 +598,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "%"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_PERCENT; }
   "?"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_QMARK; }
   "."                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_DOT; }
-  "/"|"^"                       { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
+  "/"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_SLASH; }
+  "^"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
 
   "[" / [@*]                    { return LEFT_SQUARE; }
   "["                           { if (!paramExpansionOther && (!paramExpansionWord || !paramExpansionHash)) {
@@ -701,4 +702,3 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /** END */
   .                            { return BAD_CHARACTER; }
-  
