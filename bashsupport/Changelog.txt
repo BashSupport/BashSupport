@@ -1,3 +1,6 @@
+2012-11-22:
+ - Improved parsing of paramter expansion (i.e. the parsing of the / operator)
+
 2012-11-21:
  - Fixed testcases to work with IntelliJ IDEA 123.4
  - Added parsing of history expansions

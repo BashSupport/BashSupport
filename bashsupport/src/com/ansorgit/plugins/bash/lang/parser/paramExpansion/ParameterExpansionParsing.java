@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.misc.WordParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
@@ -45,9 +44,11 @@ public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
 
     private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
-            PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_STAR, NUMBER);
+            PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS,
+            PARAM_EXPANSION_OP_STAR, NUMBER);
 
-    private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS, PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
+    private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS,
+            PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
