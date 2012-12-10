@@ -19,7 +19,7 @@
       <excludeFolder url="file://$MODULE_DIR$/generated_src" />
       <excludeFolder url="file://$MODULE_DIR$/javadoc" />
     </content>
-    <orderEntry type="jdk" jdkName="IDEA IU-123.4" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="IDEA IU-123.72" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

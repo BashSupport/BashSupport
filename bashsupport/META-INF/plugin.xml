@@ -18,15 +18,15 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta10</version>
+    <version>1.1beta11</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
             logo="resources/icons/bash-16.png">Joachim Ansorg
     </vendor>
 
-    <!-- Requires IDEA 11.0 or later -->
-    <idea-version since-build="121.0" until-build="126.999"/>
+    <!-- Requires IDEA 12.0 or later -->
+    <idea-version since-build="123.72" until-build="126.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -40,6 +40,16 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta11:</b>
+       <ul>
+         <li>Fixed abstract method errors with IntelliJ IDEA 12</li>
+         <li>Improved parsing of paramter expansion (i.e. the parsing of the / operator)</li>
+         <li>Added parsing of history expansions                                        </li>
+         <li>Fixed parsing of single ! tokens                                           </li>
+         <li>Fix to allow umlaut characters in command names and arguments.        </li>
+         <li>Fixed testcases to work with IntelliJ IDEA 123.4                           </li>
+       </ul>
+
        <b>Changes in version 1.1beta10:</b>
        <ul>
         <li>Fixed abstract method errors with builds >= 121 </li>
