@@ -24,10 +24,6 @@ import java.util.Collection;
 
 /**
  * Contains definitions of built-in resources like variables or functions.
- * <p/>
- * User: jansorg
- * Date: 26.05.2009
- * Time: 19:26:10
  */
 public final class LanguageBuiltins {
     //variables valid even in the very original shell implementation
