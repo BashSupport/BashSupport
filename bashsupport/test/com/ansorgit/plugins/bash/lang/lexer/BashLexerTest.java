@@ -749,10 +749,8 @@ public class BashLexerTest {
         lexer.start(code);
 
         int i = 1;
-        StringBuffer data = new StringBuffer();
         for (IElementType expectedToken : expectedTokens) {
             IElementType tokenType = lexer.getTokenType();
-            //data.append(tokenType.)
             Assert.assertEquals("Wrong match at #" + i,
                     expectedToken, tokenType);
             lexer.advance();

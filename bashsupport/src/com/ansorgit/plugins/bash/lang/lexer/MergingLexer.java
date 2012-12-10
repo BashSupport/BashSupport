@@ -19,8 +19,7 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.lexer.LexerBase;
-import com.intellij.lexer.LexerPosition;
+import com.intellij.lexer.MergingLexerAdapterBase;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
@@ -29,19 +28,11 @@ import com.intellij.psi.tree.TokenSet;
  * This lexer takes a set of token merge definitions. Each of these definitions
  * are used to create a new, merged token stream at runtime.
  * <p/>
- * Date: 17.04.2009
- * Time: 11:38:27
- * <p/>
  * The base code was taken from MergingLexerAdapter of the OpenAPI.
  *
  * @author Joachim Ansorg
  */
-class MergingLexer extends LexerBase {
-    private final Lexer originalLexer;
-    private final MergeTuple[] mergeTuples;
-    private IElementType myResultToken;
-    private int myState;
-    private int myTokenStart;
+class MergingLexer extends MergingLexerAdapterBase {
 
     /**
      * Create a merging lexer which works with the merge definitions given in the mergeTuples parameter.
@@ -49,126 +40,28 @@ class MergingLexer extends LexerBase {
      * @param original    The original lexer, used as a delegate
      * @param mergeTuples The token merge definitions.
      */
-    public MergingLexer(Lexer original, MergeTuple... mergeTuples) {
-        originalLexer = original;
-        this.mergeTuples = mergeTuples;
-    }
+    public MergingLexer(final Lexer original, final MergeTuple... mergeTuples) {
+        super(original, new MergeFunction() {
+            @Override
+            public IElementType merge(IElementType type, Lexer lexer) {
+                for (final MergeTuple currentTuple : mergeTuples) {
+                    final TokenSet tokensToMerge = currentTuple.getTokensToMerge();
 
-    @Override
-    public void start(final CharSequence buffer, final int startOffset, final int endOffset, final int initialState) {
-        originalLexer.start(buffer, startOffset, endOffset, initialState);
-        myResultToken = null;
-    }
+                    if (tokensToMerge.contains(type)) {
+                        IElementType current = lexer.getTokenType();
+                        //merge all upcoming tokens into the target token type
+                        while (tokensToMerge.contains(current)) {
+                            lexer.advance();
 
-    public CharSequence getBufferSequence() {
-        return originalLexer.getBufferSequence();
-    }
+                            current = lexer.getTokenType();
+                        }
 
-    public int getState() {
-        locateToken();
-        return myState;
-    }
-
-    public IElementType getTokenType() {
-        locateToken();
-        return myResultToken;
-    }
-
-    public int getTokenStart() {
-        locateToken();
-        return myTokenStart;
-    }
-
-    public int getTokenEnd() {
-        locateToken();
-        return originalLexer.getTokenStart();
-    }
-
-    public void advance() {
-        myResultToken = null;
-    }
-
-    public int getBufferEnd() {
-        return originalLexer.getBufferEnd();
-    }
-
-    private void locateToken() {
-        if (myResultToken == null) {
-            IElementType currentToken = originalLexer.getTokenType();
-            myTokenStart = originalLexer.getTokenStart();
-            myState = originalLexer.getState();
-
-            if (currentToken == null) return;
-            originalLexer.advance();
-
-            boolean found = false;
-            for (int i = 0; i < mergeTuples.length && !found; i++) {
-                final MergeTuple currentTuple = mergeTuples[i];
-                final TokenSet myTokensToMerge = currentTuple.getTokensToMerge();
-
-                found = myTokensToMerge.contains(currentToken);
-                if (found) {
-                    myResultToken = currentTuple.getTargetType();
-
-                    //merge all upcoming tokens
-                    while (myTokensToMerge.contains(currentToken)) {
-                        currentToken = originalLexer.getTokenType();
-
-                        if (myTokensToMerge.contains(currentToken)) originalLexer.advance();
+                        return currentTuple.getTargetType();
                     }
                 }
+
+                return type;
             }
-
-            if (!found) {
-                myResultToken = currentToken;
-            }
-        }
-    }
-
-    public void restore(LexerPosition position) {
-        MyLexerPosition pos = (MyLexerPosition) position;
-
-        originalLexer.restore(pos.getOriginalPosition());
-        myResultToken = pos.getType();
-        myTokenStart = pos.getOffset();
-        myState = pos.getOldState();
-    }
-
-    public LexerPosition getCurrentPosition() {
-        return new MyLexerPosition(myTokenStart, myResultToken, originalLexer.getCurrentPosition(), myState);
-    }
-
-    private static class MyLexerPosition implements LexerPosition {
-        private final int myOffset;
-        private IElementType myTokenType;
-        private LexerPosition myOriginalPosition;
-        private int myOldState;
-
-        public MyLexerPosition(final int offset, final IElementType tokenType, final LexerPosition originalPosition, int oldState) {
-            myOffset = offset;
-            myTokenType = tokenType;
-            myOriginalPosition = originalPosition;
-            myOldState = oldState;
-        }
-
-        public int getOffset() {
-            return myOffset;
-        }
-
-        public int getState() {
-            return myOriginalPosition.getState();
-        }
-
-        public IElementType getType() {
-            return myTokenType;
-        }
-
-        public LexerPosition getOriginalPosition() {
-            return myOriginalPosition;
-        }
-
-        public int getOldState() {
-            return myOldState;
-        }
+        });
     }
 }
