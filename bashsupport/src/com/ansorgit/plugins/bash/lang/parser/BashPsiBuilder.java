@@ -21,8 +21,8 @@ package com.ansorgit.plugins.bash.lang.parser;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.util.ForwardingMarker;
-import com.ansorgit.plugins.bash.lang.parser.util.ForwardingPsiBuilder;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.impl.PsiBuilderAdapter;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
+public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
@@ -205,7 +205,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      */
     public void error(String message) {
         if (getErrorReportingStatus()) {
-            getOriginalPsiBuilder().error(message);
+            myDelegate.error(message);
         } else if (log.isDebugEnabled()) {
             log.debug("Supressed psi error: " + message);
         }
@@ -225,7 +225,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      */
     @Override
     public Marker mark() {
-        return new BashPsiMarker(getOriginalPsiBuilder().mark());
+        return new BashPsiMarker(myDelegate.mark());
     }
 
     /**
@@ -242,6 +242,7 @@ public class BashPsiBuilder extends ForwardingPsiBuilder implements PsiBuilder {
      *
      * @author Joachim Ansorg, mail@ansorg-it.com
      */
+    // fixme is this class still required?
     private final class BashPsiMarker extends ForwardingMarker implements Marker {
         protected BashPsiMarker(final Marker original) {
             super(original);

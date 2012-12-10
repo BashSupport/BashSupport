@@ -28,7 +28,7 @@ import com.intellij.psi.tree.TokenSet;
  * Date: 28.07.2009
  * Time: 18:59:05
  */
-public class MergeTuple {
+public final class MergeTuple {
     private final TokenSet tokensToMerge;
     private final IElementType targetType;
 

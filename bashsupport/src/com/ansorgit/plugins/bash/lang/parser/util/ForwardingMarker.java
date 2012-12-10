@@ -67,8 +67,8 @@ public abstract class ForwardingMarker implements PsiBuilder.Marker {
         original.error(message);
     }
 
-    public void errorBefore(String s, PsiBuilder.Marker marker) {
-        original.errorBefore(s, marker);
+    public void errorBefore(String message, PsiBuilder.Marker marker) {
+        original.errorBefore(message, marker);
     }
 
     public PsiBuilder.Marker precede() {

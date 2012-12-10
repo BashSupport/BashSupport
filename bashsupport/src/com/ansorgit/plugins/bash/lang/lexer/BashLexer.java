@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author Joachim Ansorg
  */
-public class BashLexer extends MergingLexer implements BashTokenTypes {
+public final class BashLexer extends MergingLexer implements BashTokenTypes {
     public BashLexer() {
         this(BashVersion.Bash_v3);
     }
