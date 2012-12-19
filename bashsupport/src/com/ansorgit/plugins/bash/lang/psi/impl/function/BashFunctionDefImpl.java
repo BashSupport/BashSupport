@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionDefImpl.java, Class: BashFunctionDefImpl
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2012-12-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.function;
 
@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -33,8 +32,8 @@ import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Iconable;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
@@ -42,8 +41,8 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.Icons;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,9 +51,6 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Date: 11.04.2009
- * Time: 23:48:06
- *
  * @author Joachim Ansorg
  */
 public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
@@ -72,12 +68,15 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
         if (StringUtil.isEmpty(name)) {
             return null;
         }
+
         //fixme validate name
 
-        log.debug("renaming function");
         final PsiElement nameNode = getNameSymbol();
         final PsiElement newNameSymbol = BashChangeUtil.createSymbol(getProject(), name);
-        log.debug("renamed to symbol " + newNameSymbol);
+
+        if (log.isDebugEnabled()) {
+            log.debug("renamed to symbol " + newNameSymbol);
+        }
 
         getNode().replaceChild(nameNode.getNode(), newNameSymbol.getNode());
         return this;
@@ -89,20 +88,38 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
     }
 
     public BashBlock body() {
-        log.debug("found commandGroup: " + findChildByClass(BashBlockImpl.class)); //fixme
+        if (log.isDebugEnabled()) {
+            log.debug("found commandGroup: " + findChildByClass(BashBlockImpl.class)); //fixme
+        }
+
         return findChildByClass(BashBlockImpl.class);
     }
 
     public boolean hasCommandGroup() {
         log.debug("hasCommandGroup");
+
         final BashBlock body = body();
 
         return body != null && body.isCommandGroup();
     }
 
+    Key<BashSymbol> NAME_SYMBOL_KEY = Key.create("nameSymbol");
+
     public BashSymbol getNameSymbol() {
+//        BashSymbol cached = getUserData(NAME_SYMBOL_KEY);
+//        if (cached != null) {
+//            return cached;
+//        }
+
+
         final BashSymbol nameWord = findChildByClass(BashSymbol.class);
-        log.debug("getNameSymbole result: " + nameWord);
+
+        if (log.isDebugEnabled()) {
+            log.debug("getNameSymbole result: " + nameWord);
+        }
+
+        putUserData(NAME_SYMBOL_KEY, nameWord);
+
         return nameWord;
     }
 
@@ -126,18 +143,25 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
         return parameters;
     }
 
-    public String getDefinedName() {
-        final BashSymbol symbol = getNameSymbol();
-        if (symbol == null) {
-            return "";
-        }
+    private Key<String> DEFINED_NAME_KEY = Key.create("definedName");
 
-        return symbol.getNameString();
+    public String getDefinedName() {
+//        String cachedName = getUserData(DEFINED_NAME_KEY);
+//        if (cachedName != null) {
+//            return cachedName;
+//        }
+
+        final BashSymbol symbol = getNameSymbol();
+        String result = symbol == null ? "" : symbol.getNameString();
+
+        putUserData(DEFINED_NAME_KEY, result);
+
+        return result;
     }
 
     @Override
     public Icon getIcon(int flags) {
-        return Icons.METHOD_ICON;
+        return PlatformIcons.METHOD_ICON;
     }
 
     public int getTextOffset() {
@@ -150,10 +174,6 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
         return new ItemPresentation() {
             public String getPresentableText() {
                 return getName() + "()";
-            }
-
-            public TextAttributesKey getTextAttributesKey() {
-                return null;
             }
 
             public String getLocationString() {

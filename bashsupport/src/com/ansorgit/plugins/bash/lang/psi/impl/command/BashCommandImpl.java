@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2012-12-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
@@ -63,8 +63,8 @@ import java.util.Set;
  * @author Joachim Ansorg
  */
 public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<T> implements BashCommand, Keys {
-    private final static Key<Boolean> KEY_INTERNAL = new Key<Boolean>("internal");
-    private final static Key<Boolean> KEY_EXTERNAL = new Key<Boolean>("external");
+    private final static Key<Boolean> KEY_INTERNAL = Key.create("internal");
+    private final static Key<Boolean> KEY_EXTERNAL = Key.create("external");
 
     private PsiReference commandReference = new SelfReference();
 
@@ -98,7 +98,23 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         KEY_EXTERNAL.set(this, command != null && !internal);
     }
 
+    private static final Key<Boolean> KEY_FUNCTION_CALL = Key.create("functionCall");
+
     public boolean isFunctionCall() {
+        Boolean cached = KEY_FUNCTION_CALL.get(this);
+        if (cached != null) {
+            return cached;
+        }
+
+
+        boolean result = isFunctionCallInternal();
+
+        KEY_FUNCTION_CALL.set(this, result);
+
+        return result;
+    }
+
+    private boolean isFunctionCallInternal() {
         PsiElement commandElement = commandElement();
         if (commandElement == null) {
             return false;

@@ -1,3 +1,7 @@
+2012-12-19:
+ - Fixed flashing gutter bar icons
+ - 1.1beta12
+
 2012-12-10:
  - Removed code which is not needed for IntelliJ 12 any more
  - 1.1beta11

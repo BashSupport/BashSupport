@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTestUtils.java, Class: BashTestUtils
- * Last modified: 2010-07-01
+ * Last modified: 2012-12-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,6 @@ public class BashTestUtils {
             }
         }
 
-        return "/Volumes/750GB/Projekte/JavaProjekte/BashSupport-googlecode/testData";
+        return "/Volumes/DATA/Projekte/JavaProjekte/BashSupport-googlecode/testData";
     }
 }

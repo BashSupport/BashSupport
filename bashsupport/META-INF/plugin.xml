@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2010-11-02
+  ~ Last modified: 2012-12-19
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta11</version>
+    <version>1.1beta12</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -40,6 +40,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta12:</b>
+       <ul>
+         <li>Fixed flashing gutter icons</li>
+       </ul>
+
        <b>Changes in version 1.1beta11:</b>
        <ul>
          <li>Fixed abstract method errors with IntelliJ IDEA 12</li>
@@ -320,6 +325,9 @@
         <inspectionToolProvider implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
+
+        <codeInsight.lineMarkerProvider language="Bash"
+                                        implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
 
         <frameworkSupport
                 implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
