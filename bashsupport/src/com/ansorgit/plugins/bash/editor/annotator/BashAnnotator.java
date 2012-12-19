@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2012-12-19
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.editor.annotator;
 
@@ -26,7 +26,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.IncrementExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
@@ -52,8 +51,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashAnnotator implements Annotator {
-    private final FunctionDefAnnotator functionAnnotator = new FunctionDefAnnotator();
-
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
         if (element instanceof BashBackquote) {
             annotateBackquote(element, annotationHolder);
@@ -63,8 +60,6 @@ public class BashAnnotator implements Annotator {
             annotateHereDocStart(element, annotationHolder);
         } else if (element instanceof BashHereDocEndMarker) {
             annotateHereDocEnd(element, annotationHolder);
-        } else if (element instanceof BashFunctionDef) {
-            functionAnnotator.annotate((BashFunctionDef) element, annotationHolder);
         } else if (element instanceof BashCommand) {
             annotateCommand((BashCommand) element, annotationHolder);
         } else if (element instanceof BashVarDef) {
@@ -78,7 +73,7 @@ public class BashAnnotator implements Annotator {
         } else if (element instanceof BashSubshellCommand) {
             annotateSubshell(element, annotationHolder);
         } else if (element instanceof IncrementExpression) {
-            annotateArithmeticIncrement((IncrementExpression)element, annotationHolder);
+            annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
         }
     }
 

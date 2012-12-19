@@ -35,3 +35,10 @@ echo "Creating source code archive ..."
 #tar --create -z --file=$SRC/BashSupport-src.tar.gz .
 rm -f ${SRC}/BashSupport-src.zip
 zip -r ${SRC}/BashSupport-src.zip .
+
+function x {
+ echo
+}
+
+echo hi
+echo hi
