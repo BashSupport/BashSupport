@@ -9,12 +9,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="360"
+   height="360"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47pre4 r22446"
-   sodipodi:docname="bash.svg">
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="bash.svg"
+   inkscape:export-filename="/Users/jansorg/_DATA/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-48.png"
+   inkscape:export-xdpi="12"
+   inkscape:export-ydpi="12">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -30,21 +33,26 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5705066"
-     inkscape:cx="340.42856"
-     inkscape:cy="436.71428"
+     inkscape:zoom="0.80681817"
+     inkscape:cx="276.08625"
+     inkscape:cy="51.311612"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g2835"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1169"
-     inkscape:window-height="986"
-     inkscape:window-x="223"
+     inkscape:window-width="1600"
+     inkscape:window-height="1152"
+     inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       orientation="0,1"
+       position="292.50705,361.29578"
+       id="guide3817" />
+  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -60,60 +68,51 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(0,-692.36218)">
     <g
        id="g2835"
        inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
        inkscape:export-xdpi="3.27"
        inkscape:export-ydpi="3.27">
       <rect
-         inkscape:export-ydpi="3.27"
-         inkscape:export-xdpi="3.27"
-         inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
-         y="341.16592"
-         x="121.37514"
-         height="438.10681"
-         width="438.10684"
-         id="rect3598"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.89318037;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         inkscape:export-ydpi="3.27"
-         inkscape:export-xdpi="3.27"
-         inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
-         y="423.41888"
-         x="171.36664"
-         height="253.53911"
-         width="338.23953"
+         inkscape:export-ydpi="13.16"
+         inkscape:export-xdpi="13.16"
+         inkscape:export-filename="/Users/jansorg/_DATA/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-64.png"
+         y="758.31384"
+         x="24.327768"
+         height="228.09665"
+         width="310.62598"
          id="rect3594"
-         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.98645306;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#4e97dc;fill-opacity:1;stroke:#000094;stroke-width:11.42069148999999939;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <text
          sodipodi:linespacing="125%"
-         inkscape:export-ydpi="3.27"
-         inkscape:export-xdpi="3.27"
-         inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
+         inkscape:export-ydpi="13.16"
+         inkscape:export-xdpi="13.16"
+         inkscape:export-filename="/Users/jansorg/_DATA/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-64.png"
          id="text3590"
-         y="620.2406"
-         x="202.70209"
-         style="font-size:769.04382324px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5.76362228;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         y="961.27142"
+         x="57.382313"
+         style="font-size:789.06188965px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5.91364813;stroke-opacity:1;font-family:Bitstream Vera Sans"
          xml:space="preserve"><tspan
-           style="font-size:210.81546021px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;stroke-width:5.76362228;font-family:Arial;-inkscape-font-specification:Arial Bold"
-           y="620.2406"
-           x="202.70209"
+           style="font-size:216.30296326px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;stroke-width:5.91364813;font-family:Arial;-inkscape-font-specification:Arial Bold"
+           y="961.27142"
+           x="57.382313"
            id="tspan3592"
            sodipodi:role="line">&gt;</tspan></text>
       <text
-         inkscape:export-ydpi="3.27"
-         inkscape:export-xdpi="3.27"
-         inkscape:export-filename="/home/jansorg/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-16.png"
-         transform="scale(0.93138565,1.0736691)"
+         inkscape:export-ydpi="13.16"
+         inkscape:export-xdpi="13.16"
+         inkscape:export-filename="/Users/jansorg/_DATA/Projekte/JavaProjekte/BashSupport-googlecode/resources/icons/bash-64.png"
+         transform="scale(0.87658967,1.1407846)"
          id="text3642"
-         y="534.83545"
-         x="379.21576"
-         style="font-size:256.36663818px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:6.40916586;font-family:Bitstream Vera Sans"
+         y="783.09497"
+         x="222.65584"
+         style="font-size:189.50328064px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:4.73758173;font-family:Bitstream Vera Sans"
          xml:space="preserve"><tspan
-           style="stroke-width:6.40916586"
-           y="534.83545"
-           x="379.21576"
+           style="stroke-width:4.73758173"
+           y="783.09497"
+           x="222.65584"
            id="tspan3644"
            sodipodi:role="line">_</tspan></text>
     </g>
