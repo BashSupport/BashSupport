@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2013-01-23
+  ~ Last modified: 2013-01-25
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -46,169 +46,14 @@
             <li>Fixed icons to look better with Darcula</li>
        </ul>
 
-       <b>Changes in version 1.1beta12:</b>
+       <b>Recent changes:</b>
        <ul>
          <li>Fixed flashing gutter icons</li>
-       </ul>
-
-       <b>Changes in version 1.1beta11:</b>
-       <ul>
-         <li>Fixed abstract method errors with IntelliJ IDEA 12</li>
          <li>Improved parsing of parameter expansion (i.e. the parsing of the / operator)</li>
          <li>Added parsing of history expansions                                        </li>
          <li>Fixed parsing of single ! tokens                                           </li>
          <li>Fix to allow umlaut characters in command names and arguments.        </li>
-         <li>Fixed testcases to work with IntelliJ IDEA 123.4                           </li>
        </ul>
-
-       <b>Changes in version 1.1beta10:</b>
-       <ul>
-        <li>Fixed abstract method errors with builds >= 121 </li>
-       </ul>
-
-       <b>Changes in version 1.1beta9:</b>
-       <ul>
-            <li>Compatibility with IntelliJ IDEA 12 plattform builds</li>
-       </ul>
-
-       <b>Changes in version 1.1beta8:</b>
-       <ul>
-            <li>Compatibility with IntelliJ IDEA 11.1 plattform builds</li>
-       </ul>
-
-       <b>Changes in version 1.1beta7:</b>
-       <ul>
-         <li>Possible fix for the "marker not closed" exception</li>
-       </ul>
-
-       <b>Changes in version 1.1beta6:</b>
-       <ul>
-         <li>Compatibility with 11.1 EAP</li>
-         <li>Possible fix for exception "StringIndexOutOfBoundsException"   </li>
-         <li>Less inspection warnings                                       </li>
-         <li>Hopefully fixed "marker not closed" exception                  </li>
-         <li>Better error messages for empty loop bodies                    </li>
-       </ul>
-
-       <b>Changes in version 1.1beta5:</b>
-       <ul>
-            <li>Parser fixes</li>
-            <li>Enabled debug mode for beta releases to get better catch parsing exceptions</li>
-            <li>Fixed several parsing exceptions</li>
-       </ul>
-
-       <b>Changes in version 1.1beta4:</b>
-       <ul>
-            <li>Fixed parsing of nested strings (regression in 1.1beta3)</li>
-            <li>Performance improvements</li>
-            <li>Parser improvements</li>
-       </ul>
-
-       <b>Changes in version 1.1beta3:</b>
-       <ul>
-            <li>Parser improvements</li>
-       </ul>
-
-       <b>Changes in version 1.1beta2:</b>
-       <ul>
-            <li>Compatible with the IntelliJ IDEA 11 beta2 (build 111+)
-            <li>Parser fixes</li>
-       </ul>
-
-       <b>Changes in version 1.1beta1:</b>
-       <ul>
-        <li>Compatible with IntelliJ 11 EAP or later</li>
-        <li>Parser improvements</li>
-       </ul>
-
-       <b>Changes in version 1.0:</b>
-       <ul>
-        <li>Compatible with IntelliJ 10.5 or later</li>
-        <li>The Bash REPL now uses Enter instead of Ctrl+Enter</li>
-        <li>Removed Java options tab from Bash run configuration settings</li>
-       </ul>
-
-       <b>Changes in version 0.9.23:</b>
-       <ul>
-        <li>Fixed exception which occurred when editing external files</li>
-       </ul>
-
-       <b>Changes in version 0.9.22:</b>
-       <ul>
-        <li>Restored documentation lookup for internal and external commands</li>
-        <li>#47: Lexer fixed to parse ${_a}</li>
-        <li>#46: Default value with parentheses not parsed correctly</li>
-        <li>Find usages enabled on function definitions</li>
-        <li>Improved performance of parsing files which contain include files</li>
-        <li>Inspection to detect array use of simple variables</li>
-        <li>Inspection to detect simple use of array variables</li>
-        <li>It is possible now to define functions which have the same name as built-in Bash commands</li>
-        <li>Inspection to mark functions which override built-in Bash commands</li>
-       </ul>
-
-       <b>Changes in version 0.9.21:</b>
-       <ul>
-         <li>(Almost) full support for arrays</li>
-         <li>Fixed unused function inspection in files which reference elements in files which include the current file</li>
-         <li>Compatible with PyCharm 1.2</li>
-       </ul>
-
-       <b>Changes in version 0.9.20:</b>
-       <ul>
-         <li>Fixed detection of deep recursive file include loops</li>
-         <li>Ctrl+B on file references (e.g. in include command) is supported now</li>
-         <li>Issue #35: Math calculations using square brackets not supported</li>
-         <li>Improved autocompletion</li>
-         <li>Fixed exception if an included file was not a Bash file</li>
-       </ul>
-
-       <b>Changes in version 0.9.19:</b>
-       <ul>
-         <li>Documentation lookup for variable definitions, the comment before the definition is displayed, if available</li>
-         <li>Variable completion from included files</li>
-         <li>Autocompletion inside of ${}</li>
-         <li>Globals and built-ins are now offered after second completion call, if enabled</li>
-         <li>Support for include files and contained elements (find references, rename, go to defintion, ...)</li>
-         <li>Issue #32: Length-function not supported: Expected a command</li>
-         <li>Issue #34: Unresolved variable in string definition</li>
-         <li>Issue #35: Math calculations using square brackets not supported</li>
-         <li>Issue #36: Incorrect inspection of unused parameter when using $* inside function</li>
-       </ul>
-
-       <b>Changes in version 0.9.18:</b>
-       <ul>
-         <li>New inspection to convert a simple variable usage $a to the equivalent parameter expansion ${a}</li>
-         <li>New inspection to highlight unused parameter values for function calls</li>
-         <li>New inspection to highlight unused function definitions</li>
-         <li>Bugfix: A duplicate function definition on the global level is highlighted again</li>
-         <li>Fixed exception which occured while editing the shebang line of a script</li>
-         <li>Inline renaming of variables inside of parameter expansion elements</li>
-         <li>Fixed parsing of HereDocs with single quote markers, i.e. started with &lt;&lt;'EOF'</li>
-         <li>Fixed parsing of variables in evaluating heredocs</li>
-         <li>Compatible with the build number range of PyCharm 1.1</li>
-         <li>Bugfixes</li>
-       </ul>
-
-       <b>Recent changes:</b>
-       <ul>
-          <li>Support for the "readonly" command</li>
-          <li>New inspection to detect changes to read-only variables</li>
-          <li>New inspection to detect changes to shell read-only variables, $EUID for example</li>
-          <li>New inspection which detects integer division with a remainder</li>
-          <li>Fixed variable renaming of ${a} variables</li>
-          <li>Compatibility with RubyMine 2.0.2</li>
-          <li>Fixed for heredoc folding and highlighting</li>
-          <li>A process started withing a run script action is terminated when the stop button is pressed    </li>
-          <li>Removed global settings, these are project settings now</li>
-          <li>Arithmetic expressions are supported now, including variable declarations</li>
-          <li>Color configuration for heredoc start and end markers</li>
-          <li>New Bashsupport facet to configure which files without extensions are Bash scripts</li>
-          <li>Source code released, licensed under the terms of the Apache License 2.0</li>
-          <li>Path/file completion/</li>
-          <li>Configurable support for Bash version 4.0.</li>
-          <li>Expansions now can be replaced with the evaluated result.</li>
-          <li>Basic code formatter, not yet configurable (experimental, use at your own risk).</li>
-        </ul>
     </html>
     ]]>
     </change-notes>
@@ -281,6 +126,8 @@
                            implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>
         <colorSettingsPage
                 implementation="com.ansorgit.plugins.bash.editor.highlighting.BashColorsAndFontsPage"/>
+
+        <!--<bundledColorSchemesProvider implementation="com.ansorgit.plugins.bash.editor.highlighting.BashColorSchemeProvider"/>-->
 
         <!--Language extensions -->
         <lang.braceMatcher language="Bash"

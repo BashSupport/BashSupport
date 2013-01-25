@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionDefImpl.java, Class: BashFunctionDefImpl
- * Last modified: 2012-12-19
+ * Last modified: 2013-01-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.function;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
-import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
@@ -103,16 +103,16 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
         return body != null && body.isCommandGroup();
     }
 
-    Key<BashSymbol> NAME_SYMBOL_KEY = Key.create("nameSymbol");
+    Key<BashFunctionDefName> NAME_SYMBOL_KEY = Key.create("nameSymbol");
 
-    public BashSymbol getNameSymbol() {
-//        BashSymbol cached = getUserData(NAME_SYMBOL_KEY);
+    public BashFunctionDefName getNameSymbol() {
+//        BashFunctionDefName cached = getUserData(NAME_SYMBOL_KEY);
 //        if (cached != null) {
 //            return cached;
 //        }
 
 
-        final BashSymbol nameWord = findChildByClass(BashSymbol.class);
+        final BashFunctionDefName nameWord = findChildByClass(BashFunctionDefName.class);
 
         if (log.isDebugEnabled()) {
             log.debug("getNameSymbole result: " + nameWord);
@@ -151,7 +151,7 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
 //            return cachedName;
 //        }
 
-        final BashSymbol symbol = getNameSymbol();
+        final BashFunctionDefName symbol = getNameSymbol();
         String result = symbol == null ? "" : symbol.getNameString();
 
         putUserData(DEFINED_NAME_KEY, result);

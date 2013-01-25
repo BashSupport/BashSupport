@@ -1,24 +1,23 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-01-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
@@ -32,7 +31,6 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashIncludeCommandEleme
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashStubFileElementType;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarDefElementType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 
 /**
@@ -59,7 +57,7 @@ public interface BashElementTypes {
     IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
 
-    IElementType SYMBOL_ELEMENT = new BashElementType("named symbol");
+    IElementType FUNCTION_DEF_NAME_ELEMENT = new BashElementType("named symbol");
 
     //redirect elements
     IElementType REDIRECT_LIST_ELEMENT = new BashElementType("redirect list");

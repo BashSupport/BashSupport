@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLineMarkerProvider.java, Class: BashLineMarkerProvider
- * Last modified: 2012-12-19   
+ * Last modified: 2013-01-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashSymbol;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
@@ -40,8 +40,8 @@ public class BashLineMarkerProvider implements com.intellij.codeInsight.daemon.L
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
-        if (element instanceof BashSymbol && element.getParent() instanceof BashFunctionDef) {
-            return new LineMarkerInfo<BashSymbol>((BashSymbol) element, element.getTextRange(), Icons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
+        if (element instanceof BashFunctionDefName && element.getParent() instanceof BashFunctionDef) {
+            return new LineMarkerInfo<BashFunctionDefName>((BashFunctionDefName) element, element.getTextRange(), Icons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
         }
 
         return null;
