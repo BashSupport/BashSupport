@@ -1,7 +1,7 @@
 /*
  * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2012-12-19
+ * Last modified: 2013-01-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.IncrementExpression;
@@ -74,7 +75,14 @@ public class BashAnnotator implements Annotator {
             annotateSubshell(element, annotationHolder);
         } else if (element instanceof IncrementExpression) {
             annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
+        } else if (element instanceof BashFunctionDefName) {
+            annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
         }
+    }
+
+    private void annotateFunctionDef(BashFunctionDefName functionName, AnnotationHolder annotationHolder) {
+        Annotation annotation = annotationHolder.createInfoAnnotation(functionName, null);
+        annotation.setTextAttributes(BashSyntaxHighlighter.FUNCTION_DEF_NAME);
     }
 
     private void annotateArithmeticIncrement(IncrementExpression element, AnnotationHolder annotationHolder) {

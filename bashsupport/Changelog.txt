@@ -1,3 +1,7 @@
+2013-01-25:
+ - Rework of the syntac highlighting configuration
+ - Added highlighting for function name in a function definition
+
 2013-01-23:
  - Compatibility with 121 for PyCharm 2.6 and others
  - Fixed icons to look better with Darcula

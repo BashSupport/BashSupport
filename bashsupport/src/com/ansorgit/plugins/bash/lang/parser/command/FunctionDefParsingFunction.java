@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-01-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.command;
 
@@ -73,7 +73,7 @@ public class FunctionDefParsingFunction implements ParsingFunction {
                 return false;
             }
 
-            nameMarker.done(BashElementTypes.SYMBOL_ELEMENT);
+            nameMarker.done(BashElementTypes.FUNCTION_DEF_NAME_ELEMENT);
 
             //optional ()
             if (builder.getTokenType() == BashTokenTypes.LEFT_PAREN) {
@@ -87,7 +87,7 @@ public class FunctionDefParsingFunction implements ParsingFunction {
             }
         } else if (firstToken == BashTokenTypes.WORD) {
             //parse something like a()
-            ParserUtil.markTokenAndAdvance(builder, BashElementTypes.SYMBOL_ELEMENT);
+            ParserUtil.markTokenAndAdvance(builder, BashElementTypes.FUNCTION_DEF_NAME_ELEMENT);
 
             final IElementType leftBracket = ParserUtil.getTokenAndAdvance(builder);
             if (leftBracket != BashTokenTypes.LEFT_PAREN) {
