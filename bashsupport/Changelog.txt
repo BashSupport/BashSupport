@@ -1,3 +1,6 @@
+2013-01-30:
+ - Changed file template to use /bin/bash instead of /bin/sh
+
 2013-01-25:
  - Rework of the syntac highlighting configuration
  - Added highlighting for function name in a function definition
