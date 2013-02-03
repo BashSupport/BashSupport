@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: CommandNameCompletionProvider.java, Class: CommandNameCompletionProvider
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-02-03
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
@@ -25,7 +25,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionVariantsProcessor;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.intellij.codeInsight.completion.*;
+import com.google.common.collect.Lists;
+import com.intellij.codeInsight.completion.CompletionContributor;
+import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.patterns.ElementPattern;
@@ -33,14 +37,16 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.Icons;
 import com.intellij.util.ProcessingContext;
 
+import java.io.File;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
- * User: jansorg
- * Date: 07.02.11
- * Time: 18:28
+ * Provides command completion.
  */
 class CommandNameCompletionProvider extends BashCompletionProvider {
     @Override
@@ -97,8 +103,23 @@ class CommandNameCompletionProvider extends BashCompletionProvider {
                 Collection<LookupElement> globals = CompletionProviderUtils.createItems(LanguageBuiltins.commands_v4, BashIcons.GLOBAL_VAR_ICON);
                 commandResult.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalCommand.ordinal(), globals));
             }
+
+            if (BashProjectSettings.storedSettings(project).isAutocompletePathCommands()) {
+                //complete the current input with the executables found in $PATH
+                try {
+                    List<File> commandNames = BashPathCommandCompletion.getInstance().findCommands(currentText);
+                    List<String> commandList = Lists.newLinkedList();
+                    for (File commandName : commandNames) {
+                        commandList.add(commandName.getName());
+                    }
+
+                    commandResult.addAllElements(CompletionProviderUtils.createItems(commandList, Icons.FILE_ICON));
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } else {
-            CompletionService.getCompletionService().setAdvertisementText("Press twice for built-in commands");
+            result.addLookupAdvertisement("Press twice for built-in and system-wide commands");
         }
     }
 }

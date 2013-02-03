@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2013-01-25
+  ~ Last modified: 2013-02-03
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -65,6 +65,11 @@
 
         <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.facet.BashFacetLoader</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion
+            </implementation-class>
         </component>
     </application-components>
 

@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
  * File: BashProjectSettingsPane.java, Class: BashProjectSettingsPane
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-02-03
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.settings;
 
@@ -37,6 +37,7 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox autocompleteInternalVars;
     private JCheckBox autocompleteInternalCommands;
     private JCheckBox enableFormatterCheckbox;
+    private JCheckBox autocompletePathCommands;
 
     public void dispose() {
     }
@@ -47,7 +48,9 @@ public class BashProjectSettingsPane implements Disposable {
         bash4Support.setSelected(settings.isSupportBash4());
         autocompleteInternalCommands.setSelected(settings.isAutocompleteBuiltinCommands());
         autocompleteInternalVars.setSelected(settings.isAutocompleteBuiltinVars());
+        autocompletePathCommands.setSelected(settings.isAutocompletePathCommands());
         enableFormatterCheckbox.setSelected(settings.isFormatterEnabled());
+
     }
 
     public void storeSettings(BashProjectSettings settings) {
@@ -57,6 +60,7 @@ public class BashProjectSettingsPane implements Disposable {
         settings.setAutocompleteBuiltinCommands(autocompleteInternalCommands.isSelected());
         settings.setAutocompleteBuiltinVars(autocompleteInternalVars.isSelected());
         settings.setFormatterEnabled(enableFormatterCheckbox.isSelected());
+        settings.setAutocompletePathCommands(autocompletePathCommands.isSelected());
     }
 
     public boolean isModified(BashProjectSettings settings) {
@@ -65,7 +69,8 @@ public class BashProjectSettingsPane implements Disposable {
                 bash4Support.isSelected() != settings.isSupportBash4() ||
                 autocompleteInternalVars.isSelected() != settings.isAutocompleteBuiltinVars() ||
                 autocompleteInternalCommands.isSelected() != settings.isAutocompleteBuiltinCommands() ||
-                enableFormatterCheckbox.isSelected() != settings.isFormatterEnabled();
+                enableFormatterCheckbox.isSelected() != settings.isFormatterEnabled() ||
+                autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands();
     }
 
     public JPanel getPanel() {
@@ -81,5 +86,8 @@ public class BashProjectSettingsPane implements Disposable {
             return Collections.emptySet();
         }
         return new HashSet<String>(Arrays.asList(data.split("\\n").clone()));
+    }
+
+    private void createUIComponents() {
     }
 }
