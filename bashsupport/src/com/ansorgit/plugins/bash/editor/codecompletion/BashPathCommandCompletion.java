@@ -18,10 +18,6 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Lists;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
@@ -29,22 +25,20 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.TreeSet;
 
 /**
+ * Implements cached lookup of the global commands which are available in the configured paths of $PATH.
+ *
+ * @author jansorg
  */
 public class BashPathCommandCompletion implements ApplicationComponent {
     public static BashPathCommandCompletion getInstance() {
         return ApplicationManager.getApplication().getComponent(BashPathCommandCompletion.class);
     }
 
-    //manages the list of executables found in a given path prefix
-    LoadingCache<String, List<File>> pathCache = CacheBuilder.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build(new StringListCacheLoader());
-
-    private List<String> environmentPaths = Collections.emptyList();
+    //may only be modified in the initComponent method, because it's not serialzed
+    private final TreeSet<String> cachedCommands = new TreeSet<String>();
 
     @Override
     public void initComponent() {
@@ -52,7 +46,17 @@ public class BashPathCommandCompletion implements ApplicationComponent {
         if (envPath != null) {
             String[] split = envPath.split(":");
             if (split != null) {
-                environmentPaths = Arrays.asList(split);
+                //fixme better do this in a background task?
+                for (String path : Arrays.asList(split)) {
+                    File dir = new File(path);
+                    if (dir.exists() && dir.isDirectory()) {
+                        File[] commands = dir.listFiles(new ExecutableFileFilter());
+
+                        for (File command : commands) {
+                            cachedCommands.add(command.getName());
+                        }
+                    }
+                }
             }
         }
     }
@@ -64,24 +68,37 @@ public class BashPathCommandCompletion implements ApplicationComponent {
     @NotNull
     @Override
     public String getComponentName() {
-        return "Bash $PATH command completion";
+        return "Bash $PATH command completion component";
     }
 
-    public List<File> findCommands(String currentText) throws ExecutionException {
-        List<File> result = Lists.newLinkedList();
+    public Iterable<String> findCommands(String commandPrefix) {
+        return cachedCommands.subSet(commandPrefix, findUpperLimit(commandPrefix));
+    }
 
-        for (String prefix : environmentPaths) {
-            List<File> files = pathCache.get(prefix);
-            if (files != null) {
-                for (File file : files) {
-                    if (file.getName().startsWith(currentText)) {
-                        result.add(file);
-                    }
-                }
-            }
+    /**
+     * Find the upper limit of the TreeSet map lookup. E.g. "git" has a upper lookup limit of "giu" (exclusive).
+     *
+     * @param prefix The prefix which should be used to retrieve all keys which start with this value
+     * @return The key to use for the upper limit l
+     */
+    protected String findUpperLimit(String prefix) {
+        if (prefix.isEmpty()) {
+            return "z";
         }
 
-        return result;
+        if (prefix.length() == 1) {
+            char c = prefix.charAt(0);
+            return c < 'z' ? Character.toString((char) (c + 1)) : "z";
+        }
+
+        //change the last character to 'z' to create the lookup range
+        //if it already is 'z' then cut it of and call again with the substring
+        char lastChar = prefix.charAt(prefix.length() - 1);
+        if (lastChar < 'z') {
+            return prefix.substring(0, prefix.length() - 1) + Character.toString((char) (lastChar + 1));
+        }
+
+        return findUpperLimit(prefix.substring(0, prefix.length() - 1));
     }
 
     private static final class ExecutableFileFilter implements FileFilter {
@@ -91,19 +108,6 @@ public class BashPathCommandCompletion implements ApplicationComponent {
         @Override
         public boolean accept(File file) {
             return file.isFile() && file.canExecute() && file.canRead();
-        }
-    }
-
-    private static final class StringListCacheLoader extends CacheLoader<String, List<File>> {
-        StringListCacheLoader() {
-        }
-
-        @Override
-        public List<File> load(String pathName) throws Exception {
-            File path = new File(pathName);
-            File[] executables = path.listFiles(new ExecutableFileFilter());
-
-            return executables != null ? Arrays.asList(executables) : Collections.<File>emptyList();
         }
     }
 }
