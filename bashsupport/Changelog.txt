@@ -1,13 +1,17 @@
 2013-02-03:
- - Autocompletion of commands using the user's $PATH environment
+ - Autocompletion of commands using the user's $PATH environment. Autocompletion shows on second completion invocation.
  - Setting to disable autocompletion of commands using $PATH
 
 2013-01-30:
- - Changed file template to use /bin/bash instead of /bin/sh
+ - Changed Bash file template to use /bin/bash instead of /bin/sh
 
 2013-01-25:
- - Rework of the syntac highlighting configuration
+ - Rework of the syntax highlighting configuration
+ - Highlighting settings should be properly saved now
  - Added highlighting for function name in a function definition
+
+2013-01-24:
+ - 1.1beta13
 
 2013-01-23:
  - Compatibility with 121 for PyCharm 2.6 and others
