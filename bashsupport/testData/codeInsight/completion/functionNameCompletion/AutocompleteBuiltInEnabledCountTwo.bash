@@ -1,11 +1,11 @@
 #!/bin/sh
 
-function echo123() {
+function disown123() {
     echo 123
 }
 
-ech<caret>
+disown<caret>
 
-function echo123After() {
+function disown123DefinedLater() {
     echo 123
 }
