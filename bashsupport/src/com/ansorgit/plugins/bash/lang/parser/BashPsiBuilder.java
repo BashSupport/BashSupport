@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-04-10
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser;
 
@@ -88,11 +88,11 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     @Nullable
     public IElementType getRemappingTokenType() {
         try {
-            getParsingState().enterSimpleCommand();
+            parsingStateData.enterSimpleCommand();
 
             return getTokenType();
         } finally {
-            getParsingState().leaveSimpleCommand();
+            parsingStateData.leaveSimpleCommand();
         }
     }
 
@@ -171,7 +171,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
         return hereDocData;
     }
 
-    public ParsingStateData getParsingState() {
+    public final ParsingStateData getParsingState() {
         return parsingStateData;
     }
 
@@ -204,7 +204,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
      * @param message The message to report.
      */
     public void error(String message) {
-        if (getErrorReportingStatus()) {
+        if (isErrorReportingEnabled()) {
             myDelegate.error(message);
         } else if (log.isDebugEnabled()) {
             log.debug("Supressed psi error: " + message);
@@ -225,7 +225,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
      */
     @Override
     public Marker mark() {
-        return new BashPsiMarker(myDelegate.mark());
+        return new BashPsiMarker(this, myDelegate.mark());
     }
 
     /**
@@ -233,7 +233,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
      *
      * @return True if errors should be reported. False if not.
      */
-    boolean getErrorReportingStatus() {
+    boolean isErrorReportingEnabled() {
         return errorsStatusStack.isEmpty() || errorsStatusStack.peek();
     }
 
@@ -242,10 +242,12 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
      *
      * @author Joachim Ansorg, mail@ansorg-it.com
      */
-    // fixme is this class still required?
-    private final class BashPsiMarker extends ForwardingMarker implements Marker {
-        protected BashPsiMarker(final Marker original) {
+    private static final class BashPsiMarker extends ForwardingMarker implements Marker {
+        private final BashPsiBuilder bashPsiBuilder;
+
+        protected BashPsiMarker(BashPsiBuilder bashPsiBuilder, final Marker original) {
             super(original);
+            this.bashPsiBuilder = bashPsiBuilder;
         }
 
         @Override
@@ -258,7 +260,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
 
         @Override
         public void error(final String errorMessage) {
-            if (BashPsiBuilder.this.getErrorReportingStatus()) {
+            if (bashPsiBuilder.isErrorReportingEnabled()) {
                 original.error(errorMessage);
             } else {
                 drop();

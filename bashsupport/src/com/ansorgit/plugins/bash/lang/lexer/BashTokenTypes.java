@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2011-06-23 16:39
+ * Last modified: 2013-04-06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
@@ -170,13 +170,13 @@ public interface BashTokenTypes {
     //fixme missing: |
 
     //arithmetic operators: assign
-    IElementType ARITH_ASS_MUL = new BashElementType("*=");// *=
-    IElementType ARITH_ASS_DIV = new BashElementType("/=");// /=
-    IElementType ARITH_ASS_MOD = new BashElementType("%=");// /=
-    IElementType ARITH_ASS_PLUS = new BashElementType("+=");// /=
-    IElementType ARITH_ASS_MINUS = new BashElementType("-=");// /=
-    IElementType ARITH_ASS_SHIFT_RIGHT = new BashElementType(">>=");// /=
-    IElementType ARITH_ASS_SHIFT_LEFT = new BashElementType("<<=");// /=
+    IElementType ARITH_ASS_MUL = new BashElementType("*= arithmetic");// *=
+    IElementType ARITH_ASS_DIV = new BashElementType("/= arithmetic");// /=
+    IElementType ARITH_ASS_MOD = new BashElementType("%= arithmetic");// /=
+    IElementType ARITH_ASS_PLUS = new BashElementType("+= arithmetic");// /=
+    IElementType ARITH_ASS_MINUS = new BashElementType("-= arithmetic");// /=
+    IElementType ARITH_ASS_SHIFT_RIGHT = new BashElementType(">>= arithmetic");// /=
+    IElementType ARITH_ASS_SHIFT_LEFT = new BashElementType("<<= arithmetic");// /=
     //    IElementType ARITH_ASS_SHIFT_AND = new BashElementType("/=");// /=
     //fixme missing: &= |= ^=, = ","
 
