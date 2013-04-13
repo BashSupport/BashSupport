@@ -1,7 +1,7 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: CaseParsingTest.java, Class: CaseParsingTest
- * Last modified: 2009-12-04
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
+ * File: CaseParsingFunctionTest.java, Class: CaseParsingFunctionTest
+ * Last modified: 2013-04-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  * @author Joachim Ansorg
  */
-public class CaseParsingTest extends MockPsiTest {
+public class CaseParsingFunctionTest extends MockPsiTest {
     private final MockFunction caseTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
@@ -111,6 +111,13 @@ public class CaseParsingTest extends MockPsiTest {
         mockTest(caseTest,
                 CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
                 ESAC_KEYWORD, SEMI);
+    }
+
+    @Test
+    public void testMultiwordPattern() throws Exception {
+        //case a in "a b") echo a;; esac;
+        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, WORD, WHITESPACE, WORD, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD, SEMI);
+
     }
 
     @Test

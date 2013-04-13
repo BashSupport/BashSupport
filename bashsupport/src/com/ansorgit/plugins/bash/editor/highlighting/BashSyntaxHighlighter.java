@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashSyntaxHighlighter.java, Class: BashSyntaxHighlighter
- * Last modified: 2013-01-25
+ * Last modified: 2013-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TokenSet bracketSet = TokenSet.create(BashTokenTypes.LEFT_SQUARE, BashTokenTypes.RIGHT_SQUARE);
     private static final TokenSet numberSet = TokenSet.create(BashTokenTypes.NUMBER, BashTokenTypes.INTEGER_LITERAL);
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
+
+    public static final TextAttributes NONE_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();
 
     //custom highlightings
     private static final TextAttributes REDIRECTION_ATTRIB = HighlighterColors.TEXT.getDefaultAttributes().clone();

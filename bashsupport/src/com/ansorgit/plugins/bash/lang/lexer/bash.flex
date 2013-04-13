@@ -148,8 +148,8 @@ BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst=[^|)(# \n\r\f\t\f]
-CaseAfter=[^|)( \n\r\f\t\f;]
+CaseFirst=[^|\")(# \n\r\f\t\f]
+CaseAfter=[^|\")( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
@@ -513,7 +513,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_CASE_PATTERN> {
   "esac"                        { backToPreviousState(); yypushback(yylength()); }
-  {CasePattern}                 { return WORD; }
   ")"                           { backToPreviousState(); yypushback(1); }
 }
 
@@ -683,6 +682,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
 
     "\\"                          { return BACKSLASH; }
+}
+
+<S_CASE_PATTERN> {
+  {CasePattern}                 { return WORD; }
 }
 
 <YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {

@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2013-01-25
+ * Last modified: 2013-02-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,8 +98,10 @@ public class BashAnnotator implements Annotator {
 
     private void annotateWord(PsiElement bashWord, AnnotationHolder annotationHolder) {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
-        Annotation annotation = annotationHolder.createInfoAnnotation(bashWord, null);
-        annotation.setTextAttributes(BashSyntaxHighlighter.NONE);
+        Annotation annotation = annotationHolder.createInfoAnnotation(bashWord, "override");
+        annotation.setEnforcedTextAttributes(BashSyntaxHighlighter.NONE_ATTRIB);
+        annotation.setTextAttributes(BashSyntaxHighlighter.HERE_DOC_START);
+        annotation.setNeedsUpdateOnTyping(false);
     }
 
     private void annotateString(PsiElement bashString, final AnnotationHolder holder) {

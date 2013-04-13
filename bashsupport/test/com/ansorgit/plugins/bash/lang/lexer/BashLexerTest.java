@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2010-11-02
+ * Last modified: 2013-04-13
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,6 +178,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testLetExpressions() throws Exception {
+        testTokenization("let a+=1", WORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, NUMBER);
+    }
+
+    @Test
     public void testShebang() {
         testTokenization("#!", SHEBANG);
 
@@ -304,6 +309,9 @@ public class BashLexerTest {
         testTokenization("\\!", WORD);
         //fixme: line continuation, check with spec
         //testTokenization("abc\\\nabc", WORD);
+
+        //no escape char here
+        testTokenization("'$a\\' 'a'", STRING2, WHITESPACE, STRING2);
     }
 
     @Test
@@ -558,14 +566,17 @@ public class BashLexerTest {
                 LINE_FEED, WHITESPACE, WHITESPACE,
                 WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
 
+        testTokenization("case a in \"a b\") echo a;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN,
+                WHITESPACE, WORD, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+
         //v3 vs. v4 changes in end marker
         testTokenization(BashVersion.Bash_v4, "case a in a);;& esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
                 WHITESPACE, WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
         testTokenization(BashVersion.Bash_v3, "case a in a);;& esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
-                WHITESPACE, WORD, RIGHT_PAREN, CASE_END, WORD, WHITESPACE, ESAC_KEYWORD);
-        //fixme should be AMP instead of WORD in the last part
+                WHITESPACE, WORD, RIGHT_PAREN, CASE_END, AMP, WHITESPACE, ESAC_KEYWORD);
 
         //v3 vs. v4 changes in new end marker
         testTokenization(BashVersion.Bash_v4, "case a in a);& esac",
@@ -573,8 +584,7 @@ public class BashLexerTest {
                 WHITESPACE, WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
         testTokenization(BashVersion.Bash_v3, "case a in a);& esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
-                WHITESPACE, WORD, RIGHT_PAREN, SEMI, WORD, WHITESPACE, ESAC_KEYWORD);
-        //fixme should be AMP instead of WORD in the last part
+                WHITESPACE, WORD, RIGHT_PAREN, SEMI, AMP, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in a=a) echo a;; esac;",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
