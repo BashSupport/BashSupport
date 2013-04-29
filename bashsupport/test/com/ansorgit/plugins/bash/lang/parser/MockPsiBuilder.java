@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2010-10-05
+ * Last modified: 2013-04-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,9 +124,10 @@ public class MockPsiBuilder implements PsiBuilder {
     }
 
 
-    public void remapCurrentToken(IElementType iElementType) {
-        //fixme
-        throw new UnsupportedOperationException();
+    public void remapCurrentToken(IElementType newTokenType) {
+        //position the current element pointer
+        getTokenType();
+        elements.set(elementPosition, newTokenType);
     }
 
     public void setWhitespaceSkippedCallback(WhitespaceSkippedCallback whitespaceSkippedCallback) {

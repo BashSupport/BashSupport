@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2013-04-06
+ * Last modified: 2013-04-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,6 +95,13 @@ public interface BashTokenTypes {
             TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
             CASE_END, DOLLAR,
             EXPR_ARITH, _EXPR_ARITH, EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
+
+    //these are keyword tokens which may be used as identifiers, e.g. in a for loop
+    //these tokens will be remapped to word tokens if they occur at a position where a word token would be accepted
+    TokenSet identifierKeywords = TokenSet.create(
+            CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, ESAC_KEYWORD, FI_KEYWORD, FOR_KEYWORD, FUNCTION_KEYWORD,
+            IF_KEYWORD, IN_KEYWORD, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD, TIME_KEYWORD
+    );
 
     //here doc and here string
     IElementType HERE_STRING = new BashElementType("<<<");//<<<
