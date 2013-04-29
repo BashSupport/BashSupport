@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: ForLoopParsingFunction.java, Class: ForLoopParsingFunction
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-04-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
@@ -43,7 +43,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
         return builder.getTokenType() == FOR_KEYWORD || isArithmeticForLoop(builder);
     }
 
-    private boolean isArithmeticForLoop(BashPsiBuilder builder) {
+    private boolean isArithmeticForLoop(PsiBuilder builder) {
         return ParserUtil.hasNextTokens(builder, false, FOR_KEYWORD, EXPR_ARITH);
     }
 
@@ -78,7 +78,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
         //now just a single word
         if (ParserUtil.isIdentifier(builder.getTokenType())) {
             //mark the word as var
-            ParserUtil.markTokenAndAdvance(builder, VAR_DEF_ELEMENT);
+            ParserUtil.remapMarkAdvance(builder, WORD, VAR_DEF_ELEMENT);
         } else {
             forLoop.drop();
             ParserUtil.error(builder, "parser.shell.for.expectedWord");
