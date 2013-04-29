@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2012-12-19
+ * Last modified: 2013-04-29
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -35,7 +36,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
@@ -51,7 +51,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -154,7 +153,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     }
 
     public boolean hasAssignments() {
-        return assignments().size() > 0;
+        return findChildByType(BashElementTypes.VAR_DEF_ELEMENT) != null;
     }
 
     public PsiElement commandElement() {
@@ -181,8 +180,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         return result;
     }
 
-    public List<BashVarDef> assignments() {
-        return Arrays.asList(findChildrenByClass(BashVarDef.class));
+    public BashVarDef[] assignments() {
+        return findChildrenByClass(BashVarDef.class);
     }
 
     @Override
@@ -220,7 +219,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
             return null;
         }
 
-        final BashFunctionProcessor processor = new BashFunctionProcessor(referencedName);
+        final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
         boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
         if (!walkOn) {
@@ -243,11 +242,11 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     public PsiElement resolve() {
         PsiElement result = internalResolve();
 
-        if (isExternalCommand() && result == null) {
+        if (result == null && isExternalCommand()) {
             return null;
         }
 
-        if (isInternalCommand() && result == null) {
+        if (result == null && isInternalCommand()) {
             return null;
         }
 
@@ -332,10 +331,6 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
             }
 
             public Icon getIcon(boolean open) {
-                return null;
-            }
-
-            public TextAttributesKey getTextAttributesKey() {
                 return null;
             }
         };
