@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2013-04-29
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class ParserUtil {
      * @param builder Provides the tokens.
      * @return The current token.
      */
-    public static IElementType getTokenAndAdvance(BashPsiBuilder builder) {
+    public static IElementType getTokenAndAdvance(PsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
 
         //no EOF

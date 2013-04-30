@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: LetCommand.java, Class: LetCommand
- * Last modified: 2013-04-06
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
-import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
-import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -31,9 +31,12 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * let Argument [Argument ...]
  * Each argument is evaluated as an arithmetic expression
+ * <p/>
+ * fixme this implementation is not yet complete, currently it is just eating the tokens to avoid syntax error markers
+ * fixme not variable parsing, etc. is done at the moment
  */
 class LetCommand implements ParsingFunction, ParsingTool {
-    private TokenSet END_TOKENS = TokenSet.create(SEMI, LINE_FEED);
+    public static final TokenSet VALID_EXTRA_TOKENS = TokenSet.create(EQ, ADD_EQ, NUMBER, ARITH_PLUS, ARITH_ASS_PLUS);
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
@@ -49,21 +52,18 @@ class LetCommand implements ParsingFunction, ParsingTool {
         //eat the "let" token
         builder.advanceLexer();
 
-        // if (builder.getTokenType(true) == WHITESPACE) {
-        // }
+        boolean ok = true;
 
-        ArithmeticParsingFunction arithParser = ArithmeticFactory.entryPoint();
-        boolean ok = false;
+        PsiBuilder.Marker letExpressionMarker = builder.mark();
 
-        while (builder.getTokenType(true) == WHITESPACE) {
-            //builder.advanceLexer(true);
+        //read the params and redirects
+        boolean paramsAreFine = CommandParsingUtil.readCommandParams(builder, VALID_EXTRA_TOKENS);
 
-            ok = arithParser.parse(builder);
-        }
-
-        if (ok) {
+        if (paramsAreFine) {
+            letExpressionMarker.collapse(BashElementTypes.LET_EXPRESSION);
             marker.done(GENERIC_COMMAND_ELEMENT);
         } else {
+            letExpressionMarker.drop();
             marker.drop();
             builder.error("Expected an arithmetic expression");
         }

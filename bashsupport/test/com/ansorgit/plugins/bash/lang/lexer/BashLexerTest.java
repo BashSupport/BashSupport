@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2013-04-13
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
@@ -537,6 +538,20 @@ public class BashLexerTest {
         testTokenization("echo; #!/bin/sh", WORD, SEMI, WHITESPACE, SHEBANG);
 
         testTokenization("TOMCAT_HOST_LIST[$index]=$LINE", ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE, EQ, VARIABLE);
+
+    }
+
+
+    @Ignore
+    @Test
+    public void testUnsupported() throws Exception {
+
+        //keyword as for loop variable
+        //fixme currently unsupported, the case lexing is not context sensitive (hard to fix)
+        testTokenization("for case in a; do\n" +
+                "echo\n" +
+                "done;", FOR_KEYWORD, WHITESPACE, CASE_KEYWORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
+
     }
 
     @Test

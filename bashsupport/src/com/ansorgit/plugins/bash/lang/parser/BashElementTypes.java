@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2013-01-25
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,4 +137,5 @@ public interface BashElementTypes {
     IElementType HEREDOC_END_MARKER_ELEMENT = new BashElementType("here doc end marker element");
 
     IElementType STRING_ELEMENT = new BashElementType("string");
+    IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
 }
