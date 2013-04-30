@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarUtils.java, Class: BashVarUtils
- * Last modified: 2011-02-10 21:44
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
@@ -51,7 +51,7 @@ public class BashVarUtils {
             //we need to check the offset of top-level elements
             if (referenceElement instanceof BashVar) {
                 BashVar var = (BashVar) referenceElement;
-                BashVarDef referecingDefinition = (BashVarDef) var.resolve();
+                BashVarDef referecingDefinition = (BashVarDef) var.getReference().resolve();
 
                 if (referecingDefinition != null && referecingDefinition.isFunctionScopeLocal()) {
                     return isInDefinedScope(referecingDefinition, definition);

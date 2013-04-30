@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: UnusedFunctionParameterInspection.java, Class: UnusedFunctionParameterInspection
- * Last modified: 2013-04-29
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,18 +92,18 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
             @Override
             public void visitGenericCommand(BashCommand bashCommand) {
                 if (bashCommand.isFunctionCall()) {
-                    BashFunctionDef functionDef = (BashFunctionDef) bashCommand.resolve();
+                    BashFunctionDef functionDef = (BashFunctionDef) bashCommand.getReference().resolve();
                     if (functionDef != null) {
                         List<BashPsiElement> callerParameters = bashCommand.parameters();
                         List<BashVar> usedParameters = functionDef.findReferencedParameters();
 
                         Set<String> definedParamNames = Sets.newHashSet(Lists.transform(usedParameters, new Function<BashVar, String>() {
                             public String apply(BashVar var) {
-                                return var.getReferencedName();
+                                return var.getReference().getReferencedName();
                             }
                         }));
 
-                        //if the parameter count variable is refernced consider all params as used
+                        //if the parameter count variable is referenced consider all params as used
                         if (definedParamNames.contains("*")) {
                             return;
                         }

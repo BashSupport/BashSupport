@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionResolveTestCase.java, Class: FunctionResolveTestCase
- * Last modified: 2010-07-01
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         //Assert.assertFalse(commandElement.isInternalCommand());
         Assert.assertFalse(commandElement.isVarDefCommand());
         Assert.assertFalse(commandElement.isExternalCommand());
-        Assert.assertTrue(commandElement.isReferenceTo(psiReference.resolve()));
+        Assert.assertTrue(commandElement.getReference().isReferenceTo(psiReference.resolve()));
 
         return psiReference;
     }

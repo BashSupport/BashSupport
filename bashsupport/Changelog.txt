@@ -1,6 +1,7 @@
 2013-04-30:
  - Improved parsing of let commands (still incomplete)
  - Improved parsing of variables named like internal bash keywords
+ - Improved performance for large script files (implemented caching references for variables, variable definitions and function definitions)
 
 2013-04-06:
  - Escape chars were used in single quoted strings, but Bash does not allow escaped characters there
