@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: LetCommandTest.java, Class: LetCommandTest
- * Last modified: 2013-04-06
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -75,7 +74,6 @@ public class LetCommandTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
     public void testParse() {
         //let a=1
         mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
