@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -29,8 +30,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
@@ -40,6 +39,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -59,19 +59,22 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  *
  * @author Joachim Ansorg
  */
-public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub>  {
+public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
 
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
 
     private static final Object[] EMPTY_VARIANTS = new Object[0];
+    private final BashReference reference;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
+        reference = new CachedVarDefReference(this);
     }
 
     public BashVarDefImpl(@NotNull BashVarDefStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType, "Bash var def");
+        reference = new CachedVarDefReference(this);
     }
 
     public String getName() {
@@ -228,53 +231,17 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
         return this;
     }
 
+    @NotNull
     @Override
-    public PsiReference getReference() {
-        return this;
-    }
-
-    public TextRange getRangeInElement() {
-        return TextRange.from(0, getReferencedName().length());
-    }
-
-    public PsiElement resolve() {
-        if (isCommandLocal()) {
-            return null;
-        }
-
-        final String varName = getName();
-        if (varName == null) {
-            return null;
-        }
-
-        PsiElement resolveScope = isFunctionScopeLocal() ? findFunctionScope() : getContainingFile();
-
-        BashVarProcessor processor = new BashVarProcessor(this, true);
-        if (!BashPsiUtils.varResolveTreeWalkUp(processor, this, resolveScope, ResolveState.initial())) {
-            return processor.getBestResult(false, this);
-        }
-
-        return null;
+    public BashReference getReference() {
+        return reference;
     }
 
     public PsiElement findFunctionScope() {
         return PsiTreeUtil.getContextOfType(this, BashFunctionDef.class, true);
     }
 
-    @NotNull
-    public String getCanonicalText() {
-        return getReferencedName();
-    }
-
-    public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        return setName(newName);
-    }
-
-    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        throw new IncorrectOperationException("unsupported");
-    }
-
-    public boolean isReferenceTo(PsiElement element) {
+    /*public boolean isReferenceTo(PsiElement element) {
         if (this == element) {
             return true;
         }
@@ -295,14 +262,9 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
         return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);
     }
 
-    @NotNull
-    public Object[] getVariants() {
-        return EMPTY_VARIANTS;
-    }
-
     public boolean isSoft() {
         return false;
-    }
+    }         */
 
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -330,7 +292,7 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
         return false;
     }
 
-    public boolean isArrayUse() {                                                                               //
+    public boolean isArrayUse() {
         return false;
     }
 
@@ -349,5 +311,79 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
 
     public List<PsiComment> findAttachedComment() {
         return BashPsiUtils.findDocumentationElementComments(this);
+    }
+
+    private static final class CachedVarDefReference extends CachingReference implements BashReference {
+        private final BashVarDefImpl bashVarDef;
+
+        public CachedVarDefReference(BashVarDefImpl bashVarDef) {
+            this.bashVarDef = bashVarDef;
+        }
+
+        @Override
+        public String getReferencedName() {
+            return bashVarDef.getReferencedName();
+        }
+
+        @Override
+        public PsiElement getElement() {
+            return bashVarDef;
+        }
+
+        @Override
+        public TextRange getRangeInElement() {
+            return TextRange.from(0, bashVarDef.getReferencedName().length());
+        }
+
+        @NotNull
+        @Override
+        public String getCanonicalText() {
+            return bashVarDef.getReferencedName();
+        }
+
+        @Override
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            bashVarDef.setName(newElementName);
+            return bashVarDef;
+        }
+
+        @Override
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            throw new IncorrectOperationException("unsupported");
+        }
+
+        @NotNull
+        @Override
+        public Object[] getVariants() {
+            return EMPTY_VARIANTS;
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            if (bashVarDef.isCommandLocal()) {
+                return null;
+            }
+
+            final String varName = bashVarDef.getName();
+            if (varName == null) {
+                return null;
+            }
+
+            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : bashVarDef.getContainingFile();
+
+            ResolveProcessor processor = new BashVarProcessor(bashVarDef, true);
+            if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVarDef, resolveScope, ResolveState.initial())) {
+                return processor.getBestResult(false, bashVarDef);
+            }
+
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public String getUnresolvedMessagePattern() {
+            return "unresolved";
+        }
     }
 }

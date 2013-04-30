@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: VarDefResolveTestCase.java, Class: VarDefResolveTestCase
- * Last modified: 2010-07-12
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         BashVarDef ref = assertIsValidVarDef();
 
         //we check on global level, our var def must not resolve this this var def again, because our ref element is after the var def
-        PsiElement varDefDef = ref.resolve();
+        PsiElement varDefDef = ref.getReference().resolve();
         Assert.assertNull("ref must not resolve to anything else: " + ref, varDefDef);
     }
 
@@ -107,7 +107,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         //the inner var def must not resolve to the global variable definition
         BashVarDef varDef = assertIsValidVarDef();
         Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) != null);
-        Assert.assertNull(varDef.resolve());
+        Assert.assertNull(varDef.getReference().resolve());
     }
 
     public void testResolveFunctionDefToGlobalDef() throws Exception {

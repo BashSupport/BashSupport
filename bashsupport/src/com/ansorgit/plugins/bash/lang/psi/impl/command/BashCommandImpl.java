@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2013-04-29
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
@@ -32,16 +33,19 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
@@ -51,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +70,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
     private final static Key<Boolean> KEY_INTERNAL = Key.create("internal");
     private final static Key<Boolean> KEY_EXTERNAL = Key.create("external");
 
-    private PsiReference commandReference = new SelfReference();
+    private PsiReference commandReference = new SelfReference<T>(this);
+    private PsiReference functionReference = new CachedFunctionReference<T>(this);
 
     public BashCommandImpl(ASTNode astNode) {
         this(astNode, "Bash command");
@@ -124,7 +130,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
             return false;
         }
 
-        return node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && internalResolve() != null;
+        return node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && doResolve() != null;
     }
 
     public boolean isInternalCommand() {
@@ -138,7 +144,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         //otherwise we might still have isExternal set to true even if a
         //a target exists now, e.g. a Bash function with the right name
         Boolean external = KEY_EXTERNAL.get(this);
-        return external != null && external && (internalResolve() == null);
+        return external != null && external && (doResolve() == null);
     }
 
     public boolean isPureAssignment() {
@@ -186,7 +192,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
 
     @Override
     public PsiReference getReference() {
-        return isFunctionCall() ? this : commandReference;
+        return isFunctionCall() ? functionReference : commandReference;
     }
 
     @Nullable
@@ -199,21 +205,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         return null;
     }
 
-    public PsiElement getElement() {
-        return this;
-    }
-
-    public TextRange getRangeInElement() {
-        final PsiElement element = commandElement();
-        if (element == null) {
-            return TextRange.from(0, getTextLength());
-        }
-
-        return TextRange.from(element.getStartOffsetInParent(), element.getTextLength());
-    }
-
     @Nullable
-    private PsiElement internalResolve() {
+    private PsiElement doResolve() {
         final String referencedName = getReferencedName();
         if (referencedName == null) {
             return null;
@@ -237,61 +230,6 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         }
 
         return null;
-    }
-
-    public PsiElement resolve() {
-        PsiElement result = internalResolve();
-
-        if (result == null && isExternalCommand()) {
-            return null;
-        }
-
-        if (result == null && isInternalCommand()) {
-            return null;
-        }
-
-        return result;
-    }
-
-    @NotNull
-    public String getCanonicalText() {
-        String referencedName = getReferencedName();
-        return referencedName != null ? referencedName : "";
-    }
-
-    public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        if (StringUtil.isEmpty(newName)) {
-            return null;
-        }
-
-        final PsiElement original = commandElement();
-        final PsiElement replacement = BashChangeUtil.createWord(getProject(), newName);
-
-        getNode().replaceChild(original.getNode(), replacement.getNode());
-        return this;
-    }
-
-    public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        throw new IncorrectOperationException("bindToElement not implemented");
-    }
-
-    public boolean isReferenceTo(PsiElement element) {
-        if (element == this) {
-            return true;
-        }
-
-        return element instanceof PsiNamedElement
-                && Comparing.equal(getReferencedName(), ((PsiNamedElement) element).getName())
-                && resolve() == element;
-    }
-
-    @org.jetbrains.annotations.NotNull
-    public Object[] getVariants() {
-        return PsiReference.EMPTY_ARRAY;
-    }
-
-    public boolean isSoft() {
-        return false;
     }
 
     @Override
@@ -345,11 +283,20 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
             PsiFile includedFile = BashPsiUtils.findIncludedFile(this);
 
             Multimap<VirtualFile, PsiElement> visitedFiles = state.get(visitedIncludeFiles);
+            if (visitedFiles == null) {
+                visitedFiles = Multimaps.newListMultimap(Maps.<VirtualFile, Collection<PsiElement>>newHashMap(), new Supplier<List<PsiElement>>() {
+                    public List<PsiElement> get() {
+                        return Lists.newLinkedList();
+                    }
+                });
+            }
+
             visitedFiles.put(containingFile.getVirtualFile(), null);
 
             if (includedFile != null && !visitedFiles.containsKey(includedFile.getVirtualFile())) {
                 //mark the file as visited before the actual visit, otherwise we'll get a stack overflow
                 visitedFiles.put(includedFile.getVirtualFile(), this);
+
                 state = state.put(visitedIncludeFiles, visitedFiles);
 
                 return includedFile.processDeclarations(processor, state, lastParent, place);
@@ -363,9 +310,16 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         return false;
     }
 
-    private class SelfReference implements PsiReference {
+    private static class SelfReference<T extends StubElement> implements PsiReference {
+
+        private BashCommandImpl element;
+
+        SelfReference(BashCommandImpl<T> bashCommand) {
+            this.element = bashCommand;
+        }
+
         public PsiElement getElement() {
-            return BashCommandImpl.this;
+            return element;
         }
 
         public TextRange getRangeInElement() {
@@ -373,12 +327,13 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         }
 
         public PsiElement resolve() {
-            return BashCommandImpl.this;
+            return element;
         }
 
         @NotNull
         public String getCanonicalText() {
-            return BashCommandImpl.this.getCanonicalText();
+            String referencedName = element.getReferencedName();
+            return referencedName != null ? referencedName : "";
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
@@ -400,6 +355,87 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
 
         public boolean isSoft() {
             return true;
+        }
+    }
+
+    private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference {
+        private final BashCommandImpl<T> cmd;
+
+        public CachedFunctionReference(BashCommandImpl<T> cmd) {
+            this.cmd = cmd;
+        }
+
+        @Override
+        public String getReferencedName() {
+            return cmd.getReferencedName();
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            PsiElement result = cmd.doResolve();
+
+            if (result == null && cmd.isExternalCommand()) {
+                return null;
+            }
+
+            if (result == null && cmd.isInternalCommand()) {
+                return null;
+            }
+
+            return result;
+        }
+
+        @NotNull
+        @Override
+        public String getUnresolvedMessagePattern() {
+            return "unresolved";
+        }
+
+        @Override
+        public PsiElement getElement() {
+            return cmd;
+        }
+
+        @Override
+        public TextRange getRangeInElement() {
+            final PsiElement element = cmd.commandElement();
+            if (element == null) {
+                return TextRange.from(0, cmd.getTextLength());
+            }
+
+            return TextRange.from(element.getStartOffsetInParent(), element.getTextLength());
+        }
+
+        @NotNull
+        @Override
+        public String getCanonicalText() {
+            String referencedName = cmd.getReferencedName();
+            return referencedName != null ? referencedName : "";
+        }
+
+        @Override
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            if (StringUtil.isEmpty(newElementName)) {
+                return null;
+            }
+
+            final PsiElement original = cmd.commandElement();
+            final PsiElement replacement = BashChangeUtil.createWord(cmd.getProject(), newElementName);
+
+            cmd.getNode().replaceChild(original.getNode(), replacement.getNode());
+            return cmd;
+        }
+
+        @Override
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            throw new IncorrectOperationException("bindToElement not implemented");
+        }
+
+        @NotNull
+        @Override
+        public Object[] getVariants() {
+            return EMPTY_ARRAY;
         }
     }
 }

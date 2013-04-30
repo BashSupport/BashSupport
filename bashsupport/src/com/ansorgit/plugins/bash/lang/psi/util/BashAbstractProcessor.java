@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAbstractProcessor.java, Class: BashAbstractProcessor
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
@@ -37,7 +37,7 @@ import java.util.Collections;
  * @author Joachim Ansorg
  */
 public abstract class BashAbstractProcessor implements PsiScopeProcessor, ResolveProcessor {
-    private final Multimap<Integer, PsiElement> results = LinkedListMultimap.create();
+    private Multimap<Integer, PsiElement> results;
     private boolean preferNeigbourhood;
 
 
@@ -53,14 +53,23 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
     }
 
     public Collection<PsiElement> getResults() {
-        return Collections.unmodifiableCollection(results.values());
+        if (results == null) {
+            return Collections.emptyList();
+        }
+
+        return results.values();
+        //return Collections.unmodifiableCollection(results.values());
     }
 
     public boolean hasResults() {
-        return !results.isEmpty();
+        return results != null && !results.isEmpty();
     }
 
     protected final void storeResult(PsiElement element, Integer rating) {
+        if (results == null) {
+            results = LinkedListMultimap.create();
+        }
+
         results.put(rating, element);
     }
 
@@ -74,7 +83,7 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
      * @return The result
      */
     private PsiElement findBestResult(Multimap<Integer, PsiElement> results, boolean firstResult, PsiElement referenceElement) {
-        if (results.isEmpty()) {
+        if (!hasResults()) {
             return null;
         }
 
@@ -118,6 +127,8 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
     }
 
     public void reset() {
-        results.clear();
+        if (results != null) {
+            results.clear();
+        }
     }
 }

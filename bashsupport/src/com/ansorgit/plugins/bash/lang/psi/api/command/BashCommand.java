@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommand.java, Class: BashCommand
- * Last modified: 2013-04-29
+ * Last modified: 2013-04-30
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@
 package com.ansorgit.plugins.bash.lang.psi.api.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -38,7 +39,11 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public interface BashCommand extends BashPsiElement, BashReference {
+public interface BashCommand extends BashPsiElement {
+
+    @NotNull
+    PsiReference getReference();
+
     /**
      * Checks whether this command is a call to a declared function.
      *
