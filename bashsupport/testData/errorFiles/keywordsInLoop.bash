@@ -1,6 +1,7 @@
-for case in a b c; do
-    echo ok
-done;
+
+# for case in a b c; do
+#    echo ok
+#done;
 
 for do in a b c; do
     echo ok
