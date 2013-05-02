@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashParserDefinition.java, Class: BashParserDefinition
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-05-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser;
 
@@ -46,6 +46,10 @@ import org.jetbrains.annotations.NotNull;
 public class BashParserDefinition implements ParserDefinition, BashElementTypes {
     @NotNull
     public Lexer createLexer(Project project) {
+        return createBashLexer(project);
+    }
+
+    public static Lexer createBashLexer(Project project) {
         return new BashLexer(findLanguageLevel(project));
     }
 
@@ -53,7 +57,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
         return new BashParser(project, findLanguageLevel(project));
     }
 
-    private BashVersion findLanguageLevel(Project project) {
+    private static BashVersion findLanguageLevel(Project project) {
         boolean supportBash4 = BashProjectSettings.storedSettings(project).isSupportBash4();
         return supportBash4 ? BashVersion.Bash_v4 : BashVersion.Bash_v3;
     }

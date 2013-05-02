@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVarDefImpl.java, Class: BashVarDefImpl
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,16 +65,16 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
 
     private static final Object[] EMPTY_VARIANTS = new Object[0];
-    private final BashReference reference;
+    private final BashReference cachingReference;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
-        reference = new CachedVarDefReference(this);
+        cachingReference = new CachedVarDefReference(this);
     }
 
     public BashVarDefImpl(@NotNull BashVarDefStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType, "Bash var def");
-        reference = new CachedVarDefReference(this);
+        cachingReference = new CachedVarDefReference(this);
     }
 
     public String getName() {
@@ -234,7 +234,7 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
     @NotNull
     @Override
     public BashReference getReference() {
-        return reference;
+        return cachingReference;
     }
 
     public PsiElement findFunctionScope() {
