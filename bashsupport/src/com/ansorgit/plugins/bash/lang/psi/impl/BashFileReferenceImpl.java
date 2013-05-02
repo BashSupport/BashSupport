@@ -1,20 +1,20 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFileReferenceImpl.java, Class: BashFileReferenceImpl
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-05-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
@@ -30,18 +30,23 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * User: jansorg
- * Date: 18.02.11
- * Time: 19:59
- */
 public class BashFileReferenceImpl extends BashPsiElementImpl implements BashFileReference {
+    private PsiReference cachingReference;
+
     public BashFileReferenceImpl(final ASTNode astNode) {
         super(astNode, "File reference");
+        this.cachingReference = new CachingFileReference(this);
+    }
+
+    @Nullable
+    @Override
+    public PsiFile findReferencedFile() {
+        return (PsiFile) cachingReference.resolve();
     }
 
     @NotNull
@@ -59,19 +64,9 @@ public class BashFileReferenceImpl extends BashPsiElementImpl implements BashFil
         return firstChild instanceof BashCharSequence && ((BashCharSequence) firstChild).isStatic();
     }
 
-    @Nullable
-    public PsiFile findReferencedFile() {
-        PsiFile containingFile = getContainingFile();
-        return BashPsiFileUtils.findRelativeFile(containingFile, getFilename());
-    }
-
-    public PsiElement getElement() {
-        return this;
-    }
-
     @Override
     public PsiReference getReference() {
-        return this;
+        return cachingReference;
     }
 
     @Override
@@ -83,43 +78,64 @@ public class BashFileReferenceImpl extends BashPsiElementImpl implements BashFil
         }
     }
 
-    public TextRange getRangeInElement() {
-        PsiElement firstChild = getFirstChild();
 
-        if (firstChild instanceof BashCharSequence) {
-            return ((BashCharSequence) firstChild).getTextContentRange();
+    private static class CachingFileReference extends CachingReference {
+        private final BashFileReferenceImpl fileReference;
+
+        public CachingFileReference(BashFileReferenceImpl fileReference) {
+            this.fileReference = fileReference;
         }
 
-        return TextRange.from(0, getTextLength());
-    }
+        @Override
+        public PsiElement getElement() {
+            return fileReference;
+        }
 
-    public PsiElement resolve() {
-        return findReferencedFile();
-    }
+        public TextRange getRangeInElement() {
+            PsiElement firstChild = fileReference.getFirstChild();
 
-    @NotNull
-    public String getCanonicalText() {
-        return getText();
-    }
+            if (firstChild instanceof BashCharSequence) {
+                return ((BashCharSequence) firstChild).getTextContentRange();
+            }
 
-    public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
-    }
+            return TextRange.from(0, fileReference.getTextLength());
+        }
 
-    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        throw new IncorrectOperationException("not supported");
-    }
+        @NotNull
+        public String getCanonicalText() {
+            return this.fileReference.getText();
+        }
 
-    public boolean isReferenceTo(PsiElement element) {
-        return element == this || element.equals(findReferencedFile());
-    }
+        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
+            return BashPsiUtils.replaceElement(fileReference, BashChangeUtil.createWord(fileReference.getProject(), newName));
+        }
 
-    @NotNull
-    public Object[] getVariants() {
-        return PsiElement.EMPTY_ARRAY;
-    }
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            throw new IncorrectOperationException("not supported");
+        }
 
-    public boolean isSoft() {
-        return false;
+        public boolean isReferenceTo(PsiElement element) {
+            PsiFile containingFile = this.fileReference.getContainingFile();
+            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, this.fileReference.getFilename()));
+        }
+
+        @NotNull
+        public Object[] getVariants() {
+            return PsiElement.EMPTY_ARRAY;
+        }
+
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            PsiFile containingFile = fileReference.getContainingFile();
+            return BashPsiFileUtils.findRelativeFile(containingFile, fileReference.getFilename());
+        }
+
+        @NotNull
+        @Override
+        public String getUnresolvedMessagePattern() {
+            return "unresolved";
+        }
     }
 }

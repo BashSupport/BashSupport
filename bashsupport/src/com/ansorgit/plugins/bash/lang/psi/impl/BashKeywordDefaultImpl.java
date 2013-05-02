@@ -1,27 +1,26 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
+/*
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashKeywordDefaultImpl.java, Class: BashKeywordDefaultImpl
- * Last modified: 2011-04-30 16:33
+ * Last modified: 2013-05-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -37,6 +36,9 @@ import javax.swing.*;
  * @author Joachim Ansorg
  */
 public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implements PsiReference, BashKeyword {
+
+    private static final Object[] EMPTY = new Object[0];
+
     public BashKeywordDefaultImpl(final ASTNode astNode, final String name) {
         super(astNode, name);
     }
@@ -71,6 +73,7 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
         return this;
     }
 
+    @NotNull
     public String getCanonicalText() {
         return getText();
     }
@@ -89,7 +92,7 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
 
     @NotNull
     public Object[] getVariants() {
-        return new Object[0];
+        return EMPTY;
     }
 
     public boolean isSoft() {
@@ -109,10 +112,6 @@ public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implemen
             }
 
             public Icon getIcon(boolean open) {
-                return null;
-            }
-
-            public TextAttributesKey getTextAttributesKey() {
                 return null;
             }
         };

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-02
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -190,6 +190,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
         return findChildrenByClass(BashVarDef.class);
     }
 
+    @NotNull
     @Override
     public PsiReference getReference() {
         return isFunctionCall() ? functionReference : commandReference;
