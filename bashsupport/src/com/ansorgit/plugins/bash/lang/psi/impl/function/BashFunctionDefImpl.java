@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionDefImpl.java, Class: BashFunctionDefImpl
- * Last modified: 2013-01-25
+ * Last modified: 2013-05-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,12 +146,7 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
     private Key<String> DEFINED_NAME_KEY = Key.create("definedName");
 
     public String getDefinedName() {
-//        String cachedName = getUserData(DEFINED_NAME_KEY);
-//        if (cachedName != null) {
-//            return cachedName;
-//        }
-
-        final BashFunctionDefName symbol = getNameSymbol();
+        BashFunctionDefName symbol = getNameSymbol();
         String result = symbol == null ? "" : symbol.getNameString();
 
         putUserData(DEFINED_NAME_KEY, result);

@@ -1,3 +1,6 @@
+2013-05-05:
+ - $@ is now taken as function parameter use, i.e. a a call of a function using $@ does not lead to unused parameter warnings
+
 2013-04-30:
  - Improved parsing of let commands (still incomplete)
  - Improved parsing of variables named like internal bash keywords
