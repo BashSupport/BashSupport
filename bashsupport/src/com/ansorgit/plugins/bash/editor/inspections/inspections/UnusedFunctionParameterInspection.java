@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: UnusedFunctionParameterInspection.java, Class: UnusedFunctionParameterInspection
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,8 +103,8 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
                             }
                         }));
 
-                        //if the parameter count variable is referenced consider all params as used
-                        if (definedParamNames.contains("*")) {
+                        //if the all parameter expansion feature is used consider all params as used
+                        if (definedParamNames.contains("*") || definedParamNames.contains("@")) {
                             return;
                         }
 

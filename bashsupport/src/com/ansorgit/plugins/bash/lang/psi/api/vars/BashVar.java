@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashVar.java, Class: BashVar
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-05
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,11 @@ public interface BashVar extends BashPsiElement {
      */
     boolean isArrayUse();
 
+    /**
+     * Overloaded to return a BashReference.
+     *
+     * @return
+     */
     @NotNull
     BashReference getReference();
 }
