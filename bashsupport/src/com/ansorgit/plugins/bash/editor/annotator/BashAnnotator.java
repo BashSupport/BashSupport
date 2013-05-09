@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2013-05-02
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.openapi.editor.HighlighterColors;
+import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
@@ -98,10 +101,13 @@ public class BashAnnotator implements Annotator {
 
     private void annotateWord(PsiElement bashWord, AnnotationHolder annotationHolder) {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
-        Annotation annotation = annotationHolder.createInfoAnnotation(bashWord.getFirstChild(), null);
-        annotation.setEnforcedTextAttributes(BashSyntaxHighlighter.NONE_ATTRIB);
-        annotation.setTextAttributes(BashSyntaxHighlighter.TEXT);
-        annotation.setNeedsUpdateOnTyping(false);
+        PsiElement firstChild = bashWord.getFirstChild();
+
+        Annotation annotation = annotationHolder.createInfoAnnotation(firstChild, null);
+        annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
+
+        annotation = annotationHolder.createInfoAnnotation(firstChild, null);
+        annotation.setEnforcedTextAttributes(EditorColorsManager.getInstance().getGlobalScheme().getAttributes(HighlighterColors.TEXT));
     }
 
     private void annotateString(PsiElement bashString, final AnnotationHolder holder) {
