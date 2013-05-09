@@ -1,7 +1,7 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
+ * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: ShebangPathCompletionProvider.java, Class: ShebangPathCompletionProvider
- * Last modified: 2013-02-03
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
 
         if (command != null) {
             BashShebang shebang = (BashShebang) command;
-            String shellcommand = shebang.shellCommand();
+            String shellcommand = shebang.shellCommand(false);
 
             int elementOffset = parameters.getOffset() - shebang.commandRange().getStartOffset();
             return (elementOffset > 0 && elementOffset <= shellcommand.length())
