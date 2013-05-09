@@ -1,3 +1,8 @@
+2013-05-09:
+ - Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).
+ - Fixed shebang command inspection, settings a properly saved now
+ - Added quickfix "Register as valid shebang command" for the shebang command inspection
+
 2013-05-05:
  - $@ is now taken as function parameter use, i.e. a a call of a function using $@ does not lead to unused parameter warnings
 

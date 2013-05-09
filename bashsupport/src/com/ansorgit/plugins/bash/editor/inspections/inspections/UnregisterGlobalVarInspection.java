@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: UnregisterGlobalVarInspection.java, Class: UnregisterGlobalVarInspection
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,8 @@ import java.util.Set;
  * <p/>
  * Of course, there is a chance of false positives as both inclusions may be in conditional
  * statements.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 10:11:49 PM
  */
 public class UnregisterGlobalVarInspection extends AbstractBashInspection {
-    //private static final Logger log = Logger.getInstance("#UnresolvedVariable");
-
     @Nls
     @NotNull
     @Override
