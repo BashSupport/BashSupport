@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: UnresolvedVariableInspection.java, Class: UnresolvedVariableInspection
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class UnresolvedVariableInspection extends AbstractBashInspection {
     @NotNull
     @Override
     public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.ERROR;
+        return HighlightDisplayLevel.WARNING;
     }
 
     private static class UnresolvedVariableVisitor extends BashVisitor {
