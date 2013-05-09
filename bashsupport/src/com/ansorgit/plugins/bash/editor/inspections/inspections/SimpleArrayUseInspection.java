@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: SimpleArrayUseInspection.java, Class: SimpleArrayUseInspection
- * Last modified: 2013-04-30
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,10 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -68,7 +70,7 @@ public class SimpleArrayUseInspection extends AbstractBashInspection {
             public void visitVarUse(BashVar var) {
                 if (!var.isArrayUse()) {
                     BashVarDef definition = (BashVarDef) var.getReference().resolve();
-                    if (definition != null && definition.isArray()) {
+                    if (definition != null && definition.isArray() && !BashPsiUtils.hasParentOfType(definition, BashString.class, 4)) {
                         holder.registerProblem(var, "Simple use of array variable", ProblemHighlightType.WEAK_WARNING);
                     }
                 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2013-04-29
+ * Last modified: 2013-05-09
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -447,5 +447,15 @@ public final class BashPsiUtils {
         }
 
         return null;
+    }
+
+    public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps) {
+        for (PsiElement current = start; current != null && maxSteps-- > 0; current = current.getParent()) {
+            if (parentType.isInstance(current)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

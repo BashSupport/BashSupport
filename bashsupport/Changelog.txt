@@ -2,6 +2,9 @@
  - Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).
  - Fixed shebang command inspection, settings a properly saved now
  - Added quickfix "Register as valid shebang command" for the shebang command inspection
+ - Changed default highlighting level of "Unresolved variable" inspection from error to warning
+ - "Simple variable use" is not added to variables which are wrapped by a string
+ - "Simple array variable use" is not added to variables which are wrapped by a string
 
 2013-05-05:
  - $@ is now taken as function parameter use, i.e. a a call of a function using $@ does not lead to unused parameter warnings
