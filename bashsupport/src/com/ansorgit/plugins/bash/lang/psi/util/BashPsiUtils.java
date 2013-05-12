@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
  * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2013-05-09
+ * Last modified: 2013-05-12
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
-import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
@@ -315,7 +312,11 @@ public final class BashPsiUtils {
     @Nullable
     public static PsiFile findIncludedFile(BashCommand bashCommand) {
         if (bashCommand instanceof BashIncludeCommand) {
-            return ((BashIncludeCommand) bashCommand).getFileReference().findReferencedFile();
+            BashFileReference reference = ((BashIncludeCommand) bashCommand).getFileReference();
+
+            if (reference != null) {
+                return reference.findReferencedFile();
+            }
         }
 
         return null;
