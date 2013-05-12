@@ -1,7 +1,7 @@
 <!--
   ~ Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
   ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2013-05-09
+  ~ Last modified: 2013-05-12
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -42,11 +42,19 @@
     <html>
        <b>Changes in version 1.1beta16:</b>
        <ul>
-       </ul>
-
-       <b>Changes in version 1.1beta15:</b>
-       <ul>
-         <li>Compatibility with 128.x</li>
+         <li>Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).                                         </li>
+         <li>Fixed shebang command inspection, settings a properly saved now                                                                          </li>
+         <li>Added quickfix "Register as valid shebang command" for the shebang command inspection                                                    </li>
+         <li>Changed default highlighting level of "Unresolved variable" inspection from error to warning                                             </li>
+         <li>"Simple variable use" is not added to variables which are wrapped by a string                                                            </li>
+         <li>"Simple array variable use" is not added to variables which are wrapped by a string                                                      </li>
+         <li>$@ is now taken as function parameter use, i.e. a call of a function using $@ does not lead to unused parameter warnings                 </li>
+         <li>Improved parsing of let commands (still incomplete)                                                                                      </li>
+         <li>Improved parsing of variables named like internal bash keywords                                                                          </li>
+         <li>Improved performance for large script files (implemented caching references for variables, variable definitions and function definitions)</li>
+         <li>Escape chars were used in single quoted strings, but Bash does not allow escaped characters there                                        </li>
+         <li>Fixed parsing of string as case pattern                                                                                                  </li>
+         <li>Fixed parsing of ;;& in Bash 3 parsing mode                                                                                              </li>
        </ul>
 
        <b>Recent changes:</b>
