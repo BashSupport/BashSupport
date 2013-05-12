@@ -1,4 +1,7 @@
 2013-05-09:
+ - 1.1beta16
+
+2013-05-09:
  - Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).
  - Fixed shebang command inspection, settings a properly saved now
  - Added quickfix "Register as valid shebang command" for the shebang command inspection
