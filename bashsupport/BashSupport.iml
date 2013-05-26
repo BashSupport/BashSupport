@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="true" type="PLUGIN_MODULE" version="4">
+<module type="PLUGIN_MODULE" version="4">
   <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/META-INF/plugin.xml" />
-  <component name="FacetManager">
-    <facet type="bash" name="BashSupport">
-      <configuration>
-        <operationMode type="Custom" />
-        <file url="file://$MODULE_DIR$" mode="auto" />
-      </configuration>
-    </facet>
-  </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/.clover" />
-      <excludeFolder url="file://$MODULE_DIR$/generated_src" />
-      <excludeFolder url="file://$MODULE_DIR$/javadoc" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

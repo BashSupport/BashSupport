@@ -21,11 +21,30 @@ package com.ansorgit.plugins.bash;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 
-public class BashTestUtils {
+public final class BashTestUtils {
+
+    private BashTestUtils() {
+    }
+
+    private static volatile String basePath;
+
     public static String getBasePath() {
-        String configuredDir = StringUtils.stripToNull(System.getenv("BASHSUPPORT_TESTDATA"));
+        if (basePath == null) {
+            basePath = computeBasePath();
+        }
 
+        if (basePath == null) {
+            throw new IllegalStateException("Could not find the testData directory.");
+        }
+
+        return basePath;
+    }
+
+    private static String computeBasePath() {
+        String configuredDir = StringUtils.stripToNull(System.getenv("BASHSUPPORT_TESTDATA"));
         if (configuredDir != null) {
             File dir = new File(configuredDir);
             if (dir.isDirectory() && dir.exists()) {
@@ -33,6 +52,21 @@ public class BashTestUtils {
             }
         }
 
-        return "/Volumes/DATA/Projekte/JavaProjekte/BashSupport-googlecode/testData";
+        //try to find out from the current classloader
+        URL url = BashTestUtils.class.getClassLoader().getResource("log4j.xml");
+        if (url != null) {
+            try {
+                File resourceFile = new File(url.toURI());
+                //we need to cut the out dir and the other resource paths
+                File basePath = resourceFile.getParentFile().getParentFile().getParentFile().getParentFile();
+                if (basePath != null && basePath.isDirectory()) {
+                    return basePath + File.separator + "testData";
+                }
+            } catch (Exception e) {
+                //ignore, use fallback below
+            }
+        }
+
+        return null;
     }
 }
