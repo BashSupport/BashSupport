@@ -1,3 +1,6 @@
+2013-05-26:
+ - Moved from svn to git
+
 2013-05-09:
  - 1.1beta16
 
