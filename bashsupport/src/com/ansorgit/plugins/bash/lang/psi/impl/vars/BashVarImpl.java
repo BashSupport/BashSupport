@@ -26,7 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -48,8 +48,8 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashVarImpl extends BashPsiElementImpl implements BashVar {
-
+public class BashVarImpl extends BashPsiStubElement implements BashVar {
+    private static final Object[] OBJECTS_EMPTY = new Object[0];
     private final BashReference cachingVarReference;
 
     private static class CachedBashVarReference extends CachingReference implements BashReference {
@@ -115,24 +115,6 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
             return BashPsiUtils.replaceElement(bashVar, BashChangeUtil.createVariable(bashVar.getProject(), newName, false));
         }
 
-        /*
-        if (this == element) {
-            return true;
-        }
-
-        if (element instanceof BashVarDef) {
-            BashVarDef def = (BashVarDef) element;
-
-            //the variable definition has to be of the same same,
-            //this variable has to be in the definition's scope and finally,
-            //the resolve of this variable has to be the definition (needed for local variable handling)
-            return Comparing.equal(getName(), ((PsiNamedElement) element).getName())
-                    && BashVarUtils.isInDefinedScope(this, def);
-        }
-
-        return false;
-         */
-
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             throw new IncorrectOperationException("bindToElement not implemented");
@@ -141,7 +123,7 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
         @NotNull
         @Override
         public Object[] getVariants() {
-            return new Object[0];  //To change body of implemented methods use File | Settings | File Templates.
+            return OBJECTS_EMPTY;
         }
 
         @Override
@@ -183,15 +165,6 @@ public class BashVarImpl extends BashPsiElementImpl implements BashVar {
     public String getName() {
         return getReferencedName();
     }
-
-  /*  @NotNull
-    public Object[] getVariants() {
-        return PsiReference.EMPTY_ARRAY;
-    } */
-
-   /* public boolean isSoft() {
-        return false;
-    }*/
 
     public String getReferencedName() {
         final String text = getText();

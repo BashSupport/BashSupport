@@ -135,31 +135,6 @@ public final class BashPsiUtils {
         return element instanceof BashBlock || element instanceof BashFunctionDef || element instanceof BashFile;
     }
 
-    public static boolean processChildDeclarations(PsiElement parentContainer, PsiScopeProcessor processor, ResolveState resolveState, PsiElement lastParent, PsiElement place) {
-        boolean hasResult = false;
-
-        if (parentContainer.equals(lastParent)) {
-            return true;
-        }
-
-        if (!processor.execute(parentContainer, resolveState)) {
-            return false;
-        }
-
-        PsiElement lastChild = parentContainer;
-        PsiElement child = parentContainer.getFirstChild();
-        while (child != null) {
-            if (!child.equals(lastParent)) {
-                hasResult |= !child.processDeclarations(processor, resolveState, lastChild, place);
-            }
-
-            lastChild = child;
-            child = child.getNextSibling();
-        }
-
-        return !hasResult;
-    }
-
     public static int getElementLineNumber(PsiElement element) {
         FileViewProvider fileViewProvider = element.getContainingFile().getViewProvider();
         if (fileViewProvider.getDocument() != null) {
@@ -295,21 +270,6 @@ public final class BashPsiUtils {
     }
 
     @Nullable
-    public static String findIncludedFilename(BashCommand bashCommand) {
-        List<BashPsiElement> params = bashCommand.parameters();
-
-        if (params.size() == 1) {
-            BashPsiElement firstParam = params.get(0);
-
-            if (firstParam instanceof BashCharSequence) {
-                return ((BashCharSequence) firstParam).getUnwrappedCharSequence();
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
     public static PsiFile findIncludedFile(BashCommand bashCommand) {
         if (bashCommand instanceof BashIncludeCommand) {
             BashFileReference reference = ((BashIncludeCommand) bashCommand).getFileReference();
@@ -440,8 +400,12 @@ public final class BashPsiUtils {
     }
 
     @Nullable
-    public static PsiElement findParent(PsiElement start, Class<? extends PsiElement> parentType) {
-        for (PsiElement current = start; current != null; current = current.getParent()) {
+    public static PsiElement findParent(@Nullable PsiElement start, Class<? extends PsiElement> parentType) {
+        if (start == null) {
+            return null;
+        }
+
+        for (PsiElement current = start.getParent(); current != null; current = current.getParent()) {
             if (parentType.isInstance(current)) {
                 return current;
             }

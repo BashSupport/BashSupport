@@ -21,7 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 30, 2010
  * Time: 12:48:49 PM
  */
-abstract class AbstractHeredocMarker extends BashPsiElementImpl implements BashHereDocMarker, PsiReference {
+abstract class AbstractHeredocMarker extends BashPsiStubElement implements BashHereDocMarker, PsiReference {
     private final Object[] EMPTY = new Object[0];
     private final Class<? extends BashPsiElement> otherEndsType;
     private final boolean expectLater;

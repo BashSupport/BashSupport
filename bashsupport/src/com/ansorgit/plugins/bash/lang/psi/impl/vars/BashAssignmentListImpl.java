@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
  * Date: 26.03.11
  * Time: 19:45
  */
-public class BashAssignmentListImpl extends BashPsiElementImpl implements BashAssignmentList {
+public class BashAssignmentListImpl extends BashPsiStubElement implements BashAssignmentList {
     public BashAssignmentListImpl(ASTNode node) {
         super(node, "assignment list");
     }

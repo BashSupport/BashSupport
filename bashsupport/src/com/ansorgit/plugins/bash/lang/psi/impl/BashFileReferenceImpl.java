@@ -35,7 +35,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BashFileReferenceImpl extends BashPsiElementImpl implements BashFileReference {
+public class BashFileReferenceImpl extends BashPsiStubElement implements BashFileReference {
     private PsiReference cachingReference;
 
     public BashFileReferenceImpl(final ASTNode astNode) {

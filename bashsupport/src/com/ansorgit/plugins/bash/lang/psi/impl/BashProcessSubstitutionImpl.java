@@ -26,7 +26,7 @@ import com.intellij.lang.ASTNode;
  * Date: 13.07.2010
  * Time: 18:54:48
  */
-public class BashProcessSubstitutionImpl extends BashPsiElementImpl implements BashProcessSubstitution {
+public class BashProcessSubstitutionImpl extends BashPsiStubElement implements BashProcessSubstitution {
     public BashProcessSubstitutionImpl(final ASTNode astNode) {
         super(astNode, "process substitution element");
     }

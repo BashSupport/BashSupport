@@ -29,7 +29,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
@@ -59,7 +59,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  *
  * @author Joachim Ansorg
  */
-public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
+public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
 
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
@@ -146,12 +146,6 @@ public class BashVarDefImpl extends BashBaseElementImpl<BashVarDefStub> implemen
 
     @Nullable
     protected PsiElement findAssignmentValue() {
-        /*ASTNode equalsToken = getNode().findChildByType(BashTokenTypes.EQ);
-        if (equalsToken != null) {
-            ASTNode treeNext = equalsToken.getTreeNext();
-            if (treeNext != null && treeNext!=)
-        } */
-
         PsiElement last = getLastChild();
         return last != this ? last : null;
     }

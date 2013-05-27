@@ -20,7 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.expression;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 14:02:27
  */
-public class BashSubshellCommandImpl extends BashPsiElementImpl implements BashSubshellCommand {
+public class BashSubshellCommandImpl extends BashPsiStubElement implements BashSubshellCommand {
     public BashSubshellCommandImpl(final ASTNode astNode) {
         super(astNode, "bash subshell command");
     }

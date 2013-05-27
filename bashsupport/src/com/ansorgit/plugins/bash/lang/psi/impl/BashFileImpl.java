@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
@@ -56,7 +55,19 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
-        return BashPsiUtils.processChildDeclarations(this, processor, state, lastParent, place);
+        PsiElement child = getFirstChild();
+
+        //processing the file has to include the global variables which may come after a variable use, e.g. if the var use is in a function before the global var
+        boolean moreProcessing = true;
+        while (child != null) {
+            if (child != lastParent && !child.processDeclarations(processor, state, null, place)) {
+                moreProcessing = false;
+            }
+
+            child = child.getNextSibling();
+        }
+
+        return moreProcessing;
     }
 
     @Override
@@ -66,11 +77,5 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         } else {
             visitor.visitFile(this);
         }
-    }
-
-    @Override
-    public void subtreeChanged() {
-
-        super.subtreeChanged();
     }
 }

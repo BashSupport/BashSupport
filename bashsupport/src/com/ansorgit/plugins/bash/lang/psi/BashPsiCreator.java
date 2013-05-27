@@ -65,14 +65,6 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashShebangImpl(node);
         }
 
-        //Block
-        if (elementType == BLOCK_ELEMENT) {
-            return new BashBlockImpl(node);
-        }
-        if (elementType == GROUP_COMMAND) {
-            return new BashBlockImpl(node);
-        }
-
         //shell command elements
         if (elementType == FUNCTION_DEF_COMMAND) {
             return new BashFunctionDefImpl(node);

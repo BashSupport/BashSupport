@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -29,7 +29,7 @@ import com.intellij.lang.ASTNode;
  * Date: Nov 7, 2009
  * Time: 1:03:28 PM
  */
-public class BashParameterExpansionImpl extends BashPsiElementImpl implements BashParameterExpansion {
+public class BashParameterExpansionImpl extends BashPsiStubElement implements BashParameterExpansion {
     public BashParameterExpansionImpl(final ASTNode astNode) {
         super(astNode, "Parameter expansion");
     }

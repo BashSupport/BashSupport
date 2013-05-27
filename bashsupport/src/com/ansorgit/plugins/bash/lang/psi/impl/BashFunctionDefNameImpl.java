@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashFunctionDefNameImpl extends BashPsiElementImpl implements BashFunctionDefName {
+public class BashFunctionDefNameImpl extends BashPsiStubElement implements BashFunctionDefName {
     public BashFunctionDefNameImpl(ASTNode astNode) {
         super(astNode, "BashFunctionDefName");
     }

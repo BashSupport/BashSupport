@@ -22,12 +22,23 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.stubs.IStubElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * User: jansorg
@@ -95,5 +106,40 @@ public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandSt
     @Override
     public boolean canNavigateToSource() {
         return getFileReference().findReferencedFile() != null;
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        boolean result = PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+        if (!result) {
+            //processing is done here
+            return false;
+        }
+
+        PsiFile containingFile = getContainingFile();
+        PsiFile includedFile = BashPsiUtils.findIncludedFile(this);
+
+        Multimap<VirtualFile, PsiElement> visitedFiles = state.get(visitedIncludeFiles);
+        if (visitedFiles == null) {
+            visitedFiles = Multimaps.newListMultimap(Maps.<VirtualFile, Collection<PsiElement>>newHashMap(), new Supplier<List<PsiElement>>() {
+                public List<PsiElement> get() {
+                    return Lists.newLinkedList();
+                }
+            });
+        }
+
+        visitedFiles.put(containingFile.getVirtualFile(), null);
+
+        if (includedFile != null && !visitedFiles.containsKey(includedFile.getVirtualFile())) {
+            //mark the file as visited before the actual visit, otherwise we'll get a stack overflow
+            visitedFiles.put(includedFile.getVirtualFile(), this);
+
+            state = state.put(visitedIncludeFiles, visitedFiles);
+
+            return includedFile.processDeclarations(processor, state, lastParent, place);
+        }
+
+
+        return result;
     }
 }

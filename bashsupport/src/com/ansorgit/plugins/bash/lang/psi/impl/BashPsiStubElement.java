@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashPsiElementImpl.java, Class: BashPsiElementImpl
+ * File: BashPsiStubElement.java, Class: BashPsiStubElement
  * Last modified: 2011-04-30 16:33
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,32 +18,14 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.util.BashFunctions;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.LocalSearchScope;
-import com.intellij.psi.search.SearchScope;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * Date: 11.04.2009
@@ -51,12 +33,17 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-public abstract class BashPsiElementImpl extends BashBaseElementImpl<StubElement> implements BashPsiElement {
-    public BashPsiElementImpl(final ASTNode astNode) {
+public abstract class BashPsiStubElement extends BashBaseStubElementImpl<StubElement> implements BashPsiElement {
+    public BashPsiStubElement(final ASTNode astNode) {
         super(astNode);
     }
 
-    public BashPsiElementImpl(final ASTNode astNode, final String name) {
+    public BashPsiStubElement(final ASTNode astNode, final String name) {
         super(astNode, name);
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 }

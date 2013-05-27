@@ -19,10 +19,10 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 
-public class BashComposedVarImpl extends BashPsiElementImpl implements BashComposedVar {
+public class BashComposedVarImpl extends BashPsiStubElement implements BashComposedVar {
     public BashComposedVarImpl(final ASTNode astNode) {
         super(astNode, "BashComposedVar");
     }

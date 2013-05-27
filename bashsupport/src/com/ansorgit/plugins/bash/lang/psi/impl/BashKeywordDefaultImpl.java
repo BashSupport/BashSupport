@@ -35,7 +35,7 @@ import javax.swing.*;
  *
  * @author Joachim Ansorg
  */
-public abstract class BashKeywordDefaultImpl extends BashPsiElementImpl implements PsiReference, BashKeyword {
+public abstract class BashKeywordDefaultImpl extends BashPsiStubElement implements PsiReference, BashKeyword {
 
     private static final Object[] EMPTY = new Object[0];
 
