@@ -23,8 +23,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -35,10 +35,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -53,7 +51,7 @@ import java.util.List;
 /**
  * @author Joachim Ansorg
  */
-public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
+public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
     private static final Logger log = Logger.getInstance("#Bash.BashFunctionDefImpl");
 
     public BashFunctionDefImpl(ASTNode astNode) {
@@ -89,10 +87,10 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
 
     public BashBlock body() {
         if (log.isDebugEnabled()) {
-            log.debug("found commandGroup: " + findChildByClass(BashBlockImpl.class)); //fixme
+            log.debug("found commandGroup: " + findChildByClass(BashGroupImpl.class)); //fixme
         }
 
-        return findChildByClass(BashBlockImpl.class);
+        return findChildByClass(BashGroupImpl.class);
     }
 
     public boolean hasCommandGroup() {
@@ -106,12 +104,6 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
     Key<BashFunctionDefName> NAME_SYMBOL_KEY = Key.create("nameSymbol");
 
     public BashFunctionDefName getNameSymbol() {
-//        BashFunctionDefName cached = getUserData(NAME_SYMBOL_KEY);
-//        if (cached != null) {
-//            return cached;
-//        }
-
-
         final BashFunctionDefName nameWord = findChildByClass(BashFunctionDefName.class);
 
         if (log.isDebugEnabled()) {
@@ -192,5 +184,62 @@ public class BashFunctionDefImpl extends BashBaseElementImpl<BashFunctionDefStub
         } else {
             visitor.visitElement(this);
         }
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        //walk the tree from top to bottom because the first definition has higher priority and should still be processed
+        //if a later definition masks it
+
+        PsiElement child = null;
+        if (lastParent != null && lastParent.getParent() == this) {
+            child = lastParent.getPrevSibling();
+            if (child == null) {
+                return true; // first element
+            }
+        }
+
+        if (child == null) {
+            child = getFirstChild();
+        }
+
+        while (child != null) {
+            if (!child.processDeclarations(processor, state, null, place)) {
+                return false;
+            }
+
+            if (child == lastParent) {
+                break;
+            }
+
+            child = child.getNextSibling();
+        }
+
+        // If the last processed child is the parent of the place element check if we need to process
+        // the elements after the element
+        // In certain cases the resolving has to continue below the initial place, e.g.
+        // function x() {
+        //    function y() {
+        //        echo $a
+        //    }
+        //
+        //    a=
+        // }
+
+        if (child != null) {
+            PsiElement functionContainer = BashPsiUtils.findParent(child.getNextSibling(), BashFunctionDef.class);
+            if (functionContainer != null && functionContainer != this) {
+                //process the siblings after the parent of place
+                while (child != null) {
+                    if (!child.processDeclarations(processor, state, null, place)) {
+                        return false;
+                    }
+
+                    child = child.getNextSibling();
+                }
+            }
+        }
+
+        return true;
     }
 }

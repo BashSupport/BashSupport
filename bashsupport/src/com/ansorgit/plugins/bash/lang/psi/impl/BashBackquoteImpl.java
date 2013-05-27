@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashBackquoteImpl extends BashPsiElementImpl implements BashBackquote {
+public class BashBackquoteImpl extends BashPsiStubElement implements BashBackquote {
     public BashBackquoteImpl(ASTNode astNode) {
         super(astNode, "bash backquote");
     }

@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
@@ -30,8 +31,15 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashFunctionDefElementT
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashIncludeCommandElementType;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashStubFileElementType;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarDefElementType;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IStubFileElementType;
+import com.intellij.util.ReflectionUtil;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Constructor;
 
 /**
  * The available Bash parser element types.
@@ -42,13 +50,33 @@ import com.intellij.psi.tree.IStubFileElementType;
  * @author Joachim Ansorg
  */
 public interface BashElementTypes {
+    class BashCompositeElementType extends IBashElementType implements ICompositeElementType {
+        private final Constructor<? extends ASTNode> myConstructor;
+
+        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass) {
+            this(debugName, nodeClass, false);
+        }
+
+        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass, final boolean leftBound) {
+            super(debugName, leftBound);
+            myConstructor = ReflectionUtil.getDefaultConstructor(nodeClass);
+        }
+
+        @NotNull
+        @Override
+        public ASTNode createCompositeNode() {
+            return ReflectionUtil.createInstance(myConstructor);
+        }
+    }
+
     IStubFileElementType FILE = new BashStubFileElementType();
 
     IElementType FILE_REFERENCE = new BashElementType("File reference");
 
     IElementType SHEBANG_ELEMENT = new BashElementType("shebang element");
 
-    IElementType BLOCK_ELEMENT = new BashElementType("block element");
+    IElementType BLOCK_ELEMENT = new BashCompositeElementType("block element", BashGroupImpl.class);
+    IElementType GROUP_ELEMENT = new BashCompositeElementType("group element", BashGroupImpl.class);
 
     //Var usage
     //fixme probably unnecessary
@@ -90,7 +118,7 @@ public interface BashElementTypes {
 
     BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
 
-    IElementType GROUP_COMMAND = new BashElementType("group command");
+    IElementType GROUP_COMMAND = new BashCompositeElementType("group command", BashGroupImpl.class);
 
     //IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");
 

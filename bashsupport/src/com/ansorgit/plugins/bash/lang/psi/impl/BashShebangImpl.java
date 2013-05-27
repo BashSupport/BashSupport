@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashShebangImpl extends BashPsiElementImpl implements BashShebang {
+public class BashShebangImpl extends BashPsiStubElement implements BashShebang {
     private final static Logger log = Logger.getInstance("#bash.BashShebang");
 
     public BashShebangImpl(final ASTNode astNode) {

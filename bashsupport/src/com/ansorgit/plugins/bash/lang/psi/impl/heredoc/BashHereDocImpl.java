@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashHereDocImpl extends BashPsiElementImpl implements BashHereDoc {
+public class BashHereDocImpl extends BashPsiStubElement implements BashHereDoc {
     public BashHereDocImpl(ASTNode astNode) {
         super(astNode, "bash hereDoc");
     }

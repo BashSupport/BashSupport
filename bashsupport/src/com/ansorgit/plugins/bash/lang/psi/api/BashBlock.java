@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**

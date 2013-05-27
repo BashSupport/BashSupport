@@ -21,7 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashStringImpl extends BashPsiElementImpl implements BashString, BashCharSequence {
+public class BashStringImpl extends BashPsiStubElement implements BashString, BashCharSequence {
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
     }

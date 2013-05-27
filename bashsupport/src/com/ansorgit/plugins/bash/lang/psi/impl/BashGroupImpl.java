@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashConditionalCommandImpl.java, Class: BashConditionalCommandImpl
- * Last modified: 2010-07-04 21:24
+ * File: BashBlockImpl.java, Class: BashBlockImpl
+ * Last modified: 2011-04-30 16:33
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,27 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.ansorgit.plugins.bash.lang.psi.impl.shell;
+package com.ansorgit.plugins.bash.lang.psi.impl;
 
-import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: 06.08.2009
- * Time: 22:43:07
+ * @author Joachim Ansorg
  */
-public class BashConditionalCommandImpl extends BashPsiStubElement implements BashConditionalCommand {
-    public BashConditionalCommandImpl(final ASTNode astNode) {
-        super(astNode, "Bash conditional command");
+public class BashGroupImpl extends BashCompositeElement implements BashBlock {
+    public BashGroupImpl() {
+        super(BashElementTypes.GROUP_ELEMENT);
+    }
+
+    public boolean isCommandGroup() {
+        return true;
+    }
+
+    public PsiElement commandGroup() {
+        return this;
     }
 }

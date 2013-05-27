@@ -29,24 +29,19 @@ import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -55,18 +50,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Date: 12.04.2009
- * Time: 21:34:37
- *
  * @author Joachim Ansorg
  */
-public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<T> implements BashCommand, Keys {
+public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final static Key<Boolean> KEY_INTERNAL = Key.create("internal");
     private final static Key<Boolean> KEY_EXTERNAL = Key.create("external");
 
@@ -215,14 +206,16 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
 
         final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, getContainingFile(), ResolveState.initial());
+        PsiFile currentFile = getContainingFile();
+
+        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, currentFile, ResolveState.initial());
         if (!walkOn) {
             return processor.hasResults() ? processor.getBestResult(true, this) : null;
         }
 
         //we need to look into the files which include this command's containingFile.
         //a function call might reference a command from one of the including files
-        Set<BashFile> includingFiles = FileInclusionManager.findIncluders(getProject(), getContainingFile());
+        Set<BashFile> includingFiles = FileInclusionManager.findIncluders(getProject(), currentFile);
         for (BashFile file : includingFiles) {
             walkOn = PsiTreeUtil.treeWalkUp(processor, file.getLastChild(), file, ResolveState.initial());
             if (!walkOn) {
@@ -277,34 +270,11 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseElementImpl<
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        boolean result = super.processDeclarations(processor, state, lastParent, place);
-
-        if (isIncludeCommand()) {
-            PsiFile containingFile = getContainingFile();
-            PsiFile includedFile = BashPsiUtils.findIncludedFile(this);
-
-            Multimap<VirtualFile, PsiElement> visitedFiles = state.get(visitedIncludeFiles);
-            if (visitedFiles == null) {
-                visitedFiles = Multimaps.newListMultimap(Maps.<VirtualFile, Collection<PsiElement>>newHashMap(), new Supplier<List<PsiElement>>() {
-                    public List<PsiElement> get() {
-                        return Lists.newLinkedList();
-                    }
-                });
-            }
-
-            visitedFiles.put(containingFile.getVirtualFile(), null);
-
-            if (includedFile != null && !visitedFiles.containsKey(includedFile.getVirtualFile())) {
-                //mark the file as visited before the actual visit, otherwise we'll get a stack overflow
-                visitedFiles.put(includedFile.getVirtualFile(), this);
-
-                state = state.put(visitedIncludeFiles, visitedFiles);
-
-                return includedFile.processDeclarations(processor, state, lastParent, place);
-            }
+/*        if (!processor.execute(this, state)) {
+            return false;
         }
-
-        return result;
+  */
+        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 
     public boolean isIncludeCommand() {

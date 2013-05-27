@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Date: 12.04.2009
@@ -29,16 +30,16 @@ import com.intellij.psi.PsiElement;
  *
  * @author Joachim Ansorg
  */
-public class BashBlockImpl extends BashPsiElementImpl implements BashBlock {
-    public BashBlockImpl(ASTNode astNode) {
-        super(astNode, "bash block impl");
+public class BashBlockImpl extends BashCompositeElement implements BashBlock {
+    public BashBlockImpl() {
+        super(BashElementTypes.BLOCK_ELEMENT);
     }
 
     public boolean isCommandGroup() {
-        return commandGroup() != null;
+        return false;
     }
 
     public PsiElement commandGroup() {
-        return findChildByType(BashElementTypes.GROUP_COMMAND);
+        return null;
     }
 }

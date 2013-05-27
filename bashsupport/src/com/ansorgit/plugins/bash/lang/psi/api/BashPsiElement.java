@@ -21,8 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 import com.intellij.psi.PsiElement;
 
 /**
- * Date: 11.04.2009
- * Time: 23:15:18
+ * Marker interface for Bash psi elements.
  *
  * @author Joachim Ansorg
  */

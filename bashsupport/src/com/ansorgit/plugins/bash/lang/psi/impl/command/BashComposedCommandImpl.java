@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
  * Date: Dec 3, 2009
  * Time: 11:25:39 AM
  */
-public class BashComposedCommandImpl extends BashPsiElementImpl implements BashComposedCommand {
+public class BashComposedCommandImpl extends BashPsiStubElement implements BashComposedCommand {
     public BashComposedCommandImpl(ASTNode astNode) {
         super(astNode, "bash composed command");
     }
