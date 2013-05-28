@@ -144,6 +144,8 @@
                            implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>
         <colorSettingsPage implementation="com.ansorgit.plugins.bash.editor.highlighting.BashColorsAndFontsPage"/>
 
+        <additionalTextAttributes scheme="" file="colorSchemes/BashDefault.xml"/>
+
         <!--Language extensions -->
         <lang.braceMatcher language="Bash"
                            implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashBraceMatcher"/>
