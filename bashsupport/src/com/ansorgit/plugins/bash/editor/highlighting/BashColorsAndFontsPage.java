@@ -25,11 +25,17 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import com.intellij.openapi.util.io.StreamUtil;
+import com.intellij.util.io.IOUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Map;
 
 public class BashColorsAndFontsPage implements ColorSettingsPage {
@@ -97,51 +103,43 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
     @NonNls
     @NotNull
     public String getDemoText() {
-        return "#!/bin/sh\n\n" +
-                "<internalCmd>export</internalCmd> <varDef>subject</varDef>=world\n" +
-                "echo \"Hello $<internalVar>subject</internalVar>\"\n" +
-                "\n" +
-                "# Function to greet someone\n" +
-                "function <functionDef>greetingTo</functionDef>() {\n" +
-                "   <internalCmd>local</internalCmd> <varDef>mySubject</varDef>=$1\n" +
-                "   [ -z $mySubject ] || <externalCmd>cat</externalCmd> - <<dummy><</dummy><heredocStart>EOF</heredocStart>\n" +
-                "<heredoc>   Have a look at this great here doc, $<internalVar>mySubject</internalVar>!</heredoc>\n" +
-                "<heredocEnd>EOF</heredocEnd>\n" +
-                "}\n" +
-                "\n" +
-                "<functionCall>greetingTo</functionCall> 'World';\n" +
-                "\n" +
-                "for n in $<subshellCmd>(<externalCmd>seq</externalCmd> 3 10)</subshellCmd>; do\n" +
-                "   echo <string>\"1 + 2+...+<internalVar>$n</internalVar> = $((<internalVar>$n</internalVar>*(<internalVar>$n</internalVar>+1)/2))\"</string>\n" +
-                "done\n" +
-                "\n" +
-                "<internalCmd>echo</internalCmd> <string>\"27+15=<backquote>`<internalCmd>echo</internalCmd> 42`</backquote>\"</string>;\n" +
-                "\n" +
-                "${<internalVar>subject</internalVar>:1:2}\n" +
-                "\n" +
-                "Unix[0]='Debian'\n" +
-                "Unix[1]='Red hat'\n" +
-                "Unix[2]='Ubuntu'\n" +
-                "Unix[3]='Suse'\n" +
-                "\n" +
-                "echo ${Unix[1]}";
-    }
+        InputStream resource = getClass().getClassLoader().getResourceAsStream("/highlighterDemoText.sh");
+        String demoText;
+        try {
+            demoText = StreamUtil.readText(resource, "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException("BashSupport could not load the syntax highlighter demo text.", e);
+        }
 
+        return demoText;
+    }
 
     private static final Map<String, TextAttributesKey> tags = Maps.newHashMap();
 
     static {
+        tags.put("keyword", BashSyntaxHighlighter.KEYWORD);
+        tags.put("shebang", BashSyntaxHighlighter.SHEBANG_COMMENT);
+        tags.put("lineComment", BashSyntaxHighlighter.LINE_COMMENT);
+        tags.put("number", BashSyntaxHighlighter.NUMBER);
+
         tags.put("string", BashSyntaxHighlighter.STRING);
+        tags.put("simpleString", BashSyntaxHighlighter.STRING2);
+
         tags.put("heredoc", BashSyntaxHighlighter.HERE_DOC);
         tags.put("heredocStart", BashSyntaxHighlighter.HERE_DOC_START);
         tags.put("heredocEnd", BashSyntaxHighlighter.HERE_DOC_END);
+
         tags.put("backquote", BashSyntaxHighlighter.BACKQUOTE);
+
         tags.put("internalCmd", BashSyntaxHighlighter.INTERNAL_COMMAND);
         tags.put("externalCmd", BashSyntaxHighlighter.EXTERNAL_COMMAND);
         tags.put("subshellCmd", BashSyntaxHighlighter.SUBSHELL_COMMAND);
+
         tags.put("functionDef", BashSyntaxHighlighter.FUNCTION_DEF_NAME);
         tags.put("functionCall", BashSyntaxHighlighter.FUNCTION_CALL);
+
         tags.put("varDef", BashSyntaxHighlighter.VAR_DEF);
+        tags.put("var", BashSyntaxHighlighter.VAR_USE);
         tags.put("internalVar", BashSyntaxHighlighter.VAR_USE_BUILTIN);
         tags.put("composedVar", BashSyntaxHighlighter.VAR_USE_COMPOSED);
 

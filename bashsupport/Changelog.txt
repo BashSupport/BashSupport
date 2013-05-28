@@ -1,3 +1,4 @@
+- Improved color scheme definitions, looks better with Darcula
 - Improved performance (variable resolving)
 - Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)
 
