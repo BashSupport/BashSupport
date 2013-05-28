@@ -21,9 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
+import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
@@ -66,6 +64,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
     private static final Object[] EMPTY_VARIANTS = new Object[0];
     private final BashReference cachingReference;
+    private Boolean cachedFunctionScopeLocal;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
@@ -78,7 +77,12 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public String getName() {
-        return findAssignmentWord().getText();
+        PsiElement element = findAssignmentWord();
+        if (element instanceof BashCharSequence) {
+            return ((BashCharSequence) element).getUnwrappedCharSequence();
+        }
+
+        return element.getText();
     }
 
     public PsiElement setName(@NotNull @NonNls String newName) throws IncorrectOperationException {
@@ -151,7 +155,22 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
 
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.cachedFunctionScopeLocal = null;
+    }
+
     public boolean isFunctionScopeLocal() {
+        if (cachedFunctionScopeLocal == null) {
+            cachedFunctionScopeLocal = doIsFunctionScopeLocal();
+        }
+
+        return cachedFunctionScopeLocal;
+    }
+
+    private boolean doIsFunctionScopeLocal() {
         //var defs on global level can not be local
         PsiElement enclosingBlock = BashPsiUtils.findEnclosingBlock(this);
         if (enclosingBlock instanceof PsiFile) {
@@ -174,7 +193,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
         //we would get an infinite recursion
         final ResolveProcessor processor = new BashVarProcessor(this, false);
-        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestVarDefFunctionDefScope(this);
+        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
         if (functionLocalScope == null) {
             return false;
         }
@@ -231,34 +250,19 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return cachingReference;
     }
 
+    @Override
+    public boolean isStaticAssignmentWord() {
+        PsiElement word = findAssignmentWord();
+        if (word instanceof BashCharSequence) {
+            return ((BashCharSequence) word).isStatic();
+        }
+
+        return true;
+    }
+
     public PsiElement findFunctionScope() {
         return PsiTreeUtil.getContextOfType(this, BashFunctionDef.class, true);
     }
-
-    /*public boolean isReferenceTo(PsiElement element) {
-        if (this == element) {
-            return true;
-        }
-
-        //local vars can't be resolved in the script
-        if (isCommandLocal()) {
-            return false;
-        }
-
-        //if it's a var def and appears earlier in the same context or above it's a valid ref
-        if (!(element instanceof BashVarDef)) {
-            return false;
-        }
-
-        BashVarDef def = (BashVarDef) element;
-
-        String myName = getName();
-        return myName != null && myName.equals(def.getName()) && BashVarUtils.isInDefinedScope(this, def);
-    }
-
-    public boolean isSoft() {
-        return false;
-    }         */
 
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -288,6 +292,15 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
     public boolean isArrayUse() {
         return false;
+    }
+
+    private TextRange getAssignmentNameTextRange() {
+        PsiElement assignmentWord = findAssignmentWord();
+        if (assignmentWord instanceof BashString) {
+            return ((BashString) assignmentWord).getTextContentRange();
+        }
+
+        return TextRange.from(0, assignmentWord.getTextLength());
     }
 
     public boolean isReadonly() {
@@ -326,7 +339,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         @Override
         public TextRange getRangeInElement() {
-            return TextRange.from(0, bashVarDef.getReferencedName().length());
+            return bashVarDef.getAssignmentNameTextRange();
         }
 
         @NotNull

@@ -134,7 +134,7 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     public void testResolveFunctionVarToLocalDef() throws Exception {
         BashVar varDef = (BashVar) assertIsWellDefinedVariable();
-        Assert.assertTrue(BashPsiUtils.findBroadestVarDefFunctionDefScope(varDef) != null);
+        Assert.assertTrue(BashPsiUtils.findBroadestFunctionScope(varDef) != null);
         Assert.assertTrue(varDef.getReference().resolve() == null);
     }
 

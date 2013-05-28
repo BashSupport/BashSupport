@@ -58,7 +58,6 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
         }
 
         return results.values();
-        //return Collections.unmodifiableCollection(results.values());
     }
 
     public boolean hasResults() {

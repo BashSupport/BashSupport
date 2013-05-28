@@ -30,6 +30,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -56,7 +57,7 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
         this.ignoreGlobals = false;
     }
 
-    public boolean execute(PsiElement psiElement, ResolveState resolveState) {
+    public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
             BashVarDef varDef = (BashVarDef) psiElement;
 
@@ -86,6 +87,10 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
 
     private boolean isValidDefinition(BashVarDef varDef, ResolveState resolveState) {
         if (varDef.isCommandLocal()) {
+            return false;
+        }
+
+        if (!varDef.isStaticAssignmentWord()) {
             return false;
         }
 
