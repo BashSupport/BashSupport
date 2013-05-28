@@ -49,7 +49,7 @@ public class BashVarVariantsProcessor extends BashAbstractProcessor implements B
     public boolean execute(PsiElement psiElement, ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
             final BashVarDef varDef = (BashVarDef) psiElement;
-            if (!varDef.isCommandLocal() && !variableNames.contains(varDef.getName()) && BashVarUtils.isInDefinedScope(startElement, varDef)) {
+            if (varDef.isStaticAssignmentWord() && !varDef.isCommandLocal() && !variableNames.contains(varDef.getName()) && BashVarUtils.isInDefinedScope(startElement, varDef)) {
                 variables.add(varDef);
                 variableNames.add(varDef.getName());
             }

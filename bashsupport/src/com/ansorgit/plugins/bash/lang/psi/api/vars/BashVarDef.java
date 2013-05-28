@@ -83,4 +83,10 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
 
     @NotNull
     BashReference getReference();
+
+    /**
+     *
+     * @return True if the value of the assignment word is static, false otherwise. Something like export "$a"=b is not a static assignment word
+     */
+    boolean isStaticAssignmentWord();
 }

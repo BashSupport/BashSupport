@@ -196,7 +196,8 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
             return false;
         }
 
-        if (hasCommandGroup()) {
+        //the group does its own processing, do not duplicate it here
+        if (!hasCommandGroup()) {
             return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
         }
 

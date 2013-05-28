@@ -71,14 +71,14 @@ public final class BashPsiUtils {
     /**
      * Returns the broadest scope of the variable definition.
      *
-     * @param varDef The element to check
+     * @param startElement The element to check
      * @return The containing block or null
      */
     @Nullable
-    public static BashFunctionDef findBroadestVarDefFunctionDefScope(PsiElement varDef) {
+    public static BashFunctionDef findBroadestFunctionScope(PsiElement startElement) {
         BashFunctionDef lastValidScope = null;
 
-        PsiElement element = varDef.getContext();
+        PsiElement element = startElement.getContext();
         while (element != null) {
             element = element.getContext();
 
@@ -365,7 +365,7 @@ public final class BashPsiUtils {
     }
 
     private static boolean isGlobal(PsiElement element) {
-        return findBroadestVarDefFunctionDefScope(element) == null;
+        return findBroadestFunctionScope(element) == null;
     }
 
     public static List<PsiComment> findDocumentationElementComments(PsiElement element) {

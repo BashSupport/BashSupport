@@ -23,6 +23,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -68,12 +70,32 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
                 return null;
             }
 
-            BashVarProcessor processor = new BashVarProcessor(bashVar, true);
+           ResolveProcessor processor = new BashVarProcessor(bashVar, true);
             if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVar, bashVar.getContainingFile(), ResolveState.initial())) {
                 return processor.getBestResult(false, bashVar);
             }
 
             return null;
+
+            /*
+            //first resolve for local variable definitions in the broadest function scope
+            BashFunctionDef broadestFunctionScope = BashPsiUtils.findBroadestFunctionScope(bashVar);
+            if (broadestFunctionScope != null) {
+                ResolveProcessor localResolver = new BashVarProcessor(bashVar, true);
+                if (!BashPsiUtils.varResolveTreeWalkUp(localResolver, bashVar, broadestFunctionScope, ResolveState.initial())) {
+                    return localResolver.getBestResult(false, bashVar);
+                }
+            }
+
+            //if nothing was found, do a global check without checking for local variables
+            //fixme could be more efficient to check functions around bashVar twice
+            ResolveProcessor globalResolver = new BashVarProcessor(bashVar, true);
+            if (!BashPsiUtils.varResolveTreeWalkUp(globalResolver, bashVar, bashVar.getContainingFile(), ResolveState.initial())) {
+                return globalResolver.getBestResult(false, bashVar);
+            }
+
+            return null;
+            */
         }
 
         @NotNull

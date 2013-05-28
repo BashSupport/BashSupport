@@ -58,16 +58,9 @@ public class BashElementSharedImpl {
         //walk the tree from top to bottom because the first definition has higher priority and should still be processed
         //if a later definition masks it
 
-        PsiElement child = null;
-        if (lastParent != null && lastParent.getParent() == thisElement) {
-            child = lastParent.getPrevSibling();
-            if (child == null) {
-                return true; // first element
-            }
-        }
-
-        if (child == null) {
-            child = thisElement.getFirstChild();
+        PsiElement child = thisElement.getFirstChild();
+        if (child == lastParent) {
+            return true;
         }
 
         while (child != null) {
