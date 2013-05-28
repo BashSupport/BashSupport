@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTimeCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashKeywordDefaultImpl;
 import com.intellij.lang.ASTNode;
@@ -31,11 +32,11 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashTimeCommandImpl extends BashKeywordDefaultImpl implements BashTimeCommand {
-    public BashTimeCommandImpl(final ASTNode astNode) {
-        super(astNode, "bash time command");
+    public BashTimeCommandImpl() {
+        super(BashElementTypes.TIME_COMMAND);
     }
 
     public PsiElement keywordElement() {
-        return findChildByType(BashTokenTypes.TIME_KEYWORD);
+        return findPsiChildByType(BashTokenTypes.TIME_KEYWORD);
     }
 }

@@ -19,15 +19,16 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubElement;
 
 /**
  * User: jansorg
  * Date: Oct 29, 2009
  * Time: 8:19:49 PM
  */
-public class BashGenericCommandImpl extends BashPsiStubElement implements BashGenericCommand {
+public class BashGenericCommandImpl extends BashBaseStubElementImpl<StubElement> implements BashGenericCommand {
     public BashGenericCommandImpl(ASTNode astNode) {
         super(astNode, "BashGenericCommand");
     }

@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashFunctionDefNameImpl extends BashPsiStubElement implements BashFunctionDefName {
+public class BashFunctionDefNameImpl extends BashBaseStubElementImpl<StubElement> implements BashFunctionDefName {
     public BashFunctionDefNameImpl(ASTNode astNode) {
         super(astNode, "BashFunctionDefName");
     }

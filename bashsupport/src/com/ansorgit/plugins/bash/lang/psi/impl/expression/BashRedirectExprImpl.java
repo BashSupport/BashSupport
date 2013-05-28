@@ -20,9 +20,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.expression;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: Oct 29, 2009
  * Time: 8:44:28 PM
  */
-public class BashRedirectExprImpl extends BashPsiStubElement implements BashRedirectExpr {
+public class BashRedirectExprImpl extends BashBaseStubElementImpl<StubElement> implements BashRedirectExpr {
     public BashRedirectExprImpl(final ASTNode astNode) {
         super(astNode, "BashRedirectExpr");
     }

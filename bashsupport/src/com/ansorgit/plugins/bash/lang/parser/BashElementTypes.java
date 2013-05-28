@@ -23,7 +23,17 @@ import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashSubshellCommandImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashForImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashSelectImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashUntilImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCaseImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashConditionalCommandImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashIfImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
@@ -43,9 +53,6 @@ import java.lang.reflect.Constructor;
 
 /**
  * The available Bash parser element types.
- * <p/>
- * Date: 24.03.2009
- * Time: 20:30:25
  *
  * @author Joachim Ansorg
  */
@@ -75,7 +82,7 @@ public interface BashElementTypes {
 
     IElementType SHEBANG_ELEMENT = new BashElementType("shebang element");
 
-    IElementType BLOCK_ELEMENT = new BashCompositeElementType("block element", BashGroupImpl.class);
+    IElementType BLOCK_ELEMENT = new BashCompositeElementType("block element", BashBlockImpl.class);
     IElementType GROUP_ELEMENT = new BashCompositeElementType("group element", BashGroupImpl.class);
 
     //Var usage
@@ -107,20 +114,18 @@ public interface BashElementTypes {
     IElementType COMPOSED_COMMAND = new BashElementType("composed command");
 
     //shell commands
-    IElementType WHILE_COMMAND = new BashElementType("while loop");
-    IElementType UNTIL_COMMAND = new BashElementType("until loop");
-    IElementType FOR_COMMAND = new BashElementType("for shellcommand");
-    IElementType SELECT_COMMAND = new BashElementType("select command");
-    IElementType IF_COMMAND = new BashElementType("if shellcommand");
-    IElementType CONDITIONAL_COMMAND = new BashElementType("conditional shellcommand");
-    IElementType SUBSHELL_COMMAND = new BashElementType("subshell shellcommand");
-    IElementType BACKQUOTE_COMMAND = new BashElementType("backquote shellcommand");
+    IElementType WHILE_COMMAND = new BashCompositeElementType("while loop", BashWhileImpl.class);
+    IElementType UNTIL_COMMAND = new BashCompositeElementType("until loop", BashUntilImpl.class);
+    IElementType FOR_COMMAND = new BashCompositeElementType("for shellcommand", BashForImpl.class);
+    IElementType SELECT_COMMAND = new BashCompositeElementType("select command", BashSelectImpl.class);
+    IElementType IF_COMMAND = new BashCompositeElementType("if shellcommand", BashIfImpl.class);
+    IElementType CONDITIONAL_COMMAND = new BashCompositeElementType("conditional shellcommand", BashConditionalCommandImpl.class);
+    IElementType SUBSHELL_COMMAND = new BashCompositeElementType("subshell shellcommand", BashSubshellCommandImpl.class);
+    IElementType BACKQUOTE_COMMAND = new BashCompositeElementType("backquote shellcommand", BashBackquoteImpl.class);
 
     BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
 
     IElementType GROUP_COMMAND = new BashCompositeElementType("group command", BashGroupImpl.class);
-
-    //IElementType CONDITIONAL_EXPRESSION = new BashElementType("conditional / test expression");
 
     //arithmetic commands
     IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
@@ -131,7 +136,6 @@ public interface BashElementTypes {
     IElementType ARITH_BIT_OR_ELEMENT = new BashElementType("arithmetic bitwise or");
     IElementType ARITH_BIT_XOR_ELEMENT = new BashElementType("arithmetic bitwise xor");
     IElementType ARITH_BIT_AND_ELEMENT = new BashElementType("arithmetic bitwise and");
-    //IElementType ARITH_COMBINATION_ASSIGNMENT_ELEMENT = new BashElementType("arith assignment");
     IElementType ARITH_COMPUND_COMPARISION_ELEMENT = new BashElementType("arith compund comparision");
     IElementType ARITH_EQUALITY_ELEMENT = new BashElementType("arithmetic equality");
     IElementType ARITH_EXPONENT_ELEMENT = new BashElementType("arithmetic exponent");
@@ -143,12 +147,11 @@ public interface BashElementTypes {
     IElementType ARITH_PRE_INC_ELEMENT = new BashElementType("arithmetic pre incr");
     IElementType ARITH_SHIFT_ELEMENT = new BashElementType("arithmetic shift");
     IElementType ARITH_SIMPLE_ELEMENT = new BashElementType("arithmetic simple");
-    //IElementType ARITH_SIMPLE_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic simple assignment");
     IElementType ARITH_TERNERAY_ELEMENT = new BashElementType("arithmetic ternary operator");
 
     IElementType ARITH_PARENS_ELEMENT = new BashElementType("arithmetic parenthesis expr");
 
-    IElementType CASE_COMMAND = new BashElementType("case pattern");
+    IElementType CASE_COMMAND = new BashCompositeElementType("case pattern", BashCaseImpl.class);
     IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");
     IElementType CASE_PATTERN_ELEMENT = new BashElementType("case pattern");
 

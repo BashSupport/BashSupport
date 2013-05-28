@@ -20,8 +20,12 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -38,5 +42,18 @@ public class BashGroupImpl extends BashCompositeElement implements BashBlock {
 
     public PsiElement commandGroup() {
         return this;
+    }
+
+    private boolean isFunctionBody() {
+        return getParent() instanceof BashFunctionDef;
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        if (isFunctionBody()) {
+            return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
+        }
+
+        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 }

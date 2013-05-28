@@ -21,11 +21,12 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +40,7 @@ import java.util.List;
  * Date: Feb 6, 2010
  * Time: 12:14:33 PM
  */
-public abstract class AbstractExpression extends BashPsiStubElement implements ArithmeticExpression {
+public abstract class AbstractExpression extends BashBaseStubElementImpl<StubElement> implements ArithmeticExpression {
     private final Type type;
     private Boolean isStatic = null;
 

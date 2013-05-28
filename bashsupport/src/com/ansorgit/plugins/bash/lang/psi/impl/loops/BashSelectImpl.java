@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.loops;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.loops.BashSelect;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashKeywordDefaultImpl;
 import com.intellij.lang.ASTNode;
@@ -31,11 +32,11 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashSelectImpl extends BashKeywordDefaultImpl implements BashSelect {
-    public BashSelectImpl(final ASTNode astNode) {
-        super(astNode, "bash select loop");
+    public BashSelectImpl() {
+        super(BashElementTypes.SELECT_COMMAND);
     }
 
     public PsiElement keywordElement() {
-        return findChildByType(BashTokenTypes.SELECT_KEYWORD);
+        return findPsiChildByType(BashTokenTypes.SELECT_KEYWORD);
     }
 }

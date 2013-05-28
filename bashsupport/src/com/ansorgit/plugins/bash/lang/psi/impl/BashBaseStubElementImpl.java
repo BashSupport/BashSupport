@@ -23,6 +23,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.IStubElementType;
@@ -71,5 +75,14 @@ public abstract class BashBaseStubElementImpl<T extends StubElement> extends Stu
     @Override
     public GlobalSearchScope getResolveScope() {
         return BashElementSharedImpl.getElementGlobalSearchScope(this, getProject());
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        if (!processor.execute(this, state)) {
+            return false;
+        }
+
+        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 }

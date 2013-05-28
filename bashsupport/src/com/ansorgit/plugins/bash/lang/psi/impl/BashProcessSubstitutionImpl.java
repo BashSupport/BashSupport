@@ -20,13 +20,14 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashProcessSubstitution;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubElement;
 
 /**
  * User: jansorg
  * Date: 13.07.2010
  * Time: 18:54:48
  */
-public class BashProcessSubstitutionImpl extends BashPsiStubElement implements BashProcessSubstitution {
+public class BashProcessSubstitutionImpl extends BashBaseStubElementImpl<StubElement> implements BashProcessSubstitution {
     public BashProcessSubstitutionImpl(final ASTNode astNode) {
         super(astNode, "process substitution element");
     }

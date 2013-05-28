@@ -31,11 +31,12 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BashFileReferenceImpl extends BashPsiStubElement implements BashFileReference {
+public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> implements BashFileReference {
     private PsiReference cachingReference;
 
     public BashFileReferenceImpl(final ASTNode astNode) {

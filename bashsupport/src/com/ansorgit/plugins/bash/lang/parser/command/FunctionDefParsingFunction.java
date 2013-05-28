@@ -133,7 +133,9 @@ public class FunctionDefParsingFunction implements ParsingFunction {
             builder.advanceLexer();
         }
 
-        body.done(BashElementTypes.BLOCK_ELEMENT);
+        //body.done(BashElementTypes.BLOCK_ELEMENT);
+        body.drop();
+
         function.done(BashElementTypes.FUNCTION_DEF_COMMAND);
 
         return true;

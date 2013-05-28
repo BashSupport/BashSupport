@@ -21,6 +21,8 @@ package com.ansorgit.plugins.bash.lang.psi.api.shell;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.psi.PsiElement;
 
+import java.util.Collection;
+
 /**
  * Date: 06.05.2009
  * Time: 13:22:51
@@ -33,5 +35,5 @@ public interface BashCase extends BashPsiElement {
      *
      * @return Array containing the pattern list. May be empty.
      */
-    PsiElement[] patternList();
+    Collection<? extends PsiElement> patternList();
 }

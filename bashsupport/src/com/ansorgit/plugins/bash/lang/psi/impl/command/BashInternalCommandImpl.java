@@ -19,15 +19,16 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashInternalCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubElement;
 
 /**
  * User: jansorg
  * Date: Oct 29, 2009
  * Time: 8:19:49 PM
  */
-public class BashInternalCommandImpl extends BashPsiStubElement implements BashInternalCommand {
+public class BashInternalCommandImpl extends BashBaseStubElementImpl<StubElement> implements BashInternalCommand {
     public BashInternalCommandImpl(ASTNode astNode) {
         super(astNode, "BashInternalCommand");
     }
