@@ -69,12 +69,6 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == FUNCTION_DEF_COMMAND) {
             return new BashFunctionDefImpl(node);
         }
-        if (elementType == BACKQUOTE_COMMAND) {
-            return new BashBackquoteImpl(node);
-        }
-        if (elementType == SUBSHELL_COMMAND) {
-            return new BashSubshellCommandImpl(node);
-        }
         if (elementType == PIPELINE_COMMAND) {
             return new BashPipelineImpl(node);
         }
@@ -82,38 +76,12 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashComposedCommandImpl(node);
         }
 
-        //loops
-        if (elementType == FOR_COMMAND) {
-            return new BashForImpl(node);
-        }
-        if (elementType == WHILE_COMMAND) {
-            return new BashWhileImpl(node);
-        }
-        if (elementType == SELECT_COMMAND) {
-            return new BashSelectImpl(node);
-        }
-        if (elementType == UNTIL_COMMAND) {
-            return new BashUntilImpl(node);
-        }
-
         //other shell things
-        if (elementType == IF_COMMAND) {
-            return new BashIfImpl(node);
-        }
-        if (elementType == CONDITIONAL_COMMAND) {
-            return new BashConditionalCommandImpl(node);
-        }
-        if (elementType == CASE_COMMAND) {
-            return new BashCaseImpl(node);
-        }
         if (elementType == CASE_PATTERN_ELEMENT) {
             return new BashCasePatternImpl(node);
         }
         if (elementType == CASE_PATTERN_LIST_ELEMENT) {
             return new BashCasePatternListElementImpl(node);
-        }
-        if (elementType == TIME_COMMAND) {
-            return new BashTimeCommandImpl(node);
         }
         if (elementType == REDIRECT_ELEMENT) {
             return new BashRedirectExprImpl(node);

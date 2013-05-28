@@ -24,6 +24,8 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,12 +37,12 @@ import javax.swing.*;
  *
  * @author Joachim Ansorg
  */
-public abstract class BashKeywordDefaultImpl extends BashPsiStubElement implements PsiReference, BashKeyword {
+public abstract class BashKeywordDefaultImpl extends BashCompositeElement implements PsiReference, BashKeyword {
 
     private static final Object[] EMPTY = new Object[0];
 
-    public BashKeywordDefaultImpl(final ASTNode astNode, final String name) {
-        super(astNode, name);
+    protected BashKeywordDefaultImpl(IElementType type) {
+        super(type);
     }
 
     @Override

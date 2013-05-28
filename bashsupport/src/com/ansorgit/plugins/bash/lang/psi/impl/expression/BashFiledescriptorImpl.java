@@ -20,9 +20,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.expression;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashFiledescriptor;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 10.05.2010
  * Time: 19:57:38
  */
-public class BashFiledescriptorImpl extends BashPsiStubElement implements BashFiledescriptor {
+public class BashFiledescriptorImpl extends BashBaseStubElementImpl<StubElement> implements BashFiledescriptor {
     public BashFiledescriptorImpl(ASTNode astNode) {
         super(astNode, "Bash filedescriptor");
     }

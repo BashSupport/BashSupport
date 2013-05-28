@@ -18,17 +18,15 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashPsiStubElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashCompositeElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubElement;
 
-/**
- * User: jansorg
- * Date: 06.08.2009
- * Time: 22:43:07
- */
-public class BashConditionalCommandImpl extends BashPsiStubElement implements BashConditionalCommand {
-    public BashConditionalCommandImpl(final ASTNode astNode) {
-        super(astNode, "Bash conditional command");
+public class BashConditionalCommandImpl extends BashCompositeElement implements BashConditionalCommand {
+    public BashConditionalCommandImpl() {
+        super(BashElementTypes.CONDITIONAL_COMMAND);
     }
 }

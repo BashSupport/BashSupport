@@ -27,6 +27,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.StubElement;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashShebangImpl extends BashPsiStubElement implements BashShebang {
+public class BashShebangImpl extends BashBaseStubElementImpl<StubElement> implements BashShebang {
     private final static Logger log = Logger.getInstance("#bash.BashShebang");
 
     public BashShebangImpl(final ASTNode astNode) {

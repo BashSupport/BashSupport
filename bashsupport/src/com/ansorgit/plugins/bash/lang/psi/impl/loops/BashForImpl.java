@@ -32,17 +32,15 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashForImpl extends BashKeywordDefaultImpl implements BashFor {
-    //private Logger log = Logger.getInstance("#Bash.BashForImpl");
-
-    public BashForImpl(ASTNode astNode) {
-        super(astNode, "bash for command");
+    public BashForImpl() {
+        super(BashElementTypes.FOR_COMMAND);
     }
 
     public PsiElement keywordElement() {
-        return findChildByType(BashTokenTypes.FOR_KEYWORD);
+        return findPsiChildByType(BashTokenTypes.FOR_KEYWORD);
     }
 
     public boolean isArithmetic() {
-        return findChildrenByType(BashElementTypes.ARITHMETIC_COMMAND) != null;
+        return findPsiChildByType(BashElementTypes.ARITHMETIC_COMMAND) != null;
     }
 }

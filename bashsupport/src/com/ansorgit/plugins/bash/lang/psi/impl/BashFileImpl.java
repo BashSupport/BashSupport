@@ -55,6 +55,10 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
+        if (!processor.execute(this, state)) {
+            return false;
+        }
+
         PsiElement child = getFirstChild();
 
         //processing the file has to include the global variables which may come after a variable use, e.g. if the var use is in a function before the global var

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.loops;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.loops.BashUntil;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashKeywordDefaultImpl;
 import com.intellij.lang.ASTNode;
@@ -31,11 +32,11 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashUntilImpl extends BashKeywordDefaultImpl implements BashUntil {
-    public BashUntilImpl(final ASTNode astNode) {
-        super(astNode, "bash until command");
+    public BashUntilImpl() {
+        super(BashElementTypes.UNTIL_COMMAND);
     }
 
     public PsiElement keywordElement() {
-        return findChildByType(BashTokenTypes.UNTIL_KEYWORD);
+        return findPsiChildByType(BashTokenTypes.UNTIL_KEYWORD);
     }
 }
