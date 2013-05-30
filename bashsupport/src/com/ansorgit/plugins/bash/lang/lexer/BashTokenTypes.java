@@ -48,6 +48,7 @@ public interface BashTokenTypes {
 
     IElementType LEFT_SQUARE = new BashElementType("[ (left square)");
     IElementType RIGHT_SQUARE = new BashElementType("] (right square)");
+    TokenSet bracketSet = TokenSet.create(LEFT_SQUARE, RIGHT_SQUARE);
 
     // comments
     IElementType COMMENT = new BashElementType("Comment");
@@ -271,5 +272,5 @@ public interface BashTokenTypes {
 
     //sets
     //fixme add internal commands?
-    TokenSet identifierTokenSet = TokenSet.orSet(keywords);
+    TokenSet identifierTokenSet = TokenSet.orSet(keywords, bracketSet);
 }

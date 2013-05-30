@@ -26,8 +26,6 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import com.intellij.openapi.util.io.StreamUtil;
-import com.intellij.util.io.IOUtil;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Map;
 
 public class BashColorsAndFontsPage implements ColorSettingsPage {
@@ -53,13 +50,17 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
             new AttributesDescriptor[]{
                     new AttributesDescriptor("Line comment", BashSyntaxHighlighter.LINE_COMMENT),
                     new AttributesDescriptor("Shebang (#!) comment", BashSyntaxHighlighter.SHEBANG_COMMENT),
+
                     new AttributesDescriptor("Keyword", BashSyntaxHighlighter.KEYWORD),
+
                     new AttributesDescriptor("Parenthesis", BashSyntaxHighlighter.PAREN),
                     new AttributesDescriptor("Braces", BashSyntaxHighlighter.BRACE),
                     new AttributesDescriptor("Brackets", BashSyntaxHighlighter.BRACKET),
+
                     new AttributesDescriptor("String \"...\"", BashSyntaxHighlighter.STRING),//psi
                     new AttributesDescriptor("String '...'", BashSyntaxHighlighter.STRING2),
                     new AttributesDescriptor("Number", BashSyntaxHighlighter.NUMBER),
+
                     new AttributesDescriptor("Command redirection", BashSyntaxHighlighter.REDIRECTION),
                     new AttributesDescriptor("Conditional operator", BashSyntaxHighlighter.CONDITIONAL),
 
@@ -81,8 +82,6 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
                     new AttributesDescriptor("Here-document", BashSyntaxHighlighter.HERE_DOC),
                     new AttributesDescriptor("Here-document start marker", BashSyntaxHighlighter.HERE_DOC_START),
                     new AttributesDescriptor("Here-document end marker", BashSyntaxHighlighter.HERE_DOC_END),
-
-                    new AttributesDescriptor("Bad character", BashSyntaxHighlighter.BAD_CHARACTER),
             };
 
     @NotNull
@@ -122,6 +121,8 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
         tags.put("lineComment", BashSyntaxHighlighter.LINE_COMMENT);
         tags.put("number", BashSyntaxHighlighter.NUMBER);
 
+        tags.put("redirect", BashSyntaxHighlighter.REDIRECTION);
+
         tags.put("string", BashSyntaxHighlighter.STRING);
         tags.put("simpleString", BashSyntaxHighlighter.STRING2);
 
@@ -139,7 +140,7 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
         tags.put("functionCall", BashSyntaxHighlighter.FUNCTION_CALL);
 
         tags.put("varDef", BashSyntaxHighlighter.VAR_DEF);
-        tags.put("var", BashSyntaxHighlighter.VAR_USE);
+        tags.put("varUse", BashSyntaxHighlighter.VAR_USE);
         tags.put("internalVar", BashSyntaxHighlighter.VAR_USE_BUILTIN);
         tags.put("composedVar", BashSyntaxHighlighter.VAR_USE_COMPOSED);
 

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
@@ -26,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.IncrementExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -43,6 +45,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -55,6 +58,11 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashAnnotator implements Annotator {
+    private static TokenSet noWordHighlightErase = TokenSet.orSet(
+            TokenSet.create(BashTokenTypes.STRING2),
+            BashTokenTypes.arithLiterals);
+    private static TokenSet noRedirectHighlightErase = TokenSet.create(BashTokenTypes.FILEDESCRIPTOR);
+
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
         if (element instanceof BashBackquote) {
             annotateBackquote(element, annotationHolder);
@@ -80,7 +88,14 @@ public class BashAnnotator implements Annotator {
             annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
         } else if (element instanceof BashFunctionDefName) {
             annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
+        } else if (element instanceof BashRedirectExpr) {
+            annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
         }
+    }
+
+    private void annotateRedirectExpression(BashRedirectExpr element, AnnotationHolder annotationHolder) {
+        Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
+        annotation.setTextAttributes(BashSyntaxHighlighter.REDIRECTION);
     }
 
     private void annotateFunctionDef(BashFunctionDefName functionName, AnnotationHolder annotationHolder) {
@@ -94,20 +109,26 @@ public class BashAnnotator implements Annotator {
         if (first instanceof SimpleExpression && !(first.getFirstChild() instanceof BashVar)) {
             PsiElement operator = element.findOperatorElement();
             if (operator != null) {
-                annotationHolder.createErrorAnnotation(operator, "This error only works on a variable and not on a value.");
+                annotationHolder.createErrorAnnotation(operator, "This operator only works on a variable and not on a value.");
             }
         }
     }
 
     private void annotateWord(PsiElement bashWord, AnnotationHolder annotationHolder) {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
-        PsiElement firstChild = bashWord.getFirstChild();
+        PsiElement child = bashWord.getFirstChild();
 
-        Annotation annotation = annotationHolder.createInfoAnnotation(firstChild, null);
-        annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
+        while (child != null) {
+            if (!noWordHighlightErase.contains(child.getNode().getElementType())) {
+                Annotation annotation = annotationHolder.createInfoAnnotation(child, null);
+                annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
 
-        annotation = annotationHolder.createInfoAnnotation(firstChild, null);
-        annotation.setEnforcedTextAttributes(EditorColorsManager.getInstance().getGlobalScheme().getAttributes(HighlighterColors.TEXT));
+                annotation = annotationHolder.createInfoAnnotation(child, null);
+                annotation.setEnforcedTextAttributes(EditorColorsManager.getInstance().getGlobalScheme().getAttributes(HighlighterColors.TEXT));
+            }
+
+            child = child.getNextSibling();
+        }
     }
 
     private void annotateString(PsiElement bashString, final AnnotationHolder holder) {
