@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta16</version>
+    <version>1.1beta17</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -144,7 +144,8 @@
                            implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>
         <colorSettingsPage implementation="com.ansorgit.plugins.bash.editor.highlighting.BashColorsAndFontsPage"/>
 
-        <additionalTextAttributes scheme="" file="colorSchemes/BashDefault.xml"/>
+        <additionalTextAttributes scheme="Default" file="colors/BashDefault.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colors/BashDarcula.xml"/>
 
         <!--Language extensions -->
         <lang.braceMatcher language="Bash"
