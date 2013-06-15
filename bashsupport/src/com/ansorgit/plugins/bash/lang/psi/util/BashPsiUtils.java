@@ -20,7 +20,9 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.*;
+import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
@@ -28,9 +30,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.CompositeElement;
+import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -48,6 +52,15 @@ import java.util.List;
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
+    }
+
+    public static PsiFile findFileContext(PsiElement element) {
+        PsiFile topLevelFile = InjectedLanguageUtil.getTopLevelFile(element);
+        if (topLevelFile instanceof BashFile) {
+            return topLevelFile;
+        }
+
+        return element.getContainingFile();
     }
 
     /**
@@ -400,14 +413,14 @@ public final class BashPsiUtils {
     }
 
     @Nullable
-    public static PsiElement findParent(@Nullable PsiElement start, Class<? extends PsiElement> parentType) {
+    public static <T extends PsiElement> T findParent(@Nullable PsiElement start, Class<T> parentType) {
         if (start == null) {
             return null;
         }
 
         for (PsiElement current = start.getParent(); current != null; current = current.getParent()) {
             if (parentType.isInstance(current)) {
-                return current;
+                return (T) current;
             }
         }
 
@@ -422,5 +435,37 @@ public final class BashPsiUtils {
         }
 
         return false;
+    }
+
+    public static boolean isInjectedElement(@NotNull PsiElement element) {
+        //fixme languageManager is probably expensive
+        InjectedLanguageManager languageManager = InjectedLanguageManager.getInstance(element.getProject());
+        return languageManager.isInjectedFragment(element.getContainingFile()) || hasInjectionHostParent(element);
+    }
+
+    private static boolean hasInjectionHostParent(PsiElement element) {
+        return hasParentOfType(element, PsiLanguageInjectionHost.class, 10);
+    }
+
+    /**
+     * Returns the start text offset of the element in the toplevel file, i.e the PsiFile which containing the real document. If an element
+     * is injected then the outer file is returned.
+     *
+     * @param element The element to work on
+     * @return The start text offset in the physical PsiFile, injected virtual PsiFiles are not used for text offset calculation
+     */
+    public static int getFileTextOffset(PsiElement element) {
+        int offset = element.getTextOffset();
+        if (isInjectedElement(element)) {
+            //fixme languageManager is probably expensive
+            InjectedLanguageManager languageManager = InjectedLanguageManager.getInstance(element.getProject());
+
+            PsiLanguageInjectionHost injectionHost = languageManager.getInjectionHost(element);
+            if (injectionHost != null) {
+                offset += injectionHost.getTextOffset();
+            }
+        }
+
+        return offset;
     }
 }

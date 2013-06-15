@@ -43,7 +43,7 @@ abstract class ClasspathDocSource implements DocumentationSource {
         }
 
         BashCommand cmd = (BashCommand) element;
-        return ClasspathDocumentationReader.readFromClasspath(prefixPath, cmd.getReferencedName());
+        return ClasspathDocumentationReader.readFromClasspath(prefixPath, cmd.getReferencedCommandName());
     }
 
     abstract boolean isValid(PsiElement element, PsiElement originalElement);

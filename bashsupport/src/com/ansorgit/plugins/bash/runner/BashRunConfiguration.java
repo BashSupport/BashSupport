@@ -24,6 +24,7 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.filters.TextConsoleBuilder;
+import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.module.Module;
@@ -38,6 +39,7 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +67,7 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
 
     @Override
     public Collection<Module> getValidModules() {
-        Module[] allModules = ModuleManager.getInstance(getProject()).getModules();
-        return Lists.newArrayList(allModules);
+        return Arrays.asList(ModuleManager.getInstance(getProject()).getModules());
     }
 
     @Override
@@ -91,10 +92,10 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
         BashCommandLineState state = new BashCommandLineState(this, env);
 
-        TextConsoleBuilder textConsoleBuilder = new BashTextConsoleBuilder(getProject());
+        TextConsoleBuilder textConsoleBuilder = new TextConsoleBuilderImpl(getProject());
         textConsoleBuilder.addFilter(new BashLineErrorFilter(getProject()));
-
         state.setConsoleBuilder(textConsoleBuilder);
+
         return state;
     }
 

@@ -42,6 +42,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -181,7 +182,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
             final BashCommand parentCmd = (BashCommand) context;
-            if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedName())) {
+            if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedCommandName())) {
                 return true;
             }
         }
@@ -310,7 +311,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (context instanceof BashCommand) {
             BashCommand command = (BashCommand) context;
 
-            return command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedName());
+            return command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedCommandName());
         }
 
         return false;
@@ -320,11 +321,16 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return BashPsiUtils.findDocumentationElementComments(this);
     }
 
-    private static final class CachedVarDefReference extends CachingReference implements BashReference {
+    private static final class CachedVarDefReference extends CachingReference implements BashReference, BindablePsiReference {
         private final BashVarDefImpl bashVarDef;
 
         public CachedVarDefReference(BashVarDefImpl bashVarDef) {
             this.bashVarDef = bashVarDef;
+        }
+
+        @Override
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);    //To change body of overridden methods use File | Settings | File Templates.
         }
 
         @Override
@@ -356,7 +362,12 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException("unsupported");
+            if (isReferenceTo(element)) {
+                return bashVarDef;
+            }
+
+            //fixme right?
+            return handleElementRename(element.getText());
         }
 
         @NotNull
@@ -377,7 +388,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 return null;
             }
 
-            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : bashVarDef.getContainingFile();
+            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : BashPsiUtils.findFileContext(bashVarDef);
 
             ResolveProcessor processor = new BashVarProcessor(bashVarDef, true);
             if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVarDef, resolveScope, ResolveState.initial())) {

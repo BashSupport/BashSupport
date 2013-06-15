@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.AddShebangQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
@@ -66,14 +67,15 @@ public class AddShebangInspection extends AbstractBashInspection {
 
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        if (file instanceof BashFile) {
-            BashFile bashFile = (BashFile) file;
+        PsiFile checkedFile = BashPsiUtils.findFileContext(file);
+        if (checkedFile instanceof BashFile && !BashPsiUtils.isInjectedElement(file)) {
+            BashFile bashFile = (BashFile) checkedFile;
 
-            Boolean isLanguageConsole = file.getUserData(BashFile.LANGUAGE_CONSOLE_MARKER);
+            Boolean isLanguageConsole = checkedFile.getUserData(BashFile.LANGUAGE_CONSOLE_MARKER);
 
             if ((isLanguageConsole == null || !isLanguageConsole) && !bashFile.hasShebangLine()) {
                 return new ProblemDescriptor[]{
-                        manager.createProblemDescriptor(file, getShortName(), new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
+                        manager.createProblemDescriptor(checkedFile, getShortName(), new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
                 };
             }
         }

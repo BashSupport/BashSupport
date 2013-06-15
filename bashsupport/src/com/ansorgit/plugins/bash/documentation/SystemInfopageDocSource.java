@@ -69,7 +69,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
         }
 
         try {
-            String commandName = command.getReferencedName();
+            String commandName = command.getReferencedCommandName();
 
             boolean hasInfoPage = infoFileExists(commandName);
             if (!hasInfoPage) {
@@ -147,7 +147,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
 
     public String findCacheKey(PsiElement element, PsiElement originalElement) {
         if (element instanceof BashCommand && ((BashCommand) element).isExternalCommand()) {
-            return ((BashCommand) element).getReferencedName();
+            return ((BashCommand) element).getReferencedCommandName();
         }
 
         return null;

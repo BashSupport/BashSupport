@@ -1,9 +1,19 @@
-- Improved color scheme definitions, looks better with Darcula
-- Improved performance (variable resolving)
-- Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)
-- Better looking with themes now
-- Fixed highlighting of redirects
-- 1.1beta17
+2013-06-15:
+ - Parsing performance improved, especially for large scripts
+ - Support for the typeset command
+ - Initial support for the trap command
+ - Initial support for the eval command
+
+2013-06-12:
+ - "Replace with ${var}" is not suggested inside of arithmetic expressions any more
+
+2013-06-01:
+ - Improved color scheme definitions, looks better with Darcula
+ - Improved performance (variable resolving)
+ - Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)
+ - Better looking with themes now
+ - Fixed highlighting of redirects
+ - 1.1beta17
 
 2013-05-26:
  - Moved from svn to git

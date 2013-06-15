@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.codeInspection.ex.UnfairLocalInspectionTool;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
@@ -35,12 +36,11 @@ import org.jetbrains.annotations.NotNull;
  * Highlights unused function definitions.
  * <p/>
  * fixme: This inspection currently does not work. For a proper implementation we'd need an index.
- * <p/>
- * User: jansorg
- * Date: Oct 31, 2009
- * Time: 9:19:56 PM
  */
-public class UnusedFunctionDefInspection extends AbstractBashInspection {
+public class UnusedFunctionDefInspection extends AbstractBashInspection implements UnfairLocalInspectionTool {
+
+    public static final String SHORT_NAME = "Unused function definition";
+
     @Pattern("[a-zA-Z_0-9.]+")
     @NotNull
     @Override
@@ -51,7 +51,7 @@ public class UnusedFunctionDefInspection extends AbstractBashInspection {
     @NotNull
     @Override
     public String getShortName() {
-        return "Unused function definition";
+        return SHORT_NAME;
     }
 
     @Nls

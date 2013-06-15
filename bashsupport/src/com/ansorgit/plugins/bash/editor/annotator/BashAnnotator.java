@@ -61,7 +61,6 @@ public class BashAnnotator implements Annotator {
     private static TokenSet noWordHighlightErase = TokenSet.orSet(
             TokenSet.create(BashTokenTypes.STRING2),
             BashTokenTypes.arithLiterals);
-    private static TokenSet noRedirectHighlightErase = TokenSet.create(BashTokenTypes.FILEDESCRIPTOR);
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
         if (element instanceof BashBackquote) {

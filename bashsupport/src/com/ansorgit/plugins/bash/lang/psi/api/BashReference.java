@@ -18,7 +18,9 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 12.04.2009

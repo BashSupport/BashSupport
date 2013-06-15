@@ -41,7 +41,7 @@ public class BashPsiFileUtils {
      */
     @Nullable
     public static PsiFile findRelativeFile(PsiFile start, String relativePath) {
-        PsiDirectory startDirectory = start.getContainingFile().getContainingDirectory();
+        PsiDirectory startDirectory = BashPsiUtils.findFileContext(start).getContainingDirectory();
         if (startDirectory == null || StringUtil.isEmptyOrSpaces(relativePath)) {
             return null;
         }

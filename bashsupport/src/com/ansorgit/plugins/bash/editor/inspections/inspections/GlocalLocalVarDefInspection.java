@@ -79,7 +79,7 @@ public class GlocalLocalVarDefInspection extends AbstractBashInspection {
                     if (context instanceof BashCommand) {
                         final BashCommand parentCmd = (BashCommand) context;
 
-                        if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedName())) {
+                        if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedCommandName())) {
                             boolean isInFunction = false;
 
                             PsiElement parent = BashPsiUtils.findEnclosingBlock(varDef);

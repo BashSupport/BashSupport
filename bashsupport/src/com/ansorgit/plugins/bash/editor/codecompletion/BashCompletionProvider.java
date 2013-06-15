@@ -18,10 +18,12 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 

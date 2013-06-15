@@ -18,16 +18,26 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.injection.InjectedLanguageManager;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.LeafElement;
+import com.intellij.psi.impl.source.tree.TreeElement;
+import com.intellij.psi.impl.source.tree.injected.StringLiteralEscaper;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * A string spanning start and end markers and content elements.
@@ -67,5 +77,44 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
         } else {
             visitor.visitElement(this);
         }
+    }
+
+    @Override
+    public boolean isValidHost() {
+        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
+
+        if (walkOn && isValidHost()) {
+            InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(getProject());
+            List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(this);
+            if (injectedPsiFiles != null) {
+                for (Pair<PsiElement, TextRange> psi_range : injectedPsiFiles) {
+                    //fixme check lastParent ?
+                    walkOn &= psi_range.first.processDeclarations(processor, state, lastParent, place);
+                }
+            }
+        }
+
+        return walkOn;
+    }
+
+    @Override
+    public PsiLanguageInjectionHost updateText(@NotNull String text) {
+        ASTNode valueNode = getNode().getFirstChildNode();
+        assert valueNode instanceof LeafElement;
+        ((LeafElement)valueNode).replaceWithText(text);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
+        //fixme
+        return new StringLiteralEscaper<PsiLanguageInjectionHost>(this);
     }
 }

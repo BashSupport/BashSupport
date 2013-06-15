@@ -19,11 +19,15 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
+
+import java.util.Set;
 
 /**
  * Date: 12.04.2009
@@ -34,6 +38,7 @@ import com.intellij.psi.ResolveState;
 public class BashFunctionProcessor extends BashAbstractProcessor {
     private final String symboleName;
     private final boolean ignoreExecuteResult;
+    private Set<PsiElement> visitedElements = Sets.newIdentityHashSet();
 
     public BashFunctionProcessor(String symboleName) {
         this(symboleName, false);
@@ -47,6 +52,12 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
     }
 
     public boolean execute(PsiElement element, ResolveState resolveState) {
+       /* if (visitedElements.contains(element)) {
+            return true;
+        }
+
+        visitedElements.add(element);*/
+
         if (element instanceof BashFunctionDef) {
             final BashFunctionDef f = (BashFunctionDef) element;
 
@@ -59,7 +70,15 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
         return true;
     }
 
-    public <T> T getHint(Key<T> tKey) {
+    public <T> T getHint(Key<T> key) {
+        if (key.equals(Keys.VISITED_SCOPES_KEY)) {
+            return (T) visitedElements;
+        }
+
+        if (key.equals(Keys.FILE_WALK_GO_DEEP)) {
+            return (T) Boolean.FALSE;
+        }
+
         return null;
     }
 }

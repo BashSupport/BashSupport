@@ -74,6 +74,14 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         checkItems("abIsOk1", "abIsOk2");
     }
 
+    public void testWithinTrapCommand() throws Exception {
+        configure();
+
+        //the trap command is a language injection host and contains a bash snippet
+
+        checkItems("inner", "outer");
+    }
+
     public void testEmptyParameterExpansion() throws Exception {
         configure();
         checkItems("abIsOk1", "abIsOk2");

@@ -117,5 +117,5 @@ public interface BashCommand extends BashPsiElement {
     BashVarDef[] assignments();
 
     @Nullable
-    String getReferencedName();
+    String getReferencedCommandName();
 }

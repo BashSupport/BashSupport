@@ -26,6 +26,7 @@ package com.ansorgit.plugins.bash;
  * Time: 8:34:41 PM
  */
 public class BashComponents {
-    public static final String HighlighterFactory = "BashHighlighterFactory";
+    public static final String PostHighlighterFactory = "BashPostHighlightingPassFactory";
+    public static final String RemoveHighlighterFactory = "BashRemoveHighlightingPassFactory";
     public static final String BASH_LOADER = "bash.support.loader";
 }

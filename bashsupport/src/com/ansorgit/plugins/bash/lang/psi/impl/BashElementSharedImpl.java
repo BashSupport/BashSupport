@@ -25,7 +25,8 @@ import java.util.Set;
 public class BashElementSharedImpl {
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
         //fixme is this right?
-        BashFile psiFile = (BashFile) element.getContainingFile();
+        BashFile psiFile = (BashFile) BashPsiUtils.findFileContext(element);
+//        BashFile psiFile = (BashFile) element.getContainingFile();
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
@@ -39,7 +40,8 @@ public class BashElementSharedImpl {
 
         //fixme can this be optimized?
 
-        PsiFile currentFile = element.getContainingFile();
+        PsiFile currentFile = BashPsiUtils.findFileContext(element);
+        //PsiFile currentFile = element.getContainingFile();
         Set<BashFile> includers = FileInclusionManager.findIncluders(project, currentFile);
         Set<PsiFile> included = FileInclusionManager.findIncludedFiles(currentFile, true, true);
 

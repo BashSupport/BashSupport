@@ -30,6 +30,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -59,16 +60,31 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
             return false;
         }
 
-        PsiElement child = getFirstChild();
-
-        //processing the file has to include the global variables which may come after a variable use, e.g. if the var use is in a function before the global var
+        boolean walkDeep = BooleanUtils.toBooleanDefaultIfNull(processor.getHint(Keys.FILE_WALK_GO_DEEP), true);
         boolean moreProcessing = true;
-        while (child != null) {
-            if (child != lastParent && !child.processDeclarations(processor, state, null, place)) {
-                moreProcessing = false;
-            }
+        if (walkDeep) {
+            PsiElement child = getFirstChild();
 
-            child = child.getNextSibling();
+            while (child != null) {
+                if (child != lastParent && !child.processDeclarations(processor, state, lastParent, place)) {
+                    moreProcessing = false;
+                }
+
+                child = child.getNextSibling();
+            }
+        } else {
+            //walk the toplevel psi elements without diving into them
+            //we can compute the first element to walk a bit smarter than getFirstChild().
+            //It's the next toplevel element after place, i.e. starting element
+
+            PsiElement child = getFirstChild();
+            while (child != null) {
+                if (!processor.execute(child, state)) {
+                    moreProcessing = false;
+                    break;
+                }
+                child = child.getNextSibling();
+            }
         }
 
         return moreProcessing;

@@ -59,5 +59,4 @@ public class BashStubFileElementType extends IStubFileElementType<BashFileStub> 
       sink.occurrence(BashFullScriptNameIndex.KEY, name);
     }
   }
-
 }

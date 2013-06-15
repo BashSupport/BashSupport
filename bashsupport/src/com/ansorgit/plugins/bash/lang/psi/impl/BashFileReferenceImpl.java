@@ -129,7 +129,7 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
         @Nullable
         @Override
         public PsiElement resolveInner() {
-            PsiFile containingFile = fileReference.getContainingFile();
+            PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
             return BashPsiFileUtils.findRelativeFile(containingFile, fileReference.getFilename());
         }
 
