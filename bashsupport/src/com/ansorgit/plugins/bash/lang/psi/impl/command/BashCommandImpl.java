@@ -28,10 +28,12 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -59,8 +61,8 @@ import java.util.Set;
  */
 public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final static Key<Boolean> KEY_INTERNAL = Key.create("internal");
-    private final static Key<Boolean> KEY_EXTERNAL = Key.create("external");
-
+    private final static Key<Boolean> KEY_EXTERNAL_OR_FUNCTION = Key.create("external");
+    private static final Key<Boolean> KEY_FUNCTION_CALL = Key.create("functionCall");
     private PsiReference commandReference = new SelfReference<T>(this);
     private PsiReference functionReference = new CachedFunctionReference<T>(this);
 
@@ -91,17 +93,14 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         boolean internal = command != null && LanguageBuiltins.isInternalCommand(command.getText());
 
         KEY_INTERNAL.set(this, internal);
-        KEY_EXTERNAL.set(this, command != null && !internal);
+        KEY_EXTERNAL_OR_FUNCTION.set(this, command != null && !internal);
     }
-
-    private static final Key<Boolean> KEY_FUNCTION_CALL = Key.create("functionCall");
 
     public boolean isFunctionCall() {
         Boolean cached = KEY_FUNCTION_CALL.get(this);
         if (cached != null) {
             return cached;
         }
-
 
         boolean result = isFunctionCallInternal();
 
@@ -117,11 +116,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         }
 
         ASTNode node = commandElement.getNode();
-        if (node == null) {
-            return false;
-        }
-
-        return node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && doResolve() != null;
+        return node != null && node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && doResolve() != null;
     }
 
     public boolean isInternalCommand() {
@@ -134,8 +129,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         //we have to listen to psi changes in the file, though
         //otherwise we might still have isExternal set to true even if a
         //a target exists now, e.g. a Bash function with the right name
-        Boolean external = KEY_EXTERNAL.get(this);
-        return external != null && external && (doResolve() == null);
+        Boolean external = KEY_EXTERNAL_OR_FUNCTION.get(this);
+        return external != null && external && !isFunctionCall();
     }
 
     public boolean isPureAssignment() {
@@ -145,8 +140,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
 
     public boolean isVarDefCommand() {
         return isInternalCommand()
-                && (LanguageBuiltins.varDefCommands.contains(getReferencedName())
-                || LanguageBuiltins.localVarDefCommands.contains(getReferencedName()));
+                && (LanguageBuiltins.varDefCommands.contains(getReferencedCommandName())
+                || LanguageBuiltins.localVarDefCommands.contains(getReferencedCommandName()));
     }
 
     public boolean hasAssignments() {
@@ -188,7 +183,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
     }
 
     @Nullable
-    public String getReferencedName() {
+    public String getReferencedCommandName() {
         final PsiElement element = commandElement();
         if (element != null) {
             return element.getText();
@@ -199,14 +194,14 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
 
     @Nullable
     private PsiElement doResolve() {
-        final String referencedName = getReferencedName();
+        final String referencedName = getReferencedCommandName();
         if (referencedName == null) {
             return null;
         }
 
         final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-        PsiFile currentFile = getContainingFile();
+        PsiFile currentFile = BashPsiUtils.findFileContext(this);
 
         boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, currentFile, ResolveState.initial());
         if (!walkOn) {
@@ -303,7 +298,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
 
         @NotNull
         public String getCanonicalText() {
-            String referencedName = element.getReferencedName();
+            String referencedName = element.getReferencedCommandName();
             return referencedName != null ? referencedName : "";
         }
 
@@ -316,6 +311,13 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         }
 
         public boolean isReferenceTo(PsiElement element) {
+            if (element instanceof BashFunctionDef) {
+                String functionName = ((BashFunctionDef) element).getName();
+                if (functionName != null) {
+                    return functionName.equals(this.element.getReferencedCommandName());
+                }
+            }
+
             return false;
         }
 
@@ -338,7 +340,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
 
         @Override
         public String getReferencedName() {
-            return cmd.getReferencedName();
+            return cmd.getReferencedCommandName();
         }
 
         @Nullable
@@ -381,7 +383,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         @NotNull
         @Override
         public String getCanonicalText() {
-            String referencedName = cmd.getReferencedName();
+            String referencedName = cmd.getReferencedCommandName();
             return referencedName != null ? referencedName : "";
         }
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashHighlighterFactory.java, Class: BashHighlighterFactory
+ * File: RemoveHighlightingPassFactory.java, Class: RemoveHighlightingPassFactory
  * Last modified: 2011-03-31 20:06
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,42 +19,44 @@
 package com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting;
 
 import com.ansorgit.plugins.bash.BashComponents;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.intellij.codeHighlighting.TextEditorHighlightingPass;
+import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar;
-import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.HighlighterLayer;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory which provides text editor highlighters for the Bash file type.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 8:27:58 PM
  */
-public class BashHighlighterFactory implements ProjectComponent {
+public class RemoveHighlightingPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory {
     private TextEditorHighlightingPassRegistrar myRegistrar;
 
-    public BashHighlighterFactory(final TextEditorHighlightingPassRegistrar passRegistrar) {
-        myRegistrar = passRegistrar;
+    protected RemoveHighlightingPassFactory(Project project, TextEditorHighlightingPassRegistrar highlightingPassRegistrar) {
+        super(project);
+        myRegistrar = highlightingPassRegistrar;
     }
 
     public void projectOpened() {
-        myRegistrar.registerTextEditorHighlightingPass(new RemoveHighlightingFactory(), TextEditorHighlightingPassRegistrar.Anchor.AFTER, HighlighterLayer.ADDITIONAL_SYNTAX, false, true);
-    }
-
-    public void projectClosed() {
+        myRegistrar.registerTextEditorHighlightingPass(this, TextEditorHighlightingPassRegistrar.Anchor.AFTER, HighlighterLayer.ADDITIONAL_SYNTAX, false, true);
     }
 
     @NonNls
     @NotNull
     public String getComponentName() {
-        return BashComponents.HighlighterFactory;
+        return BashComponents.RemoveHighlighterFactory;
     }
 
-    public void initComponent() {
-    }
+    public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
+        if (file instanceof BashFile) {
+            return new RemoveHighlightingPass(file.getProject(), (BashFile) file, editor);
+        }
 
-    public void disposeComponent() {
+        return null;
     }
 }

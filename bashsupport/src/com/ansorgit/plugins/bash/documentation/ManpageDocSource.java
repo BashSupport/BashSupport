@@ -44,6 +44,6 @@ class ManpageDocSource extends ClasspathDocSource {
         if (!isValid(element, originalElement)) return null;
 
         BashCommand cmd = (BashCommand) element;
-        return "http://www.linuxmanpages.com/man1/" + cmd.getReferencedName() + ".1.php";
+        return "http://www.linuxmanpages.com/man1/" + cmd.getReferencedCommandName() + ".1.php";
     }
 }

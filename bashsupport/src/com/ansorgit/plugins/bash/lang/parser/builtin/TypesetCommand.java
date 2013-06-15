@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashTargetElementEvaluator.java, Class: BashTargetElementEvaluator
- * Last modified: 2011-04-02 00:26
+ * File: DeclareCommand.java, Class: DeclareCommand
+ * Last modified: 2011-03-27 15:15
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,23 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.ansorgit.plugins.bash.lang.codeInsight;
+package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.intellij.codeInsight.TargetElementEvaluator;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import org.jetbrains.annotations.NotNull;
+import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * User: jansorg
- * Date: 01.04.11
- * Time: 23:28
+ * Syntax:typeset [-afFirtx] [-p] name[=value] ...
+ * Typeset is an obsolete command
+ * <p/>
+ * Parses the typeset command. It makes the assignments available to the reference detection.
+ * <p/>
+ * Date: 15.04.2009
+ * Time: 22:12:32
+ *
+ * @author Joachim Ansorg
  */
-public class BashTargetElementEvaluator implements TargetElementEvaluator {
-    public boolean includeSelfInGotoImplementation(@NotNull PsiElement element) {
-        return true;
-    }
-
-    public PsiElement getElementByReference(PsiReference psiReference, int flags) {
-        return null;
+class TypesetCommand extends AbstractVariableDefParsing implements ParsingTool {
+    TypesetCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "typeset", true);
     }
 }

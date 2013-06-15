@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: RemoveHeredocHighlightingPass.java, Class: RemoveHeredocHighlightingPass
+ * File: RemoveHighlightingPass.java, Class: RemoveHighlightingPass
  * Last modified: 2011-04-30 16:33
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,7 @@
 package com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.google.common.collect.Lists;
 import com.intellij.codeHighlighting.TextEditorHighlightingPass;
@@ -44,18 +45,14 @@ import java.util.List;
  * the highlighting appeareantly is based on the lexing result.
  * <p/>
  * In this highlighting pass we remove all highlighting in heredoc subtokens.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 8:36:58 PM
  */
-class RemoveHeredocHighlightingPass extends TextEditorHighlightingPass {
+class RemoveHighlightingPass extends TextEditorHighlightingPass {
     private final BashFile bashFile;
     private final Editor editor;
-    private List<TextRange> unhighlightRanges;
+    private List<TextRange> unhighlightHeredocRanges;
+    private List<TextRange> unhighlightUnusedFormat;
 
-    public RemoveHeredocHighlightingPass(Project project, BashFile bashFile, Editor editor) {
+    public RemoveHighlightingPass(Project project, BashFile bashFile, Editor editor) {
         super(project, editor.getDocument(), true);
         this.bashFile = bashFile;
         this.editor = editor;
@@ -64,12 +61,17 @@ class RemoveHeredocHighlightingPass extends TextEditorHighlightingPass {
     @Override
     public void doCollectInformation(ProgressIndicator progress) {
         final List<TextRange> collectedRanges = Lists.newLinkedList();
+        final List<TextRange> collectedUnused = Lists.newLinkedList();
 
         PsiRecursiveElementVisitor visitor = new PsiRecursiveElementVisitor() {
             @Override
             public void visitElement(PsiElement element) {
                 if (element instanceof BashHereDoc) {
                     collectedRanges.add(element.getTextRange());
+                } else if (element instanceof BashFunctionDef) {
+                    if (HighlightingKeys.IS_UNUSED.get(element, Boolean.FALSE) == Boolean.FALSE) {
+                        collectedUnused.add(element.getTextRange());
+                    }
                 } else {
                     element.acceptChildren(this);
                 }
@@ -77,14 +79,19 @@ class RemoveHeredocHighlightingPass extends TextEditorHighlightingPass {
         };
 
         visitor.visitElement(bashFile);
-        unhighlightRanges = collectedRanges;
+        unhighlightHeredocRanges = collectedRanges;
+        unhighlightUnusedFormat = collectedUnused;
     }
 
     @Override
     public void doApplyInformationToEditor() {
-        for (TextRange r : unhighlightRanges) {
-            editor.getMarkupModel().addRangeHighlighter(r.getStartOffset(), r.getEndOffset(),
-                    HighlighterLayer.ADDITIONAL_SYNTAX, TextAttributes.ERASE_MARKER, HighlighterTargetArea.LINES_IN_RANGE);
+        if (unhighlightHeredocRanges != null) {
+            for (TextRange r : unhighlightHeredocRanges) {
+                editor.getMarkupModel().addRangeHighlighter(r.getStartOffset(), r.getEndOffset(),
+                        HighlighterLayer.ADDITIONAL_SYNTAX, TextAttributes.ERASE_MARKER, HighlighterTargetArea.LINES_IN_RANGE);
+            }
+
+            unhighlightHeredocRanges = null;
         }
     }
 }

@@ -22,11 +22,14 @@ import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
+import com.intellij.lang.injection.InjectedLanguageManager;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * The base class for psi processors.
@@ -39,7 +42,6 @@ import java.util.Collections;
 public abstract class BashAbstractProcessor implements PsiScopeProcessor, ResolveProcessor {
     private Multimap<Integer, PsiElement> results;
     private boolean preferNeigbourhood;
-
 
     protected BashAbstractProcessor(boolean preferNeighbourhood) {
         this.preferNeigbourhood = preferNeighbourhood;
@@ -107,16 +109,23 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
 
         //now get the best result
         //if there are equal definitions on the same level we prefer the first if the neighbourhood is not preferred
-        if (preferNeigbourhood)
+        if (preferNeigbourhood) {
             return Iterators.getLast(results.get(bestRating).iterator());
-        else {
+        } else {
             //return the element which has the lowest textOffset
             long smallestOffset = Integer.MAX_VALUE;
             PsiElement bestElement = null;
 
             for (PsiElement e : results.get(bestRating)) {
-                if (e.getTextOffset() < smallestOffset) {
-                    smallestOffset = e.getTextOffset();
+                //if the element is injected compute the text offset in the real file
+                int textOffset = e.getTextOffset();
+                if (BashPsiUtils.isInjectedElement(e)) {
+                    //fixme optimize this
+                    textOffset = textOffset + InjectedLanguageManager.getInstance(e.getProject()).getInjectionHost(e).getTextOffset();
+                }
+
+                if (textOffset < smallestOffset) {
+                    smallestOffset = textOffset;
                     bestElement = e;
                 }
             }

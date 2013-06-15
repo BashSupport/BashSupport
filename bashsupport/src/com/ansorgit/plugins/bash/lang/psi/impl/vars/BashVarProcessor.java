@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -33,6 +34,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Date: 14.04.2009
@@ -40,14 +42,21 @@ import java.util.Collection;
  *
  * @author Joachim Ansorg
  */
-class BashVarProcessor extends BashAbstractProcessor implements Keys {
+public class BashVarProcessor extends BashAbstractProcessor implements Keys {
+    private final boolean leaveInjectionHost;
     private BashVar startElement;
     private boolean checkLocalness;
     private String varName;
     private boolean startElementIsVarDef;
     private boolean ignoreGlobals;
 
+    private final Set<PsiElement> visitedScopes = Sets.newIdentityHashSet();
+
     public BashVarProcessor(BashVar startElement, boolean checkLocalness) {
+        this(startElement, checkLocalness, true);
+    }
+
+    public BashVarProcessor(BashVar startElement, boolean checkLocalness, boolean leaveInjectionHosts) {
         super(false);
 
         this.startElement = startElement;
@@ -55,9 +64,14 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
         this.varName = startElement.getReference().getReferencedName();
         this.startElementIsVarDef = startElement instanceof BashVarDef;
         this.ignoreGlobals = false;
+        this.leaveInjectionHost = leaveInjectionHosts;
     }
 
     public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
+        if (visitedScopes.contains(psiElement)) {
+            return true;
+        }
+
         if (psiElement instanceof BashVarDef) {
             BashVarDef varDef = (BashVarDef) psiElement;
 
@@ -82,6 +96,7 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
             }
         }
 
+        visitedScopes.add(psiElement);
         return true;
     }
 
@@ -104,11 +119,17 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef do NOT share a common scope -> varDef is only valid if it's inside of a function definition, i.e. global
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
-        boolean sameFiles = startElement.getContainingFile().equals(varDef.getContainingFile());
+
+        boolean sameFiles = this.leaveInjectionHost
+                ? BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef))
+                : startElement.getContainingFile().equals(varDef.getContainingFile());
+
         BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
 
         if (sameFiles) {
-            if (startElement.getTextOffset() >= varDef.getTextOffset()) {
+            int textOffsetStart = BashPsiUtils.getFileTextOffset(startElement);
+            int textOffsetDef = BashPsiUtils.getFileTextOffset(varDef);
+            if (textOffsetStart >= textOffsetDef) {
                 return isDefinitionOffsetValid(varDefScope);
             }
 
@@ -136,7 +157,9 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
             BashFunctionDef includeCommandScope = BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand);
 
             //now check the offset of the include command
-            if (startElement.getTextOffset() >= includeCommand.getTextOffset()) {
+            int startOffset = BashPsiUtils.getFileTextOffset(startElement);
+            int endOffset = BashPsiUtils.getFileTextOffset(includeCommand);
+            if (startOffset >= endOffset) {
                 return isDefinitionOffsetValid(includeCommandScope);
             }
 
@@ -182,10 +205,14 @@ class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //fixme: this is not entirely true, think of a function with a var redefinition of a local variable of the inner functions
         //context (i.e. the outer function)
         //for now, this is ok
-        return validScope && varDef.getTextOffset() < startElement.getTextOffset();
+        return validScope && BashPsiUtils.getFileTextOffset(varDef) < BashPsiUtils.getFileTextOffset(startElement);
     }
 
-    public <T> T getHint(Key<T> tKey) {
+    public <T> T getHint(Key<T> key) {
+        if (key.equals(VISITED_SCOPES_KEY)) {
+            return (T) visitedScopes;
+        }
+
         return null;
     }
 }

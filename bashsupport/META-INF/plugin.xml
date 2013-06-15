@@ -29,6 +29,7 @@
     <idea-version since-build="121.0" until-build="130.999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
+
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[
@@ -99,9 +100,17 @@
 
         <component>
             <implementation-class>
-                com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashHighlighterFactory
+                com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.RemoveHighlightingPassFactory
             </implementation-class>
         </component>
+
+<!--
+        <component>
+            <implementation-class>
+                com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
+            </implementation-class>
+        </component>
+-->
     </project-components>
 
     <!-- Plugin's module components -->
@@ -177,6 +186,8 @@
 
         <lang.tokenSeparatorGenerator language="Bash"
                                       implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
+
+        <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashInjector"/>
 
         <readWriteAccessDetector
                 implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>

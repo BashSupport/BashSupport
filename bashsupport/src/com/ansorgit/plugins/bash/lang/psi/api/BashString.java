@@ -18,10 +18,12 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.psi.PsiLanguageInjectionHost;
+
 /**
  * User: jansorg
  * Date: Jan 24, 2010
  * Time: 9:47:20 PM
  */
-public interface BashString extends BashPsiElement, BashCharSequence {
+public interface BashString extends BashPsiElement, BashCharSequence, PsiLanguageInjectionHost {
 }

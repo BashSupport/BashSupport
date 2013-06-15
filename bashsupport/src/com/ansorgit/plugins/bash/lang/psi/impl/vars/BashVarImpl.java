@@ -24,7 +24,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -32,14 +31,17 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
@@ -54,106 +56,6 @@ import org.jetbrains.annotations.Nullable;
 public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements BashVar {
     private static final Object[] OBJECTS_EMPTY = new Object[0];
     private final BashReference cachingVarReference;
-
-    private static class CachedBashVarReference extends CachingReference implements BashReference {
-        private final BashVarImpl bashVar;
-
-        public CachedBashVarReference(BashVarImpl bashVar) {
-            this.bashVar = bashVar;
-        }
-
-        @Nullable
-        @Override
-        public PsiElement resolveInner() {
-            final String varName = bashVar.getName();
-            if (varName == null) {
-                return null;
-            }
-
-           ResolveProcessor processor = new BashVarProcessor(bashVar, true);
-            if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVar, bashVar.getContainingFile(), ResolveState.initial())) {
-                return processor.getBestResult(false, bashVar);
-            }
-
-            return null;
-
-            /*
-            //first resolve for local variable definitions in the broadest function scope
-            BashFunctionDef broadestFunctionScope = BashPsiUtils.findBroadestFunctionScope(bashVar);
-            if (broadestFunctionScope != null) {
-                ResolveProcessor localResolver = new BashVarProcessor(bashVar, true);
-                if (!BashPsiUtils.varResolveTreeWalkUp(localResolver, bashVar, broadestFunctionScope, ResolveState.initial())) {
-                    return localResolver.getBestResult(false, bashVar);
-                }
-            }
-
-            //if nothing was found, do a global check without checking for local variables
-            //fixme could be more efficient to check functions around bashVar twice
-            ResolveProcessor globalResolver = new BashVarProcessor(bashVar, true);
-            if (!BashPsiUtils.varResolveTreeWalkUp(globalResolver, bashVar, bashVar.getContainingFile(), ResolveState.initial())) {
-                return globalResolver.getBestResult(false, bashVar);
-            }
-
-            return null;
-            */
-        }
-
-        @NotNull
-        @Override
-        public String getUnresolvedMessagePattern() {
-            return "unresolved var";
-        }
-
-        @Override
-        public PsiElement getElement() {
-            return bashVar;
-        }
-
-        @Override
-        public TextRange getRangeInElement() {
-            if (bashVar.isSingleWord()) {
-                return TextRange.from(0, getReferencedName().length());
-            }
-
-            return TextRange.from(1, getReferencedName().length());
-        }
-
-        @NotNull
-        @Override
-        public String getCanonicalText() {
-            return bashVar.getReferencedName();
-        }
-
-        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            if (!BashIdentifierUtil.isValidIdentifier(newName)) {
-                throw new IncorrectOperationException("Can't have an empty name");
-            }
-
-            //if this is variable which doesn't have a $ sign prefix
-            if (bashVar.isSingleWord()) {
-                //return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
-                return BashPsiUtils.replaceElement(bashVar, BashChangeUtil.createVariable(bashVar.getProject(), newName, true));
-            }
-
-            return BashPsiUtils.replaceElement(bashVar, BashChangeUtil.createVariable(bashVar.getProject(), newName, false));
-        }
-
-        @Override
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException("bindToElement not implemented");
-        }
-
-        @NotNull
-        @Override
-        public Object[] getVariants() {
-            return OBJECTS_EMPTY;
-        }
-
-        @Override
-        public String getReferencedName() {
-            return bashVar.getReferencedName();
-        }
-    }
 
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
@@ -234,5 +136,84 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
         }
 
         return false;
+    }
+
+    private static class CachedBashVarReference extends CachingReference implements BashReference, BindablePsiReference {
+        private final BashVarImpl bashVar;
+
+        public CachedBashVarReference(BashVarImpl bashVar) {
+            this.bashVar = bashVar;
+        }
+
+        @Override
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);    //To change body of overridden methods use File | Settings | File Templates.
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            return BashResolveUtil.resolve(bashVar, true);
+        }
+
+        @NotNull
+        @Override
+        public String getUnresolvedMessagePattern() {
+            return "unresolved var";
+        }
+
+        @Override
+        public PsiElement getElement() {
+            return bashVar;
+        }
+
+        @Override
+        public TextRange getRangeInElement() {
+            if (bashVar.isSingleWord()) {
+                return TextRange.from(0, getReferencedName().length());
+            }
+
+            return TextRange.from(1, getReferencedName().length());
+        }
+
+        @NotNull
+        @Override
+        public String getCanonicalText() {
+            return bashVar.getReferencedName();
+        }
+
+        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
+            if (!BashIdentifierUtil.isValidIdentifier(newName)) {
+                throw new IncorrectOperationException("Can't have an empty name");
+            }
+
+            //if this is variable which doesn't have a $ sign prefix
+            if (bashVar.isSingleWord()) {
+                //return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
+                return BashPsiUtils.replaceElement(bashVar, BashChangeUtil.createVariable(bashVar.getProject(), newName, true));
+            }
+
+            return BashPsiUtils.replaceElement(bashVar, BashChangeUtil.createVariable(bashVar.getProject(), newName, false));
+        }
+
+        @Override
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            if (isReferenceTo(element)) {
+                return bashVar;
+            }
+
+            return handleElementRename(element.getText());
+        }
+
+        @NotNull
+        @Override
+        public Object[] getVariants() {
+            return OBJECTS_EMPTY;
+        }
+
+        @Override
+        public String getReferencedName() {
+            return bashVar.getReferencedName();
+        }
     }
 }

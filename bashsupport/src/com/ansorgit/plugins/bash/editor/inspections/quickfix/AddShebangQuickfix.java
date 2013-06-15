@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -44,7 +45,7 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
         // work around a problem in a 9.0.2 eap which need a write session
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             public void run() {
-                Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+                Document document = PsiDocumentManager.getInstance(project).getDocument(BashPsiUtils.findFileContext(file));
                 if (document != null) {
                     document.insertString(0, "#!/bin/sh\n");
                     PsiDocumentManager.getInstance(project).commitDocument(document);

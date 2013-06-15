@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.ReplaceVarWithParamExpansionQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
@@ -80,7 +81,10 @@ public class SimpleVarUsageInspection extends AbstractBashInspection {
             @Override
             public void visitVarUse(BashVar var) {
                 //only if the variable is not embedded inside of a string add the quickfix
-                if (!var.isParameterExpansion() && !var.isBuiltinVar() && !BashPsiUtils.hasParentOfType(var, BashString.class, 4)) {
+                boolean validParent = !BashPsiUtils.hasParentOfType(var, BashString.class, 4)
+                        && !BashPsiUtils.hasParentOfType(var, ArithmeticExpression.class, 4);
+
+                if (!var.isParameterExpansion() && !var.isBuiltinVar() && validParent) {
                     holder.registerProblem(var, getShortName(), new ReplaceVarWithParamExpansionQuickfix(var));
                 }
             }
