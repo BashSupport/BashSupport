@@ -1,3 +1,6 @@
+2013-08-08:
+ - 1.1beta17 for IDEA 12 and IDEA 13
+
 2013-06-15:
  - Parsing performance improved, especially for large scripts
  - Support for the typeset command
