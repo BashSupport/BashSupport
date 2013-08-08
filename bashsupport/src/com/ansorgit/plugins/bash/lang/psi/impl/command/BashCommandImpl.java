@@ -359,12 +359,6 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
             return result;
         }
 
-        @NotNull
-        @Override
-        public String getUnresolvedMessagePattern() {
-            return "unresolved";
-        }
-
         @Override
         public PsiElement getElement() {
             return cmd;

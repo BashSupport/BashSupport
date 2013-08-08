@@ -132,11 +132,5 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
             PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
             return BashPsiFileUtils.findRelativeFile(containingFile, fileReference.getFilename());
         }
-
-        @NotNull
-        @Override
-        public String getUnresolvedMessagePattern() {
-            return "unresolved";
-        }
     }
 }
