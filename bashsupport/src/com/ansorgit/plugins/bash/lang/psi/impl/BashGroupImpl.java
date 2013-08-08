@@ -21,11 +21,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.intellij.lang.ASTNode;
+import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.scope.util.PsiScopesUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
