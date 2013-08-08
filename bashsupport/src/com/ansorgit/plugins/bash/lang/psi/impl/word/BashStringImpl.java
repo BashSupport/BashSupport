@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
+import com.ansorgit.plugins.bash.jetbrains.StringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
@@ -31,8 +32,6 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.LeafElement;
-import com.intellij.psi.impl.source.tree.TreeElement;
-import com.intellij.psi.impl.source.tree.injected.StringLiteralEscaper;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
