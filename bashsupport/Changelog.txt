@@ -1,3 +1,7 @@
+2013-08-10:
+ - 1.1beta18 for IDEA 12 and IDEA 13
+ - Fixed some ClassNotFound Exceptions for PHPStorm and WebStorm.
+
 2013-08-08:
  - 1.1beta17 for IDEA 12 and IDEA 13
 
