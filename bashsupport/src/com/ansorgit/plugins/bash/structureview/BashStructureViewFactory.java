@@ -22,8 +22,10 @@ import com.intellij.ide.structureView.StructureViewBuilder;
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.TreeBasedStructureViewBuilder;
 import com.intellij.lang.PsiStructureViewFactory;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Creates the structure view builder for Bash files.
@@ -37,8 +39,9 @@ public class BashStructureViewFactory implements PsiStructureViewFactory {
     public StructureViewBuilder getStructureViewBuilder(final PsiFile psiFile) {
         return new TreeBasedStructureViewBuilder() {
             @NotNull
-            public StructureViewModel createStructureViewModel() {
-                return new BashStructureViewModel(psiFile);
+            @Override
+            public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
+                return new BashStructureViewModel(editor, psiFile);
             }
 
             public boolean isRootNodeShown() {

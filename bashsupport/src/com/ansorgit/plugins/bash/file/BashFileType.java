@@ -115,7 +115,8 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             return false;
         }
 
-        if (file.isDirectory()) {
+        //fixme check for directory type
+        if (!file.isInLocalFileSystem()) {
             return false;
         }
 
