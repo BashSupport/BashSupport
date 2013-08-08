@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta17-idea13</version>
+    <version>1.1beta18-idea13</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -41,6 +41,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta18-idea13:</b>
+       <ul>
+         <li>Compatibility with IDEA 13.x and WebStorm 7 EAPS and other plattform builds</li>
+       </ul>
+
        <b>Changes in version 1.1beta17:</b>
        <ul>
          <li>Compatibility with IDEA 13.x</li>
