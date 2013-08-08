@@ -41,6 +41,20 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta17:</b>
+       <ul>
+         <li>Parsing performance improved, especially for large scripts                                  </li>
+         <li>Support for the typeset command                                                                     </li>
+         <li>Initial support for the trap command                                                                </li>
+         <li>Initial support for the eval command                                                                </li>
+         <li>"Replace with ${var}" is not suggested inside of arithmetic expressions any more                    </li>
+         <li>Improved color scheme definitions, looks better with Darcula                                        </li>
+         <li>Improved performance (variable resolving)                                                           </li>
+         <li>Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)       </li>
+         <li>Better looking with themes now                                                                      </li>
+         <li>Fixed highlighting of redirects                                                                     </li>
+       </ul>
+
        <b>Changes in version 1.1beta16:</b>
        <ul>
          <li>Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).                                         </li>
