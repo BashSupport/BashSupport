@@ -41,6 +41,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta19:</b>
+       <ul>
+         <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
+       </ul>
+
        <b>Changes in version 1.1beta18-idea13:</b>
        <ul>
          <li>Compatibility with IDEA 13.x and WebStorm 7 EAPS and other plattform builds</li>
