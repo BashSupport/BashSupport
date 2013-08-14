@@ -25,8 +25,8 @@
             logo="/icons/bash-16.png">Joachim Ansorg
     </vendor>
 
-    <!-- Requires IDEA 12.0 or later -->
-    <idea-version since-build="123.0" until-build="129.99999"/>
+    <!-- Requires IDEA 12.1 or later, is compatible with builds 125.0 - 129.* -->
+    <idea-version since-build="125.0" until-build="129.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
 
@@ -41,7 +41,12 @@
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 1.1beta18:</b>
+       <b>Changes in version 1.1beta19:</b>
+       <ul>
+         <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
+       </ul>
+
+        <b>Changes in version 1.1beta18:</b>
        <ul>
          <li>Compatibility with PHPStorm 6 and WebStorm 6</li>
        </ul>
