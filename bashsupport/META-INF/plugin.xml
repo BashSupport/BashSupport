@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta18</version>
+    <version>1.1beta19</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -43,7 +43,7 @@
     <html>
        <b>Changes in version 1.1beta19:</b>
        <ul>
-         <li>Backport for IntelliJ 12.0, dropped support for builds 121.x</li>
+         <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
        </ul>
 
        <b>Changes in version 1.1beta18:</b>
