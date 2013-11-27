@@ -10,11 +10,15 @@ import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.UpdateHighlightersUtil;
+import com.intellij.codeInsight.daemon.impl.quickfix.QuickFixAction;
+import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.InspectionProfile;
+import com.intellij.codeInspection.reference.UnusedDeclarationFixProvider;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.profile.codeInspection.InspectionProjectProfileManager;
@@ -64,9 +68,16 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
         return highlights == null ? null : new ArrayList<HighlightInfo>(highlights);
     }
 
-    public static HighlightInfo createUnusedSymbolInfo(@NotNull PsiElement element, @Nullable String message) {
-        HighlightInfo highlightInfo = HighlightInfo.createHighlightInfo(HighlightInfoType.UNUSED_SYMBOL, element, message);
-        return highlightInfo;
+    public static HighlightInfo createUnusedSymbolInfo(@NotNull PsiElement element, @NotNull String message, @NotNull final HighlightInfoType highlightInfoType) {
+        HighlightInfo info = HighlightInfo.newHighlightInfo(highlightInfoType).range(element).descriptionAndTooltip(message).create();
+        UnusedDeclarationFixProvider[] fixProviders = Extensions.getExtensions(UnusedDeclarationFixProvider.EP_NAME);
+        for (UnusedDeclarationFixProvider provider : fixProviders) {
+            IntentionAction[] fixes = provider.getQuickFixes(element);
+            for (IntentionAction fix : fixes) {
+                QuickFixAction.registerQuickFixAction(info, fix);
+            }
+        }
+        return info;
     }
 
     @Override
@@ -122,7 +133,8 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
             if (first == null) {
                 HighlightingKeys.IS_UNUSED.set(functionDef, Boolean.TRUE);
 
-                return createUnusedSymbolInfo(nameSymbol, null);
+                final HighlightInfo info = createUnusedSymbolInfo(nameSymbol, "Unused function definition", HighlightInfoType.UNUSED_SYMBOL);
+                return info;
             }
         }
 

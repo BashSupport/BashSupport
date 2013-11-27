@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta19</version>
+    <version>1.1beta20</version>
 
     <vendor url="http://www.ansorg-it.com/"
             email="mail@ansorg-it.com"
@@ -41,6 +41,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta20:</b>
+       <ul>
+         <li>Removed custom log4j.xml file to avoid side-effets on the plattform</li>
+       </ul>
+
        <b>Changes in version 1.1beta19:</b>
        <ul>
          <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
