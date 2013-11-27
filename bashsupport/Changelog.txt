@@ -1,4 +1,7 @@
 2013-08-08:
+ - 1.1beta20 for IDEA 13
+
+2013-08-08:
  - 1.1beta17 for IDEA 12 and IDEA 13
 
 2013-06-15:
