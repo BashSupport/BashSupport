@@ -41,6 +41,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta20:</b>
+       <ul>
+         <li>Removed custom logging configuration to fix global plattform debug output</li>
+       </ul>
+
        <b>Changes in version 1.1beta19:</b>
        <ul>
          <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
