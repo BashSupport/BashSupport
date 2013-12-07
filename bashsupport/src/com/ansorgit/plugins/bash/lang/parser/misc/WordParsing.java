@@ -52,8 +52,8 @@ public class WordParsing implements ParsingTool {
     public boolean isWordToken(final BashPsiBuilder builder, final boolean enableRemapping) {
         final IElementType tokenType = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
 
-        boolean isWord = isComposedString(tokenType)
-                || Parsing.braceExpansionParsing.isValid(builder)
+        boolean isWord = Parsing.braceExpansionParsing.isValid(builder)
+                || isComposedString(tokenType)
                 || BashTokenTypes.stringLiterals.contains(tokenType)
                 || Parsing.var.isValid(builder)
                 || Parsing.shellCommand.backtickParser.isValid(builder)
@@ -129,12 +129,12 @@ public class WordParsing implements ParsingTool {
 
             final IElementType nextToken = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
 
-            if (nextToken == STRING_BEGIN) {
-                isOk = parseComposedString(builder);
-                parsedStringParts++;
-            } else if (Parsing.braceExpansionParsing.isValid(builder)) {
+            if (Parsing.braceExpansionParsing.isValid(builder)) {
                 isOk = Parsing.braceExpansionParsing.parse(builder);
                 processedTokens++;
+            } else if (nextToken == STRING_BEGIN) {
+                isOk = parseComposedString(builder);
+                parsedStringParts++;
             } else if (accept.contains(nextToken) || stringLiterals.contains(nextToken)) {
                 builder.advanceLexer();
                 processedTokens++;
