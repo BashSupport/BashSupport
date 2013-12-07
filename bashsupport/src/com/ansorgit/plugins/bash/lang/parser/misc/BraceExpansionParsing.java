@@ -19,8 +19,10 @@
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -46,8 +48,17 @@ public class BraceExpansionParsing implements ParsingFunction {
         PsiBuilder.Marker marker = builder.mark();
 
         //read in the prefix
-        while (validExpansionTokens.contains(builder.getTokenType(true))) {
-            builder.advanceLexer();
+        while (true) {
+            IElementType tokenType = builder.getTokenType(true);
+            if (Parsing.word.isComposedString(tokenType)) {
+                Parsing.word.parseComposedString(builder);
+            } else {
+                if (validExpansionTokens.contains(tokenType)) {
+                    builder.advanceLexer();
+                } else {
+                    break;
+                }
+            }
         }
 
         //don't accept a prefix without the actual expansion block
