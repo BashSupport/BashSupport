@@ -1,3 +1,6 @@
+2013-12-07:
+ - Bug #116: Fixed value expansions with a string prefix. "a"{1,2} is now properly expanded to 'a1 a2'.
+
 2013-08-10:
  - 1.1beta18 for IDEA 12 and IDEA 13
  - Fixed some ClassNotFound Exceptions for PHPStorm and WebStorm.
