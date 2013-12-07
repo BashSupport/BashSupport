@@ -81,6 +81,9 @@ public class WordParsingTest extends MockPsiTest {
         mockTest(wordTestParser, LEFT_CURLY, INTEGER_LITERAL, COMMA, WORD, RIGHT_CURLY);
         //{1,a,2}z
         mockTest(wordTestParser, LEFT_CURLY, INTEGER_LITERAL, COMMA, WORD, COMMA, INTEGER_LITERAL, RIGHT_CURLY, WORD);
+        //"a"a{1,2}
+        mockTest(wordTestParser, STRING_BEGIN, WORD, STRING_END, WORD, LEFT_CURLY, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_CURLY);
+
     }
 
 }

@@ -28,7 +28,7 @@ import org.junit.Test;
  * Date: Nov 15, 2009
  * Time: 12:09:48 AM
  */
-public class ExpansionParsingTest extends MockPsiTest {
+public class BraceExpansionParsingTest extends MockPsiTest {
     private MockFunction parser = new MockFunction() {
         @Override
         public boolean preCheck(BashPsiBuilder psi) {
@@ -55,6 +55,10 @@ public class ExpansionParsingTest extends MockPsiTest {
         mockTest(parser, LEFT_CURLY, INTEGER_LITERAL, COMMA, WORD, RIGHT_CURLY);
         //{1,a,2}z
         mockTest(parser, LEFT_CURLY, INTEGER_LITERAL, COMMA, WORD, COMMA, INTEGER_LITERAL, RIGHT_CURLY, WORD);
+        //"a"{1,2}
+        mockTest(parser, STRING_BEGIN, WORD, STRING_END, LEFT_CURLY, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_CURLY);
+        //"a"a{1,2}
+        mockTest(parser, STRING_BEGIN, WORD, STRING_END, WORD, LEFT_CURLY, INTEGER_LITERAL, COMMA, INTEGER_LITERAL, RIGHT_CURLY);
     }
 
     @Test
