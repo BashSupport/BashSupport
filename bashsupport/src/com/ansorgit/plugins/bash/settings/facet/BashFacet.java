@@ -29,11 +29,6 @@ public class BashFacet extends Facet<BashFacetConfiguration> {
         super(facetType, module, name, configuration, underlyingFacet);
     }
 
-    /*@Override
-    public boolean isDisposed() {
-        return super.isDisposed();
-    } */
-
     @Override
     public void initFacet() {
         super.initFacet();
