@@ -18,8 +18,6 @@
 
 package com.ansorgit.plugins.bash.util.content;
 
-import com.intellij.openapi.project.Project;
-
 import java.io.File;
 
 /**
@@ -36,7 +34,7 @@ class PermissionHeuristic implements ContentHeuristic {
         this.weight = weight;
     }
 
-    public double isBashFile(File file, String data, Project project) {
+    public double isBashFile(File file) {
         if (file.canExecute()) {
             return weight;
         }
