@@ -52,7 +52,7 @@ public class FunctionBodyQuickfix extends AbstractBashQuickfix {
     }
 
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        if (!CodeInsightUtilBase.prepareFileForWrite(file)) {
+        if (!CodeInsightUtilBase.prepareEditorForWrite(editor)) {
             return;
         }
 

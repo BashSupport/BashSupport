@@ -18,15 +18,12 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta20</version>
+    <version>1.1beta23-idea13.1</version>
 
-    <vendor url="http://www.ansorg-it.com/"
-            email="mail@ansorg-it.com"
-            logo="/icons/bash-16.png">Joachim Ansorg
-    </vendor>
+    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 12.1 or later, is compatible with builds 125.0 - 129.* -->
-    <idea-version since-build="125.0" until-build="129.99999"/>
+    <!-- Requires IDEA 13 or later -->
+    <idea-version since-build="134.0" until-build="137.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
 
@@ -41,9 +38,24 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.1beta23:</b>
+       <ul>
+         <li>Finally fixed exception with isDirectory</li>
+       </ul>
+
+       <b>Changes in version 1.1beta22:</b>
+       <ul>
+         <li>Fixed exception with isDirectory in some versions of IntelliJ</li>
+       </ul>
+
+       <b>Changes in version 1.1beta21:</b>
+       <ul>
+         <li>Fixed stack overflow exception which occurred in IDEA IntelliJ 13.1.1</li>
+       </ul>
+
        <b>Changes in version 1.1beta20:</b>
        <ul>
-         <li>Removed custom log4j.xml file to avoid side-effets on the plattform</li>
+         <li>Removed custom logging configuration to fix global plattform debug output</li>
        </ul>
 
        <b>Changes in version 1.1beta19:</b>
@@ -51,13 +63,14 @@
          <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
        </ul>
 
-        <b>Changes in version 1.1beta18:</b>
+       <b>Changes in version 1.1beta18-idea13:</b>
        <ul>
-         <li>Compatibility with PHPStorm 6 and WebStorm 6</li>
+         <li>Compatibility with IDEA 13.x and WebStorm 7 EAPS and other plattform builds</li>
        </ul>
 
        <b>Changes in version 1.1beta17:</b>
        <ul>
+         <li>Compatibility with IDEA 13.x</li>
          <li>Parsing performance improved, especially for large scripts                                  </li>
          <li>Support for the typeset command                                                                     </li>
          <li>Initial support for the trap command                                                                </li>

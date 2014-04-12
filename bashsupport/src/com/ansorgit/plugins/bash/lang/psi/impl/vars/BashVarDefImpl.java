@@ -397,11 +397,5 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
             return null;
         }
-
-        @NotNull
-        @Override
-        public String getUnresolvedMessagePattern() {
-            return "unresolved";
-        }
     }
 }

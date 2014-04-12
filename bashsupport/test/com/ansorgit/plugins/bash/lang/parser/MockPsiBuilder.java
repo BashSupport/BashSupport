@@ -176,6 +176,12 @@ public class MockPsiBuilder implements PsiBuilder {
         return offset;
     }
 
+    @Override
+    public int rawTokenIndex() {
+        //fixme right?
+        return getCurrentOffset();
+    }
+
     public int getCurrentOffset() {
         return elementPosition;
     }

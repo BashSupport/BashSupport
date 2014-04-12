@@ -55,10 +55,11 @@ public final class BashPsiUtils {
     }
 
     public static PsiFile findFileContext(PsiElement element) {
-        PsiFile topLevelFile = InjectedLanguageUtil.getTopLevelFile(element);
+        //fixme
+        /*PsiFile topLevelFile = InjectedLanguageUtil.getTopLevelEditor(element);
         if (topLevelFile instanceof BashFile) {
             return topLevelFile;
-        }
+        } */
 
         return element.getContainingFile();
     }
