@@ -18,8 +18,6 @@
 
 package com.ansorgit.plugins.bash.util.content;
 
-import com.intellij.openapi.project.Project;
-
 import java.io.File;
 
 /**
@@ -34,7 +32,7 @@ class EmptyFileHeuristic implements ContentHeuristic {
         this.weight = weight;
     }
 
-    public double isBashFile(File file, String data, Project project) {
+    public double isBashFile(File file) {
         return file.isFile() && file.length() == 0 ? weight : 0d;
     }
 }

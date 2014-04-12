@@ -20,24 +20,25 @@ package com.ansorgit.plugins.bash.util.content;
 
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.google.common.collect.Lists;
-import com.intellij.openapi.project.Project;
+import com.google.common.io.ByteStreams;
+import com.intellij.openapi.util.io.FileUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Feb 20, 2010
- * Time: 11:28:48 AM
+ * Reads the first bytes of the file.
  */
 class ShebangHeuristic implements ContentHeuristic {
     private static final List<String> validStarts = Lists.newArrayList();
+    private static int readLimit = 1;
 
     static {
         for (String location : BashInterpreterDetection.guessLocations) {
             validStarts.add("#!" + location);
+            readLimit = Math.max(readLimit, location.length() + 2);
         }
-
     }
 
     private final double weight;
@@ -46,13 +47,19 @@ class ShebangHeuristic implements ContentHeuristic {
         this.weight = weight;
     }
 
-    public double isBashFile(File file, String data, Project project) {
-        for (String s : validStarts) {
-            if (data.startsWith(s)) {
-                return weight;
-            }
-        }
+    public double isBashFile(File file) {
+        try {
+            String data = FileUtil.loadTextAndClose(ByteStreams.limit(new FileInputStream(file), readLimit));
 
-        return 0;
+            for (String s : validStarts) {
+                if (data.startsWith(s)) {
+                    return weight;
+                }
+            }
+
+            return 0;
+        } catch (java.io.IOException e) {
+            return 0;
+        }
     }
 }

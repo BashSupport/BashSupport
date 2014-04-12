@@ -20,21 +20,13 @@ package com.ansorgit.plugins.bash.file;
 
 import com.ansorgit.plugins.bash.lang.Bash;
 import com.ansorgit.plugins.bash.lang.BashLanguage;
-import com.ansorgit.plugins.bash.settings.facet.BashFacet;
-import com.ansorgit.plugins.bash.settings.facet.BashFacetConfiguration;
-import com.ansorgit.plugins.bash.settings.facet.ui.FileMode;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.content.BashContentUtil;
 import com.intellij.lang.Language;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.ex.FileTypeIdentifiableByVirtualFile;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
-import com.intellij.openapi.project.DumbServiceImpl;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
-import com.intellij.openapi.roots.impl.DirectoryIndex;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vfs.VFileProperty;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.StringUtils;
@@ -53,7 +45,6 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public class BashFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile {
-    private static final Logger LOG = Logger.getInstance("#BashFileType");
     public static final BashFileType BASH_FILE_TYPE = new BashFileType();
     public static final Language BASH_LANGUAGE = BASH_FILE_TYPE.getLanguage();
 
@@ -100,69 +91,89 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
         return false;
     }
 
+    private final static Key<Boolean> bashFileTypeKey = Key.create("bash-file-type");
+
     /**
      * Here we check if a given file belongs to our plugin.
      * We take this road because we need the actual file and not a filename to check files without extension.
      * <p/>
      * A file is checked according to the rules defined in the facet settings.
      * A file can be set to ignored, accepted or auto. Auto means that the content is checked.
+     * <p/>
+     * This method does not support nested calls. If it detects a nested call it automatically returns false for files without extension.
      *
      * @param file The file to check
      * @return True if BashSupport wants to take that file
      */
     public boolean isMyFileType(VirtualFile file) {
-        if (file == null) {
-            return false;
-        }
-
-        if (file.isDirectory()) {
+        if (file == null || !file.isInLocalFileSystem()) {
             return false;
         }
 
         if (extensionList.contains(file.getExtension())) {
             return true;
-        } else if (!file.isInLocalFileSystem()) {
-            return false;
-        } else if (StringUtils.isEmpty(file.getExtension())) {
-            BashFacet facet = null;
-            //no extensions, special checks (looking at the content, etc)
+        }
+
+/*
+        Boolean cachedResult = bashFileTypeKey.get(file);
+        if (cachedResult == Boolean.TRUE) {
+            return true;
+        }
+
+*/
+        boolean isBashFile = doFileTypeCheck(file);
+//        file.putUserData(bashFileTypeKey, isBashFile);
+
+        return isBashFile;
+    }
+
+    private boolean doFileTypeCheck(VirtualFile file) {
+        // try to guess the content type if no extension is provided
+        if (StringUtils.isEmpty(file.getExtension())) {
+            //if this is a recursive call (e.g. through callees calling this method) then we quit
+            //IntelliJ 13.1.1 throws a SOE in certain, yet unknown, conditions
 
             //guess project
-            Project project = ProjectUtil.guessProjectForFile(file);
-            if (project == null) {
-                return false;
-            }
+                /*Project project = ProjectUtil.guessProjectForFile(file);
+                if (project == null) {
+                    return false;
+                }
 
-            DumbServiceImpl dumbService = DumbServiceImpl.getInstance(project);
-            if (dumbService == null || dumbService.isDumb()) {
-                return false;
-            }
+                DumbServiceImpl dumbService = DumbServiceImpl.getInstance(project);
+                if (dumbService == null || dumbService.isDumb()) {
+                    return false;
+                }
 
-            DirectoryIndex directoryIndex = DirectoryIndex.getInstance(project);
-            if (directoryIndex == null || !directoryIndex.isInitialized()) {
-                return false;
-            }
+                DirectoryIndex directoryIndex = DirectoryIndex.getInstance(project);
+                if (directoryIndex == null || !directoryIndex.isInitialized()) {
+                    return false;
+                }
 
-            Module module = ModuleUtil.findModuleForFile(file, project);
-            if (module == null) {
-                return false;
-            }
+                Module module = ModuleUtil.findModuleForFile(file, project);
+                if (module == null) {
+                    return false;
+                }
 
-            facet = BashFacet.getInstance(module);
-            if (facet == null) {
-                return false;
-            }
+                BashFacet facet = BashFacet.getInstance(module);
+                if (facet == null) {
+                    return false;
+                }
 
-            BashFacetConfiguration config = facet.getConfiguration();
-            FileMode mode = config.findMode(file);
+                BashFacetConfiguration config = facet.getConfiguration();
+                FileMode mode = config.findMode(file);
 
-            if (mode == FileMode.accept()) {
-                return true;
-            } else if (mode == FileMode.ignore()) {
-                return false;
-            } else if (mode == FileMode.auto()) {
-                return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY, ProjectUtil.guessProjectForFile(file));
-            }
+                if (mode == FileMode.accept()) {
+                    return true;
+                }
+
+                if (mode == FileMode.ignore()) {
+                    return false;
+                }
+
+                if (mode == FileMode.auto()) {  */
+            return BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY);
+            //}
+
         }
 
         return false;

@@ -25,6 +25,7 @@ import com.intellij.ide.structureView.TextEditorBasedStructureViewModel;
 import com.intellij.ide.util.treeView.smartTree.Filter;
 import com.intellij.ide.util.treeView.smartTree.Grouper;
 import com.intellij.ide.util.treeView.smartTree.Sorter;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,9 +40,9 @@ class BashStructureViewModel extends TextEditorBasedStructureViewModel implement
     private static final Class[] CLASSS = new Class[]{BashFunctionDef.class};
     private static final Sorter[] SORTERS = new Sorter[]{Sorter.ALPHA_SORTER};
 
-    public BashStructureViewModel(PsiFile psiFile) {
-        super(psiFile);
-        myFile = psiFile;
+    protected BashStructureViewModel(Editor editor, PsiFile file) {
+        super(editor, file);
+        this.myFile = file;
     }
 
     protected PsiFile getPsiFile() {

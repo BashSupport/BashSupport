@@ -156,12 +156,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
             return BashResolveUtil.resolve(bashVar, true);
         }
 
-        @NotNull
-        @Override
-        public String getUnresolvedMessagePattern() {
-            return "unresolved var";
-        }
-
         @Override
         public PsiElement getElement() {
             return bashVar;
