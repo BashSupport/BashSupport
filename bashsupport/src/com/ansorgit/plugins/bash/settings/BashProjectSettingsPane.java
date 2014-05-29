@@ -38,6 +38,7 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox autocompleteInternalCommands;
     private JCheckBox enableFormatterCheckbox;
     private JCheckBox autocompletePathCommands;
+    private JCheckBox globalFunctionVarDefs;
 
     public void dispose() {
     }
@@ -50,7 +51,7 @@ public class BashProjectSettingsPane implements Disposable {
         autocompleteInternalVars.setSelected(settings.isAutocompleteBuiltinVars());
         autocompletePathCommands.setSelected(settings.isAutocompletePathCommands());
         enableFormatterCheckbox.setSelected(settings.isFormatterEnabled());
-
+        globalFunctionVarDefs.setSelected(settings.isGlobalFunctionVarDefs());
     }
 
     public void storeSettings(BashProjectSettings settings) {
@@ -61,6 +62,7 @@ public class BashProjectSettingsPane implements Disposable {
         settings.setAutocompleteBuiltinVars(autocompleteInternalVars.isSelected());
         settings.setFormatterEnabled(enableFormatterCheckbox.isSelected());
         settings.setAutocompletePathCommands(autocompletePathCommands.isSelected());
+        settings.setGlobalFunctionVarDefs(globalFunctionVarDefs.isSelected());
     }
 
     public boolean isModified(BashProjectSettings settings) {
@@ -70,7 +72,8 @@ public class BashProjectSettingsPane implements Disposable {
                 autocompleteInternalVars.isSelected() != settings.isAutocompleteBuiltinVars() ||
                 autocompleteInternalCommands.isSelected() != settings.isAutocompleteBuiltinCommands() ||
                 enableFormatterCheckbox.isSelected() != settings.isFormatterEnabled() ||
-                autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands();
+                autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands() ||
+                globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs();
     }
 
     public JPanel getPanel() {

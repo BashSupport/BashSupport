@@ -30,7 +30,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 public class PsiScopesUtil {
-    //Taken from the Jetrbains code, it's not included in WebStorm 7 EAP , for example
+    //Taken from the Jetbrains code, it's not included in WebStorm 7 EAP , for example
     public static boolean walkChildrenScopes(@NotNull PsiElement thisElement,
                                              @NotNull PsiScopeProcessor processor,
                                              @NotNull ResolveState state,

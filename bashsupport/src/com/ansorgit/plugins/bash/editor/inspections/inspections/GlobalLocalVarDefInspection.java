@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: GlocalLocalVarDefInspection.java, Class: GlocalLocalVarDefInspection
+ * File: GlobalLocalVarDefInspection.java, Class: GlobalLocalVarDefInspection
  * Last modified: 2011-04-30 16:33
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.localVarDefCommand
  *
  * @author Joachim Ansorg
  */
-public class GlocalLocalVarDefInspection extends AbstractBashInspection {
+public class GlobalLocalVarDefInspection extends AbstractBashInspection {
 
     @Pattern("[a-zA-Z_0-9.]+")
     @NotNull

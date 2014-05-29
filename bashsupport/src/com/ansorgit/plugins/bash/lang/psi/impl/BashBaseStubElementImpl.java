@@ -83,6 +83,6 @@ public abstract class BashBaseStubElementImpl<T extends StubElement> extends Stu
             return false;
         }
 
-        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+        return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
     }
 }

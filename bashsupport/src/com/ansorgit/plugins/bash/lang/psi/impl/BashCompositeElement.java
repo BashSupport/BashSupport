@@ -49,6 +49,6 @@ public abstract class BashCompositeElement extends CompositePsiElement implement
             return false;
         }
 
-        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+        return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
     }
 }

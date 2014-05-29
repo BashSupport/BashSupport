@@ -4,6 +4,11 @@
  - Fixed autocompletion of built-in variables
  - Array type of a variable is inferred by typeset -a now, too
  - Added support to detect illegal use of readonly variables declared by typeset -r or declare -r
+ - 1.1beta24
+
+ - New settings: Variables which are defined in function can be treated as global variables. Default is strict checking.
+ - Fixed variable resolving in blocks. If multiple definitions are present then some were ignored.
+ - Fixed variable resolving in composed commands, added testcases
 
 2014-04-10:
  - Fixed & simplified file type checking

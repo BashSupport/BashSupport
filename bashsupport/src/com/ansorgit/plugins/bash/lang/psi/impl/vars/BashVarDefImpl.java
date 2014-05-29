@@ -349,7 +349,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         @Override
         public boolean isReferenceTo(PsiElement element) {
-            return super.isReferenceTo(element);    //To change body of overridden methods use File | Settings | File Templates.
+            return super.isReferenceTo(element);
         }
 
         @Override
