@@ -32,7 +32,8 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 public class BashTimeCommandImpl extends BashKeywordDefaultImpl implements BashTimeCommand {
-    public BashTimeCommandImpl() {
+    public BashTimeCommandImpl(ASTNode node) {
+        //fixme handling of the node
         super(BashElementTypes.TIME_COMMAND);
     }
 

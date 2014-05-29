@@ -39,20 +39,22 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
     private final String commandName;
+    private final boolean acceptArrayVars;
     private final CommandParsingUtil.Mode parsingMode;
 
     /**
      * Construct a new variable def commmand.
-     *
      * @param acceptFrontVarDef    If true then local variable definitions are accepted in front of the command. e.g. "a=1 export b=1" is a valid bash command, but only b is visible afterwards.
      * @param commandElementType
      * @param commandText
      * @param acceptVarAssignments
+     * @param acceptArrayVars
      */
-    protected AbstractVariableDefParsing(boolean acceptFrontVarDef, IElementType commandElementType, String commandText, boolean acceptVarAssignments) {
+    protected AbstractVariableDefParsing(boolean acceptFrontVarDef, IElementType commandElementType, String commandText, boolean acceptVarAssignments, boolean acceptArrayVars) {
         this.acceptFrontVarDef = acceptFrontVarDef;
         this.commandElementType = commandElementType;
         this.commandName = commandText;
+        this.acceptArrayVars = acceptArrayVars;
 
         if (acceptVarAssignments) {
             parsingMode = CommandParsingUtil.Mode.LaxAssignmentMode;
@@ -66,8 +68,8 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
         //if accepted, read in command local var defs
         boolean ok = true;
-        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode)) {
-            ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode);
+        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
+            ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
         }
 
         //return ok && (builder.getTokenType() == INTERNAL_COMMAND) && commandName.equals(builder.getTokenText());
@@ -85,8 +87,8 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
-        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode)) {
-            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode);
+        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
+            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
             if (!ok) {
                 cmdMarker.drop();
                 return false;
@@ -103,8 +105,8 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
             return false;
         }
 
-        boolean ok = !CommandParsingUtil.isAssignmentOrRedirect(builder, parsingMode)
-                || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode);
+        boolean ok = !CommandParsingUtil.isAssignmentOrRedirect(builder, parsingMode, acceptArrayVars)
+                || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode, acceptArrayVars);
 
         if (ok) {
             cmdMarker.done(SIMPLE_COMMAND_ELEMENT);

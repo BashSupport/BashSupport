@@ -87,13 +87,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     private CommandParsingUtil() {
     }
 
-    public static boolean isAssignment(final BashPsiBuilder builder, Mode mode) {
+    public static boolean isAssignment(final BashPsiBuilder builder, Mode mode, boolean acceptArrayVars) {
         final IElementType tokenType = builder.getTokenType();
         switch (mode) {
             case SimpleMode:
                 return ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder);
+                        || Parsing.var.isValid(builder)
+                        ;
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
@@ -106,35 +107,36 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         }
     }
 
-    public static boolean readOptionalAssignmentOrRedirects(BashPsiBuilder builder, Mode asssignmentMode, boolean markAsVarDef) {
+    public static boolean readOptionalAssignmentOrRedirects(BashPsiBuilder builder, Mode asssignmentMode, boolean markAsVarDef, boolean acceptArrayVars) {
         boolean ok = true;
 
-        while (ok && isAssignmentOrRedirect(builder, asssignmentMode)) {
-            ok = readAssignmentsAndRedirects(builder, markAsVarDef, asssignmentMode);
+        while (ok && isAssignmentOrRedirect(builder, asssignmentMode, acceptArrayVars)) {
+            ok = readAssignmentsAndRedirects(builder, markAsVarDef, asssignmentMode, acceptArrayVars);
         }
 
         return ok;
     }
 
-    public static boolean isAssignmentOrRedirect(BashPsiBuilder builder, Mode assignmentMode) {
-        return isAssignment(builder, assignmentMode) || Parsing.redirection.isRedirect(builder);
+    public static boolean isAssignmentOrRedirect(BashPsiBuilder builder, Mode assignmentMode, boolean acceptArrayVars) {
+        return isAssignment(builder, assignmentMode, acceptArrayVars) || Parsing.redirection.isRedirect(builder);
     }
 
     /**
      * Reads an optional list of assignments and redirects which
      * are before a command.
      *
-     * @param builder
-     * @param markAsVarDef
+     * @param builder         The current builder
+     * @param markAsVarDef    Mark as a variable definition
      * @param mode
+     * @param acceptArrayVars
      * @return
      */
-    public static boolean readAssignmentsAndRedirects(final BashPsiBuilder builder, boolean markAsVarDef, Mode mode) {
+    public static boolean readAssignmentsAndRedirects(final BashPsiBuilder builder, boolean markAsVarDef, Mode mode, boolean acceptArrayVars) {
         boolean ok = false;
 
         do {
-            if (isAssignment(builder, mode)) {
-                ok = readAssignment(builder, mode, markAsVarDef);
+            if (isAssignment(builder, mode, acceptArrayVars)) {
+                ok = readAssignment(builder, mode, markAsVarDef, acceptArrayVars);
             } else if (Parsing.redirection.isRedirect(builder)) {
                 ok = Parsing.redirection.parseSingleRedirect(builder);
             } else if (mode == Mode.LaxAssignmentMode && Parsing.word.isWordToken(builder)) {
@@ -151,12 +153,13 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     /**
      * Reads a single assignment
      *
-     * @param builder      Provides the okens
-     * @param mode         Set to true if a variable assignment with "declare" is being processed right now.
-     * @param markAsVarDef True if the assignments should be marked with a psi marker as such.
+     * @param builder         Provides the tokens
+     * @param mode            Set to true if a variable assignment with "declare" is being processed right now.
+     * @param markAsVarDef    True if the assignments should be marked with a psi marker as such.
+     * @param acceptArrayVars
      * @return True if the assignment has been read successfully.
      */
-    public static boolean readAssignment(BashPsiBuilder builder, Mode mode, boolean markAsVarDef) {
+    public static boolean readAssignment(BashPsiBuilder builder, Mode mode, boolean markAsVarDef, boolean acceptArrayVars) {
         final PsiBuilder.Marker assignment = builder.mark();
 
         switch (mode) {
@@ -194,20 +197,26 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 throw new IllegalStateException("Invalid parsing mode found");
         }
 
-        if (mode != Mode.SimpleMode) {
-            if (builder.getTokenType() == LEFT_SQUARE) {
-                //this is an array assignment, e.g. a[1]=x
-                //parse the arithmetic expression in the array assignment square brackets
-                boolean valid = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-                if (!valid) {
-                    ParserUtil.error(builder, "parser.unexpected.token");
-                    assignment.drop();
-                    return false;
-                }
+        if (mode == Mode.SimpleMode && acceptArrayVars && builder.getTokenType() == ASSIGNMENT_WORD) {
+            //the accept array vars is only evaluated in simple mode, e.g. simple variable use
+            //the other modes parse the array index with assignment following later on
+            builder.advanceLexer();
 
-                //here the next token should be the EQ token, i.e. after the element reference part
+            //if it has the [] marker
+            boolean hasArrayIndex = readArrayIndex(builder, assignment);
+            if (!hasArrayIndex) {
+                //error parsing the array index marker, if it was present
+                return false;
+            }
+        }
+
+        if (mode != Mode.SimpleMode) {
+            if (!readArrayIndex(builder, assignment)) {
+                //error parsing the array index marker, if it was present
+                return false;
             }
 
+            //here the next token should be the EQ token, i.e. after the element reference part
             final IElementType nextToken = builder.getTokenType(true);
             boolean hasAssignment = nextToken == EQ || nextToken == ADD_EQ;
             if (!hasAssignment && mode == Mode.StrictAssignmentMode) {
@@ -248,6 +257,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             assignment.done(VAR_DEF_ELEMENT);
         } else {
             assignment.drop();
+        }
+
+        return true;
+    }
+
+    private static boolean readArrayIndex(BashPsiBuilder builder, PsiBuilder.Marker assignment) {
+        if (builder.getTokenType() == LEFT_SQUARE) {
+            //this is an array assignment, e.g. a[1]=x
+            //parse the arithmetic expression in the array assignment square brackets
+            boolean valid = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+            if (!valid) {
+                ParserUtil.error(builder, "parser.unexpected.token");
+                assignment.drop();
+                return false;
+            }
         }
 
         return true;

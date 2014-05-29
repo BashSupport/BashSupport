@@ -25,6 +25,7 @@ import com.google.common.collect.Multimap;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.scope.PsiScopeProcessor;
 
 import java.util.Collection;
@@ -121,7 +122,10 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
                 int textOffset = e.getTextOffset();
                 if (BashPsiUtils.isInjectedElement(e)) {
                     //fixme optimize this
-                    textOffset = textOffset + InjectedLanguageManager.getInstance(e.getProject()).getInjectionHost(e).getTextOffset();
+                    PsiLanguageInjectionHost injectionHost = InjectedLanguageManager.getInstance(e.getProject()).getInjectionHost(e);
+                    if (injectionHost != null) {
+                        textOffset = textOffset + injectionHost.getTextOffset();
+                    }
                 }
 
                 if (textOffset < smallestOffset) {

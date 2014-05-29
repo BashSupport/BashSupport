@@ -33,6 +33,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
@@ -49,6 +50,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 
@@ -66,6 +68,10 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private static final Object[] EMPTY_VARIANTS = new Object[0];
     private final BashReference cachingReference;
     private Boolean cachedFunctionScopeLocal;
+
+    private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
+    private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
+    private static final Set<String> typeReadOnlyParams = Sets.newHashSet("-r");
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
@@ -100,6 +106,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         //a variable can be declared as array variable in different ways:
         // - using an array assignment a=(one two)
         // - using declare -a
+        // - using typeset -a
 
         PsiElement assignmentValue = findAssignmentValue();
 
@@ -108,17 +115,17 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             return true;
         }
 
-        //check for declare -a
+        //check for declare -a or typeset -a
         PsiElement parentElement = getParent();
         if (parentElement instanceof BashCommand) {
             BashCommand command = (BashCommand) parentElement;
 
             PsiElement commandElement = command.commandElement();
-            if (commandElement != null && "declare".equals(commandElement.getText())) {
+            if (commandElement != null && typeCommands.contains(commandElement.getText())) {
                 List<BashPsiElement> parameters = command.parameters();
 
                 for (BashPsiElement param : parameters) {
-                    if ("-a".equals(param.getText())) {
+                    if (typeArrayDeclarationParams.contains(param.getText())) {
                         return true;
                     }
                 }
@@ -146,7 +153,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
         ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-        return node != null ? node.getPsi() : firstChild;
+        return (node != null) ? node.getPsi() : firstChild;
     }
 
     @Nullable
@@ -305,13 +312,25 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isReadonly() {
-        //fixme support "declare -r" style readonly variables
-
         PsiElement context = getParent();
         if (context instanceof BashCommand) {
             BashCommand command = (BashCommand) context;
 
-            return command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedCommandName());
+            if (command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedCommandName())) {
+                return true;
+            }
+
+            //check for declare -r or typeset -r
+            PsiElement commandElement = command.commandElement();
+            if (commandElement != null && typeCommands.contains(commandElement.getText())) {
+                List<BashPsiElement> parameters = command.parameters();
+
+                for (BashPsiElement param : parameters) {
+                    if (typeReadOnlyParams.contains(param.getText())) {
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;

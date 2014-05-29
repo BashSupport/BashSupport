@@ -20,22 +20,22 @@ package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.impl.*;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashFileReferenceImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashFunctionDefNameImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashProcessSubstitutionImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashShebangImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashFiledescriptorImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectExprImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashRedirectListImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashSubshellCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.function.BashFunctionDefImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocEndMarkerImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocStartMarkerImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashForImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashSelectImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashUntilImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.*;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternListElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTimeCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashExpansionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
@@ -119,6 +119,9 @@ public class BashPsiCreator implements BashElementTypes {
         }
         if (elementType == INCLUDE_COMMAND_ELEMENT) {
             return new BashIncludeCommandImpl(node);
+        }
+        if (elementType == TIME_COMMAND) {
+            return new BashTimeCommandImpl(node);
         }
 
         //misc elements

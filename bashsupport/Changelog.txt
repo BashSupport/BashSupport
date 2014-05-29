@@ -1,3 +1,10 @@
+2014-05-29:
+ - Fixed parsing of optional array variables used in the read command
+ - Added missing implementation of the time command PSI element
+ - Fixed autocompletion of built-in variables
+ - Array type of a variable is inferred by typeset -a now, too
+ - Added support to detect illegal use of readonly variables declared by typeset -r or declare -r
+
 2014-04-10:
  - Fixed & simplified file type checking
  - Fixed exception to fix ISE with isDirectory calls
