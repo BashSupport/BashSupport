@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.PrioritizedLookupElement;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiNamedElement;
 
 import javax.swing.*;
@@ -52,7 +53,9 @@ class CompletionProviderUtils {
     static Collection<LookupElement> createItems(Iterable<String> items, final Icon icon) {
         return Lists.transform(Lists.newArrayList(items), new Function<String, LookupElement>() {
             public LookupElement apply(String from) {
-                return LookupElementBuilder.create(from).withCaseSensitivity(true).withIcon(icon);
+                //create a lookup string which doesn't contain typical separator characters
+                String lookup = from.replaceAll("[_]", "");
+                return LookupElementBuilder.create(from).withCaseSensitivity(true).withLookupString(lookup).withIcon(icon);
             }
         });
     }

@@ -758,6 +758,13 @@ public class BashLexerTest {
         testTokenization("$((35#abcdefghijkl))", DOLLAR, EXPR_ARITH, ARITH_BASE_NUMBER, _EXPR_ARITH);
     }
 
+
+    @Test
+    public void testReadCommand() throws Exception {
+        testTokenization("read \"var:\" v[i]", WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
+
+    }
+
     @Test
     public void testUmlaut() throws Exception {
         testTokenization("echo ä", WORD, WHITESPACE, WORD);

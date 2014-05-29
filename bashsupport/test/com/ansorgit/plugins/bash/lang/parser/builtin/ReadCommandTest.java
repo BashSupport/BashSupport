@@ -43,6 +43,9 @@ public class ReadCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("read"), WORD);
         mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD);
         mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD, WORD, WORD);
+
+        //read a v[i]
+        mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
     }
 
     @Test

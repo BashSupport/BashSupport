@@ -48,7 +48,7 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
     public boolean parse(BashPsiBuilder builder) {
         PsiBuilder.Marker commandMarker = builder.mark();
 
-        boolean ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        boolean ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false, true);
         if (!ok) {
             commandMarker.drop();
             return false;
@@ -74,8 +74,8 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
         }
 
         //optional parameters
-
-        ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        //fixme the include command takes optional args which are passed on as positional parameters
+        ok = CommandParsingUtil.readOptionalAssignmentOrRedirects(builder, CommandParsingUtil.Mode.SimpleMode, false, false);
         if (!ok) {
             commandMarker.drop();
             return false;

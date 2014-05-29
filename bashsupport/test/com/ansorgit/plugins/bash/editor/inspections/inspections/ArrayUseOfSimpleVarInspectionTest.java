@@ -23,6 +23,11 @@ public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCas
     }
 
     @Test
+    public void testSimpleAccessTypeset() throws Exception {
+        doTest("arrayUseOfSimpleVarInspection/arrayVarTypeset", new ArrayUseOfSimpleVarInspection());
+    }
+
+    @Test
     public void testArrayAccess() throws Exception {
         doTest("arrayUseOfSimpleVarInspection/arrayVar", new ArrayUseOfSimpleVarInspection());
     }

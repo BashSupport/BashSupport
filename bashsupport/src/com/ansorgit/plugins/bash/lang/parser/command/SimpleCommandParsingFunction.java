@@ -42,7 +42,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read assignments and redirects
-        final boolean hasAssignmentOrRedirect = CommandParsingUtil.readAssignmentsAndRedirects(builder, true, CommandParsingUtil.Mode.StrictAssignmentMode);
+        final boolean hasAssignmentOrRedirect = CommandParsingUtil.readAssignmentsAndRedirects(builder, true, CommandParsingUtil.Mode.StrictAssignmentMode, true);
 
         //read the command word
         final boolean hasCommand = parseCommandWord(builder);
@@ -95,7 +95,8 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
         return Parsing.word.isWordToken(builder)
                 || Parsing.redirection.isRedirect(builder)
                 || Parsing.braceExpansionParsing.isValid(builder)
-                || CommandParsingUtil.isAssignment(builder, CommandParsingUtil.Mode.StrictAssignmentMode);
+                //fixme check the array var use
+                || CommandParsingUtil.isAssignment(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
     }
 
 }
