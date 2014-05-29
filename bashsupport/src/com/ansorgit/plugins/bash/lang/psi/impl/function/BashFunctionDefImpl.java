@@ -125,7 +125,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     @NotNull
     public List<BashVar> findReferencedParameters() {
-        //call the visitor to find all uses of the parameter varaiables
+        //call the visitor to find all uses of the parameter variables
         Collection<BashVar> usedVariables = PsiTreeUtil.collectElementsOfType(this, BashVar.class);
 
         List<BashVar> parameters = Lists.newLinkedList();
