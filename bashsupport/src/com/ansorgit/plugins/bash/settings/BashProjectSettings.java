@@ -37,6 +37,8 @@ public class BashProjectSettings implements Serializable {
     private boolean autocompleteBuiltinCommands = true;
     private boolean autocompletePathCommands = true;
 
+    private boolean globalFunctionVarDefs = false;
+
     private boolean formatterEnabled = false;
 
     public boolean isAutocompleteBuiltinVars() {
@@ -105,5 +107,13 @@ public class BashProjectSettings implements Serializable {
 
     public void setAutocompletePathCommands(boolean autocompletePathCommands) {
         this.autocompletePathCommands = autocompletePathCommands;
+    }
+
+    public boolean isGlobalFunctionVarDefs() {
+        return globalFunctionVarDefs;
+    }
+
+    public void setGlobalFunctionVarDefs(boolean globalFunctionVarDefs) {
+        this.globalFunctionVarDefs = globalFunctionVarDefs;
     }
 }

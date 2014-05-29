@@ -49,7 +49,7 @@ public class InspectionProvider implements InspectionToolProvider {
                 ReadonlyVariableInspection.class,
                 InternalVariableInspection.class,
                 UnknownFiledescriptorInspection.class,
-                GlocalLocalVarDefInspection.class,
+                GlobalLocalVarDefInspection.class,
                 SimpleVarUsageInspection.class,
                 UnusedFunctionParameterInspection.class,
                 ConvertBackquoteInspection.class,

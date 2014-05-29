@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
@@ -45,10 +46,14 @@ import java.util.Set;
 public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private final boolean leaveInjectionHost;
     private BashVar startElement;
+    private final BashFunctionDef startElementScope;
     private boolean checkLocalness;
     private String varName;
     private boolean startElementIsVarDef;
     private boolean ignoreGlobals;
+    private boolean functionVarDefsAreGlobal;
+    private int startElementTextOffset;
+
 
     private final Set<PsiElement> visitedScopes = Sets.newIdentityHashSet();
 
@@ -63,8 +68,12 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         this.checkLocalness = checkLocalness;
         this.varName = startElement.getReference().getReferencedName();
         this.startElementIsVarDef = startElement instanceof BashVarDef;
+        this.startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
+
         this.ignoreGlobals = false;
         this.leaveInjectionHost = leaveInjectionHosts;
+        this.functionVarDefsAreGlobal = BashProjectSettings.storedSettings(startElement.getProject()).isGlobalFunctionVarDefs();
+        this.startElementTextOffset = BashPsiUtils.getFileTextOffset(startElement);
     }
 
     public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
@@ -124,23 +133,27 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
                 ? BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef))
                 : startElement.getContainingFile().equals(varDef.getContainingFile());
 
-        BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
-
         if (sameFiles) {
-            int textOffsetStart = BashPsiUtils.getFileTextOffset(startElement);
-            int textOffsetDef = BashPsiUtils.getFileTextOffset(varDef);
-            if (textOffsetStart >= textOffsetDef) {
+            int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
+            if (startElementTextOffset >= textOffsetVarDef) {
                 return isDefinitionOffsetValid(varDefScope);
             }
 
             //the found varDef is AFTER the startElement
+
             if (varDefScope == null) {
                 //if varDef is on global level, then it is only valid if startElement is inside of a function definition
-                return BashPsiUtils.findNextVarDefFunctionDefScope(startElement) != null;
+                return startElementScope != null;
             }
 
             //varDef has a valid function def scope AND comes after the start element
             //in this case it is only valid if start element is in a nested function definition inside of varDefScope
+            // The found variable definition is defined in a function. If the settings is enabled, i.e. less strict checking, then the variable definition is valid
+            // if two var defs are compared then the varDef candidate (which occurs later in the file) is not a possible definition
+            if (functionVarDefsAreGlobal && startElementScope != null && !startElementIsVarDef && !varDefScope.equals(startElementScope)) {
+                return true;
+            }
+
             if (startElementScope != null) {
                 return PsiTreeUtil.isAncestor(varDefScope, startElementScope, true);
             }
@@ -179,7 +192,6 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private boolean isDefinitionOffsetValid(BashFunctionDef varDefScope) {
         //the var def is only valid if the varDef is NOT inside of a nested function (our rule is: more global is better)
 
-        BashFunctionDef startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
         if (startElementScope == null) {
             //if the start element is on global level, then the var def has to be global, too, if the start element is a var def, also
             //if it it just a variabale which references the definition, then varDef is a valid definition for it

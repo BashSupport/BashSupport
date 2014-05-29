@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
@@ -102,6 +103,34 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsValidVarDef();
     }
 
+    public void testErrorFunctionVarDef() throws Exception {
+        BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(false);
+        assertIsInvalidVarDef();
+    }
+
+    public void testErrorDoubleFunctionVarDef() throws Exception {
+        BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(false);
+        assertIsInvalidVarDef();
+    }
+
+    public void testFunctionVarDef() throws Exception {
+        BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(true);
+        assertIsValidVarDef();
+    }
+
+    public void testNestedMultipleVarDef() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+
+        //the resolved var def has to be the first in the file. The problem was, that the second definition was found as the reference
+        Assert.assertNull(varDef.getReference().resolve());
+    }
+
+    public void testNestedMultipleVarDef2() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+
+        //the resolved var def has to be the first in the file. The problem was, that the second definition was found as the reference
+        Assert.assertNull(varDef.getReference().resolve());
+    }
 
     public void testLocalVarDefResolve() throws Exception {
         //the inner var def must not resolve to the global variable definition
