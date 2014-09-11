@@ -10,16 +10,16 @@ public class AbsolutePathCompletionTest extends AbstractCompletionTest {
     }
 
     public void testSimpleCompletion1() throws Throwable {
-        configureByText(BashFileType.BASH_FILE_TYPE, String.format("S<caret>", PREFIX));
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s/S<caret>", getFullTestDataPath()));
 
         complete(1);
-        assertStringItems(PREFIX + "/SimpleCompletion.bash", PREFIX + "/SimpleCompletion2.bash");
+        assertStringItems(getFullTestDataPath() + "/SimpleCompletion.bash", getFullTestDataPath() + "/SimpleCompletion2.bash");
     }
 
     public void testSimpleCompletion2() throws Throwable {
-        configureByText(BashFileType.BASH_FILE_TYPE, String.format("Si<caret>", PREFIX));
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s/Si<caret>", getFullTestDataPath()));
 
         complete(1);
-        assertStringItems(PREFIX + "/SimpleCompletion.bash", PREFIX + "/SimpleCompletion2.bash");
+        assertStringItems(getFullTestDataPath() + "/SimpleCompletion.bash", getFullTestDataPath() + "/SimpleCompletion2.bash");
     }
 }
