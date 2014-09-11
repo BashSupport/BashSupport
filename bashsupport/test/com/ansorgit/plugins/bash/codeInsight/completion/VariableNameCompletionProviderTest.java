@@ -2,30 +2,13 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 
-/**
- * User: jansorg
- * Date: 09.02.11
- * Time: 20:59
- */
 public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "variableNameCompletion";
+    public VariableNameCompletionProviderTest() {
+        super("/codeInsight/completion/variableNameCompletion");
     }
 
     public void testSimpleCompletion() throws Exception {
-        configure();
         checkItems("abIsOk1", "abIsOk2");
-    }
-
-    public void testIncludedVariables() throws Exception {
-        configure("include.bash");
-        checkItems("myVarIsOk", "myVarIsOk2", "myIncludedVarIsOk", "myIncludedVarIsOk2");
-    }
-
-    public void testDollarCompletion() throws Exception {
-        configure();
-        checkItems("abIsOk", "aIsOk2");
     }
 
     public void testGlobalCompletionInvocationOne() throws Exception {
@@ -33,9 +16,9 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
 
-            configure();
+            configureByTestName();
 
-            checkItems("PWD_MINE");
+            checkItemsCustomCompletion(1, "PWD_MINE");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }
@@ -46,9 +29,9 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
 
-            configure();
+            configureByTestName();
 
-            checkItems("PWD", "OLDPWD", "COMP_WORDBREAKS", "COMP_WORDS");
+            checkItemsCustomCompletion(1, "PWD", "COMP_WORDBREAKS", "COMP_WORDS", "OLDPWD");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }
@@ -59,9 +42,9 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
 
-            configure(2);
+            configureByTestName();
 
-            checkItems("PWD", "PWD_MINE", "OLDPWD", "COMP_WORDBREAKS", "COMP_WORDS");
+            checkItemsCustomCompletion(2, "PWD_MINE", "PWD", "COMP_WORDBREAKS", "COMP_WORDS", "OLDPWD");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
         }
@@ -69,28 +52,27 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
 
     public void testSimpleParameterExpansion() throws Exception {
-        configure();
+        configureByTestName();
 
         checkItems("abIsOk1", "abIsOk2");
     }
 
     public void testWithinTrapCommand() throws Exception {
-        configure();
-
         //the trap command is a language injection host and contains a bash snippet
+        configureByTestName();
 
         checkItems("inner", "outer");
     }
 
     public void testEmptyParameterExpansion() throws Exception {
-        configure();
         checkItems("abIsOk1", "abIsOk2");
     }
 
     public void testParameterExpansionNoCommands() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
-        configure();
+        configureByTestName();
+
         checkItems("echoVar");
     }
 
@@ -102,7 +84,8 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
 
     public void testSelfReference() throws Exception {
-        configure();
-        checkItems(NO_COMPLETIONS);
+        configureByTestName();
+
+        checkItems();
     }
 }

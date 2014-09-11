@@ -9,23 +9,22 @@ import org.junit.Assert;
  * Time: 20:59
  */
 public class DynamicPathCompletionTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "dynamicPathCompletion";
+    public DynamicPathCompletionTest() {
+        super("/codeInsight/completion/dynamicPathCompletion");
     }
 
     public void testSimpleCompletion() throws Throwable {
-        configure();
+
         checkItems("./SimpleCompletion.bash");
     }
 
     public void testNoCompletion() throws Throwable {
-        configure();
         checkItems(NO_COMPLETIONS);
     }
 
     public void testHomeVarCompletion() throws Throwable {
-        configure();
+        configureByTestName();
+
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -36,7 +35,8 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     }
 
     public void testHomeVarHiddenCompletion() throws Throwable {
-        configure();
+        configureByTestName();
+
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -46,7 +46,8 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     }
 
     public void testTildeCompletion() throws Throwable {
-        configure();
+        configureByTestName();
+
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -57,7 +58,8 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     }
 
     public void testNoFunctionCompletion() throws Exception {
-        configure();
+        configureByTestName();
+
         Assert.assertTrue("No completions found", myItems.length > 0);
 
         for (LookupElement item : myItems) {

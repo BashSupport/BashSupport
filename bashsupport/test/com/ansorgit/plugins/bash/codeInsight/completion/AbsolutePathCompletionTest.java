@@ -2,30 +2,24 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 
-/**
- * User: jansorg
- * Date: 09.02.11
- * Time: 20:59
- */
 public class AbsolutePathCompletionTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "absolutePathCompletion";
+    private static final String PREFIX = "codeInsight/completion/absolutePathCompletion";
+
+    public AbsolutePathCompletionTest() {
+        super("/" + PREFIX);
     }
 
     public void testSimpleCompletion1() throws Throwable {
-        String data = String.format("%sSimpleC<caret>", getTestDataPath());
-        configureByText(BashFileType.BASH_FILE_TYPE, data);
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("S<caret>", PREFIX));
 
-        complete();
-        checkItems(getTestDataPath() + "SimpleCompletion.bash");
+        complete(1);
+        assertStringItems(PREFIX + "/SimpleCompletion.bash", PREFIX + "/SimpleCompletion2.bash");
     }
 
     public void testSimpleCompletion2() throws Throwable {
-        String data = String.format("%sSi<caret>", getTestDataPath());
-        configureByText(BashFileType.BASH_FILE_TYPE, data);
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("Si<caret>", PREFIX));
 
-        complete();
-        checkItems(getTestDataPath() + "SimpleCompletion.bash");
+        complete(1);
+        assertStringItems(PREFIX + "/SimpleCompletion.bash", PREFIX + "/SimpleCompletion2.bash");
     }
 }
