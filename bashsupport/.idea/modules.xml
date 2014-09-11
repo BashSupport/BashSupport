@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BashSupport.iml" filepath="$PROJECT_DIR$/BashSupport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../tmp/Source/idea-branch-135/java/java-tests/IntelliJ Testsrc.iml" filepath="$PROJECT_DIR$/../../../../tmp/Source/idea-branch-135/java/java-tests/IntelliJ Testsrc.iml" />
     </modules>
   </component>
 </project>

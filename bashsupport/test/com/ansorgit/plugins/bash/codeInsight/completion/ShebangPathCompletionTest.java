@@ -11,44 +11,43 @@ import java.io.File;
  * Time: 20:59
  */
 public class ShebangPathCompletionTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "shebangPathCompletion";
+    public ShebangPathCompletionTest() {
+        super("/codeInsight/completion/shebangPathCompletion");
     }
 
     public void testSimpleCompletionExecutable() throws Throwable {
         //make sure the file is executable
-        String filePath = getTestDataPath() + "SimpleCompletion.bash";
+        String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";
         Assert.assertTrue(new File(filePath).setExecutable(true));
 
-        String data = String.format("#!%sSimpleC<caret>", getTestDataPath());
+        String data = String.format("#!%s/SimpleC<caret>", getFullTestDataPath());
         configureByText(BashFileType.BASH_FILE_TYPE, data);
 
         complete();
-        checkItems(filePath);
+        assertStringItems(filePath);
     }
 
     public void testSimpleCompletionNotExecutable() throws Throwable {
         //make sure the file is NOT executable
-        String filePath = getTestDataPath() + "SimpleCompletion.bash";
+        String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";
         Assert.assertTrue(new File(filePath).setExecutable(false));
 
-        String data = String.format("#!%sSimpleC<caret>", getTestDataPath());
+        String data = String.format("#!%s/SimpleC<caret>", getTestDataPath());
         configureByText(BashFileType.BASH_FILE_TYPE, data);
 
         complete();
-        checkItems(NO_COMPLETIONS);
+        assertNull(myItems);
     }
 
     public void testNoCompletionPossible() throws Throwable {
         //make sure the file is NOT executable
-        String filePath = getTestDataPath() + "SimpleCompletion.bash";
+        String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";
         Assert.assertTrue(new File(filePath).setExecutable(false));
 
-        String data = String.format("#!%sNO<caret>", getTestDataPath());
+        String data = String.format("#!%s/NO<caret>", getTestDataPath());
         configureByText(BashFileType.BASH_FILE_TYPE, data);
 
         complete();
-        checkItems(NO_COMPLETIONS);
+        assertNull(myItems);
     }
 }

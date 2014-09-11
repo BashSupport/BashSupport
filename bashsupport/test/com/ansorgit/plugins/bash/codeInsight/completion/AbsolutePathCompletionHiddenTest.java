@@ -1,43 +1,43 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.intellij.codeInsight.completion.CompletionType;
 
-/**
- * User: jansorg
- * Date: 09.02.11
- * Time: 20:59
- */
 public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "absolutePathCompletionHidden";
+    public AbsolutePathCompletionHiddenTest() {
+        super("/codeInsight/completion/absolutePathCompletionHidden");
     }
 
     public void testSimpleCompletionNoHidden() throws Throwable {
-        String prefix = getTestDataPath();
-        String data = String.format("%s<caret>", prefix);
-        configureByText(BashFileType.BASH_FILE_TYPE, data);
+        String prefix = getFullTestDataPath();
+
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s<caret>", prefix));
 
         complete(1);
-        checkItems(prefix + "SimpleCompletion.bash");
+
+        assertStringItems(prefix + "/SimpleCompletion.bash", prefix + "/SimpleCompletion2.bash");
     }
 
     public void testSimpleCompletionHiddenNoFirstCompletions() throws Throwable {
-        String prefix = getTestDataPath();
-        String data = String.format("%s.H<caret>", prefix);
-        configureByText(BashFileType.BASH_FILE_TYPE, data);
+        String prefix = getFullTestDataPath();
+
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s/.H<caret>", prefix));
 
         //there should be completions if no files were found
         complete(1);
-        checkItems(prefix + ".HiddenFile.bash");
+
+        assertStringItems(prefix + "/.HiddenFile.bash", prefix + "/.HiddenFile2.bash");
     }
 
     public void testSimpleCompletionShowHidden() throws Throwable {
-        String prefix = getTestDataPath();
-        String data = String.format("%s<caret>", prefix);
-        configureByText(BashFileType.BASH_FILE_TYPE, data);
+        String prefix = getFullTestDataPath();
+
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s<caret>", prefix));
 
         complete(2);
-        checkItems(prefix + "SimpleCompletion.bash", prefix + ".hiddenDir/", prefix + ".HiddenFile.bash");
+
+        assertStringItems(prefix + "/.hiddenDir/",
+                prefix + "/.HiddenFile.bash", prefix + "/.HiddenFile2.bash",
+                prefix + "/SimpleCompletion.bash", prefix + "/SimpleCompletion2.bash");
     }
 }

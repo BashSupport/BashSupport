@@ -26,39 +26,39 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
  * Time: 22:07
  */
 public class FunctionNameCompletionTest extends AbstractCompletionTest {
-    @Override
-    protected String getTestDir() {
-        return "functionNameCompletion";
+    public FunctionNameCompletionTest() {
+        super("/codeInsight/completion/functionNameCompletion");
     }
 
     public void testSimpleCompletion() throws Exception {
-        configure();
+        configureByTestName();
 
         checkItems("myFunctionOneIsOk", "myFunctionTwoIsOk", "myFunctionTwoOneIsOk");
     }
 
     public void testDollarCompletion() throws Exception {
-        configure();
+        configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
     public void testAutocompleteBuiltInDisabled() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems("echo123");
     }
 
     public void testAutocompleteBuiltInEnabledCountOne() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
-        configure();
+        configureByTestName();
         checkItems("echo123");
     }
 
     public void testAutocompleteBuiltInEnabledCountOneNoLocals() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
-        configure();
+        configureByTestName();
         checkItems("echo");
     }
 
@@ -66,42 +66,48 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
         //completes bash built-in command and the local function definition
-        configure(2);
-        checkItems("disown", "disown123");
+        checkItemsCustomCompletion(2, "disown", "disown123");
     }
 
     public void testEmptyCompletion() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems("myFunction");
     }
 
     public void testVarCompletion() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testParameterExpansion() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testVarDef() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testInnerFunctionCompletion() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testGlobalFunctionCompletion() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testNoNameCompletionInParam() throws Exception {
-        configure();
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 }
