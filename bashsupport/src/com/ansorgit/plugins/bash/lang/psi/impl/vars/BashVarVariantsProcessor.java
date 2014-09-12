@@ -25,6 +25,7 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class BashVarVariantsProcessor extends BashAbstractProcessor implements B
         this.startElement = startElement;
     }
 
-    public boolean execute(PsiElement psiElement, ResolveState resolveState) {
+    public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
             final BashVarDef varDef = (BashVarDef) psiElement;
             if (varDef.isStaticAssignmentWord() && !varDef.isCommandLocal() && !variableNames.contains(varDef.getName()) && BashVarUtils.isInDefinedScope(startElement, varDef)) {

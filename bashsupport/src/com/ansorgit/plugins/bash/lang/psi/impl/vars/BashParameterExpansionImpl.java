@@ -34,4 +34,9 @@ public class BashParameterExpansionImpl extends BashBaseStubElementImpl<StubElem
     public BashParameterExpansionImpl(final ASTNode astNode) {
         super(astNode, "Parameter expansion");
     }
+
+    @Override
+    public boolean isParameterReference() {
+        return "*".equals(getText()) || "@".equals(getText());
+    }
 }

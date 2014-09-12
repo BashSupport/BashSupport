@@ -51,10 +51,10 @@ public class BashVarUtils {
             //we need to check the offset of top-level elements
             if (referenceElement instanceof BashVar) {
                 BashVar var = (BashVar) referenceElement;
-                BashVarDef referecingDefinition = (BashVarDef) var.getReference().resolve();
+                BashVarDef referencingDefinition = (BashVarDef) var.getReference().resolve();
 
-                if (referecingDefinition != null && referecingDefinition.isFunctionScopeLocal()) {
-                    return isInDefinedScope(referecingDefinition, definition);
+                if (referencingDefinition != null && referencingDefinition.isFunctionScopeLocal()) {
+                    return isInDefinedScope(referencingDefinition, definition);
                 }
             }
 

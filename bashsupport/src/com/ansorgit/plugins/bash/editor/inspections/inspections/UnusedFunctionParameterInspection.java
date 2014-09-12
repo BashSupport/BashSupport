@@ -95,11 +95,15 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
                     BashFunctionDef functionDef = (BashFunctionDef) bashCommand.getReference().resolve();
                     if (functionDef != null) {
                         List<BashPsiElement> callerParameters = bashCommand.parameters();
-                        List<BashVar> usedParameters = functionDef.findReferencedParameters();
+                        List<BashPsiElement> usedParameters = functionDef.findReferencedParameters();
 
-                        Set<String> definedParamNames = Sets.newHashSet(Lists.transform(usedParameters, new Function<BashVar, String>() {
-                            public String apply(BashVar var) {
-                                return var.getReference().getReferencedName();
+                        Set<String> definedParamNames = Sets.newHashSet(Lists.transform(usedParameters, new Function<BashPsiElement, String>() {
+                            public String apply(BashPsiElement element) {
+                                if (element instanceof BashVar) {
+                                    return ((BashVar)element).getReference().getReferencedName();
+                                }
+
+                                return element.getText();
                             }
                         }));
 

@@ -63,5 +63,5 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
      * @return The list of parameter variable uses
      */
     @NotNull
-    List<BashVar> findReferencedParameters();
+    List<BashPsiElement> findReferencedParameters();
 }
