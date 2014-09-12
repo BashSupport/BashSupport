@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -83,6 +84,14 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
                     moreProcessing = false;
                     break;
                 }
+
+                //include commands have to be visited, though
+                if (child instanceof BashIncludeCommand) {
+                    if (!child.processDeclarations(processor, state, lastParent, place)) {
+                        moreProcessing = false;
+                    }
+                }
+
                 child = child.getNextSibling();
             }
         }

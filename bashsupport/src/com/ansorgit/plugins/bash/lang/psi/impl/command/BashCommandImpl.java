@@ -88,6 +88,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
     }
 
     private void updateCache(ASTNode astNode) {
+        KEY_FUNCTION_CALL.set(this, null);
+
         ASTNode command = astNode.findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
 
         boolean internal = command != null && LanguageBuiltins.isInternalCommand(command.getText());
@@ -193,7 +195,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
     }
 
     @Nullable
-    private PsiElement doResolve() {
+    public PsiElement doResolve() {
         final String referencedName = getReferencedCommandName();
         if (referencedName == null) {
             return null;

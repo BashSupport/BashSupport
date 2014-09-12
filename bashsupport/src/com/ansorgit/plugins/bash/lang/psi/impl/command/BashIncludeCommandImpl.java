@@ -139,7 +139,6 @@ public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandSt
             return includedFile.processDeclarations(processor, state, lastParent, place);
         }
 
-
-        return result;
+        return true;
     }
 }
