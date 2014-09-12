@@ -107,6 +107,17 @@ public class RedirectionParsing implements ParsingTool {
             return false;
         }
 
+        // Process substitution
+        if (isProcessSubstitution(builder, secondToken)) {
+            if (!parseProcessSubstitution(builder, marker)) {
+                marker.drop();
+                return false;
+            }
+
+            marker.done(REDIRECT_ELEMENT);
+            return true;
+        }
+
         if (validBeforeFiledescriptor.contains(secondToken) && ParserUtil.hasNextTokens(builder, true, secondToken, FILEDESCRIPTOR)) {
             //avoid "advance without check" exceptions
             ParserUtil.getTokenAndAdvance(builder, true);
@@ -155,6 +166,30 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         //an invalid redirect should not break the whole parsing, thus we return true here
+        return true;
+    }
+
+    private boolean isProcessSubstitution(BashPsiBuilder builder, IElementType secondToken) {
+        return (secondToken == LESS_THAN || secondToken == GREATER_THAN) && builder.rawLookup(1) == LEFT_PAREN;
+    }
+
+    private boolean parseProcessSubstitution(BashPsiBuilder builder, PsiBuilder.Marker marker) {
+        builder.advanceLexer(); //eat the < or > token
+        builder.advanceLexer(); //eat the left parentheses
+        if (!Parsing.list.parseCompoundList(builder, true, false)) {
+            marker.drop();
+            return false;
+        }
+
+        //now a right parentheses has to follow to close the process substitution
+        IElementType substitutionEnd = builder.getTokenType(true);
+        if (substitutionEnd == RIGHT_PAREN) {
+            builder.advanceLexer();
+        } else {
+            marker.drop();
+            return false;
+        }
+
         return true;
     }
 

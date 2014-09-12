@@ -2,6 +2,7 @@
  - Fixed autocompletion tests
  - Fixed invalid warnings about unused paramters in ${*} and ${@}
  - Support for the getopts command
+ - Support for process substitution redirects, e.g. <(command)
 
 2014-05-29:
  - Fixed parsing of optional array variables used in the read command

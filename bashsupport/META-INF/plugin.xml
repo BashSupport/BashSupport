@@ -29,6 +29,10 @@
 
     <depends>com.intellij.modules.lang</depends>
 
+    <!--
+    <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
+    -->
+
     <description><![CDATA[
   <html>
     Bash 4 support for IntelliJ. Supports syntax highlighting,
@@ -239,7 +243,7 @@
         <lang.tokenSeparatorGenerator language="Bash"
                                       implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
 
-        <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashInjector"/>
+        <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>
 
         <readWriteAccessDetector
                 implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
