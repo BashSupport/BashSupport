@@ -27,28 +27,31 @@ import com.intellij.psi.PsiReference;
 import com.intellij.testFramework.ResolveTestCase;
 import com.intellij.testFramework.TestDataFile;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
-/**
- * User: jansorg
- * Date: 15.06.2010
- * Time: 21:09:35
- */
 public abstract class AbstractResolveTest extends ResolveTestCase {
     protected PsiReference configure() throws Exception {
-        return configureByFile(getTestName(false) + ".bash");
+        return configure(null);
+    }
+
+    protected PsiReference configure(@Nullable VirtualFile parentDir) throws Exception {
+        return configureByFile(getTestName(false) + ".bash", parentDir);
     }
 
     protected PsiFile addFile(@TestDataFile @NonNls String filePath) throws Exception {
+        return addFile(filePath, myFile != null ? myFile.getVirtualFile().getParent() : null);
+    }
+
+    protected PsiFile addFile(@TestDataFile @NonNls String filePath, @Nullable VirtualFile parentDir) throws Exception {
         final String fullPath = getTestDataPath() + filePath;
+
         final VirtualFile vFile = LocalFileSystem.getInstance().findFileByPath(fullPath.replace(File.separatorChar, '/'));
         assertNotNull("file " + filePath + " not found", vFile);
 
         String fileText = StringUtil.convertLineSeparators(VfsUtil.loadText(vFile));
 
-        final String fileName = vFile.getName();
-
-        return createFile(myModule, myFile.getVirtualFile().getParent(), fileName, fileText);
+        return createFile(myModule, parentDir, vFile.getName(), fileText);
     }
 }

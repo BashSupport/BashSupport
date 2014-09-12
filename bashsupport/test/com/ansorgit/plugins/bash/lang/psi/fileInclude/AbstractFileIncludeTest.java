@@ -19,29 +19,33 @@
 package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.impl.command.BashCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import org.junit.Assert;
 
-/**
- * User: jansorg
- * Date: 15.06.2010
- * Time: 21:09:35
- */
+import java.io.File;
+
 public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/fileInclude/";
     }
 
     protected PsiElement checkWithIncludeFile(String fileName, boolean assertDefInInclude) throws Exception {
-        PsiReference reference = configure();
+        File tempDirectory = createTempDirectory();
+
+        VirtualFile tempLocation = LocalFileSystem.getInstance().findFileByPath(tempDirectory.getPath().replace(File.separatorChar, '/'));
+        PsiFile includeFile = addFile(fileName, tempLocation);
+
+        PsiReference reference = configure(tempLocation);
         Assert.assertNotNull(reference);
 
-        PsiFile includeFile = addFile(fileName);
-
-        //the var has to resolve to the definition in the included file
+        //the reference has to resolve to the definition in the included file
         PsiElement def = reference.resolve();
         Assert.assertNotNull("Reference is not properly resolved", def);
 
@@ -59,10 +63,10 @@ public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
         PsiReference reference = configure();
         Assert.assertNotNull(reference);
 
-        PsiFile includeFile = addFile(includeFilePath);
+        PsiFile includeFile = addFile(includeFilePath, myFile.getVirtualFile().getParent());
         Assert.assertNotNull(includeFile);
 
-        //the var has to resolve to the definition in the included file
+        //the reference has to resolve to the definition in the included file
         PsiElement def = reference.resolve();
         Assert.assertNull("Variable must not be resolved", def);
     }
