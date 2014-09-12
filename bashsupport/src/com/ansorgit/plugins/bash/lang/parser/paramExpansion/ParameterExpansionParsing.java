@@ -47,6 +47,9 @@ public class ParameterExpansionParsing implements ParsingFunction {
             PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS,
             PARAM_EXPANSION_OP_STAR, NUMBER);
 
+    private static final TokenSet variableMarkingExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
+            PARAM_EXPANSION_OP_STAR);
+
     private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS,
             PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
@@ -61,7 +64,11 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         if (singleExpansionOperators.contains(builder.rawLookup(0)) && builder.rawLookup(1) == RIGHT_CURLY) {
             //fixme handle variable marking, i.e. $- etc.
-            ParserUtil.getTokenAndAdvance(builder); //the single value token
+            if (variableMarkingExpansionOperators.contains(builder.rawLookup(0))) {
+                ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
+            }   else {
+                ParserUtil.getTokenAndAdvance(builder); //the single value token
+            }
             ParserUtil.getTokenAndAdvance(builder); //the closing }
             marker.done(PARAM_EXPANSION_ELEMENT);
             return true;

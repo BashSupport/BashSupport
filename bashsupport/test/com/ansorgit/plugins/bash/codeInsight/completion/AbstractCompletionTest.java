@@ -1,18 +1,29 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.completion.CompletionTestCase;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 abstract class AbstractCompletionTest extends CompletionTestCase {
     protected static final String[] NO_COMPLETIONS = new String[0];
     private final String basePath;
+    private final boolean autoInsertionEnabled;
+
     private boolean oldBasic;
     private boolean oldSmart;
 
     public AbstractCompletionTest(String basePath) {
+        this(basePath, false);
+    }
+
+    public AbstractCompletionTest(String basePath, boolean autoInsertionEnabled) {
         this.basePath = basePath;
+        this.autoInsertionEnabled = autoInsertionEnabled;
     }
 
     @Override
@@ -22,8 +33,8 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
         oldBasic = CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION;
         oldSmart = CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION;
 
-        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION = false;
-        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION = false;
+        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION = autoInsertionEnabled;
+        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION = autoInsertionEnabled;
 
     }
 
@@ -46,36 +57,33 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
         return BashTestUtils.getBasePath() + basePath;
     }
 
-    protected void checkItemsCustomCompletion(int completions, String... values) throws Exception {
-        boolean oldBasic = CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION;
-        boolean oldSmart = CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION;
+    protected void configureByTestName(String... additionalFiles) throws Exception {
+        String testnameFile = basePath + "/" + getTestName(true) + ".bash";
 
-        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION = false;
-        CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION = false;
-
-        try {
-            configureByFileNoCompletion(basePath + "/" + getTestName(true) + ".bash");
-
-            complete(completions);
-
-            if (values == null || values.length == 0) {
-                assertNull("No completion items were expected", myItems);
-                return;
-            }
-
-            assertStringItems(values);
-        } finally {
-            CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_CODE_COMPLETION = oldBasic;
-            CodeInsightSettings.getInstance().AUTOCOMPLETE_ON_SMART_TYPE_COMPLETION = oldSmart;
-
+        ArrayList<String> files = Lists.newArrayList(testnameFile);
+        if (additionalFiles != null && additionalFiles.length > 0) {
+            files.addAll(Arrays.asList(additionalFiles));
         }
+
+        configureByFiles(null, files.toArray(new String[files.size()]));
     }
 
-    protected void configureByTestName() throws Exception {
-        configureByFile(basePath + "/" + getTestName(true) + ".bash");
+    protected void checkItemsCustomCompletion(int completions, String... values) throws Exception {
+        complete(completions);
+
+        if (values == null || values.length == 0) {
+            assertNull("No completion items were expected", myItems);
+            return;
+        }
+
+        assertStringItems(values);
     }
 
     protected void checkItems(String... values) throws Exception {
         checkItemsCustomCompletion(1, values);
+    }
+
+    public String getBasePath() {
+        return basePath;
     }
 }

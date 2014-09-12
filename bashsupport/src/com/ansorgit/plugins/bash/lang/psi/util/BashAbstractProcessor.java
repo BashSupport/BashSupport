@@ -108,8 +108,8 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
             }
         }
 
-        //now get the best result
-        //if there are equal definitions on the same level we prefer the first if the neighbourhood is not preferred
+        // now get the best result
+        // if there are equal definitions on the same level we prefer the first if the neighbourhood is not preferred
         if (preferNeigbourhood) {
             return Iterators.getLast(results.get(bestRating).iterator());
         } else {

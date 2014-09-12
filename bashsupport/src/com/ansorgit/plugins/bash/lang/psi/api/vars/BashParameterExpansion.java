@@ -20,10 +20,6 @@ package com.ansorgit.plugins.bash.lang.psi.api.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
-/**
- * User: jansorg
- * Date: Nov 7, 2009
- * Time: 1:02:56 PM
- */
 public interface BashParameterExpansion extends BashPsiElement {
+    boolean isParameterReference();
 }

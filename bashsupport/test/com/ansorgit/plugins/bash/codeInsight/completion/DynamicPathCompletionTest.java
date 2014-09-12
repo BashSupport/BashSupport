@@ -14,17 +14,23 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     }
 
     public void testSimpleCompletion() throws Throwable {
+        configureByTestName();
 
         checkItems("./SimpleCompletion.bash");
     }
 
     public void testNoCompletion() throws Throwable {
+        configureByTestName();
+
         checkItems(NO_COMPLETIONS);
     }
 
     public void testHomeVarCompletion() throws Throwable {
         configureByTestName();
 
+        complete();
+
+        Assert.assertNotNull(myItems);
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -37,6 +43,9 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testHomeVarHiddenCompletion() throws Throwable {
         configureByTestName();
 
+        complete();
+
+        Assert.assertNotNull(myItems);
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -48,6 +57,9 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testTildeCompletion() throws Throwable {
         configureByTestName();
 
+        complete();
+
+        Assert.assertNotNull(myItems);
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {
@@ -60,6 +72,9 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testNoFunctionCompletion() throws Exception {
         configureByTestName();
 
+        complete();
+
+        Assert.assertNotNull(myItems);
         Assert.assertTrue("No completions found", myItems.length > 0);
 
         for (LookupElement item : myItems) {

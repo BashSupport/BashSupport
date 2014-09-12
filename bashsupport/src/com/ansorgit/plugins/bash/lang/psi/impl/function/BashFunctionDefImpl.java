@@ -22,7 +22,9 @@ import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
@@ -47,7 +49,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -124,13 +125,12 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     }
 
     @NotNull
-    public List<BashVar> findReferencedParameters() {
+    public List<com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement> findReferencedParameters() {
         //call the visitor to find all uses of the parameter variables
-        Collection<BashVar> usedVariables = PsiTreeUtil.collectElementsOfType(this, BashVar.class);
 
-        List<BashVar> parameters = Lists.newLinkedList();
+        List<BashPsiElement> parameters = Lists.newLinkedList();
 
-        for (BashVar var : usedVariables) {
+        for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
             if (var.isParameterReference()) {
                 parameters.add(var);
             }

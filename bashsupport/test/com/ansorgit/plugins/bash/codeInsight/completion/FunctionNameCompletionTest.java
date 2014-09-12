@@ -52,6 +52,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
         configureByTestName();
+
         checkItems("echo123");
     }
 
@@ -59,11 +60,14 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
         configureByTestName();
+
         checkItems("echo");
     }
 
     public void testAutocompleteBuiltInEnabledCountTwo() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
+
+        configureByTestName();
 
         //completes bash built-in command and the local function definition
         checkItemsCustomCompletion(2, "disown", "disown123");

@@ -1,6 +1,7 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import org.junit.Ignore;
 
 public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     public VariableNameCompletionProviderTest() {
@@ -8,6 +9,8 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     }
 
     public void testSimpleCompletion() throws Exception {
+        configureByTestName();
+
         checkItems("abIsOk1", "abIsOk2");
     }
 
@@ -65,23 +68,43 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     }
 
     public void testEmptyParameterExpansion() throws Exception {
+        configureByTestName();
+
         checkItems("abIsOk1", "abIsOk2");
     }
 
     public void testParameterExpansionNoCommands() throws Exception {
-        BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
+        boolean oldAutocomplete = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinCommands();
 
-        configureByTestName();
+        try {
+            BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
-        checkItems("echoVar");
+            configureByTestName();
+
+            checkItems("echoVar");
+        } finally {
+            BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(oldAutocomplete);
+        }
     }
 
-    /*@Ignore("Completion inside comments seems to be IntelliJ's word completion")
+    //@Ignore("Completion inside comments seems to be IntelliJ's word completion")
     public void testWithinComment() throws Exception {
-        configure();
-        checkItems(NO_COMPLETIONS);
-    } */
+        configureByTestName();
 
+        checkItems(NO_COMPLETIONS);
+    }
+
+    public void testIncludedVariables() throws Exception {
+        configureByTestName(getBasePath() + "/include.bash");
+
+        checkItems("myVarIsOk", "myVarIsOk2", "myIncludedVarIsOk", "myIncludedVarIsOk2");
+    }
+
+    public void testDollarCompletion() throws Exception {
+        configureByTestName();
+
+        checkItems("abIsOk", "aIsOk2");
+    }
 
     public void testSelfReference() throws Exception {
         configureByTestName();

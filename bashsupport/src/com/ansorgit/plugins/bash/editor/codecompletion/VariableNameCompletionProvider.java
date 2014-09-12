@@ -37,9 +37,7 @@ import com.intellij.util.ProcessingContext;
 import java.util.Collection;
 
 /**
- * User: jansorg
- * Date: 07.02.11
- * Time: 18:28
+ * Completion provider for variable names.
  */
 class VariableNameCompletionProvider extends BashCompletionProvider {
     @Override
@@ -65,7 +63,8 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
         int invocationCount = parameters.getInvocationCount();
         int resultLength = 0;
 
-        //fixme Currently we only look into the current file if no original element is given, better: we should collect locals and the included vars from the original file
+        // fixme Currently we only look into the current file if no original element is given,
+        // fixme better: we should collect locals and the included vars from the original file
 
         if (varElement != null) {
             resultLength += addCollectedVariables(original, result, new BashVarVariantsProcessor(varElement));
