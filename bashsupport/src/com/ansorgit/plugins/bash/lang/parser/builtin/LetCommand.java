@@ -52,8 +52,6 @@ class LetCommand implements ParsingFunction, ParsingTool {
         //eat the "let" token
         builder.advanceLexer();
 
-        boolean ok = true;
-
         PsiBuilder.Marker letExpressionMarker = builder.mark();
 
         //read the params and redirects
@@ -68,6 +66,6 @@ class LetCommand implements ParsingFunction, ParsingTool {
             builder.error("Expected an arithmetic expression");
         }
 
-        return ok;
+        return true;
     }
 }

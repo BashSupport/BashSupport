@@ -163,6 +163,12 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     public void testParseReplace() throws Exception {
         // {myvar/,/ }
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, WORD, PARAM_EXPANSION_OP_SLASH, WHITESPACE, RIGHT_CURLY);
+    }
 
+    @Test
+    public void testParseArray() throws Exception {
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_STAR, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
     }
 }

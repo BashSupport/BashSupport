@@ -53,6 +53,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet substitutionOperators = TokenSet.create(PARAM_EXPANSION_OP_COLON_MINUS,
             PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
+    private static final TokenSet validFirstTokens = TokenSet.create(DOLLAR, PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_STAR);
+
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
     }
@@ -97,8 +99,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
         //the first token has to be a plain word token
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
-        if (firstToken != DOLLAR && !ParserUtil.isWordToken(firstToken)) {
-            builder.error("Expected a variable.");
+        if (!validFirstTokens.contains(firstToken) && !ParserUtil.isWordToken(firstToken)) {
+            builder.error("Expected a valid parameter expansion token.");
             firstElementMarker.drop();
             marker.drop();
 

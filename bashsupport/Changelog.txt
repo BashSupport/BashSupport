@@ -1,6 +1,7 @@
 2014-09-12:
  - Fixed autocompletion tests
  - Fixed invalid warnings about unused paramters in ${*} and ${@}
+ - Support for the getopts command
 
 2014-05-29:
  - Fixed parsing of optional array variables used in the read command
