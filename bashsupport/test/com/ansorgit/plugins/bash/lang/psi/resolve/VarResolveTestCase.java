@@ -158,6 +158,10 @@ public class VarResolveTestCase extends AbstractResolveTest {
         assertIsWellDefinedVariable();
     }
 
+    public void testGetOptsVariable() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
     //invalid resolves
 
     public void testBasicResolveLocalVarGlobal() throws Exception {

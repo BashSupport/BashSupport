@@ -117,7 +117,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
     }
 
-    private boolean readOptions(BashPsiBuilder builder) {
+    protected boolean readOptions(BashPsiBuilder builder) {
         builder.getTokenText();
 
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {

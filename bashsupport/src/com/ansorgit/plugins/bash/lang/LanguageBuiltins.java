@@ -100,7 +100,7 @@ public final class LanguageBuiltins {
     );
 
     public static final Collection<String> varDefCommands = Sets.newHashSet(
-            "export", "read", "declare", "readonly", "typeset"
+            "export", "read", "declare", "readonly", "typeset", "getopts"
     );
 
     public static final Collection<String> localVarDefCommands = Sets.newHashSet(

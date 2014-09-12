@@ -37,6 +37,7 @@ public class BuiltinCommandParser extends ParsingChain {
         addParsingFunction(new ReadCommand());
         addParsingFunction(new LocalCommand());
         addParsingFunction(new IncludeCommand());
+        addParsingFunction(new GetOptsCommand());
 
         addParsingFunction(new LetCommand());
     }

@@ -97,7 +97,7 @@ public class ParserUtil {
     }
 
     /**
-     * Encloses the current token in a marker (the marker token is the 2nd paramter).
+     * Encloses the current token in a marker (the marker token is the 2nd parameter).
      *
      * @param builder Provides the tokens.
      * @param markAs  The type for the marker
