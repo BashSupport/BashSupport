@@ -36,10 +36,10 @@ public class GetOptsCommandTest extends MockPsiTest {
     @Test
     public void testIsValid() {
         //getopts x varX
-        mockTest(parserFunction, Lists.newArrayList("getopts"), WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("getopts"), WORD, WORD, WORD);
 
         //getopts x varX p1
-        mockTest(parserFunction, Lists.newArrayList("getopts"), WORD, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("getopts"), WORD, WORD, WORD, WORD);
     }
 
     @Test

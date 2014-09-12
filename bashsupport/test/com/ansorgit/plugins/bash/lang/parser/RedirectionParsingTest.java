@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -95,6 +96,11 @@ public class RedirectionParsingTest extends MockPsiTest {
     @Test
     public void testBash4Redirect() {
         mockTest(BashVersion.Bash_v4, redirectionTest, REDIRECT_AMP_GREATER_GREATER, WORD);
+    }
+
+    @Test
+    public void testProcessRedirection() {
+        mockTest(redirectionTest, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
     }
 
     @Test
