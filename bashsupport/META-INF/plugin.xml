@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.1beta24</version>
+    <version>1.1</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -42,49 +42,25 @@
 
     <change-notes><![CDATA[
     <html>
-
-       <b>Changes in version 1.1beta24:</b>
+       <b>Changes in version 1.1:</b>
        <ul>
-         <li> Fixed parsing of optional array variables used in the read command</li>
-         <li> Array type of a variable is inferred by typeset -a now, too</li>
-         <li> Added support to detect illegal use of readonly variables declared by typeset -r or declare -r</li>
-         <li> Fixed autocompletion of built-in variables</li>
-         <li> Added missing implementation of the time command PSI element</li>
+          <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
+          <li>Support for the getopts command</li>
+          <li>Support for process substitution redirects, e.g. <(command)</li>
+          <li>[Issue 145]: Functions defined in include files are now properly found if included on global level</li>
+          <li>Fixed parsing of optional array variables used in the read command</li>
+          <li>Array type of a variable is inferred by typeset -a now, too</li>
+          <li>Added support to detect illegal use of readonly variables declared by typeset -r or declare -r</li>
+          <li>Fixed autocompletion of built-in variables</li>
+          <li>Added missing implementation of the time command PSI element</li>
        </ul>
 
-       <b>Changes in version 1.1beta23:</b>
+       <b>Recent changes:</b>
        <ul>
          <li>Finally fixed exception with isDirectory</li>
-       </ul>
-
-       <b>Changes in version 1.1beta22:</b>
-       <ul>
          <li>Fixed exception with isDirectory in some versions of IntelliJ</li>
-       </ul>
-
-       <b>Changes in version 1.1beta21:</b>
-       <ul>
          <li>Fixed stack overflow exception which occurred in IDEA IntelliJ 13.1.1</li>
-       </ul>
-
-       <b>Changes in version 1.1beta20:</b>
-       <ul>
          <li>Removed custom logging configuration to fix global plattform debug output</li>
-       </ul>
-
-       <b>Changes in version 1.1beta19:</b>
-       <ul>
-         <li>Compatible releases for IDEA 12.0.x, IDEA 12.1.x (all plattforms with builds >= 125.x) and IDEA 13 EAP (builds 130.x)</li>
-       </ul>
-
-       <b>Changes in version 1.1beta18-idea13:</b>
-       <ul>
-         <li>Compatibility with IDEA 13.x and WebStorm 7 EAPS and other plattform builds</li>
-       </ul>
-
-       <b>Changes in version 1.1beta17:</b>
-       <ul>
-         <li>Compatibility with IDEA 13.x</li>
          <li>Parsing performance improved, especially for large scripts                                  </li>
          <li>Support for the typeset command                                                                     </li>
          <li>Initial support for the trap command                                                                </li>
@@ -94,11 +70,7 @@
          <li>Improved performance (variable resolving)                                                           </li>
          <li>Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)       </li>
          <li>Better looking with themes now                                                                      </li>
-         <li>Fixed highlighting of redirects                                                                     </li>
-       </ul>
-
-       <b>Changes in version 1.1beta16:</b>
-       <ul>
+         <li>Fixed highlighting of redirects
          <li>Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).                                         </li>
          <li>Fixed shebang command inspection, settings a properly saved now                                                                          </li>
          <li>Added quickfix "Register as valid shebang command" for the shebang command inspection                                                    </li>
@@ -112,10 +84,6 @@
          <li>Escape chars were used in single quoted strings, but Bash does not allow escaped characters there                                        </li>
          <li>Fixed parsing of string as case pattern                                                                                                  </li>
          <li>Fixed parsing of ;;& in Bash 3 parsing mode                                                                                              </li>
-       </ul>
-
-       <b>Recent changes:</b>
-       <ul>
          <li>Autocompletion of commands using the user's $PATH environment. Autocompletion shows on second completion invocation.</li>
          <li>Setting to disable autocompletion of commands using $PATH</li>
          <li>Fixed flashing gutter icons</li>
