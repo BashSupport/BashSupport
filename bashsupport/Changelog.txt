@@ -1,3 +1,7 @@
+2014-11-12:
+ - Fixed NPE which occurred with unclosed subshell expressions
+ - https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters
+
 2014-09-12:
  - Fixed autocompletion tests
  - Fixed invalid warnings about unused paramters in ${*} and ${@}

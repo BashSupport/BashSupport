@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.intellij.execution.filters.Filter;
-import com.intellij.execution.filters.RegexpFilter;
+import com.intellij.execution.filters.ExtendedRegexFilter;
 import com.intellij.openapi.project.Project;
 
 /**
@@ -30,10 +30,10 @@ import com.intellij.openapi.project.Project;
  * Date: Oct 31, 2009
  * Time: 10:36:04 PM
  */
-public class BashLineErrorFilter extends RegexpFilter implements Filter {
+public class BashLineErrorFilter extends ExtendedRegexFilter implements Filter {
     //e.g. /home/user/test.sh: line 13: notHere: command not found
     private static final String FILTER_REGEXP =
-            RegexpFilter.FILE_PATH_MACROS + ": [a-zA-Z]+ " + RegexpFilter.LINE_MACROS + ": .+";
+            ExtendedRegexFilter.FILE_PATH_MACROS + ": [a-zA-Z]+ " + ExtendedRegexFilter.LINE_MACROS + ": .+";
 
     public BashLineErrorFilter(Project project) {
         //: line (\d+):
