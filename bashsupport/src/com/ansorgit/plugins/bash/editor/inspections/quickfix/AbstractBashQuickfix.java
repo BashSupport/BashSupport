@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 10:47:27
  */
-abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
+abstract class AbstractBashQuickfix implements LocalQuickFix {
     @NotNull
     public final String getText() {
         return getName();
@@ -45,15 +45,4 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
         return "Bash";
     }
 
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
-        return file instanceof BashFile;
-    }
-
-    public boolean startInWriteAction() {
-        return true;
-    }
-
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        invoke(project, null, descriptor.getPsiElement().getContainingFile());
-    }
 }
