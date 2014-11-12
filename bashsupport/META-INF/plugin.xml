@@ -258,7 +258,9 @@
         -->
 
         <!-- Error reporter-->
+        <!--
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
+        -->
 
         <!-- stubs -->
         <stubElementTypeHolder class="com.ansorgit.plugins.bash.lang.parser.BashElementTypes"/>

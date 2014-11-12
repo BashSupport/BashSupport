@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
@@ -49,7 +50,8 @@ public class UnregisterGlobalVariableQuickfix extends AbstractBashQuickfix {
         return "Unregister as global variable";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
         String variableName = variable.getReference().getReferencedName();
         TextRange textRange = variable.getTextRange();
         BashProjectSettings.storedSettings(project).removeGlobalVariable(variableName);

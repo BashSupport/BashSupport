@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -40,8 +41,9 @@ abstract class AbstractWordWrapQuickfix extends AbstractBashQuickfix {
         this.word = word;
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile psiFile) throws IncorrectOperationException {
-        Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
+    @Override
+    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+        Document document = PsiDocumentManager.getInstance(project).getDocument(descriptor.getPsiElement().getContainingFile());
         if (document != null) {
             int endOffset = word.getTextOffset() + word.getTextLength();
             document.replaceString(word.getTextOffset(), endOffset, wrapText(word.getText()));
