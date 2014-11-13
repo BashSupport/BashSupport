@@ -43,6 +43,6 @@ abstract class AbstractBashInspection extends LocalInspectionTool {
     @Nls
     @NotNull
     public String getGroupDisplayName() {
-        return InspectionProvider.FAMILY;
+        return InspectionProvider.BASH_FAMILY;
     }
 }

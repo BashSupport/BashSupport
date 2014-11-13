@@ -37,7 +37,7 @@ abstract class AbstractBashPsiElementQuickfix extends LocalQuickFixAndIntentionA
 
     @NotNull
     public String getFamilyName() {
-        return InspectionProvider.FAMILY;
+        return InspectionProvider.BASH_FAMILY;
     }
 
     public boolean startInWriteAction() {

@@ -43,7 +43,7 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
 
     @NotNull
     public String getFamilyName() {
-        return InspectionProvider.FAMILY;
+        return InspectionProvider.BASH_FAMILY;
     }
 
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {

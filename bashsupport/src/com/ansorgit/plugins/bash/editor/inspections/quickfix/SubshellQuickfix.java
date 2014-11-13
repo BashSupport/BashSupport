@@ -45,7 +45,7 @@ public class SubshellQuickfix extends LocalQuickFixAndIntentionActionOnPsiElemen
     @NotNull
     @Override
     public String getFamilyName() {
-        return InspectionProvider.FAMILY;
+        return InspectionProvider.BASH_FAMILY;
     }
 
     @Override
