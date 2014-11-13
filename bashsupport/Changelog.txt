@@ -1,5 +1,6 @@
 2014-11-13:
  - Fixed QuickFix implementations to not reference PSI element, reduces memory consumption
+ - The inspection "Add missing shebang..." can now be suppressed. A comment will be added to the file to suppress it.
 
 2014-11-12:
  - Fixed NPE which occurred with unclosed subshell expressions

@@ -18,19 +18,21 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
+import com.ansorgit.plugins.bash.editor.inspections.SupressionUtil;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.AddShebangQuickfix;
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.SupressAddShebangInspectionQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.intellij.codeInspection.InspectionManager;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.codeInspection.ProblemHighlightType;
-import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.codeInspection.*;
+import com.intellij.psi.PsiComment;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This inspection detects a missing shebang line and offers a file-level quickfix to add one.
@@ -39,13 +41,15 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class AddShebangInspection extends AbstractBashInspection {
+public class AddShebangInspection extends AbstractBashInspection implements CustomSuppressableInspectionTool, BatchSuppressableTool {
+
+    public static final String ID = "AddShebangLine";
 
     @Pattern("[a-zA-Z_0-9.]+")
     @NotNull
     @Override
     public String getID() {
-        return "AddShebangLine";
+        return ID;
     }
 
     @NotNull
@@ -81,6 +85,34 @@ public class AddShebangInspection extends AbstractBashInspection {
         }
 
         return null;
+    }
+
+    @Nullable
+    @Override
+    public SuppressIntentionAction[] getSuppressActions(PsiElement element) {
+        return SuppressIntentionActionFromFix.convertBatchToSuppressIntentionActions(getBatchSuppressActions(element));
+    }
+
+    @Override
+    public boolean isSuppressedFor(@NotNull PsiElement element) {
+//        if (element.getContainingFile() instanceof BashFile) {
+            PsiComment suppressionComment = SupressionUtil.findSuppressionComment(element);
+            return suppressionComment != null && SupressionUtil.isSuppressionComment(suppressionComment, getID());
+//        }
+
+//        return false;
+    }
+
+    @NotNull
+    @Override
+    public SuppressQuickFix[] getBatchSuppressActions(PsiElement element) {
+        if (element.getContainingFile() instanceof BashFile) {
+            return new SuppressQuickFix[]{
+                    new SupressAddShebangInspectionQuickfix()
+            };
+        }
+
+        return SuppressQuickFix.EMPTY_ARRAY;
     }
 
     @NotNull

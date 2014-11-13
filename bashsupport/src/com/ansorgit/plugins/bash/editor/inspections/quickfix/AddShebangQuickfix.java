@@ -19,16 +19,11 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.codeInspection.SuppressIntentionAction;
-import com.intellij.codeInspection.SuppressIntentionActionFromFix;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -39,14 +34,16 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class AddShebangQuickfix extends SuppressIntentionAction implements LocalQuickFix {
+public class AddShebangQuickfix extends AbstractBashQuickfix {
 
     @NotNull
     public String getName() {
         return "Add shebang line";
     }
 
-    /*public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+
+    @Override
+    public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
         // work around a problem in a 9.0.2 eap which need a write session
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             public void run() {
@@ -57,34 +54,6 @@ public class AddShebangQuickfix extends SuppressIntentionAction implements Local
                 }
             }
         });
-    } */
-
-    @Override
-    public void invoke(@NotNull final Project project, Editor editor, @NotNull final PsiElement element) throws IncorrectOperationException {
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            public void run() {
-                Document document = PsiDocumentManager.getInstance(project).getDocument(BashPsiUtils.findFileContext(element.getContainingFile()));
-                if (document != null) {
-                    document.insertString(0, "#!/bin/sh\n");
-                    PsiDocumentManager.getInstance(project).commitDocument(document);
-                }
-            }
-        });
     }
 
-    @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        return false;
-    }
-
-    @NotNull
-    @Override
-    public String getFamilyName() {
-        return "Bash";
-    }
-
-    @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        invoke(project, null, descriptor.getPsiElement());
-    }
 }
