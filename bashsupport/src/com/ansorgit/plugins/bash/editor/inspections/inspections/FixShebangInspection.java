@@ -124,7 +124,7 @@ public class FixShebangInspection extends AbstractBashInspection {
     }
 
     @Override
-    public void readSettings(Element node) throws InvalidDataException {
+    public void readSettings(@NotNull Element node) throws InvalidDataException {
         validShebangCommands = Lists.newLinkedList();
 
         List<Element> shebangs = node.getChildren(ELEMENT_NAME_SHEBANG);
@@ -138,7 +138,7 @@ public class FixShebangInspection extends AbstractBashInspection {
     }
 
     @Override
-    public void writeSettings(Element node) throws WriteExternalException {
+    public void writeSettings(@NotNull Element node) throws WriteExternalException {
         for (String shebangCommand : validShebangCommands) {
             Element shebandElement = new Element(ELEMENT_NAME_SHEBANG);
             shebandElement.setText(shebangCommand.trim());

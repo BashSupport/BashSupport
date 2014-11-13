@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
+import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.LocalInspectionTool;
 import org.jetbrains.annotations.Nls;
@@ -42,6 +43,6 @@ abstract class AbstractBashInspection extends LocalInspectionTool {
     @Nls
     @NotNull
     public String getGroupDisplayName() {
-        return "Bash";
+        return InspectionProvider.FAMILY;
     }
 }
