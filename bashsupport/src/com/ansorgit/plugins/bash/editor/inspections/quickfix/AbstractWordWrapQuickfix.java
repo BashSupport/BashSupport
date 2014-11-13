@@ -19,13 +19,12 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -34,19 +33,21 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 11:05:40
  */
-abstract class AbstractWordWrapQuickfix extends AbstractBashQuickfix {
-    protected final BashWord word;
-
+abstract class AbstractWordWrapQuickfix extends AbstractBashPsiElementQuickfix {
     public AbstractWordWrapQuickfix(BashWord word) {
-        this.word = word;
+        super(word);
     }
 
     @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        Document document = PsiDocumentManager.getInstance(project).getDocument(descriptor.getPsiElement().getContainingFile());
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
         if (document != null) {
-            int endOffset = word.getTextOffset() + word.getTextLength();
-            document.replaceString(word.getTextOffset(), endOffset, wrapText(word.getText()));
+            int endOffset = startElement.getTextOffset() + startElement.getTextLength();
+
+            String replacement = wrapText(startElement.getText());
+
+            document.replaceString(startElement.getTextOffset(), endOffset, replacement);
+
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }

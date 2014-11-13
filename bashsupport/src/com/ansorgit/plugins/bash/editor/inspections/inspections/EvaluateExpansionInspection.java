@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateExpansionQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -75,7 +76,8 @@ public class EvaluateExpansionInspection extends AbstractBashInspection {
             @Override
             public void visitExpansion(BashExpansion expansion) {
                 if (isOnTheFly && expansion.isValidExpansion()) {
-                    holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion, expansion.getProject()));
+                    boolean bash4 = BashProjectSettings.storedSettings(holder.getProject()).isSupportBash4();
+                    holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion, bash4));
                 }
             }
         };

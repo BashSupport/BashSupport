@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: WordToDoublequotedStringQuickfix.java, Class: WordToDoublequotedStringQuickfix
- * Last modified: 2011-04-30 16:33
+ * File: AbstractBashQuickfix.java, Class: AbstractBashQuickfix
+ * Last modified: 2010-12-28 14:57
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,28 +18,29 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
+import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Wraps a word like a in a quoted string, i.e. "a".
+ * Abstract base class for Bash quickfixes.
  * <p/>
  * User: jansorg
  * Date: 21.05.2009
- * Time: 10:40:37
+ * Time: 10:47:27
  */
-public class WordToDoublequotedStringQuickfix extends AbstractWordWrapQuickfix {
-    public WordToDoublequotedStringQuickfix(BashWord word) {
-        super(word);
-    }
-
-    protected String wrapText(String text) {
-        return "\"" + text + "\"";
+abstract class AbstractBashPsiElementQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
+    protected AbstractBashPsiElementQuickfix(PsiElement element) {
+        super(element);
     }
 
     @NotNull
-    public String getText() {
-        return "Convert to quoted string \"...\"";
+    public String getFamilyName() {
+        return InspectionProvider.FAMILY;
     }
 
+    public boolean startInWriteAction() {
+        return true;
+    }
 }

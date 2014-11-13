@@ -36,23 +36,24 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 14:05:02
  */
-public class RemoveLocalQuickfix extends AbstractBashQuickfix {
-    private final BashVarDef varDef;
-
+public class RemoveLocalQuickfix extends AbstractBashPsiElementQuickfix {
     public RemoveLocalQuickfix(BashVarDef varDef) {
-        this.varDef = varDef;
+        super(varDef);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Remove local part of the definition";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashVarDef varDef = (BashVarDef) startElement;
+
         PsiElement context = varDef.getContext();
         if (context != null) {
-            //a definition without value, e.g. "local a" has to be relaced with a= , otherwise it's not a valid
-            //var def
+            //a definition without value, e.g. "local a" has to be relaced with a= , otherwise it's not a valid var def
+
             if (!varDef.hasAssignmentValue()) {
                 Document document = PsiDocumentManager.getInstance(project).getDocument(varDef.getContainingFile());
                 if (document != null) {

@@ -39,7 +39,7 @@ public class WordToSinglequotedStringQuickfix extends AbstractWordWrapQuickfix {
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Convert to unquoted string '...'";
     }
 

@@ -31,6 +31,8 @@ import com.intellij.codeInspection.InspectionToolProvider;
  * @author Joachim Ansorg
  */
 public class InspectionProvider implements InspectionToolProvider {
+    public static final String FAMILY = "Bash";
+
     public Class[] getInspectionClasses() {
         return new Class[]{
                 FixShebangInspection.class,

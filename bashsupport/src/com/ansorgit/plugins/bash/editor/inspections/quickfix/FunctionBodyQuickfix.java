@@ -26,6 +26,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -38,28 +39,25 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class FunctionBodyQuickfix extends AbstractBashQuickfix {
+public class FunctionBodyQuickfix extends AbstractBashPsiElementQuickfix {
     private static final Logger log = Logger.getInstance("#bash.FunctionBodyQuickfix");
-    private final BashFunctionDef functionDef;
 
     public FunctionBodyQuickfix(BashFunctionDef functionDef) {
-        this.functionDef = functionDef;
+        super(functionDef);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Wrap function body in curly brackets";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         if (!CodeInsightUtilBase.prepareEditorForWrite(editor)) {
             return;
         }
 
-        log.assertTrue(functionDef != null);
-
-        log.debug("Invoke for " + functionDef);
-        log.debug("command group? " + functionDef.body());
+        BashFunctionDef functionDef = (BashFunctionDef) startElement;
 
         final BashBlock block = functionDef.body();
         if (block != null) {
@@ -72,6 +70,7 @@ public class FunctionBodyQuickfix extends AbstractBashQuickfix {
 
             Document document = PsiDocumentManager.getInstance(project).getDocument(file);
             document.replaceString(startOffset, endOffset, builder);
+
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }

@@ -27,6 +27,7 @@ import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -38,20 +39,21 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 25, 2010
  * Time: 10:30:22 PM
  */
-public class UnregisterGlobalVariableQuickfix extends AbstractBashQuickfix {
-    private final BashVar variable;
-
+public class UnregisterGlobalVariableQuickfix extends AbstractBashPsiElementQuickfix {
     public UnregisterGlobalVariableQuickfix(BashVar variable) {
-        this.variable = variable;
+        super(variable);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Unregister as global variable";
     }
 
+
     @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+    public void invoke(@NotNull Project project, @NotNull final PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashVar variable = (BashVar) startElement;
+
         String variableName = variable.getReference().getReferencedName();
         TextRange textRange = variable.getTextRange();
         BashProjectSettings.storedSettings(project).removeGlobalVariable(variableName);
