@@ -70,7 +70,7 @@ public class ConvertSubshellInspection extends AbstractBashInspection {
             @Override
             public void visitSubshell(BashSubshellCommand subshellCommand) {
                 if (isOnTheFly) {
-                    holder.registerProblem(subshellCommand, getShortName(), new SubshellQuickfix());
+                    holder.registerProblem(subshellCommand, getShortName(), new SubshellQuickfix(subshellCommand));
                 }
             }
         };

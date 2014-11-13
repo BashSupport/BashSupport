@@ -33,8 +33,8 @@ import org.jetbrains.annotations.NotNull;
  * Replaces a subshell command with the old-style backtick command.
  */
 public class SubshellQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
-    public SubshellQuickfix() {
-        super(null);
+    public SubshellQuickfix(BashSubshellCommand subshellCommand) {
+        super(subshellCommand);
     }
 
     @NotNull
@@ -46,11 +46,6 @@ public class SubshellQuickfix extends LocalQuickFixAndIntentionActionOnPsiElemen
     @Override
     public String getFamilyName() {
         return InspectionProvider.FAMILY;
-    }
-
-    @Override
-    public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        return startElement instanceof BashSubshellCommand;
     }
 
     @Override
