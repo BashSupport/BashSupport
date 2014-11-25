@@ -1,3 +1,6 @@
+2014-11-25:
+ - #166: Support for ToDo-Strings in Bash comments
+
 2014-11-13:
  - Fixed QuickFix implementations to not reference PSI element, reduces memory consumption
  - The inspection "Add missing shebang..." can now be suppressed. A comment will be added to the file to suppress it.

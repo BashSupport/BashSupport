@@ -231,6 +231,8 @@
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
+        <todoIndexer implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" filetype="BASH"/>
+
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
