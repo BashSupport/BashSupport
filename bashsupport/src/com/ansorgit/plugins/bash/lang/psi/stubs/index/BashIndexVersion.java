@@ -10,4 +10,5 @@ public final class BashIndexVersion {
     }
 
     public static int VERSION = 9;
+    public static int ID_VERSION = 1;
 }
