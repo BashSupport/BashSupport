@@ -21,7 +21,7 @@ package com.ansorgit.plugins.bash.runner;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.ColoredProcessHandler;
+import com.intellij.execution.process.KillableColoredProcessHandler;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
@@ -40,10 +40,9 @@ public class BashCommandLineState extends CommandLineState {
     @NotNull
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
-        GeneralCommandLine cmd = new GeneralCommandLine();
-
         String workingDir = ProgramParametersUtil.getWorkingDir(runConfig, getEnvironment().getProject(), runConfig.getConfigurationModule().getModule());
 
+        GeneralCommandLine cmd = new GeneralCommandLine();
         cmd.setExePath(runConfig.getInterpreterPath());
         cmd.getParametersList().addParametersString(runConfig.getInterpreterOptions());
 
@@ -54,8 +53,8 @@ public class BashCommandLineState extends CommandLineState {
         cmd.setPassParentEnvironment(runConfig.isPassParentEnvs());
         cmd.withEnvironment(runConfig.getEnvs());
 
-        OSProcessHandler processHandler = new ColoredProcessHandler(cmd);
-        ProcessTerminatedListener.attach(processHandler);
+        OSProcessHandler processHandler = new KillableColoredProcessHandler(cmd);
+        ProcessTerminatedListener.attach(processHandler, getEnvironment().getProject());
 
         //fixme handle path macros
 
