@@ -23,8 +23,6 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.util.ProgramParametersUtil;
 import com.intellij.openapi.module.Module;
@@ -75,11 +73,8 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Nullable
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
-        TextConsoleBuilder textConsoleBuilder = new TextConsoleBuilderImpl(getProject());
-        textConsoleBuilder.addFilter(new BashLineErrorFilter(getProject()));
-
         BashCommandLineState state = new BashCommandLineState(this, env);
-        state.setConsoleBuilder(textConsoleBuilder);
+        state.getConsoleBuilder().addFilter(new BashLineErrorFilter(getProject()));
 
         return state;
     }
