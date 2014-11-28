@@ -18,48 +18,41 @@
 
 package com.ansorgit.plugins.bash.runner;
 
-import com.google.common.collect.Lists;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
+import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.util.ProgramParametersUtil;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This code is based on the intellij-batch plugin.
  *
  * @author wibotwi, jansorg
  */
-public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> implements CommonBashRunConfigurationParams, BashRunConfigurationParams {
-    // common config
+public class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams {
     private String interpreterOptions = "";
     private String workingDirectory = "";
-    private boolean passParentEnvs = true;
-    private Map<String, String> envs = new HashMap<String, String>();
     private String interpreterPath = "";
-
-    // run config
     private String scriptName;
-    private String scriptParameters;
+    private String programsParameters;
 
     protected BashRunConfiguration(RunConfigurationModule runConfigurationModule, ConfigurationFactory configurationFactory, String name) {
         super(name, runConfigurationModule, configurationFactory);
@@ -71,29 +64,21 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
     }
 
     @Override
-    protected ModuleBasedConfiguration createInstance() {
-        return new BashRunConfiguration(getConfigurationModule(), getFactory(), getName());
-    }
-
-    @Override
-    public void createAdditionalTabComponents(AdditionalTabComponentManager manager, ProcessHandler startedProcess) {
-
-    }
-
-    @Override
     public boolean excludeCompileBeforeLaunchOption() {
         return true;
     }
 
+    @NotNull
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return new BashRunConfigurationEditor(this);
+        return new BashRunConfigurationEditor(getConfigurationModule().getModule());
     }
 
+    @Nullable
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
-        BashCommandLineState state = new BashCommandLineState(this, env);
-
         TextConsoleBuilder textConsoleBuilder = new TextConsoleBuilderImpl(getProject());
         textConsoleBuilder.addFilter(new BashLineErrorFilter(getProject()));
+
+        BashCommandLineState state = new BashCommandLineState(this, env);
         state.setConsoleBuilder(textConsoleBuilder);
 
         return state;
@@ -111,6 +96,8 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
     public void checkConfiguration() throws RuntimeConfigurationException {
         super.checkConfiguration();
 
+        ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), getConfigurationModule().getModule());
+
         if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
             throw new RuntimeConfigurationException("No interpreter path given.");
         }
@@ -121,13 +108,8 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
         }
 
         if (StringUtil.isEmptyOrSpaces(scriptName)) {
-            throw new RuntimeConfigurationException("No script name given.");
+            throw new RuntimeConfigurationException("Script name not given.");
         }
-    }
-
-    @Override
-    public boolean isGeneratedName() {
-        return Comparing.equal(getName(), suggestedName());
     }
 
     @Override
@@ -150,19 +132,20 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
         interpreterPath = JDOMExternalizerUtil.readField(element, "INTERPRETER_PATH");
         workingDirectory = JDOMExternalizerUtil.readField(element, "WORKING_DIRECTORY");
 
-        String str = JDOMExternalizerUtil.readField(element, "PARENT_ENVS");
-        if (str != null) {
-            passParentEnvs = Boolean.parseBoolean(str);
+        String parentEnvValue = JDOMExternalizerUtil.readField(element, "PARENT_ENVS");
+        if (parentEnvValue != null) {
+            setPassParentEnvs(Boolean.parseBoolean(parentEnvValue));
         }
 
-        EnvironmentVariablesComponent.readExternal(element, envs);
+        EnvironmentVariablesComponent.readExternal(element, getEnvs());
 
-        // ???
+        //module location
         getConfigurationModule().readExternal(element);
 
         // run config
         scriptName = JDOMExternalizerUtil.readField(element, "SCRIPT_NAME");
-        scriptParameters = JDOMExternalizerUtil.readField(element, "PARAMETERS");
+        //fixme
+        setProgramParameters(JDOMExternalizerUtil.readField(element, "PARAMETERS"));
     }
 
     @Override
@@ -173,30 +156,16 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_OPTIONS", interpreterOptions);
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_PATH", interpreterPath);
         JDOMExternalizerUtil.writeField(element, "WORKING_DIRECTORY", workingDirectory);
-        JDOMExternalizerUtil.writeField(element, "PARENT_ENVS", Boolean.toString(passParentEnvs));
-        EnvironmentVariablesComponent.writeExternal(element, envs);
+        JDOMExternalizerUtil.writeField(element, "PARENT_ENVS", Boolean.toString(isPassParentEnvs()));
 
-        // ???
+        EnvironmentVariablesComponent.writeExternal(element, getEnvs());
+
+        // module location
         getConfigurationModule().writeExternal(element);
 
         // run config
         JDOMExternalizerUtil.writeField(element, "SCRIPT_NAME", scriptName);
-        JDOMExternalizerUtil.writeField(element, "PARAMETERS", scriptParameters);
-    }
-
-    public static void copyParams(CommonBashRunConfigurationParams from, CommonBashRunConfigurationParams to) {
-        to.setEnvs(new HashMap<String, String>(from.getEnvs()));
-        to.setInterpreterOptions(from.getInterpreterOptions());
-        to.setWorkingDirectory(from.getWorkingDirectory());
-        to.setInterpreterPath(from.getInterpreterPath());
-        //to.setPassParentEnvs(from.isPassParentEnvs());
-    }
-
-    public static void copyParams(BashRunConfigurationParams from, BashRunConfigurationParams to) {
-        copyParams(from.getCommonParams(), to.getCommonParams());
-
-        to.setScriptName(from.getScriptName());
-        to.setScriptParameters(from.getScriptParameters());
+        JDOMExternalizerUtil.writeField(element, "PARAMETERS", getProgramParameters());
     }
 
     public String getInterpreterOptions() {
@@ -215,24 +184,13 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
         this.workingDirectory = workingDirectory;
     }
 
-    public boolean isPassParentEnvs() {
-        return passParentEnvs;
+    @Nullable
+    public String getProgramParameters() {
+        return programsParameters;
     }
 
-    public void setPassParentEnvs(boolean passParentEnvs) {
-        this.passParentEnvs = passParentEnvs;
-    }
-
-    public Map<String, String> getEnvs() {
-        return envs;
-    }
-
-    public void setEnvs(Map<String, String> envs) {
-        this.envs = envs;
-    }
-
-    public CommonBashRunConfigurationParams getCommonParams() {
-        return this;
+    public void setProgramParameters(@Nullable String programParameters) {
+        this.programsParameters = programParameters;
     }
 
     public String getScriptName() {
@@ -241,13 +199,5 @@ public class BashRunConfiguration extends ModuleBasedConfiguration<RunConfigurat
 
     public void setScriptName(String scriptName) {
         this.scriptName = scriptName;
-    }
-
-    public String getScriptParameters() {
-        return scriptParameters;
-    }
-
-    public void setScriptParameters(String scriptParameters) {
-        this.scriptParameters = scriptParameters;
     }
 }

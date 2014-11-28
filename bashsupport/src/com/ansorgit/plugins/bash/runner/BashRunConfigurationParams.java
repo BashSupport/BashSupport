@@ -18,17 +18,18 @@
 
 package com.ansorgit.plugins.bash.runner;
 
-/**
- * @author wibotwi
- */
-public interface BashRunConfigurationParams {
-    CommonBashRunConfigurationParams getCommonParams();
+import com.intellij.execution.CommonProgramRunConfigurationParameters;
+
+public interface BashRunConfigurationParams extends CommonProgramRunConfigurationParameters {
+    String getInterpreterPath();
+
+    void setInterpreterPath(String interpreterPath);
+
+    String getInterpreterOptions();
+
+    void setInterpreterOptions(String options);
 
     String getScriptName();
 
     void setScriptName(String scriptName);
-
-    String getScriptParameters();
-
-    void setScriptParameters(String scriptParameters);
 }
