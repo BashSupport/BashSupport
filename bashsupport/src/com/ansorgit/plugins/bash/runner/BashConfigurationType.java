@@ -20,58 +20,38 @@ package com.ansorgit.plugins.bash.runner;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configuration.ConfigurationFactoryEx;
+import com.intellij.execution.configurations.ConfigurationTypeBase;
+import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationModule;
-import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
-
 /**
- * This code is based on the intellij-batch plugin.
+ * Bash run configuration type.
  *
- * @author wibotwi, jansorg
+ * @author jansorg
  */
-public class BashConfigurationType implements ConfigurationType {
-    public String getDisplayName() {
-        return "Bash";
-    }
+public class BashConfigurationType extends ConfigurationTypeBase {
+    public BashConfigurationType() {
+        super("BashConfigurationType", "Bash", "Bash run configuration", BashIcons.BASH_FILE_ICON);
 
-    public String getConfigurationTypeDescription() {
-        return "Bash run configuration";
-    }
-
-    public Icon getIcon() {
-        return BashIcons.BASH_FILE_ICON;
+        addFactory(new BashConfigurationFactory(this));
     }
 
     @NotNull
-    public String getId() {
-        return "BashConfigurationType";
+    public static BashConfigurationType getInstance() {
+        return ConfigurationTypeUtil.findConfigurationType(BashConfigurationType.class);
     }
 
-    public static BashConfigurationType getInstance() {
-        ConfigurationType[] configurationTypes = Extensions.getExtensions(CONFIGURATION_TYPE_EP);
-
-        for (ConfigurationType configurationType : configurationTypes) {
-            if (configurationType instanceof BashConfigurationType) {
-                return (BashConfigurationType) configurationType;
-            }
+    private static class BashConfigurationFactory extends ConfigurationFactoryEx {
+        public BashConfigurationFactory(BashConfigurationType configurationType) {
+            super(configurationType);
         }
 
-        throw new IllegalStateException("Invalid state in getInstance");
-    }
-
-    public ConfigurationFactory[] getConfigurationFactories() {
-        return new ConfigurationFactory[]{new BashConfigurationFactory(this)};
-    }
-
-    private static class BashConfigurationFactory extends ConfigurationFactory {
-        public BashConfigurationFactory(BashConfigurationType batchConfigurationType) {
-            super(batchConfigurationType);
+        @Override
+        public void onNewConfigurationCreated(@NotNull RunConfiguration configuration) {
         }
 
         @Override

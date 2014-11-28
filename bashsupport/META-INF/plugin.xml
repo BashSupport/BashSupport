@@ -249,11 +249,10 @@
         <codeInsight.lineMarkerProvider language="Bash"
                                         implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
 
-        <frameworkSupport
-                implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
+        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
+        <runConfigurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigProducer"/>
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
-        <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
         <!-- Repl-->
