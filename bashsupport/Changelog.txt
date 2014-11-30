@@ -1,3 +1,6 @@
+2014-11-30:
+ - Disabled debug button for Bash run configuration
+
 2014-11-27:
  - Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed
 
