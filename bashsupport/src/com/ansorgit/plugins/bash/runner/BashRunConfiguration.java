@@ -20,18 +20,22 @@ package com.ansorgit.plugins.bash.runner;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
+import com.intellij.execution.JavaRunConfigurationExtensionManager;
 import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.util.ProgramParametersUtil;
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.SettingsEditor;
+import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -120,7 +124,12 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Override
     public void readExternal(Element element) throws InvalidDataException {
+        PathMacroManager.getInstance(getProject()).expandPaths(element);
         super.readExternal(element);
+        JavaRunConfigurationExtensionManager.getInstance().readExternal(this, element);
+        DefaultJDOMExternalizer.readExternal(this, element);
+        readModule(element);
+        EnvironmentVariablesComponent.readExternal(element, getEnvs());
 
         // common config
         interpreterOptions = JDOMExternalizerUtil.readField(element, "INTERPRETER_OPTIONS");
@@ -132,14 +141,8 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
             setPassParentEnvs(Boolean.parseBoolean(parentEnvValue));
         }
 
-        EnvironmentVariablesComponent.readExternal(element, getEnvs());
-
-        //module location
-        getConfigurationModule().readExternal(element);
-
         // run config
         scriptName = JDOMExternalizerUtil.readField(element, "SCRIPT_NAME");
-        //fixme
         setProgramParameters(JDOMExternalizerUtil.readField(element, "PARAMETERS"));
     }
 
@@ -153,14 +156,16 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         JDOMExternalizerUtil.writeField(element, "WORKING_DIRECTORY", workingDirectory);
         JDOMExternalizerUtil.writeField(element, "PARENT_ENVS", Boolean.toString(isPassParentEnvs()));
 
-        EnvironmentVariablesComponent.writeExternal(element, getEnvs());
-
-        // module location
-        getConfigurationModule().writeExternal(element);
-
         // run config
         JDOMExternalizerUtil.writeField(element, "SCRIPT_NAME", scriptName);
         JDOMExternalizerUtil.writeField(element, "PARAMETERS", getProgramParameters());
+
+        //JavaRunConfigurationExtensionManager.getInstance().writeExternal(this, element);
+        DefaultJDOMExternalizer.writeExternal(this, element);
+        writeModule(element);
+        EnvironmentVariablesComponent.writeExternal(element, getEnvs());
+
+        PathMacroManager.getInstance(getProject()).collapsePathsRecursively(element);
     }
 
     public String getInterpreterOptions() {
