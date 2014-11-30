@@ -25,6 +25,7 @@ import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.RunConfigurationWithSuppressedDefaultRunAction;
 import com.intellij.execution.util.ProgramParametersUtil;
 import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.module.Module;
@@ -49,7 +50,7 @@ import java.util.Collection;
  *
  * @author wibotwi, jansorg
  */
-public class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams {
+public class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams, RunConfigurationWithSuppressedDefaultDebugAction {
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
