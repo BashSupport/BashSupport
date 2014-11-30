@@ -1,12 +1,12 @@
 package com.ansorgit.plugins.bash.runner;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.Location;
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.actions.RunConfigurationProducer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -31,12 +31,16 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
             return false;
         }
 
-        configuration.setName(file.getPresentableName());
+        sourceElement.set(location.getPsiElement().getContainingFile());
+
+        configuration.setName(location.getVirtualFile().getPresentableName());
         configuration.setScriptName(file.getPath());
+
         if (file.getParent() != null) {
             configuration.setWorkingDirectory(file.getParent().getPath());
         }
 
+        //fixme set the shebang line as interpreter and also set the interpreter options
         if (StringUtil.isEmptyOrSpaces(configuration.getInterpreterPath())) {
             configuration.setInterpreterPath(new BashInterpreterDetection().findBestLocation());
         }
@@ -52,8 +56,15 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
 
     @Override
     public boolean isConfigurationFromContext(BashRunConfiguration configuration, ConfigurationContext context) {
-        PsiElement psiLocation = context.getPsiLocation();
+        Location location = context.getLocation();
+        if (location == null) {
+            return false;
+        }
 
-        return psiLocation != null && psiLocation.getContainingFile() instanceof BashFile;
+        //fixme file checks needs to check the properties
+
+        VirtualFile file = location.getVirtualFile();
+
+        return file != null && FileUtil.pathsEqual(file.getPath(), configuration.getScriptName());
     }
 }
