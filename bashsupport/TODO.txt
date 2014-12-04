@@ -44,7 +44,7 @@ Possible features:
 - Inspection for external command if binary is there
 - Inspection for function call method params (possible?)
 - Intention/annotator to highlight builtin variables
-- "unset" builtin unterstützen
+- "unset" builtin support
 - Support for collapse blocks. Very important would be to be able to collapse the initial comment (that is mostly the license agreement in many projects)
 - Also in the Ctrl+Q window: link to the web to some accepted documentation where the item is handled in more detail
 - Sourround with "for loop", "while loop", "case command", ...
