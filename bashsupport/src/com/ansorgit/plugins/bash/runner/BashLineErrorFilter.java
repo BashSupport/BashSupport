@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.runner;
 
-import com.intellij.execution.filters.ExtendedRegexFilter;
+import com.ansorgit.plugins.bash.jetbrains.ExtendedRegexFilter;
 import com.intellij.execution.filters.Filter;
 import com.intellij.openapi.project.Project;
 

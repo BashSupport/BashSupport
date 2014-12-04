@@ -55,9 +55,8 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory<Language
     protected Process createProcess() throws ExecutionException {
         GeneralCommandLine commandLine = new GeneralCommandLine();
 
-        BashInterpreterDetection detect = new BashInterpreterDetection();
         //fixme make this configurable
-        commandLine.setExePath(detect.findBestLocation());
+        commandLine.setExePath(BashInterpreterDetection.instance().findBestLocation());
 
         if (getWorkingDir() != null) {
             commandLine.setWorkDirectory(getWorkingDir());

@@ -1,14 +1,12 @@
 package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 
 /**
- * User: jansorg
- * Date: 12.01.12
- * Time: 13:31
+ * Configures the versions of the available Bash indexes.
  */
 public final class BashIndexVersion {
     private BashIndexVersion() {
     }
 
-    public static int VERSION = 9;
-    public static int ID_VERSION = 1;
+    public static int VERSION = 10;
+    public static int ID_VERSION = 2;
 }
