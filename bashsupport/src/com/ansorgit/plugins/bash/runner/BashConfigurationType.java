@@ -52,12 +52,13 @@ public class BashConfigurationType extends ConfigurationTypeBase {
 
         @Override
         public void onNewConfigurationCreated(@NotNull RunConfiguration configuration) {
+
         }
 
         @Override
         public RunConfiguration createTemplateConfiguration(Project project) {
             BashRunConfiguration configuration = new BashRunConfiguration(new RunConfigurationModule(project), this, "");
-            configuration.setInterpreterPath(new BashInterpreterDetection().findBestLocation());
+            configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
             return configuration;
         }
     }

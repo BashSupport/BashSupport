@@ -70,6 +70,18 @@ public class BashShebangImpl extends BashBaseStubElementImpl<StubElement> implem
         return commandLine.trim();
     }
 
+    @Override
+    public String shellCommandParams() {
+        String withParams = shellCommand(true);
+        String withoutParams = shellCommand(false);
+
+        if (withoutParams.length() < withParams.length()) {
+            return withParams.substring(withoutParams.length()).trim();
+        }
+
+        return "";
+    }
+
     public int getShellCommandOffset() {
         String line = getText();
         if (!line.startsWith("#!")) {
@@ -115,6 +127,4 @@ public class BashShebangImpl extends BashBaseStubElementImpl<StubElement> implem
             visitor.visitElement(this);
         }
     }
-
-
 }

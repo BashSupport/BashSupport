@@ -1,5 +1,7 @@
 package com.ansorgit.plugins.bash.runner;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.Location;
 import com.intellij.execution.actions.ConfigurationContext;
@@ -10,6 +12,7 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 
 /**
  * Bash run config producer which looks at the current context to create a new run configuation.
@@ -40,16 +43,32 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
             configuration.setWorkingDirectory(file.getParent().getPath());
         }
 
-        //fixme set the shebang line as interpreter and also set the interpreter options
-        if (StringUtil.isEmptyOrSpaces(configuration.getInterpreterPath())) {
-            configuration.setInterpreterPath(new BashInterpreterDetection().findBestLocation());
-        }
-
         Module module = context.getModule();
         if (module != null) {
             configuration.setModule(module);
         }
 
+        //check the location given by the actual Bash file
+        PsiFile psiFile = location.getPsiElement().getContainingFile();
+        if (psiFile instanceof BashFile) {
+            BashFile bashFile = (BashFile) psiFile;
+            BashShebang shebang = bashFile.findShebang();
+
+            if (shebang != null) {
+                String shebandShell = shebang.shellCommand(false);
+
+                if ((BashInterpreterDetection.instance().isSuitable(shebandShell))) {
+                    configuration.setInterpreterPath(shebandShell);
+
+                    configuration.setInterpreterOptions(shebang.shellCommandParams());
+                }
+            }
+        }
+
+        //fallback location if none was found
+        if (StringUtil.isEmptyOrSpaces(configuration.getInterpreterPath())) {
+            configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
+        }
 
         return true;
     }

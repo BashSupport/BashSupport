@@ -21,25 +21,35 @@ package com.ansorgit.plugins.bash.util;
 import com.google.common.collect.Lists;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Helper class to detect if there's is a Bash installation in one of the most common places.
- * <p/>
- * User: jansorg
- * Date: Oct 31, 2009
- * Time: 12:48:42 PM
  */
 public class BashInterpreterDetection {
-    public static final List<String> guessLocations = Lists.newArrayList(
+    public static final List<String> guessLocations = Collections.unmodifiableList(Lists.newArrayList(
             "/bin/bash",
             "/usr/bin/bash",
             "/usr/local/bin/bash",
             "/bin/sh",
             "/usr/bin/sh"
-    );
+    ));
+
+    public static final BashInterpreterDetection INSTANCE = new BashInterpreterDetection(guessLocations);
+
+    private final List<String> locations;
+
+    BashInterpreterDetection(List<String> locations) {
+        this.locations = locations;
+    }
+
+    public static BashInterpreterDetection instance() {
+        return INSTANCE;
+    }
 
     public String findBestLocation() {
+
         for (String guessLocation : guessLocations) {
             if (isSuitable(guessLocation)) {
                 return guessLocation;
@@ -49,12 +59,13 @@ public class BashInterpreterDetection {
         return "";
     }
 
-    boolean isSuitable(String guessLocation) {
+    public boolean isSuitable(String guessLocation) {
+        if (guessLocation == null) {
+            return false;
+        }
+
         File f = new File(guessLocation);
 
-        if (f.isFile() && f.canRead()) {
-            return true;
-        }
-        return false;
+        return f.isFile() && f.canRead();
     }
 }

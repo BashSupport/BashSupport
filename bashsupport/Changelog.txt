@@ -1,3 +1,6 @@
+2014-12-04:
+ - Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line
+
 2014-11-30:
  - Disabled debug button for Bash run configuration
 

@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.intellij.execution.filters;
+package com.ansorgit.plugins.bash.jetbrains;
 
+import com.intellij.execution.filters.Filter;
+import com.intellij.execution.filters.HyperlinkInfo;
+import com.intellij.execution.filters.InvalidExpressionException;
+import com.intellij.execution.filters.OpenFileHyperlinkInfo;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -40,8 +44,9 @@ public class ExtendedRegexFilter implements Filter {
     @NonNls public static final String LINE_MACROS = "$LINE$";
     @NonNls public static final String COLUMN_MACROS = "$COLUMN$";
 
-    //patched
+    // patched
     @NonNls private static final String FILE_PATH_REGEXP = "((?:\\p{Alpha}\\:)?[0-9 a-z_A-Z\\-\\\\./+#_$]+)";
+    // /patched
 
     @NonNls private static final String NUMBER_REGEXP = "([0-9]+)";
     @NonNls private static final String FILE_STR = "file";
