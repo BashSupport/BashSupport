@@ -1,7 +1,7 @@
 About:
 ------
-This is a custom language plugin for IntelliJ IDEA version 9.x. It is compatible with
-the Community and the Ultimate editions of IntelliJ. It also is working with RubyMine 2.0.1 or later.
+This is a custom language plugin for IntelliJ IDEA. It is compatible with
+the Community and the Ultimate editions of IntelliJ.
 It is supposed to work with the other available editions (PyCharm, WebStorm, PHPStorm).
 
 This plugin supports the Bash command shell, which is widely available in Linux and UNIX systems.
