@@ -125,6 +125,10 @@
 
     <project-components>
         <component>
+            <implementation-class>com.ansorgit.plugins.bash.lang.BashFundRaiser</implementation-class>
+        </component>
+
+        <component>
             <implementation-class>
                 com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable
             </implementation-class>
@@ -154,13 +158,13 @@
     </module-components>
 
     <actions>
-        <!--        <action id="BashErrorReporter.TriggerException"
+                <action id="BashErrorReporter.TriggerException"
                         class="nu.studer.idea.errortesting.TriggerExceptionAction"
                         text="Trigger Exception"
                         description="Triggers an exception">
                     <add-to-group group-id="ToolsMenu" anchor="last"/>
                 </action>
-        -->
+
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
@@ -262,9 +266,7 @@
         -->
 
         <!-- Error reporter-->
-        <!--
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
-        -->
 
         <!-- stubs -->
         <stubElementTypeHolder class="com.ansorgit.plugins.bash.lang.parser.BashElementTypes"/>
