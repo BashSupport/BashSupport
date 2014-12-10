@@ -32,24 +32,21 @@ public class BashInterpreterDetection {
             "/bin/bash",
             "/usr/bin/bash",
             "/usr/local/bin/bash",
+            "/opt/local/bin/bash",
+            "/opt/bin/bash",
             "/bin/sh",
-            "/usr/bin/sh"
+            "/usr/bin/sh",
+            "/opt/local/bin/sh",
+            "/opt/bin/sh"
     ));
 
-    public static final BashInterpreterDetection INSTANCE = new BashInterpreterDetection(guessLocations);
-
-    private final List<String> locations;
-
-    BashInterpreterDetection(List<String> locations) {
-        this.locations = locations;
-    }
+    public static final BashInterpreterDetection INSTANCE = new BashInterpreterDetection();
 
     public static BashInterpreterDetection instance() {
         return INSTANCE;
     }
 
     public String findBestLocation() {
-
         for (String guessLocation : guessLocations) {
             if (isSuitable(guessLocation)) {
                 return guessLocation;
@@ -65,7 +62,6 @@ public class BashInterpreterDetection {
         }
 
         File f = new File(guessLocation);
-
         return f.isFile() && f.canRead();
     }
 }
