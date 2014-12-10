@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.util;
 
-import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +29,7 @@ import org.junit.Test;
 public class BashInterpreterDetectionTest {
     @Test
     public void testFindBestLocation() throws Exception {
-        BashInterpreterDetection detection = new BashInterpreterDetection(Lists.newArrayList("/bin/bash"));
+        BashInterpreterDetection detection = new BashInterpreterDetection();
 
         Assert.assertEquals("/bin/bash", detection.findBestLocation());
     }
