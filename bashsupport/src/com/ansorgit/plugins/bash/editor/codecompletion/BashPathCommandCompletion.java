@@ -52,8 +52,10 @@ public class BashPathCommandCompletion implements ApplicationComponent {
                     if (dir.exists() && dir.isDirectory()) {
                         File[] commands = dir.listFiles(new ExecutableFileFilter());
 
-                        for (File command : commands) {
-                            cachedCommands.add(command.getName());
+                        if (commands != null) {
+                            for (File command : commands) {
+                                cachedCommands.add(command.getName());
+                            }
                         }
                     }
                 }
