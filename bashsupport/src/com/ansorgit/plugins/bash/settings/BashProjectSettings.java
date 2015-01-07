@@ -29,6 +29,8 @@ import java.util.Set;
  * registered for the current project.
  */
 public class BashProjectSettings implements Serializable {
+    private boolean weddingNotification = true;
+
     private Set<String> globalVariables = new HashSet<String>();
     private boolean autcompleteGlobalVars = true;
     private boolean supportBash4 = false;
@@ -40,6 +42,10 @@ public class BashProjectSettings implements Serializable {
     private boolean globalFunctionVarDefs = false;
 
     private boolean formatterEnabled = false;
+
+    public static BashProjectSettings storedSettings(Project project) {
+        return project.getComponent(BashProjectSettingsComponent.class).getState();
+    }
 
     public boolean isAutocompleteBuiltinVars() {
         return autocompleteBuiltinVars;
@@ -55,10 +61,6 @@ public class BashProjectSettings implements Serializable {
 
     public void setAutocompleteBuiltinCommands(boolean autocompleteBuiltinCommands) {
         this.autocompleteBuiltinCommands = autocompleteBuiltinCommands;
-    }
-
-    public static BashProjectSettings storedSettings(Project project) {
-        return project.getComponent(BashProjectSettingsComponent.class).getState();
     }
 
     public void addGlobalVariable(String variableName) {
@@ -115,5 +117,13 @@ public class BashProjectSettings implements Serializable {
 
     public void setGlobalFunctionVarDefs(boolean globalFunctionVarDefs) {
         this.globalFunctionVarDefs = globalFunctionVarDefs;
+    }
+
+    public boolean isWeddingNotification() {
+        return weddingNotification;
+    }
+
+    public void setWeddingNotification(boolean weddingNotification) {
+        this.weddingNotification = weddingNotification;
     }
 }
