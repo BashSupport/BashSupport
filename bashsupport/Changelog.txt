@@ -1,3 +1,6 @@
+2015-01-07:
+ - Added notification message at project init to inform about the wedding gift campaign. It will not appear after the wedding date.
+
 2015-01-06:
  - Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
 

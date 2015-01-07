@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.settings;
 
 import com.ansorgit.plugins.bash.BashComponents;
+import com.ansorgit.plugins.bash.lang.BashFundRaiser;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.Configurable;
@@ -36,8 +37,8 @@ import javax.swing.*;
  * @author Joachim Ansorg
  */
 public class BashProjectSettingsConfigurable implements ProjectComponent, Configurable {
-    private BashProjectSettingsPane settingsPanel;
     private final Project project;
+    private BashProjectSettingsPane settingsPanel;
 
     public BashProjectSettingsConfigurable(Project project) {
         this.project = project;
@@ -74,6 +75,10 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     public JComponent createComponent() {
         if (settingsPanel == null) {
             settingsPanel = new BashProjectSettingsPane();
+
+            if (!BashFundRaiser.isActive()) {
+                settingsPanel.showWeddingNotification.setVisible(false);
+            }
         }
 
         return settingsPanel.getPanel();
