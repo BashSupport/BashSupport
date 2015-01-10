@@ -30,9 +30,9 @@ import org.jetbrains.annotations.NotNull;
         name = "BashSupportProjectSettings",
         storages = {
                 @Storage(id = "default",
-                        file = "$PROJECT_FILE$"),
+                        file = StoragePathMacros.PROJECT_FILE),
                 @Storage(id = "dir",
-                        file = "$PROJECT_CONFIG_DIR$/bashsupport_project.xml",
+                        file = StoragePathMacros.PROJECT_CONFIG_DIR + "/bashsupport_project.xml",
                         scheme = StorageScheme.DIRECTORY_BASED)}
 )
 public class BashProjectSettingsComponent implements PersistentStateComponent<BashProjectSettings>, ProjectComponent {

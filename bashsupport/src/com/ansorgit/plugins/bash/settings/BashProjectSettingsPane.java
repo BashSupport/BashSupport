@@ -57,7 +57,6 @@ public class BashProjectSettingsPane implements Disposable {
         autocompletePathCommands.setSelected(settings.isAutocompletePathCommands());
         enableFormatterCheckbox.setSelected(settings.isFormatterEnabled());
         globalFunctionVarDefs.setSelected(settings.isGlobalFunctionVarDefs());
-        showWeddingNotification.setSelected(settings.isWeddingNotification());
     }
 
     public void storeSettings(BashProjectSettings settings) {
@@ -69,7 +68,6 @@ public class BashProjectSettingsPane implements Disposable {
         settings.setFormatterEnabled(enableFormatterCheckbox.isSelected());
         settings.setAutocompletePathCommands(autocompletePathCommands.isSelected());
         settings.setGlobalFunctionVarDefs(globalFunctionVarDefs.isSelected());
-        settings.setWeddingNotification(showWeddingNotification.isSelected());
     }
 
     public boolean isModified(BashProjectSettings settings) {
@@ -80,8 +78,7 @@ public class BashProjectSettingsPane implements Disposable {
                 autocompleteInternalCommands.isSelected() != settings.isAutocompleteBuiltinCommands() ||
                 enableFormatterCheckbox.isSelected() != settings.isFormatterEnabled() ||
                 autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands() ||
-                globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs() ||
-                showWeddingNotification.isSelected() != settings.isWeddingNotification();
+                globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs();
     }
 
     public JPanel getPanel() {

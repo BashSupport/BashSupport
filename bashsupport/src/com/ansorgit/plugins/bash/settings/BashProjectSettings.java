@@ -29,8 +29,6 @@ import java.util.Set;
  * registered for the current project.
  */
 public class BashProjectSettings implements Serializable {
-    private boolean weddingNotification = true;
-
     private Set<String> globalVariables = new HashSet<String>();
     private boolean autcompleteGlobalVars = true;
     private boolean supportBash4 = false;
@@ -117,13 +115,5 @@ public class BashProjectSettings implements Serializable {
 
     public void setGlobalFunctionVarDefs(boolean globalFunctionVarDefs) {
         this.globalFunctionVarDefs = globalFunctionVarDefs;
-    }
-
-    public boolean isWeddingNotification() {
-        return weddingNotification;
-    }
-
-    public void setWeddingNotification(boolean weddingNotification) {
-        this.weddingNotification = weddingNotification;
     }
 }
