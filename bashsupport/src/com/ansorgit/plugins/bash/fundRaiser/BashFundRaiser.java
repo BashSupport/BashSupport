@@ -21,11 +21,12 @@ import java.util.GregorianCalendar;
 public class BashFundRaiser implements com.intellij.openapi.components.ProjectComponent {
     private static final Calendar WEDDING_DAY = new GregorianCalendar(2015, Calendar.APRIL, 25, 12, 0);
     //only show messages until it was dimissed this many times
-    private static final int MAX_SHOW_COUNT = 3;
+    private static final int MAX_SHOW_COUNT = 2;
 
     private static final String closeNotificationUrl = "http://bashsupport/fundRaiser/close";
     private static final String showAgainLink = "http://bashsupport/fundRaiser/showAgain";
-    private static final String donationUrl = "http://www.ansorg-it.com/en/products_bashsupport.html";
+    private static final String donationUrl = "http://www.gofundme.com/bashsupport";
+    private static final String detailsUrl = "http://www.ansorg-it.com/en/products_bashsupport.html";
     private final Project project;
 
     public BashFundRaiser(com.intellij.openapi.project.Project project) {
@@ -68,13 +69,15 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
         }
 
         new FundNotification(
-                "BashSupport: wedding gift",
-                "BashSupport is being developed for almost 6 years now and is currently the 6th most downloaded plugin.<br/><br/>" +
-                        "I, the author of BashSupport, will marry my fiancée Lisa in April 2015.<br/><br/>" +
-                        "If you like BashSupport please consider a gift to my wedding: <a href=\"" + donationUrl + "\">Donation</a>. " +
-                        "It would be highly appreciated!<br/><br/>" +
-                        "Best regards,<br/>" +
-                        "Joachim Ansorg<br/><br/>" +
+                "BashSupport: Developer is getting married, want to send me a gift?",
+                "BashSupport is in development for 6 years now and you made my plugin the 6th most downloaded ever. " +
+                        "Thank you for liking it! This newest version now has some cool new changes including improved run configurations and ANSI colors!<br/><br/>" +
+                        "My life also gets a cool new change: I'm getting married to my fiancée Lisa in April. " +
+                        "I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href=\"" + donationUrl + "\">make a small donation here</a>. " +
+                        "(Note that this will be my first and last campaign via BashSupport, ever.)<br/><br/>" +
+                        "<a href=\"" + detailsUrl + "\">Details</a><br/><br/>" +
+                        "Thank you all!<br/>" +
+                        "Joachim Ansorg, BashSupport Developer<br/><br/>" +
                         "<small><a href=\"" + closeNotificationUrl + "\">No, thanks</a>,&nbsp;<a href=\"" + showAgainLink + "\">Show again later</a></small><br/>" +
                         "<span style=\"color: gray; font-size:smaller;\">This message won't show after the wedding. It will be displayed " + MAX_SHOW_COUNT + " times at most.</span>"
         ).notify(project);
@@ -143,10 +146,19 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
                     BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
                 }
 
+            } else if (url.toString().equals(donationUrl)) {
+                notification.expire();
+
+                if (settings != null) {
+                    //disable the "show notification" switch
+                    BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
+                }
+
             } else {
                 BrowserUtil.browse(url);
 
                 if (settings != null) {
+                    //disable the "show notification" switch
                     BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
                 }
 
