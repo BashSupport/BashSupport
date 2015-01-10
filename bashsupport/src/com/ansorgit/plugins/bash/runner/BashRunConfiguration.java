@@ -20,12 +20,10 @@ package com.ansorgit.plugins.bash.runner;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
-import com.intellij.execution.JavaRunConfigurationExtensionManager;
 import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.RunConfigurationWithSuppressedDefaultRunAction;
 import com.intellij.execution.util.ProgramParametersUtil;
 import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.module.Module;
@@ -36,7 +34,6 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -127,7 +124,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     public void readExternal(Element element) throws InvalidDataException {
         PathMacroManager.getInstance(getProject()).expandPaths(element);
         super.readExternal(element);
-        JavaRunConfigurationExtensionManager.getInstance().readExternal(this, element);
+
         DefaultJDOMExternalizer.readExternal(this, element);
         readModule(element);
         EnvironmentVariablesComponent.readExternal(element, getEnvs());
