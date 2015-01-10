@@ -26,6 +26,7 @@ import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -36,17 +37,16 @@ import org.jetbrains.annotations.NotNull;
  * Date: 28.12.10
  * Time: 12:19
  */
-public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashQuickfix implements LocalQuickFix {
-    private final BashVar var;
-    protected final String variableName;
+public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElementQuickfix {
+    private final String variableName;
 
     public ReplaceVarWithParamExpansionQuickfix(BashVar var) {
-        this.var = var;
+        super(var);
         this.variableName = var.getReference().getReferencedName();
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         if (variableName.length() > 10) {
             return "Replace with '${...}'";
         } else {
@@ -54,14 +54,17 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashQuickfix i
         }
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        TextRange textRange = var.getTextRange();
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        TextRange textRange = startElement.getTextRange();
 
         //replace this position with the same value, we have to trigger a reparse somehow
         try {
             Document document = file.getViewProvider().getDocument();
-            document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
-            file.subtreeChanged();
+            if (document != null) {
+                document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
+                file.subtreeChanged();
+            }
         } catch (ReadOnlyModificationException e) {
             //ignore
         } catch (ReadOnlyFragmentModificationException e) {

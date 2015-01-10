@@ -29,6 +29,7 @@ import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -40,22 +41,24 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 25, 2010
  * Time: 10:36:04 PM
  */
-public class RegisterGlobalVariableQuickfix extends AbstractBashQuickfix {
-    private final BashVar bashVar;
-
+public class RegisterGlobalVariableQuickfix extends AbstractBashPsiElementQuickfix {
     public RegisterGlobalVariableQuickfix(BashVar bashVar) {
-        this.bashVar = bashVar;
+        super(bashVar);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Register as global variable";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void invoke(@NotNull Project project, @NotNull final PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashVar bashVar = (BashVar) startElement;
+
         String variableName = bashVar.getReference().getReferencedName();
         TextRange textRange = bashVar.getTextRange();
         BashProjectSettings.storedSettings(project).addGlobalVariable(variableName);
+
         //replace this position with the same value, we have to trigger a reparse somehow
         try {
             file.getViewProvider().getDocument().replaceString(textRange.getStartOffset(), textRange.getEndOffset(), bashVar.getText());

@@ -41,6 +41,10 @@ public class BashProjectSettings implements Serializable {
 
     private boolean formatterEnabled = false;
 
+    public static BashProjectSettings storedSettings(Project project) {
+        return project.getComponent(BashProjectSettingsComponent.class).getState();
+    }
+
     public boolean isAutocompleteBuiltinVars() {
         return autocompleteBuiltinVars;
     }
@@ -55,10 +59,6 @@ public class BashProjectSettings implements Serializable {
 
     public void setAutocompleteBuiltinCommands(boolean autocompleteBuiltinCommands) {
         this.autocompleteBuiltinCommands = autocompleteBuiltinCommands;
-    }
-
-    public static BashProjectSettings storedSettings(Project project) {
-        return project.getComponent(BashProjectSettingsComponent.class).getState();
     }
 
     public void addGlobalVariable(String variableName) {

@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.2</version>
+    <version>1.3.0_idea13</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -41,8 +41,41 @@
   ]]></description>
 
     <change-notes><![CDATA[
-    <html>
+    <html
+       <b>Changes in version 1.3.0:</b>
+       <ul>
+         <li>Once-in-a-lifetime gift campaign to help me with my wedding: <a href="hhttp://www.ansorg-it.com/products_bashsupport_gift.html">BashSupport wedding gift</a></li>
+         <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
+         <li>Enabled and fixed the custom error reporting dialog</li>
+         <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
+         <li>Disabled debug button for Bash run configuration</li>
+         <li>#166: Support for ToDo-Strings in Bash comments</li>
+         <li>https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters</li>
+         <li>Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
+         <li>Fixed QuickFix implementations to not reference PSI element, reduces memory consumption</li>
+         <li>The inspection "Add missing shebang..." can now be suppressed. A comment will be added to the file to suppress it.</li>
+         <li>Fixed NPE which occurred with unclosed subshell expressions</li>
+       </ul>
+
+       <b>Changes in version 1.2.1:</b>
+       <ul>
+          <li>Version accepted by IntelliJ IDEA 14</li>
+       </ul>
+
        <b>Changes in version 1.2:</b>
+       <ul>
+          <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
+          <li>Support for the getopts command</li>
+          <li>Support for process substitution redirects, e.g. <(command)</li>
+          <li>[Issue 145]: Functions defined in include files are now properly found if included on global level</li>
+          <li>Fixed parsing of optional array variables used in the read command</li>
+          <li>Array type of a variable is inferred by typeset -a now, too</li>
+          <li>Added support to detect illegal use of readonly variables declared by typeset -r or declare -r</li>
+          <li>Fixed autocompletion of built-in variables</li>
+          <li>Added missing implementation of the time command PSI element</li>
+       </ul>
+       
+       <b>Changes in version 1.1:</b>
        <ul>
           <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
           <li>Support for the getopts command</li>
@@ -113,6 +146,10 @@
 
     <project-components>
         <component>
+            <implementation-class>com.ansorgit.plugins.bash.fundRaiser.BashFundRaiser</implementation-class>
+        </component>
+
+        <component>
             <implementation-class>
                 com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable
             </implementation-class>
@@ -142,13 +179,13 @@
     </module-components>
 
     <actions>
-        <!--        <action id="BashErrorReporter.TriggerException"
+ <!--               <action id="BashErrorReporter.TriggerException"
                         class="nu.studer.idea.errortesting.TriggerExceptionAction"
                         text="Trigger Exception"
                         description="Triggers an exception">
                     <add-to-group group-id="ToolsMenu" anchor="last"/>
-                </action>
-        -->
+                </action>-->
+
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
@@ -219,6 +256,11 @@
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
+        <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
+        <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
+
+
+
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
@@ -232,11 +274,10 @@
         <codeInsight.lineMarkerProvider language="Bash"
                                         implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
 
-        <frameworkSupport
-                implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
+        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
+        <runConfigurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigProducer"/>
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
-        <configurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigurationProducer"/>
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
         <!-- Repl-->

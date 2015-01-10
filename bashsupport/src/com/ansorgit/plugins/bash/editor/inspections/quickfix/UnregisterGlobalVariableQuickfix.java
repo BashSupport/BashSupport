@@ -20,12 +20,14 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -37,19 +39,21 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 25, 2010
  * Time: 10:30:22 PM
  */
-public class UnregisterGlobalVariableQuickfix extends AbstractBashQuickfix {
-    private final BashVar variable;
-
+public class UnregisterGlobalVariableQuickfix extends AbstractBashPsiElementQuickfix {
     public UnregisterGlobalVariableQuickfix(BashVar variable) {
-        this.variable = variable;
+        super(variable);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Unregister as global variable";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
+
+    @Override
+    public void invoke(@NotNull Project project, @NotNull final PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashVar variable = (BashVar) startElement;
+
         String variableName = variable.getReference().getReferencedName();
         TextRange textRange = variable.getTextRange();
         BashProjectSettings.storedSettings(project).removeGlobalVariable(variableName);

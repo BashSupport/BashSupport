@@ -22,17 +22,20 @@ import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 16.04.2009
- * Time: 14:50:39
- *
  * @author Joachim Ansorg
  */
 public interface BashShebang extends BashPsiElement {
     /**
-     * @param withParams
+     * @param withParams True if the interpreter options should be included in the command
      * @return The shell command given in the shebang line, e.g. /bin/sh
      */
     String shellCommand(boolean withParams);
+
+    /**
+     *
+     * @return The parameters of the shell command, if available.
+     */
+    String shellCommandParams();
 
     void updateCommand(String command);
 

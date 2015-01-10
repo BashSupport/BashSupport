@@ -29,12 +29,7 @@ import org.junit.Test;
 public class BashInterpreterDetectionTest {
     @Test
     public void testFindBestLocation() throws Exception {
-        BashInterpreterDetection detection = new BashInterpreterDetection() {
-            @Override
-            boolean isSuitable(String guessLocation) {
-                return guessLocation.equals("/bin/bash");
-            }
-        };
+        BashInterpreterDetection detection = new BashInterpreterDetection();
 
         Assert.assertEquals("/bin/bash", detection.findBestLocation());
     }

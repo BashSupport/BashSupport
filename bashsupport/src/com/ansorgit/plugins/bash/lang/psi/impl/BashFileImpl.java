@@ -33,6 +33,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * PSI implementation for a Bash file.
@@ -48,8 +49,15 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
     }
 
     public boolean hasShebangLine() {
-        return findChildByClass(BashShebang.class) != null;
+        return findShebang() != null;
     }
+
+    @Nullable
+    @Override
+    public BashShebang findShebang() {
+        return findChildByClass(BashShebang.class);
+    }
+
 
     public BashFunctionDef[] functionDefinitions() {
         return findChildrenByClass(BashFunctionDef.class);

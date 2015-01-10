@@ -20,12 +20,13 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
 import com.ansorgit.plugins.bash.lang.valueExpansion.ValueExpansionUtil;
-import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,19 +36,19 @@ import org.jetbrains.annotations.NotNull;
  * Date: Nov 15, 2009
  * Time: 12:50:35 AM
  */
-public class EvaluateExpansionQuickfix extends AbstractBashQuickfix {
-    private final BashExpansion expansion;
-    private Project project;
+public class EvaluateExpansionQuickfix extends AbstractBashPsiElementQuickfix {
+    private final boolean enableBash4;
+    private final String expansionDef;
 
-    public EvaluateExpansionQuickfix(BashExpansion expansion, Project project) {
-        this.expansion = expansion;
-        this.project = project;
+    public EvaluateExpansionQuickfix(BashExpansion expansion, boolean enableBash4) {
+        super(expansion);
+        this.enableBash4 = enableBash4;
+        this.expansionDef = expansion.getText();
     }
 
     @NotNull
-    public String getName() {
-        boolean supportBash4 = BashProjectSettings.storedSettings(project).isSupportBash4();
-        String replacement = ValueExpansionUtil.expand(expansion.getText(), supportBash4);
+    public String getText() {
+        String replacement = ValueExpansionUtil.expand(expansionDef, enableBash4);
 
         if (replacement.length() < 20) {
             return "Replace with the result '" + replacement + "'";
@@ -56,13 +57,16 @@ public class EvaluateExpansionQuickfix extends AbstractBashQuickfix {
         return "Replace with evaluated expansion";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        TextRange r = expansion.getTextRange();
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        TextRange r = startElement.getTextRange();
 
-        boolean supportBash4 = BashProjectSettings.storedSettings(project).isSupportBash4();
-        String replacement = ValueExpansionUtil.expand(expansion.getText(), supportBash4);
-        if (replacement != null) {
+        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+
+        String replacement = ValueExpansionUtil.expand(startElement.getText(), enableBash4);
+        if (replacement != null && document != null) {
             editor.getDocument().replaceString(r.getStartOffset(), r.getEndOffset(), replacement);
+            PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }
 }

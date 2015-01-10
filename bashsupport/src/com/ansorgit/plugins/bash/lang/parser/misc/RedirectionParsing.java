@@ -110,7 +110,6 @@ public class RedirectionParsing implements ParsingTool {
         // Process substitution
         if (isProcessSubstitution(builder, secondToken)) {
             if (!parseProcessSubstitution(builder, marker)) {
-                marker.drop();
                 return false;
             }
 
