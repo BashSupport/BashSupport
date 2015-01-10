@@ -71,9 +71,9 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
         new FundNotification(
                 "BashSupport: Developer is getting married, want to send me a gift?",
                 "BashSupport is in development for 6 years now and you made my plugin the 6th most downloaded ever. " +
-                        "Thank you for liking it! This newest version now has some cool new changes including improved run configurations and ANSI colors!<br/><br/>" +
-                        "My life also gets a cool new change: I'm getting married to my fiancée Lisa in April. " +
-                        "I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href=\"" + donationUrl + "\">make a small donation here</a>. " +
+                        "Thank you for liking it!<br/><br/>" +
+                        "My life gets a cool new change: I'm getting married to my fiancée Lisa in April. " +
+                        "I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href=\"" + donationUrl + "\">make a small donation here</a>.<br/>" +
                         "(Note that this will be my first and last campaign via BashSupport, ever.)<br/><br/>" +
                         "<a href=\"" + detailsUrl + "\">Details</a><br/><br/>" +
                         "Thank you all!<br/>" +
