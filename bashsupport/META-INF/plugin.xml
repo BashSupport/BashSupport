@@ -44,12 +44,11 @@
     <html
        <b>Changes in version 1.3.0:</b>
        <ul>
-         <li>Once-in-a-lifetime gift campaign to help me with my wedding: <a href="hhttp://www.ansorg-it.com/products_bashsupport_gift.html">BashSupport wedding gift</a></li>
+         <li>Once-in-a-lifetime chance to reward BashSupport development: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">Wedding gift campaign</a></li>
          <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
          <li>Disabled debug button for Bash run configuration</li>
-         <li>#166: Support for ToDo-Strings in Bash comments</li>
          <li>https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters</li>
          <li>Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
          <li>Fixed QuickFix implementations to not reference PSI element, reduces memory consumption</li>
@@ -255,11 +254,6 @@
 
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
-
-        <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
-        <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
-
-
 
         <!--
         <weigher key="completionSorting"
