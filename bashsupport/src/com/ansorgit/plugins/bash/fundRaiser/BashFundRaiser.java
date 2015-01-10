@@ -25,7 +25,7 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
 
     private static final String closeNotificationUrl = "http://bashsupport/fundRaiser/close";
     private static final String showAgainLink = "http://bashsupport/fundRaiser/showAgain";
-    private static final String donationUrl = "http://www.ansorg-it.com/products_bashsupport.html";
+    private static final String donationUrl = "http://www.ansorg-it.com/en/products_bashsupport.html";
     private final Project project;
 
     public BashFundRaiser(com.intellij.openapi.project.Project project) {
