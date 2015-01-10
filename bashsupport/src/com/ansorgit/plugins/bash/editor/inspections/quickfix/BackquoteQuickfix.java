@@ -23,6 +23,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -34,24 +35,27 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 13:53:59
  */
-public class BackquoteQuickfix extends AbstractBashQuickfix {
-    private final BashBackquote backquote;
-
+public class BackquoteQuickfix extends AbstractBashPsiElementQuickfix {
     public BackquoteQuickfix(BashBackquote backquote) {
-        this.backquote = backquote;
+        super(backquote);
     }
 
+    @Override
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Replace with subshell command";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         Document document = PsiDocumentManager.getInstance(project).getDocument(file);
         if (document != null) {
-            int endOffset = backquote.getTextRange().getEndOffset();
+            BashBackquote backquote = (BashBackquote) startElement;
+            int endOffset = startElement.getTextRange().getEndOffset();
             String command = backquote.getCommandText();
-            document.replaceString(backquote.getTextOffset(), endOffset, "$(" + command + ")");
+
+            document.replaceString(startElement.getTextOffset(), endOffset, "$(" + command + ")");
+
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }

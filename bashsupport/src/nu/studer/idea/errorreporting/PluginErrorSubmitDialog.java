@@ -44,34 +44,15 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     @SuppressWarnings({"AnalyzingVariableNaming"})
     public String USERNAME;// persisted setting
 
-    private JTextArea descriptionTextArea;
-    private JTextField userTextField;
-    private JPanel contentPane;
     private AbstractAction proxyAction;
+    private final PluginErrorReportComponent reportComponent;
 
     protected PluginErrorSubmitDialog(Component inParent) {
         super(inParent, true);
 
         setTitle(PluginErrorReportSubmitterBundle.message("submission.dialog.title"));
 
-        descriptionTextArea = new JTextArea(10, 50);
-        descriptionTextArea.setWrapStyleWord(true);
-        descriptionTextArea.setLineWrap(true);
-        descriptionTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-
-        userTextField = new JTextField();
-
-        JPanel descriptionPane = new JPanel(new BorderLayout());
-        descriptionPane.add(new JLabel(PluginErrorReportSubmitterBundle.message("submission.dialog.label.description")), BorderLayout.NORTH);
-        descriptionPane.add(descriptionTextArea, BorderLayout.CENTER);
-
-        JPanel userPane = new JPanel(new BorderLayout());
-        userPane.add(new JLabel(PluginErrorReportSubmitterBundle.message("submission.dialog.label.user")), BorderLayout.NORTH);
-        userPane.add(userTextField, BorderLayout.CENTER);
-
-        contentPane = new JPanel(new BorderLayout(0, 10));
-        contentPane.add(descriptionPane, BorderLayout.CENTER);
-        contentPane.add(userPane, BorderLayout.SOUTH);
+        reportComponent = new PluginErrorReportComponent();
 
         setOKButtonText(PluginErrorReportSubmitterBundle.message("submission.dialog.button.send"));
 
@@ -85,7 +66,11 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
         init();
     }
 
-    public void prepare() {
+    public void prepare(String additionalInfo, String stacktrace, String versionId) {
+        reportComponent.descriptionField.setText(additionalInfo);
+        reportComponent.stacktraceField.setText(stacktrace);
+        reportComponent.versionField.setText(versionId);
+
         File file = new File(getOptionsFilePath());
         if (file.exists()) {
             try {
@@ -100,7 +85,7 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
                 }
 
                 DefaultJDOMExternalizer.readExternal(this, componentElement);
-                userTextField.setText(USERNAME);
+                reportComponent.nameField.setText(USERNAME);
             } catch (Exception e) {
                 LOGGER.info("Unable to read configuration file", e);
             }
@@ -113,7 +98,7 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
             Element componentElement = new Element("component");
             applicationElement.addContent(componentElement);
 
-            USERNAME = userTextField.getText();
+            USERNAME = reportComponent.nameField.getText();
             DefaultJDOMExternalizer.writeExternal(this, componentElement);
 
             Document document = new Document(applicationElement);
@@ -130,7 +115,7 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     }
 
     protected JComponent createCenterPanel() {
-        return contentPane;
+        return reportComponent.contentPane;
     }
 
     protected Action[] createLeftSideActions() {
@@ -138,14 +123,18 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     }
 
     public JComponent getPreferredFocusedComponent() {
-        return descriptionTextArea;
+        return reportComponent.descriptionField;
     }
 
     public String getDescription() {
-        return descriptionTextArea.getText();
+        return reportComponent.descriptionField.getText();
+    }
+
+    public String getStackTrace() {
+        return reportComponent.stacktraceField.getText();
     }
 
     public String getUser() {
-        return userTextField.getText();
+        return reportComponent.nameField.getText();
     }
 }

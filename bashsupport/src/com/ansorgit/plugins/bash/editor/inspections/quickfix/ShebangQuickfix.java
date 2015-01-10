@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -33,21 +34,23 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class ShebangQuickfix extends AbstractBashQuickfix {
-    private final BashShebang shebang;
+public class ShebangQuickfix extends AbstractBashPsiElementQuickfix {
     private final String command;
 
     public ShebangQuickfix(BashShebang shebang, String command) {
-        this.shebang = shebang;
+        super(shebang);
         this.command = command;
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Replace with " + command;
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashShebang shebang = (BashShebang) startElement;
+
         shebang.updateCommand(command);
     }
 }

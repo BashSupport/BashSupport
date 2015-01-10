@@ -19,9 +19,12 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -33,21 +36,30 @@ import org.jetbrains.annotations.NotNull;
  * Date: Nov 15, 2009
  * Time: 12:50:35 AM
  */
-public class EvaluateArithExprQuickfix extends AbstractBashQuickfix {
-    private final ArithmeticExpression expression;
+public class EvaluateArithExprQuickfix extends AbstractBashPsiElementQuickfix {
+    private final String expressionText;
+    private final long numericValue;
 
     public EvaluateArithExprQuickfix(ArithmeticExpression expression) {
-        this.expression = expression;
+        super(expression);
+        this.expressionText = expression.getText();
+        this.numericValue = expression.computeNumericValue();
     }
 
     @NotNull
-    public String getName() {
-        return "Replace '" + expression.getText() + "' with the result '" + expression.computeNumericValue() + "'";
+    public String getText() {
+        return "Replace '" + expressionText + "' with the result '" + numericValue + "'";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        TextRange r = expression.getTextRange();
-        String replacement = String.valueOf(expression.computeNumericValue());
-        editor.getDocument().replaceString(r.getStartOffset(), r.getEndOffset(), replacement);
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        TextRange r = startElement.getTextRange();
+        String replacement = String.valueOf(numericValue);
+
+        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+        if (document != null) {
+            document.replaceString(r.getStartOffset(), r.getEndOffset(), replacement);
+            PsiDocumentManager.getInstance(project).commitDocument(document);
+        }
     }
 }

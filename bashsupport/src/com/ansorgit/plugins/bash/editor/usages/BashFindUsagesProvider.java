@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
     private static final class BashWordsScanner extends DefaultWordsScanner {
-        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL);
+        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD);
 
         public BashWordsScanner() {
             //fixme the Bash lexer is project dependent

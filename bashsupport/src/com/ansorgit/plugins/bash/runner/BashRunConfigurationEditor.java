@@ -18,42 +18,41 @@
 
 package com.ansorgit.plugins.bash.runner;
 
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-/**
- * Uses code from the intellij-batch plugin.
- *
- * @author wibotwi, jansorg
- */
 public class BashRunConfigurationEditor extends SettingsEditor<BashRunConfiguration> {
-    private BashRunConfigurationForm myForm;
+    private BashConfigForm form;
 
-    public BashRunConfigurationEditor(BashRunConfiguration batchRunConfiguration) {
-        this.myForm = new BashRunConfigurationForm(batchRunConfiguration);
+    public BashRunConfigurationEditor(Module module) {
+        this.form = new BashConfigForm();
+        this.form.setModuleContext(module);
     }
 
     @Override
     protected void resetEditorFrom(BashRunConfiguration runConfiguration) {
-        BashRunConfiguration.copyParams(runConfiguration, myForm);
+        form.reset(runConfiguration);
+        form.resetBash(runConfiguration);
     }
 
     @Override
     protected void applyEditorTo(BashRunConfiguration runConfiguration) throws ConfigurationException {
-        BashRunConfiguration.copyParams(myForm, runConfiguration);
+        form.applyTo(runConfiguration);
+        form.applyBashTo(runConfiguration);
     }
 
     @Override
     @NotNull
     protected JComponent createEditor() {
-        return myForm.getRootPanel();
+        return form;
     }
 
     @Override
     protected void disposeEditor() {
-        myForm = null;
+        form = null;
     }
 }

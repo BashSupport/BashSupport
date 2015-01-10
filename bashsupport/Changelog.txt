@@ -1,3 +1,35 @@
+2015-01-07:
+ - Added notification message at project init to inform about the wedding gift campaign. It will not appear after the wedding date.
+
+2015-01-06:
+ - Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
+
+2014-12-05:
+ - Enabled and fixed the custom error reporting dialog
+
+2014-12-04:
+ - Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line
+
+2014-11-30:
+ - Disabled debug button for Bash run configuration
+
+2014-11-27:
+ - Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed
+
+2014-11-25:
+ - #166: Support for ToDo-Strings in Bash comments
+
+2014-11-13:
+ - Fixed QuickFix implementations to not reference PSI element, reduces memory consumption
+ - The inspection "Add missing shebang..." can now be suppressed. A comment will be added to the file to suppress it.
+
+2014-11-12:
+ - Fixed NPE which occurred with unclosed subshell expressions
+ - https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters
+
+2014-11-07:
+ - Released 1.2.1
+
 2014-09-12:
  - Fixed autocompletion tests
  - Fixed invalid warnings about unused paramters in ${*} and ${@}

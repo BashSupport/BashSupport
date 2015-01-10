@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiFileWithStubSupport;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
@@ -35,6 +36,13 @@ public interface BashFile extends PsiFile, BashPsiElement, PsiFileWithStubSuppor
     Key<Boolean> LANGUAGE_CONSOLE_MARKER = new Key<Boolean>("Language console marker");
 
     boolean hasShebangLine();
+
+    /**
+     * Returns the shebang line of the current file if one exists.
+     * @return
+     */
+    @Nullable
+    BashShebang findShebang();
 
     /**
      * @return

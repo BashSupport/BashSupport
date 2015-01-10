@@ -32,14 +32,13 @@ import java.util.List;
  * Time: 11:20:17 AM
  */
 public class BashContentUtil {
-    private BashContentUtil() {
-    }
-
     private static final List<? extends ContentHeuristic> heuristics = Lists.newArrayList(
             new ShebangHeuristic(1.0d),
             new EmptyFileHeuristic(0.4d),
             new PermissionHeuristic(0.4d));
 
+    private BashContentUtil() {
+    }
 
     public static boolean isProbablyBashFile(@NotNull File file, double minProbabiliy) {
         return computeBashProbability(file, minProbabiliy) >= minProbabiliy;

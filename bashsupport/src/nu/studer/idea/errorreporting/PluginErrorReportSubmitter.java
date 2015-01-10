@@ -17,7 +17,10 @@
  ******************************************************************************/
 package nu.studer.idea.errorreporting;
 
+import com.intellij.ide.DataManager;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
@@ -27,9 +30,14 @@ import com.intellij.openapi.extensions.PluginDescriptor;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.Consumer;
 import com.intellij.util.net.HttpConfigurable;
 import com.intellij.util.net.IOExceptionDialog;
 import org.jetbrains.annotations.NonNls;
@@ -37,12 +45,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Properties;
 
@@ -56,16 +61,16 @@ import java.util.Properties;
  * server).
  *
  * @author <a href="mailto:intellij@studer.nu">Etienne Studer</a>, May 17, 2006
- * @see LoggingEventSubmitter
+ * @see TextStreamLoggingEventSubmitter
  */
 @SuppressWarnings({"AnalyzingLoggingWithoutLogLevelCheck"})
 public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
-    private static final Logger LOGGER = Logger.getInstance(LoggingEventSubmitter.class.getName());
+    private static final Logger LOGGER = Logger.getInstance(TextStreamLoggingEventSubmitter.class.getName());
 
     @NonNls
     private static final String SERVER_LOOKUP_URL = "http://www.ansorg-it.com/errorReceiverRedirect.txt";
     @NonNls
-    private static final String FALLBACK_SERVER_URL = "http://errors.ansorg-it.com:8080/errorReceiver/";
+    private static final String FALLBACK_SERVER_URL = "http://www.ansorg-it.com/bashsupport/errorReceiver.pl";
     @NonNls
     private static final String ERROR_SUBMITTER_PROPERTIES_PATH = "errorReporter.properties";
 
@@ -89,27 +94,70 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
         return PluginErrorReportSubmitterBundle.message("report.error.to.plugin.vendor");
     }
 
-    public SubmittedReportInfo submit(IdeaLoggingEvent[] events, Component parentComponent) {
+    @Override
+    public boolean submit(@NotNull IdeaLoggingEvent[] events, @Nullable String additionalInfo, @NotNull final Component parentComponent, @NotNull final Consumer<SubmittedReportInfo> consumer) {
+        final DataContext dataContext = DataManager.getInstance().getDataContext(parentComponent);
+        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+
+        StringBuilder stacktrace = new StringBuilder();
+        for (IdeaLoggingEvent event : events) {
+            stacktrace.append(event.getMessage()).append("\n");
+            stacktrace.append(event.getThrowableText()).append("\n");
+        }
+
+        Properties properties = new Properties();
+        queryPluginDescriptor(getPluginDescriptor(), properties);
+
+        StringBuilder versionId = new StringBuilder();
+        versionId.append(properties.getProperty(PLUGIN_ID_PROPERTY_KEY)).append(" ").append(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
+        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+        
         // show modal error submission dialog
         PluginErrorSubmitDialog dialog = new PluginErrorSubmitDialog(parentComponent);
-        dialog.prepare();
+        dialog.prepare(additionalInfo, stacktrace.toString(), versionId.toString());
         dialog.show();
 
         // submit error to server if user pressed SEND
         int code = dialog.getExitCode();
         if (code == DialogWrapper.OK_EXIT_CODE) {
             dialog.persist();
+
             String description = dialog.getDescription();
             String user = dialog.getUser();
-            return submitToServer(events, description, user, parentComponent);
+            String editedStacktrace = dialog.getStackTrace();
+
+            submitToServer(project, editedStacktrace, description, user,
+                    new Consumer<SubmittedReportInfo>() {
+                        @Override
+                        public void consume(SubmittedReportInfo submittedReportInfo) {
+                            consumer.consume(submittedReportInfo);
+
+                            Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void consume(Throwable throwable) {
+                            LOGGER.info("Error submission failed", throwable);
+                            consumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED));
+
+                            //Messages.showErrorDialog(parentComponent, throwable != null ? throwable.getMessage() : "", PluginErrorReportSubmitterBundle.message("error.dialog.title"));
+                        }
+                    }
+            );
+
+            return true;
         }
 
-        // otherwise do nothing
-        return null;
+        return false;
     }
 
-    private SubmittedReportInfo submitToServer(final IdeaLoggingEvent[] events, @Nullable final String description, @Nullable final String user,
-                                               final Component parentComponent) {
+    private void submitToServer(Project project,
+                                final String stacktrace,
+                                @Nullable final String description,
+                                @Nullable final String user,
+                                final Consumer<SubmittedReportInfo> successConsumer,
+                                Consumer<Throwable> errorConsumer) {
+
         PluginDescriptor pluginDescriptor = getPluginDescriptor();
 
         // the properties that define the error report content/envelope
@@ -131,6 +179,40 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
         @NonNls final String serverUrl = properties.getProperty(SERVER_PROPERTY_KEY);
 
         // check if connection to server can be established, i.e. proxy settings are correct
+        if (!tryConnectOnly(serverUrl)) {
+            errorConsumer.consume(null);
+            return;
+        }
+
+        Task.Backgroundable task = new Task.Backgroundable(project, PluginErrorReportSubmitterBundle.message("progress.dialog.title"), false) {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                indicator.setText(PluginErrorReportSubmitterBundle.message("progress.dialog.text"));
+                indicator.setIndeterminate(true);
+
+                LoggingEventSubmitter submitter = new TextStreamLoggingEventSubmitter(serverUrl);
+                submitter.setPluginId(properties.getProperty(PLUGIN_ID_PROPERTY_KEY));
+                submitter.setPluginName(properties.getProperty(PLUGIN_NAME_PROPERTY_KEY));
+                submitter.setPluginVersion(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
+                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+                submitter.setEmailTo(splitByBlanks(properties.getProperty(EMAIL_TO_PROPERTY_KEY)));
+                submitter.setEmailCc(splitByBlanks(properties.getProperty(EMAIL_CC_PROPERTY_KEY)));
+
+                try {
+                    submitter.submit(stacktrace, description, user);
+
+                    successConsumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.NEW_ISSUE));
+                } catch (LoggingEventSubmitter.SubmitException e) {
+                    //ignore
+                }
+            }
+        };
+
+        BackgroundableProcessIndicator indicator = new BackgroundableProcessIndicator(task);
+        ProgressManager.getInstance().runProcessWithProgressAsynchronously(task, indicator);
+    }
+
+    private boolean tryConnectOnly(String serverUrl) {
         boolean tryAgain = false;
         do {
             try {
@@ -138,52 +220,19 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 httpConfigurable.prepareURL(serverUrl);
             } catch (IOException ioe) {
                 LOGGER.info("Connection error", ioe);
-                tryAgain = IOExceptionDialog.showErrorDialog(PluginErrorReportSubmitterBundle.message("error.dialog.title"),
-                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", serverUrl));
+                tryAgain = IOExceptionDialog.showErrorDialog(
+                        PluginErrorReportSubmitterBundle.message("error.dialog.title"),
+                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", serverUrl)
+                );
 
                 // abort if cannot connect to server and user does not want to try again
                 if (!tryAgain) {
-                    return null;
+                    return false;
                 }
             }
         } while (tryAgain);
 
-        // submit error report
-        final LoggingEventSubmitter.SubmitException[] ex = new LoggingEventSubmitter.SubmitException[]{null};
-        Runnable runnable = new Runnable() {
-            public void run() {
-                try {
-                    ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
-                    indicator.setText(PluginErrorReportSubmitterBundle.message("progress.dialog.text"));
-                    indicator.setIndeterminate(true);
-
-                    LoggingEventSubmitter submitter = new LoggingEventSubmitter(serverUrl);
-                    submitter.setPluginId(properties.getProperty(PLUGIN_ID_PROPERTY_KEY));
-                    submitter.setPluginName(properties.getProperty(PLUGIN_NAME_PROPERTY_KEY));
-                    submitter.setPluginVersion(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-                    submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asString());
-                    submitter.setEmailTo(splitByBlanks(properties.getProperty(EMAIL_TO_PROPERTY_KEY)));
-                    submitter.setEmailCc(splitByBlanks(properties.getProperty(EMAIL_CC_PROPERTY_KEY)));
-                    submitter.submit(events, description, user);
-                } catch (LoggingEventSubmitter.SubmitException se) {
-                    ex[0] = se;
-                }
-            }
-        };
-        ProgressManager progressManager = ProgressManager.getInstance();
-        progressManager.runProcessWithProgressSynchronously(runnable, PluginErrorReportSubmitterBundle.message("progress.dialog.title"), false, null);
-
-        // handle successful/failed submission
-        if (ex[0] != null) {
-            LOGGER.info("Error submission failed", ex[0]);
-            Messages.showErrorDialog(parentComponent, ex[0].getMessage(), PluginErrorReportSubmitterBundle.message("error.dialog.title"));
-            return new SubmittedReportInfo(null, null, SubmittedReportInfo.SubmissionStatus.FAILED);
-        }
-
-        LOGGER.info("Error submission successful");
-        Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"),
-                PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
-        return new SubmittedReportInfo(null, null, SubmittedReportInfo.SubmissionStatus.NEW_ISSUE);
+        return true;
     }
 
     private void queryPluginDescriptor(@NotNull PluginDescriptor pluginDescriptor, @NotNull Properties properties) {
@@ -283,38 +332,23 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
 
     @Nullable
     private String readUrlContent(String urlString) {
-        URL url;
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            LOGGER.info("Invalid URL", e);
-            return null;
-        }
+        HttpConfigurable httpConfigurable = HttpConfigurable.getInstance();
 
-        StringBuffer sb = new StringBuffer();
+        HttpURLConnection connection = null;
 
-        BufferedReader bufferedReader = null;
         try {
-            InputStream stream = url.openStream();
-            InputStreamReader reader = new InputStreamReader(stream);
-            bufferedReader = new BufferedReader(reader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-        } catch (IOException ioe) {
-            LOGGER.info("Unable to read from URL", ioe);
-            return null;
+            connection = httpConfigurable.openHttpConnection(urlString);
+
+            String text = StreamUtil.readText(connection.getInputStream(), "UTF-8");
+            return text.trim();
+        } catch (IOException e) {
+            //ignored
         } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ioe) {
-                    LOGGER.info("Unable to disconnect from URL", ioe);
-                }
+            if (connection != null) {
+                connection.disconnect();
             }
         }
 
-        return sb.toString().trim();
+        return null;
     }
 }

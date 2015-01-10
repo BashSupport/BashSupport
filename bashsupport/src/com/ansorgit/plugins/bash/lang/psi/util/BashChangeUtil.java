@@ -23,9 +23,11 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -87,5 +89,17 @@ public class BashChangeUtil {
     public static PsiElement createShebang(Project project, String command, boolean addNewline) {
         String text = "#!" + command + (addNewline ? "\n" : "");
         return createDummyBashFile(project, text).getFirstChild();
+    }
+
+    public static PsiElement createNewline(Project project) {
+        String text = "\n";
+        return createDummyBashFile(project, text).getFirstChild();
+    }
+
+    public static PsiComment createComment(Project project, String comment) {
+        String text = "#" + comment + "\n";
+
+        PsiFile file = createDummyBashFile(project, text);
+        return PsiTreeUtil.getChildOfType(file, PsiComment.class);
     }
 }

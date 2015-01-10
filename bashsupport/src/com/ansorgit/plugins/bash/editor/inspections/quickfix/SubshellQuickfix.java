@@ -18,42 +18,50 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
+import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
+import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Replaces a subshell command with the old-style backtick command.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 14:05:02
  */
-public class SubshellQuickfix extends AbstractBashQuickfix {
-    private final BashSubshellCommand subshellCommand;
-
+public class SubshellQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
     public SubshellQuickfix(BashSubshellCommand subshellCommand) {
-        this.subshellCommand = subshellCommand;
+        super(subshellCommand);
     }
 
     @NotNull
-    public String getName() {
+    public String getText() {
         return "Replace with backquote command";
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    @NotNull
+    @Override
+    public String getFamilyName() {
+        return InspectionProvider.BASH_FAMILY;
+    }
+
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         Document document = PsiDocumentManager.getInstance(project).getDocument(file);
         if (document != null) {
-            int startOffset = subshellCommand.getTextOffset() - 1; //to include the $
+            BashSubshellCommand subshellCommand = (BashSubshellCommand) startElement;
+
+            //fixme check if the element is inside of a $() block
+
+            int startOffset = subshellCommand.getTextOffset(); //to include the $
             int endOffset = subshellCommand.getTextRange().getEndOffset();
             String command = subshellCommand.getCommandText();
 
             document.replaceString(startOffset, endOffset, "`" + command + "`");
+
             PsiDocumentManager.getInstance(project).commitDocument(document);
         }
     }

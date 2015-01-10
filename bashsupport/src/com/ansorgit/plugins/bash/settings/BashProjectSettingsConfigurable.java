@@ -19,7 +19,9 @@
 package com.ansorgit.plugins.bash.settings;
 
 import com.ansorgit.plugins.bash.BashComponents;
+import com.ansorgit.plugins.bash.fundRaiser.BashFundRaiser;
 import com.ansorgit.plugins.bash.util.BashIcons;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -36,11 +38,29 @@ import javax.swing.*;
  * @author Joachim Ansorg
  */
 public class BashProjectSettingsConfigurable implements ProjectComponent, Configurable {
-    private BashProjectSettingsPane settingsPanel;
+    public static final String BASHSUPPORT_WEDDING_NOTIFICATION_ENABLED = "bashsupport.weddingNotification.enabled";
+    public static final String BASHSUPPORT_WEDDING_NOTIFICATION_SHOW_COUNT = "bashsupport.weddingNotification.shown";
     private final Project project;
+    private BashProjectSettingsPane settingsPanel;
 
     public BashProjectSettingsConfigurable(Project project) {
         this.project = project;
+    }
+
+    public synchronized static boolean isWeddingNotificationEnabled() {
+        return PropertiesComponent.getInstance().getBoolean(BASHSUPPORT_WEDDING_NOTIFICATION_ENABLED, true);
+    }
+
+    public synchronized static void setWeddingNotificationEnabled(boolean enabled) {
+        PropertiesComponent.getInstance().setValue(BASHSUPPORT_WEDDING_NOTIFICATION_ENABLED, String.valueOf(enabled));
+    }
+
+    public synchronized static int getWeddingNotificationShowCount() {
+        return PropertiesComponent.getInstance().getOrInitInt(BASHSUPPORT_WEDDING_NOTIFICATION_SHOW_COUNT, 0);
+    }
+
+    public synchronized static void setWeddingNotificationShowCount(int count) {
+        PropertiesComponent.getInstance().setValue(BASHSUPPORT_WEDDING_NOTIFICATION_SHOW_COUNT, String.valueOf(count));
     }
 
     @NotNull
@@ -74,6 +94,11 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     public JComponent createComponent() {
         if (settingsPanel == null) {
             settingsPanel = new BashProjectSettingsPane();
+
+            if (!BashFundRaiser.isActive()) {
+                settingsPanel.showWeddingNotification.setSelected(false);
+                settingsPanel.showWeddingNotification.setVisible(false);
+            }
         }
 
         return settingsPanel.getPanel();
@@ -84,14 +109,22 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
             return false;
         }
 
+        if (isWeddingNotificationEnabled() != settingsPanel.showWeddingNotification.isEnabled()) {
+            return true;
+        }
+
         return settingsPanel.isModified(BashProjectSettings.storedSettings(project));
     }
 
     public void apply() throws ConfigurationException {
+        setWeddingNotificationEnabled(settingsPanel.showWeddingNotification.isSelected());
+
         settingsPanel.storeSettings(BashProjectSettings.storedSettings(project));
     }
 
     public void reset() {
+        settingsPanel.showWeddingNotification.setSelected(isWeddingNotificationEnabled());
+
         settingsPanel.setData(BashProjectSettings.storedSettings(project));
     }
 
