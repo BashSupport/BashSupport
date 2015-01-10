@@ -90,7 +90,7 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
     private void handleMessageShown() {
         int count = BashProjectSettingsConfigurable.getWeddingNotificationShowCount() + 1;
 
-        if (count > MAX_SHOW_COUNT) {
+        if (count >= MAX_SHOW_COUNT) {
             BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
             BashProjectSettingsConfigurable.setWeddingNotificationShowCount(0);
         } else {
