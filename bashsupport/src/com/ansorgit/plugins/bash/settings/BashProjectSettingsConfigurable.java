@@ -117,7 +117,10 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     }
 
     public void apply() throws ConfigurationException {
-        setWeddingNotificationEnabled(settingsPanel.showWeddingNotification.isSelected());
+        if (settingsPanel.showWeddingNotification.isSelected() != isWeddingNotificationEnabled()) {
+            setWeddingNotificationEnabled(settingsPanel.showWeddingNotification.isSelected());
+            setWeddingNotificationShowCount(0);
+        }
 
         settingsPanel.storeSettings(BashProjectSettings.storedSettings(project));
     }
