@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.lexer.MergeFunction;
 import com.intellij.lexer.MergingLexerAdapterBase;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -34,7 +33,6 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 class MergingLexer extends MergingLexerAdapterBase {
-    private final MergeTuple[] mergeTuples;
 
     /**
      * Create a merging lexer which works with the merge definitions given in the mergeTuples parameter.
@@ -43,13 +41,7 @@ class MergingLexer extends MergingLexerAdapterBase {
      * @param mergeTuples The token merge definitions.
      */
     public MergingLexer(final Lexer original, final MergeTuple... mergeTuples) {
-        super(original);
-        this.mergeTuples = mergeTuples;
-    }
-
-    @Override
-    public MergeFunction getMergeFunction() {
-        return new MergeFunction() {
+        super(original, new MergeFunction() {
             @Override
             public IElementType merge(IElementType type, Lexer lexer) {
                 for (final MergeTuple currentTuple : mergeTuples) {
@@ -70,6 +62,6 @@ class MergingLexer extends MergingLexerAdapterBase {
 
                 return type;
             }
-        };
+        });
     }
 }

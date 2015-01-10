@@ -49,9 +49,9 @@ public class BashCommandLineState extends CommandLineState {
         cmd.addParameter(runConfig.getScriptName());
         cmd.getParametersList().addParametersString(runConfig.getProgramParameters());
 
-        cmd.withWorkDirectory(workingDir);
+        cmd.setWorkDirectory(workingDir);
         cmd.setPassParentEnvironment(runConfig.isPassParentEnvs());
-        cmd.withEnvironment(runConfig.getEnvs());
+        cmd.setEnvParams(runConfig.getEnvs());
 
         OSProcessHandler processHandler = new KillableColoredProcessHandler(cmd);
         ProcessTerminatedListener.attach(processHandler, getEnvironment().getProject());
