@@ -1,3 +1,6 @@
+2015-01-10:
+ - Version 1.3.0
+
 2015-01-07:
  - Added notification message at project init to inform about the wedding gift campaign. It will not appear after the wedding date.
 

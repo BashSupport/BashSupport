@@ -35,8 +35,8 @@
 
     <description><![CDATA[
   <html>
-    Bash 4 support for IntelliJ. Supports syntax highlighting,
-    rename refactoring, documentation lookup, inspections, quickfixes and much more.
+    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/>
+    I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>.
   </html>
   ]]></description>
 
@@ -44,7 +44,7 @@
     <html>
        <b>Changes in version 1.3.0:</b>
        <ul>
-         <li>Once-in-a-lifetime chance to send a reward: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">Wedding gift campaign</a></li>
+         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a></li>
          <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
