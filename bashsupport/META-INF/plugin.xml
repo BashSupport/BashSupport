@@ -166,12 +166,14 @@
     </module-components>
 
     <actions>
+<!--
                 <action id="BashErrorReporter.TriggerException"
                         class="nu.studer.idea.errortesting.TriggerExceptionAction"
                         text="Trigger Exception"
                         description="Triggers an exception">
                     <add-to-group group-id="ToolsMenu" anchor="last"/>
                 </action>
+-->
 
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
