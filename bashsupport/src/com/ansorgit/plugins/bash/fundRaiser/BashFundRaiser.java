@@ -25,7 +25,8 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
 
     private static final String closeNotificationUrl = "http://bashsupport/fundRaiser/close";
     private static final String showAgainLink = "http://bashsupport/fundRaiser/showAgain";
-    private static final String donationUrl = "http://www.gofundme.com/bashsupport";
+    private static final String gofundmeUrl = "http://www.gofundme.com/bashsupport";
+    private static final String paypalUrl = "https://www.paypal.com/webapps/mpp/send-money-online";
     private static final String detailsUrl = "http://www.ansorg-it.com/en/products_bashsupport.html";
     private final Project project;
 
@@ -71,11 +72,13 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
         new FundNotification(
                 "BashSupport: Developer is getting married, want to send me a gift?",
                 "BashSupport is in development for 6 years now and you made my plugin the 6th most downloaded ever. " +
-                        "Thank you for liking it!<br/><br/>" +
+                        "Thank you for liking it! <br/><br/>" +
                         "My life gets a cool new change: I'm getting married to my fiancée Lisa in April. " +
-                        "I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href=\"" + donationUrl + "\">make a small donation here</a>.<br/>" +
+                        "I invite all happy users of BashSupport to chip in by sending us a wedding gift:<br/>" +
+                        "<a href=\"" + gofundmeUrl + "\" title=\"" + gofundmeUrl + "\">make a small donation here</a> or " +
+                        "send your gift <a href=\"" + paypalUrl + "\" title=\"" + paypalUrl + "\">with Paypal to <em>mail@ansorg-it.com</em></a>. " +
                         "(Note that this will be my first and last campaign via BashSupport, ever.)<br/><br/>" +
-                        "<a href=\"" + detailsUrl + "\">Details</a><br/><br/>" +
+                        "<a href=\"" + detailsUrl + "\" title=\"" + detailsUrl + "\">Details</a><br/><br/>" +
                         "Thank you all!<br/>" +
                         "Joachim Ansorg, BashSupport Developer<br/><br/>" +
                         "<small><a href=\"" + closeNotificationUrl + "\">No, thanks</a>,&nbsp;<a href=\"" + showAgainLink + "\">Show again later</a></small><br/>" +
@@ -130,7 +133,7 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
             }
 
             BashProjectSettings settings = BashProjectSettings.storedSettings(project);
-            if (url.toString().equals(showAgainLink)) {
+            if (showAgainLink.equals(url.toString())) {
                 notification.expire();
 
                 if (settings != null) {
@@ -138,22 +141,13 @@ public class BashFundRaiser implements com.intellij.openapi.components.ProjectCo
                     BashProjectSettingsConfigurable.setWeddingNotificationEnabled(true);
                     BashProjectSettingsConfigurable.setWeddingNotificationShowCount(0);
                 }
-            } else if (url.toString().equals(closeNotificationUrl)) {
+            } else if (closeNotificationUrl.equals(url.toString())) {
                 notification.expire();
 
                 if (settings != null) {
                     //disable the "show notification" switch
                     BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
                 }
-
-            } else if (url.toString().equals(donationUrl)) {
-                notification.expire();
-
-                if (settings != null) {
-                    //disable the "show notification" switch
-                    BashProjectSettingsConfigurable.setWeddingNotificationEnabled(false);
-                }
-
             } else {
                 BrowserUtil.browse(url);
 
