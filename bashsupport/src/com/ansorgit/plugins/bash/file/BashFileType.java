@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,7 +94,19 @@ public class BashFileType extends LanguageFileType implements FileTypeIdentifiab
             return true;
         }
 
-        return StringUtils.isEmpty(file.getExtension()) && BashContentUtil.isProbablyBashFile(VfsUtil.virtualToIoFile(file), MIN_FILE_PROBABILIY);
+        if (!StringUtils.isEmpty(file.getExtension())) {
+            return false;
+        }
+
+        File ioFile;
+        try {
+            ioFile = VfsUtil.virtualToIoFile(file);
+        } catch (UnsupportedOperationException e) {
+            // PS-139.732 throws a UOE for StubVirtualFile.getUrl, so we need to workaround this. Happens if a new plain text file is created without an extension
+            return false;
+        }
+
+        return  BashContentUtil.isProbablyBashFile(ioFile, MIN_FILE_PROBABILIY);
     }
 
 }

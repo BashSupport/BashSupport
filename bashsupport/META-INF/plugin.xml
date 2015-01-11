@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.3.1_idea13</version>
+    <version>1.3.2_idea13</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -36,15 +36,28 @@
     <description><![CDATA[
   <html>
     Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/>
-    I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>.
+    I will marry in April and invite all happy users of BashSupport to chip in by sending us a wedding gift:
+    <ul>
+        <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
+        <li>GoFundMe: <a target="_blank" href="http://www.gofundme.com/bashsupport">Make a donation on <em>www.gofundme.com/bashsupport</em></a></li>
+        <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
+    </ul>
   </html>
   ]]></description>
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.3.2:</b>
+       <ul>
+         <li>Fixed UnsupportedOperationException which occurred after a new plain text file without extension was created.</li>
+         <li>Fixed the message displayed on startup</li>
+       </ul>
+
        <b>Changes in version 1.3.1:</b>
        <ul>
-         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a></li>
+         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift:
+            <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>
+         </li>
          <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
@@ -73,7 +86,7 @@
           <li>Fixed autocompletion of built-in variables</li>
           <li>Added missing implementation of the time command PSI element</li>
        </ul>
-       
+
        <b>Recent changes:</b>
        <ul>
          <li>Finally fixed exception with isDirectory</li>
