@@ -18,11 +18,11 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 13 or later -->
+    <!-- Requires IDEA 14.0 or later -->
     <idea-version since-build="139.0" until-build="140.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
@@ -36,15 +36,28 @@
     <description><![CDATA[
   <html>
     Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/>
-    I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>.
+    I invite all happy users of BashSupport to chip in by sending us a wedding gift:
+    <ul>
+        <li>Paypal: <a href="https://www.paypal.com/webapps/mpp/send-money-online">Send to <pre>mail@ansorg-it.com</pre></a></li>
+        <li>GoFundMe: <a href="http://www.gofundme.com/bashsupport">Make a donation on <pre>www.gofundme.com/bashsupport</pre></a></li>
+        <li>Details: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
+    </ul>
   </html>
   ]]></description>
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.3.2:</b>
+       <ul>
+         <li>Fixed UnsupportedOperationException which occurred after a new plain text file without extension was created.</li>
+         <li>Fixed the message displayed on startup</li>
+       </ul>
+
        <b>Changes in version 1.3.1:</b>
        <ul>
-         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift: <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a></li>
+         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift:
+            <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>
+         </li>
          <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
