@@ -23,6 +23,7 @@ public class BashFileStubImpl extends PsiFileStubImpl<BashFile> implements BashF
     myName = name;
   }
 
+  @Override
   public IStubFileElementType getType() {
       return BashElementTypes.FILE;
   }

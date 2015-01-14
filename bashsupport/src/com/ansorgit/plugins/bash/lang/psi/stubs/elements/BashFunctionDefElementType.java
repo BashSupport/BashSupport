@@ -7,13 +7,12 @@ import com.ansorgit.plugins.bash.lang.psi.impl.function.BashFunctionDefImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashFunctionDefStubImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -26,29 +25,26 @@ public class BashFunctionDefElementType extends BashStubElementType<BashFunction
         super("function-def-element");
     }
 
-    public void serialize(BashFunctionDefStub stub, StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull BashFunctionDefStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
-    public BashFunctionDefStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException {
+    @NotNull
+    public BashFunctionDefStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         StringRef ref = dataStream.readName();
         return new BashFunctionDefStubImpl(parentStub, ref, this);
     }
 
-    public PsiElement createElement(ASTNode node) {
-        return new BashFunctionDefImpl(node);
-    }
-
-    public BashFunctionDef createPsi(BashFunctionDefStub stub) {
+    public BashFunctionDef createPsi(@NotNull BashFunctionDefStub stub) {
         return new BashFunctionDefImpl(stub, BashElementTypes.FUNCTION_DEF_COMMAND);
     }
 
-    public BashFunctionDefStub createStub(BashFunctionDef psi, StubElement parentStub) {
+    public BashFunctionDefStub createStub(@NotNull BashFunctionDef psi, StubElement parentStub) {
         return new BashFunctionDefStubImpl(parentStub, StringRef.fromString(psi.getName()), BashElementTypes.FUNCTION_DEF_COMMAND);
     }
 
     @Override
-    public void indexStub(BashFunctionDefStub stub, IndexSink sink) {
+    public void indexStub(@NotNull BashFunctionDefStub stub, @NotNull IndexSink sink) {
         final String name = stub.getName();
         if (name != null) {
             sink.occurrence(BashFunctionNameIndex.KEY, name);
