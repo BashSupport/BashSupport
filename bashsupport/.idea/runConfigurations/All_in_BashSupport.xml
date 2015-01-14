@@ -16,7 +16,10 @@
     <option name="TEST_SEARCH_SCOPE">
       <value defaultName="singleModule" />
     </option>
-    <envs />
+    <envs>
+      <env name="NO_FS_ROOTS_ACCESS_CHECK" value="true" />
+      <env name="" value="" />
+    </envs>
     <patterns />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="" />
