@@ -29,12 +29,22 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
             return false;
         }
 
+        PsiElement psiElement = location.getPsiElement();
+        if (!psiElement.isValid()) {
+            return false;
+        }
+
+        PsiFile psiFile = psiElement.getContainingFile();
+        if (psiFile == null || !(psiFile instanceof BashFile)) {
+            return false;
+        }
+
         VirtualFile file = location.getVirtualFile();
         if (file == null) {
             return false;
         }
 
-        sourceElement.set(location.getPsiElement().getContainingFile());
+        sourceElement.set(psiFile);
 
         configuration.setName(location.getVirtualFile().getPresentableName());
         configuration.setScriptName(file.getPath());
@@ -49,19 +59,16 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
         }
 
         //check the location given by the actual Bash file
-        PsiFile psiFile = location.getPsiElement().getContainingFile();
-        if (psiFile instanceof BashFile) {
-            BashFile bashFile = (BashFile) psiFile;
-            BashShebang shebang = bashFile.findShebang();
+        BashFile bashFile = (BashFile) psiFile;
+        BashShebang shebang = bashFile.findShebang();
 
-            if (shebang != null) {
-                String shebandShell = shebang.shellCommand(false);
+        if (shebang != null) {
+            String shebandShell = shebang.shellCommand(false);
 
-                if ((BashInterpreterDetection.instance().isSuitable(shebandShell))) {
-                    configuration.setInterpreterPath(shebandShell);
+            if ((BashInterpreterDetection.instance().isSuitable(shebandShell))) {
+                configuration.setInterpreterPath(shebandShell);
 
-                    configuration.setInterpreterOptions(shebang.shellCommandParams());
-                }
+                configuration.setInterpreterOptions(shebang.shellCommandParams());
             }
         }
 
