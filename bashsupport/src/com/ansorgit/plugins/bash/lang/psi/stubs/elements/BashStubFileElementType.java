@@ -10,6 +10,7 @@ import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.*;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.io.StringRef;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -32,31 +33,29 @@ public class BashStubFileElementType extends IStubFileElementType<BashFileStub> 
     return super.getStubVersion() + CACHES_VERSION;
   }
 
+  @NotNull
   public String getExternalId() {
     return "bash.FILE";
   }
 
   @Override
-  public void indexStub(PsiFileStub stub, IndexSink sink) {
-    super.indexStub(stub, sink);
+  public void indexStub(@NotNull PsiFileStub stub, @NotNull IndexSink sink) {
+    assert stub instanceof BashFileStub;
+
+    String name = ((BashFileStub)stub).getName().toString();
+    sink.occurrence(BashScriptNameIndex.KEY, name);
+    sink.occurrence(BashFullScriptNameIndex.KEY, name);
   }
 
   @Override
-  public void serialize(final BashFileStub stub, final StubOutputStream dataStream) throws IOException {
+  public void serialize(@NotNull final BashFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
     dataStream.writeName(stub.getName().toString());
   }
 
+  @NotNull
   @Override
-  public BashFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException {
+  public BashFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
     StringRef name = dataStream.readName();
     return new BashFileStubImpl(name);
-  }
-
-  public void indexStub(BashFileStub stub, IndexSink sink) {
-    String name = stub.getName().toString();
-    if (name != null) {
-      sink.occurrence(BashScriptNameIndex.KEY, name);
-      sink.occurrence(BashFullScriptNameIndex.KEY, name);
-    }
   }
 }

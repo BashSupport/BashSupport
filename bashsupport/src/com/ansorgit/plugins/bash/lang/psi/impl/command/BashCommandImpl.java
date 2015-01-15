@@ -38,6 +38,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
@@ -99,6 +100,10 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
     }
 
     public boolean isFunctionCall() {
+        if (DumbService.isDumb(getProject())) {
+            return false;
+        }
+
         Boolean cached = KEY_FUNCTION_CALL.get(this);
         if (cached != null) {
             return cached;
