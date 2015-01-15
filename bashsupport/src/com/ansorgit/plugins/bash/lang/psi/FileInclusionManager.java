@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -101,11 +102,15 @@ public class FileInclusionManager {
      */
     @NotNull
     public static Set<BashFile> findIncluders(@NotNull Project project, @NotNull PsiFile file) {
+        if (DumbService.isDumb(project)) {
+            return Collections.emptySet();
+        }
+
         GlobalSearchScope searchScope = BashSearchScopes.moduleScope(file);
 
         Set<BashFile> includers = Sets.newHashSet();
 
-        Collection<BashIncludeCommand> includeCommands = StubIndex.getInstance().get(BashIncludedFilenamesIndex.KEY, file.getName(), project, searchScope);
+        Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, file.getName(), project, searchScope, BashIncludeCommand.class);
         for (BashIncludeCommand command : includeCommands) {
             BashFile includer = (BashFile) command.getContainingFile();
 
