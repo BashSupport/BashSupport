@@ -120,9 +120,6 @@ public class BashPsiCreator implements BashElementTypes {
         if (elementType == INCLUDE_COMMAND_ELEMENT) {
             return new BashIncludeCommandImpl(node);
         }
-        if (elementType == TIME_COMMAND) {
-            return new BashTimeCommandImpl(node);
-        }
 
         //misc elements
         if (elementType == STRING_ELEMENT) {
