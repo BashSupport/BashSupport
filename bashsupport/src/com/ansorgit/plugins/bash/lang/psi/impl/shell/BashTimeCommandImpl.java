@@ -26,14 +26,10 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**
- * Date: 06.05.2009
- * Time: 13:21:38
- *
  * @author Joachim Ansorg
  */
 public class BashTimeCommandImpl extends BashKeywordDefaultImpl implements BashTimeCommand {
-    public BashTimeCommandImpl(ASTNode node) {
-        //fixme handling of the node
+    public BashTimeCommandImpl() {
         super(BashElementTypes.TIME_COMMAND);
     }
 

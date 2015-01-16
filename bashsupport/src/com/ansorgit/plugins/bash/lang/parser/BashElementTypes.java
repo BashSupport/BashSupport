@@ -34,6 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCaseImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashConditionalCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashIfImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTimeCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
@@ -155,7 +156,7 @@ public interface BashElementTypes {
     IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");
     IElementType CASE_PATTERN_ELEMENT = new BashElementType("case pattern");
 
-    IElementType TIME_COMMAND = new BashElementType("time with optional -p");
+    IElementType TIME_COMMAND = new BashCompositeElementType("time with optional -p", BashTimeCommandImpl.class);
 
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
