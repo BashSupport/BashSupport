@@ -19,6 +19,7 @@
     <name>BashSupport</name>
     <category>Custom Languages</category>
     <version>1.3.3</version>
+    <resource-bundle>bashsupport</resource-bundle>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -272,10 +273,10 @@
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
+
+        <inspectionToolProvider id="BashInspectionProvider" implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
         -->
 
-        <inspectionToolProvider id="BashInspectionProvider"
-                                implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
@@ -306,5 +307,15 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
+
+        <!-- WEAK WARNING inspections -->
+        <localInspection language="Bash"
+                         level="WEAK WARNING"
+                         shortName="SimpleVarUsage"
+                         groupKey="inspection.groupName"
+                         key="inspection.simpleVarUsage.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection"
+                />
     </extensions>
 </idea-plugin>

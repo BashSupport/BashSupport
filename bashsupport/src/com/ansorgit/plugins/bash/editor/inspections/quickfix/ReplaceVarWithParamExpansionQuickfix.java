@@ -18,21 +18,24 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.intellij.codeInspection.LocalQuickFix;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
 import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * THis quickfix replaces a simple variable usage with the equivalent parameter expansion form.
+ * This quickfix replaces a simple variable usage with the equivalent parameter expansion form.
+ * <p/>
  * User: jansorg
  * Date: 28.12.10
  * Time: 12:19
@@ -45,25 +48,38 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
         this.variableName = var.getReference().getReferencedName();
     }
 
+    public static boolean isAvailableAt(@NotNull Project project, @NotNull PsiFile file, @NotNull BashVar var) {
+        if (BashPsiUtils.hasParentOfType(var, BashString.class, 4) || BashPsiUtils.hasParentOfType(var, ArithmeticExpression.class, 4)) {
+            return false;
+        }
+
+        return !var.isParameterExpansion() && !var.isBuiltinVar();
+    }
+
+    @Override
+    public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        return startElement instanceof BashVar && isAvailableAt(project, file, (BashVar) startElement);
+    }
+
     @NotNull
     public String getText() {
         if (variableName.length() > 10) {
             return "Replace with '${...}'";
-        } else {
-            return String.format("Replace '%s' with '${%s}'", variableName, variableName);
         }
+
+        return String.format("Replace '%s' with '${%s}'", variableName, variableName);
     }
 
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
         TextRange textRange = startElement.getTextRange();
 
-        //replace this position with the same value, we have to trigger a reparse somehow
         try {
+            // Replace this position with the same value, we have to trigger a reparse somehow
             Document document = file.getViewProvider().getDocument();
-            if (document != null) {
+            if (document != null && document.isWritable()) {
                 document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
-                file.subtreeChanged();
+                PsiDocumentManager.getInstance(project).commitDocument(document);
             }
         } catch (ReadOnlyModificationException e) {
             //ignore
