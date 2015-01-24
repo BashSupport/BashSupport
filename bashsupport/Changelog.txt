@@ -1,3 +1,6 @@
+2015-01-24:
+ - Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"
+
 2015-01-16:
  - Fixed time command exceptions. If the time command was used the parse tree was broken up to now. AssertionErrors in WalkingState.next were thrown.
 
