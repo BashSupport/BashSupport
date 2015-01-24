@@ -22,6 +22,7 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationInfo;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.Logger;
@@ -132,15 +133,18 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                         public void consume(SubmittedReportInfo submittedReportInfo) {
                             consumer.consume(submittedReportInfo);
 
-                            Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
+                            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
+                                }
+                            });
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void consume(Throwable throwable) {
                             LOGGER.info("Error submission failed", throwable);
                             consumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED));
-
-                            //Messages.showErrorDialog(parentComponent, throwable != null ? throwable.getMessage() : "", PluginErrorReportSubmitterBundle.message("error.dialog.title"));
                         }
                     }
             );
