@@ -77,7 +77,7 @@ public class EvaluateExpansionInspection extends AbstractBashInspection {
             public void visitExpansion(BashExpansion expansion) {
                 if (isOnTheFly && expansion.isValidExpansion()) {
                     boolean bash4 = BashProjectSettings.storedSettings(holder.getProject()).isSupportBash4();
-                    holder.registerProblem(expansion, getShortName(), new EvaluateExpansionQuickfix(expansion, bash4));
+                    holder.registerProblem(expansion, "Evaluate expansion", new EvaluateExpansionQuickfix(expansion, bash4));
                 }
             }
         };

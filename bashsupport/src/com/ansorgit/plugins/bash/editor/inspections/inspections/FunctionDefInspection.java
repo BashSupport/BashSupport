@@ -40,7 +40,7 @@ public class FunctionDefInspection extends LocalInspectionTool {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
                 if (isOnTheFly && !functionDef.hasCommandGroup() && functionDef.body() != null) {
-                    holder.registerProblem(functionDef.body(), getShortName(), new FunctionBodyQuickfix(functionDef));
+                    holder.registerProblem(functionDef.body(), "Wrap function body", new FunctionBodyQuickfix(functionDef));
                 }
             }
         };

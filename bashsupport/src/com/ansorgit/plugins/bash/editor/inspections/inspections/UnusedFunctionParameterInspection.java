@@ -117,7 +117,7 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
                             String paramName = String.valueOf(i + 1);
 
                             if (!definedParamNames.contains(paramName)) {
-                                holder.registerProblem(callerParameters.get(i), getShortName(), LocalQuickFix.EMPTY_ARRAY);
+                                holder.registerProblem(callerParameters.get(i), "Unused function parameter", LocalQuickFix.EMPTY_ARRAY);
                             }
                         }
                     }

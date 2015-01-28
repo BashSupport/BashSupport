@@ -77,7 +77,7 @@ public class ConvertBackquoteInspection extends AbstractBashInspection {
             @Override
             public void visitBackquoteCommand(BashBackquote backquote) {
                 if (isOnTheFly) {
-                    problemsHolder.registerProblem(backquote, getShortName(), new BackquoteQuickfix(backquote));
+                    problemsHolder.registerProblem(backquote, "Replace with subshell", new BackquoteQuickfix(backquote));
                 }
             }
         };

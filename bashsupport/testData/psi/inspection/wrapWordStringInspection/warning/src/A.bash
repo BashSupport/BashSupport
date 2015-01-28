@@ -1,1 +1,1 @@
-echo unwrapped
+echo unwrapped${string}a

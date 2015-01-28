@@ -38,7 +38,7 @@ public class SimpleVarUsageInspection extends LocalInspectionTool {
             @Override
             public void visitVarUse(BashVar var) {
                 if (ReplaceVarWithParamExpansionQuickfix.isAvailableAt(holder.getProject(), holder.getFile(), var)) {
-                    holder.registerProblem(var, getShortName(), new ReplaceVarWithParamExpansionQuickfix(var));
+                    holder.registerProblem(var, "Simple variable usage", new ReplaceVarWithParamExpansionQuickfix(var));
                 }
             }
         };

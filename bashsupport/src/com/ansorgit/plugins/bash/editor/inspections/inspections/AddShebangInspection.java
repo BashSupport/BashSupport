@@ -51,7 +51,7 @@ public class AddShebangInspection extends LocalInspectionTool implements CustomS
 
             if ((isLanguageConsole == null || !isLanguageConsole) && !bashFile.hasShebangLine()) {
                 return new ProblemDescriptor[]{
-                        manager.createProblemDescriptor(checkedFile, getShortName(), new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
+                        manager.createProblemDescriptor(checkedFile, "Add shebang line", new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
                 };
             }
         }
