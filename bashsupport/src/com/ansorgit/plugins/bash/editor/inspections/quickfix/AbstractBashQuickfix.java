@@ -47,7 +47,7 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
     }
 
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
-        return file instanceof BashFile;
+        return file instanceof BashFile && file.isValid() && file.isWritable();
     }
 
     public boolean startInWriteAction() {

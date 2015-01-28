@@ -186,7 +186,7 @@
     </module-components>
 
     <actions>
-<!--
+        <!--
                 <action id="BashErrorReporter.TriggerException"
                         class="nu.studer.idea.errortesting.TriggerExceptionAction"
                         text="Trigger Exception"
@@ -194,7 +194,6 @@
                     <add-to-group group-id="ToolsMenu" anchor="last"/>
                 </action>
 -->
-
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
@@ -273,8 +272,6 @@
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
-
-        <inspectionToolProvider id="BashInspectionProvider" implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
         -->
 
 
@@ -307,15 +304,32 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
+        <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
+
+        <!-- WARNING inspections -->
+        <localInspection language="Bash"
+                         level="WARNING"
+                         groupKey="inspection.groupName"
+                         shortName="BashFixShebang"
+                         key="inspection.fixShebang.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FixShebangInspection" />
 
         <!-- WEAK WARNING inspections -->
         <localInspection language="Bash"
                          level="WEAK WARNING"
-                         shortName="SimpleVarUsage"
                          groupKey="inspection.groupName"
+                         shortName="BashSimpleVarUsage"
                          key="inspection.simpleVarUsage.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection"
-                />
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection" />
+
+        <localInspection language="Bash"
+                         level="WEAK WARNING"
+                         groupKey="inspection.groupName"
+                         shortName="BashGlobalLocalVarDef"
+                         key="inspection.globalLocalVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GlobalLocalVarDefInspection" />
     </extensions>
 </idea-plugin>

@@ -35,7 +35,7 @@ public class InspectionProvider implements InspectionToolProvider {
 
     public Class[] getInspectionClasses() {
         return new Class[]{
-                FixShebangInspection.class,
+                //FixShebangInspection.class,
                 FunctionDefInspection.class,
                 AddShebangInspection.class,
                 WrapWordInStringInspection.class,
@@ -51,7 +51,7 @@ public class InspectionProvider implements InspectionToolProvider {
                 ReadonlyVariableInspection.class,
                 InternalVariableInspection.class,
                 UnknownFiledescriptorInspection.class,
-                GlobalLocalVarDefInspection.class,
+                //GlobalLocalVarDefInspection.class,
                 SimpleVarUsageInspection.class,
                 UnusedFunctionParameterInspection.class,
                 ConvertBackquoteInspection.class,
