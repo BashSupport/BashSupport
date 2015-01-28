@@ -1,3 +1,8 @@
+2015-01-28:
+ - Fixed NullPointerException in AddShebangInspection.getBatchSuppressActions
+ - Refactored inspections
+ - Improved inspection testcases
+
 2015-01-24:
  - Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"
 
