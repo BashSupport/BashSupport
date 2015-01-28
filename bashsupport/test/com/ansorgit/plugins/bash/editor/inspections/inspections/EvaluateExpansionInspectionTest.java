@@ -1,10 +1,5 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-/**
- * User: jansorg
- * Date: 28.12.10
- * Time: 20:02
- */
 public class EvaluateExpansionInspectionTest extends AbstractInspectionTestCase {
     public EvaluateExpansionInspectionTest() {
         super(EvaluateExpansionInspection.class);
