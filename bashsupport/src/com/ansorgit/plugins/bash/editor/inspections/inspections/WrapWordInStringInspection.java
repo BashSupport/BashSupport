@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,8 +47,7 @@ public class WrapWordInStringInspection extends LocalInspectionTool {
                 }
 
                 if (word.isWrappable()) {
-                    problemsHolder.registerProblem(word, getShortName(), new WordToDoublequotedStringQuickfix(word));
-                    problemsHolder.registerProblem(word, getShortName(), new WordToSinglequotedStringQuickfix(word));
+                    problemsHolder.registerProblem(word, "Unquoted string", new WordToDoublequotedStringQuickfix(word), new WordToSinglequotedStringQuickfix(word));
                 }
             }
         };

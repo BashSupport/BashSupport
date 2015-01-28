@@ -79,7 +79,7 @@ public class UnusedFunctionDefInspection extends AbstractBashInspection implemen
                     PsiReference first = search.findFirst();
 
                     if (first == null) {
-                        holder.registerProblem(nameSymbol, getShortName(), ProblemHighlightType.LIKE_UNUSED_SYMBOL);
+                        holder.registerProblem(nameSymbol, "Unused function definition", ProblemHighlightType.LIKE_UNUSED_SYMBOL);
                     }
                 }
             }

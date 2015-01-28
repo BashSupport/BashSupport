@@ -306,7 +306,6 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
         <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
 
-        <!-- WARNING inspections -->
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashFixShebang"
                          key="inspection.fixShebang.name"
@@ -319,7 +318,6 @@
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection"/>
 
-        <!-- WEAK WARNING inspections -->
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
                          shortName="BashSimpleVarUsage"
                          key="inspection.simpleVarUsage.name"

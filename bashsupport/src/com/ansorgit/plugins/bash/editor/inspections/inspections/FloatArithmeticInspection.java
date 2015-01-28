@@ -82,7 +82,7 @@ public class FloatArithmeticInspection extends AbstractBashInspection {
                     ProductExpression product = (ProductExpression) expression;
 
                     if (product.hasDivisionRemainder()) {
-                        holder.registerProblem(expression, getShortName());
+                        holder.registerProblem(expression, "Integer division with remainder found.");
                     }
                 }
             }

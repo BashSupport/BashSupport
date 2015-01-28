@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.intellij.codeInspection.*;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
@@ -30,10 +31,42 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.Assert;
 
 public abstract class AbstractInspectionTestCase extends InspectionTestCase {
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/inspection/";
+    }
+
+    @Override
+    public void doTest(@NonNls String folderName, LocalInspectionTool tool) {
+        //fixme
+        doTest(folderName, tool.getClass());
+    }
+
+    /**
+     * This method looks at the LocalInspectionTool extension points registered in BashSupport's plugin.xml.
+     * The base InspectionTestCase doesn't handle inspections well which are only registered in the plugin.xml and
+     * which do not have a seperately overridden displayName implementation.
+     *
+     * @param folderName
+     * @param clazz
+     */
+    public void doTest(String folderName, Class<? extends LocalInspectionTool> clazz) {
+        LocalInspectionEP[] extensions = Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION);
+        for (LocalInspectionEP extension : extensions) {
+            if (extension.implementationClass.equals(clazz.getCanonicalName())) {
+                extension.enabledByDefault = true;
+
+                InspectionProfileEntry instance = extension.instantiateTool();
+
+                super.doTest(folderName, (LocalInspectionTool) instance);
+
+                return;
+            }
+        }
+
+        Assert.fail("Inspection not found for type " + clazz.getName());
     }
 
     protected LocalInspectionTool withOnTheFly(final LocalInspectionTool delegate) {
@@ -106,8 +139,7 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
         @NotNull
         @NonNls
         public String getID() {
-            String id = delegate.getID();
-            return id;
+            return delegate.getID();
         }
 
         @Override

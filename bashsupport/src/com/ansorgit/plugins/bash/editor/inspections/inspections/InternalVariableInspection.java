@@ -73,7 +73,7 @@ public class InternalVariableInspection extends AbstractBashInspection {
                 String name = varDef.getName();
 
                 if (LanguageBuiltins.readonlyShellVars.contains(name)) {
-                    holder.registerProblem(varDef, getShortName(), LocalQuickFix.EMPTY_ARRAY);
+                    holder.registerProblem(varDef, "Read-only shell variable", LocalQuickFix.EMPTY_ARRAY);
                 }
             }
         };

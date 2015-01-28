@@ -2,14 +2,13 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 public class WrapWordInStringInspectionTest extends AbstractInspectionTestCase {
 
-    private WrapWordInStringInspection tool;
+    private WrapWordInStringInspection tool = new WrapWordInStringInspection();
 
     public void testOk() throws Exception {
-        tool = new WrapWordInStringInspection();
-        doTest("wrapWordStringInspection/ok", tool);
+        doTest("wrapWordStringInspection/ok", WrapWordInStringInspection.class);
     }
 
     public void testWarning() throws Exception {
-        doTest("wrapWordStringInspection/ok", tool);
+        doTest("wrapWordStringInspection/warning", tool);
     }
 }
