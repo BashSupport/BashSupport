@@ -21,46 +21,18 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.FunctionBodyQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * In Bash a function definition must not have a command block as body. A body block is good style, though.
  * This inspection offers a quickfix to wrap the body in a block.
- * <p/>
- * Date: 15.05.2009
- * Time: 15:14:04
  *
  * @author Joachim Ansorg
  */
-public class FunctionDefInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "WrapFunction";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Wrap function body";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Wrap function body in {}";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "If the body of a function is not yet wrapped in curly brackets {} this inspection" +
-                "offers a quickfix to automatically do this.";
-    }
-
+public class FunctionDefInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {

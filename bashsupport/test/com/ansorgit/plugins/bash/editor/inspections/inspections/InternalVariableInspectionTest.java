@@ -8,10 +8,6 @@ import org.junit.Test;
  * Time: 19:47
  */
 public class InternalVariableInspectionTest extends AbstractInspectionTestCase {
-    public InternalVariableInspectionTest() {
-        super(InternalVariableInspection.class);
-    }
-
     @Test
     public void testOk() throws Exception {
         doTest("internalVariableInspection/ok", new InternalVariableInspection());

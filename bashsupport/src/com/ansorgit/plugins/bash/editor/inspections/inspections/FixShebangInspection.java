@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.util.InvalidDataException;
@@ -45,7 +46,7 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class FixShebangInspection extends AbstractBashInspection {
+public class FixShebangInspection extends LocalInspectionTool {
     private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/sh");
     private static final String ELEMENT_NAME_SHEBANG = "shebang";
 

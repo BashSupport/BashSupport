@@ -8,10 +8,6 @@ import org.junit.Test;
  * Time: 19:47
  */
 public class ReadOnlyVarInspectionTest extends AbstractInspectionTestCase {
-    public ReadOnlyVarInspectionTest() {
-        super(ReadonlyVariableInspection.class);
-    }
-
     @Test
     public void testOk() throws Exception {
         doTest("readOnlyVarInspection/ok", new ReadonlyVariableInspection());

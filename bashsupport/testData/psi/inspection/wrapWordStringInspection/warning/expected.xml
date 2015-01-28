@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>1</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Add missing shebang line to file
+        </problem_class>
+        <description>Add Shebang line</description>
+    </problem>
+</problems>
+
