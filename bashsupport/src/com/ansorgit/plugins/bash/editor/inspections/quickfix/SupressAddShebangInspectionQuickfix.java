@@ -15,8 +15,10 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
-    public SupressAddShebangInspectionQuickfix() {
-        super();
+    private final String inspectionId;
+
+    public SupressAddShebangInspectionQuickfix(String inspectionId) {
+        this.inspectionId = inspectionId;
     }
 
     @NotNull
@@ -47,7 +49,7 @@ public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
             return;
         }
 
-        PsiComment suppressionComment = SupressionUtil.createSuppressionComment(project, AddShebangInspection.ID);
+        PsiComment suppressionComment = SupressionUtil.createSuppressionComment(project, inspectionId);
 
         PsiElement firstChild = file.getFirstChild();
         PsiElement inserted;

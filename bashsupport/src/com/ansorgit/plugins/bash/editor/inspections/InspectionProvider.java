@@ -30,15 +30,15 @@ import com.intellij.codeInspection.InspectionToolProvider;
  *
  * @author Joachim Ansorg
  */
-public class InspectionProvider implements InspectionToolProvider {
+public class InspectionProvider  {
     public static final String BASH_FAMILY = "Bash";
 
     public Class[] getInspectionClasses() {
         return new Class[]{
                 //FixShebangInspection.class,
-                FunctionDefInspection.class,
-                AddShebangInspection.class,
-                WrapWordInStringInspection.class,
+                //FunctionDefInspection.class,
+                //AddShebangInspection.class,
+                //WrapWordInStringInspection.class,
                 ConvertSubshellInspection.class,
                 DuplicateFunctionDefInspection.class,
                 MissingIncludeFileInspection.class,

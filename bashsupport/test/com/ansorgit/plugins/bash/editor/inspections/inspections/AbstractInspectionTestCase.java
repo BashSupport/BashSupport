@@ -19,32 +19,19 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
 import com.intellij.codeInspection.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.testFramework.InspectionTestCase;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-
-/**
- * User: jansorg
- * Date: 01.07.2010
- * Time: 18:48:20
- */
 public abstract class AbstractInspectionTestCase extends InspectionTestCase {
-    protected AbstractInspectionTestCase(Class<?> inspectionClass) {
-        if (!Arrays.asList(new InspectionProvider().getInspectionClasses()).contains(inspectionClass)) {
-            throw new IllegalStateException("The inspection is not registered in the inspection provider");
-        }
-    }
-
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/inspection/";
     }
@@ -99,26 +86,28 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
         }
 
         @Override
-        public void inspectionStarted(LocalInspectionToolSession session, boolean isOnTheFly) {
+        public void inspectionStarted(@NotNull LocalInspectionToolSession session, boolean isOnTheFly) {
             delegate.inspectionStarted(session, isOnTheFly);
         }
 
         @Override
-        public void inspectionFinished(LocalInspectionToolSession session, ProblemsHolder problemsHolder) {
+        public void inspectionFinished(@NotNull LocalInspectionToolSession session, @NotNull ProblemsHolder problemsHolder) {
             delegate.inspectionFinished(session, problemsHolder);
         }
 
         @Override
         @Deprecated
-        public void inspectionFinished(LocalInspectionToolSession session) {
+        public void inspectionFinished(@NotNull LocalInspectionToolSession session) {
             delegate.inspectionFinished(session);
         }
 
+        @Pattern("[a-zA-Z_0-9.-]+")
         @Override
         @NotNull
         @NonNls
         public String getID() {
-            return delegate.getID();
+            String id = delegate.getID();
+            return id;
         }
 
         @Override
@@ -141,7 +130,7 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
 
         @Override
         @NotNull
-        public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly, LocalInspectionToolSession session) {
+        public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly, @NotNull LocalInspectionToolSession session) {
             return delegate.buildVisitor(holder, true, session);
         }
     }

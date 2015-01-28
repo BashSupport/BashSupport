@@ -6,10 +6,6 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  * Time: 23:05
  */
 public class InternalCommandFunctionOverrideInspectionTest extends AbstractInspectionTestCase {
-    public InternalCommandFunctionOverrideInspectionTest() {
-        super(InternalCommandFunctionOverrideInspection.class);
-    }
-
     public void testOverride() throws Exception {
         doTest("internalCommandFunctionOverrideInspection/override", new InternalCommandFunctionOverrideInspection());
     }

@@ -9,10 +9,6 @@ import org.junit.Test;
  */
 public class SimpleArrayUseInspectionTest extends AbstractInspectionTestCase {
 
-    public SimpleArrayUseInspectionTest() {
-        super(SimpleArrayUseInspection.class);
-    }
-
     @Test
     public void testSimpleAccess() throws Exception {
         doTest("simpleArrayUseInspection/simpleAccess", new SimpleArrayUseInspection());

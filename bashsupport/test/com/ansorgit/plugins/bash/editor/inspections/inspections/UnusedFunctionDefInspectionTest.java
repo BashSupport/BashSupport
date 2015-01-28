@@ -8,10 +8,6 @@ import org.junit.Test;
  * Time: 19:15
  */
 public class UnusedFunctionDefInspectionTest extends AbstractInspectionTestCase {
-    public UnusedFunctionDefInspectionTest() {
-        super(UnusedFunctionDefInspection.class);
-    }
-
     @Test
     public void testOk() throws Exception {
         doTest("unusedFunctionDefInspection/ok", new UnusedFunctionDefInspection());

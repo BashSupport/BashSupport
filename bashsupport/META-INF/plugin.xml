@@ -172,13 +172,13 @@
             </implementation-class>
         </component>
 
-<!--
-        <component>
-            <implementation-class>
-                com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
-            </implementation-class>
-        </component>
--->
+        <!--
+                <component>
+                    <implementation-class>
+                        com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
+                    </implementation-class>
+                </component>
+        -->
     </project-components>
 
     <!-- Plugin's module components -->
@@ -264,9 +264,8 @@
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
-        <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
-        <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
-
+        <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer"/>
+        <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer"/>
 
 
         <!--
@@ -280,7 +279,8 @@
         <codeInsight.lineMarkerProvider language="Bash"
                                         implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
 
-        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
+        <frameworkSupport
+                implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
         <runConfigurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigProducer"/>
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
@@ -307,29 +307,41 @@
         <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
 
         <!-- WARNING inspections -->
-        <localInspection language="Bash"
-                         level="WARNING"
-                         groupKey="inspection.groupName"
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashFixShebang"
                          key="inspection.fixShebang.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FixShebangInspection" />
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FixShebangInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashAddShebang"
+                         key="inspection.addShebang.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection"/>
 
         <!-- WEAK WARNING inspections -->
-        <localInspection language="Bash"
-                         level="WEAK WARNING"
-                         groupKey="inspection.groupName"
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
                          shortName="BashSimpleVarUsage"
                          key="inspection.simpleVarUsage.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection" />
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection"/>
 
-        <localInspection language="Bash"
-                         level="WEAK WARNING"
-                         groupKey="inspection.groupName"
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
                          shortName="BashGlobalLocalVarDef"
                          key="inspection.globalLocalVar.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GlobalLocalVarDefInspection" />
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GlobalLocalVarDefInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashWrapFunction"
+                         key="inspection.wrapFunction.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FunctionDefInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashWrapWord"
+                         key="inspection.wrapWord.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.WrapWordInStringInspection"/>
     </extensions>
 </idea-plugin>
