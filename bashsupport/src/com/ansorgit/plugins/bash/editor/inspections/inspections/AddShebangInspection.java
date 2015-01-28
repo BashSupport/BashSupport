@@ -73,8 +73,8 @@ public class AddShebangInspection extends LocalInspectionTool implements CustomS
 
     @NotNull
     @Override
-    public SuppressQuickFix[] getBatchSuppressActions(PsiElement element) {
-        if (element.getContainingFile() instanceof BashFile) {
+    public SuppressQuickFix[] getBatchSuppressActions(@Nullable PsiElement element) {
+        if (element != null && element.getContainingFile() instanceof BashFile) {
             return new SuppressQuickFix[]{
                     new SupressAddShebangInspectionQuickfix(AddShebangInspection.this.getID())
             };

@@ -307,37 +307,37 @@
         <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
-                         shortName="BashFixShebang"
+                         shortName="FixShebang"
                          key="inspection.fixShebang.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FixShebangInspection"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
-                         shortName="BashAddShebang"
+                         shortName="AddShebang"
                          key="inspection.addShebang.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashSimpleVarUsage"
+                         shortName="SimpleVarUsage"
                          key="inspection.simpleVarUsage.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashGlobalLocalVarDef"
+                         shortName="GlobalLocalVarDef"
                          key="inspection.globalLocalVar.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GlobalLocalVarDefInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashWrapFunction"
+                         shortName="WrapFunction"
                          key="inspection.wrapFunction.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FunctionDefInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashWrapWord"
+                         shortName="WrapWord"
                          key="inspection.wrapWord.name"
                          enabledByDefault="false"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.WrapWordInStringInspection"/>

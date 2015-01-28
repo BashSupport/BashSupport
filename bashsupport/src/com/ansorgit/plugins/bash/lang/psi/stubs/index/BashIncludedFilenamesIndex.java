@@ -4,6 +4,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User: jansorg
@@ -13,6 +14,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 public class BashIncludedFilenamesIndex extends StringStubIndexExtension<BashIncludeCommand> {
     public static final StubIndexKey<String, BashIncludeCommand> KEY = StubIndexKey.createIndexKey("bash.included");
 
+    @NotNull
     @Override
     public StubIndexKey<String, BashIncludeCommand> getKey() {
         return KEY;
