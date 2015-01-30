@@ -40,7 +40,7 @@ public class InspectionProvider  {
                 //AddShebangInspection.class,
                 //WrapWordInStringInspection.class,
                 //ConvertSubshellInspection.class,
-                DuplicateFunctionDefInspection.class,
+                //DuplicateFunctionDefInspection.class,
                 MissingIncludeFileInspection.class,
                 RecursiveIncludeFileInspection.class,
                 EvaluateExpansionInspection.class,
