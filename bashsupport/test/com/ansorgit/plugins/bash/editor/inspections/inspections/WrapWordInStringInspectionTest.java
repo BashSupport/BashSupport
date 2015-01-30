@@ -5,7 +5,7 @@ public class WrapWordInStringInspectionTest extends AbstractInspectionTestCase {
     private WrapWordInStringInspection tool = new WrapWordInStringInspection();
 
     public void testOk() throws Exception {
-        doTest("wrapWordStringInspection/ok", WrapWordInStringInspection.class);
+        doTest("wrapWordStringInspection/ok", WrapWordInStringInspection.class, false);
     }
 
     public void testWarning() throws Exception {
