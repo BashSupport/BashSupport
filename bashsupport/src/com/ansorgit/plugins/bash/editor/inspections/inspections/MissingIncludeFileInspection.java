@@ -21,54 +21,18 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 /**
- * User: jansorg
- * Date: Nov 2, 2009
- * Time: 8:15:59 PM
+ * Detects include file statements which reference missing files.
+ * @author jansorg
  */
 public class MissingIncludeFileInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "MissingInclude";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Missing include file";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Missing include file";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Checks the filenames of include directives. If a given file doesn't exist then" +
-                "the element is highlighted as an error. Includes of files given as runtime values (e.g. variables) are not evaluated.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -90,7 +54,7 @@ public class MissingIncludeFileInspection extends AbstractBashInspection {
                     File diskFile = new File(filename);
                     boolean absoluteAndExists = diskFile.isAbsolute() && diskFile.exists();
                     if (!absoluteAndExists) {
-                        holder.registerProblem(fileReference, "The file '" + filename + "' does not exist.");
+                        holder.registerProblem(fileReference, String.format("The file '%s' does not exist.", filename));
                     }
 
                     //print an error message if the given path is a directory

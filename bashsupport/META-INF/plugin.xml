@@ -353,5 +353,11 @@
                          key="inspection.duplicateFunction.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.DuplicateFunctionDefInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="MissingInclude"
+                         key="inspection.missingInclude.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.MissingIncludeFileInspection"/>
     </extensions>
 </idea-plugin>
