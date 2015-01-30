@@ -24,59 +24,21 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
  * This inspection highlights duplicate function definitions.
- * <p/>
- * User: jansorg
- * Date: Oct 31, 2009
- * Time: 8:25:43 PM
  */
-public class DuplicateFunctionDefInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "DuplicateFunction";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Duplicate function";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Duplicate function definition";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Detects duplicate function definitions and highlights the double definitions. There is a chance of false" +
-                "positives if the earlier definition is inside of a conditional command.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
+public class DuplicateFunctionDefInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -93,32 +55,34 @@ public class DuplicateFunctionDefInspection extends AbstractBashInspection {
                 if (start != null) {
                     PsiTreeUtil.treeWalkUp(p, start, functionDef.getContainingFile(), ResolveState.initial());
 
-                    List<PsiElement> results = Lists.newArrayList(p.getResults());
-                    results.remove(functionDef);
+                    if (p.hasResults()) {
+                        List<PsiElement> results = p.getResults() != null ? Lists.newArrayList(p.getResults()) : Lists.<PsiElement>newArrayList();
+                        results.remove(functionDef);
 
-                    if (results.size() > 0) {
-                        //find the result which has the lowest textOffset in the file
-                        PsiElement firstFunctionDef = results.get(0);
-                        for (PsiElement e : results) {
-                            if (e.getTextOffset() < firstFunctionDef.getTextOffset()) {
-                                firstFunctionDef = e;
-                            }
-                        }
-
-
-                        if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
-                            String message = "The function '" + functionDef.getName() +
-                                    "' is already defined at line " + BashPsiUtils.getElementLineNumber(firstFunctionDef) + ".";
-
-                            BashFunctionDefName nameSymbol = functionDef.getNameSymbol();
-                            if (nameSymbol != null) {
-                                holder.registerProblem(
-                                        nameSymbol,
-                                        message,
-                                        ProblemHighlightType.GENERIC_ERROR_OR_WARNING
-                                );
+                        if (results.size() > 0) {
+                            //find the result which has the lowest textOffset in the file
+                            PsiElement firstFunctionDef = results.get(0);
+                            for (PsiElement e : results) {
+                                if (e.getTextOffset() < firstFunctionDef.getTextOffset()) {
+                                    firstFunctionDef = e;
+                                }
                             }
 
+                            if (firstFunctionDef.getTextOffset() < functionDef.getTextOffset()) {
+                                BashFunctionDefName nameSymbol = functionDef.getNameSymbol();
+
+                                if (nameSymbol != null) {
+                                    String message = String.format("The function '%s' is already defined at line %d.",
+                                            functionDef.getName(),
+                                            BashPsiUtils.getElementLineNumber(firstFunctionDef));
+
+                                    holder.registerProblem(
+                                            nameSymbol,
+                                            message,
+                                            ProblemHighlightType.GENERIC_ERROR_OR_WARNING
+                                    );
+                                }
+                            }
                         }
                     }
                 }

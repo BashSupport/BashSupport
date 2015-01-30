@@ -347,5 +347,11 @@
                          key="inspection.replaceWithBackquote.name"
                          enabledByDefault="false"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertSubshellInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="DuplicateFunction"
+                         key="inspection.duplicateFunction.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.DuplicateFunctionDefInspection"/>
     </extensions>
 </idea-plugin>
