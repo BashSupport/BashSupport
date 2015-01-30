@@ -41,7 +41,7 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
     @Override
     public void doTest(@NonNls String folderName, LocalInspectionTool tool) {
         //fixme
-        doTest(folderName, tool.getClass());
+        doTest(folderName, tool.getClass(), false);
     }
 
     /**
@@ -51,8 +51,9 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
      *
      * @param folderName
      * @param clazz
+     * @param onTheFly
      */
-    public void doTest(String folderName, Class<? extends LocalInspectionTool> clazz) {
+    public void doTest(String folderName, Class<? extends LocalInspectionTool> clazz, boolean onTheFly) {
         LocalInspectionEP[] extensions = Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION);
         for (LocalInspectionEP extension : extensions) {
             if (extension.implementationClass.equals(clazz.getCanonicalName())) {
@@ -60,7 +61,7 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
 
                 InspectionProfileEntry instance = extension.instantiateTool();
 
-                super.doTest(folderName, (LocalInspectionTool) instance);
+                super.doTest(folderName, onTheFly ? withOnTheFly((LocalInspectionTool) instance) : (LocalInspectionTool) instance);
 
                 return;
             }

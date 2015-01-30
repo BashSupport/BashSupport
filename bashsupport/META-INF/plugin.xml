@@ -341,5 +341,11 @@
                          key="inspection.wrapWord.name"
                          enabledByDefault="false"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.WrapWordInStringInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="ReplaceWithBackquote"
+                         key="inspection.replaceWithBackquote.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertSubshellInspection"/>
     </extensions>
 </idea-plugin>
