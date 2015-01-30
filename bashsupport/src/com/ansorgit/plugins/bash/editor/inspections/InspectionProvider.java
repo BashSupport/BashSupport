@@ -43,7 +43,7 @@ public class InspectionProvider  {
                 //DuplicateFunctionDefInspection.class,
                 //MissingIncludeFileInspection.class,
                 //RecursiveIncludeFileInspection.class,
-                EvaluateExpansionInspection.class,
+                //EvaluateExpansionInspection.class,
                 UnresolvedVariableInspection.class,
                 UnregisterGlobalVarInspection.class,
                 EvaluateArithmeticExpressionInspection.class,
