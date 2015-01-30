@@ -359,5 +359,11 @@
                          key="inspection.missingInclude.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.MissingIncludeFileInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="RecursiveInclusion"
+                         key="inspection.recursiveInclusion.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.RecursiveIncludeFileInspection"/>
     </extensions>
 </idea-plugin>
