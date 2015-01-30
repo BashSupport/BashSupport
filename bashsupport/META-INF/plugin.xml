@@ -365,5 +365,11 @@
                          key="inspection.recursiveInclusion.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.RecursiveIncludeFileInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="EvaluateExpression"
+                         key="inspection.evaluateExpansion.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateExpansionInspection"/>
     </extensions>
 </idea-plugin>

@@ -22,53 +22,19 @@ import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateExpansionQu
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection detects expansions and offers a quickfix to calculate the expansion
  * and insert it instead of the original expansion placeholder.
  * <p/>
- * User: jansorg
- * Date: Nov 15, 2009
- * Time: 12:48:24 AM
+ *
+ * @author jansorg
  */
-public class EvaluateExpansionInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "EvaluateExpression";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Evaluate expansion";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Evaluate an expansion";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Replaces a Bash expansion with the evaluated result. Only static value expansions are understood by this expansion, i.e. if an expansion contains a variable then the quickfix can not be applied.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
+public class EvaluateExpansionInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
