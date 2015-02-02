@@ -23,13 +23,10 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -42,46 +39,13 @@ import java.util.Set;
  * Time: 10:11:49 PM
  */
 public class UnresolvedVariableInspection extends AbstractBashInspection {
-    //private static final Logger log = Logger.getInstance("#UnresolvedVariable");
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Unresolved variable";
-    }
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "unresolvedVariableInspection";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Unresolved variable";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "An unresolved variable has not been declared in earlier parts of the script";
-    }
-
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new UnresolvedVariableVisitor(holder);
     }
 
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
-    private static class UnresolvedVariableVisitor extends BashVisitor {
+    private static final class UnresolvedVariableVisitor extends BashVisitor {
         private final ProblemsHolder holder;
         private Set<String> globalVariables;
 

@@ -371,5 +371,11 @@
                          key="inspection.evaluateExpansion.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateExpansionInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnresolvedVariable"
+                         key="inspection.unresolvedVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
     </extensions>
 </idea-plugin>
