@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>1</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unresolved variable</problem_class>
+        <description>Unresolved variable</description>
+    </problem>
+</problems>
+
