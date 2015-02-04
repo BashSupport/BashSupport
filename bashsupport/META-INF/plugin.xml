@@ -16,6 +16,8 @@
   ~ limitations under the License.
   -->
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
+    <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
+
     <name>BashSupport</name>
     <category>Custom Languages</category>
     <version>1.3.4_idea13</version>
