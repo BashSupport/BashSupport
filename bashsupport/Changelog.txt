@@ -1,4 +1,6 @@
 2015-02-04:
+ - Version 1.3.4
+ - Small performance and memory improvement in the Bash file lexer
  - Fixed case expressions followed by a backtick character
  - Fixed "Local variable definition on global level" inspection
  - Escape characters were not accepted in case pattern

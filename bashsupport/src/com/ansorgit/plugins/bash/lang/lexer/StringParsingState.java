@@ -32,44 +32,8 @@ import com.intellij.util.containers.Stack;
  * @author Joachim Ansorg
  */
 final class StringParsingState {
-    private final StringBuilder stringData = new StringBuilder(256);
-
-    private static final class SubshellState {
-        private boolean inString = false;
-        private int openParenths = 0;
-        private boolean freshStart = true;
-
-        public boolean isInString() {
-            return inString;
-        }
-
-        public void enterSubstring() {
-            assert !inString;
-            inString = true;
-        }
-
-        public void leaveSubstring() {
-            assert inString;
-            inString = false;
-        }
-
-        public void enterParenth() {
-            //assert !inString;
-            assert openParenths >= 0;
-            openParenths++;
-        }
-
-        public void leaveParenth() {
-            assert openParenths > 0;
-            openParenths--;
-        }
-
-        public void advanceToken() {
-            freshStart = false;
-        }
-    }
-
-    private final Stack<SubshellState> subshells = new Stack<SubshellState>();
+    private final StringBuilder stringData = new StringBuilder(128);
+    private final Stack<SubshellState> subshells = new Stack<SubshellState>(5);
 
     public void reset() {
         stringData.setLength(0);
@@ -114,19 +78,10 @@ final class StringParsingState {
     public void leaveSubshell() {
         assert !subshells.isEmpty();
 
-        if (!subshells.isEmpty()) {
-            if (subshells.peek().openParenths > 0) {
-                subshells.peek().leaveParenth();
-            } else {
-                subshells.pop();
-            }
-        }
-    }
-
-    public void enterSubshellParenth() {
-        assert !subshells.isEmpty();
-        if (!subshells.peek().freshStart) {
-            subshells.peek().enterParenth();
+        if (subshells.peek().openParenths > 0) {
+            subshells.peek().leaveParenth();
+        } else {
+            subshells.pop();
         }
     }
 
@@ -138,5 +93,34 @@ final class StringParsingState {
 
     public boolean isFreshSubshell() {
         return !subshells.isEmpty() && subshells.peek().freshStart;
+    }
+
+    private static final class SubshellState {
+        private boolean inString = false;
+        private int openParenths = 0;
+        private boolean freshStart = true;
+
+        public boolean isInString() {
+            return inString;
+        }
+
+        public void enterSubstring() {
+            assert !inString;
+            inString = true;
+        }
+
+        public void leaveSubstring() {
+            assert inString;
+            inString = false;
+        }
+
+        public void leaveParenth() {
+            assert openParenths > 0;
+            openParenths--;
+        }
+
+        public void advanceToken() {
+            freshStart = false;
+        }
     }
 }

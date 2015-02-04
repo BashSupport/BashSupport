@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +33,6 @@ abstract class AbstractBashPsiElementQuickfix extends LocalQuickFixAndIntentionA
 
     @NotNull
     public String getFamilyName() {
-        return InspectionProvider.BASH_FAMILY;
+        return BashInspections.FAMILY_NAME;
     }
 }
