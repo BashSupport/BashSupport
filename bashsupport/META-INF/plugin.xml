@@ -377,5 +377,41 @@
                          key="inspection.unresolvedVariable.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
+
+        <localInspection language="Bash" level="ERROR" groupKey="inspection.groupName"
+                         shortName="BashUnregisterGlobalVariableInspection"
+                         key="inspection.unregisterGlovalVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnregisterGlobalVarInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="EvaluateArithmeticExpression"
+                         key="inspection.evaluateArithmeticExpression.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateArithmeticExpressionInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="FloatArithmetic"
+                         key="inspection.floatArithmetic.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FloatArithmeticInspection"/>
+
+        <localInspection language="Bash" level="ERROR" groupKey="inspection.groupName"
+                         shortName="BashReadOnlyVariable"
+                         key="inspection.readOnlyVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashBuiltInVariable"
+                         key="inspection.builtInVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalVariableInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnknownFileDescriptor"
+                         key="inspection.unknownFileDescriptor.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection"/>
     </extensions>
 </idea-plugin>

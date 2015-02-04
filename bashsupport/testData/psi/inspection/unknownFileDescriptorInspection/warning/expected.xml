@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unknown filedescriptor. Only 0 to 9 are valid.</problem_class>
+        <description>Invalid file descriptor 10</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unknown filedescriptor. Only 0 to 9 are valid.</problem_class>
+        <description>Invalid file descriptor 200</description>
+    </problem>
+</problems>
+
