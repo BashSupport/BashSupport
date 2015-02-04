@@ -1,0 +1,1 @@
+<caret>time -p echo hi

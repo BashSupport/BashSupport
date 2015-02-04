@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.openapi.editor.Document;
@@ -45,7 +45,7 @@ public class SubshellQuickfix extends LocalQuickFixAndIntentionActionOnPsiElemen
     @NotNull
     @Override
     public String getFamilyName() {
-        return InspectionProvider.BASH_FAMILY;
+        return BashInspections.FAMILY_NAME;
     }
 
     @Override

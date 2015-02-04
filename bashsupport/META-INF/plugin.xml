@@ -18,7 +18,7 @@
 <idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.3.3_idea13</version>
+    <version>1.3.4_idea13</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -40,6 +40,7 @@
     <ul>
         <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
         <li>GoFundMe: <a target="_blank" href="http://www.gofundme.com/bashsupport">Make a donation on <em>www.gofundme.com/bashsupport</em></a></li>
+        <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
         <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
     </ul>
   </html>
@@ -47,6 +48,17 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.3.4:</b>
+       <ul>
+        <li>Fixed exceptions caused by an invalid implementation of the time command (PsiWhitespace exceptions)</li>
+        <li>Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"</li>
+        <li>Fixed NullPointerException in AddShebangInspection.getBatchSuppressActions</li>
+        <li>Escape characters were not accepted in case pattern</li>
+        <li>Fixed "Local variable definition on global level" inspection</li>
+        <li>Fixed case expressions followed by a backtick character</li>
+        <li>Small performance and memory improvement in the Bash file lexer</li>
+       </ul>
+
        <b>Changes in version 1.3.3:</b>
        <ul>
         <li>Fixed run configurations produced for non-Bash files. Run configuration are now only created for Bash files.</li>
@@ -68,6 +80,7 @@
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
          <li>Disabled debug button for Bash run configuration</li>
+         <li>#166: Support for ToDo-Strings in Bash comments</li>
          <li>https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters</li>
          <li>Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
          <li>Fixed QuickFix implementations to not reference PSI element, reduces memory consumption</li>
@@ -170,13 +183,13 @@
             </implementation-class>
         </component>
 
-<!--
-        <component>
-            <implementation-class>
-                com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
-            </implementation-class>
-        </component>
--->
+        <!--
+                <component>
+                    <implementation-class>
+                        com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
+                    </implementation-class>
+                </component>
+        -->
     </project-components>
 
     <!-- Plugin's module components -->
@@ -184,7 +197,7 @@
     </module-components>
 
     <actions>
-<!--
+        <!--
                 <action id="BashErrorReporter.TriggerException"
                         class="nu.studer.idea.errortesting.TriggerExceptionAction"
                         text="Trigger Exception"
@@ -192,7 +205,6 @@
                     <add-to-group group-id="ToolsMenu" anchor="last"/>
                 </action>
 -->
-
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
@@ -263,20 +275,23 @@
         <completion.contributor language="Bash"
                                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
+        <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
+        <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
+
+
+
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
         -->
-
-        <inspectionToolProvider id="BashInspectionProvider"
-                                implementation="com.ansorgit.plugins.bash.editor.inspections.InspectionProvider"/>
 
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
         <codeInsight.lineMarkerProvider language="Bash"
                                         implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
 
-        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
+        <frameworkSupport
+                implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
         <runConfigurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigProducer"/>
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
@@ -300,5 +315,150 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
+        <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="FixShebang"
+                         key="inspection.fixShebang.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FixShebangInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="AddShebang"
+                         key="inspection.addShebang.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="SimpleVarUsage"
+                         key="inspection.simpleVarUsage.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="GlobalLocalVarDef"
+                         key="inspection.globalLocalVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GlobalLocalVarDefInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="WrapFunction"
+                         key="inspection.wrapFunction.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FunctionDefInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="WrapWord"
+                         key="inspection.wrapWord.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.WrapWordInStringInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="ReplaceWithBackquote"
+                         key="inspection.replaceWithBackquote.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertSubshellInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="DuplicateFunction"
+                         key="inspection.duplicateFunction.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.DuplicateFunctionDefInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="MissingInclude"
+                         key="inspection.missingInclude.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.MissingIncludeFileInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="RecursiveInclusion"
+                         key="inspection.recursiveInclusion.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.RecursiveIncludeFileInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="EvaluateExpression"
+                         key="inspection.evaluateExpansion.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateExpansionInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnresolvedVariable"
+                         key="inspection.unresolvedVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
+
+        <localInspection language="Bash" level="ERROR" groupKey="inspection.groupName"
+                         shortName="BashUnregisterGlobalVariableInspection"
+                         key="inspection.unregisterGlovalVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnregisterGlobalVarInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="EvaluateArithmeticExpression"
+                         key="inspection.evaluateArithmeticExpression.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateArithmeticExpressionInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="FloatArithmetic"
+                         key="inspection.floatArithmetic.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FloatArithmeticInspection"/>
+
+        <localInspection language="Bash" level="ERROR" groupKey="inspection.groupName"
+                         shortName="BashReadOnlyVariable"
+                         key="inspection.readOnlyVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashBuiltInVariable"
+                         key="inspection.builtInVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalVariableInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnknownFileDescriptor"
+                         key="inspection.unknownFileDescriptor.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnusedFunctionParams"
+                         key="inspection.unusedFunctionParams.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionParameterInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="ReplaceWithSubshell"
+                         key="inspection.convertBackquote.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertBackquoteInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnusedFunction"
+                         key="inspection.unusedFunctionDef.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionDefInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="BashSimpleArrayUse"
+                         key="inspection.simpleArrayUse.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleArrayUseInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashArrayUseOfSimple"
+                         key="inspection.arrayUseOfSimpleVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ArrayUseOfSimpleVarInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="InternalCommandFunctionOverride"
+                         key="inspection.internalCommandOverride.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalCommandFunctionOverrideInspection"/>
     </extensions>
 </idea-plugin>

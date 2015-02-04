@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>1</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Convert subshell to backquote command</problem_class>
+        <description>Replace with backquote</description>
+    </problem>
+</problems>
+

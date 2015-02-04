@@ -23,66 +23,31 @@ import com.ansorgit.plugins.bash.editor.inspections.quickfix.WordToSinglequotedS
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Inspection which can wrap a word token inside of a string.
  * It offers options to either convert to a double quoted string or into
  * a single quoted string.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:32:31
+ *
+ * @author jansorg
  */
-public class WrapWordInStringInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "ConvertToString";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Convert to string";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Convert to a quoted or unquoted string";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return false;
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "This inspection can convert text which is not in a string into a string. For example \"echo a\" can be converted into \"echo 'a'\".";
-    }
-
+public class WrapWordInStringInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder problemsHolder, boolean b) {
         return new BashVisitor() {
             @Override
             public void visitCombinedWord(BashWord word) {
-                PsiElement parent = word.getParent();
-                if (parent instanceof BashString) {
+                if (word.getParent() instanceof BashString) {
                     return;
                 }
 
-                boolean wrappable = word.isWrappable();
-                if (wrappable) {
-                    problemsHolder.registerProblem(word, getShortName(), new WordToDoublequotedStringQuickfix(word));
-                    problemsHolder.registerProblem(word, getShortName(), new WordToSinglequotedStringQuickfix(word));
+                if (word.isWrappable()) {
+                    problemsHolder.registerProblem(word, "Unquoted string", new WordToDoublequotedStringQuickfix(word), new WordToSinglequotedStringQuickfix(word));
                 }
             }
         };

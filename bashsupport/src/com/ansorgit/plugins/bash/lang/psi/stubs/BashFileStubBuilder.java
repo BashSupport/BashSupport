@@ -26,6 +26,7 @@ import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 public class BashFileStubBuilder extends DefaultStubBuilder {
+    @NotNull
     protected StubElement createStubForFile(@NotNull final PsiFile file) {
         if (file instanceof BashFile) {
             return new BashFileStubImpl((BashFile) file);

@@ -19,34 +19,55 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
 import com.intellij.codeInspection.*;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.testFramework.InspectionTestCase;
+import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.Assert;
 
-import java.util.Arrays;
-
-/**
- * User: jansorg
- * Date: 01.07.2010
- * Time: 18:48:20
- */
 public abstract class AbstractInspectionTestCase extends InspectionTestCase {
-    protected AbstractInspectionTestCase(Class<?> inspectionClass) {
-        if (!Arrays.asList(new InspectionProvider().getInspectionClasses()).contains(inspectionClass)) {
-            throw new IllegalStateException("The inspection is not registered in the inspection provider");
-        }
+    protected String getTestDataPath() {
+        return BashTestUtils.getBasePath() + "/psi/inspection";
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/inspection/";
+    @Override
+    public void doTest(@NonNls String folderName, LocalInspectionTool tool) {
+        //fixme
+        doTest(folderName, tool.getClass(), false);
+    }
+
+    /**
+     * This method looks at the LocalInspectionTool extension points registered in BashSupport's plugin.xml.
+     * The base InspectionTestCase doesn't handle inspections well which are only registered in the plugin.xml and
+     * which do not have a seperately overridden displayName implementation.
+     *
+     * @param folderName
+     * @param clazz
+     * @param onTheFly
+     */
+    public void doTest(String folderName, Class<? extends LocalInspectionTool> clazz, boolean onTheFly) {
+        LocalInspectionEP[] extensions = Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION);
+        for (LocalInspectionEP extension : extensions) {
+            if (extension.implementationClass.equals(clazz.getCanonicalName())) {
+                extension.enabledByDefault = true;
+
+                InspectionProfileEntry instance = extension.instantiateTool();
+
+                super.doTest(folderName, onTheFly ? withOnTheFly((LocalInspectionTool) instance) : (LocalInspectionTool) instance);
+
+                return;
+            }
+        }
+
+        Assert.fail("Inspection not found for type " + clazz.getName());
     }
 
     protected LocalInspectionTool withOnTheFly(final LocalInspectionTool delegate) {
@@ -99,21 +120,22 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
         }
 
         @Override
-        public void inspectionStarted(LocalInspectionToolSession session, boolean isOnTheFly) {
+        public void inspectionStarted(@NotNull LocalInspectionToolSession session, boolean isOnTheFly) {
             delegate.inspectionStarted(session, isOnTheFly);
         }
 
         @Override
-        public void inspectionFinished(LocalInspectionToolSession session, ProblemsHolder problemsHolder) {
+        public void inspectionFinished(@NotNull LocalInspectionToolSession session, @NotNull ProblemsHolder problemsHolder) {
             delegate.inspectionFinished(session, problemsHolder);
         }
 
         @Override
         @Deprecated
-        public void inspectionFinished(LocalInspectionToolSession session) {
+        public void inspectionFinished(@NotNull LocalInspectionToolSession session) {
             delegate.inspectionFinished(session);
         }
 
+        @Pattern("[a-zA-Z_0-9.-]+")
         @Override
         @NotNull
         @NonNls
@@ -141,7 +163,7 @@ public abstract class AbstractInspectionTestCase extends InspectionTestCase {
 
         @Override
         @NotNull
-        public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly, LocalInspectionToolSession session) {
+        public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly, @NotNull LocalInspectionToolSession session) {
             return delegate.buildVisitor(holder, true, session);
         }
     }

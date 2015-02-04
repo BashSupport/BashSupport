@@ -22,48 +22,16 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection marks unresolved variables.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 10:11:49 PM
  */
-public class InternalVariableInspection extends AbstractBashInspection {
-    //private static final Logger log = Logger.getInstance("#UnresolvedVariable");
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Read-only shell variable";
-    }
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "internalVariableInspection";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Change to a builtin, read-only shell variable";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Attempt to change an internal, read-only shell variable.";
-    }
-
+public class InternalVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -73,15 +41,9 @@ public class InternalVariableInspection extends AbstractBashInspection {
                 String name = varDef.getName();
 
                 if (LanguageBuiltins.readonlyShellVars.contains(name)) {
-                    holder.registerProblem(varDef, getShortName(), LocalQuickFix.EMPTY_ARRAY);
+                    holder.registerProblem(varDef, "Built-in shell variable", LocalQuickFix.EMPTY_ARRAY);
                 }
             }
         };
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
     }
 }

@@ -21,46 +21,17 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection detects function names which override internal bash commands.
  */
-public class InternalCommandFunctionOverrideInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "InternalCommandFunctionOverride";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Function overrides internal command";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Function overrides internal command";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Detects function definitions which override built-in Bash commands.";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
+public class InternalCommandFunctionOverrideInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {

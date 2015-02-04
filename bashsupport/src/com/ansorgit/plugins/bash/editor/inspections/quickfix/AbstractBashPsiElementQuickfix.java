@@ -18,17 +18,13 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Abstract base class for Bash quickfixes.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:47:27
  */
 abstract class AbstractBashPsiElementQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
     protected AbstractBashPsiElementQuickfix(PsiElement element) {
@@ -37,10 +33,6 @@ abstract class AbstractBashPsiElementQuickfix extends LocalQuickFixAndIntentionA
 
     @NotNull
     public String getFamilyName() {
-        return InspectionProvider.BASH_FAMILY;
-    }
-
-    public boolean startInWriteAction() {
-        return true;
+        return BashInspections.FAMILY_NAME;
     }
 }

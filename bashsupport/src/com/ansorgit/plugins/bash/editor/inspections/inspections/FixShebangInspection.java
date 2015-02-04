@@ -24,15 +24,13 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
 import org.jdom.Element;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -48,29 +46,11 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class FixShebangInspection extends AbstractBashInspection {
+public class FixShebangInspection extends LocalInspectionTool {
     private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/sh");
     private static final String ELEMENT_NAME_SHEBANG = "shebang";
 
     private List<String> validShebangCommands = DEFAULT_COMMANDS;
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "FixShebang";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Fix shebang";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Fix unusual shebang lines";
-    }
 
     @Override
     public JComponent createOptionsPanel() {
@@ -112,17 +92,6 @@ public class FixShebangInspection extends AbstractBashInspection {
         }
     }
 
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "This inspection can replace unknown shebang commands with one of the registered commands, like /bin/sh .";
-    }
-
     @Override
     public void readSettings(@NotNull Element node) throws InvalidDataException {
         validShebangCommands = Lists.newLinkedList();
@@ -155,11 +124,13 @@ public class FixShebangInspection extends AbstractBashInspection {
                 //check command with and withouot parameters
                 boolean isValid = validShebangCommands.contains(shebang.shellCommand(false)) || validShebangCommands.contains(shebang.shellCommand(true));
 
-                if (isOnTheFly && !isValid && validShebangCommands.size() > 0) {
-                    //quickfix to register the shebang line
-                    holder.registerProblem(shebang, "Mark as valid shebang command", new RegisterShebangCommandQuickfix(FixShebangInspection.this, shebang));
+                if (!isValid && validShebangCommands.size() > 0) {
+                    if (isOnTheFly) {
+                        //quickfix to register the shebang line
+                        holder.registerProblem(shebang, "Mark as valid shebang command", new RegisterShebangCommandQuickfix(FixShebangInspection.this, shebang));
+                    }
 
-                    LinkedList<LocalQuickFix> quickFixes = Lists.newLinkedList();
+                    List<LocalQuickFix> quickFixes = Lists.newLinkedList();
                     for (String validCommand : validShebangCommands) {
                         if (!validCommand.equals(shebang.shellCommand(false)) && !validCommand.equals(shebang.shellCommand(true))) {
                             quickFixes.add(new ShebangQuickfix(shebang, validCommand));

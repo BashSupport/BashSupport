@@ -27,6 +27,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -47,44 +48,7 @@ import java.util.Set;
  * Date: 28.12.10
  * Time: 12:41
  */
-public class UnusedFunctionParameterInspection extends AbstractBashInspection {
-    @NotNull
-    @Override
-    public String getID() {
-        return "UnusedFunctionParams";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Unused function parameter";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Unused parameter";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Detects unused function parameter values. " +
-                "If the caller passes a parameter value " +
-                "which is not used inside of the function then it is highlighted.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
+public class UnusedFunctionParameterInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
@@ -117,7 +81,7 @@ public class UnusedFunctionParameterInspection extends AbstractBashInspection {
                             String paramName = String.valueOf(i + 1);
 
                             if (!definedParamNames.contains(paramName)) {
-                                holder.registerProblem(callerParameters.get(i), getShortName(), LocalQuickFix.EMPTY_ARRAY);
+                                holder.registerProblem(callerParameters.get(i), "Unused function parameter", LocalQuickFix.EMPTY_ARRAY);
                             }
                         }
                     }

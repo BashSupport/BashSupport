@@ -5,6 +5,7 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.BashFileStubBuilder;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFileStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashFileStubImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIndexVersion;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex;
 import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.*;
@@ -18,44 +19,44 @@ import java.io.IOException;
  * @author ilyas
  */
 public class BashStubFileElementType extends IStubFileElementType<BashFileStub> {
-  private static final int CACHES_VERSION = 1;
 
-  public BashStubFileElementType() {
-    super(BashFileType.BASH_LANGUAGE);
-  }
+    public BashStubFileElementType() {
+        super(BashFileType.BASH_LANGUAGE);
+    }
 
-  public StubBuilder getBuilder() {
-    return new BashFileStubBuilder();
-  }
+    @Override
+    public StubBuilder getBuilder() {
+        return new BashFileStubBuilder();
+    }
 
-  @Override
-  public int getStubVersion() {
-    return super.getStubVersion() + CACHES_VERSION;
-  }
+    @Override
+    public int getStubVersion() {
+        return super.getStubVersion() + BashIndexVersion.CACHES_VERSION;
+    }
 
-  @NotNull
-  public String getExternalId() {
-    return "bash.FILE";
-  }
+    @NotNull
+    public String getExternalId() {
+        return "bash.FILE";
+    }
 
-  @Override
-  public void indexStub(@NotNull PsiFileStub stub, @NotNull IndexSink sink) {
-    assert stub instanceof BashFileStub;
+    @Override
+    public void indexStub(@NotNull PsiFileStub stub, @NotNull IndexSink sink) {
+        assert stub instanceof BashFileStub;
 
-    String name = ((BashFileStub)stub).getName().toString();
-    sink.occurrence(BashScriptNameIndex.KEY, name);
-    sink.occurrence(BashFullScriptNameIndex.KEY, name);
-  }
+        String name = ((BashFileStub) stub).getName().toString();
+        sink.occurrence(BashScriptNameIndex.KEY, name);
+        sink.occurrence(BashFullScriptNameIndex.KEY, name);
+    }
 
-  @Override
-  public void serialize(@NotNull final BashFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
-    dataStream.writeName(stub.getName().toString());
-  }
+    @Override
+    public void serialize(@NotNull final BashFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+        dataStream.writeName(stub.getName().toString());
+    }
 
-  @NotNull
-  @Override
-  public BashFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-    StringRef name = dataStream.readName();
-    return new BashFileStubImpl(name);
-  }
+    @NotNull
+    @Override
+    public BashFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
+        StringRef name = dataStream.readName();
+        return new BashFileStubImpl(name);
+    }
 }

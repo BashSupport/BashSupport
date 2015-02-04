@@ -554,6 +554,45 @@ public class BashLexerTest {
         testTokenization("for case in a; do\n" +
                 "echo\n" +
                 "done;", FOR_KEYWORD, WHITESPACE, CASE_KEYWORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
+    }
+
+    @Test
+    public void testCaseWhitespacePattern() throws Exception {
+        testTokenization("case x in\n" +
+                "a\\ b)\n" +
+                ";;\n" +
+                "esac", CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED, CASE_END, LINE_FEED, ESAC_KEYWORD);
+
+    }
+
+    @Test
+    public void testNestedCase() throws Exception {
+        testTokenization("case x in x) ;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
+
+        testTokenization("$(case x in x) ;; esac)",
+                DOLLAR, LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
+        testTokenization("(case x in x) ;; esac)",
+                LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
+
+        testTokenization("`case x in x) ;; esac `",
+                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, WHITESPACE, BACKQUOTE);
+
+        testTokenization("case x in esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, ESAC_KEYWORD);
+
+        testTokenization("`case x in esac`;",
+                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, SEMI);
+
+        testTokenization("case x in\n" +
+                        "a\\ b)\n" +
+                        "x=`case x in x) echo;; esac`\n" +
+                        ";;\n" +
+                        "esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                WORD, RIGHT_PAREN, LINE_FEED,
+                ASSIGNMENT_WORD, EQ, BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, LINE_FEED,
+                CASE_END, LINE_FEED, ESAC_KEYWORD);
 
     }
 
@@ -762,7 +801,6 @@ public class BashLexerTest {
     @Test
     public void testReadCommand() throws Exception {
         testTokenization("read \"var:\" v[i]", WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
-
     }
 
     @Test
