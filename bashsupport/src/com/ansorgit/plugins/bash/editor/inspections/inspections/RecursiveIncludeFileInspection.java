@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
@@ -37,42 +38,9 @@ import java.util.Set;
  * This inspection detects recursive file inclusion.
  * It can detect whether another file actually back-includes this file.
  * <p/>
- * User: jansorg
- * Date: Nov 2, 2009
- * Time: 8:15:59 PM
+ * @author jansorg #
  */
-public class RecursiveIncludeFileInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "RecursiveInclusion";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Recursive file inclusion";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Recursive file inclusion";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Checks for recursive file inclusion. Currently it can highlight the inclusion of a file in itself..";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
+public class RecursiveIncludeFileInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {

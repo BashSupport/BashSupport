@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -30,20 +31,16 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Replaces a subshell command with the old-style backtick command.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 14:05:02
+ * Removes the local qualifier of global variable declarations
  */
-public class RemoveLocalQuickfix extends AbstractBashPsiElementQuickfix {
-    public RemoveLocalQuickfix(BashVarDef varDef) {
+public class RemoveLocalQualifierQuickfix extends AbstractBashPsiElementQuickfix {
+    public RemoveLocalQualifierQuickfix(BashVarDef varDef) {
         super(varDef);
     }
 
     @NotNull
     public String getText() {
-        return "Remove local part of the definition";
+        return "Remove 'local' qualifier";
     }
 
     @Override

@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -31,35 +32,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This inspection detects use of array variables without array element qualifiers.
  */
-public class ArrayUseOfSimpleVarInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "ArrayUseOfSimple";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Array use of a simple variable";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Array use of a simple, non-array variable";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Detects array element references to simple variables which are defined as array variables.";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
+public class ArrayUseOfSimpleVarInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {

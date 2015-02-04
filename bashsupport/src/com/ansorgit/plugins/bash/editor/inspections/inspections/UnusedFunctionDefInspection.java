@@ -19,70 +19,24 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.intellij.codeInspection.ProblemHighlightType;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.codeInspection.ex.UnfairLocalInspectionTool;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.util.Query;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Highlights unused function definitions.
  * <p/>
- * fixme: This inspection currently does not work. For a proper implementation we'd need an index.
+ * The inspection is empty, the work is done by the PostHighlightingPass.
  */
-public class UnusedFunctionDefInspection extends AbstractBashInspection implements UnfairLocalInspectionTool {
-
-    public static final String SHORT_NAME = "Unused function definition";
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "UnusedFunction";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return SHORT_NAME;
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Unused function definition";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "This inspection highlights function definitions which are never called in a Bash script.";
-    }
+public class UnusedFunctionDefInspection extends LocalInspectionTool implements UnfairLocalInspectionTool {
+    public static final String ID = "BashUnusedFunction";
 
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new BashVisitor() {
-            @Override
-            public void visitFunctionDef(BashFunctionDef functionDef) {
-                BashFunctionDefName nameSymbol = functionDef.getNameSymbol();
-
-                if (nameSymbol != null) {
-                    Query<PsiReference> search = ReferencesSearch.search(functionDef, functionDef.getUseScope(), true);
-                    PsiReference first = search.findFirst();
-
-                    if (first == null) {
-                        holder.registerProblem(nameSymbol, getShortName(), ProblemHighlightType.LIKE_UNUSED_SYMBOL);
-                    }
-                }
-            }
         };
     }
 }

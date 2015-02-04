@@ -3,17 +3,20 @@
     <problem>
         <file>A.bash</file>
         <line>3</line>
-        <description>Change to a builtin, read-only shell variable</description>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Change to a built-in shell variable</problem_class>
+        <description>Built-in shell variable</description>
     </problem>
     <problem>
         <file>A.bash</file>
         <line>4</line>
-        <description>Change to a builtin, read-only shell variable</description>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Change to a built-in shell variable</problem_class>
+        <description>Built-in shell variable</description>
     </problem>
     <problem>
         <file>A.bash</file>
         <line>5</line>
-        <description>Change to a builtin, read-only shell variable</description>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Change to a built-in shell variable</problem_class>
+        <description>Built-in shell variable</description>
     </problem>
 </problems>
 

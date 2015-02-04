@@ -93,7 +93,7 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
 
         InspectionProfile profile = InspectionProjectProfileManager.getInstance(myProject).getInspectionProfile();
 
-        unusedSymbolInspection = HighlightDisplayKey.find(UnusedFunctionDefInspection.SHORT_NAME);
+        unusedSymbolInspection = HighlightDisplayKey.findById(UnusedFunctionDefInspection.ID);
 
         boolean findUnusedFunctions = profile.isToolEnabled(unusedSymbolInspection, file);
         if (findUnusedFunctions) {
@@ -121,7 +121,7 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
         }
     }
 
-    private HighlightInfo processFunctionDef(BashFunctionDef functionDef, ProgressIndicator progress) {
+    private static HighlightInfo processFunctionDef(BashFunctionDef functionDef, ProgressIndicator progress) {
         BashFunctionDefName nameSymbol = functionDef.getNameSymbol();
         if (nameSymbol != null) {
             Query<PsiReference> search = ReferencesSearch.search(functionDef, functionDef.getUseScope(), true);
@@ -133,8 +133,7 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
             if (first == null) {
                 HighlightingKeys.IS_UNUSED.set(functionDef, Boolean.TRUE);
 
-                final HighlightInfo info = createUnusedSymbolInfo(nameSymbol, "Unused function definition", HighlightInfoType.UNUSED_SYMBOL);
-                return info;
+                return createUnusedSymbolInfo(nameSymbol, "Unused function definition", HighlightInfoType.UNUSED_SYMBOL);
             }
         }
 

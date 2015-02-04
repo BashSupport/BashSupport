@@ -29,44 +29,16 @@ import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * This inspection detects a missing shebang line and offers a file-level quickfix to add one.
- * Date: 15.05.2009
- * Time: 14:56:55
  *
  * @author Joachim Ansorg
  */
-public class AddShebangInspection extends AbstractBashInspection implements CustomSuppressableInspectionTool, BatchSuppressableTool {
-
-    public static final String ID = "AddShebangLine";
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return ID;
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Add Shebang line";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Add missing shebang line to file";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "If a file does not yet have a shebang line this inspection offers " +
-                "a file wide quickfix to add one.";
+public class AddShebangInspection extends LocalInspectionTool implements CustomSuppressableInspectionTool, BatchSuppressableTool {
+    public AddShebangInspection() {
     }
 
     @Override
@@ -79,7 +51,7 @@ public class AddShebangInspection extends AbstractBashInspection implements Cust
 
             if ((isLanguageConsole == null || !isLanguageConsole) && !bashFile.hasShebangLine()) {
                 return new ProblemDescriptor[]{
-                        manager.createProblemDescriptor(checkedFile, getShortName(), new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
+                        manager.createProblemDescriptor(checkedFile, "Add shebang line", new AddShebangQuickfix(), ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly)
                 };
             }
         }
@@ -95,20 +67,16 @@ public class AddShebangInspection extends AbstractBashInspection implements Cust
 
     @Override
     public boolean isSuppressedFor(@NotNull PsiElement element) {
-//        if (element.getContainingFile() instanceof BashFile) {
-            PsiComment suppressionComment = SupressionUtil.findSuppressionComment(element);
-            return suppressionComment != null && SupressionUtil.isSuppressionComment(suppressionComment, getID());
-//        }
-
-//        return false;
+        PsiComment suppressionComment = SupressionUtil.findSuppressionComment(element);
+        return suppressionComment != null && SupressionUtil.isSuppressionComment(suppressionComment, getID());
     }
 
     @NotNull
     @Override
-    public SuppressQuickFix[] getBatchSuppressActions(PsiElement element) {
-        if (element.getContainingFile() instanceof BashFile) {
+    public SuppressQuickFix[] getBatchSuppressActions(@Nullable PsiElement element) {
+        if (element != null && element.getContainingFile() instanceof BashFile) {
             return new SuppressQuickFix[]{
-                    new SupressAddShebangInspectionQuickfix()
+                    new SupressAddShebangInspectionQuickfix(AddShebangInspection.this.getID())
             };
         }
 

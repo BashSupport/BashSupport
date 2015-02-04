@@ -33,7 +33,7 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
-import com.intellij.util.containers.Stack;
+import com.intellij.util.containers.IntStack;
 
 %%
 
@@ -47,7 +47,7 @@ import com.intellij.util.containers.Stack;
 %type IElementType
 
 %{
-  private Stack<Integer> lastStates = new Stack<Integer>(25);
+  private IntStack lastStates = new IntStack(25);
   private int openParenths = 0;
   private boolean isBash4 = false;
 
@@ -57,25 +57,21 @@ import com.intellij.util.containers.Stack;
   }
 
   /**
-  * Goes to the given state and stores the previous state on the stack of states.
-  * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
-  */
-  private void goToState(Integer newState) {
+   * Goes to the given state and stores the previous state on the stack of states.
+   * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
+   */
+  private void goToState(int newState) {
     lastStates.push(yystate());
     yybegin(newState);
   }
 
   /**
-  * Goes back to the previous state of the lexer. If there
-  * is no previous state then YYINITIAL, the initial state, is chosen.
-  */
+   * Goes back to the previous state of the lexer. If there
+   * is no previous state then YYINITIAL, the initial state, is chosen.
+   */
   private void backToPreviousState() {
-    if (lastStates.isEmpty()) {
-      throw new IllegalStateException("BashLexer: Tried to go to previous state, but not more state left.");
-    }
-    else {
-      yybegin(lastStates.pop());
-    }
+    // pop() will throw an exception if empty
+    yybegin(lastStates.pop());
   }
 
   //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
@@ -148,8 +144,8 @@ BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst=[^|\")(# \n\r\f\t\f]
-CaseAfter=[^|\")( \n\r\f\t\f;]
+CaseFirst={EscapedChar} | [^|\"')(# \n\r\f\t\f]
+CaseAfter={EscapedChar} | [^|\"'`)( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
@@ -656,9 +652,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "{"                           { return LEFT_CURLY; }
 
-    "|&"                          { if (isBash4)
-                                        return PIPE_AMP; 
-                                     else {
+    "|&"                          { if (isBash4) {
+                                        return PIPE_AMP;
+                                     } else {
                                         yypushback(1);
                                         return PIPE;
                                      }

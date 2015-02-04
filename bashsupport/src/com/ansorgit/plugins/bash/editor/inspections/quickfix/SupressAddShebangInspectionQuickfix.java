@@ -1,8 +1,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.editor.inspections.SupressionUtil;
-import com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection;
 import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInspection.ProblemDescriptor;
@@ -15,8 +14,10 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
-    public SupressAddShebangInspectionQuickfix() {
-        super();
+    private final String inspectionId;
+
+    public SupressAddShebangInspectionQuickfix(String inspectionId) {
+        this.inspectionId = inspectionId;
     }
 
     @NotNull
@@ -28,7 +29,7 @@ public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
     @NotNull
     @Override
     public String getFamilyName() {
-        return InspectionProvider.BASH_FAMILY;
+        return BashInspections.FAMILY_NAME;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
             return;
         }
 
-        PsiComment suppressionComment = SupressionUtil.createSuppressionComment(project, AddShebangInspection.ID);
+        PsiComment suppressionComment = SupressionUtil.createSuppressionComment(project, inspectionId);
 
         PsiElement firstChild = file.getFirstChild();
         PsiElement inserted;

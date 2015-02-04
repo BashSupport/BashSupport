@@ -179,12 +179,6 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private boolean doIsFunctionScopeLocal() {
-        //var defs on global level can not be local
-        PsiElement enclosingBlock = BashPsiUtils.findEnclosingBlock(this);
-        if (enclosingBlock instanceof PsiFile) {
-            return false;
-        }
-
         //check if the command is a local-var defining command, e.g. local
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {

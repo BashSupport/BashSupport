@@ -5,7 +5,7 @@
         <line>1</line>
         <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Add missing shebang line to file
         </problem_class>
-        <description>Add Shebang line</description>
+        <description>Add shebang line</description>
     </problem>
 </problems>
 

@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
