@@ -23,14 +23,8 @@ import com.intellij.codeInsight.CodeInsightTestCase;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import org.junit.Assert;
 
-/**
- * User: jansorg
- * Date: 17.07.2010
- * Time: 12:51:15
- */
-public class AbstractShellCommandTest extends CodeInsightTestCase {
+public abstract class AbstractShellCommandTest extends CodeInsightTestCase {
     protected PsiElement configureCommand() throws Exception {
         configure();
         setupCursorAndSelection(myEditor);

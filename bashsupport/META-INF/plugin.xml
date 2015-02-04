@@ -41,6 +41,7 @@
     <ul>
         <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
         <li>GoFundMe: <a target="_blank" href="http://www.gofundme.com/bashsupport">Make a donation on <em>www.gofundme.com/bashsupport</em></a></li>
+        <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
         <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
     </ul>
   </html>
@@ -48,6 +49,15 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.3.4:</b>
+       <ul>
+        <li>Fixed exceptions caused by an invalid implementation of the time command (PsiWhitespace exceptions)</li>
+        <li>Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"</li>
+        <li>Fixed NullPointerException in AddShebangInspection.getBatchSuppressActions</li>
+        <li>Escape characters were not accepted in case pattern</li>
+        <li>Fixed "Local variable definition on global level" inspection</li>
+       </ul>
+
        <b>Changes in version 1.3.3:</b>
        <ul>
         <li>Fixed run configurations produced for non-Bash files. Run configuration are now only created for Bash files.</li>
@@ -413,5 +423,41 @@
                          key="inspection.unknownFileDescriptor.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnusedFunctionParams"
+                         key="inspection.unusedFunctionParams.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionParameterInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="ReplaceWithSubshell"
+                         key="inspection.convertBackquote.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertBackquoteInspection"/>
+
+        <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
+                         shortName="BashUnusedFunction"
+                         key="inspection.unusedFunctionDef.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionDefInspection"/>
+
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="BashSimpleArrayUse"
+                         key="inspection.simpleArrayUse.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleArrayUseInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashArrayUseOfSimple"
+                         key="inspection.arrayUseOfSimpleVar.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ArrayUseOfSimpleVarInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="InternalCommandFunctionOverride"
+                         key="inspection.internalCommandOverride.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalCommandFunctionOverrideInspection"/>
     </extensions>
 </idea-plugin>

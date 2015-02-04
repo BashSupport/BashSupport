@@ -21,11 +21,9 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.BackquoteQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,41 +33,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: 21.05.2009
  * Time: 13:49:05
  */
-public class ConvertBackquoteInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "ReplaceWithSubshell";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Replace with subshell";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Convert backquote to subshell commands";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Replaces a backtick command with a corresponding subshell expression. For example: `echo a` would be replaced by $(echo a).";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return false;
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.INFO;
-    }
-
+public class ConvertBackquoteInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder problemsHolder, final boolean isOnTheFly) {

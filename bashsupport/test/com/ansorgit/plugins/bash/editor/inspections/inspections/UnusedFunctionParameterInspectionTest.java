@@ -1,10 +1,5 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-/**
- * User: jansorg
- * Date: 28.12.10
- * Time: 16:50
- */
 public class UnusedFunctionParameterInspectionTest extends AbstractInspectionTestCase {
     public void testOk() throws Exception {
         doTest("unusedFunctionParameter/ok", new UnusedFunctionParameterInspection());

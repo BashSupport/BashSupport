@@ -2,7 +2,13 @@
 <problems>
     <problem>
         <file>A.bash</file>
-        <line>2</line>
+        <line>4</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Global definition of local variable</problem_class>
+        <description>'local' must be used in a function</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>10</line>
         <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Global definition of local variable</problem_class>
         <description>'local' must be used in a function</description>
     </problem>
