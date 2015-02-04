@@ -7,10 +7,10 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  */
 public class EvaluateArithmeticExpressionInspectionTest extends AbstractInspectionTestCase {
     public void testOk() throws Exception {
-        doTest("evaluateArithmeticExpressionInspection/ok", withOnTheFly(new EvaluateArithmeticExpressionInspection()));
+        doTest("evaluateArithmeticExpressionInspection/ok", EvaluateArithmeticExpressionInspection.class, true);
     }
 
     public void testEvaluation() throws Exception {
-        doTest("evaluateArithmeticExpressionInspection/evaluation", withOnTheFly(new EvaluateArithmeticExpressionInspection()));
+        doTest("evaluateArithmeticExpressionInspection/evaluation", EvaluateArithmeticExpressionInspection.class, true);
     }
 }

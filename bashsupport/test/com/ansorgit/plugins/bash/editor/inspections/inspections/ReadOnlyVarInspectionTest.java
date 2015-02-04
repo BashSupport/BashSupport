@@ -8,22 +8,18 @@ import org.junit.Test;
  * Time: 19:47
  */
 public class ReadOnlyVarInspectionTest extends AbstractInspectionTestCase {
-    @Test
     public void testOk() throws Exception {
         doTest("readOnlyVarInspection/ok", new ReadonlyVariableInspection());
     }
 
-    @Test
     public void testSimpleVar() throws Exception {
         doTest("readOnlyVarInspection/simpleVar", new ReadonlyVariableInspection());
     }
 
-    @Test
     public void testTypesetVar() throws Exception {
         doTest("readOnlyVarInspection/typesetVar", new ReadonlyVariableInspection());
     }
 
-    @Test
     public void testDeclaredVar() throws Exception {
         doTest("readOnlyVarInspection/declaredVar", new ReadonlyVariableInspection());
     }

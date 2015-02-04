@@ -1,35 +1,23 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-import org.junit.Test;
-
-/**
- * User: jansorg
- * Date: 28.12.10
- * Time: 19:15
- */
 public class UnusedFunctionDefInspectionTest extends AbstractInspectionTestCase {
-    @Test
     public void testOk() throws Exception {
-        doTest("unusedFunctionDefInspection/ok", new UnusedFunctionDefInspection());
+        doTest("unusedFunctionDefInspection/ok", UnusedFunctionDefInspection.class, false);
     }
 
-    @Test
     public void testOk2() throws Exception {
-        doTest("unusedFunctionDefInspection/ok2", new UnusedFunctionDefInspection());
+        doTest("unusedFunctionDefInspection/ok2", UnusedFunctionDefInspection.class, false);
     }
 
-    @Test
     public void testOk3() throws Exception {
-        doTest("unusedFunctionDefInspection/ok3", new UnusedFunctionDefInspection());
+        doTest("unusedFunctionDefInspection/ok3", UnusedFunctionDefInspection.class, false);
     }
 
-    @Test
     public void testOk4() throws Exception {
-        doTest("unusedFunctionDefInspection/ok4", new UnusedFunctionDefInspection());
+        doTest("unusedFunctionDefInspection/ok4", UnusedFunctionDefInspection.class, false);
     }
 
-    @Test
     public void testUnusedDef() throws Exception {
-        doTest("unusedFunctionDefInspection/unusedDef", new UnusedFunctionDefInspection());
+        doTest("unusedFunctionDefInspection/unusedDef", UnusedFunctionDefInspection.class, false);
     }
 }

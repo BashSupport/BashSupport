@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<problems>
-    <problem>
-        <file>A.bash</file>
-        <line>3</line>
-        <description>Change to a read-only variable</description>
-    </problem>
-</problems>
-
