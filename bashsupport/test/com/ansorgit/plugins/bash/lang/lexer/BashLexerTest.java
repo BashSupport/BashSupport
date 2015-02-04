@@ -554,6 +554,14 @@ public class BashLexerTest {
         testTokenization("for case in a; do\n" +
                 "echo\n" +
                 "done;", FOR_KEYWORD, WHITESPACE, CASE_KEYWORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
+    }
+
+    @Test
+    public void testCaseWhitespacePattern() throws Exception {
+        testTokenization("case x in\n" +
+                "a\\ b)\n" +
+                ";;\n" +
+                "esac", CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED, CASE_END, LINE_FEED, ESAC_KEYWORD);
 
     }
 
@@ -762,7 +770,6 @@ public class BashLexerTest {
     @Test
     public void testReadCommand() throws Exception {
         testTokenization("read \"var:\" v[i]", WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
-
     }
 
     @Test

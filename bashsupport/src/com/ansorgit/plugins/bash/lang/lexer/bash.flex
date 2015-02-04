@@ -148,8 +148,8 @@ BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst=[^|\")(# \n\r\f\t\f]
-CaseAfter=[^|\")( \n\r\f\t\f;]
+CaseFirst={EscapedChar} | [^|\")(# \n\r\f\t\f]
+CaseAfter={EscapedChar} | [^|\")( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"

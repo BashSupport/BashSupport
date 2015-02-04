@@ -21,53 +21,18 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ProductExpression;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection detects floating point arithmetic using Bash arithmetic (so it probably does not produce
  * the intended results).
  * <p/>
- * Date: 15.05.2009
- * Time: 14:56:55
  *
  * @author Joachim Ansorg
  */
 public class FloatArithmeticInspection extends AbstractBashInspection {
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "FloatArithmetic";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Integer division with remainder found.";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Integer division with remainder. Maybe you wanted floating point arithmetic (unsupported in Bash)?";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Detects floating point quotients in static expressions (e.g. '3/4') which give a probably unexpected result.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.INFO;
-    }
-
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {

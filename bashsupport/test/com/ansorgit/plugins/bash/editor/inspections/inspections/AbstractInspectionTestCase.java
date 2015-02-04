@@ -35,7 +35,7 @@ import org.junit.Assert;
 
 public abstract class AbstractInspectionTestCase extends InspectionTestCase {
     protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/inspection/";
+        return BashTestUtils.getBasePath() + "/psi/inspection";
     }
 
     @Override

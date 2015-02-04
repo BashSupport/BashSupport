@@ -18,56 +18,21 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashFiledescriptor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.tree.TokenSet;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Detects invalid filedescriptors. Bash only supports the descriptors 0-9.
- * <p/>
- * <p/>
- * Date: 09.05.2010
  *
  * @author Joachim Ansorg
  */
-public class UnknownFiledescriptorInspection extends AbstractBashInspection {
-    static final TokenSet FILTER = TokenSet.create(BashTokenTypes.FILEDESCRIPTOR);
-
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "UnknownFiledescriptor";
-    }
-
-    @NotNull
-    public String getShortName() {
-        return "Unknown filedescriptor";
-    }
-
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Unknown filedescriptor. Only &0 to &9 are valid.";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Bash supports the numbers 0-9 to identify filedescriptors. 0 is stdin, 1 is stdout and 2 is stderr.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
+public class UnknownFiledescriptorInspection extends LocalInspectionTool {
+    public UnknownFiledescriptorInspection() {
     }
 
     @NotNull

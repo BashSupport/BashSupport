@@ -22,54 +22,19 @@ import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateArithExprQu
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
+import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
  * Evaluate a static arithmetic expression. Offers a quickfix to insert the replacement value.
- * <p/>
- * User: jansorg
- * Date: Nov 15, 2009
- * Time: 12:48:24 AM
+ *
+ * @author jansorg
  */
-public class EvaluateArithmeticExpressionInspection extends AbstractBashInspection {
-    @Pattern("[a-zA-Z_0-9.]+")
-    @NotNull
-    @Override
-    public String getID() {
-        return "EvaluateArithmeticExpression";
-    }
-
-    @NotNull
-    @Override
-    public String getShortName() {
-        return "Evaluate arithmetic expression";
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getDisplayName() {
-        return "Evaluate an arithmetic expression";
-    }
-
-    @Override
-    public String getStaticDescription() {
-        return "Replaces a static arithmetic expression with the result. For example the expression 1 + 3 * 4 would be replaced with the evaluated result of 13.";
-    }
-
-    @NotNull
-    @Override
-    public HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.WARNING;
-    }
-
+public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
