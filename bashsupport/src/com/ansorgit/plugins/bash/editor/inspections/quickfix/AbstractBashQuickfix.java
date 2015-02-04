@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.editor.inspections.InspectionProvider;
+import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalQuickFix;
@@ -43,7 +43,7 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
 
     @NotNull
     public String getFamilyName() {
-        return InspectionProvider.BASH_FAMILY;
+        return BashInspections.FAMILY_NAME;
     }
 
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {

@@ -33,7 +33,7 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
-import com.intellij.util.containers.Stack;
+import com.intellij.util.containers.IntStack;
 
 %%
 
@@ -47,7 +47,7 @@ import com.intellij.util.containers.Stack;
 %type IElementType
 
 %{
-  private Stack<Integer> lastStates = new Stack<Integer>(25);
+  private IntStack lastStates = new IntStack(25);
   private int openParenths = 0;
   private boolean isBash4 = false;
 
@@ -56,19 +56,11 @@ import com.intellij.util.containers.Stack;
     this.isBash4 = com.ansorgit.plugins.bash.lang.BashVersion.Bash_v4.equals(version);
   }
 
-  private boolean isInState(Integer state) {
-    return yystate() == state;
-  }
-
-  private boolean isInNestedState(Integer state) {
-    return isInState(state) || lastStates.contains(state);
-  }
-
   /**
    * Goes to the given state and stores the previous state on the stack of states.
    * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
    */
-  private void goToState(Integer newState) {
+  private void goToState(int newState) {
     lastStates.push(yystate());
     yybegin(newState);
   }
@@ -78,12 +70,8 @@ import com.intellij.util.containers.Stack;
    * is no previous state then YYINITIAL, the initial state, is chosen.
    */
   private void backToPreviousState() {
-    if (lastStates.isEmpty()) {
-      throw new IllegalStateException("BashLexer: Tried to go to previous state, but not more state left.");
-    }
-    else {
-      yybegin(lastStates.pop());
-    }
+    // pop() will throw an exception if empty
+    yybegin(lastStates.pop());
   }
 
   //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
