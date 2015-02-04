@@ -56,19 +56,27 @@ import com.intellij.util.containers.Stack;
     this.isBash4 = com.ansorgit.plugins.bash.lang.BashVersion.Bash_v4.equals(version);
   }
 
+  private boolean isInState(Integer state) {
+    return yystate() == state;
+  }
+
+  private boolean isInNestedState(Integer state) {
+    return isInState(state) || lastStates.contains(state);
+  }
+
   /**
-  * Goes to the given state and stores the previous state on the stack of states.
-  * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
-  */
+   * Goes to the given state and stores the previous state on the stack of states.
+   * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
+   */
   private void goToState(Integer newState) {
     lastStates.push(yystate());
     yybegin(newState);
   }
 
   /**
-  * Goes back to the previous state of the lexer. If there
-  * is no previous state then YYINITIAL, the initial state, is chosen.
-  */
+   * Goes back to the previous state of the lexer. If there
+   * is no previous state then YYINITIAL, the initial state, is chosen.
+   */
   private void backToPreviousState() {
     if (lastStates.isEmpty()) {
       throw new IllegalStateException("BashLexer: Tried to go to previous state, but not more state left.");
@@ -148,8 +156,8 @@ BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst={EscapedChar} | [^|\")(# \n\r\f\t\f]
-CaseAfter={EscapedChar} | [^|\")( \n\r\f\t\f;]
+CaseFirst={EscapedChar} | [^|\"')(# \n\r\f\t\f]
+CaseAfter={EscapedChar} | [^|\"'`)( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
@@ -656,9 +664,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "{"                           { return LEFT_CURLY; }
 
-    "|&"                          { if (isBash4)
-                                        return PIPE_AMP; 
-                                     else {
+    "|&"                          { if (isBash4) {
+                                        return PIPE_AMP;
+                                     } else {
                                         yypushback(1);
                                         return PIPE;
                                      }
