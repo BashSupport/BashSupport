@@ -16,6 +16,6 @@ public class BashFunctionNameIndex extends StringStubIndexExtension<BashFunction
 
     @Override
     public int getVersion() {
-        return BashIndexVersion.VERSION;
+        return BashIndexVersion.STUB_INDEX_VERSION;
     }
 }

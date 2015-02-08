@@ -16,6 +16,6 @@ public class BashIncludeCommandIndex extends StringStubIndexExtension<BashInclud
 
     @Override
     public int getVersion() {
-        return BashIndexVersion.VERSION;
+        return BashIndexVersion.STUB_INDEX_VERSION;
     }
 }
