@@ -18,6 +18,6 @@ public class BashIdIndexer extends LexerBasedIdIndexer {
 
     @Override
     public int getVersion() {
-        return BashIndexVersion.ID_VERSION;
+        return BashIndexVersion.ID_INDEX_VERSION;
     }
 }

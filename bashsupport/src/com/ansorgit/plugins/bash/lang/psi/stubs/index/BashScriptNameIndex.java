@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
 
@@ -20,6 +19,6 @@ public class BashScriptNameIndex extends StringStubIndexExtension<BashFile> {
 
     @Override
     public int getVersion() {
-        return BashIndexVersion.VERSION;
+        return BashIndexVersion.STUB_INDEX_VERSION;
     }
 }

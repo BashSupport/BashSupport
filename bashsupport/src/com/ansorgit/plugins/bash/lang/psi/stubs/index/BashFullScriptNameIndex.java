@@ -16,6 +16,6 @@ public class BashFullScriptNameIndex extends StringStubIndexExtension<BashFile> 
 
     @Override
     public int getVersion() {
-        return BashIndexVersion.VERSION;
+        return BashIndexVersion.STUB_INDEX_VERSION;
     }
 }
