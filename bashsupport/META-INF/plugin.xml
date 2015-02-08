@@ -372,7 +372,7 @@
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
 
-        <localInspection language="Bash" level="ERROR" groupKey="inspection.groupName"
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
                          shortName="BashUnregisterGlobalVariableInspection"
                          key="inspection.unregisterGlovalVariable.name"
                          enabledByDefault="true"
