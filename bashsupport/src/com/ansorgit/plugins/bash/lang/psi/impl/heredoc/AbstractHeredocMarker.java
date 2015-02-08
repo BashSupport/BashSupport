@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
  * Time: 12:48:49 PM
  */
 abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker, PsiReference {
-    private final Object[] EMPTY = new Object[0];
+    private static final Object[] EMPTY = new Object[0];
     private final Class<? extends BashPsiElement> otherEndsType;
     private final boolean expectLater;
 
