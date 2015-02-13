@@ -1,5 +1,6 @@
 2015-02-13:
- - #186: Array access in a String was falsely flagg as "simple use of array variable"
+ - #184: Single quoted associative array keys parsing error
+ - #186: Erroneous warning "Simple use of array variable" when iterating through array
 
 2015-02-08:
  - NPE fix for FileInclusionManager

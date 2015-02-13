@@ -38,7 +38,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public final class ArithmeticParser implements ParsingFunction {
-    private ParsingFunction arithmeticExprParser = ArithmeticFactory.entryPoint();
+    private static final ParsingFunction arithmeticExprParser = ArithmeticFactory.entryPoint();
 
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();

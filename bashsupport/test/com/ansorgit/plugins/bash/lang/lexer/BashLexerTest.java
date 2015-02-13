@@ -94,6 +94,13 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testArrayWithString() throws Exception {
+        // ARR=(['foo']='someval' ['bar']='otherval')
+
+        testTokenization("a=(['x']=1)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, LEFT_SQUARE, STRING2, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
+    }
+
+    @Test
     public void testSquareBracketArithmeticExpr() {
         testTokenization("$[1]", DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
 

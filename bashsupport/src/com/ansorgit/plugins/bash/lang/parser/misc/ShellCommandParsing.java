@@ -66,7 +66,7 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
 
     public final ParsingFunction selectParser = new SelectParsingFunction();
 
-    public final ArithmeticParser arithmeticParser = new ArithmeticParser();
+    public static final ArithmeticParser arithmeticParser = new ArithmeticParser();
 
     public final ParsingFunction conditionalExpressionParser = new ConditionalExpressionParsingFunction();
 
