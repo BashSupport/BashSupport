@@ -1,3 +1,9 @@
+2015-02-13:
+ - #186: Array access in a String was falsely flagg as "simple use of array variable"
+
+2015-02-08:
+ - NPE fix for FileInclusionManager
+
 2015-02-04:
  - Version 1.3.4
  - Small performance and memory improvement in the Bash file lexer

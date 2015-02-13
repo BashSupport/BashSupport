@@ -16,4 +16,8 @@ public class SimpleArrayUseInspectionTest extends AbstractInspectionTestCase {
     public void testArrayAccessDeclared() throws Exception {
         doTest("simpleArrayUseInspection/arrayAccessDeclared", new SimpleArrayUseInspection());
     }
+
+    public void testArrayStringUse() throws Exception {
+        doTest("simpleArrayUseInspection/arrayStringUse", new SimpleArrayUseInspection());
+    }
 }
