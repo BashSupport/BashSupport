@@ -29,7 +29,7 @@ import com.intellij.psi.tree.TokenSet;
  * Time: 18:36:58
  */
 public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
-    private static ParenExpr parenExpr = new ParenExpr();
+    private static final ParenExpr parenExpr = new ParenExpr();
 
     private ArithmeticFactory() {
     }

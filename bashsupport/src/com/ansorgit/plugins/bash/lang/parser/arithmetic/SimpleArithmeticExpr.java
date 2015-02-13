@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -38,7 +39,9 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                 || arithLiterals.contains(tokenType)
                 || arithmeticAdditionOps.contains(builder.getTokenType())
                 || Parsing.var.isValid(builder)
-                || Parsing.word.isWordToken(builder);
+                || Parsing.word.isWordToken(builder)
+                || Parsing.word.isComposedString(tokenType)
+                || ShellCommandParsing.arithmeticParser.isValid(builder);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -64,8 +67,12 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                 } else if (Parsing.var.isValid(builder)) {
                     //fixme whitespace on?
                     ok = Parsing.var.parse(builder);
-                } else if (Parsing.word.isWordToken(builder)) {
+                } else if (Parsing.word.isComposedString(tokenType)) {
                     ok = Parsing.word.parseComposedString(builder);
+                } else if (Parsing.word.isWordToken(builder)) {
+                    ok = Parsing.word.parseWord(builder);
+                } else if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
+                    ok = ShellCommandParsing.arithmeticParser.parse(builder);
                 } else {
                     ok = false;
                     break;
@@ -74,7 +81,9 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                 //next, including whitespace
                 tokenType = builder.getTokenType(true);
             }
-            while (ok && (tokenType == WORD || arithLiterals.contains(tokenType) || Parsing.var.isValid(builder) || Parsing.word.isWordToken(builder)));
+            while (ok && isValidPart(builder, tokenType));
+
+            //FIXME checking twice in the loop and in the invariant condition is not efficient
         }
 
         if (ok) {
@@ -84,5 +93,14 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         }
 
         return ok;
+    }
+
+    private boolean isValidPart(BashPsiBuilder builder, IElementType tokenType) {
+        return tokenType == WORD
+                || arithLiterals.contains(tokenType)
+                || Parsing.var.isValid(builder)
+                || Parsing.word.isWordToken(builder)
+                || Parsing.word.isComposedString(tokenType)
+                || ShellCommandParsing.arithmeticParser.isValid(builder);
     }
 }
