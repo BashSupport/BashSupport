@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
@@ -66,8 +67,9 @@ public class FileInclusionManager {
             GlobalSearchScope moduleScope = BashSearchScopes.moduleScope(file);
             Collection<BashIncludeCommand> commands = StubIndex.getInstance().get(BashIncludeCommandIndex.KEY, file.getName(), file.getProject(), moduleScope);
             for (BashIncludeCommand command : commands) {
-                if (command.getFileReference().isStatic()) {
-                    PsiFile referencedFile = command.getFileReference().findReferencedFile();
+                BashFileReference fileReference = command.getFileReference();
+                if (fileReference != null && fileReference.isStatic()) {
+                    PsiFile referencedFile = fileReference.findReferencedFile();
                     if (bashOnly && !(referencedFile instanceof BashFile)) {
                         continue;
                     }
