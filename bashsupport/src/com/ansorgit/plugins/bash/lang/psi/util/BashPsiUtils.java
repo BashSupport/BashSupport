@@ -34,7 +34,6 @@ import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.CompositeElement;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -429,7 +428,7 @@ public final class BashPsiUtils {
     }
 
     public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps) {
-        for (PsiElement current = start; current != null && maxSteps-- > 0; current = current.getParent()) {
+        for (PsiElement current = start; current != null && maxSteps-- >= 0; current = current.getParent()) {
             if (parentType.isInstance(current)) {
                 return true;
             }
