@@ -49,7 +49,7 @@ public class ComposedVariableParsing implements ParsingFunction {
 
     public boolean parse(BashPsiBuilder builder) {
         final PsiBuilder.Marker varMarker = builder.mark();
-        builder.advanceLexer(); //DOLAR token
+        builder.advanceLexer(); //DOLLAR token
 
         final IElementType nextToken = builder.getTokenType(true);
         if (nextToken == WHITESPACE) {
