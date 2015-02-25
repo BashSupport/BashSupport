@@ -7,5 +7,5 @@ public class HighlightingKeys {
 
     }
 
-    public static Key<Boolean> IS_UNUSED = Key.create("BASH_IS_UNUSED");
+    public static final Key<Boolean> IS_UNUSED = Key.create("BASH_IS_UNUSED");
 }

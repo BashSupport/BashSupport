@@ -34,19 +34,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class PostHighlightingPass extends TextEditorHighlightingPass {
-    private static final Logger LOG = Logger.getInstance("#com.intellij.codeInsight.daemon.impl.PostHighlightingPass");
-    @NotNull
-    private final Project project;
+    //private static final Logger LOG = Logger.getInstance("#com.intellij.codeInsight.daemon.impl.PostHighlightingPass");
+
     @NotNull
     private final PsiFile file;
-    @Nullable
-    private final Editor editor;
-    @NotNull
-    private final Document document;
-    private HighlightDisplayKey unusedSymbolInspection;
     private int startOffset;
     private int endOffset;
     private Collection<HighlightInfo> highlights;
@@ -54,18 +49,16 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
     PostHighlightingPass(@NotNull Project project, @NotNull PsiFile file, @Nullable Editor editor, @NotNull Document document) {
         super(project, document, true);
 
-        this.project = project;
         this.file = file;
-        this.editor = editor;
-        this.document = document;
 
         startOffset = 0;
         endOffset = file.getTextLength();
     }
 
+    @NotNull
     @Override
     public List<HighlightInfo> getInfos() {
-        return highlights == null ? null : new ArrayList<HighlightInfo>(highlights);
+        return highlights == null ? Collections.<HighlightInfo>emptyList() : new ArrayList<HighlightInfo>(highlights);
     }
 
     public static HighlightInfo createUnusedSymbolInfo(@NotNull PsiElement element, @NotNull String message, @NotNull final HighlightInfoType highlightInfoType) {
@@ -93,7 +86,7 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
 
         InspectionProfile profile = InspectionProjectProfileManager.getInstance(myProject).getInspectionProfile();
 
-        unusedSymbolInspection = HighlightDisplayKey.findById(UnusedFunctionDefInspection.ID);
+        HighlightDisplayKey unusedSymbolInspection = HighlightDisplayKey.findById(UnusedFunctionDefInspection.ID);
 
         boolean findUnusedFunctions = profile.isToolEnabled(unusedSymbolInspection, file);
         if (findUnusedFunctions) {
@@ -142,11 +135,11 @@ public class PostHighlightingPass extends TextEditorHighlightingPass {
 
     @Override
     public void doApplyInformationToEditor() {
-        if (highlights == null || highlights.isEmpty()) {
+        if (highlights == null || highlights.isEmpty() || myDocument == null) {
             return;
         }
 
-        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), Pass.POST_UPDATE_ALL);
+        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), Pass.LAST_PASS);
         BashPostHighlightingPassFactory.markFileUpToDate(file);
     }
 }
