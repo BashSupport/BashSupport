@@ -30,6 +30,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory which provides text editor highlighters for the Bash file type.
@@ -52,6 +53,7 @@ public class RemoveHighlightingPassFactory extends AbstractProjectComponent impl
         return BashComponents.RemoveHighlighterFactory;
     }
 
+    @Nullable
     public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
         if (file instanceof BashFile) {
             return new RemoveHighlightingPass(file.getProject(), (BashFile) file, editor);

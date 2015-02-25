@@ -56,7 +56,7 @@ public class BashPostHighlightingPassFactory extends AbstractProjectComponent im
     }
 
     public void projectOpened() {
-        registrar.registerTextEditorHighlightingPass(this, new int[]{Pass.UPDATE_ALL}, null, true, Pass.POST_UPDATE_ALL);
+        registrar.registerTextEditorHighlightingPass(this, new int[]{Pass.UPDATE_ALL}, null, true, Pass.LAST_PASS);
     }
 
     @NonNls
