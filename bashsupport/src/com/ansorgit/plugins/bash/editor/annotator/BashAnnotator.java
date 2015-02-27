@@ -48,6 +48,8 @@ import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * The annotator for the the Bash language.
  * It takes care of the advanced syntax highlighting options.
@@ -103,8 +105,12 @@ public class BashAnnotator implements Annotator {
     }
 
     private void annotateArithmeticIncrement(IncrementExpression element, AnnotationHolder annotationHolder) {
-        ArithmeticExpression first = element.subexpressions().get(0);
+        List<ArithmeticExpression> subexpressions = element.subexpressions();
+        if (subexpressions.isEmpty()) {
+            return;
+        }
 
+        ArithmeticExpression first = subexpressions.get(0);
         if (first instanceof SimpleExpression && !(first.getFirstChild() instanceof BashVar)) {
             PsiElement operator = element.findOperatorElement();
             if (operator != null) {
