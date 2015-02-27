@@ -41,7 +41,7 @@ import java.util.Set;
  * Date: Dec 3, 2009
  * Time: 10:32:06 PM
  */
-class DynamicPathCompletionProvider extends BashCompletionProvider {
+class DynamicPathCompletionProvider extends AbstractBashCompletionProvider {
     private static final Set<String> homePrefixes = Sets.newHashSet("$HOME", "~");
     private static final Set<String> supportedPrefixes = Sets.newHashSet("$HOME", "~", ".");
 

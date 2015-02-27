@@ -45,7 +45,7 @@ import java.util.Collection;
 /**
  * Provides command completion.
  */
-class CommandNameCompletionProvider extends BashCompletionProvider {
+class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
         BashPsiPattern internal = new BashPsiPattern().withParent(BashInternalCommand.class);

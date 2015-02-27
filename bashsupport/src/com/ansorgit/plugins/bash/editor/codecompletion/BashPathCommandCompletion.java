@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -44,7 +45,7 @@ public class BashPathCommandCompletion implements ApplicationComponent {
     public void initComponent() {
         String envPath = System.getenv("PATH");
         if (envPath != null) {
-            String[] split = envPath.split(":");
+            String[] split = StringUtils.split(envPath, ':');
             if (split != null) {
                 //fixme better do this in a background task?
                 for (String path : Arrays.asList(split)) {
