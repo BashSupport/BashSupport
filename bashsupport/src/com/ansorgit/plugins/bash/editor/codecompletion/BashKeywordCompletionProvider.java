@@ -48,6 +48,10 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
         }
     };
 
+    void addTo(CompletionContributor contributor) {
+        contributor.extend(CompletionType.BASIC, KEYWORD_PATTERN, this);
+    }
+
     @Override
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet resultWithoutPrefix) {
         if (currentText != null && currentText.startsWith("$")) {
@@ -57,9 +61,5 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
         for (String keyword : LanguageBuiltins.completionKeywords) {
             resultWithoutPrefix.addElement(LookupElementBuilder.create(keyword).bold());
         }
-    }
-
-    void addTo(CompletionContributor contributor) {
-        contributor.extend(CompletionType.BASIC, KEYWORD_PATTERN, this);
     }
 }
