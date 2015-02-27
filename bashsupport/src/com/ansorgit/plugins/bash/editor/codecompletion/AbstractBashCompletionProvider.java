@@ -31,8 +31,8 @@ import java.util.List;
 /**
  * Abstract base class for completion providers in Bash files.
  */
-abstract class BashCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public BashCompletionProvider() {
+abstract class AbstractBashCompletionProvider extends CompletionProvider<CompletionParameters> {
+    public AbstractBashCompletionProvider() {
     }
 
     abstract void addTo(CompletionContributor contributor);

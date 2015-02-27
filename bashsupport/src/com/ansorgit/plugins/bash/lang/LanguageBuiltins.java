@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang;
 
 import com.google.common.collect.Sets;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -117,4 +118,8 @@ public final class LanguageBuiltins {
     public static final Collection<String> bashInjectionHostCommand = Sets.newHashSet(
             "eval", "trap"
     );
+
+    public static final Collection<String> completionKeywords = Sets.newLinkedHashSet(Arrays.asList(
+            "if", "then", "elif", "else", "fi", "while", "do", "done", "until", "case", "in", "esac", "true", "false"
+    ));
 }

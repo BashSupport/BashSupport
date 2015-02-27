@@ -1,8 +1,10 @@
 2015-02-27:
  - #192: Fixed NPE in highlighting of arithmetic expressions
+ - #170: Keywords like "fi", "if", "while", "done" were not offered in the list of autocompletion suggestions
  - Fixed autocompletion at the end of a string, e.g. "$a<caret>". The string end marker was replaced if tab was pressed.
  - Fixed autocompletion with open strings, e.g. $a<caret>\necho "x". The command in the next line was removed if tab was pressed.
  - Fixed autocompletion in curly brackets, e.g. ${<caret>}. The right curly bracket was removed if tab was pressed.
+ - Fixed missing autocompletion of global variables and built-in commands inside of parameter expansions
 
 2015-02-13:
  - #184: Single quoted associative array keys parsing error
