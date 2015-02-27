@@ -24,6 +24,7 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
 import com.intellij.codeInsight.completion.OffsetMap;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.codeInsight.completion.CompletionInitializationContext.IDENTIFIER_END_OFFSET;
@@ -33,6 +34,9 @@ import static com.intellij.codeInsight.completion.CompletionInitializationContex
  * Bash completion contributor.
  */
 public class BashCompletionContributor extends CompletionContributor {
+    private final static TokenSet endTokens = TokenSet.create(BashTokenTypes.STRING_END, BashTokenTypes.RIGHT_CURLY);
+    private final static TokenSet wordTokens = TokenSet.create(BashTokenTypes.WORD);
+
     public BashCompletionContributor() {
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider().addTo(this);
@@ -66,9 +70,19 @@ public class BashCompletionContributor extends CompletionContributor {
 
         //if the completion is like "$<caret>" then element is the string end marker
         // in that case set the end before the end marker
-        if (element.getNode().getElementType() == BashTokenTypes.STRING_END) {
+        if (endTokens.contains(element.getNode().getElementType())) {
             offsetMap.addOffset(START_OFFSET, element.getTextOffset());
             offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset());
+            return;
+        }
+
+        if (wordTokens.contains(element.getNode().getElementType())) {
+            //in a completion like "$abc<caret> def" the element is a word psi lead element, in this case to not expand the autocompletion after the whitespace character
+            int whitespaceIndex = element.getText().indexOf(' ');
+            if (whitespaceIndex >= 0) {
+                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + whitespaceIndex);
+            }
+
             return;
         }
 
@@ -79,7 +93,19 @@ public class BashCompletionContributor extends CompletionContributor {
 
         if (element instanceof BashWord) {
             offsetMap.addOffset(START_OFFSET, element.getTextOffset());
-            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextRange().getEndOffset());
+
+            // https://code.google.com/p/bashsupport/issues/detail?id=51
+            // a completion at the end of a line with an open string is parsed as string until the first quote in the next line(s)
+            // in the case of a newline character in the string the end offset is set to the end of the string to avoid aggressive string replacements
+
+            String text = element.getText();
+            int newlineIndex = text.indexOf('\n');
+            if (newlineIndex > 0) {
+                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + newlineIndex);
+            } else {
+                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextRange().getEndOffset());
+            }
+
         }
     }
 }
