@@ -25,6 +25,7 @@ import com.intellij.codeInsight.completion.CompletionInitializationContext;
 import com.intellij.codeInsight.completion.OffsetMap;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.codeInsight.completion.CompletionInitializationContext.IDENTIFIER_END_OFFSET;
@@ -77,13 +78,9 @@ public class BashCompletionContributor extends CompletionContributor {
         }
 
         if (wordTokens.contains(element.getNode().getElementType())) {
-            //in a completion like "$abc<caret> def" the element is a word psi lead element, in this case to not expand the autocompletion after the whitespace character
-            int whitespaceIndex = element.getText().indexOf(' ');
-            if (whitespaceIndex >= 0) {
-                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + whitespaceIndex);
+            if (fixReplacementOffsetInString(element, offsetMap)) {
+                return;
             }
-
-            return;
         }
 
         //try the parent if it's not already a BashWord
@@ -98,14 +95,26 @@ public class BashCompletionContributor extends CompletionContributor {
             // a completion at the end of a line with an open string is parsed as string until the first quote in the next line(s)
             // in the case of a newline character in the string the end offset is set to the end of the string to avoid aggressive string replacements
 
-            String text = element.getText();
-            int newlineIndex = text.indexOf('\n');
-            if (newlineIndex > 0) {
-                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + newlineIndex);
-            } else {
+            if (!fixReplacementOffsetInString(element, offsetMap)) {
                 offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextRange().getEndOffset());
             }
 
         }
+    }
+
+    /**
+     * In a completion like "$abc<caret> def" the element is a word psi lead element, in this case to not expand the autocompletion after the whitespace character
+     * https://code.google.com/p/bashsupport/issues/detail?id=51
+     * a completion at the end of a line with an open string is parsed as string until the first quote in the next line(s)
+     * in the case of a newline character in the string the end offset is set to the end of the string to avoid aggressive string replacements
+     */
+    private boolean fixReplacementOffsetInString(PsiElement element, OffsetMap offsetMap) {
+        int endCharIndex = StringUtils.indexOfAny(element.getText(), new char[]{'\n', ' '});
+        if (endCharIndex > 0) {
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + endCharIndex);
+            return true;
+        }
+
+        return false;
     }
 }
