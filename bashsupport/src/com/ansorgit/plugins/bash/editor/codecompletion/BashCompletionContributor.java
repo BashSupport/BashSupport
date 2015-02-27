@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
@@ -61,18 +62,24 @@ public class BashCompletionContributor extends CompletionContributor {
             return;
         }
 
+        OffsetMap offsetMap = context.getOffsetMap();
+
+        //if the completion is like "$<caret>" then element is the string end marker
+        // in that case set the end before the end marker
+        if (element.getNode().getElementType() == BashTokenTypes.STRING_END) {
+            offsetMap.addOffset(START_OFFSET, element.getTextOffset());
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset());
+            return;
+        }
+
         //try the parent if it's not already a BashWord
         if (!(element instanceof BashWord)) {
             element = element.getParent();
         }
 
         if (element instanceof BashWord) {
-            int endOffset = element.getTextOffset() + element.getTextLength();
-
-            OffsetMap offsetMap = context.getOffsetMap();
             offsetMap.addOffset(START_OFFSET, element.getTextOffset());
-            offsetMap.addOffset(IDENTIFIER_END_OFFSET, endOffset);
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextRange().getEndOffset());
         }
     }
-
 }

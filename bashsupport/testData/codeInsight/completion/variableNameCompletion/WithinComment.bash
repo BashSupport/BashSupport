@@ -1,4 +1,5 @@
 #!/bin/sh
 
-myVar=
-#myV<caret>
+myVar1=
+myVar2=
+# myV<caret>

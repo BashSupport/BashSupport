@@ -88,7 +88,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     }
 
     //@Ignore("Completion inside comments seems to be IntelliJ's word completion")
-    public void testWithinComment() throws Exception {
+    public void _testWithinComment() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);

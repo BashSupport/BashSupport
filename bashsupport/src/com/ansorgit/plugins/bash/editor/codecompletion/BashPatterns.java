@@ -29,10 +29,14 @@ import org.jetbrains.annotations.NotNull;
  * Time: 19:10
  */
 class BashPatterns {
+    public static BashPsiPattern afterDollar = new BashPsiPattern().withText("$");
+
     private BashPatterns() {
     }
 
-    public static BashPsiPattern afterDollar = new BashPsiPattern().withText("$");
+    public static BashCharPattern charPattern() {
+        return new BashCharPattern();
+    }
 
     static class BashCharPattern extends CharPattern {
         private BashCharPattern() {
@@ -45,9 +49,5 @@ class BashPatterns {
                 }
             });
         }
-    }
-
-    public static BashCharPattern charPattern() {
-        return new BashCharPattern();
     }
 }

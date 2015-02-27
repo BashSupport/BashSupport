@@ -80,7 +80,7 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
             addBuildInVariables(result, project);
             addGlobalVariables(result, project);
         } else {
-            CompletionService.getCompletionService().setAdvertisementText("Press twice for global variables");
+            result.addLookupAdvertisement("Press twice for global variables");
         }
     }
 

@@ -1,3 +1,7 @@
+2015-02-27:
+ - #192: Fixed NPE in highlighting of arithmetic expressions
+ - Fixed faulty autocompletion at the end of a string, e.g. "$a<caret>" (The string end marker was removed)
+
 2015-02-13:
  - #184: Single quoted associative array keys parsing error
  - #186: Erroneous warning "Simple use of array variable" when iterating through array
