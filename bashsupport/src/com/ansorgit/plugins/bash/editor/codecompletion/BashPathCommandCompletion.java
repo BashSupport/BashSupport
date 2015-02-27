@@ -33,12 +33,12 @@ import java.util.TreeSet;
  * @author jansorg
  */
 public class BashPathCommandCompletion implements ApplicationComponent {
+    //may only be modified in the initComponent method, because it's not serialzed
+    private final TreeSet<String> cachedCommands = new TreeSet<String>();
+
     public static BashPathCommandCompletion getInstance() {
         return ApplicationManager.getApplication().getComponent(BashPathCommandCompletion.class);
     }
-
-    //may only be modified in the initComponent method, because it's not serialzed
-    private final TreeSet<String> cachedCommands = new TreeSet<String>();
 
     @Override
     public void initComponent() {

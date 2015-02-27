@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.PrioritizedLookupElement;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiNamedElement;
 
 import javax.swing.*;
