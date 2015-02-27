@@ -31,6 +31,7 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -85,8 +86,13 @@ public abstract class AbstractExpression extends BashBaseStubElementImpl<StubEle
         this.isStatic = null;
     }
 
+    //fixme cache this?
+    @NotNull
     public List<ArithmeticExpression> subexpressions() {
-        //fixme cache this?
+        if (getFirstChild() == null) {
+            return Collections.emptyList();
+        }
+
         return Arrays.asList(findChildrenByClass(ArithmeticExpression.class));
     }
 
