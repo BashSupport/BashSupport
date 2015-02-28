@@ -263,7 +263,9 @@
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
         <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
 
-
+        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
+        <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
+        
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
