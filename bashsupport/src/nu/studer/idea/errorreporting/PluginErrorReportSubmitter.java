@@ -22,7 +22,6 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationInfo;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.Logger;
@@ -96,7 +95,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
     }
 
     @Override
-    public boolean submit(@NotNull IdeaLoggingEvent[] events, @Nullable String additionalInfo, @NotNull final Component parentComponent, @NotNull final Consumer<SubmittedReportInfo> consumer) {
+    public SubmittedReportInfo submit(IdeaLoggingEvent[] events, final Component parentComponent) {
         final DataContext dataContext = DataManager.getInstance().getDataContext(parentComponent);
         final Project project = CommonDataKeys.PROJECT.getData(dataContext);
 
@@ -111,12 +110,14 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
 
         StringBuilder versionId = new StringBuilder();
         versionId.append(properties.getProperty(PLUGIN_ID_PROPERTY_KEY)).append(" ").append(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
-
+        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asString());
+        
         // show modal error submission dialog
         PluginErrorSubmitDialog dialog = new PluginErrorSubmitDialog(parentComponent);
-        dialog.prepare(additionalInfo, stacktrace.toString(), versionId.toString());
+        dialog.prepare("", stacktrace.toString(), versionId.toString());
         dialog.show();
+
+        final SubmittedReportInfo[] result = {null};
 
         // submit error to server if user pressed SEND
         int code = dialog.getExitCode();
@@ -131,28 +132,20 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                     new Consumer<SubmittedReportInfo>() {
                         @Override
                         public void consume(SubmittedReportInfo submittedReportInfo) {
-                            consumer.consume(submittedReportInfo);
-
-                            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
-                                }
-                            });
+                            result[0] = submittedReportInfo;
+                            //Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void consume(Throwable throwable) {
                             LOGGER.info("Error submission failed", throwable);
-                            consumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED));
+                            result[0 ] = new SubmittedReportInfo("http://www.ansorg-it.com/en/products_bashsupport.html", "BashSupport", SubmittedReportInfo.SubmissionStatus.FAILED);
                         }
                     }
             );
-
-            return true;
         }
 
-        return false;
+        return result[0];
     }
 
     private void submitToServer(Project project,
@@ -188,32 +181,28 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
             return;
         }
 
-        Task.Backgroundable task = new Task.Backgroundable(project, PluginErrorReportSubmitterBundle.message("progress.dialog.title"), false) {
+        Runnable task = new Runnable() {
             @Override
-            public void run(@NotNull ProgressIndicator indicator) {
-                indicator.setText(PluginErrorReportSubmitterBundle.message("progress.dialog.text"));
-                indicator.setIndeterminate(true);
-
+            public void run() {
                 LoggingEventSubmitter submitter = new TextStreamLoggingEventSubmitter(serverUrl);
                 submitter.setPluginId(properties.getProperty(PLUGIN_ID_PROPERTY_KEY));
                 submitter.setPluginName(properties.getProperty(PLUGIN_NAME_PROPERTY_KEY));
                 submitter.setPluginVersion(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asString());
                 submitter.setEmailTo(splitByBlanks(properties.getProperty(EMAIL_TO_PROPERTY_KEY)));
                 submitter.setEmailCc(splitByBlanks(properties.getProperty(EMAIL_CC_PROPERTY_KEY)));
 
                 try {
                     submitter.submit(stacktrace, description, user);
 
-                    successConsumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.NEW_ISSUE));
+                    successConsumer.consume(new SubmittedReportInfo("http://www.ansorg-it.com/en/products_bashsupport.html", "BashSupport", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE));
                 } catch (LoggingEventSubmitter.SubmitException e) {
                     //ignore
                 }
             }
         };
 
-        BackgroundableProcessIndicator indicator = new BackgroundableProcessIndicator(task);
-        ProgressManager.getInstance().runProcessWithProgressAsynchronously(task, indicator);
+        ProgressManager.getInstance().runProcessWithProgressSynchronously(task, "", false, project);
     }
 
     private boolean tryConnectOnly(String serverUrl) {

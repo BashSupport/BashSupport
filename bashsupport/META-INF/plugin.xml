@@ -20,12 +20,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.3.4</version>
+    <version>1.3.4_idea13</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 14.0 or later -->
-    <idea-version since-build="139.0" until-build="140.99999"/>
+    <!-- Requires IDEA 13.x or later -->
+    <idea-version since-build="135.0" until-build="137.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
 
@@ -263,9 +263,7 @@
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
         <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
 
-        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
-        <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
-        
+
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
