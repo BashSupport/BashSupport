@@ -130,11 +130,13 @@ public class ListParsing implements ParsingTool {
     //fixme refactor this to include markers, take care of recursive calls
 
     public boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand) {
-        //used only to mark composed commands which combine several commands, not for single commands
-        //or a command list
-        PsiBuilder.Marker m = builder.mark();
-        BashSmartMarker composedMarker = new BashSmartMarker(m);
+        if (!Parsing.pipeline.isPipelineCommand(builder)) {
+            builder.error("Expected a command");
+            return false;
+        }
 
+        //used only to mark composed commands which combine several commands, not for single commands or a command list
+        PsiBuilder.Marker composedMarker = builder.mark();
         if (!Parsing.pipeline.parsePipelineCommand(builder)) {
             composedMarker.drop();
             return false;
