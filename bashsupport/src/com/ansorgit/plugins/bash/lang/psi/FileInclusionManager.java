@@ -52,6 +52,11 @@ public class FileInclusionManager {
             return Collections.emptySet();
         }
 
+        if (DumbService.isDumb(sourceFile.getProject())) {
+            return Collections.emptySet();
+        }
+
+
         Set<PsiFile> includersTodo = Sets.newHashSet(sourceFile.getContainingFile());
         Set<PsiFile> includersDone = Sets.newHashSet();
 
@@ -59,13 +64,17 @@ public class FileInclusionManager {
 
         while (!includersTodo.isEmpty()) {
             Iterator<PsiFile> iterator = includersTodo.iterator();
+
             PsiFile file = iterator.next();
             iterator.remove();
 
             includersDone.add(file);
 
-            GlobalSearchScope moduleScope = BashSearchScopes.moduleScope(file);
-            Collection<BashIncludeCommand> commands = StubIndex.getInstance().get(BashIncludeCommandIndex.KEY, file.getName(), file.getProject(), moduleScope);
+            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, file.getName(), file.getProject(), BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
+            if (commands == null) {
+                continue;
+            }
+
             for (BashIncludeCommand command : commands) {
                 BashFileReference fileReference = command.getFileReference();
                 if (fileReference != null && fileReference.isStatic()) {
@@ -110,9 +119,12 @@ public class FileInclusionManager {
 
         GlobalSearchScope searchScope = BashSearchScopes.moduleScope(file);
 
-        Set<BashFile> includers = Sets.newHashSet();
-
         Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, file.getName(), project, searchScope, BashIncludeCommand.class);
+        if (includeCommands == null) {
+            return Collections.emptySet();
+        }
+
+        Set<BashFile> includers = Sets.newHashSet();
         for (BashIncludeCommand command : includeCommands) {
             BashFile includer = (BashFile) command.getContainingFile();
 
