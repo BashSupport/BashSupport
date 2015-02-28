@@ -1,6 +1,7 @@
 2015-02-28:
  - Added live template context for Bash files
  - Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3
+ - Possible fix for a stack overflow in the parser (not reproducible here, though)
 
 2015-02-27:
  - #192: Fixed NPE in highlighting of arithmetic expressions
