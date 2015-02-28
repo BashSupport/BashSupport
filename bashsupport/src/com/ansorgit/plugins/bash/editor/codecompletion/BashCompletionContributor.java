@@ -18,11 +18,14 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
 import com.intellij.codeInsight.completion.OffsetMap;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.TokenSet;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.codeInsight.completion.CompletionInitializationContext.IDENTIFIER_END_OFFSET;
@@ -32,12 +35,16 @@ import static com.intellij.codeInsight.completion.CompletionInitializationContex
  * Bash completion contributor.
  */
 public class BashCompletionContributor extends CompletionContributor {
+    private final static TokenSet endTokens = TokenSet.create(BashTokenTypes.STRING_END, BashTokenTypes.RIGHT_CURLY);
+    private final static TokenSet wordTokens = TokenSet.create(BashTokenTypes.WORD);
+
     public BashCompletionContributor() {
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider().addTo(this);
         new AbsolutePathCompletionProvider().addTo(this);
         new ShebangPathCompletionProvider().addTo(this);
         new DynamicPathCompletionProvider().addTo(this);
+        new BashKeywordCompletionProvider().addTo(this);
     }
 
     @Override
@@ -61,18 +68,54 @@ public class BashCompletionContributor extends CompletionContributor {
             return;
         }
 
+        OffsetMap offsetMap = context.getOffsetMap();
+
+        //if the completion is like "$<caret>" then element is the string end marker
+        // in that case set the end before the end marker
+        if (endTokens.contains(element.getNode().getElementType())) {
+            offsetMap.addOffset(START_OFFSET, element.getTextOffset());
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset());
+            return;
+        }
+
+        if (wordTokens.contains(element.getNode().getElementType())) {
+            if (fixReplacementOffsetInString(element, offsetMap)) {
+                return;
+            }
+        }
+
         //try the parent if it's not already a BashWord
         if (!(element instanceof BashWord)) {
             element = element.getParent();
         }
 
         if (element instanceof BashWord) {
-            int endOffset = element.getTextOffset() + element.getTextLength();
-
-            OffsetMap offsetMap = context.getOffsetMap();
             offsetMap.addOffset(START_OFFSET, element.getTextOffset());
-            offsetMap.addOffset(IDENTIFIER_END_OFFSET, endOffset);
+
+            // https://code.google.com/p/bashsupport/issues/detail?id=51
+            // a completion at the end of a line with an open string is parsed as string until the first quote in the next line(s)
+            // in the case of a newline character in the string the end offset is set to the end of the string to avoid aggressive string replacements
+
+            if (!fixReplacementOffsetInString(element, offsetMap)) {
+                offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextRange().getEndOffset());
+            }
+
         }
     }
 
+    /**
+     * In a completion like "$abc<caret> def" the element is a word psi lead element, in this case to not expand the autocompletion after the whitespace character
+     * https://code.google.com/p/bashsupport/issues/detail?id=51
+     * a completion at the end of a line with an open string is parsed as string until the first quote in the next line(s)
+     * in the case of a newline character in the string the end offset is set to the end of the string to avoid aggressive string replacements
+     */
+    private boolean fixReplacementOffsetInString(PsiElement element, OffsetMap offsetMap) {
+        int endCharIndex = StringUtils.indexOfAny(element.getText(), new char[]{'\n', ' '});
+        if (endCharIndex > 0) {
+            offsetMap.addOffset(IDENTIFIER_END_OFFSET, element.getTextOffset() + endCharIndex);
+            return true;
+        }
+
+        return false;
+    }
 }
