@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
+public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
@@ -81,7 +81,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     }
 
     @Nullable
-    public IElementType getTokenType(boolean withWhitespace) {
+    public final IElementType getTokenType(boolean withWhitespace) {
         return withWhitespace ? rawLookup(0) : getTokenType();
     }
 
@@ -155,7 +155,7 @@ public class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     private final ParsingStateData parsingStateData = new ParsingStateData();
 
     public void remapShebangToComment() {
-        tokenRemapper.setMapShebangToComment(true);
+        tokenRemapper.enableShebangToCommentMapping();
     }
 
     /**

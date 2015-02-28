@@ -16,8 +16,12 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser;
+package com.ansorgit.plugins.bash.lang.parser.misc;
 
+import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.misc.RecursionGuard;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -31,7 +35,7 @@ public class ListParsingTest extends MockPsiTest {
     private MockFunction list1ParsingTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.list.parseList1(builder, false, false);
+            return Parsing.list.parseList1(builder, false, false, RecursionGuard.initial());
         }
     };
 
