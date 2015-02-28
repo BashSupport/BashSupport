@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -33,18 +34,18 @@ import java.util.TreeSet;
  * @author jansorg
  */
 public class BashPathCommandCompletion implements ApplicationComponent {
+    //may only be modified in the initComponent method, because it's not serialzed
+    private final TreeSet<String> cachedCommands = new TreeSet<String>();
+
     public static BashPathCommandCompletion getInstance() {
         return ApplicationManager.getApplication().getComponent(BashPathCommandCompletion.class);
     }
-
-    //may only be modified in the initComponent method, because it's not serialzed
-    private final TreeSet<String> cachedCommands = new TreeSet<String>();
 
     @Override
     public void initComponent() {
         String envPath = System.getenv("PATH");
         if (envPath != null) {
-            String[] split = envPath.split(":");
+            String[] split = StringUtils.split(envPath, ':');
             if (split != null) {
                 //fixme better do this in a background task?
                 for (String path : Arrays.asList(split)) {

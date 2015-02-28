@@ -39,7 +39,7 @@ import java.util.Collection;
 /**
  * Completion provider for variable names.
  */
-class VariableNameCompletionProvider extends BashCompletionProvider {
+class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
     @Override
     void addTo(CompletionContributor contributor) {
         BashPsiPattern insideVar = new BashPsiPattern().withParent(BashVar.class);
@@ -75,12 +75,12 @@ class VariableNameCompletionProvider extends BashCompletionProvider {
             resultLength += addCollectedVariables(lookupElement, result, new BashVarVariantsProcessor(lookupElement));
         }
 
-        if (currentText != null && dollarPrefix && (invocationCount >= 2 || resultLength == 0)) {
+        if (currentText != null && (dollarPrefix || insideExpansion) && (invocationCount >= 2 || resultLength == 0)) {
             Project project = element.getProject();
             addBuildInVariables(result, project);
             addGlobalVariables(result, project);
         } else {
-            CompletionService.getCompletionService().setAdvertisementText("Press twice for global variables");
+            result.addLookupAdvertisement("Press twice for global variables");
         }
     }
 

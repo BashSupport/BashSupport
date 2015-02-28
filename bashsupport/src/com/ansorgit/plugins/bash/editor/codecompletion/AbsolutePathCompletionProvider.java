@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * This completion provider provides code completion for file / directory paths in the file.
  */
-class AbsolutePathCompletionProvider extends BashCompletionProvider {
+class AbsolutePathCompletionProvider extends AbstractBashCompletionProvider {
     public AbsolutePathCompletionProvider() {
     }
 
