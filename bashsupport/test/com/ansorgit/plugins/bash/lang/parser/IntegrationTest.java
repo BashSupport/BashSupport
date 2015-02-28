@@ -381,7 +381,6 @@ public class IntegrationTest extends MockPsiTest {
         mockTestError(fileParsingTest, PIPE, WORD); // | b
     }
 
-
     @Test
     public void testAppendAssignment() {
         //a+=a
