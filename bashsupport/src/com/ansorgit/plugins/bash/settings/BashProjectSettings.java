@@ -74,7 +74,8 @@ public class BashProjectSettings implements Serializable {
     }
 
     public void setGlobalVariables(Set<String> globalVariables) {
-        this.globalVariables = globalVariables;
+        this.globalVariables.clear();
+        this.globalVariables.addAll(globalVariables);
     }
 
     public boolean isAutcompleteGlobalVars() {
