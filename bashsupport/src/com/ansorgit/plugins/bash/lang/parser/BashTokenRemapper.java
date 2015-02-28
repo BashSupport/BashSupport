@@ -33,7 +33,7 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author Joachim Ansorg
  */
-class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
+final class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
     private static final TokenSet mappedToWord = TokenSet.create(
             ASSIGNMENT_WORD,
             LEFT_SQUARE, RIGHT_SQUARE,
@@ -59,23 +59,19 @@ class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
     }
 
     public IElementType filter(final IElementType elementType, final int from, final int to, final CharSequence charSequence) {
-        //we have to remap because commands like "echo a=b" are valid and this is not an assignment command
-        if (builder.getParsingState().isInSimpleCommand() && remappedToWord(elementType)) {
-            return WORD;
-        }
-
         if (remapShebangToComment && elementType == SHEBANG) {
             return COMMENT;
+        }
+
+        //we have to remap because commands like "echo a=b" are valid and this is not an assignment command
+        if (builder.getParsingState().isInSimpleCommand() && mappedToWord.contains(elementType)) {
+            return WORD;
         }
 
         return elementType;
     }
 
-    private boolean remappedToWord(final IElementType element) {
-        return mappedToWord.contains(element);
-    }
-
-    public void setMapShebangToComment(boolean remapToComment) {
-        this.remapShebangToComment = remapToComment;
+    public void enableShebangToCommentMapping() {
+        this.remapShebangToComment = true;
     }
 }
