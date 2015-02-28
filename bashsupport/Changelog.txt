@@ -5,7 +5,7 @@
  - #190: Fixed UOE error in the "register as global variable" quickfix
  - #179: Fixed NPE in FileInclusionManager
  - #152: Guard to prevent endless recursions
- - Small parser performance improvement
+ - Parser performance improvement
 
 2015-02-27:
  - #192: Fixed NPE in highlighting of arithmetic expressions
