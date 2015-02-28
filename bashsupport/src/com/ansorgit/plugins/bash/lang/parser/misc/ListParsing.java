@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -33,7 +32,7 @@ import com.intellij.psi.tree.IElementType;
  *
  * @author Joachim Ansorg
  */
-public class ListParsing implements ParsingTool {
+public final class ListParsing implements ParsingTool {
     /* Grammar:
         simple_list_terminator:	'\n' //or eof
             ;
@@ -89,7 +88,7 @@ public class ListParsing implements ParsingTool {
         builder.eatOptionalNewlines();
 
         //this is the list0 parsing here
-        if (!parseList1(builder, false, true)) {
+        if (!parseList1(builder, false, true, RecursionGuard.initial())) {
             optionalMarker.drop();
 
             return false;
@@ -129,14 +128,19 @@ public class ListParsing implements ParsingTool {
      */
     //fixme refactor this to include markers, take care of recursive calls
 
-    public boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand) {
+    boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand, RecursionGuard recursionGuard) {
+        if (!recursionGuard.next(builder)) {
+            return false;
+        }
+
         if (!Parsing.pipeline.isPipelineCommand(builder)) {
             builder.error("Expected a command");
             return false;
         }
 
         //used only to mark composed commands which combine several commands, not for single commands or a command list
-        PsiBuilder.Marker composedMarker = builder.mark();
+        PsiBuilder.Marker composedMarker = markComposedCommand ? builder.mark() : NullMarker.get();
+
         if (!Parsing.pipeline.parsePipelineCommand(builder)) {
             composedMarker.drop();
             return false;
@@ -152,7 +156,7 @@ public class ListParsing implements ParsingTool {
         if (token == AND_AND || token == OR_OR) {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
-            result = parseList1(builder, simpleMode, false); //with errors
+            result = parseList1(builder, simpleMode, false,recursionGuard); //with errors
 
             if (markComposedCommand) {
                 composedMarker.done(COMPOSED_COMMAND);
@@ -188,7 +192,7 @@ public class ListParsing implements ParsingTool {
 
             start.drop();
             composedMarker.drop();
-            result = parseList1(builder, simpleMode, false);
+            result = parseList1(builder, simpleMode, false, recursionGuard);
         } else {
             composedMarker.drop();
 
@@ -207,8 +211,8 @@ public class ListParsing implements ParsingTool {
     /**
      * A simple list is like a list1
      *
-     * @param builder
-     * @return
+     * @param builder The BashPsiBuilder
+     * @return true if the parsing had no errors
      */
     public boolean parseSimpleList(BashPsiBuilder builder) {
         /*
@@ -217,9 +221,19 @@ public class ListParsing implements ParsingTool {
         |       simple_list1 '&'
         |       simple_list1 ';'
         ;
-         */
+        */
 
-        if (!parseSimpleList1(builder)) {
+        /*
+        simple_list1:
+            simple_list1 AND_AND newline_list simple_list1
+        |   simple_list1 OR_OR newline_list simple_list1
+        |   simple_list1 '&' simple_list1
+        |   simple_list1 ';' simple_list1
+        |   pipeline_command
+        ;
+        */
+        // this is the simpleList1 parsing
+        if (!parseList1(builder, true, true, RecursionGuard.initial())) {
             return false;
         }
 
@@ -230,19 +244,5 @@ public class ListParsing implements ParsingTool {
         }
 
         return true;
-    }
-
-    /*
-        simple_list1:
-            simple_list1 AND_AND newline_list simple_list1
-        |   simple_list1 OR_OR newline_list simple_list1
-        |   simple_list1 '&' simple_list1
-        |   simple_list1 ';' simple_list1
-        |   pipeline_command
-        ;
-     */
-
-    boolean parseSimpleList1(BashPsiBuilder builder) {
-        return parseList1(builder, true, true);
     }
 }

@@ -18,8 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Data container to track the advanced parsing state.
  * It can track whether the parser currently is in a heredoc or a simple command.
@@ -29,30 +27,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 7:12:36 PM
  */
 final class ParsingStateData {
-    private AtomicInteger inSimpleCommand = new AtomicInteger(0);
-    private AtomicInteger inHereDoc = new AtomicInteger(0);
+    //do we have to use the volatile? Currently it's not clear whether a PsiBuilder is called concurrently or not
+    private volatile int inSimpleCommand = 0;
 
     public void enterSimpleCommand() {
-        inSimpleCommand.incrementAndGet();
+        inSimpleCommand += 1;
     }
 
     public void leaveSimpleCommand() {
-        inSimpleCommand.decrementAndGet();
+        inSimpleCommand -= 1;
     }
 
     public boolean isInSimpleCommand() {
-        return inSimpleCommand.get() > 0;
-    }
-
-    public void enterHereDoc() {
-        inHereDoc.incrementAndGet();
-    }
-
-    public void leaveHereDoc() {
-        inHereDoc.decrementAndGet();
-    }
-
-    public boolean isInHereDoc() {
-        return inHereDoc.get() > 0;
+        return inSimpleCommand > 0;
     }
 }
