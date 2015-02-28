@@ -76,7 +76,9 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     public void testEmptyCompletion() throws Exception {
         configureByTestName();
 
-        checkItems("myFunction");
+        //we expect the keywords for now
+        //fixme smarter keyword completion is needed to offer them only in the right context
+        checkItems("myFunction","case", "do", "done", "elif", "else", "esac", "false", "fi", "if", "in", "then", "true", "until", "while");
     }
 
     public void testVarCompletion() throws Exception {
