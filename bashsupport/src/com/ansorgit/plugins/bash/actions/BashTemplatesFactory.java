@@ -54,7 +54,7 @@ public class BashTemplatesFactory implements FileTemplateGroupDescriptorFactory 
     public static PsiFile createFromTemplate(final PsiDirectory directory, final String name, String fileName) throws IncorrectOperationException {
         log.debug("createFromTemplate: dir:" + directory + ", filename: " + fileName);
 
-        final String text = "#!/bin/bash\n";
+        final String text = "#!/usr/bin/env bash\n";
         final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
 
         log.debug("Create file from text");
