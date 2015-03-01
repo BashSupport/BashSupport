@@ -20,12 +20,13 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.util.ForwardingMarker;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.lang.impl.PsiBuilderAdapter;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.util.containers.LimitedPool;
 import com.intellij.util.containers.Stack;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -42,9 +43,27 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
+
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
+
+    //reuse markers in the pool, the PsiBuilder allocates a lot of marker. Markers can be cleaned fairly simply so we will reuse them
+    //the original PsiBUilderImpl does it in a similair way
+    private final LimitedPool<BashPsiMarker> markerPool = new LimitedPool<BashPsiMarker>(750, new LimitedPool.ObjectFactory<BashPsiMarker>() {
+        @Override
+        public BashPsiMarker create() {
+            return new BashPsiMarker();
+        }
+
+        @Override
+        public void cleanup(final BashPsiMarker startMarker) {
+            startMarker.clean();
+        }
+    });
+    private final BackquoteData backquoteData = new BackquoteData();
+    private final HereDocData hereDocData = new HereDocData();
+    private final ParsingStateData parsingStateData = new ParsingStateData();
     private Project project;
 
     public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
@@ -150,10 +169,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         return BashVersion.Bash_v4.equals(bashVersion);
     }
 
-    private final BackquoteData backquoteData = new BackquoteData();
-    private final HereDocData hereDocData = new HereDocData();
-    private final ParsingStateData parsingStateData = new ParsingStateData();
-
     public void remapShebangToComment() {
         tokenRemapper.enableShebangToCommentMapping();
     }
@@ -225,7 +240,11 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      */
     @Override
     public Marker mark() {
-        return new BashPsiMarker(this, myDelegate.mark());
+        BashPsiMarker marker = markerPool.alloc();
+        marker.psiBuilder = this;
+        marker.original = myDelegate.mark();
+
+        return marker;
     }
 
     /**
@@ -237,30 +256,36 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         return errorsStatusStack.isEmpty() || errorsStatusStack.peek();
     }
 
+
+    private void recycle(BashPsiMarker marker) {
+        markerPool.recycle(marker);
+    }
+
     /**
      * An enhanced marker which takes care of error reporting.
      *
      * @author Joachim Ansorg, mail@ansorg-it.com
      */
-    private static final class BashPsiMarker extends ForwardingMarker implements Marker {
-        private final BashPsiBuilder bashPsiBuilder;
+    private static final class BashPsiMarker implements Marker {
+        BashPsiBuilder psiBuilder;
+        Marker original;
 
-        protected BashPsiMarker(BashPsiBuilder bashPsiBuilder, final Marker original) {
-            super(original);
-            this.bashPsiBuilder = bashPsiBuilder;
+        public BashPsiMarker() {
+            this.original = null;
         }
 
         @Override
         public void doneBefore(IElementType type, Marker beforeCandidate) {
             //IntelliJ's API assumes that before is a StartMarker and not another implementation
             //thus we have to pass the original marker
-            Marker before = beforeCandidate instanceof ForwardingMarker ? ((ForwardingMarker) beforeCandidate).getOriginal() : beforeCandidate;
-            super.doneBefore(type, before);
+            Marker before = beforeCandidate instanceof BashPsiMarker ? ((BashPsiMarker) beforeCandidate).original : beforeCandidate;
+
+            original.doneBefore(type, before);
         }
 
         @Override
         public void error(final String errorMessage) {
-            if (bashPsiBuilder.isErrorReportingEnabled()) {
+            if (psiBuilder.isErrorReportingEnabled()) {
                 original.error(errorMessage);
             } else {
                 drop();
@@ -269,6 +294,61 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
                     log.debug("Marker: suppressed error " + errorMessage);
                 }
             }
+        }
+
+        @Override
+        public void drop() {
+            original.drop();
+
+            psiBuilder.recycle(this);
+        }
+
+
+        @Override
+        public void done(IElementType type) {
+            original.done(type);
+
+            psiBuilder.recycle(this);
+        }
+
+        @Override
+        public void doneBefore(IElementType type, Marker before, String errorMessage) {
+            original.doneBefore(type, before, errorMessage);
+
+            psiBuilder.recycle(this);
+        }
+
+        @Override
+        public void errorBefore(String message, Marker marker) {
+            original.errorBefore(message, marker);
+
+            psiBuilder.recycle(this);
+        }
+
+        @Override
+        public void rollbackTo() {
+            original.rollbackTo();
+
+            psiBuilder.recycle(this);
+        }
+
+        public void clean() {
+            this.original = null;
+            this.psiBuilder = null;
+        }
+
+        public void collapse(IElementType iElementType) {
+            original.collapse(iElementType);
+
+            psiBuilder.recycle(this);
+        }
+
+        public Marker precede() {
+            return original.precede();
+        }
+
+        public void setCustomEdgeTokenBinders(@Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder, @Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder1) {
+            original.setCustomEdgeTokenBinders(whitespacesAndCommentsBinder, whitespacesAndCommentsBinder1);
         }
     }
 }
