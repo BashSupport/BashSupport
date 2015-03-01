@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Joachim Ansorg
@@ -37,7 +38,10 @@ public interface BashShebang extends BashPsiElement {
      */
     String shellCommandParams();
 
-    void updateCommand(String command);
+    @NotNull
+    TextRange commandAndParamsRange();
+
+    void updateCommand(String command, @Nullable TextRange replacementRange);
 
     @NotNull
     TextRange commandRange();
