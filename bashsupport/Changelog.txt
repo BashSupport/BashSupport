@@ -1,3 +1,6 @@
+2015-03-01:
+ - Parser performance improved (pool for internal marker objects added)
+
 2015-02-28:
  - Added live template context for Bash files
  - Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3
