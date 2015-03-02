@@ -67,6 +67,13 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         checkItems("inner", "outer");
     }
 
+    public void testWithinEvalCommand() throws Exception {
+        //the eval command is a language injection host and contains a bash snippet
+        configureByTestName();
+
+        checkItems("inner", "outer");
+    }
+
     public void testEmptyParameterExpansion() throws Exception {
         configureByTestName();
 

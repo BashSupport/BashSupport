@@ -174,7 +174,8 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, DOLLAR, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
 
         //$ {#a}
-        mockTestFail(fileParsingTest, DOLLAR, WHITESPACE, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
+        // this is a valid syntax in bash
+        mockTest(fileParsingTest, DOLLAR, WHITESPACE, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
     }
 
     @Test

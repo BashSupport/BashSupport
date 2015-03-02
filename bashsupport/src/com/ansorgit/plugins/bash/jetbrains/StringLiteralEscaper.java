@@ -22,46 +22,29 @@ import com.intellij.psi.PsiLanguageInjectionHost;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author cdr
-*/
+ * @author jansorg
+ */
 public class StringLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
-  private int[] outSourceOffsets;
+    public StringLiteralEscaper(T host) {
+        super(host);
+    }
 
-  public StringLiteralEscaper(T host) {
-    super(host);
-  }
+    @Override
+    public boolean decode(@NotNull final TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
+        ProperTextRange.assertProperRange(rangeInsideHost);
 
-  @Override
-  public boolean decode(@NotNull final TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
-    ProperTextRange.assertProperRange(rangeInsideHost);
-    String subText = rangeInsideHost.substring(myHost.getText());
-    outSourceOffsets = new int[subText.length()+1];
+        outChars.append(rangeInsideHost.substring(myHost.getText()));
 
+        return true;
+    }
 
+    @Override
+    public int getOffsetInHost(int offsetInDecoded, @NotNull final TextRange rangeInsideHost) {
+        return offsetInDecoded + rangeInsideHost.getStartOffset();
+    }
 
-      //fixme check this
-      outChars.append(subText);
-
-      //fill the offset array
-      //fixme check this
-      for (int i = 0; i < outSourceOffsets.length; i++) {
-          outSourceOffsets[i] = rangeInsideHost.getStartOffset() + i;
-      }
-
-
-      return true;
-    //return PsiLiteralExpressionImpl.parseStringCharacters(subText, outChars, outSourceOffsets);
-  }
-
-  @Override
-  public int getOffsetInHost(int offsetInDecoded, @NotNull final TextRange rangeInsideHost) {
-    int result = offsetInDecoded < outSourceOffsets.length ? outSourceOffsets[offsetInDecoded] : -1;
-    if (result == -1) return -1;
-    return (result <= rangeInsideHost.getLength() ? result : rangeInsideHost.getLength()) + rangeInsideHost.getStartOffset();
-  }
-
-  @Override
-  public boolean isOneLine() {
-    return true;
-  }
+    @Override
+    public boolean isOneLine() {
+        return true;
+    }
 }
