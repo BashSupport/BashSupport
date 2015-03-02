@@ -47,7 +47,7 @@ public class BashVarVariantsProcessor extends BashAbstractProcessor implements B
         this.startElement = startElement;
     }
 
-    public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
+    public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
             final BashVarDef varDef = (BashVarDef) psiElement;
             if (varDef.isStaticAssignmentWord() && !varDef.isCommandLocal() && !variableNames.contains(varDef.getName()) && BashVarUtils.isInDefinedScope(startElement, varDef)) {
@@ -63,7 +63,7 @@ public class BashVarVariantsProcessor extends BashAbstractProcessor implements B
         return variables;
     }
 
-    public <T> T getHint(Key<T> tKey) {
+    public <T> T getHint(@NotNull Key<T> tKey) {
         return null;
     }
 }

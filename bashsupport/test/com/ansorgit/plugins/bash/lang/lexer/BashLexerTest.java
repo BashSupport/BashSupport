@@ -363,6 +363,8 @@ public class BashLexerTest {
         testTokenization("\"$('(')\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING2, RIGHT_PAREN, STRING_END);
 
         testTokenization("\"$'(')\"", STRING_BEGIN, WORD, STRING_END);
+
+        testTokenization("echo $", WORD, WHITESPACE, DOLLAR);
     }
 
     @Test
@@ -667,6 +669,9 @@ public class BashLexerTest {
     public void testEval() {
         testTokenization("eval [ \"a\" ]",
                 WORD, WHITESPACE, EXPR_CONDITIONAL, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+
+        testTokenization("eval \"echo $\"",
+                WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END);
 
         testTokenization("for f in a; do eval [ \"a\" ]; done",
                 FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI,
