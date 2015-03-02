@@ -28,7 +28,7 @@ package com.ansorgit.plugins.bash.lang.parser;
  */
 final class ParsingStateData {
     //do we have to use the volatile? Currently it's not clear whether a PsiBuilder is called concurrently or not
-    private volatile int inSimpleCommand = 0;
+    private int inSimpleCommand = 0;
 
     public void enterSimpleCommand() {
         inSimpleCommand += 1;

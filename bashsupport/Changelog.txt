@@ -1,3 +1,11 @@
+2015-03-02:
+ - No keyword autocompletion in a variable context
+ - Fixed parsing of a file containg a $ as last character
+ - Fixed autocomplete in eval and trap commands
+
+2015-03-01:
+ - Parser performance improved (pool for internal marker objects added)
+
 2015-03-01:
  - Parser performance improved (pool for internal marker objects added)
 
