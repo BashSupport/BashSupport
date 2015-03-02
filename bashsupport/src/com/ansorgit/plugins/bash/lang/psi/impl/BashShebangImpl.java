@@ -30,6 +30,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.StubElement;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 16.04.2009
@@ -101,12 +102,18 @@ public class BashShebangImpl extends BashBaseStubElementImpl<StubElement> implem
         return TextRange.from(getShellCommandOffset(), shellCommand(false).length());
     }
 
-    public void updateCommand(String command) {
+    @Override
+    @NotNull
+    public TextRange commandAndParamsRange() {
+        return TextRange.from(getShellCommandOffset(), shellCommand(true).length());
+    }
+
+    public void updateCommand(String command, @Nullable TextRange replacementRange) {
         log.debug("Updating command to " + command);
 
         Document document = getContainingFile().getViewProvider().getDocument();
         if (document != null) {
-            TextRange textRange = commandRange();
+            TextRange textRange = replacementRange != null ? replacementRange : commandRange();
             document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), command);
         } else {
             //fallback

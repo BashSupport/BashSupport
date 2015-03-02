@@ -41,7 +41,6 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
         return "Add shebang line";
     }
 
-
     @Override
     public void invoke(@NotNull final Project project, Editor editor, final PsiFile file) throws IncorrectOperationException {
         // work around a problem in a 9.0.2 eap which need a write session
@@ -49,7 +48,7 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
             public void run() {
                 Document document = PsiDocumentManager.getInstance(project).getDocument(BashPsiUtils.findFileContext(file));
                 if (document != null) {
-                    document.insertString(0, "#!/bin/sh\n");
+                    document.insertString(0, "#!/usr/bin/env bash\n");
                     PsiDocumentManager.getInstance(project).commitDocument(document);
                 }
             }
