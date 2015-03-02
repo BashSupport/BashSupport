@@ -5,11 +5,6 @@
 
 2015-03-01:
  - Parser performance improved (pool for internal marker objects added)
-
-2015-03-01:
- - Parser performance improved (pool for internal marker objects added)
-
-2015-03-01:
  - The special /usr/bin/env command is now supported by the shebang inspection
 
 2015-02-28:
