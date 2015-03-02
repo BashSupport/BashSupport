@@ -19,17 +19,19 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.RegisterShebangCommandQuickfix;
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.ShebangQuickfix;
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.ReplaceShebangQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.psi.PsiElementVisitor;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +40,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,6 +49,7 @@ import java.util.List;
  */
 public class FixShebangInspection extends LocalInspectionTool {
     private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/sh");
+    private static final List<String> VALID_ENV_SHELLS = Lists.newArrayList("bash", "sh");
     private static final String ELEMENT_NAME_SHEBANG = "shebang";
 
     private List<String> validShebangCommands = DEFAULT_COMMANDS;
@@ -121,25 +123,52 @@ public class FixShebangInspection extends LocalInspectionTool {
         return new BashVisitor() {
             @Override
             public void visitShebang(BashShebang shebang) {
-                //check command with and withouot parameters
-                boolean isValid = validShebangCommands.contains(shebang.shellCommand(false)) || validShebangCommands.contains(shebang.shellCommand(true));
+                String shellCommand = shebang.shellCommand(false);
+                String shellCommandWithParams = shebang.shellCommand(true);
 
-                if (!isValid && validShebangCommands.size() > 0) {
+                if (validShebangCommands.contains(shellCommand) || validShebangCommands.contains(shellCommandWithParams)) {
+                    return;
+                }
+
+                if ("/usr/bin/env".equals(shellCommand)) {
+                    //check the special env shebang command
+
+                    String paramString = shebang.shellCommandParams();
+                    String[] params = StringUtils.split(paramString, ' ');
+                    boolean noShellParam = params == null || params.length == 0;
+                    boolean invalidShell = params != null && params.length > 0 && !VALID_ENV_SHELLS.contains(params[0]);
+
+                    if (noShellParam || invalidShell) {
+                        List<LocalQuickFix> quickFixes = Lists.newLinkedList();
+
+                        if (invalidShell) {
+                            quickFixes.add(new RegisterShebangCommandQuickfix(FixShebangInspection.this, shebang));
+                        }
+
+                        for (String validCommand : VALID_ENV_SHELLS) {
+                            quickFixes.add(new ReplaceShebangQuickfix(shebang, "/usr/bin/env " + validCommand, shebang.commandAndParamsRange()));
+                        }
+
+                        String message = noShellParam ? "'/usr/bin/env' needs a shell parameter" : "Unknown shell for /usr/bin/env";
+                        holder.registerProblem(shebang, message,
+                                ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                                shebang.commandAndParamsRange(),
+                                quickFixes.toArray(new LocalQuickFix[quickFixes.size()]));
+                    }
+                } else {
+                    List<LocalQuickFix> quickFixes = Lists.newLinkedList();
+
                     if (isOnTheFly) {
-                        //quickfix to register the shebang line
-                        holder.registerProblem(shebang, "Mark as valid shebang command", new RegisterShebangCommandQuickfix(FixShebangInspection.this, shebang));
+                        quickFixes.add(new RegisterShebangCommandQuickfix(FixShebangInspection.this, shebang));
                     }
 
-                    List<LocalQuickFix> quickFixes = Lists.newLinkedList();
                     for (String validCommand : validShebangCommands) {
-                        if (!validCommand.equals(shebang.shellCommand(false)) && !validCommand.equals(shebang.shellCommand(true))) {
-                            quickFixes.add(new ShebangQuickfix(shebang, validCommand));
+                        if (!validCommand.equals(shellCommand) && !validCommand.equals(shellCommandWithParams)) {
+                            quickFixes.add(new ReplaceShebangQuickfix(shebang, validCommand));
                         }
                     }
 
-                    if (!quickFixes.isEmpty()) {
-                        holder.registerProblem(shebang, "Replace with valid shebang command", quickFixes.toArray(new LocalQuickFix[quickFixes.size()]));
-                    }
+                    holder.registerProblem(shebang, "Unknown shebang command", ProblemHighlightType.GENERIC_ERROR_OR_WARNING, shebang.commandRange(), quickFixes.toArray(new LocalQuickFix[quickFixes.size()]));
                 }
             }
         };
