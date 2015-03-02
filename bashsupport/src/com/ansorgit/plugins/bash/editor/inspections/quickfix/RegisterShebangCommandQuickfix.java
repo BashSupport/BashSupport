@@ -40,7 +40,7 @@ public class RegisterShebangCommandQuickfix extends AbstractBashQuickfix {
         inspection.registerShebangCommand(shebang.shellCommand(true));
 
         //trigger a change to remove this inspection
-        shebang.updateCommand(shebang.shellCommand(false));
+        shebang.updateCommand(shebang.shellCommand(false), null);
     }
 
     @NotNull
