@@ -49,16 +49,8 @@ public final class HereDocData {
         return expectedEnds.peek().first;
     }
 
-    public boolean isCurrentlyEvaluating() {
-        return expectedEnds.peek().second == MarkerType.Eval;
-    }
-
-    public boolean isStrippingWhitespace() {
-        return isCurrentlyEvaluating();//expectedEnds.peek().second == MarkerType.Eval;
-    }
-
     public boolean expectsHereDoc() {
-        return expectedEnds.size() > 0;
+        return !expectedEnds.isEmpty();
     }
 
     public void reset() {

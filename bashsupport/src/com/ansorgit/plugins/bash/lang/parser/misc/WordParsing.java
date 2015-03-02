@@ -67,14 +67,8 @@ public class WordParsing implements ParsingTool {
         }
 
         if (tokenType == DOLLAR) {
-            PsiBuilder.Marker marker = builder.mark();
-            builder.advanceLexer();
-
-            IElementType next = builder.getTokenType();
-
-            marker.rollbackTo();
-
-            return singleDollarFollowups.contains(next);
+            IElementType next = builder.rawLookup(1);
+            return next == null || singleDollarFollowups.contains(next);
         }
 
         //accept single Bang tokens as word
