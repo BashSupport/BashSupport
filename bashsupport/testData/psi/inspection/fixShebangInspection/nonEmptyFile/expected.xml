@@ -4,7 +4,7 @@
         <file>A.bash</file>
         <line>1</line>
         <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Fix unusal Shebang</problem_class>
-        <description>Replace with valid shebang command</description>
+        <description>Unknown shebang command</description>
     </problem>
 </problems>
 
