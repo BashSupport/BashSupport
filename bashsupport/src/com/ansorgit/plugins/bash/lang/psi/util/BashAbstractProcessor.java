@@ -27,6 +27,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public abstract class BashAbstractProcessor implements PsiScopeProcessor, Resolv
         this.preferNeigbourhood = preferNeighbourhood;
     }
 
-    public void handleEvent(Event event, Object o) {
+    public void handleEvent(@NotNull Event event, Object o) {
     }
 
     public final PsiElement getBestResult(boolean firstResult, PsiElement referenceElement) {

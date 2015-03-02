@@ -64,7 +64,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     private final BackquoteData backquoteData = new BackquoteData();
     private final HereDocData hereDocData = new HereDocData();
     private final ParsingStateData parsingStateData = new ParsingStateData();
-    private Project project;
+    private final Project project;
 
     public BashPsiBuilder(Project project, PsiBuilder wrappedBuilder, BashVersion bashVersion) {
         super(wrappedBuilder);
@@ -271,7 +271,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         Marker original;
 
         public BashPsiMarker() {
-            this.original = null;
         }
 
         @Override
@@ -281,6 +280,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
             Marker before = beforeCandidate instanceof BashPsiMarker ? ((BashPsiMarker) beforeCandidate).original : beforeCandidate;
 
             original.doneBefore(type, before);
+            psiBuilder.recycle(this);
         }
 
         @Override

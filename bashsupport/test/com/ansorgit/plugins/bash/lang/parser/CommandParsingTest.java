@@ -65,6 +65,8 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(simpleCommandTest, WORD, VARIABLE);
         //tr [:echo:]
         mockTest(simpleCommandTest, WORD, LEFT_SQUARE, WORD);
+        //echo $
+        mockTest(simpleCommandTest, WORD, DOLLAR);
     }
 
     @Test
