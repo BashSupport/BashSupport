@@ -85,8 +85,12 @@ public class ListParsingTest extends MockPsiTest {
 
     @Test
     public void testParseCompoundList5() {
-        mockTest(compoundListParsingTest,
-                WORD, SEMI); // a ;
+        mockTest(compoundListParsingTest, WORD, SEMI); // a ;
+    }
+
+    @Test
+    public void testParseCompoundList6() {
+        mockTest(compoundListParsingTest, WORD, DOLLAR, SEMI); // echo $ ;
     }
 
     @Test

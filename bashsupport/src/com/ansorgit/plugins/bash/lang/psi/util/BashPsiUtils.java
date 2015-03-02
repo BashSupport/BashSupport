@@ -53,12 +53,18 @@ public final class BashPsiUtils {
     private BashPsiUtils() {
     }
 
+    /**
+     * Finds the file context for a given element. If element is inside of an Bash file injection host (e.g. because the element is in an eval command)
+     * then the host file is returned.
+     *
+     * @param element
+     * @return The file on disk
+     */
     public static PsiFile findFileContext(PsiElement element) {
-        //fixme
-        /*PsiFile topLevelFile = InjectedLanguageUtil.getTopLevelEditor(element);
-        if (topLevelFile instanceof BashFile) {
-            return topLevelFile;
-        } */
+        PsiLanguageInjectionHost injectionHost = InjectedLanguageManager.getInstance(element.getProject()).getInjectionHost(element);
+        if (injectionHost != null && injectionHost.getContainingFile() instanceof BashFile) {
+            return injectionHost.getContainingFile();
+        }
 
         return element.getContainingFile();
     }
