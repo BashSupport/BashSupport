@@ -1,3 +1,7 @@
+2015-03-03:
+ - Fixed the "Run before" steps of a Bash run configuration
+ - The template Bash run configuration has no "Run before" step now
+
 2015-03-02:
  - No keyword autocompletion in a variable context
  - Fixed parsing of a file containg a $ as last character
