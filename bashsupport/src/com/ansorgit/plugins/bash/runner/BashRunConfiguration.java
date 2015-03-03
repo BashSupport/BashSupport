@@ -65,7 +65,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Override
     public boolean excludeCompileBeforeLaunchOption() {
-        return true;
+        return false;
     }
 
     @NotNull
