@@ -47,6 +47,10 @@ public class StaticValueComputationTest extends AbstractArithExprTest {
         assertValueComputedResult(168);
     }
 
+    public void testHexBaseValueTest() throws Exception {
+        assertValueComputedResult(2748);
+    }
+
     private void assertValueComputedResult(long expectedValue) throws Exception {
         ArithmeticExpression start = configureTopArithExpression();
 

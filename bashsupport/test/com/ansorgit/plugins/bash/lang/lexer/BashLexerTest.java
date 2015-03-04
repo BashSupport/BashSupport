@@ -806,6 +806,8 @@ public class BashLexerTest {
         //an inspection
         testTokenization("$((10#100afe))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_BASE_CHAR, ARITH_NUMBER, WORD, _EXPR_ARITH);
 
+        testTokenization("$((12#D))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_BASE_CHAR, WORD, _EXPR_ARITH);
+
         testTokenization("$((35#abcdefghijkl))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_BASE_CHAR, WORD, _EXPR_ARITH);
     }
 
