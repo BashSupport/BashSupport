@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ArithmeticParserTest extends MockPsiTest {
@@ -35,7 +34,7 @@ public class ArithmeticParserTest extends MockPsiTest {
     @Test
     public void testParseSquareMode() {
         //[1]
-        mockTest(arithmeticTest, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE);
+        mockTest(arithmeticTest, EXPR_ARITH_SQUARE, ARITH_NUMBER, _EXPR_ARITH_SQUARE);
 
         //[a + b]
         mockTest(arithmeticTest, EXPR_ARITH_SQUARE, WORD, ARITH_MINUS, WORD, _EXPR_ARITH_SQUARE);
@@ -44,7 +43,7 @@ public class ArithmeticParserTest extends MockPsiTest {
     @Test
     public void testParse() throws Exception {
         //((1))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a))
         mockTest(arithmeticTest, EXPR_ARITH, WORD, _EXPR_ARITH);
@@ -53,88 +52,88 @@ public class ArithmeticParserTest extends MockPsiTest {
         mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, _EXPR_ARITH);
 
         //((1 + 1))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_PLUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a + b))
         mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_MINUS, WORD, _EXPR_ARITH);
 
         //((1 * 2 - 3))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_MULT, NUMBER, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((10 % 3))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_MOD, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_MOD, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
     public void testNumbers() {
         //((-1))
-        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((--1))
-        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((---a))
-        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
     public void testParseList() throws Exception {
         //((1,2))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, COMMA, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, COMMA, ARITH_NUMBER, _EXPR_ARITH);
 
         //(($a,b))
         mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, COMMA, WORD, _EXPR_ARITH);
 
         //(($a,1*3,b))
-        mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, COMMA, NUMBER, ARITH_MULT, NUMBER, COMMA, WORD, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, VARIABLE, COMMA, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, COMMA, WORD, _EXPR_ARITH);
     }
 
     @Test
     public void testParseAssignments() throws Exception {
         //((a=1))
-        mockTest(arithmeticTest, EXPR_ARITH, WORD, EQ, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, EQ, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a=1)) with assignment word
-        mockTest(arithmeticTest, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a += 1))
-        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_PLUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_PLUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a -= 1))
-        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MINUS, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a *= 1))
-        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MUL, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MUL, ARITH_NUMBER, _EXPR_ARITH);
 
         //((a %= 1))
-        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MOD, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_ASS_MOD, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
     public void testParseParentheses() throws Exception {
         //(((1)))
-        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
 
         //(((1 * 2)))
-        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, ARITH_MULT, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
 
         //((1 * (2 + 3)))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_MULT, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_MULT, LEFT_PAREN, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
 
         //(( (2 + 3) / 2 ))
-        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, ARITH_DIV, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, RIGHT_PAREN, ARITH_DIV, ARITH_NUMBER, _EXPR_ARITH);
 
         //(( (2 + 3) / (1/2 + (3*4) / 5) ))
-        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, ARITH_PLUS, NUMBER, RIGHT_PAREN, ARITH_DIV,
+        mockTest(arithmeticTest, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, RIGHT_PAREN, ARITH_DIV,
                 LEFT_PAREN,
-                NUMBER, ARITH_DIV, NUMBER, ARITH_PLUS,
-                LEFT_PAREN, NUMBER, ARITH_MULT, NUMBER, RIGHT_PAREN,
-                ARITH_DIV, NUMBER,
+                ARITH_NUMBER, ARITH_DIV, ARITH_NUMBER, ARITH_PLUS,
+                LEFT_PAREN, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, RIGHT_PAREN,
+                ARITH_DIV, ARITH_NUMBER,
                 RIGHT_PAREN,
                 _EXPR_ARITH);
 
         // Error: (( (3) * ))
-        mockTestError(arithmeticTest, EXPR_ARITH, LEFT_PAREN, NUMBER, RIGHT_PAREN, ARITH_MULT, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, ARITH_MULT, _EXPR_ARITH);
     }
 
     @Test
@@ -149,27 +148,27 @@ public class ArithmeticParserTest extends MockPsiTest {
         //mockTest(arithmeticTest, EXPR_ARITH, WORD, ARITH_QMARK, WORD, ARITH_QMARK, WORD, ARITH_COLON, WORD, ARITH_COLON, WORD, _EXPR_ARITH);
 
         //((1+2 ? 3*4 : 5))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_PLUS, NUMBER, ARITH_QMARK, NUMBER, ARITH_MULT, NUMBER, ARITH_COLON, WORD, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, ARITH_QMARK, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, ARITH_COLON, WORD, _EXPR_ARITH);
 
         //((1 == 1 ? 0 : 0))
-        mockTest(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_EQ, NUMBER, ARITH_QMARK, NUMBER, ARITH_COLON, NUMBER, _EXPR_ARITH);
+        mockTest(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, ARITH_QMARK, ARITH_NUMBER, ARITH_COLON, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
     public void testParseAssignmentsErrors() throws Exception {
         //((1=1))
-        mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, EQ, NUMBER, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, EQ, ARITH_NUMBER, _EXPR_ARITH);
 
         //((1 += 1))
-        mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_ASS_PLUS, NUMBER, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_ASS_PLUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((1 -= 1))
-        mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_ASS_MINUS, NUMBER, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_ASS_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         //((1 *= 1))
-        mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_ASS_MUL, NUMBER, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_ASS_MUL, ARITH_NUMBER, _EXPR_ARITH);
 
         //((1 %= 1))
-        mockTestError(arithmeticTest, EXPR_ARITH, NUMBER, ARITH_ASS_MOD, NUMBER, _EXPR_ARITH);
+        mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_ASS_MOD, ARITH_NUMBER, _EXPR_ARITH);
     }
 }

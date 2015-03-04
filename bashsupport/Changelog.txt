@@ -1,3 +1,7 @@
+2015-03-04:
+ - #193: Variables in arithmetic base expressions were not supported
+ - #194: $(( 8#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.
+
 2015-03-03:
  - Fixed the "Run before" steps of a Bash run configuration
  - The template Bash run configuration has no "Run before" step now

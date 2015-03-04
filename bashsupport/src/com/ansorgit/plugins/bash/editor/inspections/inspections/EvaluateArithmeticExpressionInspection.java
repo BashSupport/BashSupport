@@ -22,7 +22,10 @@ import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateArithExprQu
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
+import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.InvalidExpressionValue;
 import com.intellij.codeInspection.LocalInspectionTool;
+import com.intellij.codeInspection.LocalQuickFix;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -48,13 +51,27 @@ public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool 
                 boolean isParenthesisExpr = expression instanceof ParenthesesExpression;
 
                 List<ArithmeticExpression> subexpressions = expression.subexpressions();
-                if (subexpressions.size() > 1 && (expression.isStatic() || isParenthesisExpr)) {
+
+                if (subexpressions.size() == 0 && expression.isStatic()) {
+                    //test the expression for validity, show an error marker if invalid
+                    try {
+                        expression.computeNumericValue();
+                    } catch (InvalidExpressionValue e) {
+                        holder.registerProblem(expression, e.getMessage(), ProblemHighlightType.GENERIC_ERROR, null, LocalQuickFix.EMPTY_ARRAY);
+                    }
+                } else if (subexpressions.size() > 1 && (expression.isStatic() || isParenthesisExpr)) {
                     ArithmeticExpression parent = expression.findParentExpression();
 
                     //run only if the parent is not a static expression itself
                     if (parent == null || !parent.isStatic()) {
-                        String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + expression.computeNumericValue() + "'";
-                        holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
+                        try {
+                            long numericValue = expression.computeNumericValue();
+                            String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + numericValue + "'";
+                            holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
+                        } catch (InvalidExpressionValue invalidExpressionValue) {
+                            //holder.registerProblem(expression, "Invalid arithmetic value");
+                            //the problem is already reported by this recursive visitor call in the empty subexpression check above
+                        }
                     }
                 }
             }

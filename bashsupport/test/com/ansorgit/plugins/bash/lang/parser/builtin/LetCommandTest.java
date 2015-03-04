@@ -76,13 +76,13 @@ public class LetCommandTest extends MockPsiTest {
     @Test
     public void testParse() {
         //let a=1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER);
 
         //let a=1+1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, ARITH_PLUS, NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER);
 
         //let a+=1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
 
         //let a=1 b=1
 //        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);

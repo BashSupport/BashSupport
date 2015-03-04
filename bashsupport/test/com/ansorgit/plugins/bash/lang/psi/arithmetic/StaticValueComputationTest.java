@@ -43,6 +43,10 @@ public class StaticValueComputationTest extends AbstractArithExprTest {
         assertValueComputedResult(-3035138555904L);
     }
 
+    public void testBaseValueTest() throws Exception {
+        assertValueComputedResult(168);
+    }
+
     private void assertValueComputedResult(long expectedValue) throws Exception {
         ArithmeticExpression start = configureTopArithExpression();
 

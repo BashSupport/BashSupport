@@ -35,7 +35,7 @@ public interface BashTokenTypes {
     IElementType WHITESPACE = TokenType.WHITE_SPACE;
     TokenSet whitespaceTokens = TokenSet.create(WHITESPACE);
 
-    IElementType NUMBER = new BashElementType("number");
+    IElementType ARITH_NUMBER = new BashElementType("number");
     IElementType WORD = new BashElementType("word");
     IElementType ASSIGNMENT_WORD = new BashElementType("assignment_word"); //"a" =2
     IElementType DOLLAR = new BashElementType("$");
@@ -192,11 +192,12 @@ public interface BashTokenTypes {
             ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
 
     //arithmetic literals
-    IElementType ARITH_BASE_NUMBER = new BashElementType("xx#xx literal");
     IElementType ARITH_HEX_NUMBER = new BashElementType("0x hex literal");
     IElementType ARITH_OCTAL_NUMBER = new BashElementType("octal literal");
 
-    TokenSet arithLiterals = TokenSet.create(NUMBER, ARITH_BASE_NUMBER, ARITH_OCTAL_NUMBER, ARITH_HEX_NUMBER);
+    IElementType ARITH_BASE_CHAR = new BashElementType("arithmetic base char (#)");
+
+    TokenSet arithLiterals = TokenSet.create(ARITH_NUMBER, ARITH_OCTAL_NUMBER, ARITH_HEX_NUMBER);
 
     //builtin command
     IElementType COMMAND_TOKEN = new BashElementType("command");//!=

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.InvalidExpressionValue;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +55,7 @@ public interface ArithmeticExpression extends BashPsiElement {
      *
      * @return The numeric value. If not isStatic an IllegalStateException is thrown.
      */
-    long computeNumericValue();
+    long computeNumericValue() throws InvalidExpressionValue;
 
     /**
      * Tries to find a parent expression.
