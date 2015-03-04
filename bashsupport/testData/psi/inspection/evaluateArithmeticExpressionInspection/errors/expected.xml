@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>3</line>
+        <problem_class severity="WARNING">Evaluate arithmetic expression</problem_class>
+        <description>Digit F is invalid with base 12</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <problem_class severity="WARNING">Evaluate arithmetic expression</problem_class>
+        <description>Digit E is invalid with base 12</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <problem_class severity="WARNING">Evaluate arithmetic expression</problem_class>
+        <description>Digit G is invalid with base 16</description>
+    </problem>
+</problems>
+

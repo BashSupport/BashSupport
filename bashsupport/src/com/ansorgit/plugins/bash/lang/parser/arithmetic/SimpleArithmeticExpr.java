@@ -78,7 +78,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                 } else {
                     break;
                 }
-            } while (ok);
+            } while (true);
 
             ok = ok && builder.getCurrentOffset() > startOffset;
         } else {

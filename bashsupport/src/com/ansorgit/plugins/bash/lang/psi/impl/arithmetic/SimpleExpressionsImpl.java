@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -112,7 +113,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
             }
         }
 
-        return result;
+        return result < base ? result : -1;
     }
 
     public LiteralType literalType() {
@@ -161,7 +162,14 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                 IElementType first = children[0].getElementType();
 
                 if (LiteralType.BaseLiteral.equals(literalType())) {
-                    isStatic = children.length == 3 && BashTokenTypes.arithLiterals.contains(children[2].getElementType());
+                    isStatic = children.length == 3;
+                    if (isStatic) {
+                        IElementType secondType = children[2].getElementType();
+
+                        isStatic = secondType == BashTokenTypes.WORD
+                                || secondType == BashElementTypes.PARSED_WORD_ELEMENT
+                                || BashTokenTypes.arithLiterals.contains(secondType);
+                    }
                 } else if (children.length == 2 && BashTokenTypes.arithmeticAdditionOps.contains(first)) {
                     List<ArithmeticExpression> subexpressions = subexpressions();
                     isStatic = (subexpressions.size() == 1) && subexpressions.get(0).isStatic();
