@@ -36,7 +36,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     private final static TokenSet assignmentSeparators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
-    private final static TokenSet validWordTokens = TokenSet.create(NUMBER);
+    private final static TokenSet validWordTokens = TokenSet.create(ARITH_NUMBER);
 
     public static boolean readCommandParams(final BashPsiBuilder builder) {
         return readCommandParams(builder, TokenSet.EMPTY);

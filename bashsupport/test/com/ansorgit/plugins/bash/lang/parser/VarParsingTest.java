@@ -57,7 +57,7 @@ public class VarParsingTest extends MockPsiTest {
     @Test
     public void testParse4() {
         //$((1))
-        mockTest(varParsingTest, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+        mockTest(varParsingTest, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH);
     }
 
 /*    @Test

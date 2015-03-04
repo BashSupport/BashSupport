@@ -90,7 +90,7 @@ public class ReadonlyCommandTest extends MockPsiTest {
     public void testComplicated() {
         //>out a=1 export a=1
         mockTest(parserFunction, Lists.newArrayList(">", "out", " ", "a", "=", "1", " ", "readonly"),
-                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, WORD,
-                WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
+                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, WHITESPACE, WORD,
+                WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER);
     }
 }

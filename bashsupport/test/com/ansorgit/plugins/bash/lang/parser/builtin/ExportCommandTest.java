@@ -88,8 +88,8 @@ public class ExportCommandTest extends MockPsiTest {
     public void testComplicated() {
         //>out a=1 export a=1
         mockTest(parserFunction, Lists.newArrayList(">", "out", " ", "a", "=", "1", " ", "export"),
-                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, WORD,
-                WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);
+                GREATER_THAN, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, WHITESPACE, WORD,
+                WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER);
     }
 
     @Test
@@ -98,6 +98,6 @@ public class ExportCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("export"), WORD, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN);
 
         //export a=(1 [10]=2 3)
-        mockTest(parserFunction, Lists.newArrayList("export"), WORD, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
     }
 }

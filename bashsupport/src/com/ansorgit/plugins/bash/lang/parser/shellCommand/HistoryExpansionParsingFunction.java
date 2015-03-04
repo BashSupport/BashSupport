@@ -17,7 +17,7 @@ public class HistoryExpansionParsingFunction implements ParsingFunction {
         return token != null && builder.getTokenType() == BANG_TOKEN && !ParserUtil.isWhitespace(token);
     }
 
-    private final TokenSet accepted = TokenSet.create(WORD, WORD, NUMBER, BANG_TOKEN, DOLLAR);
+    private final TokenSet accepted = TokenSet.create(WORD, WORD, ARITH_NUMBER, BANG_TOKEN, DOLLAR);
 
     @Override
     public boolean parse(BashPsiBuilder builder) {
