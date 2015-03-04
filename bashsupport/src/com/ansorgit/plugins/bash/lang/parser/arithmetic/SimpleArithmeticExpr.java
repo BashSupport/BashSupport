@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
@@ -53,9 +54,36 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
             ok = parse(builder);
         } else if (Parsing.var.isValid(builder)) {
             ok = Parsing.var.parse(builder);
+        } else if (builder.getTokenType() == BashTokenTypes.ARITH_NUMBER && builder.rawLookup(1) == BashTokenTypes.ARITH_BASE_CHAR) {
+            //arithmetic base expression
+            ParserUtil.getTokenAndAdvance(builder, false);
+            ParserUtil.getTokenAndAdvance(builder, true);
+
+            int startOffset = builder.getCurrentOffset();
+            ok = true;
+            do {
+                IElementType nextToken = builder.getTokenType(true);
+                if (nextToken == BashTokenTypes.ARITH_NUMBER) {
+                    builder.advanceLexer();
+                } else if (Parsing.word.isWordToken(builder)) {
+                    ok = Parsing.word.parseWord(builder);
+                    if (!ok) {
+                        break;
+                    }
+                } else if (Parsing.var.isValid(builder)) {
+                    ok = Parsing.var.parse(builder);
+                    if (!ok) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            } while (true);
+
+            ok = ok && builder.getCurrentOffset() > startOffset;
         } else {
-            //these are valid: 12, a. 12$a , 12${a}56
-            IElementType tokenType = builder.getTokenType(); //no whitespace
+            //these are valid: 12, a. 12$a , 12${a}56, 12#10
+            IElementType tokenType = builder.getTokenType(); //without whitespace
             do {
                 if (tokenType == WORD) {
                     //mark "a" as a variable and not as a regular word token
@@ -80,8 +108,7 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
 
                 //next, including whitespace
                 tokenType = builder.getTokenType(true);
-            }
-            while (ok && isValidPart(builder, tokenType));
+            } while (ok && isValidPart(builder, tokenType));
 
             //FIXME checking twice in the loop and in the invariant condition is not efficient
         }

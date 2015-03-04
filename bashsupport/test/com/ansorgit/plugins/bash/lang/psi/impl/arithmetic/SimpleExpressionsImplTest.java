@@ -62,6 +62,11 @@ public class SimpleExpressionsImplTest {
         Assert.assertEquals(35, SimpleExpressionsImpl.baseLiteralValue(36, "Z"));
     }
 
+    @Test(expected = InvalidExpressionValue.class)
+    public void testBase12Error() throws Exception {
+        SimpleExpressionsImpl.baseLiteralValue(12, "F");
+    }
+
     @Test
     public void testBase37() throws Exception {
         Assert.assertEquals(10, SimpleExpressionsImpl.baseLiteralValue(37, "a"));

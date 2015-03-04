@@ -10,6 +10,10 @@ public class EvaluateArithmeticExpressionInspectionTest extends AbstractInspecti
         doTest("evaluateArithmeticExpressionInspection/ok", EvaluateArithmeticExpressionInspection.class, true);
     }
 
+    public void testErrors() throws Exception {
+        doTest("evaluateArithmeticExpressionInspection/errors", EvaluateArithmeticExpressionInspection.class, true);
+    }
+
     public void testEvaluation() throws Exception {
         doTest("evaluateArithmeticExpressionInspection/evaluation", EvaluateArithmeticExpressionInspection.class, true);
     }

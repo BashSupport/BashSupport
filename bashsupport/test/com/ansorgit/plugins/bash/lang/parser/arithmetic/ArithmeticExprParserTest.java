@@ -37,28 +37,32 @@ public class ArithmeticExprParserTest extends MockPsiTest {
 
     @Test
     public void testVarsInNumbers() {
-        mockTest(exprParser, NUMBER);
+        mockTest(exprParser, ARITH_NUMBER);
         mockTest(exprParser, ARITH_HEX_NUMBER);
         mockTest(exprParser, ARITH_OCTAL_NUMBER);
-        mockTest(exprParser, ARITH_BASE_NUMBER);
+        mockTest(exprParser, ARITH_NUMBER, ARITH_BASE_CHAR, ARITH_NUMBER);
 
-        mockTest(exprParser, NUMBER, VARIABLE);
-        mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER);
-        mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, NUMBER);
-        mockTest(exprParser, NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, NUMBER, VARIABLE);
+        mockTest(exprParser, ARITH_NUMBER, VARIABLE);
+        mockTest(exprParser, ARITH_NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, ARITH_NUMBER);
+        mockTest(exprParser, ARITH_NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, ARITH_NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, ARITH_NUMBER);
+        mockTest(exprParser, ARITH_NUMBER, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, ARITH_NUMBER, WHITESPACE, ARITH_DIV, WHITESPACE, ARITH_NUMBER, VARIABLE);
     }
 
     @Test
     public void testWhitespace() throws Exception {
-        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, NUMBER);
+        mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, ARITH_NUMBER);
     }
 
     @Test
     public void testComplexExpressions() throws Exception {
         //1 < "x"
-        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END);
+        mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END);
 
         //1 < $(a)
-        mockTest(exprParser, NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+
+        //123#$a
+        //a variable as value
+        mockTest(exprParser, ARITH_NUMBER, ARITH_BASE_CHAR, VARIABLE);
     }
 }

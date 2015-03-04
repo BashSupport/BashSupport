@@ -19,16 +19,16 @@
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
- * An arithmetic sum expression.
+ * An simple arithmetic expression.
  * <p/>
  * User: jansorg
  * Date: Feb 6, 2010
  * Time: 10:57:11 AM
  */
 public interface SimpleExpression extends ArithmeticExpression {
+    LiteralType literalType();
+
     enum LiteralType {
         HexLiteral, BaseLiteral, OctalLiteral, DecimalLiteral, Other
     }
-
-    LiteralType literalType();
 }

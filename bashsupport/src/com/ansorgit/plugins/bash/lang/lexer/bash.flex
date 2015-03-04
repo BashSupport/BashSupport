@@ -140,7 +140,7 @@ Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | 
 ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 
 IntegerLiteral = [0] | ([1-9][0-9]*)
-BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
+//BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
@@ -413,9 +413,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "("                           { openParenths++; return LEFT_PAREN; }
 
   {HexIntegerLiteral}           { return ARITH_HEX_NUMBER; }
-  {BaseIntegerLiteral}          { return ARITH_BASE_NUMBER; }
   {OctalIntegerLiteral}         { return ARITH_OCTAL_NUMBER; }
-  {IntegerLiteral}              { return NUMBER; }
+  {IntegerLiteral}              { return ARITH_NUMBER; }
 
   ">"                           { return ARITH_GT; }
   "<"                           { return ARITH_LT; }
@@ -444,10 +443,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "--"/{WhiteSpace}+"-"
                                 { yypushback(1); return ARITH_MINUS; }
 
-  "--"/({HexIntegerLiteral}|{BaseIntegerLiteral}|{BaseIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
+  "--"/({HexIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
                                 { yypushback(1); return ARITH_MINUS; }
 
-  "--"/{WhiteSpace}+({HexIntegerLiteral}|{BaseIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
+  "--"/{WhiteSpace}+({HexIntegerLiteral}|{OctalIntegerLiteral}|{IntegerLiteral})
                                 { yypushback(1); return ARITH_MINUS; }
 
   "--"                          { return ARITH_MINUS_MINUS; }
@@ -467,6 +466,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "?"                           { return ARITH_QMARK; }
   ":"                           { return ARITH_COLON; }
+
+  "#"                           { return ARITH_BASE_CHAR; }
 
   {ArithWord}                   { return WORD; }
 }

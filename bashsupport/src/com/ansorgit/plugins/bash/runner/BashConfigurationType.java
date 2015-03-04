@@ -20,6 +20,8 @@ package com.ansorgit.plugins.bash.runner;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
+import com.intellij.execution.BeforeRunTask;
+import com.intellij.execution.RunManagerEx;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.ConfigurationTypeUtil;
@@ -27,6 +29,8 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationModule;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
 
 /**
  * Bash run configuration type.
@@ -52,13 +56,15 @@ public class BashConfigurationType extends ConfigurationTypeBase {
 
         @Override
         public void onNewConfigurationCreated(@NotNull RunConfiguration configuration) {
-
+            //the last param has to be false because we do not want a fallback to the template (we're creating it right now) (avoiding a SOE)
+            RunManagerEx.getInstanceEx(configuration.getProject()).setBeforeRunTasks(configuration, Collections.<BeforeRunTask>emptyList(), false);
         }
 
         @Override
         public RunConfiguration createTemplateConfiguration(Project project) {
             BashRunConfiguration configuration = new BashRunConfiguration(new RunConfigurationModule(project), this, "");
             configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
+
             return configuration;
         }
     }
