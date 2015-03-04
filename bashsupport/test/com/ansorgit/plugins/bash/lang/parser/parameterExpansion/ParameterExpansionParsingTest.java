@@ -96,10 +96,10 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testParseArrayVarRef() throws Exception {
         //{a[1]}
-        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
 
         //{a[1*34-4]}
-        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, ARITH_MULT, NUMBER, ARITH_MINUS, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, ARITH_NUMBER, ARITH_MULT, ARITH_NUMBER, ARITH_MINUS, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
     }
 
     @Test
@@ -132,18 +132,18 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testArithmeticArrayRefs() throws Exception {
         //{var[1+2-var]}
-        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, LEFT_SQUARE, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
 
         //{#var[1+2-var]}
-        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE, RIGHT_CURLY);
 
         //{#var[1+2-var]#[a-z]}
-        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, ARITH_PLUS, NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE,
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, ARITH_MINUS, WORD, RIGHT_SQUARE,
                 PARAM_EXPANSION_OP_HASH, LEFT_SQUARE, WORD, PARAM_EXPANSION_OP_MINUS, WORD, RIGHT_SQUARE,
                 RIGHT_CURLY);
 
         //{#A[1]}
-        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
     }
 
     @Test
@@ -155,7 +155,7 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_CURLY);
 
         //${x-`$[1]`}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, ARITH_NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE, RIGHT_CURLY);
     }
 
 

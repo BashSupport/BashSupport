@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.parser.misc;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.misc.RecursionGuard;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -109,7 +108,7 @@ public class ListParsingTest extends MockPsiTest {
         Assert.assertTrue(Parsing.list.isListTerminator(SEMI));
 
         Assert.assertFalse(Parsing.list.isListTerminator(WORD));
-        Assert.assertFalse(Parsing.list.isListTerminator(NUMBER));
+        Assert.assertFalse(Parsing.list.isListTerminator(ARITH_NUMBER));
         Assert.assertFalse(Parsing.list.isListTerminator(WHILE_KEYWORD));
     }
 

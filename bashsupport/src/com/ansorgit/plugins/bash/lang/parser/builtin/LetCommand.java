@@ -36,7 +36,7 @@ import com.intellij.psi.tree.TokenSet;
  * fixme not variable parsing, etc. is done at the moment
  */
 class LetCommand implements ParsingFunction, ParsingTool {
-    public static final TokenSet VALID_EXTRA_TOKENS = TokenSet.create(EQ, ADD_EQ, NUMBER, ARITH_PLUS, ARITH_ASS_PLUS);
+    public static final TokenSet VALID_EXTRA_TOKENS = TokenSet.create(EQ, ADD_EQ, ARITH_NUMBER, ARITH_PLUS, ARITH_ASS_PLUS);
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {

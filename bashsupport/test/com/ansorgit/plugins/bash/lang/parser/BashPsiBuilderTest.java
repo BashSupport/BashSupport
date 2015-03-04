@@ -14,9 +14,9 @@ import java.util.Collections;
 public class BashPsiBuilderTest extends MockPsiTest {
     @Test
     public void testWhitespaceDisabled() throws Exception {
-        BashPsiBuilder builder = new BashPsiBuilder(null, builderFor(Collections.<String>emptyList(), NUMBER, WHITESPACE, WORD), BashVersion.Bash_v4);
+        BashPsiBuilder builder = new BashPsiBuilder(null, builderFor(Collections.<String>emptyList(), ARITH_NUMBER, WHITESPACE, WORD), BashVersion.Bash_v4);
 
-        Assert.assertEquals(NUMBER, builder.getTokenType());
+        Assert.assertEquals(ARITH_NUMBER, builder.getTokenType());
 
         builder.advanceLexer();
         Assert.assertEquals(WORD, builder.getTokenType());
@@ -24,8 +24,8 @@ public class BashPsiBuilderTest extends MockPsiTest {
 
     @Test
     public void testWhitespaceEnabled() throws Exception {
-        BashPsiBuilder builder = new BashPsiBuilder(null, builderFor(Collections.<String>emptyList(), NUMBER, WHITESPACE, WORD, WHITESPACE, NUMBER), BashVersion.Bash_v4);
-        Assert.assertEquals(NUMBER, builder.getTokenType());
+        BashPsiBuilder builder = new BashPsiBuilder(null, builderFor(Collections.<String>emptyList(), ARITH_NUMBER, WHITESPACE, WORD, WHITESPACE, ARITH_NUMBER), BashVersion.Bash_v4);
+        Assert.assertEquals(ARITH_NUMBER, builder.getTokenType());
 
         builder.advanceLexer();
         Assert.assertEquals(WHITESPACE, builder.getTokenType(true));
@@ -34,6 +34,6 @@ public class BashPsiBuilderTest extends MockPsiTest {
         Assert.assertEquals(WORD, builder.getTokenType(true));
 
         builder.advanceLexer();
-        Assert.assertEquals(NUMBER, builder.getTokenType(false));
+        Assert.assertEquals(ARITH_NUMBER, builder.getTokenType(false));
     }
 }
