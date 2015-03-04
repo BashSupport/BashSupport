@@ -52,7 +52,7 @@ public class WordParsingTest extends MockPsiTest {
 
     @Test
     public void testParseWord3() {
-        mockTest(wordTestParser, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+        mockTest(wordTestParser, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test

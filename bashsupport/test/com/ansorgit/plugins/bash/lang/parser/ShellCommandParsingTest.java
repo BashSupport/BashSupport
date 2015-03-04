@@ -213,7 +213,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
 
         //`echo $((1))`
         mockTest(backquoteCommandParsingTester,
-                BACKQUOTE, WORD, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH, BACKQUOTE);
+                BACKQUOTE, WORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH, BACKQUOTE);
     }
 
     @Test
@@ -249,7 +249,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     public void testParseArithmeticCommand1() {
         //$((1 + 2))
         mockTest(arithmeticParsingTester,
-                EXPR_ARITH, NUMBER, ARITH_PLUS, NUMBER, _EXPR_ARITH
+                EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH
         );
     }
 
@@ -257,7 +257,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     public void testParseArithmeticCommand2() {
         //$((1))
         mockTest(arithmeticParsingTester,
-                EXPR_ARITH, NUMBER, _EXPR_ARITH
+                EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH
         );
     }
 
@@ -272,7 +272,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     @Test
     public void testParseArithmeticCommand5() {
         //$(((1)))
-        mockTest(arithmeticParsingTester, EXPR_ARITH, LEFT_PAREN, NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        mockTest(arithmeticParsingTester, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
     }
 
     @Test
@@ -280,7 +280,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
         //$(($(a) + 1))
         mockTest(arithmeticParsingTester,
                 EXPR_ARITH,
-                DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, ARITH_PLUS, NUMBER,
+                DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, ARITH_PLUS, ARITH_NUMBER,
                 _EXPR_ARITH);
     }
 
@@ -299,7 +299,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
         mockTest(arithmeticParsingTester,
                 EXPR_ARITH,
                 ASSIGNMENT_WORD, EQ,
-                DOLLAR, EXPR_ARITH, NUMBER, ARITH_PLUS, NUMBER, _EXPR_ARITH,
+                DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH,
                 _EXPR_ARITH);
     }
 

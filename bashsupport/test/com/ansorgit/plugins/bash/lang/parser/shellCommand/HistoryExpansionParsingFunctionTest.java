@@ -23,7 +23,7 @@ public class HistoryExpansionParsingFunctionTest extends MockPsiTest {
 
     @Test
     public void testNumbers() throws Exception {
-        mockTest(expansionParser, BANG_TOKEN, NUMBER);
+        mockTest(expansionParser, BANG_TOKEN, ARITH_NUMBER);
     }
 
     @Test

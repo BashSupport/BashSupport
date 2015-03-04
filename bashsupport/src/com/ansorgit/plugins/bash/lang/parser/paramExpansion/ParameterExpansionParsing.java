@@ -45,7 +45,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
     private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS,
-            PARAM_EXPANSION_OP_STAR, NUMBER);
+            PARAM_EXPANSION_OP_STAR, ARITH_NUMBER);
 
     private static final TokenSet variableMarkingExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_STAR);

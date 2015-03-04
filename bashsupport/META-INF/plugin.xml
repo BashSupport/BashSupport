@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -265,7 +265,7 @@
 
         <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
-        
+
         <!--
         <spellchecker.support language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.SpellcheckerSupport" />
         -->
