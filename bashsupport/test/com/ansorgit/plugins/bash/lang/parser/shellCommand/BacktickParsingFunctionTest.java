@@ -30,9 +30,9 @@ public class BacktickParsingFunctionTest extends MockPsiTest {
         mockTest(backtickParser, BACKQUOTE, VARIABLE, BACKQUOTE);
 
         //`$((123))`
-        mockTest(backtickParser, BACKQUOTE, DOLLAR, EXPR_ARITH, NUMBER, _EXPR_ARITH, BACKQUOTE);
+        mockTest(backtickParser, BACKQUOTE, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH, BACKQUOTE);
 
         //`$[123]`
-        mockTest(backtickParser, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE);
+        mockTest(backtickParser, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, ARITH_NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE);
     }
 }

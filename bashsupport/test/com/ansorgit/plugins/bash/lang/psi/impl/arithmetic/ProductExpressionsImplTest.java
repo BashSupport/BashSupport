@@ -47,7 +47,7 @@ public class ProductExpressionsImplTest {
     }
 
     private ProductExpressionsImpl createDummyNode() {
-        ASTNode astNode = new LeafPsiElement(BashTokenTypes.NUMBER, "xxx");
+        ASTNode astNode = new LeafPsiElement(BashTokenTypes.ARITH_NUMBER, "xxx");
         ProductExpressionsImpl product = new ProductExpressionsImpl(astNode);
         return product;
     }

@@ -234,7 +234,7 @@ public class IntegrationTest extends MockPsiTest {
         // echo
         // ((a=1))
         mockTest(fileParsingTest,
-                WORD, LINE_FEED, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, _EXPR_ARITH);
+                WORD, LINE_FEED, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
@@ -394,9 +394,9 @@ public class IntegrationTest extends MockPsiTest {
         //$a is here written as DOLLAR, WORD which is an invalid combination
         //this has to be detected as an error
         mockTestError(fileParsingTest,
-                FOR_KEYWORD, EXPR_ARITH, WORD, ARITH_MULT, NUMBER, ARITH_LT, NUMBER, SEMI,
-                NUMBER, ARITH_GE, WORD, SEMI,
-                WORD, EQ, WORD, ARITH_MULT, NUMBER, _EXPR_ARITH,
+                FOR_KEYWORD, EXPR_ARITH, WORD, ARITH_MULT, ARITH_NUMBER, ARITH_LT, ARITH_NUMBER, SEMI,
+                ARITH_NUMBER, ARITH_GE, WORD, SEMI,
+                WORD, EQ, WORD, ARITH_MULT, ARITH_NUMBER, _EXPR_ARITH,
                 DO_KEYWORD, WORD, WHITESPACE, DOLLAR, WORD, SEMI, DONE_KEYWORD, SEMI);
     }
 
@@ -404,9 +404,9 @@ public class IntegrationTest extends MockPsiTest {
     public void testArithmeticForLoop() {
         //for (( a *2 < 4; 3 >= a; a = a*2 )) ; do hey $a; done;
         mockTest(fileParsingTest,
-                FOR_KEYWORD, EXPR_ARITH, WORD, ARITH_MULT, NUMBER, ARITH_LT, NUMBER, SEMI,
-                NUMBER, ARITH_GE, WORD, SEMI,
-                WORD, EQ, WORD, ARITH_MULT, NUMBER, _EXPR_ARITH,
+                FOR_KEYWORD, EXPR_ARITH, WORD, ARITH_MULT, ARITH_NUMBER, ARITH_LT, ARITH_NUMBER, SEMI,
+                ARITH_NUMBER, ARITH_GE, WORD, SEMI,
+                WORD, EQ, WORD, ARITH_MULT, ARITH_NUMBER, _EXPR_ARITH,
                 DO_KEYWORD, WORD, VARIABLE, SEMI, DONE_KEYWORD, SEMI);
 
         //for (( ; ; )) ; do hey $a; done;
@@ -430,7 +430,7 @@ public class IntegrationTest extends MockPsiTest {
         //    echo "Welcome $c times..."
         //done
         mockTest(fileParsingTest,
-                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, SEMI, WORD, ARITH_LE, NUMBER, SEMI, WORD, ARITH_PLUS_PLUS, _EXPR_ARITH,
+                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, SEMI, WORD, ARITH_LE, ARITH_NUMBER, SEMI, WORD, ARITH_PLUS_PLUS, _EXPR_ARITH,
                 LINE_FEED, DO_KEYWORD, LINE_FEED, WORD, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
     }
 
@@ -617,7 +617,7 @@ public class IntegrationTest extends MockPsiTest {
     public void testRedirectWithArithmeticCommand() {
         //a=1 ((1))
         mockTestFail(fileParsingTest,
-                ASSIGNMENT_WORD, EQ, WORD, EXPR_ARITH, NUMBER, _EXPR_ARITH);
+                ASSIGNMENT_WORD, EQ, WORD, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
@@ -645,7 +645,7 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testSquareArithmetic() {
         //$[10/${num}]
-        mockTest(fileParsingTest, DOLLAR, EXPR_ARITH_SQUARE, NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH_SQUARE);
+        mockTest(fileParsingTest, DOLLAR, EXPR_ARITH_SQUARE, ARITH_NUMBER, ARITH_DIV, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, _EXPR_ARITH_SQUARE);
     }
 
     @Test

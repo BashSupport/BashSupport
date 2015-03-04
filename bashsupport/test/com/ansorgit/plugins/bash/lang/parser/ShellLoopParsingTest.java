@@ -118,12 +118,12 @@ public class ShellLoopParsingTest extends MockPsiTest {
 
         // for ((i=1;;)); do e; done
         mockTest(forLoopTester,
-                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, SEMI, SEMI, _EXPR_ARITH, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD
+                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, SEMI, SEMI, _EXPR_ARITH, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD
         );
 
         // for ((i=1;i<10;)); do e; done
         mockTest(forLoopTester,
-                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, NUMBER, SEMI, WORD, ARITH_LT, NUMBER, SEMI, _EXPR_ARITH, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD
+                FOR_KEYWORD, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, SEMI, WORD, ARITH_LT, ARITH_NUMBER, SEMI, _EXPR_ARITH, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD
         );
     }
 
