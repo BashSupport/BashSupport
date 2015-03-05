@@ -63,7 +63,7 @@ public class UnregisterGlobalVarInspection extends LocalInspectionTool {
 
                 if (isRegisteredAsGlobal) {
                     holder.registerProblem(bashVar, "This variable is currently registered as a global variable",
-                            ProblemHighlightType.INFO,
+                            ProblemHighlightType.INFORMATION,
                             ref.getRangeInElement(),
                             new UnregisterGlobalVariableQuickfix(bashVar));
                 }

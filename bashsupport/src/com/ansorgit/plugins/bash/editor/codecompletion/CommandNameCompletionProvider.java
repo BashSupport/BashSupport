@@ -37,7 +37,7 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.Icons;
+import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 
 import java.util.Collection;
@@ -105,7 +105,7 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
                 //complete the current input with the executables found in $PATH
                 Iterable<String> commandNames = BashPathCommandCompletion.getInstance().findCommands(currentText);
 
-                commandResult.addAllElements(CompletionProviderUtils.createItems(commandNames, Icons.FILE_ICON));
+                commandResult.addAllElements(CompletionProviderUtils.createItems(commandNames, PlatformIcons.FILE_ICON));
 
             }
         } else {
