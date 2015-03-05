@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.4.0</version>
+    <version>1.4.0_build140</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -28,16 +28,10 @@
     <idea-version since-build="140.0" until-build="140.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
-
     <depends>com.intellij.modules.lang</depends>
 
-    <!--
-    <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
-    -->
-
-    <description><![CDATA[
-  <html>
-    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/>
+    <description><![CDATA[<html>
+    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
     I will marry in April and invite all happy users of BashSupport to chip in by sending us a wedding gift:
     <ul>
         <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
@@ -45,12 +39,35 @@
         <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
         <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
     </ul>
-  </html>
-  ]]></description>
+    </html>]]></description>
 
     <change-notes><![CDATA[
     <html>
-       <b>Changes in version 1.3.4:</b>
+       <b>Changes in version 1.4.0:</b>
+       <ul>
+         <li>Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3</li>
+         <li>Added live template context for Bash files</li>
+         <li>The special /usr/bin/env command is now supported by the shebang inspection</li>
+         <li>No keyword autocompletion in a variable context</li>
+         <li>Fixed parsing of a file containg a $ as last character</li>
+         <li>Fixed autocomplete in eval and trap commands</li>
+         <li>Parser performance improved (pool for internal marker objects added)</li>
+         <li>Possible fix for a stack overflow in the parser (not reproducible here, though)</li>
+         <li>#190: Fixed UOE error in the "register as global variable" quickfix</li>
+         <li>#179: Fixed NPE in FileInclusionManager</li>
+         <li>#152: Guard to prevent endless recursions</li>
+         <li>#192: Fixed NPE in highlighting of arithmetic expressions</li>
+         <li>#170: Keywords like "fi", "if", "while", "done" were not offered in the list of autocompletion suggestions</li>
+         <li>Fixed autocompletion at the end of a string, e.g. "$a<caret>". The string end marker was replaced if tab was pressed.</li>
+         <li>Fixed autocompletion with open strings, e.g. $a<caret>\necho "x". The command in the next line was removed if tab was pressed.</li>
+         <li>Fixed autocompletion in curly brackets, e.g. ${<caret>}. The right curly bracket was removed if tab was pressed.</li>
+         <li>Fixed missing autocompletion of global variables and built-in commands inside of parameter expansions</li>
+         <li>#184: Single quoted associative array keys parsing error</li>
+         <li>#186: Erroneous warning "Simple use of array variable" when iterating through array</li>
+         <li>NPE fix for FileInclusionManager</li>
+        </ul>
+
+       <b>Changes in version 1.3.x:</b>
        <ul>
         <li>Fixed exceptions caused by an invalid implementation of the time command (PsiWhitespace exceptions)</li>
         <li>Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"</li>
@@ -59,22 +76,10 @@
         <li>Fixed "Local variable definition on global level" inspection</li>
         <li>Fixed case expressions followed by a backtick character</li>
         <li>Small performance and memory improvement in the Bash file lexer</li>
-       </ul>
-
-       <b>Changes in version 1.3.3:</b>
-       <ul>
         <li>Fixed run configurations produced for non-Bash files. Run configuration are now only created for Bash files.</li>
         <li>Fixed IndexNotReadyException</li>
-       </ul>
-
-       <b>Changes in version 1.3.2:</b>
-       <ul>
          <li>Fixed UnsupportedOperationException which occurred after a new plain text file without extension was created.</li>
          <li>Fixed the message displayed on startup</li>
-       </ul>
-
-       <b>Changes in version 1.3.1:</b>
-       <ul>
          <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift:
             <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>
          </li>
@@ -90,13 +95,7 @@
          <li>Fixed NPE which occurred with unclosed subshell expressions</li>
        </ul>
 
-       <b>Changes in version 1.2.1:</b>
-       <ul>
-          <li>Version accepted by IntelliJ IDEA 14</li>
-       </ul>
-
-       <b>Changes in version 1.2:</b>
-       <ul>
+       <b>Changes in version 1.2.x:</b>
           <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
           <li>Support for the getopts command</li>
           <li>Support for process substitution redirects, e.g. <(command)</li>
@@ -267,10 +266,6 @@
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
 
         <!--
-        <spellchecker.support language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.SpellcheckerSupport" />
-        -->
-
-        <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
         -->
@@ -306,7 +301,6 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
         <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
 
-        <!-- Inspections -->
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashFixShebang"
                          key="inspection.fixShebang.name"
