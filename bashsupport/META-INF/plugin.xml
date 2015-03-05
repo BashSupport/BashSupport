@@ -20,8 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.4.0</version>
-_idea13</version>
+    <version>1.4.0_idea13</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -29,16 +28,10 @@ _idea13</version>
     <idea-version since-build="135.0" until-build="137.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
-
     <depends>com.intellij.modules.lang</depends>
 
-    <!--
-    <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
-    -->
-
-    <description><![CDATA[
-  <html>
-    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/>
+    <description><![CDATA[<html>
+    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
     I will marry in April and invite all happy users of BashSupport to chip in by sending us a wedding gift:
     <ul>
         <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
@@ -46,10 +39,9 @@ _idea13</version>
         <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
         <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
     </ul>
-  </html>
-  ]]></description>
+    </html>]]></description>
 
-<change-notes><![CDATA[
+    <change-notes><![CDATA[
     <html>
        <b>Changes in version 1.4.0:</b>
        <ul>
