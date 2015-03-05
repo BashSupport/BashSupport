@@ -64,7 +64,7 @@ class ClasspathDocumentationReader {
 
             final InputStream inputStream = new BufferedInputStream(url.openStream());
 
-            return StreamUtil.readText(inputStream);
+            return StreamUtil.readText(inputStream, "UTF-8");
         } catch (IOException e) {
             log.debug("Failed to read documentation.", e);
         }

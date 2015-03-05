@@ -24,7 +24,7 @@ import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.Icons;
+import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +41,7 @@ public class BashLineMarkerProvider implements com.intellij.codeInsight.daemon.L
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
         if (element instanceof BashFunctionDefName && element.getParent() instanceof BashFunctionDef) {
-            return new LineMarkerInfo<BashFunctionDefName>((BashFunctionDefName) element, element.getTextRange(), Icons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
+            return new LineMarkerInfo<BashFunctionDefName>((BashFunctionDefName) element, element.getTextRange(), PlatformIcons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
         }
 
         return null;
