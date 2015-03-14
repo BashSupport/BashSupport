@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
+<idea-plugin version="2" url="https://github.com/jansorg/BashSupport">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
