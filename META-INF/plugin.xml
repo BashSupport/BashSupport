@@ -45,6 +45,8 @@
     <html>
        <b>Changes in version 1.4.0:</b>
        <ul>
+         <li>Fixed the "Run before" steps of a Bash run configuration</li>
+         <li>The template Bash run configuration has no default "make" run before step now</li>
          <li>Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3</li>
          <li>Added live template context for Bash files</li>
          <li>The special /usr/bin/env command is now supported by the shebang inspection</li>
@@ -53,6 +55,8 @@
          <li>Fixed autocomplete in eval and trap commands</li>
          <li>Parser performance improved (pool for internal marker objects added)</li>
          <li>Possible fix for a stack overflow in the parser (not reproducible here, though)</li>
+         <li>#193: Variables in arithmetic base expressions were not supported</li>
+         <li>#194: $(( 8#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.</li>
          <li>#190: Fixed UOE error in the "register as global variable" quickfix</li>
          <li>#179: Fixed NPE in FileInclusionManager</li>
          <li>#152: Guard to prevent endless recursions</li>
@@ -265,7 +269,7 @@
 
         <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
-        
+
         <!--
         <weigher key="completionSorting"
                  implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
