@@ -96,6 +96,7 @@
        </ul>
 
        <b>Changes in version 1.2.x:</b>
+       <ul>
           <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
           <li>Support for the getopts command</li>
           <li>Support for process substitution redirects, e.g. <(command)</li>
