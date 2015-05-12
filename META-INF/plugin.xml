@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -43,6 +43,11 @@
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.5.0:</b>
+       <ul>
+         <li></li>
+        </ul>
+
        <b>Changes in version 1.4.0:</b>
        <ul>
          <li>Fixed the "Run before" steps of a Bash run configuration</li>
