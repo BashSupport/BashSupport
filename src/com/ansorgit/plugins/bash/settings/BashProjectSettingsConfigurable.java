@@ -84,7 +84,7 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     }
 
     public Icon getIcon() {
-        return BashIcons.BASH_LARGE_ICON;
+        return BashIcons.BASH_FILE_ICON;
     }
 
     public String getHelpTopic() {

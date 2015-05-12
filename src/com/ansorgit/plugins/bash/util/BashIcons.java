@@ -30,9 +30,6 @@ import javax.swing.*;
  * @author Joachim Ansorg, mail@ansorg-it.com.
  */
 public interface BashIcons {
-
-    Icon BASH_LARGE_ICON = IconLoader.getIcon("/icons/bash-64.png");
-
     Icon BASH_FILE_ICON = IconLoader.getIcon("/icons/bash.png");
 
     Icon FUNCTION_DEF_ICON = IconLoader.findIcon("/icons/function-16.png");
