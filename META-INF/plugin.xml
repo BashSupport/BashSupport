@@ -32,13 +32,6 @@
 
     <description><![CDATA[<html>
     Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
-    I will marry in April and invite all happy users of BashSupport to chip in by sending us a wedding gift:
-    <ul>
-        <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
-        <li>GoFundMe: <a target="_blank" href="http://www.gofundme.com/bashsupport">Make a donation on <em>www.gofundme.com/bashsupport</em></a></li>
-        <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
-        <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
-    </ul>
     </html>]]></description>
 
     <change-notes><![CDATA[
@@ -173,10 +166,6 @@
     </application-components>
 
     <project-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.fundRaiser.BashFundRaiser</implementation-class>
-        </component>
-
         <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable</implementation-class>
         </component>
