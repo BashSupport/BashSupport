@@ -135,6 +135,7 @@ public class RedirectionParsing implements ParsingTool {
         if (heredocStarters.contains(secondToken)) {
             if (inCheckMode) {
                 marker.drop();
+
                 return builder.getTokenType() == HEREDOC_MARKER;
             }
 
@@ -143,6 +144,8 @@ public class RedirectionParsing implements ParsingTool {
                 marker.drop();
                 return false;
             }
+
+            builder.advanceLexer();
 
             marker.done(REDIRECT_ELEMENT);
             return true;

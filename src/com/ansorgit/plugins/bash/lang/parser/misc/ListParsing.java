@@ -1,20 +1,22 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
@@ -156,7 +158,7 @@ public final class ListParsing implements ParsingTool {
         if (token == AND_AND || token == OR_OR) {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
-            result = parseList1(builder, simpleMode, false,recursionGuard); //with errors
+            result = parseList1(builder, simpleMode, false, recursionGuard); //with errors
 
             if (markComposedCommand) {
                 composedMarker.done(COMPOSED_COMMAND);
@@ -165,16 +167,18 @@ public final class ListParsing implements ParsingTool {
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
             IElementType current = token;
-            if (current == LINE_FEED) {
+            if (current == LINE_FEED && (builder.lookAhead(1) == HEREDOC_CONTENT_ELEMENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
+                //eat the newline
+                builder.advanceLexer();
+
                 // Parse here documents at this place. They follow a statement which opened one.
                 // Several here-docs can be combined
-                if (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT) {
-                    while (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT) {
-                        builder.advanceLexer();
-                    }
-
-                    current = builder.getTokenType();
+                while (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT || builder.getTokenType() == HEREDOC_MARKER_END) {
+                    builder.advanceLexer();
                 }
+
+                composedMarker.drop();
+                return true;
             }
 
             if (current == LINE_FEED && simpleMode) {

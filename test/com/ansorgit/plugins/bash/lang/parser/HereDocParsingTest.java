@@ -102,7 +102,7 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, DOLLAR, WORD, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
     }
 
 
@@ -113,7 +113,7 @@ public class HereDocParsingTest extends MockPsiTest {
         // !
 
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END
         );
     }
 }

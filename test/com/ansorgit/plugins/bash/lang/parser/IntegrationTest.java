@@ -565,8 +565,8 @@ public class IntegrationTest extends MockPsiTest {
         // "TEST
         //END
         mockTest(fileParsingTest,
-                Lists.newArrayList("a", "<<", "END", "\n", "\"", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+                Lists.newArrayList("a", "<<", "END", "\n", "\"TEST\n", "END"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
     }
 
     @Test
