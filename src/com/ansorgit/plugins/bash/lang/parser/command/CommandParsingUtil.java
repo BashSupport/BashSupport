@@ -68,7 +68,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return ok;
     }
 
-    public static enum Mode {
+    public enum Mode {
         /**
          * Only accept an ASSIGNENT_WORD or ARRAY_ASSIGNMENT_WORD in front .
          * The =value part is mandatory.
