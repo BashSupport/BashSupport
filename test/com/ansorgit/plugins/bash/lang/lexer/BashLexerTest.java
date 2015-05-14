@@ -25,6 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
+import static com.ansorgit.plugins.bash.lang.parser.BashElementTypes.HEREDOC_CONTENT_ELEMENT;
 
 /**
  * Tests the bash lexer.
@@ -432,9 +433,9 @@ public class BashLexerTest {
     public void testRedirect1() {
         testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
-        testTokenization("<<", REDIRECT_LESS_LESS);
+        testTokenization("<<", HEREDOC_MARKER_TAG);
         testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
-        testTokenization("<<-", REDIRECT_LESS_LESS_MINUS);
+        testTokenization("<<-", HEREDOC_MARKER_TAG);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
         testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
@@ -825,6 +826,27 @@ public class BashLexerTest {
     @Test
     public void testSubshellExpr() {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+    }
+
+    @Test
+    public void testHeredoc() {
+        testTokenization("cat <<END\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER);
+        testTokenization("cat <<END\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED);
+        testTokenization("cat <<END\nABC\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT);
+        testTokenization("cat <<END\nABC\n\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT);
+        testTokenization("cat <<END\nABC", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+        testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<END\nABC\nDEF\n\n\nXYZ DEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
     }
 
     private void testTokenization(String code, IElementType... expectedTokens) {

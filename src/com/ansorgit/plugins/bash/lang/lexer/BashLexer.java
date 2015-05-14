@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.psi.tree.TokenSet;
 
@@ -42,6 +43,7 @@ public final class BashLexer extends MergingLexer implements BashTokenTypes {
     public BashLexer(BashVersion bashVersion) {
         super(new FlexAdapter(
                 new _BashLexer(bashVersion, null)),
-                MergeTuple.create(TokenSet.create(STRING_CHAR), WORD));
+                MergeTuple.create(TokenSet.create(STRING_CHAR), WORD),
+                MergeTuple.create(TokenSet.create(HEREDOC_LINE), BashElementTypes.HEREDOC_CONTENT_ELEMENT));
     }
 }

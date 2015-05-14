@@ -99,6 +99,9 @@ CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
+HeredocMarkerTag = "<<" | "<<-"
+HeredocMarker = [A-Za-z0-9]+
+
 /************* STATES ************/
 /* If in a conditional expression */
 %state S_TEST
@@ -144,12 +147,46 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
 
+/* To matche heredoc documents */
+%xstate S_HEREDOC_MARKER
+%xstate S_HEREDOC
+
 %%
 /***************************** INITIAL STAATE ************************************/
 <YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST> {
   {Shebang}                     { return SHEBANG; }
   {Comment}                     { return COMMENT; }
 }
+
+<YYINITIAL> {
+    {HeredocMarkerTag} {
+        goToState(S_HEREDOC_MARKER);
+        return HEREDOC_MARKER_TAG;
+    }
+}
+
+<S_HEREDOC_MARKER> {
+    [^\s\n\r]+ {
+        setExpectedHeredocMarker(yytext());
+        goToState(S_HEREDOC);
+
+        return HEREDOC_MARKER;
+    }
+}
+
+<S_HEREDOC> {
+    {LineTerminator}+ { return LINE_FEED; }
+
+    ^.+ {LineTerminator}*  {
+        if (isHeredocEnd(yytext().toString())) {
+            backToPreviousState();
+            return HEREDOC_MARKER_END;
+        };
+
+        return HEREDOC_LINE;
+    }
+}
+
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
   "[ ]"                         { yypushback(1); goToState(S_TEST); setEmptyConditionalCommand(true); return EXPR_CONDITIONAL; }
@@ -511,8 +548,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   /* Bash v3 */
   "<<<"                         { return REDIRECT_LESS_LESS_LESS; }
-  "<<"                          { return REDIRECT_LESS_LESS; }
-  "<<-"                         { return REDIRECT_LESS_LESS_MINUS; }
   "<>"                          { return REDIRECT_LESS_GREATER; }
 
   "<&" / {ArithWord}            { return REDIRECT_LESS_AMP; }

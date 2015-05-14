@@ -54,4 +54,10 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
     boolean isStartNewArithExpression();
 
     void setStartNewArithExpression(boolean startNewArithExpression);
+
+    void setExpectedHeredocMarker(CharSequence marker);
+
+    CharSequence getExpectedHeredocMarker();
+
+    boolean isHeredocEnd(String text);
 }

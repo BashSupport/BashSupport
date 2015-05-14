@@ -70,7 +70,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static TextRange adjustFoldingRange(ASTNode node) {
-        if (node.getElementType() == HEREDOC_ELEMENT) {
+        if (node.getElementType() == HEREDOC_CONTENT_ELEMENT) {
             TextRange textRange = node.getTextRange();
             return TextRange.from(textRange.getStartOffset(), textRange.getLength() - 1);
         }
@@ -79,14 +79,14 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static boolean mayContainFoldBlocks(IElementType type) {
-        return type != HEREDOC_ELEMENT;
+        return type != HEREDOC_CONTENT_ELEMENT;
     }
 
     private static boolean isFoldable(IElementType type) {
         return type == BLOCK_ELEMENT
                 || type == GROUP_COMMAND
                 || type == CASE_PATTERN_LIST_ELEMENT
-                || type == HEREDOC_ELEMENT;
+                || type == HEREDOC_CONTENT_ELEMENT;
     }
 
     private static int minumumLineOffset(IElementType type) {
@@ -100,7 +100,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             return null;
         }
 
-        if (type == HEREDOC_ELEMENT) {
+        if (type == HEREDOC_CONTENT_ELEMENT) {
             return "...";
         }
 

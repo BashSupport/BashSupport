@@ -35,7 +35,6 @@ import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocStartMarkerImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternListElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTimeCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashExpansionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
@@ -145,15 +144,15 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashGenericCommandImpl(node);
         }
 
-        if (elementType == HEREDOC_START_MARKER_ELEMENT) {
+        if (elementType == BashTokenTypes.HEREDOC_MARKER) {
             return new BashHereDocStartMarkerImpl(node);
         }
 
-        if (elementType == HEREDOC_ELEMENT) {
+        if (elementType == HEREDOC_CONTENT_ELEMENT) {
             return new BashHereDocImpl(node);
         }
 
-        if (elementType == HEREDOC_END_MARKER_ELEMENT) {
+        if (elementType == BashTokenTypes.HEREDOC_MARKER_END) {
             return new BashHereDocEndMarkerImpl(node);
         }
 

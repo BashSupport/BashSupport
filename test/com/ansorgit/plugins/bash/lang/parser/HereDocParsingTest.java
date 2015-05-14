@@ -41,41 +41,41 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD);
 
         //a <<- END
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD);
 
         //a <<- END
         // TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "END", "\n", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, WORD, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD, LINE_FEED, WORD);
 
         //a <<-"END"
         // TEST
         //END
         mockTest(hereDoc,
-                Lists.newArrayList("a", "<<-", "\"", "END", "\"", "\n", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, STRING_BEGIN, WORD, STRING_END, LINE_FEED, WORD, LINE_FEED, WORD);
+                Lists.newArrayList("a", "<<-", "\"END\"", "\n", "TEST", "\n", "END"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, WORD, LINE_FEED, WORD);
 
         //a <<-"END"
         // "TEST
         //END
         mockTest(hereDoc,
-                Lists.newArrayList("a", "<<-", "\"", "END", "\"", "\n", "\"", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, STRING_BEGIN, WORD, STRING_END, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+                Lists.newArrayList("a", "<<-", "\"END\"", "\n", "\"", "TEST", "\n", "END"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
 
         //a <<-'END'
         // "TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "'END'", "\n", "\"", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, STRING2, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
     }
 
     @Test
@@ -85,14 +85,14 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$a", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, VARIABLE, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, VARIABLE, LINE_FEED, WORD);
 
         //a << END
         //${a}
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "{", "a", "}", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, LINE_FEED, WORD);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS_MINUS, WORD, LINE_FEED, DOLLAR, WORD, LINE_FEED, WORD);
+                WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, DOLLAR, WORD, LINE_FEED, WORD);
     }
 
 
@@ -113,7 +113,7 @@ public class HereDocParsingTest extends MockPsiTest {
         // !
 
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
-                WORD, REDIRECT_LESS_LESS, BANG_TOKEN, LINE_FEED, WORD, LINE_FEED, WORD
+                WORD, HEREDOC_MARKER_TAG, BANG_TOKEN, LINE_FEED, WORD, LINE_FEED, WORD
         );
     }
 }

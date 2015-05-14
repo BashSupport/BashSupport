@@ -166,9 +166,13 @@ public final class ListParsing implements ParsingTool {
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
             IElementType current = token;
             if (current == LINE_FEED) {
-                //parse here documents at this place. They follow a statement which opened one.
+                // Parse here documents at this place. They follow a statement which opened one.
                 // Several here-docs can be combined
-                if (Parsing.hereDoc.parseOptionalHereDocs(builder)) {
+                if (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT) {
+                    while (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT) {
+                        builder.advanceLexer();
+                    }
+
                     current = builder.getTokenType();
                 }
             }

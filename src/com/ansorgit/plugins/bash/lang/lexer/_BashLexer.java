@@ -25,10 +25,27 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     //conditional expressions
     private boolean emptyConditionalCommand = false;
 
+    private CharSequence expectedHeredocMarker;
+
     public _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
+    }
+
+    @Override
+    public boolean isHeredocEnd(String text) {
+        return text.trim().equals(expectedHeredocMarker.toString().trim());
+    }
+
+    @Override
+    public CharSequence getExpectedHeredocMarker() {
+        return expectedHeredocMarker;
+    }
+
+    @Override
+    public void setExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
+        this.expectedHeredocMarker = expectedHeredocMarker;
     }
 
     @Override

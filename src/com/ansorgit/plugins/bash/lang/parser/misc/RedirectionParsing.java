@@ -41,7 +41,7 @@ public class RedirectionParsing implements ParsingTool {
     );
 
     private static final TokenSet heredocStarters = TokenSet.create(
-            REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_MINUS
+            HEREDOC_MARKER_TAG
     );
 
     public boolean parseList(BashPsiBuilder builder, boolean optional) {
@@ -135,10 +135,10 @@ public class RedirectionParsing implements ParsingTool {
         if (heredocStarters.contains(secondToken)) {
             if (inCheckMode) {
                 marker.drop();
-                return Parsing.word.isWordToken(builder);
+                return builder.getTokenType() == HEREDOC_MARKER;
             }
 
-            if (!handleHereDocRedirect(builder)) {
+            if (builder.getTokenType() != HEREDOC_MARKER) {
                 //marker.error("Expected heredoc marker");
                 marker.drop();
                 return false;
@@ -189,15 +189,6 @@ public class RedirectionParsing implements ParsingTool {
             return false;
         }
 
-        return true;
-    }
-
-    private boolean handleHereDocRedirect(BashPsiBuilder builder) {
-        if (!Parsing.word.isWordToken(builder)) {
-            return false;
-        }
-
-        HereDocParsing.readHeredocMarker(builder);
         return true;
     }
 }
