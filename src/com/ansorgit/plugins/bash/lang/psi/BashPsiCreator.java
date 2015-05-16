@@ -148,7 +148,7 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashHereDocStartMarkerImpl(node);
         }
 
-        if (elementType == HEREDOC_CONTENT_ELEMENT) {
+        if (elementType == BashTokenTypes.HEREDOC_CONTENT) {
             return new BashHereDocImpl(node);
         }
 

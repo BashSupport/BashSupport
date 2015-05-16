@@ -1,4 +1,4 @@
-cat >> /tmp/test.txt << _EOF
+cat - << _EOF
 You can't use an unmatched single-quote this way
 _EOF
 

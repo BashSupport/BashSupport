@@ -174,11 +174,11 @@ public final class ListParsing implements ParsingTool {
                 builder.advanceLexer();
 
                 while (true) {
-                    PsiBuilder.Marker heredocMarker = builder.mark();
+                    //PsiBuilder.Marker heredocMarker = builder.mark();
                     if (builder.getTokenType() == HEREDOC_CONTENT) {
                         builder.advanceLexer();
                     }
-                    heredocMarker.done(HEREDOC_CONTENT_ELEMENT);
+                    //heredocMarker.done(HEREDOC_CONTENT_ELEMENT);
 
                     if (builder.getTokenType() == HEREDOC_MARKER_END) {
                         PsiBuilder.Marker endMarker = builder.mark();
