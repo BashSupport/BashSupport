@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Date: 25.03.2009
@@ -48,6 +49,8 @@ public final class ListParsing implements ParsingTool {
         | 	';'  //eof
         ;
      */
+
+    private static final TokenSet heredocTokens = TokenSet.create(HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
     public boolean isListTerminator(IElementType token) {
         return token == LINE_FEED || token == SEMI || token == null; //fixme null right for eof?
@@ -166,20 +169,42 @@ public final class ListParsing implements ParsingTool {
                 composedMarker.drop();
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            if (token == LINE_FEED && (builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
+            if (token == LINE_FEED && (heredocTokens.contains(builder.lookAhead(1)))) {
                 //eat the newline
                 builder.advanceLexer();
 
+                while (true) {
+                    PsiBuilder.Marker heredocMarker = builder.mark();
+                    if (builder.getTokenType() == HEREDOC_CONTENT) {
+                        builder.advanceLexer();
+                    }
+                    heredocMarker.done(HEREDOC_CONTENT_ELEMENT);
+
+                    if (builder.getTokenType() == HEREDOC_MARKER_END) {
+                        PsiBuilder.Marker endMarker = builder.mark();
+                        builder.advanceLexer();
+                        endMarker.done(HEREDOC_END_ELEMENT);
+                    } else {
+                        //composedMarker.drop();
+                        builder.error("Expected heredoc end elemend");
+                        break;
+                    }
+
+                    if (!heredocTokens.contains(builder.getTokenType())) {
+                        break;
+                    }
+                }
+
                 // Parse here documents at this place. They follow a statement which opened one.
                 // Several here-docs can be combined
-                while ((builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
+               /* while ((builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
                     PsiBuilder.Marker heredocMarker = builder.mark();
 
                     builder.advanceLexer();
                     ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
 
                     heredocMarker.done(HEREDOC_CONTENT);
-                }
+                }*/
 
                 composedMarker.drop();
                 return true;

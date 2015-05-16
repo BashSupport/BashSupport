@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.intellij.psi.PsiReference;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 /**
  * User: jansorg
@@ -47,14 +47,24 @@ public class HereDocResolveTest extends AbstractResolveTest {
     public void testResolveHereDocEndMarker() throws Exception {
         PsiReference startMarker = configure();
         Assert.assertNotNull(startMarker);
-        //Assert.assertTrue("start marker is invalid: "+startMarker.getClass(),startMarker instanceof BashHereDocStartMarker);
         Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
     }
 
     public void testResolveHereDocEndMarkerWithEval() throws Exception {
         PsiReference startMarker = configure();
         Assert.assertNotNull(startMarker);
-        //Assert.assertTrue("start marker is invalid: "+startMarker.getClass(), startMarker instanceof BashHereDocStartMarker);
+        Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
+    }
+
+    public void testResolveErrorFile() throws Exception {
+        PsiReference startMarker = configure();
+        Assert.assertNotNull(startMarker);
+        Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
+    }
+
+    public void testResolveErrorFile2() throws Exception {
+        PsiReference startMarker = configure();
+        Assert.assertNotNull(startMarker);
         Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
     }
 

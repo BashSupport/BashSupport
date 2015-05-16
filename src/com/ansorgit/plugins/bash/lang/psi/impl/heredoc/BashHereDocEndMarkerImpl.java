@@ -48,6 +48,6 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
 
     @Override
     public String getMarkerText() {
-        return getText();
+        return getText().trim();
     }
 }

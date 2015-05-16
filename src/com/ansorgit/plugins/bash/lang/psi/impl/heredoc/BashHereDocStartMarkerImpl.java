@@ -28,11 +28,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * User: jansorg
- * Date: Jan 29, 2010
- * Time: 7:03:22 PM
- */
 public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements BashHereDocStartMarker {
     public BashHereDocStartMarkerImpl(final ASTNode astNode) {
         super(astNode, "Bash heredoc start marker", BashHereDocEndMarker.class, true);
@@ -57,12 +52,20 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
 
     @Override
     public String getMarkerText() {
-        String text = getText();
+        String text = getText().trim();
 
-        if (isEvaluatingVariables()) {
-            return text.substring(1, text.length() - 1);
+        int start = 0;
+        int end = text.length();
+
+        if (text.startsWith("$")) {
+            start++;
         }
 
-        return text;
+        if (text.charAt(start) == '"' || text.charAt(start) == '\'') {
+            start++;
+            end--;
+        }
+
+        return text.substring(start, end);
     }
 }

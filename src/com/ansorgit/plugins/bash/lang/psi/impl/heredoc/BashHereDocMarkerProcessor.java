@@ -20,7 +20,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
@@ -36,9 +36,9 @@ import org.jetbrains.annotations.NotNull;
  */
 class BashHereDocMarkerProcessor extends BashAbstractProcessor {
     private final String referencedName;
-    private final Class<? extends BashPsiElement> otherEndsType;
+    private final Class<? extends BashHereDocMarker> otherEndsType;
 
-    public BashHereDocMarkerProcessor(String referencedName, Class<? extends BashPsiElement> otherEndsType) {
+    public BashHereDocMarkerProcessor(String referencedName, Class<? extends BashHereDocMarker> otherEndsType) {
         super(true);
 
         this.referencedName = referencedName;
@@ -46,7 +46,7 @@ class BashHereDocMarkerProcessor extends BashAbstractProcessor {
     }
 
     public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
-        boolean isValid = otherEndsType.isInstance(element) && referencedName.equals(element.getText());
+        boolean isValid = otherEndsType.isInstance(element) && referencedName.equals(((BashHereDocMarker) element).getMarkerText());
         if (isValid) {
             storeResult(element, 100);
             return false;

@@ -45,7 +45,23 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
 
     @Override
     public void setExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
-        this.expectedHeredocMarker = expectedHeredocMarker;
+        String marker = expectedHeredocMarker.toString();
+
+        int start = 0;
+        int end = marker.length();
+
+        if (marker.charAt(0) == '$') {
+            start++;
+        }
+
+        if (marker.charAt(start) == '\'' || marker.charAt(start) == '"') {
+            start++;
+            end--;
+        }
+
+        //fixme handle concatenated ''"" parts with optional $ prefix chars
+
+        this.expectedHeredocMarker = marker.substring(start, end);
     }
 
     @Override

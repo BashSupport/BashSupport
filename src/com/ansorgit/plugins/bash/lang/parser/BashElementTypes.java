@@ -170,6 +170,6 @@ public interface BashElementTypes {
     IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
 
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
-    //IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
+    IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
 }

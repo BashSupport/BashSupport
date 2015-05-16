@@ -48,10 +48,10 @@ import org.jetbrains.annotations.NotNull;
  */
 abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker, PsiReference {
     private static final Object[] EMPTY = new Object[0];
-    private final Class<? extends BashPsiElement> otherEndsType;
+    private final Class<? extends BashHereDocMarker> otherEndsType;
     private final boolean expectLater;
 
-    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashPsiElement> otherEndsType, boolean expectLater) {
+    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashHereDocMarker> otherEndsType, boolean expectLater) {
         super(astNode, name);
         this.otherEndsType = otherEndsType;
         this.expectLater = expectLater;

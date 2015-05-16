@@ -856,6 +856,19 @@ public class BashLexerTest {
         testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
         testTokenization("cat <<END\nABC\nDEF\n\n\nXYZ DEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<!\n!", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "test\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testHeredocErrors() throws Exception {
+        testTokenization("cat <<\"END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, BAD_CHARACTER, HEREDOC_MARKER_START);
     }
 
     private void testTokenization(String code, IElementType... expectedTokens) {

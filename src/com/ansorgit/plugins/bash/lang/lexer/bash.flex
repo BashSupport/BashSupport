@@ -170,12 +170,16 @@ HeredocMarkerTag = "<<" | "<<-"
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
-    | {Word} {
+    | [^ \s\t\n\r\f]+ {
         setExpectedHeredocMarker(yytext());
+
+        backToPreviousState();
         goToState(S_HEREDOC);
 
         return HEREDOC_MARKER_START;
     }
+
+    .                            { return BAD_CHARACTER; }
 }
 
 <S_HEREDOC> {
