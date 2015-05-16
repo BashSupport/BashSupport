@@ -41,41 +41,41 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<- END
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<- END
         // TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "END", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<-"END"
         // TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"END\"", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<-"END"
         // "TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"END\"", "\n", "\"", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
         //a <<-'END'
         // "TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "'END'", "\n", "\"", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
     @Test
@@ -85,14 +85,14 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$a", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, VARIABLE, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, LINE_FEED, HEREDOC_MARKER_END);
 
         //a << END
         //${a}
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "{", "a", "}", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, LINE_FEED, HEREDOC_MARKER_END);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
 
@@ -113,7 +113,7 @@ public class HereDocParsingTest extends MockPsiTest {
         // !
 
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER, LINE_FEED, BashElementTypes.HEREDOC_CONTENT_ELEMENT, HEREDOC_MARKER_END
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END
         );
     }
 }

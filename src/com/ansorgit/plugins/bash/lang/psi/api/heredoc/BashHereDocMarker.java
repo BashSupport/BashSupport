@@ -32,4 +32,5 @@ import com.intellij.psi.PsiNamedElement;
  * Time: 1:57:34 PM
  */
 public interface BashHereDocMarker extends BashPsiElement, BashReference, PsiNameIdentifierOwner, NavigationItem, PsiNamedElement {
+    String getMarkerText();
 }

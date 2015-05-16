@@ -254,9 +254,10 @@ public interface BashTokenTypes {
     TokenSet editorStringLiterals = TokenSet.create(STRING2, INTEGER_LITERAL, COLON);
 
     IElementType HEREDOC_MARKER_TAG = new BashElementType("heredoc marker tag");
-    IElementType HEREDOC_MARKER = new BashElementType("heredoc start marker");
+    IElementType HEREDOC_MARKER_START = new BashElementType("heredoc start marker");
     IElementType HEREDOC_MARKER_END = new BashElementType("heredoc end marker");
-    IElementType HEREDOC_LINE = new BashElementType("heredoc line");
+    IElementType HEREDOC_LINE = new BashElementType("heredoc line (temporary)");
+    IElementType HEREDOC_CONTENT = new ILazyParseableElementType("here doc content", BashFileType.BASH_LANGUAGE);
 
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...
@@ -266,14 +267,11 @@ public interface BashTokenTypes {
     TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, BANG_TOKEN, COND_OP_EQ_EQ, COND_OP_REGEX);
 
     //redirects
-    //IElementType REDIRECT_LESS_LESS = new BashElementType("<<");
     IElementType REDIRECT_LESS_LESS_LESS = new BashElementType("<<<");
     IElementType REDIRECT_LESS_AMP = new BashElementType("<&");
     IElementType REDIRECT_GREATER_AMP = new BashElementType(">&");
-    //IElementType REDIRECT_LESS_LESS_MINUS = new BashElementType("<<-");
     IElementType REDIRECT_LESS_GREATER = new BashElementType("<>");
     IElementType REDIRECT_GREATER_BAR = new BashElementType(">|");
-
     IElementType FILEDESCRIPTOR = new BashElementType("&[0-9] filedescriptor");
 
     //Bash 4:

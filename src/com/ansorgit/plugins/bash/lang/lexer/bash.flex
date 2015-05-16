@@ -100,7 +100,6 @@ CasePattern = {CaseFirst}{CaseAfter}*
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 HeredocMarkerTag = "<<" | "<<-"
-HeredocMarker = [A-Za-z0-9]+
 
 /************* STATES ************/
 /* If in a conditional expression */
@@ -166,16 +165,21 @@ HeredocMarker = [A-Za-z0-9]+
 }
 
 <S_HEREDOC_MARKER> {
-    [^\s\n\r]+ {
+    {WhiteSpace}+                { return WHITESPACE; }
+    {ContinuedLine}+             { /* ignored */ }
+
+      ("$"? "'" [^\']+ "'")+
+    | ("$"? \" [^\"]+ \")+
+    | {Word} {
         setExpectedHeredocMarker(yytext());
         goToState(S_HEREDOC);
 
-        return HEREDOC_MARKER;
+        return HEREDOC_MARKER_START;
     }
 }
 
 <S_HEREDOC> {
-    {LineTerminator}+ { return LINE_FEED; }
+    {LineTerminator}+           { return LINE_FEED; }
 
     ^.+ {LineTerminator}*  {
         if (isHeredocEnd(yytext().toString())) {

@@ -166,22 +166,26 @@ public final class ListParsing implements ParsingTool {
                 composedMarker.drop();
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            IElementType current = token;
-            if (current == LINE_FEED && (builder.lookAhead(1) == HEREDOC_CONTENT_ELEMENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
+            if (token == LINE_FEED && (builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
                 //eat the newline
                 builder.advanceLexer();
 
                 // Parse here documents at this place. They follow a statement which opened one.
                 // Several here-docs can be combined
-                while (builder.getTokenType() == HEREDOC_CONTENT_ELEMENT || builder.getTokenType() == HEREDOC_MARKER_END) {
+                while ((builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
+                    PsiBuilder.Marker heredocMarker = builder.mark();
+
                     builder.advanceLexer();
+                    ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
+
+                    heredocMarker.done(HEREDOC_CONTENT);
                 }
 
                 composedMarker.drop();
                 return true;
             }
 
-            if (current == LINE_FEED && simpleMode) {
+            if (token == LINE_FEED && simpleMode) {
                 composedMarker.drop();
                 return true;
             }

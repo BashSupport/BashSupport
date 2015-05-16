@@ -165,21 +165,11 @@ public interface BashElementTypes {
 
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
-
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
-
-    //heredoc
-    //IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("here doc content element");
-    IElementType HEREDOC_CONTENT_ELEMENT = new ILazyParseableElementType("here doc content", BashFileType.BASH_LANGUAGE) {
-        @Override
-        protected Language getLanguageForParser(PsiElement psi) {
-            return Language.findInstance(XHTMLLanguage.class);
-        }
-    };
-
-    //IElementType HEREDOC_START_MARKER_ELEMENT = new BashElementType("here doc start marker element");
-    //IElementType HEREDOC_END_MARKER_ELEMENT = new BashElementType("here doc end marker element");
-
     IElementType STRING_ELEMENT = new BashElementType("string");
     IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
+
+    IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
+    //IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
+    IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
 }

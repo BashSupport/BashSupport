@@ -136,16 +136,17 @@ public class RedirectionParsing implements ParsingTool {
             if (inCheckMode) {
                 marker.drop();
 
-                return builder.getTokenType() == HEREDOC_MARKER;
+                return builder.getTokenType() == HEREDOC_MARKER_START;
             }
 
-            if (builder.getTokenType() != HEREDOC_MARKER) {
-                //marker.error("Expected heredoc marker");
+            if (builder.getTokenType() != HEREDOC_MARKER_START) {
                 marker.drop();
                 return false;
             }
 
+            PsiBuilder.Marker heredocMarker = builder.mark();
             builder.advanceLexer();
+            heredocMarker.done(HEREDOC_START_ELEMENT);
 
             marker.done(REDIRECT_ELEMENT);
             return true;
@@ -163,8 +164,6 @@ public class RedirectionParsing implements ParsingTool {
             if (builder.getTokenType() != LINE_FEED) {
                 builder.advanceLexer();
             }
-
-//            return false;
         }
 
         //an invalid redirect should not break the whole parsing, thus we return true here

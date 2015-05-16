@@ -89,8 +89,8 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
     }
 
     public boolean isEvaluatingVariables() {
-        PsiElement start = findStartMarkerElement();
-        return (start instanceof BashHereDocStartMarker) && ((BashHereDocStartMarker) start).isEvaluatingVariables();
+        BashHereDocStartMarker start = findStartMarkerElement();
+        return (start != null) && start.isEvaluatingVariables();
     }
 
     public boolean isStrippingLeadingWhitespace() {
