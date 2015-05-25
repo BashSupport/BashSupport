@@ -46,7 +46,7 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
         PsiElement previous = getPrevSibling();
 
         String content = previous.getText();
-        return content != null && (content.startsWith("\"") || content.startsWith("'"));
+        return content != null && !content.startsWith("\"") && !content.startsWith("'");
 
     }
 

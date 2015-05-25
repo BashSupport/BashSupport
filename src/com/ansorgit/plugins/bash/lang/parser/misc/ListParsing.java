@@ -173,19 +173,16 @@ public final class ListParsing implements ParsingTool {
                 //eat the newline
                 builder.advanceLexer();
 
+                // Parse here documents at this place. They follow a statement which opened one.
+                // Several here-docs can be combined
                 while (true) {
-                    //PsiBuilder.Marker heredocMarker = builder.mark();
                     if (builder.getTokenType() == HEREDOC_CONTENT) {
-                        builder.advanceLexer();
+                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_CONTENT_ELEMENT);
                     }
-                    //heredocMarker.done(HEREDOC_CONTENT_ELEMENT);
 
                     if (builder.getTokenType() == HEREDOC_MARKER_END) {
-                        PsiBuilder.Marker endMarker = builder.mark();
-                        builder.advanceLexer();
-                        endMarker.done(HEREDOC_END_ELEMENT);
+                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
                     } else {
-                        //composedMarker.drop();
                         builder.error("Expected heredoc end elemend");
                         break;
                     }
@@ -194,17 +191,6 @@ public final class ListParsing implements ParsingTool {
                         break;
                     }
                 }
-
-                // Parse here documents at this place. They follow a statement which opened one.
-                // Several here-docs can be combined
-               /* while ((builder.lookAhead(1) == HEREDOC_CONTENT || builder.lookAhead(1) == HEREDOC_MARKER_END)) {
-                    PsiBuilder.Marker heredocMarker = builder.mark();
-
-                    builder.advanceLexer();
-                    ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
-
-                    heredocMarker.done(HEREDOC_CONTENT);
-                }*/
 
                 composedMarker.drop();
                 return true;
