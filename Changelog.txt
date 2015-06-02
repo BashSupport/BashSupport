@@ -1,3 +1,6 @@
+2015-06-02:
+ - Moved README.txt to README.md
+
 2015-03-04:
  - #193: Variables in arithmetic base expressions were not supported
  - #194: $(( 8#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.
