@@ -71,16 +71,19 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
     protected void checkItemsCustomCompletion(int completions, String... values) throws Exception {
         complete(completions);
 
-        if (values == null || values.length == 0) {
-            assertNull("No completion items were expected", myItems);
-            return;
-        }
-
         assertStringItems(values);
     }
 
     protected void checkItems(String... values) throws Exception {
         checkItemsCustomCompletion(1, values);
+    }
+
+    protected void checkNoItemsExpected() throws Exception {
+        complete(1);
+        assertNull(this.myItems);
+
+        complete(2);
+        assertNull(this.myItems);
     }
 
     public String getBasePath() {

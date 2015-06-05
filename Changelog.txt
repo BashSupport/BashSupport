@@ -1,4 +1,5 @@
 2015-06-05:
+ - No Bash keyword completions whille typing in a Bash comment
  - No liveTemplate suggestions whille typing in a Bash comment
 
 2015-06-02:
