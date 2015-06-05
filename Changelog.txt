@@ -1,3 +1,6 @@
+2015-06-05:
+ - No liveTemplate suggestions whille typing in a Bash comment
+
 2015-06-02:
  - Moved README.txt to README.md
 
