@@ -1,6 +1,7 @@
 package com.ansorgit.plugins.bash.editor.liveTemplates;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.intellij.codeInsight.template.TemplateContextType;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiComment;
@@ -29,7 +30,8 @@ public class BashLiveTemplatesContext extends TemplateContextType {
                 element = file.findElementAt(offset - 1);
             }
 
-            return PsiTreeUtil.getParentOfType(element, PsiComment.class, false) == null;
+            return PsiTreeUtil.getParentOfType(element, PsiComment.class, false) == null
+                    && PsiTreeUtil.getParentOfType(element, BashShebang.class, false) == null;
         }
 
         return false;
