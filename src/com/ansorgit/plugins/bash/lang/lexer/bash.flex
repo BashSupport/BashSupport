@@ -174,9 +174,13 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_HEREDOC> {
-    {LineTerminator}+           { return LINE_FEED; }
+    {LineTerminator}+           { if (!isHeredocMarkersEmpty()) {
+                                        return HEREDOC_LINE;
+                                  }
+                                  return LINE_FEED;
+                                }
 
-    ^.+ {LineTerminator}*  {
+    ^.+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
@@ -190,7 +194,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
         return HEREDOC_LINE;
     }
 
-        .                            { return BAD_CHARACTER; }
+    .                            { return BAD_CHARACTER; }
 }
 
 
