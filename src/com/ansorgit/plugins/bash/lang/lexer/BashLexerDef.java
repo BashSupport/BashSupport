@@ -41,7 +41,7 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
 
     void setInCaseBody(boolean inCaseBody);
 
-    StringParsingState stringParsingState();
+    StringLexingtate stringParsingState();
 
     boolean isEmptyConditionalCommand();
 
@@ -55,9 +55,11 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
 
     void setStartNewArithExpression(boolean startNewArithExpression);
 
-    void setExpectedHeredocMarker(CharSequence marker);
+    void pushExpectedHeredocMarker(CharSequence marker);
 
-    CharSequence getExpectedHeredocMarker();
+    void popHeredocMarker(CharSequence marker);
+
+    boolean isHeredocMarkersEmpty();
 
     boolean isHeredocEnd(String text);
 }

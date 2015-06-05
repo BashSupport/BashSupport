@@ -9,7 +9,7 @@ import com.intellij.util.containers.IntStack;
 public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
-    private final StringParsingState string = new StringParsingState();
+    private final StringLexingtate string = new StringLexingtate();
     //parameter expansion parsing state
     boolean paramExpansionHash = false;
     boolean paramExpansionWord = false;
@@ -24,8 +24,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean startNewArithExpression = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
-
-    private CharSequence expectedHeredocMarker;
+    private HeredocLexingState heredocLexingState = new HeredocLexingState();
 
     public _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
@@ -35,33 +34,22 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
 
     @Override
     public boolean isHeredocEnd(String text) {
-        return text.trim().equals(expectedHeredocMarker.toString().trim());
+        return heredocLexingState.isNextHeredocMarker(text);
     }
 
     @Override
-    public CharSequence getExpectedHeredocMarker() {
-        return expectedHeredocMarker;
+    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
+        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
     }
 
     @Override
-    public void setExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
-        String marker = expectedHeredocMarker.toString();
+    public void popHeredocMarker(CharSequence marker) {
+        heredocLexingState.popHeredocMarker(marker.toString());
+    }
 
-        int start = 0;
-        int end = marker.length();
-
-        if (marker.charAt(0) == '$') {
-            start++;
-        }
-
-        if (marker.charAt(start) == '\'' || marker.charAt(start) == '"') {
-            start++;
-            end--;
-        }
-
-        //fixme handle concatenated ''"" parts with optional $ prefix chars
-
-        this.expectedHeredocMarker = marker.substring(start, end);
+    @Override
+    public boolean isHeredocMarkersEmpty() {
+        return heredocLexingState.isEmpty();
     }
 
     @Override
@@ -95,7 +83,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public StringParsingState stringParsingState() {
+    public StringLexingtate stringParsingState() {
         return string;
     }
 

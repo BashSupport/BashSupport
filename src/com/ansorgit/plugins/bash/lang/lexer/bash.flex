@@ -171,7 +171,7 @@ HeredocMarkerTag = "<<" | "<<-"
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
     | [^ \s\t\n\r\f]+ {
-        setExpectedHeredocMarker(yytext());
+        pushExpectedHeredocMarker(yytext());
 
         backToPreviousState();
         goToState(S_HEREDOC);
@@ -187,12 +187,19 @@ HeredocMarkerTag = "<<" | "<<-"
 
     ^.+ {LineTerminator}*  {
         if (isHeredocEnd(yytext().toString())) {
-            backToPreviousState();
+            popHeredocMarker(yytext().toString());
+
+            if (isHeredocMarkersEmpty()) {
+                backToPreviousState();
+            }
+
             return HEREDOC_MARKER_END;
         };
 
         return HEREDOC_LINE;
     }
+
+        .                            { return BAD_CHARACTER; }
 }
 
 
@@ -565,7 +572,7 @@ HeredocMarkerTag = "<<" | "<<-"
 
   ">|"                          { return REDIRECT_GREATER_BAR; }
 
-  {Filedescriptor}              { return FILEDESCRIPTOR; }              
+  {Filedescriptor}              { return FILEDESCRIPTOR; }
 }
 
 <S_PARAM_EXPANSION> {
@@ -622,7 +629,7 @@ HeredocMarkerTag = "<<" | "<<-"
   /* Matching in all states */
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
-     if we match repeated whtiespace! 
+     if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
     {ContinuedLine}+             { /* ignored */ }
@@ -683,7 +690,7 @@ HeredocMarkerTag = "<<" | "<<-"
 <YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
-}    
+}
 
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY> {

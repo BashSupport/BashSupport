@@ -31,7 +31,7 @@ import com.intellij.util.containers.Stack;
  *
  * @author Joachim Ansorg
  */
-final class StringParsingState {
+final class StringLexingtate {
     private final StringBuilder stringData = new StringBuilder(128);
     private final Stack<SubshellState> subshells = new Stack<SubshellState>(5);
 
