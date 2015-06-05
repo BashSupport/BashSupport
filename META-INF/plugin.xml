@@ -167,24 +167,12 @@
 
     <project-components>
         <component>
-            <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable</implementation-class>
-        </component>
-
-        <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
         </component>
 
         <component>
             <implementation-class> com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.RemoveHighlightingPassFactory</implementation-class>
         </component>
-
-        <!--
-                <component>
-                    <implementation-class>
-                        com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
-                    </implementation-class>
-                </component>
-        -->
     </project-components>
 
     <!-- Plugin's module components -->
@@ -285,6 +273,8 @@
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
                         serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
         -->
+
+        <projectConfigurable groupId="language" instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
 
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
