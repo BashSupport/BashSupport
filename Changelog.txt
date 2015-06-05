@@ -1,6 +1,7 @@
 2015-06-05:
- - No Bash keyword completions whille typing in a Bash comment
- - No liveTemplate suggestions whille typing in a Bash comment
+ - No Bash keyword completions while typing in a Bash comment
+ - No Bash keyword completions while typing in a Bash comment
+ - Bash version 4 support is now enabled by default
 
 2015-06-02:
  - Moved README.txt to README.md
