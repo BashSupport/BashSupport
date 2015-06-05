@@ -867,6 +867,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testMultilineHeredoc() throws Exception {
+        //multiple heredocs in one command line
+        testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
     @Ignore //ignored for now because there is a match-all rule for the heredoc start marker
     public void _testHeredocErrors() throws Exception {
         testTokenization("cat <<\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);

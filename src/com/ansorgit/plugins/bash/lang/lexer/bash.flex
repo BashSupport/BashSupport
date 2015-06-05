@@ -99,8 +99,6 @@ CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
-HeredocMarkerTag = "<<" | "<<-"
-
 /************* STATES ************/
 /* If in a conditional expression */
 %state S_TEST
@@ -157,16 +155,9 @@ HeredocMarkerTag = "<<" | "<<-"
   {Comment}                     { return COMMENT; }
 }
 
-<YYINITIAL> {
-    {HeredocMarkerTag} {
-        goToState(S_HEREDOC_MARKER);
-        return HEREDOC_MARKER_TAG;
-    }
-}
-
 <S_HEREDOC_MARKER> {
     {WhiteSpace}+                { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }
+    {ContinuedLine}+             { /* ignored */ }     //fixme
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
@@ -174,7 +165,7 @@ HeredocMarkerTag = "<<" | "<<-"
         pushExpectedHeredocMarker(yytext());
 
         backToPreviousState();
-        goToState(S_HEREDOC);
+        //goToState(S_HEREDOC);
 
         return HEREDOC_MARKER_START;
     }
@@ -642,7 +633,13 @@ HeredocMarkerTag = "<<" | "<<-"
     \'{SingleCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
-    {LineTerminator}             { return LINE_FEED; }
+    {LineTerminator}             {
+                                        if (!isHeredocMarkersEmpty()) {
+                                            goToState(S_HEREDOC);
+                                        }
+
+                                       return LINE_FEED;
+                                 }
 
     /* Backquote expression */
     `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
@@ -669,6 +666,10 @@ HeredocMarkerTag = "<<" | "<<-"
     "@"                           { return AT; }
     "$"                           { return DOLLAR; }
     ";"                           { return SEMI; }
+    "<<" | "<<-" {
+        goToState(S_HEREDOC_MARKER);
+        return HEREDOC_MARKER_TAG;
+    }
     ">"                           { return GREATER_THAN; }
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }

@@ -15,7 +15,7 @@ class HeredocLexingState {
     }
 
     public void pushHeredocMarker(String marker) {
-        expectedHeredocs.push(cleanMarker(marker));
+        expectedHeredocs.add(cleanMarker(marker));
     }
 
     public void popHeredocMarker(String marker) {
