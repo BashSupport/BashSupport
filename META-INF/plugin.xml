@@ -38,8 +38,8 @@
     <html>
        <b>Changes in version 1.5.0:</b>
        <ul>
-         <li></li>
-        </ul>
+        <li></li>
+       </ul>
 
        <b>Changes in version 1.4.0:</b>
        <ul>
@@ -261,7 +261,7 @@
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
         <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
 
-        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
+        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesProvider" />
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
 
         <!--
