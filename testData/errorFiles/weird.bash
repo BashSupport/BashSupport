@@ -38,7 +38,7 @@ echo a << a
     p
     e
     r
-    a
+a
  e
 b
 
