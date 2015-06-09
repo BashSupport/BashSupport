@@ -43,10 +43,9 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
     }
 
     public boolean isEvaluatingVariables() {
-        PsiElement previous = getPrevSibling();
+        String text = getText().trim();
 
-        String content = previous.getText();
-        return content != null && !content.startsWith("\"") && !content.startsWith("'");
+        return !text.startsWith("\"") && !text.startsWith("'");
 
     }
 

@@ -74,3 +74,10 @@ echo "$(echo "\\")" jdhulkjfdsoierkj "$(echo "\\")"
 a b c d
 "$("hey there")"
 
+
+if test "X$1"; then
+cat <<E
+    s
+E
+    exit
+fi

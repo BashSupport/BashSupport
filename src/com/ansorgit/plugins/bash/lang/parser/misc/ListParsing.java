@@ -170,6 +170,8 @@ public final class ListParsing implements ParsingTool {
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
             if (token == LINE_FEED && (heredocTokens.contains(builder.lookAhead(1)))) {
+                composedMarker.drop();
+
                 //eat the newline
                 builder.advanceLexer();
 
@@ -183,7 +185,7 @@ public final class ListParsing implements ParsingTool {
                     if (builder.getTokenType() == HEREDOC_MARKER_END) {
                         ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
                     } else {
-                        builder.error("Expected heredoc end elemend");
+                        builder.error("Expected heredoc end marker");
                         break;
                     }
 
@@ -192,7 +194,6 @@ public final class ListParsing implements ParsingTool {
                     }
                 }
 
-                composedMarker.drop();
                 return true;
             }
 

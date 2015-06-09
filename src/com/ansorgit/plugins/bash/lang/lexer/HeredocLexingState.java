@@ -1,6 +1,8 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.google.common.collect.Lists;
+import com.intellij.openapi.util.text.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;
 
@@ -11,7 +13,11 @@ class HeredocLexingState {
     private LinkedList<String> expectedHeredocs = Lists.newLinkedList();
 
     public boolean isNextHeredocMarker(String marker) {
-        return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().equals(cleanMarker(marker));
+        return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().equals(trimNewline(marker));
+    }
+
+    private String trimNewline(String marker) {
+        return StringUtils.removeEnd(marker, "\n");
     }
 
     public void pushHeredocMarker(String marker) {
@@ -32,10 +38,14 @@ class HeredocLexingState {
 
     private String cleanMarker(String marker) {
         int start = 0;
-        int end = marker.trim().length();
+        int end = marker.length();
 
         if (marker.charAt(0) == '$') {
             start++;
+        }
+
+        while (marker.charAt(end - 1) == '\n') {
+            end--;
         }
 
         if (marker.charAt(start) == '\'' || marker.charAt(start) == '"') {

@@ -1,3 +1,7 @@
+For heredocs:
+    - parsing of references, subshells, etc in heredoc-reference-evaluation mode
+    - language injection to heredocs (not in ref-eval mode) doesn't work properly at the moment
+
 General list of to-do items. Indented items are already implemented / fixed.
 
 Planned features:

@@ -105,8 +105,7 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
 
     @Override
     public boolean isValidHost() {
-        //fixme
-        return true;
+        return !isEvaluatingVariables();
     }
 
     @Override
