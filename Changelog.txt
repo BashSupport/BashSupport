@@ -1,3 +1,6 @@
+2015-06-10:
+ - Fixed Bash file renaming, file references to Bash files are changed now
+
 2015-06-05:
  - No Bash keyword completions while typing in a Bash comment
  - No Bash keyword completions while typing in a Bash comment

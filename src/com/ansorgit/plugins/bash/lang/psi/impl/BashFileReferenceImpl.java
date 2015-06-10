@@ -21,33 +21,30 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> implements BashFileReference {
-    private PsiReference cachingReference;
+    private FileReferenceSet fileReferenceSet;
 
     public BashFileReferenceImpl(final ASTNode astNode) {
-        super(astNode, "File reference");
-        this.cachingReference = new CachingFileReference(this);
+        super(astNode, "Bash File reference");
+        this.fileReferenceSet = new FileReferenceSet(this);
     }
 
     @Nullable
     @Override
     public PsiFile findReferencedFile() {
-        return (PsiFile) cachingReference.resolve();
+        return (PsiFile) fileReferenceSet.resolve();
     }
 
     @NotNull
@@ -67,7 +64,7 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
 
     @Override
     public PsiReference getReference() {
-        return cachingReference;
+        return fileReferenceSet.getLastReference();
     }
 
     @Override
@@ -79,58 +76,13 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
         }
     }
 
-
-    private static class CachingFileReference extends CachingReference {
-        private final BashFileReferenceImpl fileReference;
-
-        public CachingFileReference(BashFileReferenceImpl fileReference) {
-            this.fileReference = fileReference;
+    @Override
+    public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
+        FileReference lastReference = fileReferenceSet.getLastReference();
+        if (lastReference == null) {
+            throw new IncorrectOperationException("no reference found");
         }
 
-        @Override
-        public PsiElement getElement() {
-            return fileReference;
-        }
-
-        public TextRange getRangeInElement() {
-            PsiElement firstChild = fileReference.getFirstChild();
-
-            if (firstChild instanceof BashCharSequence) {
-                return ((BashCharSequence) firstChild).getTextContentRange();
-            }
-
-            return TextRange.from(0, fileReference.getTextLength());
-        }
-
-        @NotNull
-        public String getCanonicalText() {
-            return this.fileReference.getText();
-        }
-
-        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            return BashPsiUtils.replaceElement(fileReference, BashChangeUtil.createWord(fileReference.getProject(), newName));
-        }
-
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException("not supported");
-        }
-
-        public boolean isReferenceTo(PsiElement element) {
-            PsiFile containingFile = this.fileReference.getContainingFile();
-            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, this.fileReference.getFilename()));
-        }
-
-        @NotNull
-        public Object[] getVariants() {
-            return PsiElement.EMPTY_ARRAY;
-        }
-
-
-        @Nullable
-        @Override
-        public PsiElement resolveInner() {
-            PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
-            return BashPsiFileUtils.findRelativeFile(containingFile, fileReference.getFilename());
-        }
+        return lastReference.handleElementRename(name);
     }
 }

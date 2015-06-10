@@ -54,7 +54,11 @@ public class BashChangeUtil {
     }
 
     public static PsiElement createWord(Project project, String name) {
-        return createDummyBashFile(project, name).getFirstChild();
+        return createDummyBashFile(project, name).getFirstChild().getFirstChild().getFirstChild();
+    }
+
+    public static PsiElement createString(Project project, String content) {
+        return createDummyBashFile(project, "\"" + content + "\"").getFirstChild().getFirstChild().getFirstChild();
     }
 
     public static PsiElement createAssignmentWord(Project project, String name) {
@@ -66,7 +70,7 @@ public class BashChangeUtil {
     public static PsiElement createVariable(Project project, String name, boolean withBraces) {
         if (withBraces) {
             String text = "${" + name + "}";
-            PsiElement command = createDummyBashFile(project, text).getFirstChild();
+            PsiElement command = createDummyBashFile(project, text).getFirstChild().getFirstChild();
 
             final PsiElement[] result = new PsiElement[1];
 
@@ -81,7 +85,7 @@ public class BashChangeUtil {
         }
 
         String text = "$" + name;
-        PsiElement command = createDummyBashFile(project, text).getFirstChild();
+        PsiElement command = createDummyBashFile(project, text).getFirstChild().getFirstChild();
 
         return command.getFirstChild().getFirstChild();
     }

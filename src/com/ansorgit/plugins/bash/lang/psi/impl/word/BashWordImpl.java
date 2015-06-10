@@ -59,11 +59,22 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         return children.length > 1 && findChildByType(nonWrappableChilds) == null;
     }
 
+    @Override
+    public boolean isWrapped() {
+        String text = getText();
+        return isStatic() && text.length() >= 2 && text.startsWith("'") && text.endsWith("'");
+    }
+
+    @Override
+    public String createEquallyWrappedString(String newContent) {
+        return "'" + newContent + "'";
+    }
+
     public String getUnwrappedCharSequence() {
         String text = getText();
 
         //if it is a single quoted string unqote it
-        if (isStatic() && text.length() >= 2 && text.startsWith("'")) {
+        if (isWrapped()) {
             return text.substring(1, text.length() - 1);
         }
 

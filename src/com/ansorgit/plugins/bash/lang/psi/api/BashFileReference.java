@@ -19,10 +19,11 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface BashFileReference extends BashPsiElement {
+public interface BashFileReference extends BashPsiElement, PsiNamedElement {
     @Nullable
     PsiFile findReferencedFile();
 

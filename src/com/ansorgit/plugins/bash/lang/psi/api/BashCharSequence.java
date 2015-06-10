@@ -27,6 +27,10 @@ import org.jetbrains.annotations.NotNull;
  * Time: 8:46:06 PM
  */
 public interface BashCharSequence extends BashPsiElement {
+    boolean isWrapped();
+
+    String createEquallyWrappedString(String newContent);
+
     /**
      * Returns the char sequence without any start or end markers.
      *
