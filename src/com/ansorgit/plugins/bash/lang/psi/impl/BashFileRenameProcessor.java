@@ -23,6 +23,7 @@ public class BashFileRenameProcessor extends RenamePsiFileProcessor {
     @NotNull
     @Override
     public Collection<PsiReference> findReferences(PsiElement element) {
+        //fixme fix the scope for non-bash elements
         SearchScope scope = BashElementSharedImpl.getElementUseScope((BashPsiElement) element, element.getProject());
         return ReferencesSearch.search(element, scope).findAll();
     }

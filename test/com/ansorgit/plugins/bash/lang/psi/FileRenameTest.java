@@ -42,6 +42,7 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
      */
     @Test
     public void testBasicFileRenameWithHandler() throws Exception {
+        //this test is broken in 14.0.3 because the test framework doesn't pass the new name but uses a stupid default name instead, which is equal to the current name
         doRename(true);
     }
 
