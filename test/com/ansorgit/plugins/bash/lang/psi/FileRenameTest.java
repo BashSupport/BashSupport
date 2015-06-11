@@ -4,11 +4,11 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -41,13 +41,34 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testBasicFileRenameWithHandler() throws Exception {
         //this test is broken in 14.0.3 because the test framework doesn't pass the new name but uses a stupid default name instead, which is equal to the current name
         doRename(true);
     }
 
+    /**
+     * Tests renaming for references embedded in a double quoted string
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBasicFileRenameDoubleQuoteFilename() throws Exception {
+        doRename(false);
+    }
+
+    /**
+     * Tests renaming for references embedded in a single quoted string
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBasicFileRenameSingleQuoteFilename() throws Exception {
+        doRename(false);
+    }
+
     private void doRename(boolean renameWithHandler) {
-        myFixture.setTestDataPath(getTestDataPath() + "basicFileRename");
+        myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
         myFixture.configureByFiles("source.bash", "source2.bash", "target.bash");
 
         //Assert.assertFalse("caret element must not be a file", myFixture.getElementAtCaret() instanceof PsiFile);
@@ -64,11 +85,11 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
 
         PsiElement psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
         Assert.assertNotNull("file reference is null", psiElement);
-        Assert.assertEquals("Filename wasn't changed", "target_renamed.bash", psiElement.getText());
+        Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
 
         PsiReference psiReference = psiElement.getReference();
         Assert.assertNotNull("target file reference wasn't found", psiReference);
-        Assert.assertEquals("target_renamed.bash", psiReference.getCanonicalText());
+        Assert.assertTrue("Renamed reference wasn't found in the canonical text", psiReference.getCanonicalText().contains("target_renamed.bash"));
 
         PsiElement targetFile = psiReference.resolve();
         Assert.assertNotNull("target file resolve result wasn't found", targetFile);

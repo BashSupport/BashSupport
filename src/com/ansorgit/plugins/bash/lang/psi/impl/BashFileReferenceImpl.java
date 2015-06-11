@@ -27,7 +27,6 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import com.intellij.refactoring.rename.BindablePsiReference;
@@ -151,7 +150,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         return lastReference.handleElementRename(name);
     }
 
-    private static class CachingFileReference  extends PsiReferenceBase<BashFileReferenceImpl> implements PsiReference, BindablePsiReference, PsiFileReference {
+    private static class CachingFileReference extends PsiReferenceBase<BashFileReferenceImpl> implements PsiReference, BindablePsiReference, PsiFileReference {
         private final BashFileReferenceImpl referencedFile;
 
         public CachingFileReference(BashFileReferenceImpl referencedFile) {
@@ -180,7 +179,16 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            return BashPsiUtils.replaceElement(referencedFile, BashPsiElementFactory.createFileReference(referencedFile.getProject(), newName));
+            PsiElement firstChild = referencedFile.getFirstChild();
+
+            String name;
+            if (firstChild instanceof BashCharSequence) {
+                name = ((BashCharSequence) firstChild).createEquallyWrappedString(newName);
+            } else {
+                name = newName;
+            }
+
+            return BashPsiUtils.replaceElement(referencedFile, BashPsiElementFactory.createFileReference(referencedFile.getProject(), name));
         }
 
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
@@ -192,8 +200,8 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
 
         public boolean isReferenceTo(PsiElement element) {
-            PsiFile containingFile = this.referencedFile.getContainingFile();
-            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, this.referencedFile.getFilename()));
+            PsiFile containingFile = referencedFile.getContainingFile();
+            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, referencedFile.getFilename()));
         }
 
         @NotNull
