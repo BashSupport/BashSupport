@@ -185,7 +185,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
             if (firstChild instanceof BashCharSequence) {
                 name = ((BashCharSequence) firstChild).createEquallyWrappedString(newName);
             } else {
-                name = newName;c
+                name = newName;
             }
 
             return BashPsiUtils.replaceElement(referencedFile, BashPsiElementFactory.createFileReference(referencedFile.getProject(), name));
