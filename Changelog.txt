@@ -1,3 +1,6 @@
+2015-06-11:
+ - Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.
+
 2015-06-10:
  - Fixed Bash file renaming, file references to Bash files are changed now
 
