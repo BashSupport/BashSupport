@@ -67,7 +67,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
 
     @Override
     public String createEquallyWrappedString(String newContent) {
-        return "'" + newContent + "'";
+        return isWrapped() ? "'" + newContent + "'" : newContent;
     }
 
     public String getUnwrappedCharSequence() {

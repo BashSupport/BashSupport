@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashChangeUtil {
+public class BashPsiElementFactory {
     private static final String TEMP_FILE_NAME = "__.sh";
 
     @NotNull
@@ -46,6 +47,12 @@ public class BashChangeUtil {
 
     public static PsiFile createDummyBashFile(Project project, String text) {
         return createFileFromText(project, TEMP_FILE_NAME, BashFileType.BASH_FILE_TYPE, text);
+    }
+
+    public static PsiElement createFileReference(Project project, String content) {
+        PsiElement firstChild = createDummyBashFile(project, ". " + content).getFirstChild();
+
+        return ((BashIncludeCommand)firstChild).getFileReference();
     }
 
     public static PsiElement createSymbol(Project project, String name) {

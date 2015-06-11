@@ -20,7 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
@@ -117,7 +117,7 @@ public class BashShebangImpl extends BashBaseStubElementImpl<StubElement> implem
             document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), command);
         } else {
             //fallback
-            PsiElement newElement = BashChangeUtil.createShebang(getProject(), command, hasNewline());
+            PsiElement newElement = BashPsiElementFactory.createShebang(getProject(), command, hasNewline());
             getNode().replaceChild(getNode().getFirstChildNode(), newElement.getNode());
         }
     }

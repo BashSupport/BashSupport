@@ -29,7 +29,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
@@ -98,7 +98,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         }
 
         PsiElement original = findAssignmentWord();
-        PsiElement replacement = BashChangeUtil.createAssignmentWord(getProject(), newName);
+        PsiElement replacement = BashPsiElementFactory.createAssignmentWord(getProject(), newName);
         return BashPsiUtils.replaceElement(original, replacement);
     }
 

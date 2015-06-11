@@ -242,7 +242,10 @@
 
         <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>
 
-        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference" implementationClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReferenceManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.BashFileReferenceManipulator" />
+
+        <renamePsiElementProcessor implementation="com.ansorgit.plugins.bash.lang.psi.impl.BashFileRenameProcessor"/>
 
         <readWriteAccessDetector implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
 

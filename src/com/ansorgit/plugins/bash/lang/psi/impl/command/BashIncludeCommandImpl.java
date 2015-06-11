@@ -105,7 +105,8 @@ public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandSt
 
     @Override
     public boolean canNavigateToSource() {
-        return getFileReference().findReferencedFile() != null;
+        BashFileReference fileReference = getFileReference();
+        return fileReference != null && fileReference.findReferencedFile() != null;
     }
 
     @Override

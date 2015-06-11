@@ -2,7 +2,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.editor.inspections.SupressionUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.SuppressQuickFix;
@@ -59,7 +59,7 @@ public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
         }
 
         if (inserted != null) {
-            file.addAfter(BashChangeUtil.createNewline(project), inserted);
+            file.addAfter(BashPsiElementFactory.createNewline(project), inserted);
         }
 
         UndoUtil.markPsiFileForUndo(file);

@@ -1,8 +1,11 @@
-package com.ansorgit.plugins.bash.lang.psi.api;
+package com.ansorgit.plugins.bash.lang.psi.impl;
 
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.AbstractElementManipulator;
 import com.intellij.psi.ElementManipulator;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -16,32 +19,26 @@ import org.jetbrains.annotations.NotNull;
 public class BashFileReferenceManipulator implements ElementManipulator {
     @Override
     public PsiElement handleContentChange(@NotNull PsiElement element, @NotNull TextRange range, String newContent) throws IncorrectOperationException {
-        assert element instanceof BashFileReference;
-        assert range.equals(getRangeInElement(element));
+        PsiElement first = element.getFirstChild();
+        String filename = first instanceof BashCharSequence ? ((BashCharSequence) first).createEquallyWrappedString(newContent) : newContent;
 
-        BashFileReference ref = (BashFileReference) element;
-        PsiElement firstChild = element.getFirstChild();
-        if (firstChild instanceof BashCharSequence && ((BashCharSequence) firstChild).isWrapped()) {
-            return BashPsiUtils.replaceElement(firstChild, BashChangeUtil.createString(ref.getProject(), ((BashCharSequence) firstChild).createEquallyWrappedString(newContent)));
-        }
-
-        return BashPsiUtils.replaceElement(ref, BashChangeUtil.createWord(ref.getProject(), newContent));
+        return BashPsiUtils.replaceElement(element, BashPsiElementFactory.createFileReference(element.getProject(), filename));
+        //return BashPsiUtils.replaceElement(element, BashPsiElementFactory.createFileReference(element.getProject(), filename));
     }
 
+
     @Override
-    public PsiElement handleContentChange(@NotNull PsiElement element, String newContent) throws IncorrectOperationException {
+    public PsiElement handleContentChange(@NotNull final PsiElement element, final String newContent) throws IncorrectOperationException {
         return handleContentChange(element, getRangeInElement(element), newContent);
     }
 
     @NotNull
     @Override
     public TextRange getRangeInElement(@NotNull PsiElement element) {
-        assert element instanceof BashFileReference;
-
         PsiElement firstChild = element.getFirstChild();
-        if (firstChild instanceof BashCharSequence) {
+        /*if (firstChild instanceof BashCharSequence) {
             return ((BashCharSequence) firstChild).getTextContentRange().shiftRight(firstChild.getStartOffsetInParent());
-        }
+        } */
 
         return TextRange.from(0, element.getTextLength());
     }

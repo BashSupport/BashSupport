@@ -33,7 +33,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -395,7 +395,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
             }
 
             final PsiElement original = cmd.commandElement();
-            final PsiElement replacement = BashChangeUtil.createWord(cmd.getProject(), newElementName);
+            final PsiElement replacement = BashPsiElementFactory.createWord(cmd.getProject(), newElementName);
 
             cmd.getNode().replaceChild(original.getNode(), replacement.getNode());
             return cmd;
