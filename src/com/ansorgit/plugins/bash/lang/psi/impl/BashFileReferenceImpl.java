@@ -38,8 +38,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
-    private FileReferenceSet fileReferenceSet;
-
     public BashFileReferenceImpl(final ASTNode astNode) {
         super(astNode, "Bash File reference");
     }
@@ -73,9 +71,6 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
     @Override
     public PsiReference getReference() {
         return new CachingFileReference(this);
-        //fixme
-        //throw new IllegalStateException("not implemeneted");
-        //return referenceSet().getLastReference();
     }
 
     @Override
@@ -83,22 +78,6 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         PsiReference reference = getReference();
 
         return reference != null && reference.resolve() != null;
-    }
-
-    private FileReferenceSet referenceSet() {
-        if (fileReferenceSet == null) {
-            synchronized (this) {
-                fileReferenceSet = new FileReferenceSet(this);
-                fileReferenceSet.addCustomization(FileReferenceSet.DEFAULT_PATH_EVALUATOR_OPTION, new Function<PsiFile, Collection<PsiFileSystemItem>>() {
-                    @Override
-                    public Collection<PsiFileSystemItem> fun(PsiFile psiFile) {
-                        return Collections.<PsiFileSystemItem>singletonList(psiFile.getContainingDirectory());
-                    }
-                });
-            }
-        }
-
-        return fileReferenceSet;
     }
 
     @Override
