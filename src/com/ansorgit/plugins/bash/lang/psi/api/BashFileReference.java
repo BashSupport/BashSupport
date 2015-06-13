@@ -24,7 +24,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface BashFileReference extends BashPsiElement, PsiNameIdentifierOwner {
+public interface BashFileReference extends BashPsiElement {
     @Nullable
     PsiFile findReferencedFile();
 

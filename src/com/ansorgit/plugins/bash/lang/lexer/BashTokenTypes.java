@@ -236,7 +236,7 @@ public interface BashTokenTypes {
     IElementType STRING_CHAR = new BashElementType("string char");
     IElementType STRING_END = new BashElementType("string end");
 
-    IElementType STRING2 = new BashElementType("unevaluated string");
+    IElementType STRING2 = new BashElementType("unevaluated string (STRING2)");
     IElementType BACKQUOTE = new BashElementType("backquote `");
 
     IElementType INTEGER_LITERAL = new BashElementType("int literal");

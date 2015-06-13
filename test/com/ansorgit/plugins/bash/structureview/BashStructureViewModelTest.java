@@ -38,7 +38,7 @@ import junit.framework.Assert;
  * Time: 10:32:04
  */
 public class BashStructureViewModelTest extends CodeInsightTestCase {
-    protected interface Test {
+    private interface Test {
         void test(StructureViewComponent component);
     }
 

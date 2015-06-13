@@ -3,13 +3,20 @@ package com.ansorgit.plugins.bash.lang.psi;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.google.common.collect.Lists;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.refactoring.RefactoringSettings;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author jansorg
@@ -41,7 +48,6 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testBasicFileRenameWithHandler() throws Exception {
         //this test is broken in 14.0.3 because the test framework doesn't pass the new name but uses a stupid default name instead, which is equal to the current name
         doRename(true);
@@ -64,14 +70,26 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
      */
     @Test
     public void testBasicFileRenameSingleQuoteFilename() throws Exception {
-        doRename(false);
+        boolean oldValue = RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE;
+        RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE = true;
+        try {
+            doRename(false, "source.bash");
+        } finally {
+            RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE = oldValue;
+
+        }
     }
 
     private void doRename(boolean renameWithHandler) {
-        myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
-        myFixture.configureByFiles("source.bash", "source2.bash", "target.bash");
+        doRename(renameWithHandler, "source.bash", "source2.bash");
+    }
 
-        //Assert.assertFalse("caret element must not be a file", myFixture.getElementAtCaret() instanceof PsiFile);
+    private void doRename(boolean renameWithHandler, String... sourceFiles) {
+        myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
+
+        ArrayList<String> filenames = Lists.newArrayList(sourceFiles);
+        filenames.add("target.bash");
+        myFixture.configureByFiles(filenames.toArray(new String[filenames.size()]));
 
         if (renameWithHandler) {
             myFixture.renameElementAtCaretUsingHandler("target_renamed.bash");
@@ -79,9 +97,9 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
             myFixture.renameElementAtCaret("target_renamed.bash");
         }
 
-        myFixture.checkResultByFile("source.bash", "source_after.bash", false);
-        myFixture.checkResultByFile("source2.bash", "source2_after.bash", false);
-        myFixture.checkResultByFile("target_renamed.bash", "target_after.bash", false);
+        for (String filename : sourceFiles) {
+            myFixture.checkResultByFile(filename, FileUtil.getNameWithoutExtension(filename) + "_after." + FileUtilRt.getExtension(filename), false);
+        }
 
         PsiElement psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
         Assert.assertNotNull("file reference is null", psiElement);

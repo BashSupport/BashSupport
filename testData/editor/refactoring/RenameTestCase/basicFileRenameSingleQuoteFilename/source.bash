@@ -1,1 +1,1 @@
-. '<caret>target.bash'
+. 'tar<caret>get.bash'

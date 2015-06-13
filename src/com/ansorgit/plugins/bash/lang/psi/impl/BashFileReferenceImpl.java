@@ -21,7 +21,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
@@ -38,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 
-public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference, PsiNamedElement {
+public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
     private FileReferenceSet fileReferenceSet;
 
     public BashFileReferenceImpl(final ASTNode astNode) {
@@ -81,12 +80,9 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
     @Override
     public boolean canNavigate() {
-        return getReference().resolve() != null;
-    }
+        PsiReference reference = getReference();
 
-    @Override
-    public boolean canNavigateToSource() {
-        return super.canNavigateToSource();
+        return reference != null && reference.resolve() != null;
     }
 
     private FileReferenceSet referenceSet() {
@@ -114,101 +110,52 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
     }
 
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-    }
-
-    @Override
-    protected void clearUserData() {
-        super.clearUserData();
-    }
-
-    @Override
-    public PsiElement replace(@NotNull PsiElement newElement) throws IncorrectOperationException {
-        return super.replace(newElement);
-    }
-
-    @Override
-    public String getName() {
-        return getFilename();
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getNameIdentifier() {
-        return getFirstChild();
-    }
-
-    @Override
-    public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        PsiReference lastReference = getReference();
-        if (lastReference == null) {
-            throw new IncorrectOperationException("no reference found to handle element rename");
-        }
-
-        return lastReference.handleElementRename(name);
-    }
-
     private static class CachingFileReference extends PsiReferenceBase<BashFileReferenceImpl> implements PsiReference, BindablePsiReference, PsiFileReference {
-        private final BashFileReferenceImpl referencedFile;
-
-        public CachingFileReference(BashFileReferenceImpl referencedFile) {
-            super(referencedFile, false);
-            this.referencedFile = referencedFile;
+        public CachingFileReference(BashFileReferenceImpl myElement) {
+            super(myElement, false);
         }
 
         @Override
         public BashFileReferenceImpl getElement() {
-            return referencedFile;
+            return myElement;
         }
 
         public TextRange getRangeInElement() {
-            PsiElement firstChild = referencedFile.getFirstChild();
-
-            if (firstChild instanceof BashCharSequence) {
-                return ((BashCharSequence) firstChild).getTextContentRange();
+            ElementManipulator<BashFileReferenceImpl> manipulator = ElementManipulators.getManipulator(myElement);
+            if (manipulator == null) {
+                throw new IncorrectOperationException("no implementation found to rename " + myElement);
             }
 
-            return TextRange.from(0, referencedFile.getTextLength());
+            return manipulator.getRangeInElement(myElement);
         }
 
         @NotNull
         public String getCanonicalText() {
-            return this.referencedFile.getText();
+            //fixme
+            return this.myElement.getText();
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            PsiElement firstChild = referencedFile.getFirstChild();
-
-            String name;
-            if (firstChild instanceof BashCharSequence) {
-                name = ((BashCharSequence) firstChild).createEquallyWrappedString(newName);
-            } else {
-                name = newName;
+            ElementManipulator<BashFileReferenceImpl> manipulator = ElementManipulators.getManipulator(myElement);
+            if (manipulator == null) {
+                throw new IncorrectOperationException("no implementation found to rename " + myElement);
             }
 
-            return BashPsiUtils.replaceElement(referencedFile, BashPsiElementFactory.createFileReference(referencedFile.getProject(), name));
+            return manipulator.handleContentChange(myElement, newName);
         }
 
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            if (element instanceof PsiFile) {
-                return handleElementRename(((PsiFile) element).getName());
-            }
-
-            throw new IncorrectOperationException("unsupported for psi element " + element);
+            return handleElementRename(((PsiFile) element).getName());
         }
 
         public boolean isReferenceTo(PsiElement element) {
-            PsiFile containingFile = referencedFile.getContainingFile();
-            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, referencedFile.getFilename()));
+            return element == resolve();
         }
 
         @NotNull
         public Object[] getVariants() {
             return PsiElement.EMPTY_ARRAY;
         }
-
 
         @Override
         public PsiElement resolve() {
@@ -218,7 +165,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         @Nullable
         public PsiElement resolveInner() {
             PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
-            return BashPsiFileUtils.findRelativeFile(containingFile, referencedFile.getFilename());
+            return BashPsiFileUtils.findRelativeFile(containingFile, myElement.getFilename());
         }
 
         @NotNull

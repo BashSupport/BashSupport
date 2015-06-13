@@ -20,19 +20,11 @@ public class BashFilterLexer extends BaseFilterLexer {
         if (tokenType == BashTokenTypes.COMMENT) {
             scanWordsInToken(UsageSearchContext.IN_COMMENTS, false, false);
             advanceTodoItemCountsInToken();
-        }
-
-        //fixme
-        /*else if (tokenType == BashTokenTypes.STRING2) {
-            scanWordsInToken(UsageSearchContext.IN_STRINGS, false, false);
-        } else {
-            scanWordsInToken(UsageSearchContext.IN_PLAIN_TEXT, false, false);
-        } */
-
-        if (tokenType == BashTokenTypes.WORD) {
-            //scanWordsInToken(UsageSearchContext.IN_STRINGS, false, false);
-            //scanWordsInToken(UsageSearchContext.IN_FOREIGN_LANGUAGES, false, false);
-            scanWordsInToken(UsageSearchContext.ANY, false, false);
+        } else if (tokenType == BashTokenTypes.WORD) {
+            addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
+            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, false, false);
+        } else if (tokenType == BashTokenTypes.STRING2) {
+            scanWordsInToken(UsageSearchContext.IN_STRINGS, true, false);
         }
 
         myDelegate.advance();

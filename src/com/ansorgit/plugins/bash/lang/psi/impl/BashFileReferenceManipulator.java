@@ -19,13 +19,17 @@ import org.jetbrains.annotations.NotNull;
 public class BashFileReferenceManipulator implements ElementManipulator {
     @Override
     public PsiElement handleContentChange(@NotNull PsiElement element, @NotNull TextRange range, String newContent) throws IncorrectOperationException {
-        PsiElement first = element.getFirstChild();
-        String filename = first instanceof BashCharSequence ? ((BashCharSequence) first).createEquallyWrappedString(newContent) : newContent;
+        PsiElement firstChild = element.getFirstChild();
 
-        return BashPsiUtils.replaceElement(element, BashPsiElementFactory.createFileReference(element.getProject(), filename));
-        //return BashPsiUtils.replaceElement(element, BashPsiElementFactory.createFileReference(element.getProject(), filename));
+        String name;
+        if (firstChild instanceof BashCharSequence) {
+            name = ((BashCharSequence) firstChild).createEquallyWrappedString(newContent);
+        } else {
+            name = newContent;
+        }
+
+        return BashPsiUtils.replaceElement(element, BashPsiElementFactory.createFileReference(element.getProject(), name));
     }
-
 
     @Override
     public PsiElement handleContentChange(@NotNull final PsiElement element, final String newContent) throws IncorrectOperationException {
@@ -36,9 +40,9 @@ public class BashFileReferenceManipulator implements ElementManipulator {
     @Override
     public TextRange getRangeInElement(@NotNull PsiElement element) {
         PsiElement firstChild = element.getFirstChild();
-        /*if (firstChild instanceof BashCharSequence) {
+        if (firstChild instanceof BashCharSequence) {
             return ((BashCharSequence) firstChild).getTextContentRange().shiftRight(firstChild.getStartOffsetInParent());
-        } */
+        }
 
         return TextRange.from(0, element.getTextLength());
     }
