@@ -257,11 +257,7 @@
         <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesProvider" />
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
 
-        <!--
-        <weigher key="completionSorting"
-                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
-        -->
-
+        <internalFileTemplate name="Bash Script"/>
 
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 

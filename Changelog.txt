@@ -1,5 +1,6 @@
 2015-06-14:
  - Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'
+ - New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.
 
 2015-06-11:
  - Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.
