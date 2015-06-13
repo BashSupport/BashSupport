@@ -1,3 +1,6 @@
+2015-06-14:
+ - Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'
+
 2015-06-11:
  - Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.
 
@@ -5,8 +8,8 @@
  - Fixed Bash file renaming, file references to Bash files are changed now
 
 2015-06-05:
- - No Bash keyword completions while typing in a Bash comment
- - No Bash keyword completions while typing in a Bash comment
+ - No keyword completions while typing in a Bash comment
+ - No live template completions while typing in a Bash comment
  - Bash version 4 support is now enabled by default
 
 2015-06-02:
