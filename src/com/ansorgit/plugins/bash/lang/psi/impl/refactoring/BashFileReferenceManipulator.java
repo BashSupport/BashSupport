@@ -1,4 +1,4 @@
-package com.ansorgit.plugins.bash.lang.psi.impl;
+package com.ansorgit.plugins.bash.lang.psi.impl.refactoring;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;

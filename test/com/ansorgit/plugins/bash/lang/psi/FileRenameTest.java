@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * This test checks renaming of files and the related issues.
+ *
  * @author jansorg
  */
 public class FileRenameTest extends LightCodeInsightFixtureTestCase {
@@ -61,6 +63,16 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
     @Test
     public void testBasicFileRenameDoubleQuoteFilename() throws Exception {
         doRename(false);
+    }
+
+    /**
+     * Tests renaming for references embedded in a double quoted string
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRenameBashCommandReference() throws Exception {
+        doRename(false, "source.bash");
     }
 
     /**
