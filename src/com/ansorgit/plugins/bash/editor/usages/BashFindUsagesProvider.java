@@ -62,6 +62,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     public boolean canFindUsagesFor(@NotNull PsiElement psi) {
         return psi instanceof BashVar
+                || psi instanceof BashFile
                 || (psi instanceof BashCommand && ((BashCommand) psi).isFunctionCall())
                 || psi instanceof BashHereDocMarker
                 || psi instanceof BashFunctionDef;
@@ -77,13 +78,24 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return "function";
         }
         if (element instanceof BashCommand) {
-            return ((BashCommand) element).isFunctionCall() ? "function" : "generic command";
+            if (((BashCommand) element).isFunctionCall()) {
+                return "function";
+            }
+
+            if (((BashCommand) element).isBashScriptCall()) {
+                return "Bash script call";
+            }
+
+            return "command";
         }
         if (element instanceof BashVarDef) {
             return "variable";
         }
         if (element instanceof BashHereDocMarker) {
             return "heredoc marker";
+        }
+        if (element instanceof BashFile) {
+            return "Bash file";
         }
 
         return "unknown type";

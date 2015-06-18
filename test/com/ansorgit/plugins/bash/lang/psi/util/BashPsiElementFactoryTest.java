@@ -3,6 +3,8 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.*;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.CodeInsightTestCase;
@@ -72,5 +74,10 @@ public class BashPsiElementFactoryTest extends CodeInsightTestCase {
     public void testCreateComment() throws Exception {
         PsiComment element = BashPsiElementFactory.createComment(myProject, "abc");
         Assert.assertTrue("element is not a command: "+ element, element instanceof PsiComment);
+    }
+
+    public void testCommand() throws Exception {
+        PsiElement element = BashPsiElementFactory.createCommand(myProject, "externalCOmmand");
+        Assert.assertTrue("element is not a command: "+ element, element instanceof BashGenericCommand);
     }
 }

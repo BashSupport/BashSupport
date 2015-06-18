@@ -26,16 +26,11 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
 import com.intellij.refactoring.rename.BindablePsiReference;
-import com.intellij.util.Function;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
     public BashFileReferenceImpl(final ASTNode astNode) {
@@ -100,12 +95,16 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
 
         public TextRange getRangeInElement() {
+            return getManipulator().getRangeInElement(myElement);
+        }
+
+        @NotNull
+        private ElementManipulator<BashFileReferenceImpl> getManipulator() {
             ElementManipulator<BashFileReferenceImpl> manipulator = ElementManipulators.getManipulator(myElement);
             if (manipulator == null) {
                 throw new IncorrectOperationException("no implementation found to rename " + myElement);
             }
-
-            return manipulator.getRangeInElement(myElement);
+            return manipulator;
         }
 
         @NotNull
@@ -115,10 +114,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            ElementManipulator<BashFileReferenceImpl> manipulator = ElementManipulators.getManipulator(myElement);
-            if (manipulator == null) {
-                throw new IncorrectOperationException("no implementation found to rename " + myElement);
-            }
+            ElementManipulator<BashFileReferenceImpl> manipulator = getManipulator();
 
             return manipulator.handleContentChange(myElement, newName);
         }

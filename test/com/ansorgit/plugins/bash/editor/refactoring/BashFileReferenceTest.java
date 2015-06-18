@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  */
-public class RenameFileReferenceTest extends MultiFileTestCase {
+public class BashFileReferenceTest extends MultiFileTestCase {
     @Override
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath();

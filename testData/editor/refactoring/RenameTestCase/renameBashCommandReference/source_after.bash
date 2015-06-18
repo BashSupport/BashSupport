@@ -1,2 +1,2 @@
-./target_rename.bash
-target_rename.bash
+target_renamed.bash
+target_renamed.bash

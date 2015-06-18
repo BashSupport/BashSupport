@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi;
 
+import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
@@ -10,28 +11,25 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.RefactoringSettings;
+import com.intellij.testFramework.builders.ModuleFixtureBuilder;
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * This test checks renaming of files and the related issues.
  *
  * @author jansorg
  */
-public class FileRenameTest extends LightCodeInsightFixtureTestCase {
+public class FileRenameTest extends BashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/RenameTestCase/";
-    }
-
-    @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + getBasePath();
     }
 
     /**
@@ -72,7 +70,7 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
      */
     @Test
     public void testRenameBashCommandReference() throws Exception {
-        doRename(false, "source.bash");
+        doRename(false, true, "source.bash", "subdir/source2.bash", "subdir/subdir/source3.bash");
     }
 
     /**
@@ -85,21 +83,25 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
         boolean oldValue = RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE;
         RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE = true;
         try {
-            doRename(false, "source.bash");
+            doRename(false, true, "source.bash");
         } finally {
             RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE = oldValue;
 
         }
     }
 
-    private void doRename(boolean renameWithHandler) {
-        doRename(renameWithHandler, "source.bash", "source2.bash");
+    public void testFileRenameWithRefs() throws Exception {
+        doRename(false);
     }
 
-    private void doRename(boolean renameWithHandler, String... sourceFiles) {
+    private void doRename(boolean renameWithHandler) {
+        doRename(renameWithHandler, false, "source.bash", "source2.bash");
+    }
+
+    private void doRename(boolean renameWithHandler, boolean expectFileReference, String... sourceFiles) {
         myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
 
-        ArrayList<String> filenames = Lists.newArrayList(sourceFiles);
+        List<String> filenames = Lists.newArrayList(sourceFiles);
         filenames.add("target.bash");
         myFixture.configureByFiles(filenames.toArray(new String[filenames.size()]));
 
@@ -113,9 +115,24 @@ public class FileRenameTest extends LightCodeInsightFixtureTestCase {
             myFixture.checkResultByFile(filename, FileUtil.getNameWithoutExtension(filename) + "_after." + FileUtilRt.getExtension(filename), false);
         }
 
-        PsiElement psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
-        Assert.assertNotNull("file reference is null", psiElement);
-        Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
+        PsiElement psiElement;
+        if (expectFileReference) {
+            psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
+            Assert.assertNotNull("file reference is null", psiElement);
+            Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
+        } else {
+            psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
+            Assert.assertNotNull("caret element is null", psiElement);
+
+            while (psiElement.getReference() == null) {
+                if (psiElement.getParent() == null) {
+                    break;
+                }
+
+                psiElement = psiElement.getParent();
+            }
+        }
+
 
         PsiReference psiReference = psiElement.getReference();
         Assert.assertNotNull("target file reference wasn't found", psiReference);

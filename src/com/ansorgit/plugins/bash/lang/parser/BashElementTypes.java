@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -35,13 +36,11 @@ import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCaseImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashConditionalCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashIfImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTimeCommandImpl;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashFunctionDefElementType;
-import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashIncludeCommandElementType;
-import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashStubFileElementType;
-import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarDefElementType;
+import com.ansorgit.plugins.bash.lang.psi.stubs.elements.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
@@ -102,7 +101,7 @@ public interface BashElementTypes {
     IElementType PROCESS_SUBSTITUTION_ELEMENT = new BashElementType("process substitution element");
 
     //command elements
-    IElementType SIMPLE_COMMAND_ELEMENT = new BashElementType("simple command element");
+    BashStubElementType<BashCommandStub, BashCommand> SIMPLE_COMMAND_ELEMENT = new BashCommandElementType();
     BashStubElementType<BashVarDefStub, BashVarDef> VAR_DEF_ELEMENT = new BashVarDefElementType();
 
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");

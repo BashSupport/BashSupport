@@ -1,21 +1,3 @@
-/*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashCommandImpl.java, Class: BashCommandImpl
- * Last modified: 2013-05-02
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
@@ -33,11 +15,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.graph.impl.layout.planar.BCCSubgraphImpl;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
@@ -50,7 +32,7 @@ import com.intellij.psi.util.CachedValue;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.xml.XmlFile;
+import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,46 +42,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Joachim Ansorg
- */
-public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
+public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final static Key<CachedValue<Boolean>> KEY_INTERNAL = Key.create("internal");
     private final static Key<CachedValue<Boolean>> KEY_EXTERNAL_OR_FUNCTION = Key.create("external");
-    private static final Key<CachedValue<Boolean>> KEY_FUNCTION_CALL = Key.create("functionCall");
+    private final static Key<CachedValue<Boolean>> KEY_FUNCTION_CALL = Key.create("functionCall");
     private final PsiReference functionReference = new CachedFunctionReference<T>(this);
+    private final PsiReference bashFileReference = new BashFileReference<T>(this);
 
-    public BashCommandImpl(ASTNode astNode) {
-        this(astNode, "Bash command");
-    }
-
-    public BashCommandImpl(ASTNode astNode, String name) {
+    public AbstractBashCommand(ASTNode astNode, String name) {
         super(astNode, name);
-
-        updateCache(astNode);
     }
 
-    public BashCommandImpl(@NotNull T stub, @NotNull IStubElementType nodeType, @Nullable String name) {
+    public AbstractBashCommand(T stub, IStubElementType nodeType, String name) {
         super(stub, nodeType, name);
     }
-
-    /*@Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        updateCache(getNode());
-    } */
-
-    //private void updateCache(ASTNode astNode) {
-        /*KEY_FUNCTION_CALL.set(this, null);
-
-        ASTNode command = astNode.findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-
-        boolean internal = command != null && LanguageBuiltins.isInternalCommand(command.getText());
-
-        KEY_INTERNAL.set(this, internal);
-        KEY_EXTERNAL_OR_FUNCTION.set(this, command != null && !internal);*/
-    //}
 
     public boolean isFunctionCall() {
         if (DumbService.isDumb(getProject())) {
@@ -109,7 +65,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         CachedValuesManager manager = CachedValuesManager.getManager(getProject());
         return manager.getCachedValue(this, KEY_FUNCTION_CALL, new CachedValueProvider<Boolean>() {
             @Override
-            public CachedValueProvider.Result<Boolean> compute() {
+            public Result<Boolean> compute() {
                 boolean isFunctionCall;
 
                 PsiElement commandElement = commandElement();
@@ -121,7 +77,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
                 }
 
 
-                return CachedValueProvider.Result.create(isFunctionCall, BashCommandImpl.this);
+                return Result.create(isFunctionCall, AbstractBashCommand.this);
             }
         }, false);
     }
@@ -135,12 +91,9 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
                 ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
                 boolean result = command != null && LanguageBuiltins.isInternalCommand(command.getText());
 
-                return CachedValueProvider.Result.create(result, BashCommandImpl.this);
+                return Result.create(result, AbstractBashCommand.this);
             }
         }, false);
-
-        //Boolean internal = KEY_INTERNAL.get(this);
-        //return internal != null && internal;
     }
 
     public boolean isExternalCommand() {
@@ -157,11 +110,16 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
                 ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
                 boolean result = command != null && !LanguageBuiltins.isInternalCommand(command.getText());
 
-                return Result.create(result, BashCommandImpl.this);
+                return Result.create(result, AbstractBashCommand.this);
             }
         }, false);
 
         return cachedValue && !isFunctionCall();
+    }
+
+    @Override
+    public boolean isBashScriptCall() {
+        return bashFileReference.resolve() != null;
     }
 
     public boolean isPureAssignment() {
@@ -214,7 +172,11 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
             return functionReference;
         }
 
-        return new SelfReference(this);
+        if (isInternalCommand()) {
+            return new SelfReference(this);
+        }
+
+        return bashFileReference;
     }
 
     @Nullable
@@ -257,7 +219,7 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
     public ItemPresentation getPresentation() {
         return new ItemPresentation() {
             public String getPresentableText() {
-                final PsiElement element = BashCommandImpl.this.commandElement();
+                final PsiElement element = AbstractBashCommand.this.commandElement();
                 return element == null ? "unknown" : element.getText();
             }
 
@@ -313,10 +275,10 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         }
     }
 
-    private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference {
-        private final BashCommandImpl<T> cmd;
+    private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {
+        private final AbstractBashCommand<T> cmd;
 
-        public CachedFunctionReference(BashCommandImpl<T> cmd) {
+        public CachedFunctionReference(AbstractBashCommand<T> cmd) {
             this.cmd = cmd;
         }
 
@@ -366,8 +328,8 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         }
 
         @NotNull
-        private ElementManipulator<BashCommandImpl<T>> getManipulator() {
-            ElementManipulator<BashCommandImpl<T>> manipulator = ElementManipulators.getManipulator(cmd);
+        private ElementManipulator<AbstractBashCommand<T>> getManipulator() {
+            ElementManipulator<AbstractBashCommand<T>> manipulator = ElementManipulators.getManipulator(cmd);
             if (manipulator == null) {
                 throw new IncorrectOperationException("No element manipulator found for " + cmd);
             }
@@ -402,8 +364,83 @@ public class BashCommandImpl<T extends StubElement> extends BashBaseStubElementI
         }
     }
 
-    /*private class BashCommandReference<T extends StubElement> extends PsiReferenceBase {
-        public BashCommandReference(BashCommandImpl<T> tBashCommand) {
+    private static class BashFileReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {
+        private final AbstractBashCommand<T> cmd;
+
+        public BashFileReference(AbstractBashCommand<T> cmd) {
+            this.cmd = cmd;
         }
-    } */
+
+        @Override
+        public String getReferencedName() {
+            return cmd.getReferencedCommandName();
+        }
+
+        @Override
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            final String referencedName = cmd.getReferencedCommandName();
+            if (referencedName == null) {
+                return null;
+            }
+
+            PsiFile currentFile = BashPsiUtils.findFileContext(cmd);
+            return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
+        }
+
+        @Override
+        public PsiElement getElement() {
+            return cmd;
+        }
+
+        @Override
+        public TextRange getRangeInElement() {
+            return getManipulator().getRangeInElement(cmd);
+        }
+
+        @NotNull
+        private ElementManipulator<AbstractBashCommand<T>> getManipulator() {
+            ElementManipulator<AbstractBashCommand<T>> manipulator = ElementManipulators.getManipulator(cmd);
+            if (manipulator == null) {
+                throw new IncorrectOperationException("No element manipulator found for " + cmd);
+            }
+            return manipulator;
+        }
+
+        @NotNull
+        @Override
+        public String getCanonicalText() {
+            String referencedName = cmd.getReferencedCommandName();
+            return referencedName != null ? referencedName : "";
+        }
+
+        @Override
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            return getManipulator().handleContentChange(cmd, newElementName);
+        }
+
+        @Override
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            if (element instanceof PsiFile) {
+                PsiFile currentFile = BashPsiUtils.findFileContext(cmd);
+
+                String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
+
+                return handleElementRename(relativeFilePath);
+            }
+
+            throw new IncorrectOperationException("unsupported for element " + element);
+        }
+
+        @NotNull
+        @Override
+        public Object[] getVariants() {
+            return EMPTY_ARRAY;
+        }
+    }
 }

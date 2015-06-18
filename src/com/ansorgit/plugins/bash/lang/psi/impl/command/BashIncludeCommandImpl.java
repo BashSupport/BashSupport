@@ -45,7 +45,7 @@ import java.util.List;
  * Date: 18.02.11
  * Time: 20:17
  */
-public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandStub> implements BashIncludeCommand, StubBasedPsiElement<BashIncludeCommandStub> {
+public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeCommandStub> implements BashIncludeCommand, StubBasedPsiElement<BashIncludeCommandStub> {
     public BashIncludeCommandImpl(ASTNode astNode) {
         super(astNode, "Bash include command");
     }
@@ -101,6 +101,11 @@ public class BashIncludeCommandImpl extends BashCommandImpl<BashIncludeCommandSt
     @Override
     public boolean canNavigate() {
         return canNavigateToSource();
+    }
+
+    @Override
+    public boolean isBashScriptCall() {
+        return false;
     }
 
     @Override
