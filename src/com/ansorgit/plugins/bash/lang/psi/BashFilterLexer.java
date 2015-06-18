@@ -1,6 +1,7 @@
 package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.psi.impl.cache.impl.BaseFilterLexer;
 import com.intellij.psi.impl.cache.impl.OccurrenceConsumer;
@@ -20,19 +21,15 @@ public class BashFilterLexer extends BaseFilterLexer {
         if (tokenType == BashTokenTypes.COMMENT) {
             scanWordsInToken(UsageSearchContext.IN_COMMENTS, false, false);
             advanceTodoItemCountsInToken();
-        }
-
-        //fixme
-        /*else if (tokenType == BashTokenTypes.STRING2) {
-            scanWordsInToken(UsageSearchContext.IN_STRINGS, false, false);
+        } else if (tokenType == BashTokenTypes.WORD) {
+            addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
+            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);
+        } else if (tokenType == BashTokenTypes.STRING2) {
+            addOccurrenceInToken(UsageSearchContext.IN_STRINGS);
+            scanWordsInToken(UsageSearchContext.IN_STRINGS, true, false);
         } else {
-            scanWordsInToken(UsageSearchContext.IN_PLAIN_TEXT, false, false);
-        } */
-
-        if (tokenType == BashTokenTypes.WORD) {
-            //scanWordsInToken(UsageSearchContext.IN_STRINGS, false, false);
-            //scanWordsInToken(UsageSearchContext.IN_FOREIGN_LANGUAGES, false, false);
-            scanWordsInToken(UsageSearchContext.ANY, false, false);
+            addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
+            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);
         }
 
         myDelegate.advance();

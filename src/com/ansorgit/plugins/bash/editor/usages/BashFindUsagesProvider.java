@@ -21,11 +21,13 @@ package com.ansorgit.plugins.bash.editor.usages;
 import com.ansorgit.plugins.bash.lang.lexer.BashLexer;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -60,6 +62,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     public boolean canFindUsagesFor(@NotNull PsiElement psi) {
         return psi instanceof BashVar
+                || psi instanceof BashFile
                 || (psi instanceof BashCommand && ((BashCommand) psi).isFunctionCall())
                 || psi instanceof BashHereDocMarker
                 || psi instanceof BashFunctionDef;
@@ -75,13 +78,24 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return "function";
         }
         if (element instanceof BashCommand) {
-            return ((BashCommand) element).isFunctionCall() ? "function" : "generic command";
+            if (((BashCommand) element).isFunctionCall()) {
+                return "function";
+            }
+
+            if (((BashCommand) element).isBashScriptCall()) {
+                return "Bash script call";
+            }
+
+            return "command";
         }
         if (element instanceof BashVarDef) {
             return "variable";
         }
         if (element instanceof BashHereDocMarker) {
             return "heredoc marker";
+        }
+        if (element instanceof BashFile) {
+            return "Bash file";
         }
 
         return "unknown type";

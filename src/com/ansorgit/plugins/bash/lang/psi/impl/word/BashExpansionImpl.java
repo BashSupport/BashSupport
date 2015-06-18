@@ -49,6 +49,16 @@ public class BashExpansionImpl extends BashBaseStubElementImpl<StubElement> impl
         }
     }
 
+    @Override
+    public boolean isWrapped() {
+        return false;
+    }
+
+    @Override
+    public String createEquallyWrappedString(String newContent) {
+        return getText();
+    }
+
     public String getUnwrappedCharSequence() {
         return getText();
     }

@@ -10,7 +10,7 @@
     token (for the = character) has to be remapped to a WORD later on (see BashTokenTypeRemapper).
 
     Another problem is that string can contain unescaped substrings, e.g.
-        "$(echo hello "$(echo "world")")" is just one string. But this string contains
+        "$(echo hello "$(echo "world")")" is just one stringParsingState(). But this string contains
     two levels of embedded strings in the embedded subshell command.
     The lexer parses a string as STRING_BEGIN, STRING_CHAR and STRING_END. These
     tokens are mapped to a STRING later on by the lexer.MergingLexer class.
@@ -29,16 +29,13 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
-
-import com.intellij.util.containers.IntStack;
 
 %%
 
-%class _BashLexer
-%implements FlexLexer
+%class _BashLexerBase
+%implements BashLexerDef
+%abstract
 %unicode
 %public
 %char
@@ -47,55 +44,7 @@ import com.intellij.util.containers.IntStack;
 %type IElementType
 
 %{
-  private IntStack lastStates = new IntStack(25);
-  private int openParenths = 0;
-  private boolean isBash4 = false;
-
-  public _BashLexer(com.ansorgit.plugins.bash.lang.BashVersion version, java.io.Reader in) {
-    this(in);
-    this.isBash4 = com.ansorgit.plugins.bash.lang.BashVersion.Bash_v4.equals(version);
-  }
-
-  /**
-   * Goes to the given state and stores the previous state on the stack of states.
-   * This makes it possible to have several levels of lexing, e.g. for $(( 1+ $(echo 3) )).
-   */
-  private void goToState(int newState) {
-    lastStates.push(yystate());
-    yybegin(newState);
-  }
-
-  /**
-   * Goes back to the previous state of the lexer. If there
-   * is no previous state then YYINITIAL, the initial state, is chosen.
-   */
-  private void backToPreviousState() {
-    // pop() will throw an exception if empty
-    yybegin(lastStates.pop());
-  }
-
-  //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
-  private boolean inCaseBody = false;
-
-  //True if an arithmetic expression is expected as next token (e.g. in $((a-$((1+34)))) ) we need to
-  //discern between a simple ( and the start of a new subexpression
-  private boolean expectArithExpression = false;
-
-  private boolean startNewArithExpression = false;
-
-  //Help data to parse (nested) strings.
-  private final StringParsingState string = new StringParsingState();
-
-  //helper
-  long yychar = 0;
-
-  //parameter expansion parsing state
-  boolean paramExpansionHash = false;
-  boolean paramExpansionWord = false;
-  boolean paramExpansionOther = false;
-
-  //conditional expressions
-  private boolean emptyConditionalCommand = false;
+    long yychar = 0;
 %}
 
 /***** Custom user code *****/
@@ -203,8 +152,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
-  "[ ]"                         { yypushback(1); goToState(S_TEST); emptyConditionalCommand = true; return EXPR_CONDITIONAL; }
-  "[ "                          { goToState(S_TEST); emptyConditionalCommand = false; return EXPR_CONDITIONAL; }
+  "[ ]"                         { yypushback(1); goToState(S_TEST); setEmptyConditionalCommand(true); return EXPR_CONDITIONAL; }
+  "[ "                          { goToState(S_TEST); setEmptyConditionalCommand(false); return EXPR_CONDITIONAL; }
 
   "time"                        { return TIME_KEYWORD; }
 
@@ -261,7 +210,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
 /* keywords and expressions */
-  "case"                        { inCaseBody = false; goToState(S_CASE); return CASE_KEYWORD; }
+  "case"                        { setInCaseBody(false); goToState(S_CASE); return CASE_KEYWORD; }
 
   "!"                           { return BANG_TOKEN; }
   "do"                          { return DO_KEYWORD; }
@@ -287,16 +236,16 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_TEST> {
-  "]"                          { if (emptyConditionalCommand) {
-                                    emptyConditionalCommand = false;
+  "]"                          { if (isEmptyConditionalCommand()) {
+                                    setEmptyConditionalCommand(false);
                                     backToPreviousState();
                                     return _EXPR_CONDITIONAL;
                                  } else {
-                                    emptyConditionalCommand = false;
+                                    setEmptyConditionalCommand(false);
                                     return WORD;
                                  }
                                }
-  " ]"                         { backToPreviousState(); emptyConditionalCommand = false; return _EXPR_CONDITIONAL; }
+  " ]"                         { backToPreviousState(); setEmptyConditionalCommand(false); return _EXPR_CONDITIONAL; }
 }
 
 <S_TEST, S_TEST_COMMAND> {
@@ -382,35 +331,38 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
-  "))"                          { if (openParenths > 0) {
-                                    openParenths--;
+  "))"                          { if (openParenthesisCount() > 0) {
+                                    decOpenParenthesisCount();
                                     yypushback(1);
+
                                     return RIGHT_PAREN;
                                   } else {
-                                    string.advanceToken();
+                                    stringParsingState().advanceToken();
                                     backToPreviousState();
+
                                     return _EXPR_ARITH;
                                   }
                                 }
 
-  ")"                           { openParenths--; return RIGHT_PAREN; }
+  ")"                           { decOpenParenthesisCount(); return RIGHT_PAREN; }
 
-  "$(("                         { yypushback(2); expectArithExpression = true; startNewArithExpression = true; return DOLLAR; }
-  "(("                          { if (expectArithExpression) {
-                                    expectArithExpression = false;
-                                    if (startNewArithExpression) {
+  "$(("                         { yypushback(2); setExpectArithExpression(true); setStartNewArithExpression(true); return DOLLAR; }
+  "(("                          { if (isExpectArithExpression()) {
+                                    setExpectArithExpression(false);
+                                    if (isStartNewArithExpression()) {
                                         goToState(S_ARITH);
                                     }
 
                                     return EXPR_ARITH;
                                   } else {
                                     yypushback(1);
-                                    openParenths++;
+                                    incOpenParenthesisCount();
+
                                     return LEFT_PAREN;
                                   }
                                 }
 
-  "("                           { openParenths++; return LEFT_PAREN; }
+  "("                           { incOpenParenthesisCount(); return LEFT_PAREN; }
 
   {HexIntegerLiteral}           { return ARITH_HEX_NUMBER; }
   {OctalIntegerLiteral}         { return ARITH_OCTAL_NUMBER; }
@@ -481,14 +433,14 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_SUBSHELL> {
-  ")"                           { backToPreviousState(); if (string != null && string.isInSubshell()) {string.leaveSubshell();} return RIGHT_PAREN; }
+  ")"                           { backToPreviousState(); if (stringParsingState() != null && stringParsingState().isInSubshell()) {stringParsingState().leaveSubshell();} return RIGHT_PAREN; }
 }
 
 <S_CASE> {
   "esac"                       { backToPreviousState(); return ESAC_KEYWORD; }
 
   ";&"                         { goToState(S_CASE_PATTERN);
-                                 if (isBash4) {
+                                 if (isBash4()) {
                                     return CASE_END;
                                  }
                                  else {
@@ -498,14 +450,14 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                }
 
   ";;&"                        { goToState(S_CASE_PATTERN);
-                                 if (!isBash4) {
+                                 if (!isBash4()) {
                                     yypushback(1);
                                  }
                                  return CASE_END;
                                }
 
   ";;"                         { goToState(S_CASE_PATTERN); return CASE_END; }
-  "in"                         { if (!inCaseBody) { inCaseBody = true; goToState(S_CASE_PATTERN); }; return IN_KEYWORD; }
+  "in"                         { if (!isInCaseBody()) { setInCaseBody(true); goToState(S_CASE_PATTERN); }; return IN_KEYWORD; }
 }
 
 <S_CASE_PATTERN> {
@@ -517,10 +469,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* string literals */
  <S_STRINGMODE> {
-  \"                            { if (string.isNewAllowed()) {
-                                    string.enterSubstring(); return STRING_BEGIN; //fixme
-                                  } else if (string.isInSubstring()) {
-                                    string.leaveSubstring(); return STRING_CHAR;
+  \"                            { if (stringParsingState().isNewAllowed()) {
+                                    stringParsingState().enterSubstring(); return STRING_BEGIN; //fixme
+                                  } else if (stringParsingState().isInSubstring()) {
+                                    stringParsingState().leaveSubstring(); return STRING_CHAR;
                                   } else {
                                     backToPreviousState(); return STRING_END;
                                   }
@@ -531,17 +483,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   /* Backquote expression inside of evaluated strings */
   `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
-  "$(("                       { yypushback(2); expectArithExpression = true; startNewArithExpression = false; goToState(S_ARITH); return DOLLAR; }
-  "$"/"("                     { string.enterSubshell(); return DOLLAR; }
-  "("                         { if (string.isFreshSubshell()) { goToState(S_SUBSHELL); return LEFT_PAREN; } else return STRING_CHAR; }
+  "$(("                       { yypushback(2); setExpectArithExpression(true); setStartNewArithExpression(false); goToState(S_ARITH); return DOLLAR; }
+  "$"/"("                     { stringParsingState().enterSubshell(); return DOLLAR; }
+  "("                         { if (stringParsingState().isFreshSubshell()) { goToState(S_SUBSHELL); return LEFT_PAREN; } else return STRING_CHAR; }
 
   {EscapedChar}               { return WORD; }
-  [^\"]                       { string.advanceToken(); return STRING_CHAR; }
+  [^\"]                       { stringParsingState().advanceToken(); return STRING_CHAR; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
   /* Bash 4 */
-    "&>>"                         { if (isBash4) {
+    "&>>"                         { if (isBash4()) {
                                         return REDIRECT_AMP_GREATER_GREATER;
                                     } else {
                                         yypushback(2);
@@ -549,7 +501,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                     }
                                   }
 
-    "&>"                          { if (isBash4) {
+    "&>"                          { if (isBash4()) {
                                         return REDIRECT_AMP_GREATER;
                                     } else {
                                         yypushback(1);
@@ -588,17 +540,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
-  "#"                           { paramExpansionHash = paramExpansionWord && true; return PARAM_EXPANSION_OP_HASH; }
+  "#"                           { setParamExpansionHash(isParamExpansionWord() && true); return PARAM_EXPANSION_OP_HASH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
-  "%"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_PERCENT; }
-  "?"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_QMARK; }
-  "."                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_DOT; }
-  "/"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_SLASH; }
-  "^"                           { paramExpansionOther = true; return PARAM_EXPANSION_OP_UNKNOWN; }
+  "%"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_PERCENT; }
+  "?"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_QMARK; }
+  "."                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_DOT; }
+  "/"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_SLASH; }
+  "^"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UNKNOWN; }
 
   "[" / [@*]                    { return LEFT_SQUARE; }
-  "["                           { if (!paramExpansionOther && (!paramExpansionWord || !paramExpansionHash)) {
+  "["                           { if (!isParamExpansionOther() && (!isParamExpansionWord() || !isParamExpansionHash())) {
                                     // If we expect an array reference parse the next tokens as arithmetic expression
                                     goToState(S_ARITH_ARRAY_MODE);
                                   }
@@ -608,17 +560,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "]"                           { return RIGHT_SQUARE; }
 
-  "{"                           { paramExpansionWord = false; paramExpansionHash = false; paramExpansionOther = false;
+  "{"                           { setParamExpansionWord(false); setParamExpansionHash(false); setParamExpansionOther(false);
                                   return LEFT_CURLY;
                                 }
-  "}"                           { paramExpansionWord = false; paramExpansionHash = false; paramExpansionOther = false;
+  "}"                           { setParamExpansionWord(false); setParamExpansionHash(false); setParamExpansionOther(false);
                                   backToPreviousState();
                                   return RIGHT_CURLY;
                                 }
 
-  {EscapedChar}                 { paramExpansionWord = true; return WORD; }
-  {IntegerLiteral}              { paramExpansionWord = true; return WORD; }
-  {ParamExpansionWord}          { paramExpansionWord = true; return WORD; }
+  {EscapedChar}                 { setParamExpansionWord(true); return WORD; }
+  {IntegerLiteral}              { setParamExpansionWord(true); return WORD; }
+  {ParamExpansionWord}          { setParamExpansionWord(true); return WORD; }
  }
 
 
@@ -634,7 +586,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
-    {StringStart}                 { string.reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
+    {StringStart}                 { stringParsingState().reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
     \'{SingleCharacter}*\'        { return STRING2; }
@@ -653,7 +605,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "{"                           { return LEFT_CURLY; }
 
-    "|&"                          { if (isBash4) {
+    "|&"                          { if (isBash4()) {
                                         return PIPE_AMP;
                                      } else {
                                         yypushback(1);

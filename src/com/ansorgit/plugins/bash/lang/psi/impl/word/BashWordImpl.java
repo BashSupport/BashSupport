@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashWordImpl.java, Class: BashWordImpl
  * Last modified: 2011-02-18 20:12
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +32,8 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:36:06
- */
 public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord {
-    private final static TokenSet nonWrappableChilds =
-            TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
+    private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
@@ -59,11 +53,22 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         return children.length > 1 && findChildByType(nonWrappableChilds) == null;
     }
 
+    @Override
+    public boolean isWrapped() {
+        String text = getText();
+        return isStatic() && text.length() >= 2 && text.startsWith("'") && text.endsWith("'");
+    }
+
+    @Override
+    public String createEquallyWrappedString(String newContent) {
+        return isWrapped() ? "'" + newContent + "'" : newContent;
+    }
+
     public String getUnwrappedCharSequence() {
         String text = getText();
 
         //if it is a single quoted string unqote it
-        if (isStatic() && text.length() >= 2 && text.startsWith("'")) {
+        if (isWrapped()) {
             return text.substring(1, text.length() - 1);
         }
 

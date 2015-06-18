@@ -64,11 +64,6 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
     }
 
     @Override
-    public PsiElement getContext() {
-        return super.getContext();
-    }
-
-    @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         if (!processor.execute(this, state)) {
             return false;

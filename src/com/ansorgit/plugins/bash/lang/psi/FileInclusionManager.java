@@ -30,6 +30,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -119,7 +120,12 @@ public class FileInclusionManager {
 
         GlobalSearchScope searchScope = BashSearchScopes.moduleScope(file);
 
-        Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, file.getName(), project, searchScope, BashIncludeCommand.class);
+        String filename = file.getName();
+        if (StringUtils.isEmpty(filename)) {
+            return Collections.emptySet();
+        }
+
+        Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, filename, project, searchScope, BashIncludeCommand.class);
         if (includeCommands == null) {
             return Collections.emptySet();
         }

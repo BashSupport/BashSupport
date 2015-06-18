@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -12,6 +13,7 @@ import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.ElementPattern;
 import com.intellij.patterns.ElementPatternCondition;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.TokenSet;
@@ -57,6 +59,14 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
 
             if (o instanceof PsiElement) {
                 if (BashPsiUtils.hasParentOfType((PsiElement) o, BashString.class, 5)) {
+                    return false;
+                }
+
+                if (BashPsiUtils.hasParentOfType((PsiElement) o, PsiComment.class, 3)) {
+                    return false;
+                }
+
+                if (BashPsiUtils.hasParentOfType((PsiElement) o, BashShebang.class, 3)) {
                     return false;
                 }
 
