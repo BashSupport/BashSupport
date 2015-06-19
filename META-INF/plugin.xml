@@ -20,12 +20,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.0</version>
+    <version>1.5.0.142-beta1</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 14.0 -->
-    <idea-version since-build="139.0" until-build="139.99999"/>
+    <!-- Requires IDEA 14.1 or later -->
+    <idea-version since-build="142.2491" until-build="142.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -38,7 +38,17 @@
     <html>
        <b>Changes in version 1.5.0:</b>
        <ul>
-        <li></li>
+         <li>Beta release for IntelliJ 15 EAP.</li>
+         <li>References to other Bash script files will now be renamed if the filename is changed</li>
+         <li>Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'</li>
+         <li>New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.</li>
+         <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
+         <li>Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.</li>
+         <li>Fixed Bash file renaming, file references to Bash files are changed now</li>
+         <li>No keyword completions while typing in a Bash comment</li>
+         <li>No live template completions while typing in a Bash comment</li>
+         <li>Bash version 4 support is now enabled by default</li>
+         <li>Moved README.txt to README.md</li>
        </ul>
 
        <b>Changes in version 1.4.0:</b>
@@ -388,7 +398,7 @@
                          shortName="BashReadOnlyVariable"
                          key="inspection.readOnlyVar.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadOnlyVariableInspection"/>
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashBuiltInVariable"
