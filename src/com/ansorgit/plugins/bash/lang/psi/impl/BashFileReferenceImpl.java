@@ -21,33 +21,31 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
-import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileReference;
+import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> implements BashFileReference {
-    private PsiReference cachingReference;
-
+public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
     public BashFileReferenceImpl(final ASTNode astNode) {
-        super(astNode, "File reference");
-        this.cachingReference = new CachingFileReference(this);
+        super(astNode, "Bash File reference");
     }
 
     @Nullable
     @Override
     public PsiFile findReferencedFile() {
-        return (PsiFile) cachingReference.resolve();
+        PsiReference reference = getReference();
+        if (reference == null) {
+            return null;
+        }
+
+        return (PsiFile) reference.resolve();
     }
 
     @NotNull
@@ -67,7 +65,14 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
 
     @Override
     public PsiReference getReference() {
-        return cachingReference;
+        return new CachingFileReference(this);
+    }
+
+    @Override
+    public boolean canNavigate() {
+        PsiReference reference = getReference();
+
+        return reference != null && reference.resolve() != null;
     }
 
     @Override
@@ -79,45 +84,47 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
         }
     }
 
-
-    private static class CachingFileReference extends CachingReference {
-        private final BashFileReferenceImpl fileReference;
-
-        public CachingFileReference(BashFileReferenceImpl fileReference) {
-            this.fileReference = fileReference;
+    private static class CachingFileReference extends PsiReferenceBase<BashFileReferenceImpl> implements PsiReference, BindablePsiReference, PsiFileReference {
+        public CachingFileReference(BashFileReferenceImpl myElement) {
+            super(myElement, false);
         }
 
         @Override
-        public PsiElement getElement() {
-            return fileReference;
+        public BashFileReferenceImpl getElement() {
+            return myElement;
         }
 
         public TextRange getRangeInElement() {
-            PsiElement firstChild = fileReference.getFirstChild();
+            return getManipulator().getRangeInElement(myElement);
+        }
 
-            if (firstChild instanceof BashCharSequence) {
-                return ((BashCharSequence) firstChild).getTextContentRange();
+        @NotNull
+        private ElementManipulator<BashFileReferenceImpl> getManipulator() {
+            ElementManipulator<BashFileReferenceImpl> manipulator = ElementManipulators.getManipulator(myElement);
+            if (manipulator == null) {
+                throw new IncorrectOperationException("no implementation found to rename " + myElement);
             }
-
-            return TextRange.from(0, fileReference.getTextLength());
+            return manipulator;
         }
 
         @NotNull
         public String getCanonicalText() {
-            return this.fileReference.getText();
+            //fixme
+            return this.myElement.getText();
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            return BashPsiUtils.replaceElement(fileReference, BashChangeUtil.createWord(fileReference.getProject(), newName));
+            ElementManipulator<BashFileReferenceImpl> manipulator = getManipulator();
+
+            return manipulator.handleContentChange(myElement, newName);
         }
 
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException("not supported");
+            return handleElementRename(((PsiFile) element).getName());
         }
 
         public boolean isReferenceTo(PsiElement element) {
-            PsiFile containingFile = this.fileReference.getContainingFile();
-            return element == this || element.equals(BashPsiFileUtils.findRelativeFile(containingFile, this.fileReference.getFilename()));
+            return element == resolve();
         }
 
         @NotNull
@@ -125,12 +132,23 @@ public class BashFileReferenceImpl extends BashBaseStubElementImpl<StubElement> 
             return PsiElement.EMPTY_ARRAY;
         }
 
+        @Override
+        public PsiElement resolve() {
+            return resolveInner();
+        }
 
         @Nullable
-        @Override
         public PsiElement resolveInner() {
             PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
-            return BashPsiFileUtils.findRelativeFile(containingFile, fileReference.getFilename());
+            return BashPsiFileUtils.findRelativeFile(containingFile, myElement.getFilename());
+        }
+
+        @NotNull
+        @Override
+        public ResolveResult[] multiResolve(boolean incompleteCode) {
+            PsiElement element = resolve();
+
+            return element != null ? new ResolveResult[]{new PsiElementResolveResult(element)} : ResolveResult.EMPTY_ARRAY;
         }
     }
 }

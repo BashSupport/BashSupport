@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.refactoring;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -39,7 +40,8 @@ public class BashRefactoringSupport extends RefactoringSupportProvider {
         return (element instanceof BashVarDef) ||
                 (element instanceof BashFunctionDef) ||
                 (element instanceof BashVar) ||
-                (element instanceof BashHereDocMarker);
+                (element instanceof BashHereDocMarker) ||
+                (element instanceof BashFileReference);
     }
 
 //    @Override

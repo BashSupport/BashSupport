@@ -25,7 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class FunctionDefParsingFunctionTest extends MockPsiTest {
-    MockFunction f = new MockFunction() {
+    private MockFunction f = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.command.parse(psi);
@@ -33,7 +33,7 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
     };
 
     @Test
-    @Ignore
+    //@Ignore
     public void testFunctionDefError() throws Exception {
         //function a b {
         //echo

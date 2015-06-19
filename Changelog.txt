@@ -1,3 +1,25 @@
+2015-06-18:
+ - References to other Bash script files will now be renamed if the filename is changed
+
+2015-06-14:
+ - Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'
+ - New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.
+ - #223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed
+
+2015-06-11:
+ - Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.
+
+2015-06-10:
+ - Fixed Bash file renaming, file references to Bash files are changed now
+
+2015-06-05:
+ - No keyword completions while typing in a Bash comment
+ - No live template completions while typing in a Bash comment
+ - Bash version 4 support is now enabled by default
+
+2015-06-02:
+ - Moved README.txt to README.md
+
 2015-03-04:
  - #193: Variables in arithmetic base expressions were not supported
  - #194: $(( 8#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.

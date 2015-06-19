@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.editor.inspections;
 
-import com.ansorgit.plugins.bash.editor.inspections.inspections.AddShebangInspection;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
@@ -26,6 +25,6 @@ public class SupressionUtil {
     }
 
     public static PsiComment createSuppressionComment(Project project, String id) {
-        return BashChangeUtil.createComment(project, SUPPRESSION_PREFIX + " " + id);
+        return BashPsiElementFactory.createComment(project, SUPPRESSION_PREFIX + " " + id);
     }
 }

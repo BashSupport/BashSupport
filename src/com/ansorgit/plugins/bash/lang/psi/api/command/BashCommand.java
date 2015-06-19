@@ -75,6 +75,13 @@ public interface BashCommand extends BashPsiElement {
     /**
      * Returns true if this command is a call to an external program.
      *
+     * @return True if this is an external command.
+     */
+    boolean isBashScriptCall();
+
+    /**
+     * Returns true if this command is a call to an external program.
+     *
      * @return True if this only contains assignments without an actual command.
      */
     boolean isPureAssignment();

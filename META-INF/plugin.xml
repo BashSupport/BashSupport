@@ -15,12 +15,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin version="2" url="http://www.ansorg-it.com/en/products_bashsupport.html">
+<idea-plugin version="2" url="https://github.com/jansorg/BashSupport">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.4.0_idea13</version>
+    <version>1.5.0</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -32,17 +32,15 @@
 
     <description><![CDATA[<html>
     Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
-    I will marry in April and invite all happy users of BashSupport to chip in by sending us a wedding gift:
-    <ul>
-        <li>Paypal: <a target="_blank" href="https://www.paypal.com/webapps/mpp/send-money-online">Send your gift to <em>mail@ansorg-it.com</em></a></li>
-        <li>GoFundMe: <a target="_blank" href="http://www.gofundme.com/bashsupport">Make a donation on <em>www.gofundme.com/bashsupport</em></a></li>
-        <li>Bitcoin ID: 157X9T1sRAs5KZeK44Ju9zEm2X4LbQFks3</li>
-        <li>Details: <a target="_blank" href="http://www.ansorg-it.com/en/products_bashsupport.html">www.ansorg-it.com</a>.</li>
-    </ul>
     </html>]]></description>
 
     <change-notes><![CDATA[
     <html>
+       <b>Changes in version 1.5.0:</b>
+       <ul>
+        <li></li>
+       </ul>
+
        <b>Changes in version 1.4.0:</b>
        <ul>
          <li>Fixed the "Run before" steps of a Bash run configuration</li>
@@ -100,6 +98,7 @@
        </ul>
 
        <b>Changes in version 1.2.x:</b>
+       <ul>
           <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
           <li>Support for the getopts command</li>
           <li>Support for process substitution redirects, e.g. <(command)</li>
@@ -168,28 +167,12 @@
 
     <project-components>
         <component>
-            <implementation-class>com.ansorgit.plugins.bash.fundRaiser.BashFundRaiser</implementation-class>
-        </component>
-
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable</implementation-class>
-        </component>
-
-        <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
         </component>
 
         <component>
             <implementation-class> com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.RemoveHighlightingPassFactory</implementation-class>
         </component>
-
-        <!--
-                <component>
-                    <implementation-class>
-                        com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.BashPostHighlightingPassFactory
-                    </implementation-class>
-                </component>
-        -->
     </project-components>
 
     <!-- Plugin's module components -->
@@ -259,6 +242,13 @@
 
         <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>
 
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashCommandManipulator" />
+
+        <renamePsiElementProcessor implementation="com.ansorgit.plugins.bash.lang.psi.impl.BashFileRenameProcessor"/>
+
         <readWriteAccessDetector implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
 
         <completion.contributor language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
@@ -266,14 +256,10 @@
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
         <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
 
-        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.LiveTemplatesProvider" />
+        <defaultLiveTemplatesProvider implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesProvider" />
         <liveTemplateContext implementation="com.ansorgit.plugins.bash.editor.liveTemplates.BashLiveTemplatesContext"/>
 
-        <!--
-        <weigher key="completionSorting"
-                 implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashVariableCompletionWeigher"/>
-        -->
-
+        <internalFileTemplate name="Bash Script"/>
 
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
@@ -291,6 +277,8 @@
                         serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
         -->
 
+        <projectConfigurable instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
+
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
 
@@ -302,6 +290,7 @@
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
         <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
 

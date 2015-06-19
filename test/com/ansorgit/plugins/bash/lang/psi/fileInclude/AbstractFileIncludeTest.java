@@ -19,8 +19,6 @@
 package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.command.BashCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;

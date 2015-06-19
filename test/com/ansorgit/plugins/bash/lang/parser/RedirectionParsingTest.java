@@ -33,7 +33,7 @@ import java.util.Collections;
  * @author Joachim Ansorg
  */
 public class RedirectionParsingTest extends MockPsiTest {
-    MockFunction redirectionTest = new MockFunction() {
+    private MockFunction redirectionTest = new MockFunction() {
         public boolean apply(BashPsiBuilder builder) {
             return Parsing.redirection.parseList(builder, false);
         }
@@ -104,13 +104,13 @@ public class RedirectionParsingTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void testBash4Errors() {
         mockTestSuccessWithErrors(BashVersion.Bash_v4, redirectionTest, Collections.<String>emptyList(), PIPE_AMP);
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void testSimpleListParsingWithErrors() {
         //>> >> a
         mockTestSuccessWithErrors(redirectionTest, SHIFT_RIGHT, SHIFT_RIGHT, WORD);

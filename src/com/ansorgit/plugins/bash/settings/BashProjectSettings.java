@@ -31,7 +31,7 @@ import java.util.Set;
 public class BashProjectSettings implements Serializable {
     private Set<String> globalVariables = new HashSet<String>();
     private boolean autcompleteGlobalVars = true;
-    private boolean supportBash4 = false;
+    private boolean supportBash4 = true;
 
     private boolean autocompleteBuiltinVars = false;
     private boolean autocompleteBuiltinCommands = true;

@@ -47,7 +47,7 @@ public class ConditionalCommandParsingFunctionTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void testRegExp() throws Exception {
         //[[ a =~ abc ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, WORD, _BRACKET_KEYWORD);

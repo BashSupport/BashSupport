@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
@@ -71,7 +71,7 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
             throw new IncorrectOperationException("The name is empty");
         }
 
-        return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newname));
+        return BashPsiUtils.replaceElement(this, BashPsiElementFactory.createWord(getProject(), newname));
     }
 
     @Override

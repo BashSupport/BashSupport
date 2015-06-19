@@ -210,9 +210,9 @@ public final class BashPsiUtils {
      * @param replacement The new element
      * @return The replaces element. Depending on the context of the original element it either the original element or the replacement element.
      */
-    public static PsiElement replaceElement(PsiElement original, PsiElement replacement) throws IncorrectOperationException {
+    public static <T extends PsiElement> T replaceElement(T original, PsiElement replacement) throws IncorrectOperationException {
         try {
-            return original.replace(replacement);
+            return (T) original.replace(replacement);
         } catch (IncorrectOperationException e) {
             //failed, try another way
         } catch (UnsupportedOperationException e) {
@@ -223,7 +223,7 @@ public final class BashPsiUtils {
         if (parent != null) {
             PsiElement inserted = parent.addBefore(replacement, original);
             original.delete();
-            return inserted;
+            return (T) inserted;
         } else {
             //last try, not optimal
             original.getNode().replaceAllChildrenToChildrenOf(replacement.getNode());

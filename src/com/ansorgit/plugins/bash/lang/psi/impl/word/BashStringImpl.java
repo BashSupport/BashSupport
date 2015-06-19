@@ -51,13 +51,23 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
         super(node, "Bash string");
     }
 
-    public String getUnwrappedCharSequence() {
+    @Override
+    public boolean isWrapped() {
         String text = getText();
-        if (text.length() <= 2) {
-            return "";
+        return text.length() >= 2 && text.startsWith("\"") && text.endsWith("\"");
+    }
+
+    @Override
+    public String createEquallyWrappedString(String newContent) {
+        return "\"" + newContent + "\"";
+    }
+
+    public String getUnwrappedCharSequence() {
+        if (isWrapped()) {
+            return getText().substring(1, getText().length() - 1);
         }
 
-        return text.substring(1, text.length() - 1);
+        return getText();
     }
 
     public boolean isStatic() {

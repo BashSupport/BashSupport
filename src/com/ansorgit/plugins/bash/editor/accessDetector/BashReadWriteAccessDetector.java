@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.accessDetector;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.codeInsight.highlighting.ReadWriteAccessDetector;
@@ -32,7 +33,7 @@ import com.intellij.psi.PsiReference;
 public class BashReadWriteAccessDetector extends ReadWriteAccessDetector {
     @Override
     public boolean isReadWriteAccessible(PsiElement element) {
-        return element instanceof BashVar || element instanceof BashVarDef;
+        return element instanceof BashVar || element instanceof BashVarDef || element instanceof BashFile;
     }
 
     @Override
@@ -56,6 +57,10 @@ public class BashReadWriteAccessDetector extends ReadWriteAccessDetector {
         }
 
         if (expression instanceof BashVar) {
+            return Access.Read;
+        }
+
+        if (expression instanceof BashFile) {
             return Access.Read;
         }
 

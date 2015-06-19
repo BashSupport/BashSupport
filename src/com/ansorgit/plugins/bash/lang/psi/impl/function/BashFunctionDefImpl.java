@@ -24,13 +24,12 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
-import com.ansorgit.plugins.bash.lang.psi.util.BashChangeUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -73,7 +72,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         //fixme validate name
 
         final PsiElement nameNode = getNameSymbol();
-        final PsiElement newNameSymbol = BashChangeUtil.createSymbol(getProject(), name);
+        final PsiElement newNameSymbol = BashPsiElementFactory.createSymbol(getProject(), name);
 
         if (log.isDebugEnabled()) {
             log.debug("renamed to symbol " + newNameSymbol);

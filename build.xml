@@ -23,7 +23,7 @@
  We're using the patched jflex library provided by JetBrains.
 -->
 <project name="Bash plugin" default="jflex">
-    <property name="lexer.file" value="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexer.java"/>
+    <property name="lexer.file" value="src/com/ansorgit/plugins/bash/lang/lexer/_BashLexerBase.java"/>
     <property name="lexer.log" value="jflex.log"/>
     <property name="lexer.source" value="src/com/ansorgit/plugins/bash/lang/lexer/bash.flex"/>
     <property name="lexer.skeleton" value="lib/idea-flex.skeleton"/>
