@@ -50,7 +50,8 @@ public class BashCommandElementType extends BashStubElementType<BashCommandStub,
     @NotNull
     public BashCommandStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         StringRef bashCommandFilename = dataStream.readName();
-        return new BashCommandStubImpl(parentStub, bashCommandFilename, this);
+
+        return new BashCommandStubImpl(parentStub, StringRef.toString(bashCommandFilename), this);
     }
 
     public BashCommand createPsi(@NotNull BashCommandStub stub) {
@@ -67,14 +68,14 @@ public class BashCommandElementType extends BashStubElementType<BashCommandStub,
             }
         }
 
-        return new BashCommandStubImpl(parentStub, StringRef.fromString(filename), BashElementTypes.SIMPLE_COMMAND_ELEMENT);
+        return new BashCommandStubImpl(parentStub, filename, BashElementTypes.SIMPLE_COMMAND_ELEMENT);
     }
 
     @Override
     public void indexStub(@NotNull BashCommandStub stub, @NotNull IndexSink sink) {
-        final String filenamef = stub.getBashCommandFilename();
-        if (filenamef != null) {
-            sink.occurrence(BashCommandNameIndex.KEY, filenamef);
+        final String filename = stub.getBashCommandFilename();
+        if (filename != null) {
+            sink.occurrence(BashCommandNameIndex.KEY, filename);
         }
     }
 }

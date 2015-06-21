@@ -7,23 +7,23 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
  */
 public class ReadOnlyVariableInspectionTest extends AbstractInspectionTestCase {
     public void testOk() throws Exception {
-        doTest("readOnlyVarInspection/ok", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/ok", new ReadonlyVariableInspection());
     }
 
     public void testSimpleVar() throws Exception {
-        doTest("readOnlyVarInspection/simpleVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/simpleVar", new ReadonlyVariableInspection());
     }
 
     public void testTypesetVar() throws Exception {
-        doTest("readOnlyVarInspection/typesetVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/typesetVar", new ReadonlyVariableInspection());
     }
 
     public void testDeclaredVar() throws Exception {
-        doTest("readOnlyVarInspection/declaredVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/declaredVar", new ReadonlyVariableInspection());
     }
 
     public void testIssue229() throws Exception {
-        doTest("readOnlyVarInspection/issue229", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/issue229", new ReadonlyVariableInspection());
     }
 
 }

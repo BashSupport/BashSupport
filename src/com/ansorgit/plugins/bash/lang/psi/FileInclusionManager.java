@@ -71,7 +71,12 @@ public class FileInclusionManager {
 
             includersDone.add(file);
 
-            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, file.getName(), file.getProject(), BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
+            String name = file.getName();
+            if (name == null) {
+                continue;
+            }
+
+            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, name, file.getProject(), BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
             if (commands == null) {
                 continue;
             }
