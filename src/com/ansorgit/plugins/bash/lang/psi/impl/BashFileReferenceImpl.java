@@ -120,11 +120,19 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         }
 
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            return handleElementRename(((PsiFile) element).getName());
+            if (element instanceof PsiFile) {
+                PsiFile currentFile = BashPsiUtils.findFileContext(element);
+
+                String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
+
+                return handleElementRename(relativeFilePath);
+            }
+
+            throw new IncorrectOperationException("Unsupported for element type " + element);
         }
 
         public boolean isReferenceTo(PsiElement element) {
-            return element == resolve();
+            return PsiManager.getInstance(element.getProject()).areElementsEquivalent(element, resolve());
         }
 
         @NotNull
