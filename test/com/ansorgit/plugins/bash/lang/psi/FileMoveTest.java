@@ -2,19 +2,16 @@ package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFilesOrDirectoriesProcessor;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -35,7 +32,9 @@ public class FileMoveTest extends BashCodeInsightFixtureTestCase {
      */
     @Test
     public void testBasicFileRename() throws Exception {
-        PsiReference targetBashRef = doMove();
+        doMove(new String[]{"source.bash", "subdir/source2.bash"}, "target.bash", "subdir");
+
+        PsiReference targetBashRef = myFixture.getReferenceAtCaretPositionWithAssertion("source.bash");
 
         Assert.assertNotNull("target file reference wasn't found", targetBashRef);
         String canonicalText = targetBashRef.getCanonicalText();
@@ -55,14 +54,10 @@ public class FileMoveTest extends BashCodeInsightFixtureTestCase {
      * @throws Exception
      */
     public void testMoveFileWithRefs() throws Exception {
-        doMove(false, new String[]{"source2.bash", "subdir/target.bash"}, "source.bash", "subdir");
+        doMove(new String[]{"source2.bash", "subdir/target.bash"}, "source.bash", "subdir");
     }
 
-    private PsiReference doMove() {
-        return doMove(false, new String[]{"source.bash", "subdir/source2.bash"}, "target.bash", "subdir");
-    }
-
-    private PsiReference doMove(boolean expectFileReference, String[] checkedFiles, String movedFileSource, String moveTargetDir) {
+    private void doMove(String[] checkedFiles, String movedFileSource, String moveTargetDir) {
         myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
 
         Set<String> filenames = Sets.newHashSet(checkedFiles);
@@ -79,28 +74,7 @@ public class FileMoveTest extends BashCodeInsightFixtureTestCase {
             myFixture.checkResultByFile(filename, FileUtil.getNameWithoutExtension(filename) + "_after." + FileUtilRt.getExtension(filename), false);
         }
 
-        myFixture.checkResultByFile(moveTargetDir + "/" + movedFileSource,
-                moveTargetDir + "/" + FileUtil.getNameWithoutExtension(movedFileSource) + "_after." + FileUtilRt.getExtension(movedFileSource), false);
-
-        PsiElement psiElement;
-        if (expectFileReference) {
-            psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
-            Assert.assertNotNull("file reference is null", psiElement);
-            Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
-        } else {
-            psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
-            Assert.assertNotNull("caret element is null", psiElement);
-
-            while (psiElement.getReference() == null) {
-                if (psiElement.getParent() == null) {
-                    break;
-                }
-
-                psiElement = psiElement.getParent();
-            }
-        }
-
-        return psiElement.getReference();
+        myFixture.checkResultByFile(moveTargetDir + "/" + movedFileSource, moveTargetDir + "/" + FileUtil.getNameWithoutExtension(movedFileSource) + "_after." + FileUtilRt.getExtension(movedFileSource), false);
     }
 
     private void moveFile(String moveTargetDir, PsiFile sourceFile) {

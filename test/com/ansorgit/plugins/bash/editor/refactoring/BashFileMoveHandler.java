@@ -4,11 +4,8 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.*;
 import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFileHandler;
@@ -35,36 +32,10 @@ public class BashFileMoveHandler extends MoveFileHandler {
 
     @Override
     public void prepareMovedFile(final PsiFile file, final PsiDirectory moveDestination, final Map<PsiElement, PsiElement> oldToNewMap) {
-        final Project project = file.getProject();
+        FileReferenceCollectionVisitor visitor = new FileReferenceCollectionVisitor();
+        BashPsiUtils.visitRecursively(file, visitor);
 
-        final Map<PsiReference, PsiFileSystemItem> replacementMap = Maps.newLinkedHashMap();
-        BashPsiUtils.visitRecursively(file, new BashVisitor() {
-            @Override
-            public void visitFileReference(BashFileReference fileReference) {
-                PsiReference reference = fileReference.getReference();
-                if (reference != null) {
-                    PsiElement oldTarget = reference.resolve();
-
-                    if (oldTarget instanceof BashFile) {
-                        replacementMap.put(reference, (BashFile) oldTarget);
-                    }
-                }
-            }
-
-            @Override
-            public void visitGenericCommand(BashCommand bashCommand) {
-                PsiReference reference = bashCommand.getReference();
-                if (bashCommand.isBashScriptCall() && reference != null) {
-                    PsiElement oldTarget = reference.resolve();
-
-                    if (oldTarget instanceof PsiFile) {
-                        replacementMap.put(reference, (PsiFile) oldTarget);
-                    }
-                }
-            }
-        });
-
-        REPLACEMENT_MAP.set(file, replacementMap);
+        REPLACEMENT_MAP.set(file, visitor.getReferenceMap());
     }
 
     @Nullable
@@ -99,6 +70,40 @@ public class BashFileMoveHandler extends MoveFileHandler {
             }
         } finally {
             REPLACEMENT_MAP.set(file, null);
+        }
+    }
+
+    private static class FileReferenceCollectionVisitor extends BashVisitor {
+        private final Map<PsiReference, PsiFileSystemItem> replacementMap;
+
+        public FileReferenceCollectionVisitor() {
+            this.replacementMap = Maps.newLinkedHashMap();
+        }
+
+        public Map<PsiReference, PsiFileSystemItem> getReferenceMap() {
+            return this.replacementMap;
+        }
+
+        @Override
+        public void visitFileReference(BashFileReference fileReference) {
+            handleReference(fileReference.getReference());
+        }
+
+        @Override
+        public void visitGenericCommand(BashCommand bashCommand) {
+            if (bashCommand.isBashScriptCall()) {
+                handleReference(bashCommand.getReference());
+            }
+        }
+
+        private void handleReference(@Nullable PsiReference psiReference) {
+            if (psiReference != null) {
+                PsiElement oldTarget = psiReference.resolve();
+
+                if (oldTarget instanceof BashFile) {
+                    replacementMap.put(psiReference, (BashFile) oldTarget);
+                }
+            }
         }
     }
 }
