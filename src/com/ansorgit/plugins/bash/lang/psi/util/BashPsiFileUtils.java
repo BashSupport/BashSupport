@@ -96,7 +96,6 @@ public class BashPsiFileUtils {
 
         VirtualFile baseParent = baseVirtualFile.getParent();
         VirtualFile targetParent = targetVirtualFile.getParent();
-
         if (baseParent == null || targetParent == null){
             throw new IllegalStateException("parent directories not found");
         }

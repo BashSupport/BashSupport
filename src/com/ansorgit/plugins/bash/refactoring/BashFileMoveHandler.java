@@ -1,4 +1,4 @@
-package com.ansorgit.plugins.bash.editor.refactoring;
+package com.ansorgit.plugins.bash.refactoring;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @author jansorg
  */
 public class BashFileMoveHandler extends MoveFileHandler {
-    private static final Key<Map<PsiReference, PsiFileSystemItem>> REPLACEMENT_MAP = new Key<Map<PsiReference, PsiFileSystemItem>>("movile file replacements");
+    private static final Key<Map<PsiReference, PsiFileSystemItem>> REPLACEMENT_MAP = new Key<Map<PsiReference, PsiFileSystemItem>>("move file replacements");
 
     @Override
     public boolean canProcessElement(PsiFile element) {
@@ -33,6 +33,7 @@ public class BashFileMoveHandler extends MoveFileHandler {
     @Override
     public void prepareMovedFile(final PsiFile file, final PsiDirectory moveDestination, final Map<PsiElement, PsiElement> oldToNewMap) {
         FileReferenceCollectionVisitor visitor = new FileReferenceCollectionVisitor();
+
         BashPsiUtils.visitRecursively(file, visitor);
 
         REPLACEMENT_MAP.set(file, visitor.getReferenceMap());
@@ -67,6 +68,7 @@ public class BashFileMoveHandler extends MoveFileHandler {
                     }
                 }
 
+                psiReferences.clear();
             }
         } finally {
             REPLACEMENT_MAP.set(file, null);
@@ -100,8 +102,8 @@ public class BashFileMoveHandler extends MoveFileHandler {
             if (psiReference != null) {
                 PsiElement oldTarget = psiReference.resolve();
 
-                if (oldTarget instanceof BashFile) {
-                    replacementMap.put(psiReference, (BashFile) oldTarget);
+                if (oldTarget instanceof PsiFileSystemItem) {
+                    replacementMap.put(psiReference, (PsiFileSystemItem) oldTarget);
                 }
             }
         }

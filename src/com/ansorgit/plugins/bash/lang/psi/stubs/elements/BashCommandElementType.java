@@ -61,11 +61,9 @@ public class BashCommandElementType extends BashStubElementType<BashCommandStub,
     public BashCommandStub createStub(@NotNull BashCommand psi, StubElement parentStub) {
         String filename = null;
 
-        if (psi.isExternalCommand()) {
-            String commandName = psi.getReferencedCommandName();
-            if (commandName != null) {
-                filename = PathUtilRt.getFileName(commandName);
-            }
+        String commandName = psi.getReferencedCommandName();
+        if (commandName != null) {
+            filename = PathUtilRt.getFileName(commandName);
         }
 
         return new BashCommandStubImpl(parentStub, filename, BashElementTypes.SIMPLE_COMMAND_ELEMENT);
