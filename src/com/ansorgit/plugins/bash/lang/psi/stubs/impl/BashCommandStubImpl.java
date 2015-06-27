@@ -13,12 +13,12 @@ import com.intellij.util.io.StringRef;
 public class BashCommandStubImpl extends StubBase<BashCommand> implements BashCommandStub {
     @Override
     public String getBashCommandFilename() {
-        return StringRef.toString(bashCommandFilename);
+        return bashCommandFilename;
     }
 
-    private final StringRef bashCommandFilename;
+    private final String bashCommandFilename;
 
-    public BashCommandStubImpl(StubElement parent, StringRef bashCommandFilename, final IStubElementType elementType) {
+    public BashCommandStubImpl(StubElement parent, String bashCommandFilename, final IStubElementType elementType) {
         super(parent, elementType);
         this.bashCommandFilename = bashCommandFilename;
     }

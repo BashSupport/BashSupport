@@ -55,10 +55,18 @@ public class BashElementSharedImpl {
         //find all files which reference the source file
         Set<PsiFile> referencingScriptFiles = Sets.newLinkedHashSet();
         if (element instanceof BashFile) {
-            Collection<BashCommand> commands = StubIndex.getElements(BashCommandNameIndex.KEY, ((BashFile) element).getVirtualFile().getName(), project, BashSearchScopes.moduleScope(currentFile), BashCommand.class);
-            if (commands != null) {
-                for (BashCommand command : commands) {
-                    referencingScriptFiles.add(BashPsiUtils.findFileContext(command));
+            String searchedName = ((BashFile) element).getName();
+            if (searchedName != null) {
+                Collection<BashCommand> commands = StubIndex.getElements(
+                        BashCommandNameIndex.KEY,
+                        searchedName,
+                        project,
+                        GlobalSearchScope.projectScope(project), //module scope isn't working as expected because it doesn't include non-src dirs
+                        BashCommand.class);
+                if (commands != null) {
+                    for (BashCommand command : commands) {
+                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command));
+                    }
                 }
             }
         }

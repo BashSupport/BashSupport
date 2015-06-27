@@ -41,7 +41,7 @@ import java.util.List;
  */
 public interface BashCommand extends BashPsiElement {
 
-    @NotNull
+    @Nullable
     PsiReference getReference();
 
     /**
