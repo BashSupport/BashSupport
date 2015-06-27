@@ -77,7 +77,10 @@ public class HereDocParsing implements ParsingTool {
 
                     line = readLine(builder);
 
-                    line.second.done(HEREDOC_END_MARKER_ELEMENT);
+                    // #235 had a NPE on "line", can only occur if EOF is reached in the previous readLine call
+                    if (line != null) {
+                        line.second.done(HEREDOC_END_MARKER_ELEMENT);
+                    }
 
                     //don't eat the newline after the end token, it's the command separator (needed in loops, etc)
                     break;
