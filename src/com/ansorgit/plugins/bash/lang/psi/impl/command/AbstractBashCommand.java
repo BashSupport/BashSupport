@@ -165,7 +165,6 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         return findChildrenByClass(BashVarDef.class);
     }
 
-    @NotNull
     @Override
     public PsiReference getReference() {
         if (isFunctionCall()) {
