@@ -86,30 +86,49 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
             doRename(false, true, "source.bash");
         } finally {
             RefactoringSettings.getInstance().RENAME_SEARCH_FOR_TEXT_FOR_FILE = oldValue;
-
         }
     }
 
+    @Test
     public void testFileRenameWithRefs() throws Exception {
         doRename(false);
+    }
+
+    @Test
+    public void testStringOccurrenceFileRename() throws Exception {
+        doRename(false, new Runnable() {
+            @Override
+            public void run() {
+                PsiElement element = myFixture.getElementAtCaret();
+                myFixture.renameElement(element, "target_renamed.bash", true, true);
+            }
+        }, "source.bash");
     }
 
     private void doRename(boolean renameWithHandler) {
         doRename(renameWithHandler, false, "source.bash", "source2.bash");
     }
 
-    private void doRename(boolean renameWithHandler, boolean expectFileReference, String... sourceFiles) {
+    private void doRename(final boolean renameWithHandler, boolean expectFileReference, String... sourceFiles) {
+        doRename(expectFileReference, new Runnable() {
+            public void run() {
+                if (renameWithHandler) {
+                    myFixture.renameElementAtCaretUsingHandler("target_renamed.bash");
+                } else {
+                    myFixture.renameElementAtCaret("target_renamed.bash");
+                }
+            }
+        }, sourceFiles);
+    }
+
+    private void doRename(boolean expectFileReference, Runnable renameLogic, String... sourceFiles) {
         myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
 
         List<String> filenames = Lists.newArrayList(sourceFiles);
         filenames.add("target.bash");
         myFixture.configureByFiles(filenames.toArray(new String[filenames.size()]));
 
-        if (renameWithHandler) {
-            myFixture.renameElementAtCaretUsingHandler("target_renamed.bash");
-        } else {
-            myFixture.renameElementAtCaret("target_renamed.bash");
-        }
+        renameLogic.run();
 
         for (String filename : sourceFiles) {
             myFixture.checkResultByFile(filename, FileUtil.getNameWithoutExtension(filename) + "_after." + FileUtilRt.getExtension(filename), false);
