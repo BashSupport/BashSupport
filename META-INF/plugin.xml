@@ -281,6 +281,8 @@
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
+        <moveFileHandler implementation="com.ansorgit.plugins.bash.refactoring.BashFileMoveHandler" id="BashMove" />
+        
         <!-- Repl-->
         <!--
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"

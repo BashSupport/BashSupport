@@ -55,6 +55,12 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
     }
 
     @Nullable
+    @Override
+    public PsiReference getReference() {
+        return null;
+    }
+
+    @Nullable
     public BashFileReference getFileReference() {
         return findChildByClass(BashFileReference.class);
     }
