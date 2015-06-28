@@ -31,121 +31,46 @@
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[<html>
-    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
+    Bash support for IntelliJ.<br/>
+    Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
 
     <change-notes><![CDATA[
     <html>
        <b>Changes in version 1.5.0:</b>
        <ul>
-        <li></li>
+         <li>References to other Bash script files will now be renamed if the filename is changed</li>
+         <li>Bash version 4 support is now enabled by default</li>
+         <li>Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'</li>
+         <li>New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.</li>
+         <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
+         <li>Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.</li>
+         <li>Fixed Bash file renaming, file references to Bash files are changed now</li>
+         <li>No keyword completions while typing in a Bash comment</li>
+         <li>No live template completions while typing in a Bash comment</li>
+         <li>Moved README.txt to README.md</li>
        </ul>
 
-       <b>Changes in version 1.4.0:</b>
+       <a href="https://github.com/jansorg/BashSupport/blob/master/Changelog.md">Full changelog</a>
+
+       <b>Recent changes:</b>
        <ul>
          <li>Fixed the "Run before" steps of a Bash run configuration</li>
-         <li>The template Bash run configuration has no default "make" run before step now</li>
          <li>Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3</li>
-         <li>Added live template context for Bash files</li>
          <li>The special /usr/bin/env command is now supported by the shebang inspection</li>
-         <li>No keyword autocompletion in a variable context</li>
-         <li>Fixed parsing of a file containg a $ as last character</li>
-         <li>Fixed autocomplete in eval and trap commands</li>
          <li>Parser performance improved (pool for internal marker objects added)</li>
-         <li>Possible fix for a stack overflow in the parser (not reproducible here, though)</li>
-         <li>#193: Variables in arithmetic base expressions were not supported</li>
-         <li>#194: $(( 8#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.</li>
-         <li>#190: Fixed UOE error in the "register as global variable" quickfix</li>
-         <li>#179: Fixed NPE in FileInclusionManager</li>
-         <li>#152: Guard to prevent endless recursions</li>
-         <li>#192: Fixed NPE in highlighting of arithmetic expressions</li>
-         <li>#170: Keywords like "fi", "if", "while", "done" were not offered in the list of autocompletion suggestions</li>
-         <li>Fixed autocompletion at the end of a string, e.g. "$a<caret>". The string end marker was replaced if tab was pressed.</li>
-         <li>Fixed autocompletion with open strings, e.g. $a<caret>\necho "x". The command in the next line was removed if tab was pressed.</li>
-         <li>Fixed autocompletion in curly brackets, e.g. ${<caret>}. The right curly bracket was removed if tab was pressed.</li>
-         <li>Fixed missing autocompletion of global variables and built-in commands inside of parameter expansions</li>
-         <li>#184: Single quoted associative array keys parsing error</li>
-         <li>#186: Erroneous warning "Simple use of array variable" when iterating through array</li>
-         <li>NPE fix for FileInclusionManager</li>
-        </ul>
-
-       <b>Changes in version 1.3.x:</b>
-       <ul>
-        <li>Fixed exceptions caused by an invalid implementation of the time command (PsiWhitespace exceptions)</li>
-        <li>Fixed exception "Assertion failed: leaveModal() should be invoked in event-dispatch thread"</li>
-        <li>Fixed NullPointerException in AddShebangInspection.getBatchSuppressActions</li>
-        <li>Escape characters were not accepted in case pattern</li>
-        <li>Fixed "Local variable definition on global level" inspection</li>
-        <li>Fixed case expressions followed by a backtick character</li>
-        <li>Small performance and memory improvement in the Bash file lexer</li>
-        <li>Fixed run configurations produced for non-Bash files. Run configuration are now only created for Bash files.</li>
-        <li>Fixed IndexNotReadyException</li>
-         <li>Fixed UnsupportedOperationException which occurred after a new plain text file without extension was created.</li>
-         <li>Fixed the message displayed on startup</li>
-         <li>I invite all happy users of BashSupport to chip in by sending us a wedding gift:
-            <a href="http://www.ansorg-it.com/en/products_bashsupport.html">make a small donation here</a>
-         </li>
+         <li>Fixed "Local variable definition on global level" inspection</li>
+         <li>Fixed case expressions followed by a backtick character</li>
          <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
          <li>Enabled and fixed the custom error reporting dialog</li>
          <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
          <li>Disabled debug button for Bash run configuration</li>
          <li>#166: Support for ToDo-Strings in Bash comments</li>
-         <li>https://code.google.com/p/bashsupport/issues/detail?id=156 Added characters +#_ to the filename characters</li>
-         <li>Fixed NPE BashPathCommandCompletion which occurred at startup of the latest IntelliJ IDEA EAP
-         <li>Fixed QuickFix implementations to not reference PSI element, reduces memory consumption</li>
-         <li>The inspection "Add missing shebang..." can now be suppressed. A comment will be added to the file to suppress it.</li>
-         <li>Fixed NPE which occurred with unclosed subshell expressions</li>
-       </ul>
-
-       <b>Changes in version 1.2.x:</b>
-       <ul>
-          <li>Fixed invalid warnings about unused paramters in ${*} and ${@}</li>
-          <li>Support for the getopts command</li>
-          <li>Support for process substitution redirects, e.g. <(command)</li>
-          <li>[Issue 145]: Functions defined in include files are now properly found if included on global level</li>
-          <li>Fixed parsing of optional array variables used in the read command</li>
-          <li>Array type of a variable is inferred by typeset -a now, too</li>
-          <li>Added support to detect illegal use of readonly variables declared by typeset -r or declare -r</li>
-          <li>Fixed autocompletion of built-in variables</li>
-          <li>Added missing implementation of the time command PSI element</li>
-       </ul>
-
-       <b>Recent changes:</b>
-       <ul>
-         <li>Finally fixed exception with isDirectory</li>
-         <li>Fixed exception with isDirectory in some versions of IntelliJ</li>
-         <li>Fixed stack overflow exception which occurred in IDEA IntelliJ 13.1.1</li>
-         <li>Removed custom logging configuration to fix global plattform debug output</li>
-         <li>Parsing performance improved, especially for large scripts                                  </li>
          <li>Support for the typeset command                                                                     </li>
          <li>Initial support for the trap command                                                                </li>
          <li>Initial support for the eval command                                                                </li>
          <li>"Replace with ${var}" is not suggested inside of arithmetic expressions any more                    </li>
          <li>Improved color scheme definitions, looks better with Darcula                                        </li>
-         <li>Improved performance (variable resolving)                                                           </li>
-         <li>Assignments which non-static variable names are not suggested with autocomplete (e.g. "$a"=a)       </li>
-         <li>Better looking with themes now                                                                      </li>
-         <li>Fixed highlighting of redirects
-         <li>Fixed highlighting of keywords used as plain text / word (the unwanted highlighting is removed).                                         </li>
-         <li>Fixed shebang command inspection, settings a properly saved now                                                                          </li>
-         <li>Added quickfix "Register as valid shebang command" for the shebang command inspection                                                    </li>
-         <li>Changed default highlighting level of "Unresolved variable" inspection from error to warning                                             </li>
-         <li>"Simple variable use" is not added to variables which are wrapped by a string                                                            </li>
-         <li>"Simple array variable use" is not added to variables which are wrapped by a string                                                      </li>
-         <li>$@ is now taken as function parameter use, i.e. a call of a function using $@ does not lead to unused parameter warnings                 </li>
-         <li>Improved parsing of let commands (still incomplete)                                                                                      </li>
-         <li>Improved parsing of variables named like internal bash keywords                                                                          </li>
-         <li>Improved performance for large script files (implemented caching references for variables, variable definitions and function definitions)</li>
-         <li>Escape chars were used in single quoted strings, but Bash does not allow escaped characters there                                        </li>
-         <li>Fixed parsing of string as case pattern                                                                                                  </li>
-         <li>Fixed parsing of ;;& in Bash 3 parsing mode                                                                                              </li>
-         <li>Autocompletion of commands using the user's $PATH environment. Autocompletion shows on second completion invocation.</li>
-         <li>Setting to disable autocompletion of commands using $PATH</li>
-         <li>Fixed flashing gutter icons</li>
-         <li>Improved parsing of parameter expansion (i.e. the parsing of the / operator)</li>
-         <li>Added parsing of history expansions                                        </li>
-         <li>Fixed parsing of single ! tokens                                           </li>
-         <li>Fix to allow umlaut characters in command names and arguments.        </li>
        </ul>
     </html>
     ]]>
