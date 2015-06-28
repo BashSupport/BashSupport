@@ -4,9 +4,15 @@ It supports IntelliJ Ultimate and Community editions, PHPStorm, WebStorm, RubyMi
 
 ##License
 BashSupport is licensed under the terms of the Apache 2.0 license.
-Read the file LICENSE.txt for further details.
+Read the file [LICENSE.txt](LICENSE.txt) for further details.
 
 Please see NOTICE for further details about the license and included code of other developers.
+
+##Documentation
+For now, refer to the partially outdated [Documentation](http://www.ansorg-it.com/en/products_bashsupport.html).
+
+##Changelog
+See the [Changelog](Changelog.md) for a list of the last changes in BashSupport.
 
 #Developer information
 ##Bash lexer
