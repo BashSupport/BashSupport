@@ -31,7 +31,8 @@
     <depends>com.intellij.modules.lang</depends>
 
     <description><![CDATA[<html>
-    Bash 4 support for IntelliJ. Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br/><br/>
+    Bash support for IntelliJ.<br/>
+    Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
 
     <change-notes><![CDATA[
