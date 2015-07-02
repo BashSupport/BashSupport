@@ -6,7 +6,7 @@ package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 public final class BashIndexVersion {
     public static final int CACHES_VERSION = 6;
     public static final int STUB_INDEX_VERSION = 23;
-    public static final int ID_INDEX_VERSION = 16;
+    public static final int ID_INDEX_VERSION = 19;
 
     private BashIndexVersion() {
     }

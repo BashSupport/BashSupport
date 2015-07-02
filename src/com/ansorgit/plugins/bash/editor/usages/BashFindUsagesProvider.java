@@ -22,18 +22,21 @@ import com.ansorgit.plugins.bash.lang.lexer.BashLexer;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIndexVersion;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
+import com.intellij.lang.cacheBuilder.WordOccurrence;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.Processor;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,12 +50,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
     private static final class BashWordsScanner extends DefaultWordsScanner {
-        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD);
+        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CHAR);
+        private static final TokenSet identifiers = TokenSet.create(VARIABLE);
 
         public BashWordsScanner() {
-            //fixme the Bash lexer is project dependent
-            super(new BashLexer(), identifierTokenSet, BashTokenTypes.commentTokens, literals);
+            super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
             setMayHaveFileRefsInLiterals(true);
+        }
+
+        @Override
+        public void processWords(CharSequence fileText, Processor<WordOccurrence> processor) {
+            super.processWords(fileText, processor);
+        }
+
+        @Override
+        public int getVersion() {
+            return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
         }
     }
 
@@ -63,7 +76,8 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     public boolean canFindUsagesFor(@NotNull PsiElement psi) {
         return psi instanceof BashVar
                 || psi instanceof BashFile
-                || (psi instanceof BashCommand && ((BashCommand) psi).isFunctionCall())
+                || psi instanceof BashFileReference
+                || psi instanceof BashCommand
                 || psi instanceof BashHereDocMarker
                 || psi instanceof BashFunctionDef;
     }
@@ -77,6 +91,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         if (element instanceof BashFunctionDef) {
             return "function";
         }
+
         if (element instanceof BashCommand) {
             if (((BashCommand) element).isFunctionCall()) {
                 return "function";
@@ -88,12 +103,15 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
             return "command";
         }
+
         if (element instanceof BashVarDef) {
             return "variable";
         }
+
         if (element instanceof BashHereDocMarker) {
             return "heredoc marker";
         }
+
         if (element instanceof BashFile) {
             return "Bash file";
         }

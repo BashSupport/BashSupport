@@ -1,3 +1,6 @@
+####2015-07-02
+ - Files usages in strings are now processed during a file rename if the option is enabled. 
+ 
 ####2015-06-21
  - Renaming files in non-source directories
 

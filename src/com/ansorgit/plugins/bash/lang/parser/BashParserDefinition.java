@@ -44,6 +44,9 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashParserDefinition implements ParserDefinition, BashElementTypes {
+    // These tokens are used e.g. during the "find references in strings" search
+    private static final TokenSet stringLiterals = TokenSet.create(BashTokenTypes.STRING2, BashTokenTypes.INTEGER_LITERAL, BashTokenTypes.COLON, BashElementTypes.STRING_ELEMENT);
+
     @NotNull
     public Lexer createLexer(Project project) {
         return createBashLexer(project);
@@ -78,7 +81,7 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
 
     @NotNull
     public TokenSet getStringLiteralElements() {
-        return BashTokenTypes.editorStringLiterals;
+        return stringLiterals;
     }
 
     public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode leftAst, ASTNode rightAst) {
