@@ -1,4 +1,4 @@
-package com.ansorgit.plugins.bash.lang.psi;
+package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
@@ -29,7 +29,7 @@ import java.util.List;
 public class FileRenameTest extends BashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
-        return "/editor/refactoring/RenameTestCase/";
+        return "/editor/refactoring/FileRenameTestCase/";
     }
 
     /**

@@ -351,7 +351,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             if (element instanceof BashFunctionDef) {
-                handleElementRename(((BashFunctionDef) element).getName());
+                return handleElementRename(((BashFunctionDef) element).getName());
             }
 
             throw new IncorrectOperationException("unsupported for element " + element);

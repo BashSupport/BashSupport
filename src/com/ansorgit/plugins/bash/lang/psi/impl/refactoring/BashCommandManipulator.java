@@ -22,7 +22,16 @@ public class BashCommandManipulator extends AbstractElementManipulator<BashComma
         }
 
         PsiElement commandElement = cmd.commandElement();
-        if (cmd.isExternalCommand()) {
+        if (commandElement == null) {
+            throw new IncorrectOperationException("invalid command");
+        }
+
+        BashGenericCommand replacement = BashPsiElementFactory.createCommand(cmd.getProject(), newElementName);
+        BashPsiUtils.replaceElement(commandElement, replacement);
+
+        return cmd;
+
+        /*if (cmd.isExternalCommand()) {
             BashGenericCommand replacement = BashPsiElementFactory.createCommand(cmd.getProject(), newElementName);
             BashPsiUtils.replaceElement(commandElement, replacement);
 
@@ -35,7 +44,7 @@ public class BashCommandManipulator extends AbstractElementManipulator<BashComma
             cmd.getNode().replaceChild(commandElement.getNode(), replacement.getNode());
 
             return cmd;
-        }
+        } */
     }
 
     @NotNull
