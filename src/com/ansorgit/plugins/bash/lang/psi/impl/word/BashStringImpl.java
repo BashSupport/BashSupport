@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.jetbrains.StringLiteralEscaper;
+import com.ansorgit.plugins.bash.jetbrains.BashStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
@@ -124,6 +124,6 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
         //fixme
-        return new StringLiteralEscaper<PsiLanguageInjectionHost>(this);
+        return new BashStringLiteralEscaper<BashString>(this);
     }
 }

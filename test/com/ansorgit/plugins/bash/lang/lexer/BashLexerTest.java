@@ -827,6 +827,12 @@ public class BashLexerTest {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
     }
 
+    @Test
+    public void testIssue242() throws Exception {
+        testTokenization("eval \"$1=\\$(printf 'a' \\\"$1\\\")\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, WORD, WORD, WORD, WORD, VARIABLE, WORD, WORD, STRING_END);
+
+    }
+
     private void testTokenization(String code, IElementType... expectedTokens) {
         testTokenization(BashVersion.Bash_v3, code, expectedTokens);
     }
