@@ -19,10 +19,14 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
@@ -32,6 +36,8 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
  * @author Joachim Ansorg
  */
 public class BashLexerTest {
+    private static final com.intellij.openapi.diagnostic.Logger log = com.intellij.openapi.diagnostic.Logger.getInstance("BashLexerTest");
+
     @Test
     public void testSimpleDefTokenization() {
         testTokenization("#", COMMENT);
@@ -827,6 +833,24 @@ public class BashLexerTest {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
     }
 
+    @Test
+    public void testIssue243() throws Exception {
+        testNoErrors("foo() { foo=\"$1\"; shift; while [ $# -gt 0 ]; do case \"$1\" in ($foo) ;; (*) return 1;; esac; shift; done; }");
+    }
+
+    private void testNoErrors(String code) {
+        BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
+        lexer.start(code);
+
+        int i = 1;
+        while (lexer.getTokenType() != null) {
+            Assert.assertFalse("Error token found at position " + i, lexer.getTokenType() == BAD_CHARACTER);
+
+            i++;
+            lexer.advance();
+        }
+    }
+
     private void testTokenization(String code, IElementType... expectedTokens) {
         testTokenization(BashVersion.Bash_v3, code, expectedTokens);
     }
@@ -845,6 +869,15 @@ public class BashLexerTest {
         }
 
         //check if the lexer has tokens left
-        Assert.assertTrue("Lexer has tokens left: " + lexer.getTokenType(), lexer.getTokenType() == null);
+        boolean noTokensLeft = lexer.getTokenType() == null;
+        if (!noTokensLeft) {
+            List<IElementType> tokens = Lists.newLinkedList();
+            while (lexer.getTokenType() != null) {
+                tokens.add(lexer.getTokenType());
+                lexer.advance();
+            }
+
+            Assert.assertTrue("Lexer has tokens left: " + Iterables.toString(tokens), noTokensLeft);
+        }
     }
 }

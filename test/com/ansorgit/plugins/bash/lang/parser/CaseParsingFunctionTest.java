@@ -29,6 +29,11 @@ import org.junit.Test;
 public class CaseParsingFunctionTest extends MockPsiTest {
     private final MockFunction caseTest = new MockFunction() {
         @Override
+        public boolean preCheck(BashPsiBuilder psi) {
+            return Parsing.shellCommand.caseParser.isValid(psi);
+        }
+
+        @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.shellCommand.caseParser.parse(psi);
         }
@@ -107,16 +112,16 @@ public class CaseParsingFunctionTest extends MockPsiTest {
 
     @Test
     public void testCaseSimple8() {
-        //case a in a) echo a;; esac;
+        //case a in a) echo a;; esac
         mockTest(caseTest,
                 CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
-                ESAC_KEYWORD, SEMI);
+                ESAC_KEYWORD);
     }
 
     @Test
     public void testMultiwordPattern() throws Exception {
-        //case a in "a b") echo a;; esac;
-        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, WORD, WHITESPACE, WORD, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD, SEMI);
+        //case a in "a b") echo a;; esac
+        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, WORD, WHITESPACE, WORD, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD);
 
     }
 

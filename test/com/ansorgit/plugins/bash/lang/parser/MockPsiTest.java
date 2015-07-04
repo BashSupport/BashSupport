@@ -87,7 +87,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
         //fixme project
         BashPsiBuilder psi = new BashPsiBuilder(null, mockBuilder, version);
 
-        Assert.assertTrue(f.preCheck(psi));
+        Assert.assertTrue("PreCheck failed for " + f, f.preCheck(psi));
 
         boolean ok = f.apply(psi);
         assertNoErrors(mockBuilder);

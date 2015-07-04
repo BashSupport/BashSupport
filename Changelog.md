@@ -1,3 +1,6 @@
+####2015-07-04
+ - \#243: Single line case statement parse error 
+ 
 ####2015-06-21
  - Renaming files in non-source directories
 
