@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ansorgit.plugins.bash.jetbrains;
+package com.ansorgit.plugins.bash.editor;
 
 import com.intellij.openapi.util.ProperTextRange;
 import com.intellij.openapi.util.Ref;
@@ -25,10 +25,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author jansorg
  */
-public class BashStringLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
+public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
     private int[] outSourceOffsets;
 
-    public BashStringLiteralEscaper(T host) {
+    public BashEnhancedLiteralTextEscaper(T host) {
         super(host);
     }
 
@@ -39,7 +39,8 @@ public class BashStringLiteralEscaper<T extends PsiLanguageInjectionHost> extend
 
         Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
         boolean result = parseStringCharacters(subText, outChars, sourceOffsetsRef);
-        outSourceOffsets = sourceOffsetsRef.get();
+        this.outSourceOffsets = sourceOffsetsRef.get();
+
         return result;
     }
 
@@ -48,6 +49,7 @@ public class BashStringLiteralEscaper<T extends PsiLanguageInjectionHost> extend
         if (result == -1) {
             return -1;
         }
+
         return (result <= rangeInsideHost.getLength() ? result : rangeInsideHost.getLength()) + rangeInsideHost.getStartOffset();
     }
 
@@ -56,7 +58,16 @@ public class BashStringLiteralEscaper<T extends PsiLanguageInjectionHost> extend
         return true;
     }
 
-    public static boolean parseStringCharacters(String chars, StringBuilder outChars, Ref<int[]> sourceOffsetsRef) {
+    /**
+     * Handles escape codes in evaluated string, e.g. the string in
+     * <code>eval "echo \˜This is the value of \$x: $x\""</code>
+     *
+     * @param chars
+     * @param outChars
+     * @param sourceOffsetsRef
+     * @return
+     */
+    private static boolean parseStringCharacters(String chars, StringBuilder outChars, Ref<int[]> sourceOffsetsRef) {
         int[] sourceOffsets = new int[chars.length() + 1];
         sourceOffsetsRef.set(sourceOffsets);
 
@@ -83,105 +94,60 @@ public class BashStringLiteralEscaper<T extends PsiLanguageInjectionHost> extend
             if (index == chars.length()) {
                 return false;
             }
+
             c = chars.charAt(index++);
             switch (c) {
-                case 'b':
-                    outChars.append('\b');
-                    break;
-
-                case 't':
-                    outChars.append('\t');
-                    break;
-
+                //newline
                 case 'n':
                     outChars.append('\n');
                     break;
 
-                case 'f':
-                    outChars.append('\f');
-                    break;
-
+                //return
                 case 'r':
                     outChars.append('\r');
+                    break;
+
+                //tab
+                case 't':
+                    outChars.append('\t');
+                    break;
+
+                //vertical tab
+                case 'v':
+                    outChars.append(0x0B);
+                    break;
+
+                //backspace
+                case 'b':
+                    outChars.append('\b');
+                    break;
+
+                //alert
+                case 'a':
+                    outChars.append(0x07);
+                    break;
+
+                //escaped dollar
+                case '$':
+                    outChars.append('$');
                     break;
 
                 case '"':
                     outChars.append('"');
                     break;
 
-                case '/':
-                    outChars.append('/');
-                    break;
-
-                case '\n':
-                    outChars.append('\n');
-                    break;
-                case '\'':
-                    outChars.append('\'');
-                    break;
-
                 case '\\':
                     outChars.append('\\');
                     break;
 
+                //octal
                 case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7': {
-                    char startC = c;
-                    int v = (int) c - '0';
-                    if (index < chars.length()) {
-                        c = chars.charAt(index++);
-                        if ('0' <= c && c <= '7') {
-                            v <<= 3;
-                            v += c - '0';
-                            if (startC <= '3' && index < chars.length()) {
-                                c = chars.charAt(index++);
-                                if ('0' <= c && c <= '7') {
-                                    v <<= 3;
-                                    v += c - '0';
-                                } else {
-                                    index--;
-                                }
-                            }
-                        } else {
-                            index--;
-                        }
-                    }
-                    outChars.append((char) v);
-                }
-                break;
-                case 'x':
+                    //fixme handle 1 to 3 possible octal numbers
                     if (index + 2 <= chars.length()) {
                         try {
-                            int v = Integer.parseInt(chars.substring(index, index + 2), 16);
+                            int v = Integer.parseInt(chars.substring(index, index + 2), 8);
                             outChars.append((char) v);
                             index += 2;
-                        } catch (Exception e) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                    break;
-                case 'u':
-                    if (index + 4 <= chars.length()) {
-                        try {
-                            int v = Integer.parseInt(chars.substring(index, index + 4), 16);
-                            //line separators are invalid here
-                            if (v == 0x000a || v == 0x000d) {
-                                return false;
-                            }
-                            c = chars.charAt(index);
-                            if (c == '+' || c == '-') {
-                                return false;
-                            }
-                            outChars.append((char) v);
-                            index += 4;
                         } catch (Exception e) {
                             return false;
                         }

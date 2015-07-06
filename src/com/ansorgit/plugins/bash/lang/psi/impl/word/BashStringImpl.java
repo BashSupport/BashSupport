@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashStringImpl.java, Class: BashStringImpl
  * Last modified: 2011-02-18 20:22
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,13 +18,15 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.jetbrains.BashStringLiteralEscaper;
+import com.ansorgit.plugins.bash.editor.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
@@ -54,20 +56,20 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
     @Override
     public boolean isWrapped() {
         String text = getText();
-        return text.length() >= 2 && text.startsWith("\"") && text.endsWith("\"");
+        return text.length() >= 2 && (text.startsWith("\"") || text.startsWith("$\"")) && text.endsWith("\"");
     }
 
     @Override
     public String createEquallyWrappedString(String newContent) {
+        if (getText().startsWith("$\"")) {
+            return "$\"" + newContent + "\"";
+        }
+
         return "\"" + newContent + "\"";
     }
 
     public String getUnwrappedCharSequence() {
-        if (isWrapped()) {
-            return getText().substring(1, getText().length() - 1);
-        }
-
-        return getText();
+        return getTextContentRange().substring(getText());
     }
 
     public boolean isStatic() {
@@ -76,6 +78,10 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @NotNull
     public TextRange getTextContentRange() {
+        if (getText().startsWith("$\"")) {
+            return TextRange.create(2, getTextLength() - 1);
+        }
+
         return TextRange.create(1, getTextLength() - 1);
     }
 
@@ -114,16 +120,15 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
-        ASTNode valueNode = getNode().getFirstChildNode();
-        assert valueNode instanceof LeafElement;
-        ((LeafElement)valueNode).replaceWithText(text);
-        return this;
+        PsiElement string = BashPsiElementFactory.createString(getProject(), text);
+        assert string instanceof BashString;
+
+        return (BashString) string;
     }
 
     @NotNull
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
-        //fixme
-        return new BashStringLiteralEscaper<BashString>(this);
+        return new BashSimpleTextLiteralEscaper<BashString>(this);
     }
 }

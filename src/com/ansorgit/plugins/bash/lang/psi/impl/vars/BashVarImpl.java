@@ -143,11 +143,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
             this.bashVar = bashVar;
         }
 
-        @Override
-        public boolean isReferenceTo(PsiElement element) {
-            return super.isReferenceTo(element);    //To change body of overridden methods use File | Settings | File Templates.
-        }
-
         @Nullable
         @Override
         public PsiElement resolveInner() {

@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -48,6 +49,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull(ref.resolve());
     }
 
+    @Test
     public void testGlobalVarDef() throws Exception {
         BashVarDef ref = assertIsValidVarDef();
 
@@ -56,6 +58,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull("ref must not resolve to anything else: " + ref, varDefDef);
     }
 
+    @Test
     public void testRedefineVarDef() throws Exception {
         BashVarDef varDef = assertIsValidVarDef();
         //the variable definition value has to be the remaining part of the line, otherwise the parsing of the value does
@@ -63,61 +66,75 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertNull(varDef.getNextSibling());
     }
 
+    @Test
     public void testGlobalVarDefWithLocal() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testVarDefFromOuterFunction() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testErrorVarDefFromNestedFunction() throws Exception {
         assertIsInvalidVarDef();
     }
 
+    @Test
     public void testValidVarDefFromNestedFunction() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testGlobalVarDefFromFunction() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testErrorGlobalVarDefFromFunction() throws Exception {
         assertIsInvalidVarDef();
     }
 
+    @Test
     public void testLocalVarDefFromFunctionError() throws Exception {
         assertIsInvalidVarDef();
     }
 
+    @Test
     public void testArrayVarDef1() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testArrayVarDef2() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testArrayVarDef3() throws Exception {
         assertIsValidVarDef();
     }
 
+    @Test
     public void testErrorFunctionVarDef() throws Exception {
         BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(false);
         assertIsInvalidVarDef();
     }
 
+    @Test
     public void testErrorDoubleFunctionVarDef() throws Exception {
         BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(false);
         assertIsInvalidVarDef();
     }
 
+    @Test
     public void testFunctionVarDef() throws Exception {
         BashProjectSettings.storedSettings(myProject).setGlobalFunctionVarDefs(true);
         assertIsValidVarDef();
     }
 
+    @Test
     public void testNestedMultipleVarDef() throws Exception {
         BashVarDef varDef = assertIsValidVarDef();
 
@@ -125,6 +142,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull(varDef.getReference().resolve());
     }
 
+    @Test
     public void testNestedMultipleVarDef2() throws Exception {
         BashVarDef varDef = assertIsValidVarDef();
 
@@ -132,6 +150,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull(varDef.getReference().resolve());
     }
 
+    @Test
     public void testLocalVarDefResolve() throws Exception {
         //the inner var def must not resolve to the global variable definition
         BashVarDef varDef = assertIsValidVarDef();
@@ -139,6 +158,7 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertNull(varDef.getReference().resolve());
     }
 
+    @Test
     public void testResolveFunctionDefToGlobalDef() throws Exception {
         PsiElement varDef = assertIsValidVarDef();
         //the found var def has to be on global level

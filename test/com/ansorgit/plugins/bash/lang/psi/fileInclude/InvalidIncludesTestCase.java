@@ -5,6 +5,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class InvalidIncludesTestCase extends AbstractFileIncludeTest {
         return super.getTestDataPath() + "invalidIncludes/";
     }
 
+    @Test
     public void testTextIncluded() throws Exception {
         Set<PsiFile> includedFiles = findIncludedFiles(false);
 
@@ -26,6 +28,7 @@ public class InvalidIncludesTestCase extends AbstractFileIncludeTest {
         Assert.assertFalse("Included file shouldn't be a Bash file", includedFiles.iterator().next() instanceof BashFile);
     }
 
+    @Test
     public void testTextIncludedJustBash() throws Exception {
         Set<PsiFile> includedFiles = findIncludedFiles(true);
         Assert.assertEquals("Included text file was not found!", 0, includedFiles.size());

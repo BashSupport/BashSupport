@@ -1,3 +1,6 @@
+####2015-07-06
+ - Bash code passed to eval in single quotes ('') is now parsed, too 
+ 
 ####2015-06-21
  - Renaming files in non-source directories
 

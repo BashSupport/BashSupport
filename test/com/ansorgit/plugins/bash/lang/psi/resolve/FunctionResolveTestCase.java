@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -31,6 +32,7 @@ import junit.framework.Assert;
  * Time: 19:14:20
  */
 public class FunctionResolveTestCase extends AbstractResolveTest {
+    @Test
     public void testBasicFunctionResolve() throws Exception {
         checkFunctionReference();
     }
@@ -50,22 +52,27 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         return psiReference;
     }
 
+    @Test
     public void testBasicFunctionResolveSelf() throws Exception {
         checkFunctionReference();
     }
 
+    @Test
     public void testBasicFunctionResolveInner() throws Exception {
         checkFunctionReference();
     }
 
+    @Test
     public void testBasicFunctionResolveToLaterDef() throws Exception {
         checkFunctionReference();
     }
 
+    @Test
     public void testInternalCommandOverride() throws Exception {
         checkFunctionReference();
     }
 
+    @Test
     public void testBasicFunctionResolveToFirstDef() throws Exception {
         checkFunctionReference();
 

@@ -18,19 +18,30 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
+import com.ansorgit.plugins.bash.editor.BashEnhancedLiteralTextEscaper;
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.injection.InjectedLanguageManager;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.LeafElement;
+import com.intellij.psi.impl.source.tree.injected.StringLiteralEscaper;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
@@ -56,23 +67,25 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     @Override
     public boolean isWrapped() {
         String text = getText();
-        return isStatic() && text.length() >= 2 && text.startsWith("'") && text.endsWith("'");
+        return  text.length() >= 2 && (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'") && isStatic();
     }
 
     @Override
     public String createEquallyWrappedString(String newContent) {
-        return isWrapped() ? "'" + newContent + "'" : newContent;
+        if (!isWrapped()) {
+            return newContent;
+        }
+
+        String current = getText();
+        if (current.startsWith("$'")) {
+            return "$'" + newContent + "'";
+        } else {
+            return "'" + newContent + "'";
+        }
     }
 
     public String getUnwrappedCharSequence() {
-        String text = getText();
-
-        //if it is a single quoted string unqote it
-        if (isWrapped()) {
-            return text.substring(1, text.length() - 1);
-        }
-
-        return text;
+        return getTextContentRange().substring(getText());
     }
 
     public boolean isStatic() {
@@ -82,10 +95,68 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     @NotNull
     public TextRange getTextContentRange() {
         String text = getText();
-        if (text.startsWith("'") && text.endsWith("'")) {
-            return TextRange.from(1, getTextLength() - 2);
+
+        if (text.startsWith("$'") && text.endsWith("'")) {
+            return TextRange.create(2, getTextLength() - 1);
         }
 
-        return TextRange.from(0, getTextLength());
+        if (text.startsWith("'") && text.endsWith("'")) {
+            return TextRange.create(1, getTextLength() - 1);
+        }
+
+        return TextRange.create(0, getTextLength());
+    }
+
+    @Override
+    public boolean isValidHost() {
+        if (!isWrapped()) {
+            return false;
+        }
+
+        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
+    }
+
+    @Override
+    public PsiLanguageInjectionHost updateText(@NotNull String text) {
+        PsiElement newElement = BashPsiElementFactory.createWord(getProject(), text);
+        assert newElement instanceof BashWord;
+
+        return (BashWord) newElement;
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
+
+        if (walkOn && isValidHost()) {
+            InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(getProject());
+            List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(this);
+            if (injectedPsiFiles != null) {
+                for (Pair<PsiElement, TextRange> psi_range : injectedPsiFiles) {
+                    //fixme check lastParent ?
+                    walkOn &= psi_range.first.processDeclarations(processor, state, lastParent, place);
+                }
+            }
+        }
+
+        return walkOn;
+    }
+
+    @NotNull
+    @Override
+    public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
+        //if the word is of the form $'abc' then the content is escape-code evaluated
+        //if the word is not prefixed by a dollar character then no escape code interpretation is performed
+
+        String current = getText();
+
+        //$' prefix -> c-escape codes are interpreted before the injected document is parsed
+        if (current.startsWith("$'")) {
+            return new BashEnhancedLiteralTextEscaper<BashWord>(this);
+        }
+
+        //no $' prefix -> no escape handling
+        return new StringLiteralEscaper<BashWord>(this);
     }
 }

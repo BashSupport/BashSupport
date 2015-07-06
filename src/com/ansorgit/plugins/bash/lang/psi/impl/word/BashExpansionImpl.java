@@ -25,7 +25,9 @@ import com.ansorgit.plugins.bash.lang.valueExpansion.ValueExpansionUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.LiteralTextEscaper;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,5 +80,21 @@ public class BashExpansionImpl extends BashBaseStubElementImpl<StubElement> impl
 
     public boolean isValidExpansion() {
         return ValueExpansionUtil.isValid(getText(), BashProjectSettings.storedSettings(getProject()).isSupportBash4());
+    }
+
+    @Override
+    public boolean isValidHost() {
+        return false;
+    }
+
+    @Override
+    public PsiLanguageInjectionHost updateText(@NotNull String text) {
+        throw new UnsupportedOperationException("unsupported in Bash expansion");
+    }
+
+    @NotNull
+    @Override
+    public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
+        throw new UnsupportedOperationException("unsupported in Bash expansion");
     }
 }
