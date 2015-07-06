@@ -19,11 +19,11 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.editor.BashEnhancedLiteralTextEscaper;
+import com.ansorgit.plugins.bash.editor.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
@@ -34,8 +34,6 @@ import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.LeafElement;
-import com.intellij.psi.impl.source.tree.injected.StringLiteralEscaper;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
@@ -113,6 +111,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
             return false;
         }
 
+        //fixme make sure that this refers to the eval document element
         BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
         return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
     }
@@ -157,6 +156,6 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         }
 
         //no $' prefix -> no escape handling
-        return new StringLiteralEscaper<BashWord>(this);
+        return new BashIdentityStringLiteralEscaper<BashWord>(this);
     }
 }

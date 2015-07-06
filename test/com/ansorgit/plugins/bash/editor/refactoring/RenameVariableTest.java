@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-public class VariableRenameTest extends BashCodeInsightFixtureTestCase {
+public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/RenameVariableTestCase/";
@@ -30,6 +30,11 @@ public class VariableRenameTest extends BashCodeInsightFixtureTestCase {
      */
     @Test
     public void testBasicRename() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testEvalRename() throws Exception {
         doRename(false);
     }
 
