@@ -145,8 +145,6 @@
         <additionalTextAttributes scheme="Darcula" file="colors/BashDarcula.xml"/>
 
         <!--Language extensions -->
-        <lang.fileViewProviderFactory language="Bash" implementationClass="com.ansorgit.plugins.bash.lang.BashViewProviderFactory"/>
-
         <lang.braceMatcher language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashBraceMatcher"/>
 
         <lang.commenter language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashCommenter"/>
