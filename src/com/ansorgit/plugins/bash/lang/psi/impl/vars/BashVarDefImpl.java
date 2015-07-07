@@ -342,11 +342,6 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         }
 
         @Override
-        public boolean isReferenceTo(PsiElement element) {
-            return super.isReferenceTo(element);
-        }
-
-        @Override
         public String getReferencedName() {
             return bashVarDef.getReferencedName();
         }

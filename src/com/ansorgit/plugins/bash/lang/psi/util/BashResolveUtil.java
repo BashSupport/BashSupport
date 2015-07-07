@@ -9,6 +9,7 @@ import com.intellij.psi.ResolveState;
 
 public final class BashResolveUtil {
     public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts) {
+        //fixme possible NPE
         final String varName = bashVar.getReference().getReferencedName();
         if (varName == null) {
             return null;

@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -30,24 +31,28 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         super("/codeInsight/completion/functionNameCompletion");
     }
 
+    @Test
     public void testSimpleCompletion() throws Exception {
         configureByTestName();
 
         checkItems("myFunctionOneIsOk", "myFunctionTwoIsOk", "myFunctionTwoOneIsOk");
     }
 
+    @Test
     public void testDollarCompletion() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testAutocompleteBuiltInDisabled() throws Exception {
         configureByTestName();
 
         checkItems("echo123");
     }
 
+    @Test
     public void testAutocompleteBuiltInEnabledCountOne() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
@@ -56,6 +61,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         checkItems("echo123");
     }
 
+    @Test
     public void testAutocompleteBuiltInEnabledCountOneNoLocals() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
@@ -64,6 +70,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         checkItems("echo");
     }
 
+    @Test
     public void testAutocompleteBuiltInEnabledCountTwo() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
 
@@ -73,6 +80,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         checkItemsCustomCompletion(2, "disown", "disown123");
     }
 
+    @Test
     public void testEmptyCompletion() throws Exception {
         configureByTestName();
 
@@ -81,36 +89,42 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
         checkItems("myFunction","case", "do", "done", "elif", "else", "esac", "false", "fi", "if", "in", "then", "true", "until", "while");
     }
 
+    @Test
     public void testVarCompletion() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testParameterExpansion() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testVarDef() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testInnerFunctionCompletion() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testGlobalFunctionCompletion() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testNoNameCompletionInParam() throws Exception {
         configureByTestName();
 

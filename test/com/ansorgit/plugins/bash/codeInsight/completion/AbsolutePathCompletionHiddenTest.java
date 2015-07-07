@@ -2,12 +2,14 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.codeInsight.completion.CompletionType;
+import org.junit.Test;
 
 public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
     public AbsolutePathCompletionHiddenTest() {
         super("/codeInsight/completion/absolutePathCompletionHidden");
     }
 
+    @Test
     public void testSimpleCompletionNoHidden() throws Throwable {
         String prefix = getFullTestDataPath();
 
@@ -18,6 +20,7 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
         assertStringItems(prefix + "/SimpleCompletion.bash", prefix + "/SimpleCompletion2.bash");
     }
 
+    @Test
     public void testSimpleCompletionHiddenNoFirstCompletions() throws Throwable {
         String prefix = getFullTestDataPath();
 
@@ -29,6 +32,7 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
         assertStringItems(prefix + "/.HiddenFile.bash", prefix + "/.HiddenFile2.bash");
     }
 
+    @Test
     public void testSimpleCompletionShowHidden() throws Throwable {
         String prefix = getFullTestDataPath();
 

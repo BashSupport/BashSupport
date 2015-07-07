@@ -14,6 +14,7 @@ import com.intellij.refactoring.MultiFileTestCase;
 import com.intellij.refactoring.rename.RenameProcessor;
 import com.intellij.refactoring.rename.naming.AutomaticRenamerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Test;
 
 /**
  */
@@ -39,6 +40,7 @@ public class BashFileReferenceTest extends MultiFileTestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testRenameFileReference() throws Exception {
         doTest(new PerformAction() {
             @Override
@@ -61,6 +63,7 @@ public class BashFileReferenceTest extends MultiFileTestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testRenameTargetFile() throws Exception {
         doTest(new PerformAction() {
             @Override

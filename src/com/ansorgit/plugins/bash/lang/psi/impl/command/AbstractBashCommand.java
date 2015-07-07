@@ -172,7 +172,8 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
 
         if (isInternalCommand()) {
-            return new SelfReference(this);
+            //return new SelfReference(this);
+            return null;
         }
 
         return bashFileReference;
@@ -247,7 +248,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
 
         public PsiElement resolve() {
-            return myElement;
+            return null;
         }
 
         @NotNull
@@ -350,7 +351,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             if (element instanceof BashFunctionDef) {
-                handleElementRename(((BashFunctionDef) element).getName());
+                return handleElementRename(((BashFunctionDef) element).getName());
             }
 
             throw new IncorrectOperationException("unsupported for element " + element);

@@ -2,18 +2,21 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import org.junit.Ignore;
+import org.junit.Test;
 
 public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     public VariableNameCompletionProviderTest() {
         super("/codeInsight/completion/variableNameCompletion");
     }
 
+    @Test
     public void testSimpleCompletion() throws Exception {
         configureByTestName();
 
         checkItems("abIsOk1", "abIsOk2");
     }
 
+    @Test
     public void testGlobalCompletionInvocationOne() throws Exception {
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
@@ -27,6 +30,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         }
     }
 
+    @Test
     public void testGlobalCompletionInvocationOneNoLocals() throws Exception {
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
@@ -40,6 +44,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         }
     }
 
+    @Test
     public void testGlobalCompletionInvocationTwo() throws Exception {
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
@@ -53,13 +58,14 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         }
     }
 
-
+    @Test
     public void testSimpleParameterExpansion() throws Exception {
         configureByTestName();
 
         checkItems("abIsOk1", "abIsOk2");
     }
 
+    @Test
     public void testWithinTrapCommand() throws Exception {
         //the trap command is a language injection host and contains a bash snippet
         configureByTestName();
@@ -67,6 +73,7 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         checkItems("inner", "outer");
     }
 
+    @Test
     public void testWithinEvalCommand() throws Exception {
         //the eval command is a language injection host and contains a bash snippet
         configureByTestName();
@@ -74,12 +81,14 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
         checkItems("inner", "outer");
     }
 
+    @Test
     public void testEmptyParameterExpansion() throws Exception {
         configureByTestName();
 
         checkItems("abIsOk1", "abIsOk2");
     }
 
+    @Test
     public void testParameterExpansionNoCommands() throws Exception {
         boolean oldAutocomplete = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinCommands();
 
@@ -95,24 +104,28 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     }
 
     //@Ignore("Completion inside comments seems to be IntelliJ's word completion")
-    public void _testWithinComment() throws Exception {
+    @Test
+    public void testWithinComment() throws Exception {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testIncludedVariables() throws Exception {
         configureByTestName(getBasePath() + "/include.bash");
 
         checkItems("myVarIsOk", "myVarIsOk2", "myIncludedVarIsOk", "myIncludedVarIsOk2");
     }
 
+    @Test
     public void testDollarCompletion() throws Exception {
         configureByTestName();
 
         checkItems("abIsOk", "aIsOk2");
     }
 
+    @Test
     public void testSelfReference() throws Exception {
         configureByTestName();
 

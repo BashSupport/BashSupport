@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -20,6 +21,7 @@ public class ReferencesTestCase extends AbstractFileIncludeTest {
         return super.getTestDataPath() + "references/";
     }
 
+    @Test
     public void testValidScope() throws Exception {
         PsiReference variableReference = configure();
         PsiFile included = addFile("included.bash");
@@ -31,6 +33,7 @@ public class ReferencesTestCase extends AbstractFileIncludeTest {
         Assert.assertTrue("The definition and usage scope must be valid", BashVarUtils.isInDefinedScope(variableReference.getElement(), (BashVarDef) varDef));
     }
 
+    @Test
     public void testInvalidScope() throws Exception {
         PsiReference variableReference = configure();
         PsiFile included = addFile("included.bash");
