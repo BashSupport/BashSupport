@@ -35,6 +35,8 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +67,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     @Override
     public boolean isWrapped() {
         String text = getText();
-        return  text.length() >= 2 && (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'") && isStatic();
+        return text.length() >= 2 && (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
     }
 
     @Override
@@ -116,12 +118,26 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
     }
 
+    @NotNull
+    @Override
+    public SearchScope getUseScope() {
+        return super.getUseScope();
+    }
+
+    @NotNull
+    @Override
+    public GlobalSearchScope getResolveScope() {
+        return super.getResolveScope();
+    }
+
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
         PsiElement newElement = BashPsiElementFactory.createWord(getProject(), text);
         assert newElement instanceof BashWord;
 
-        return (BashWord) newElement;
+        //getNode().replaceAllChildrenToChildrenOf(newElement.getNode());
+        //return this;
+        return BashPsiUtils.replaceElement(this, newElement);
     }
 
     @Override

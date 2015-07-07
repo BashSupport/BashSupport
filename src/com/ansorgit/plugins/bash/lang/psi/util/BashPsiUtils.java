@@ -61,12 +61,17 @@ public final class BashPsiUtils {
      * @return The file on disk
      */
     public static PsiFile findFileContext(PsiElement element) {
-        PsiLanguageInjectionHost injectionHost = InjectedLanguageManager.getInstance(element.getProject()).getInjectionHost(element);
+        return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
+
+        /*InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(element.getProject());
+
+        PsiLanguageInjectionHost injectionHost = injectedLanguageManager.getInjectionHost(element);
         if (injectionHost != null && injectionHost.getContainingFile() instanceof BashFile) {
-            return injectionHost.getContainingFile();
+            return injectedLanguageManager.getTopLevelFile(element);
+            //return injectionHost.getContainingFile();
         }
 
-        return element.getContainingFile();
+        return element.getContainingFile();*/
     }
 
     /**
@@ -351,7 +356,8 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
+        final boolean sameFile = findFileContext(variableDefinition).equals(findFileContext(childCandidate));
+        //final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
                 return false;
@@ -444,7 +450,6 @@ public final class BashPsiUtils {
     }
 
     public static boolean isInjectedElement(@NotNull PsiElement element) {
-        //fixme languageManager is probably expensive
         InjectedLanguageManager languageManager = InjectedLanguageManager.getInstance(element.getProject());
         return languageManager.isInjectedFragment(element.getContainingFile()) || hasInjectionHostParent(element);
     }

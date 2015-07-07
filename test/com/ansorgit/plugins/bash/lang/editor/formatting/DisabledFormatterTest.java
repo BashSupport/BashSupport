@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.base.BashFormatterTestCase;
 import com.ansorgit.plugins.bash.lang.base.TestUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class DisabledFormatterTest extends BashFormatterTestCase {
         projectSettings.setFormatterEnabled(false);
     }
 
+    @Test
     public void testDisabledFormatter() throws Throwable {
         doTest();
     }

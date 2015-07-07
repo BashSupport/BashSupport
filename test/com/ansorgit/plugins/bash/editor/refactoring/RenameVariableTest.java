@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
@@ -23,19 +24,33 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
         return "/editor/refactoring/RenameVariableTestCase/";
     }
 
-    /**
-     * Tests the basic rename feature for references pointing to files.
-     *
-     * @throws Exception
-     */
     @Test
     public void testBasicRename() throws Exception {
         doRename(false);
     }
 
     @Test
+    public void testBasicRenameInlined() throws Exception {
+        doRename(false);
+    }
+
+
+    @Test
     public void testEvalRename() throws Exception {
         doRename(false);
+    }
+
+    @Test
+    public void testEvalRenameInlined() throws Exception {
+        doRename(new Runnable() {
+            @Override
+            public void run() {
+                PsiReference psiReference = myFixture.getFile().findReferenceAt(myFixture.getEditor().getCaretModel().getOffset());
+                Assert.assertTrue(psiReference.resolve() instanceof BashVarDef);
+
+                myFixture.renameElementAtCaret("a_renamed");
+            }
+        }, "source.bash");
     }
 
     private void doRename(boolean renameWithHandler) {
@@ -80,10 +95,10 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
 
         PsiReference psiReference = psiElement.getReference();
         Assert.assertNotNull("target reference wasn't found", psiReference);
-        Assert.assertTrue("Renamed reference wasn't found in the canonical text", psiReference.getCanonicalText().contains("myFunction_renamed"));
+        Assert.assertTrue("Renamed reference wasn't found in the canonical text", psiReference.getCanonicalText().contains("a_renamed"));
 
-        PsiElement targetFile = psiReference.resolve();
-        Assert.assertNotNull("target resolve result wasn't found", targetFile);
-        Assert.assertTrue("target is not a psi function definition", targetFile instanceof BashFunctionDef);
+        PsiElement targetVariable = psiReference.resolve();
+        Assert.assertNotNull("target resolve result wasn't found", targetVariable);
+        Assert.assertTrue("target is not a psi function definition", targetVariable instanceof BashVarDef);
     }
 }

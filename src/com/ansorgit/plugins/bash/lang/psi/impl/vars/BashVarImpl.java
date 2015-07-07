@@ -169,6 +169,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
             return bashVar.getReferencedName();
         }
 
+        @Override
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);
+        }
+
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
             if (!BashIdentifierUtil.isValidIdentifier(newName)) {
                 throw new IncorrectOperationException("Can't have an empty name");
@@ -176,7 +181,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
 
             //if this is variable which doesn't have a $ sign prefix
             if (bashVar.isSingleWord()) {
-                //return BashPsiUtils.replaceElement(this, BashChangeUtil.createWord(getProject(), newName));
                 return BashPsiUtils.replaceElement(bashVar, BashPsiElementFactory.createVariable(bashVar.getProject(), newName, true));
             }
 
@@ -185,10 +189,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
 
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            if (isReferenceTo(element)) {
-                return bashVar;
-            }
-
             return handleElementRename(element.getText());
         }
 

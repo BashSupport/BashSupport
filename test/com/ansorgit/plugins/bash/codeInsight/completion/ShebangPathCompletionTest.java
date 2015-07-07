@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.File;
 
@@ -15,6 +16,7 @@ public class ShebangPathCompletionTest extends AbstractCompletionTest {
         super("/codeInsight/completion/shebangPathCompletion");
     }
 
+    @Test
     public void testSimpleCompletionExecutable() throws Throwable {
         //make sure the file is executable
         String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";
@@ -27,6 +29,7 @@ public class ShebangPathCompletionTest extends AbstractCompletionTest {
         assertStringItems(filePath);
     }
 
+    @Test
     public void testSimpleCompletionNotExecutable() throws Throwable {
         //make sure the file is NOT executable
         String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";
@@ -39,6 +42,7 @@ public class ShebangPathCompletionTest extends AbstractCompletionTest {
         assertNull(myItems);
     }
 
+    @Test
     public void testNoCompletionPossible() throws Throwable {
         //make sure the file is NOT executable
         String filePath = getFullTestDataPath() + "/SimpleCompletion.bash";

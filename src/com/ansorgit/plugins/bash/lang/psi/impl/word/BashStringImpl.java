@@ -123,7 +123,7 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
         PsiElement string = BashPsiElementFactory.createString(getProject(), text);
         assert string instanceof BashString;
 
-        return (BashString) string;
+        return BashPsiUtils.replaceElement(this, string);
     }
 
     @NotNull
