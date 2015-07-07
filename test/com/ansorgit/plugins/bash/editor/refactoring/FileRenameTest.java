@@ -70,7 +70,7 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
      */
     @Test
     public void testRenameBashCommandReference() throws Exception {
-        doRename(false, true, "source.bash", "subdir/source2.bash", "subdir/subdir/source3.bash");
+        doRename(false, false, "source.bash", "subdir/source2.bash", "subdir/subdir/source3.bash");
     }
 
     /**
@@ -137,7 +137,7 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
         PsiElement psiElement;
         if (expectFileReference) {
             psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
-            Assert.assertNotNull("file reference is null", psiElement);
+            Assert.assertNotNull("file reference is null. Current: " + myFixture.getFile().findElementAt(myFixture.getCaretOffset()).getText(), psiElement);
             Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
         } else {
             psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
