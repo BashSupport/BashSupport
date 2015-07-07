@@ -5,6 +5,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -17,6 +18,7 @@ public class ResolveScopeTestCase extends AbstractFileIncludeTest {
         return super.getTestDataPath() + "resolveScope/";
     }
 
+    @Test
     public void testSimpleScope() throws Exception {
         PsiReference reference = configure();
         Assert.assertNotNull(reference);
@@ -46,14 +48,17 @@ public class ResolveScopeTestCase extends AbstractFileIncludeTest {
         Assert.assertFalse("An excluded file must not be in the resolve scope", resolveScope.contains(include2File.getVirtualFile()));
     }
 
+    @Test
     public void testTwoStepScope() throws Exception {
         testTwoStepInclusion("include.bash", "include2.bash");
     }
 
+    @Test
     public void testRecursiveStepScope() throws Exception {
         testTwoStepInclusion("includeRecursive.bash", "includeRecursive2.bash");
     }
 
+    @Test
     private void testTwoStepInclusion(String firstFile, String secondFile) throws Exception {
         PsiReference reference = configure();
         Assert.assertNotNull(reference);

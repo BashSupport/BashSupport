@@ -4,10 +4,15 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.completion.CompletionTestCase;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.util.Function;
+import com.intellij.util.containers.ContainerUtil;
+import junit.framework.Assert;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 abstract class AbstractCompletionTest extends CompletionTestCase {
     protected static final String[] NO_COMPLETIONS = new String[0];
@@ -71,7 +76,11 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
     protected void checkItemsCustomCompletion(int completions, String... values) throws Exception {
         complete(completions);
 
-        assertStringItems(values);
+        if (values == null || values.length == 0) {
+            doTestByCount(0, values);
+        } else {
+            assertStringItems(values);
+        }
     }
 
     protected void checkItems(String... values) throws Exception {
@@ -80,10 +89,10 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
 
     protected void checkNoItemsExpected() throws Exception {
         complete(1);
-        assertNull(this.myItems);
+        doTestByCount(0, NO_COMPLETIONS);
 
         complete(2);
-        assertNull(this.myItems);
+        doTestByCount(0, NO_COMPLETIONS);
     }
 
     public String getBasePath() {

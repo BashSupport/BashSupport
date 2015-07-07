@@ -242,8 +242,6 @@ public interface BashTokenTypes {
     IElementType INTEGER_LITERAL = new BashElementType("int literal");
 
     TokenSet stringLiterals = TokenSet.create(WORD, STRING2, INTEGER_LITERAL, COLON);
-    //used for editor actions, e.g. reference search, etc.
-    TokenSet editorStringLiterals = TokenSet.create(STRING2, INTEGER_LITERAL, COLON);
 
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...
@@ -270,8 +268,4 @@ public interface BashTokenTypes {
     TokenSet redirectionSet = TokenSet.create(GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
             REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER,
             REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
-
-    //sets
-    //fixme add internal commands?
-    TokenSet identifierTokenSet = TokenSet.orSet(keywords, bracketSet);
 }

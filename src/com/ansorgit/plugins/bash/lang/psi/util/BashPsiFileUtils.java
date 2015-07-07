@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import com.intellij.ide.util.DirectoryUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.util.text.StringUtilRt;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -31,6 +32,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileSyst
 import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFilesOrDirectoriesUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.xml.resolver.helpers.FileURL;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -100,19 +102,25 @@ public class BashPsiFileUtils {
             throw new IllegalStateException("parent directories not found");
         }
 
-        String baseDirPath = baseParent.getPath();
-        String targetDirPath = targetParent.getPath();
-        String targetRelativePath = FileUtilRt.getRelativePath(baseDirPath, targetDirPath, '/', true);
+        char separator = '/';
+
+        String baseDirPath = ensureEnds(baseParent.getPath(), separator);
+        String targetDirPath = ensureEnds(targetParent.getPath(), separator);
+
+        String targetRelativePath = FileUtilRt.getRelativePath(baseDirPath, targetDirPath, separator, true);
+        if (targetRelativePath == null) {
+            return null;
+        }
 
         if (".".equals(targetRelativePath)) {
             //same parent dir
             return targetVirtualFile.getName();
         }
 
-        return targetRelativePath + '/' + targetVirtualFile.getName();
+        return ensureEnds(targetRelativePath, separator) + targetVirtualFile.getName();
     }
 
-    public static String findRelativeDirPath(PsiFileSystemItem base, PsiFileSystemItem target) {
-        return PsiFileSystemItemUtil.getRelativePath(base, target);
+    private static String ensureEnds(@NotNull String s, final char endsWith) {
+        return StringUtilRt.endsWithChar(s, endsWith) ? s : s + endsWith;
     }
 }

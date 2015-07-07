@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.arithmetic;
 
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -27,26 +28,32 @@ import org.junit.Assert;
  * Time: 10:27:57
  */
 public class StaticValueComputationTest extends AbstractArithExprTest {
+    @Test
     public void testExpressionTest() throws Exception {
         assertValueComputedResult(74430296);
     }
 
+    @Test
     public void testProductOfSumsTest() throws Exception {
         assertValueComputedResult(696);
     }
 
+    @Test
     public void testComplicatedExpressionTest() throws Exception {
         assertValueComputedResult(3035138555904L);
     }
 
+    @Test
     public void testNegativeComplicatedExpressionTest() throws Exception {
         assertValueComputedResult(-3035138555904L);
     }
 
+    @Test
     public void testBaseValueTest() throws Exception {
         assertValueComputedResult(168);
     }
 
+    @Test
     public void testHexBaseValueTest() throws Exception {
         assertValueComputedResult(2748);
     }

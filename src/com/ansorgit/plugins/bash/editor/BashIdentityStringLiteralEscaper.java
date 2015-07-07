@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ansorgit.plugins.bash.jetbrains;
+package com.ansorgit.plugins.bash.editor;
 
 import com.intellij.openapi.util.ProperTextRange;
 import com.intellij.openapi.util.TextRange;
@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author jansorg
  */
-public class StringLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
-    public StringLiteralEscaper(T host) {
+public class BashIdentityStringLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
+    public BashIdentityStringLiteralEscaper(T host) {
         super(host);
     }
 
