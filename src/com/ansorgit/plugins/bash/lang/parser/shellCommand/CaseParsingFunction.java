@@ -37,7 +37,7 @@ import com.intellij.psi.tree.IElementType;
 public class CaseParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.CaseCommandParsingFunction");
 
-    private static enum CaseParseResult {
+    private enum CaseParseResult {
         Faulty, SingleElement, ElementWithEndMarker
     }
 
@@ -145,11 +145,6 @@ public class CaseParsingFunction implements ParsingFunction {
 
             builder.error("Unexpected token");
             return false;
-        }
-
-        //eat optional semicolon at the end
-        if (builder.getTokenType() == SEMI) {
-            builder.advanceLexer();
         }
 
         caseCommand.done(CASE_COMMAND);

@@ -155,4 +155,10 @@ public class ShellLoopParsingTest extends MockPsiTest {
                 DO_KEYWORD, WORD, WORD, LINE_FEED, DONE_KEYWORD
         );
     }
+
+    @Test
+    public void testIssue243() throws Exception {
+        //while false; do case "x" in (x);; esac; done;
+        mockTest(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, CASE_KEYWORD, STRING2, IN_KEYWORD, LEFT_PAREN, WORD, RIGHT_PAREN, CASE_END, ESAC_KEYWORD, SEMI, DONE_KEYWORD);
+    }
 }
