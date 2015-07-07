@@ -18,16 +18,18 @@
 
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
+import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import org.junit.Test;
 
 public class ArithmeticParserTest extends MockPsiTest {
     private final MockFunction arithmeticTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return Parsing.shellCommand.arithmeticParser.parse(psi);
+            return ShellCommandParsing.arithmeticParser.parse(psi);
         }
     };
 
@@ -170,5 +172,10 @@ public class ArithmeticParserTest extends MockPsiTest {
 
         //((1 %= 1))
         mockTestError(arithmeticTest, EXPR_ARITH, ARITH_NUMBER, ARITH_ASS_MOD, ARITH_NUMBER, _EXPR_ARITH);
+    }
+
+    @Test
+    public void testIssue244() throws Exception {
+        mockTest(BashVersion.Bash_v4, arithmeticTest, EXPR_ARITH, VARIABLE, VARIABLE, VARIABLE, _EXPR_ARITH);
     }
 }

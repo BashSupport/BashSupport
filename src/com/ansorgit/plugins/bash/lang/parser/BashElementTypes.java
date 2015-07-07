@@ -132,6 +132,7 @@ public interface BashElementTypes {
 
     IElementType ARITH_ASSIGNMENT_CHAIN_ELEMENT = new BashElementType("arithmetic assignment chain");
     IElementType ARITH_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic assignment");
+    IElementType ARITH_VARIABLE_OPERATOR_ELEMENT = new BashElementType("arithmetic with variable operator");
     IElementType ARITH_SUM_ELEMENT = new BashElementType("arithmetic sum");
     IElementType ARITH_BIT_OR_ELEMENT = new BashElementType("arithmetic bitwise or");
     IElementType ARITH_BIT_XOR_ELEMENT = new BashElementType("arithmetic bitwise xor");
