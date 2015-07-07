@@ -9,7 +9,7 @@
 
     <problem>
         <file>A.bash</file>
-        <line>5</line>
+        <line>6</line>
         <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Read-only variable</problem_class>
         <description>Change to a read-only variable</description>
     </problem>

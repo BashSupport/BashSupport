@@ -16,6 +16,7 @@ import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,7 +49,8 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
      * @throws Exception
      */
     @Test
-    public void testBasicFileRenameWithHandler() throws Exception {
+    @Ignore("broken due to IntelliJ")
+    public void _testBasicFileRenameWithHandler() throws Exception {
         //this test is broken in 14.0.3 because the test framework doesn't pass the new name but uses a stupid default name instead, which is equal to the current name
         doRename(true);
     }
