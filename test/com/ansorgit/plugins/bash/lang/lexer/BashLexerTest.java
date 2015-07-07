@@ -834,6 +834,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue201() throws Exception {
+        testTokenization("((!foo))", EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
+    }
+
+    @Test
     public void testIssue242() throws Exception {
         testTokenization("eval \"$1=\\$(printf 'a' \\\"$1\\\")\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, WORD, WORD, WORD, WORD, VARIABLE, WORD, WORD, STRING_END);
 

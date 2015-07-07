@@ -1,3 +1,6 @@
+####2015-07-07
+ - \#201: Cannot parse logical not in arithmetic expressions 
+
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  
