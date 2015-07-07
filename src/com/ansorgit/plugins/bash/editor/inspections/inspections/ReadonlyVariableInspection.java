@@ -53,7 +53,7 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
                             BashVarDef originalDefinition = (BashVarDef) resolve;
 
                             if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
-                                holder.registerProblem(varDef, "Change to a readonly variable", LocalQuickFix.EMPTY_ARRAY);
+                                holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
                             }
                         }
                     }

@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.base.BashFormatterTestCase;
 import com.ansorgit.plugins.bash.lang.base.TestUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -50,63 +51,77 @@ public class FormatterTest extends BashFormatterTestCase {
         projectSettings.setFormatterEnabled(true);
     }
 
+    @Test
     public void testCommand() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testCommandWithParams() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testFunction() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testNestedBlocks() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testStrings() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testIfThenElse() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testConditionalCommand() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testBracketKeyword() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testVariables() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testCase() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testBackticks() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testFullTest() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testHeredoc() throws Throwable {
         doTest();
     }
 
+    @Test
     public void testParamExpansion() throws Throwable {
         doTest();
     }
 
-    public void doTest() throws Throwable {
+    protected void doTest() throws Throwable {
         final List<String> data = TestUtils.readInput(getBasePath() + getTestName(true) + ".test");
         checkFormatting(data.get(0), data.get(1));
     }

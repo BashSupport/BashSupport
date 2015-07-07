@@ -6,6 +6,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -18,6 +19,7 @@ public class UseScopeTestCase extends AbstractFileIncludeTest {
         return super.getTestDataPath() + "useScope/";
     }
 
+    @Test
     public void testUseScope() throws Exception {
         PsiReference variableReference = configure();
         PsiFile included = addFile("included.bash");

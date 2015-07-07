@@ -1,4 +1,4 @@
-package com.ansorgit.plugins.bash.lang.psi;
+package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
@@ -16,6 +16,7 @@ import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.List;
 public class FileRenameTest extends BashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
-        return "/editor/refactoring/RenameTestCase/";
+        return "/editor/refactoring/FileRenameTestCase/";
     }
 
     /**
@@ -48,7 +49,8 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
      * @throws Exception
      */
     @Test
-    public void testBasicFileRenameWithHandler() throws Exception {
+    @Ignore("broken due to IntelliJ")
+    public void _testBasicFileRenameWithHandler() throws Exception {
         //this test is broken in 14.0.3 because the test framework doesn't pass the new name but uses a stupid default name instead, which is equal to the current name
         doRename(true);
     }
@@ -70,7 +72,7 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
      */
     @Test
     public void testRenameBashCommandReference() throws Exception {
-        doRename(false, true, "source.bash", "subdir/source2.bash", "subdir/subdir/source3.bash");
+        doRename(false, false, "source.bash", "subdir/source2.bash", "subdir/subdir/source3.bash");
     }
 
     /**
@@ -137,7 +139,7 @@ public class FileRenameTest extends BashCodeInsightFixtureTestCase {
         PsiElement psiElement;
         if (expectFileReference) {
             psiElement = PsiTreeUtil.getParentOfType(myFixture.getFile().findElementAt(myFixture.getCaretOffset()), BashFileReference.class);
-            Assert.assertNotNull("file reference is null", psiElement);
+            Assert.assertNotNull("file reference is null. Current: " + myFixture.getFile().findElementAt(myFixture.getCaretOffset()).getText(), psiElement);
             Assert.assertTrue("Filename wasn't changed", psiElement.getText().contains("target_renamed.bash"));
         } else {
             psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());

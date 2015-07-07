@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -13,18 +14,21 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
         super("/codeInsight/completion/dynamicPathCompletion");
     }
 
+    @Test
     public void testSimpleCompletion() throws Throwable {
         configureByTestName();
 
         checkItems("./SimpleCompletion.bash");
     }
 
+    @Test
     public void testNoCompletion() throws Throwable {
         configureByTestName();
 
         checkItems(NO_COMPLETIONS);
     }
 
+    @Test
     public void testHomeVarCompletion() throws Throwable {
         configureByTestName();
 
@@ -40,6 +44,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
         }
     }
 
+    @Test
     public void testHomeVarHiddenCompletion() throws Throwable {
         configureByTestName();
 
@@ -54,6 +59,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
         }
     }
 
+    @Test
     public void testTildeCompletion() throws Throwable {
         configureByTestName();
 
@@ -69,6 +75,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
         }
     }
 
+    @Test
     public void testNoFunctionCompletion() throws Exception {
         configureByTestName();
 

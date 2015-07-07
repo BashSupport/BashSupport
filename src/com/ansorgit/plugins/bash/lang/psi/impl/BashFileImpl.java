@@ -31,6 +31,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.SearchScope;
 import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -105,6 +106,12 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         }
 
         return moreProcessing;
+    }
+
+    @NotNull
+    @Override
+    public SearchScope getUseScope() {
+        return BashElementSharedImpl.getElementUseScope(this, getProject());
     }
 
     @Override

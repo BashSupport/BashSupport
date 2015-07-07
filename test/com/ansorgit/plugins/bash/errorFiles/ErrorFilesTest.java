@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ErrorFilesTest extends CodeInsightTestCase {
         return configureByFile(getTestName(false) + ".bash", null);
     }
 
+    @Test
     public void testAllFiles() throws Exception {
         List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
 

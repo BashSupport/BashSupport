@@ -3,7 +3,7 @@
     <problem>
         <file>A.bash</file>
         <line>2</line>
-        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Readonly variable</problem_class>
-        <description>Change to a readonly variable</description>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Read-only variable</problem_class>
+        <description>Change to a read-only variable</description>
     </problem>
 </problems>

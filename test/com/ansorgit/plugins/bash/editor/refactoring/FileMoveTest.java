@@ -1,4 +1,4 @@
-package com.ansorgit.plugins.bash.lang.psi;
+package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;

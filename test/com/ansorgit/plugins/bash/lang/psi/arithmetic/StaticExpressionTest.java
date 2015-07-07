@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.arithmetic;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -26,26 +27,32 @@ import org.junit.Assert;
  * Time: 12:50:01
  */
 public class StaticExpressionTest extends AbstractArithExprTest {
+    @Test
     public void testProductSimpleStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }
 
+    @Test
     public void testSimpleStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }
 
+    @Test
     public void testParenthesisSimpleStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }
 
+    @Test
     public void testParenthesisProductStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }
 
+    @Test
     public void testComplicatedStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }
 
+    @Test
     public void testMultipleParentStaticExpression() throws Exception {
         Assert.assertTrue(configureTopArithExpression().isStatic());
     }

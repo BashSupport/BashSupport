@@ -70,7 +70,8 @@ public class BashPsiElementFactory {
     }
 
     public static PsiElement createString(Project project, String content) {
-        return createDummyBashFile(project, "\"" + content + "\"").getFirstChild().getFirstChild().getFirstChild();
+        String fileContent = content.startsWith("\"") && content.endsWith("\"") ? content : ("\"" + content + "\"");
+        return createDummyBashFile(project, fileContent).getFirstChild().getFirstChild().getFirstChild();
     }
 
     public static PsiElement createAssignmentWord(Project project, String name) {

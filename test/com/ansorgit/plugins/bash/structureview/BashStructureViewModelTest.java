@@ -31,6 +31,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -38,11 +39,11 @@ import junit.framework.Assert;
  * Time: 10:32:04
  */
 public class BashStructureViewModelTest extends CodeInsightTestCase {
-    private interface Test {
+    private interface MyTest {
         void test(StructureViewComponent component);
     }
 
-    protected void doTest(final Test test) {
+    protected void doTest(final MyTest myTest) {
         assert myFile != null : "configure first";
 
         final VirtualFile vFile = myFile.getVirtualFile();
@@ -57,17 +58,19 @@ public class BashStructureViewModelTest extends CodeInsightTestCase {
         StructureViewComponent component = null;
         try {
             component = (StructureViewComponent) builder.createStructureView(fileEditor, myProject);
-            test.test(component);
+            myTest.test(component);
         } finally {
             if (component != null) Disposer.dispose(component);
         }
     }
 
+
+    @Test
     public void testStructureView() throws Exception {
         VirtualFile file = configure();
         Assert.assertNotNull(file);
 
-        Test test = new Test() {
+        MyTest myTest = new MyTest() {
             public void test(StructureViewComponent component) {
                 StructureViewModel tree = component.getTreeModel();
                 Assert.assertNotNull(tree);
@@ -88,7 +91,7 @@ public class BashStructureViewModelTest extends CodeInsightTestCase {
             }
         };
 
-        doTest(test);
+        doTest(myTest);
     }
 
     protected VirtualFile configure() throws Exception {
