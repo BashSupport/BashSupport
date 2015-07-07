@@ -1,3 +1,6 @@
+####2015-07-07
+ - \#238: Replace with evaluated expansion" works incorrectly
+ 
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  
