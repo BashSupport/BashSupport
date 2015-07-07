@@ -1,6 +1,9 @@
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  
+####2015-07-04
+ - \#243: Single line case statement parse error 
+ 
 ####2015-07-02
  - Files usages in strings are now processed during a file rename if the option is enabled. 
  
