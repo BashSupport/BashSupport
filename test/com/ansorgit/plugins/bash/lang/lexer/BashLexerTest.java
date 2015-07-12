@@ -844,6 +844,13 @@ public class BashLexerTest {
         testNoErrors("foo() { foo=\"$1\"; shift; while [ $# -gt 0 ]; do case \"$1\" in ($foo) ;; (*) return 1;; esac; shift; done; }");
     }
 
+    @Test
+    public void testIssue246() throws Exception {
+        testTokenization("echo '\\';", WORD, WHITESPACE, STRING2, SEMI);
+        testTokenization("echo '\\'; echo", WORD, WHITESPACE, STRING2, SEMI, WHITESPACE, WORD);
+        testTokenization("echo '\\' && echo \\'", WORD, WHITESPACE, STRING2, WHITESPACE, AND_AND, WHITESPACE, WORD, WHITESPACE, WORD);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

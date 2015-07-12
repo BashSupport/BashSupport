@@ -60,7 +60,8 @@ Comments = {Comment}{LineTerminator}({Comment}{LineTerminator})+
 
 EscapedChar = "\\" [^\n]
 StringStart = "$\"" | "\""
-SingleCharacter = [^\'] | {EscapedChar}
+
+UnescapedCharacter = [^\']
 
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
@@ -588,8 +589,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     {StringStart}                 { stringParsingState().reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
-    "$"\'{SingleCharacter}*\'     |
-    \'{SingleCharacter}*\'        { return STRING2; }
+    "$"\'{UnescapedCharacter}*\'     |
+    \'{UnescapedCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             { return LINE_FEED; }
