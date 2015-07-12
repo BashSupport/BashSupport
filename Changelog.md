@@ -1,3 +1,6 @@
+####2015-07-12
+ - \#246: Minor Single Quote Escaping Issue 
+
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  
