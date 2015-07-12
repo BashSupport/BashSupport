@@ -849,6 +849,8 @@ public class BashLexerTest {
         testTokenization("echo '\\';", WORD, WHITESPACE, STRING2, SEMI);
         testTokenization("echo '\\'; echo", WORD, WHITESPACE, STRING2, SEMI, WHITESPACE, WORD);
         testTokenization("echo '\\' && echo \\'", WORD, WHITESPACE, STRING2, WHITESPACE, AND_AND, WHITESPACE, WORD, WHITESPACE, WORD);
+
+        testTokenization("$'hi \\' there'", STRING2);
     }
 
     private void testNoErrors(String code) {
