@@ -46,12 +46,4 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
     boolean isEmptyConditionalCommand();
 
     void setEmptyConditionalCommand(boolean emptyConditionalCommand);
-
-    boolean isExpectArithExpression();
-
-    void setExpectArithExpression(boolean expectArithExpression);
-
-    boolean isStartNewArithExpression();
-
-    void setStartNewArithExpression(boolean startNewArithExpression);
 }

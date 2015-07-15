@@ -128,8 +128,6 @@ public class BashLexerTest {
 
         testTokenization("$((a=1,1))", DOLLAR, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, COMMA, ARITH_NUMBER, _EXPR_ARITH);
 
-        testTokenization("$((((1))))", DOLLAR, EXPR_ARITH, LEFT_PAREN, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, RIGHT_PAREN, _EXPR_ARITH);
-
         testTokenization("$((-1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         testTokenization("$((--1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
@@ -186,9 +184,11 @@ public class BashLexerTest {
 
         testTokenization("$((1+---45))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_MINUS, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
-        testTokenization("$(((1 << 10)))", DOLLAR, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        testTokenization("$(((1 << 10)))", DOLLAR, LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
 
         testTokenization("$((1 < \"1\"))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END, _EXPR_ARITH);
+
+        testTokenization("$((((1))))", DOLLAR, LEFT_PAREN, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH, RIGHT_PAREN);
     }
 
     @Ignore
@@ -831,6 +831,13 @@ public class BashLexerTest {
     @Test
     public void testSubshellExpr() {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+    }
+
+    @Test
+    public void testIssue199() throws Exception {
+        testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
+        testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
+        testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
     }
 
     @Test

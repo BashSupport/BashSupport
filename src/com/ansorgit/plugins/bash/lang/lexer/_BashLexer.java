@@ -18,10 +18,6 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean isBash4 = false;
     //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
     private boolean inCaseBody = false;
-    //True if an arithmetic expression is expected as next token (e.g. in $((a-$((1+34)))) ) we need to
-    //discern between a simple ( and the start of a new subexpression
-    private boolean expectArithExpression = false;
-    private boolean startNewArithExpression = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
 
@@ -29,26 +25,6 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
-    }
-
-    @Override
-    public boolean isStartNewArithExpression() {
-        return startNewArithExpression;
-    }
-
-    @Override
-    public void setStartNewArithExpression(boolean startNewArithExpression) {
-        this.startNewArithExpression = startNewArithExpression;
-    }
-
-    @Override
-    public boolean isExpectArithExpression() {
-        return expectArithExpression;
-    }
-
-    @Override
-    public void setExpectArithExpression(boolean expectArithExpression) {
-        this.expectArithExpression = expectArithExpression;
     }
 
     @Override
