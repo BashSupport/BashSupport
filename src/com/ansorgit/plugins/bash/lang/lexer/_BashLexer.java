@@ -1,7 +1,8 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
-import com.intellij.util.containers.IntStack;
+import com.ansorgit.plugins.bash.util.IntStack;
+import com.google.common.collect.Iterables;
 
 /**
  *
@@ -73,6 +74,11 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     public void backToPreviousState() {
         // pop() will throw an exception if empty
         yybegin(lastStates.pop());
+    }
+
+    @Override
+    public boolean isInState(int state) {
+        return lastStates.contains(state);
     }
 
     @Override

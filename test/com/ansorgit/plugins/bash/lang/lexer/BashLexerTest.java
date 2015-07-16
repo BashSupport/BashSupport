@@ -836,14 +836,24 @@ public class BashLexerTest {
     @Test
     public void testIssue199() throws Exception {
         testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
-        testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
         testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
+        //limitation of the Bash lexer: no look-ahead to the end of an expression 
+        //Bash parses this (probably) as an arithmetic expression with a parenthesis inside
+        //BashSupport doesn't
+        testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
+
+        //the grammar is a bit complicated, the expression parsed beginning with $((( depends on the end of the expression
+        //bash interprets the tokens $(((1+1)+1)) different than $(((1+1)) && echo)
+        //the first is an arithmetic expression with a sum computation
+        //the second is a subshell with an embedded arithmetic command and an echo command
+        //if an expression starts with three or more parentheses the rule is:
+        //  if the expression ends with a single parenthesis, then the first opening parenthesis opens a subshell
+        //  if the expression ends with two parentheses, then the first two start an arithmetic command
     }
 
     @Test
     public void testIssue242() throws Exception {
         testTokenization("eval \"$1=\\$(printf 'a' \\\"$1\\\")\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, WORD, WORD, WORD, WORD, VARIABLE, WORD, WORD, STRING_END);
-
     }
 
     @Test

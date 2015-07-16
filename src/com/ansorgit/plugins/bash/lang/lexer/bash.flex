@@ -174,25 +174,33 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 // Parenthesis lexing
-<S_STRINGMODE, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE> {
+<S_STRINGMODE, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE, S_CASE> {
     "$" / "("                     { goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
-<YYINITIAL, S_SUBSHELL> {
-    "$"                               { return DOLLAR; }
 
-    <S_DOLLAR_PREFIXED, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION> {
-        "((("                         { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); yypushback(2); goToState(S_SUBSHELL); return LEFT_PAREN; }
-        "(("                          { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); goToState(S_ARITH); return EXPR_ARITH; }
-        "("                           { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); stringParsingState().enterSubshell(); goToState(S_SUBSHELL); return LEFT_PAREN; }
+<YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION, S_CASE> {
+    //this is not lexed in state S_SUBSHELL, because BashSupport treats ((((x)))) as subshell>arithmetic and not as subshell>subshell>arithmetic
+    //this is different to the official Bash interpreter
+    //currently it's too much effort to rewrite the lexer and parser for this feature
+    "((("                   { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); yypushback(2); goToState(S_SUBSHELL); return LEFT_PAREN; }
+
+    <S_SUBSHELL> {
+        "(("                { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); goToState(S_ARITH); return EXPR_ARITH; }
+        "("                 { if (yystate() == S_DOLLAR_PREFIXED) backToPreviousState(); stringParsingState().enterSubshell(); goToState(S_SUBSHELL); return LEFT_PAREN; }
     }
 }
 
 <YYINITIAL, S_CASE> {
-    ")" { return RIGHT_PAREN; }
+    ")"                     { return RIGHT_PAREN; }
 }
 <S_SUBSHELL> {
-    ")" { backToPreviousState(); if (stringParsingState().isInSubshell()) stringParsingState().leaveSubshell(); return RIGHT_PAREN; }
+    ")"                     { backToPreviousState(); if (stringParsingState().isInSubshell()) stringParsingState().leaveSubshell(); return RIGHT_PAREN; }
 }
+<S_CASE_PATTERN> {
+    "("                     { return LEFT_PAREN; }
+    ")"                     { backToPreviousState(); return RIGHT_PAREN; }
+}
+
 
 <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
   "))"                          { if (openParenthesisCount() > 0) {
@@ -222,11 +230,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARITH, S_ARITH_SQUARE_MODE> {
-   "="                                { return EQ; }
-}
-
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+    <S_ARITH, S_ARITH_SQUARE_MODE> {
+       "="                                { return EQ; }
+   }
+
    "+="                               { return ADD_EQ; }
 }
 
@@ -452,7 +460,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_CASE_PATTERN> {
   "esac"                        { backToPreviousState(); yypushback(yylength()); }
-  ")"                           { backToPreviousState(); yypushback(1); }
 }
 
 //////////////////// END OF STATE TEST_EXPR /////////////////////

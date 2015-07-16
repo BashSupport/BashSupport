@@ -19,6 +19,8 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
      */
     void backToPreviousState();
 
+    boolean isInState(int state);
+
     int openParenthesisCount();
 
     void incOpenParenthesisCount();
