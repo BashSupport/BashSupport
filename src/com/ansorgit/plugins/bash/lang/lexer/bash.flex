@@ -181,6 +181,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
     "$ " | "$" {LineTerminator}                     { return HEREDOC_LINE; }
     {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
+    //fixme lexing of arithmetic subshell
     "$("/[^(]                       { if (!isHeredocEvaluating()) return HEREDOC_LINE; yypushback(1); goToState(S_SUBSHELL_PREFIXED); return DOLLAR; }
     [^$\n\r]+  {
         if (isHeredocEnd(yytext().toString())) {
