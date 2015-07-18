@@ -1,20 +1,22 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: ListParsing.java, Class: ListParsing
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
@@ -25,6 +27,8 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 25.03.2009
@@ -46,6 +50,8 @@ public final class ListParsing implements ParsingTool {
         | 	';'  //eof
         ;
      */
+
+    private static final TokenSet heredocTokens = TokenSet.create(HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
     public boolean isListTerminator(IElementType token) {
         return token == LINE_FEED || token == SEMI || token == null; //fixme null right for eof?
@@ -156,7 +162,7 @@ public final class ListParsing implements ParsingTool {
         if (token == AND_AND || token == OR_OR) {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
-            result = parseList1(builder, simpleMode, false,recursionGuard); //with errors
+            result = parseList1(builder, simpleMode, false, recursionGuard); //with errors
 
             if (markComposedCommand) {
                 composedMarker.done(COMPOSED_COMMAND);
@@ -164,16 +170,12 @@ public final class ListParsing implements ParsingTool {
                 composedMarker.drop();
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            IElementType current = token;
-            if (current == LINE_FEED) {
-                //parse here documents at this place. They follow a statement which opened one.
-                // Several here-docs can be combined
-                if (Parsing.hereDoc.parseOptionalHereDocs(builder)) {
-                    current = builder.getTokenType();
-                }
+            boolean heredocResult = parseOptionalHeredoc(builder, composedMarker, token);
+            if (heredocResult) {
+                return heredocResult;
             }
 
-            if (current == LINE_FEED && simpleMode) {
+            if (token == LINE_FEED && simpleMode) {
                 composedMarker.drop();
                 return true;
             }
@@ -206,6 +208,64 @@ public final class ListParsing implements ParsingTool {
         }
 
         return result;
+    }
+
+    /**
+     * Parses an optional heredoc starting at the current position.
+     * Problem is that a heredoc might start with a variable. But that variable might also be part of the
+     * next command. The lexer state is not available here so we need to look ahead at a limited amount
+     * of following tokens.
+     *
+     * @param builder
+     * @param composedMarker
+     * @param token
+     * @return True if a heredoc was parsed, false if no heredoc was found
+     */
+    private boolean parseOptionalHeredoc(BashPsiBuilder builder, PsiBuilder.Marker composedMarker, IElementType token) {
+        if (token == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
+            composedMarker.drop();
+
+            //eat the newline
+            builder.advanceLexer();
+
+            // Parse here documents at this place. They follow a statement which opened one.
+            // Several here-docs can be combined and will be all parsed by this loop
+            while (true) {
+                //the simple case is a heredoc element followed by a heredoc-end marker
+                while (true) {
+                    if (builder.getTokenType() == LINE_FEED) {
+                        builder.advanceLexer();
+                    } else if (builder.getTokenType() == HEREDOC_CONTENT) {
+                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_CONTENT_ELEMENT);
+                    } else if (Parsing.var.isValid(builder)) {
+                        if (!Parsing.var.parse(builder)) {
+                            break;
+                        }
+                    } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
+                        if (!Parsing.shellCommand.subshellParser.parse(builder)) {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if (builder.getTokenType() == HEREDOC_MARKER_END) {
+                    ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
+                    builder.getParsingState().popHeredocMarker();
+                } else {
+                    if (builder.getParsingState().expectsHeredocMarker()) {
+                        builder.error("Unexpected token");
+                    }
+
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

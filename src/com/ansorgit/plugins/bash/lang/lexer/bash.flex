@@ -143,12 +143,62 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
 
+/* To match heredoc documents */
+%xstate S_HEREDOC_MARKER
+%xstate S_HEREDOC
+
 %%
 /***************************** INITIAL STAATE ************************************/
 <YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST> {
   {Shebang}                     { return SHEBANG; }
   {Comment}                     { return COMMENT; }
 }
+
+<S_HEREDOC_MARKER> {
+    {WhiteSpace}+                { return WHITESPACE; }
+    {ContinuedLine}+             { /* ignored */ }     //fixme
+
+      ("$"? "'" [^\']+ "'")+
+    | ("$"? \" [^\"]+ \")+
+    | [^ \s\t\n\r\f]+ {
+        pushExpectedHeredocMarker(yytext());
+        backToPreviousState();
+
+        return HEREDOC_MARKER_START;
+    }
+
+    .                            { return BAD_CHARACTER; }
+}
+
+<S_HEREDOC> {
+    {LineTerminator}+           { if (!isHeredocMarkersEmpty()) {
+                                        return HEREDOC_LINE;
+                                  }
+                                  return LINE_FEED;
+                                }
+
+
+    "$ " | "$" {LineTerminator}                     { return HEREDOC_LINE; }
+    {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
+    //fixme lexing of arithmetic subshell
+    "$("/[^(]                       { if (!isHeredocEvaluating()) return HEREDOC_LINE; yypushback(1); goToState(S_SUBSHELL_PREFIXED); return DOLLAR; }
+    [^$\n\r]+  {
+        if (isHeredocEnd(yytext().toString())) {
+            popHeredocMarker(yytext().toString());
+
+            if (isHeredocMarkersEmpty()) {
+                backToPreviousState();
+            }
+
+            return HEREDOC_MARKER_END;
+        };
+
+        return HEREDOC_LINE;
+    }
+
+    .                            { return BAD_CHARACTER; }
+}
+
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
   "[ ]"                         { yypushback(1); goToState(S_TEST); setEmptyConditionalCommand(true); return EXPR_CONDITIONAL; }
@@ -503,8 +553,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   /* Bash v3 */
   "<<<"                         { return REDIRECT_LESS_LESS_LESS; }
-  "<<"                          { return REDIRECT_LESS_LESS; }
-  "<<-"                         { return REDIRECT_LESS_LESS_MINUS; }
   "<>"                          { return REDIRECT_LESS_GREATER; }
 
   "<&" / {ArithWord}            { return REDIRECT_LESS_AMP; }
@@ -514,7 +562,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ">|"                          { return REDIRECT_GREATER_BAR; }
 
-  {Filedescriptor}              { return FILEDESCRIPTOR; }              
+  {Filedescriptor}              { return FILEDESCRIPTOR; }
 }
 
 <S_PARAM_EXPANSION> {
@@ -570,7 +618,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
-     if we match repeated whtiespace! 
+     if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
     {ContinuedLine}+             { /* ignored */ }
@@ -583,7 +631,13 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     \'{SingleCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
-    {LineTerminator}             { return LINE_FEED; }
+    {LineTerminator}             {
+                                        if (!isHeredocMarkersEmpty()) {
+                                            goToState(S_HEREDOC);
+                                        }
+
+                                       return LINE_FEED;
+                                 }
 
     /* Backquote expression */
     `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
@@ -606,6 +660,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "@"                           { return AT; }
     "$"                           { return DOLLAR; }
     ";"                           { return SEMI; }
+    "<<" | "<<-" {
+        goToState(S_HEREDOC_MARKER);
+        return HEREDOC_MARKER_TAG;
+    }
     ">"                           { return GREATER_THAN; }
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
@@ -624,10 +682,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {CasePattern}                 { return WORD; }
 }
 
-<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
-}    
+}
 
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY> {

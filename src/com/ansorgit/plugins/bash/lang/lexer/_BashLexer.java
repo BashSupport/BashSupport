@@ -10,7 +10,7 @@ import com.google.common.collect.Iterables;
 public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
-    private final StringParsingState string = new StringParsingState();
+    private final StringLexingtate string = new StringLexingtate();
     //parameter expansion parsing state
     boolean paramExpansionHash = false;
     boolean paramExpansionWord = false;
@@ -21,6 +21,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean inCaseBody = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
+    private HeredocLexingState heredocLexingState = new HeredocLexingState();
 
     public _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
@@ -28,6 +29,31 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
         this.isBash4 = BashVersion.Bash_v4.equals(version);
     }
 
+    @Override
+    public boolean isHeredocEnd(String text) {
+        return heredocLexingState.isNextHeredocMarker(text);
+    }
+
+    @Override
+    public boolean isHeredocEvaluating() {
+        return heredocLexingState.isExpectingEvaluatingHeredoc();
+    }
+
+    @Override
+    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
+        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
+    }
+
+    @Override
+    public void popHeredocMarker(CharSequence marker) {
+        heredocLexingState.popHeredocMarker(marker.toString());
+    }
+
+    @Override
+    public boolean isHeredocMarkersEmpty() {
+        return heredocLexingState.isEmpty();
+    }
+    
     @Override
     public boolean isEmptyConditionalCommand() {
         return emptyConditionalCommand;
@@ -39,7 +65,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public StringParsingState stringParsingState() {
+    public StringLexingtate stringParsingState() {
         return string;
     }
 

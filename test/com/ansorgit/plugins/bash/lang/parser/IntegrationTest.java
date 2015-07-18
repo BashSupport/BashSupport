@@ -510,9 +510,9 @@ public class IntegrationTest extends MockPsiTest {
         //done
         mockTest(fileParsingTest,
                 Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF",
-                        "\n", "heredoccontent", "(", "\n", "EOF", "\n", "done"),
+                        "\n", "heredoccontent(\n", "EOF", "\n", "done"),
                 FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI,
-                DO_KEYWORD, WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, WORD, LEFT_PAREN, LINE_FEED, WORD, LINE_FEED,
+                DO_KEYWORD, WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED,
                 DONE_KEYWORD);
 
 
@@ -528,7 +528,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTestError(BashVersion.Bash_v3, fileParsingTest, false,
                 Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF", "\n", "heredoccontent", "(", "\n", "   ", "EOF", "\n", "done"),
                 FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI,
-                DO_KEYWORD, WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, WORD, LEFT_PAREN, LINE_FEED, WHITESPACE, WORD, LINE_FEED,
+                DO_KEYWORD, WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD, LEFT_PAREN, LINE_FEED, WHITESPACE, WORD, LINE_FEED,
                 DONE_KEYWORD);
     }
 
@@ -565,8 +565,8 @@ public class IntegrationTest extends MockPsiTest {
         // "TEST
         //END
         mockTest(fileParsingTest,
-                Lists.newArrayList("a", "<<", "END", "\n", "\"", "TEST", "\n", "END"),
-                WORD, REDIRECT_LESS_LESS, WORD, LINE_FEED, STRING_BEGIN, WORD, LINE_FEED, WORD);
+                Lists.newArrayList("a", "<<", "END", "\n", "\"TEST\n", "END"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
     @Test

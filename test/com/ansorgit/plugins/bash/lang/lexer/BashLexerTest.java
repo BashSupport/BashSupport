@@ -438,9 +438,9 @@ public class BashLexerTest {
     public void testRedirect1() {
         testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
-        testTokenization("<<", REDIRECT_LESS_LESS);
+        testTokenization("<<", HEREDOC_MARKER_TAG);
         testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
-        testTokenization("<<-", REDIRECT_LESS_LESS_MINUS);
+        testTokenization("<<-", HEREDOC_MARKER_TAG);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
         testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
@@ -831,6 +831,70 @@ public class BashLexerTest {
     @Test
     public void testSubshellExpr() {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+    }
+
+    @Test
+    public void testHeredoc() {
+        testTokenization("cat <<END\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<        END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        \"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        \"END\"\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $\"END\"\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $\"END\"$\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+        testTokenization("cat <<        'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $'END''END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+
+        testTokenization("cat <<END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+        testTokenization("cat <<END\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED);
+        testTokenization("cat <<END\nABC\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+        testTokenization("cat <<END\nABC\n\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+        testTokenization("cat <<END\nABC", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+        testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+
+        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<END\nABC\nDEF\n\n\nXYZ DEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<!\n!", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "test\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+
+        testTokenization("cat <<EOF\n" +
+                "$test\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "$(test)\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testMultilineHeredoc() throws Exception {
+        //multiple heredocs in one command line
+        testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+    }
+
+    @Test
+    @Ignore //ignored for now because there is a match-all rule for the heredoc start marker
+    public void _testHeredocErrors() throws Exception {
+        testTokenization("cat <<\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+
+        //the closing string marker is missing in the heredoc
+        testTokenization("cat <<\"END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, BAD_CHARACTER, BAD_CHARACTER);
     }
 
     @Test
