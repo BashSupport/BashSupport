@@ -56,7 +56,6 @@ ContinuedLine = "\\" {LineTerminator}
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
-Comments = {Comment}{LineTerminator}({Comment}{LineTerminator})+
 
 EscapedChar = "\\" [^\n]
 StringStart = "$\"" | "\""
