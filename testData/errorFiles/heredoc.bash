@@ -20,3 +20,15 @@ cat << EOF
     a $abc b
     $abc
 EOF
+
+echo $(cat <<EOF
+hi there
+EOF
+)
+
+# The marker may be escaped to disable variable evaluation
+echo $(cat <<\EOF
+hi there
+EOF
+)
+

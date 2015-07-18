@@ -103,7 +103,9 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
 
     @Override
     public boolean isValidHost() {
-        return !isEvaluatingVariables();
+        //heredoc lexing is not yet doing well with injections
+        return false;
+        //return !isEvaluatingVariables();
     }
 
     @Override

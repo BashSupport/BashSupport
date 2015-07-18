@@ -133,6 +133,14 @@ public class HereDocParsingTest extends MockPsiTest {
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "X", "\n", "$abc", "\n", "X"),
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_MARKER_END
         );
+
+        //  x << X << Y
+        //   $abc
+        // X
+        // Y
+        mockTest(hereDoc, Lists.newArrayList("x", "<<", "X", "<<", "Y", "\n", "$abc", "\n", "X", "\n", "Y"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_MARKER_END, HEREDOC_MARKER_END
+        );
     }
 
     @Test
@@ -141,13 +149,13 @@ public class HereDocParsingTest extends MockPsiTest {
         //cat <<XX
         //XX
         //fi
-        mockTest(hereDoc, Lists.newArrayList("if", "test" ,"'X'", ";", "THEN", "\n", "cat", "<<", "XX", "\n", "XX", "\n", "echo", "\n", "fi"),
-           IF_KEYWORD, WORD, STRING2, SEMI, THEN_KEYWORD, LINE_FEED,
+        mockTest(hereDoc, Lists.newArrayList("if", "test", "'X'", ";", "THEN", "\n", "cat", "<<", "XX", "\n", "XX", "\n", "echo", "\n", "fi"),
+                IF_KEYWORD, WORD, STRING2, SEMI, THEN_KEYWORD, LINE_FEED,
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
                 HEREDOC_MARKER_END, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD
-                );
+        );
 
     }
 }

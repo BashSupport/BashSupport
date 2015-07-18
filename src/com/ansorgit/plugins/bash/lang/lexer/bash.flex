@@ -157,6 +157,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 <S_HEREDOC_MARKER> {
     {WhiteSpace}+                { return WHITESPACE; }
     {ContinuedLine}+             { /* ignored */ }     //fixme
+    {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+

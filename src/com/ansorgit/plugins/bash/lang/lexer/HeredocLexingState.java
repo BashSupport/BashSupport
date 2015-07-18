@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.LinkedList;
 
 /**
- * Herredoc lexing state used in the lexer
+ * Heredoc lexing state used in the lexer
  */
 class HeredocLexingState {
     private LinkedList<Pair<String, Boolean>> expectedHeredocs = Lists.newLinkedList();
@@ -29,8 +29,8 @@ class HeredocLexingState {
         return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().second;
     }
 
-    private Boolean isEvaluatingMarker(String marker) {
-        return !marker.startsWith("\"") && !marker.startsWith("'");
+    private static Boolean isEvaluatingMarker(String marker) {
+        return !marker.startsWith("\"") && !marker.startsWith("'") && !marker.startsWith("\\") && !marker.startsWith("$");
     }
 
     public void popHeredocMarker(String marker) {
@@ -49,7 +49,11 @@ class HeredocLexingState {
         int start = 0;
         int end = marker.length();
 
-        if (marker.charAt(0) == '$') {
+        if (marker.charAt(start) == '$') {
+            start++;
+        }
+
+        if (marker.charAt(start) == '\\') {
             start++;
         }
 
