@@ -178,10 +178,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                 }
 
 
-    "$ " | "$" {LineTerminator}                     { return HEREDOC_LINE; }
+    "$ " | "$"{LineTerminator}      { return HEREDOC_LINE; }
     {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
-    //fixme lexing of arithmetic subshell
-    "$("/[^(]                       { if (!isHeredocEvaluating()) return HEREDOC_LINE; yypushback(1); goToState(S_SUBSHELL_PREFIXED); return DOLLAR; }
     [^$\n\r]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
@@ -223,8 +221,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 // Parenthesis lexing
-<S_STRINGMODE, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE, S_CASE> {
-    "$" / "("                     { goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
+<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE, S_CASE> {
+    "$" / "("               { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION, S_CASE> {
@@ -524,7 +522,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   }
                                 }
 
-  {Variable}                  { return VARIABLE; }
+  //{Variable}                  { return VARIABLE; }
 
   /* Backquote expression inside of evaluated strings */
   `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
@@ -669,9 +667,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     ">>"                          { return SHIFT_RIGHT; }
 
     /* Arithmetic expression */
-    "(("                          { goToState(S_ARITH); return EXPR_ARITH; }
+    //"(("                          { goToState(S_ARITH); return EXPR_ARITH; }
 
-    {Variable}                    { return VARIABLE; }
+    <S_STRINGMODE>{
+        {Variable}                 { return VARIABLE; }
+    }
 
     "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
 

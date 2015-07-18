@@ -28,7 +28,6 @@ import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 25.03.2009
@@ -158,6 +157,9 @@ public final class ListParsing implements ParsingTool {
         }
 
         boolean result = true;
+
+        parseOptionalHeredoc(builder);
+
         final IElementType token = builder.getTokenType();
         if (token == AND_AND || token == OR_OR) {
             builder.advanceLexer();
@@ -170,11 +172,6 @@ public final class ListParsing implements ParsingTool {
                 composedMarker.drop();
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            boolean heredocResult = parseOptionalHeredoc(builder, composedMarker, token);
-            if (heredocResult) {
-                return heredocResult;
-            }
-
             if (token == LINE_FEED && simpleMode) {
                 composedMarker.drop();
                 return true;
@@ -217,20 +214,18 @@ public final class ListParsing implements ParsingTool {
      * of following tokens.
      *
      * @param builder
-     * @param composedMarker
-     * @param token
      * @return True if a heredoc was parsed, false if no heredoc was found
      */
-    private boolean parseOptionalHeredoc(BashPsiBuilder builder, PsiBuilder.Marker composedMarker, IElementType token) {
-        if (token == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
-            composedMarker.drop();
+    private boolean parseOptionalHeredoc(BashPsiBuilder builder) {
+        if (builder.getTokenType() == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
+            //composedMarker.drop();
 
             //eat the newline
             builder.advanceLexer();
 
             // Parse here documents at this place. They follow a statement which opened one.
             // Several here-docs can be combined and will be all parsed by this loop
-            while (true) {
+            do {
                 //the simple case is a heredoc element followed by a heredoc-end marker
                 while (true) {
                     if (builder.getTokenType() == LINE_FEED) {
@@ -260,7 +255,7 @@ public final class ListParsing implements ParsingTool {
 
                     break;
                 }
-            }
+            } while (builder.getParsingState().expectsHeredocMarker());
 
             return true;
         }

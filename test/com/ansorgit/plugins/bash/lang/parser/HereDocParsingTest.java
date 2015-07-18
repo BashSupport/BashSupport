@@ -134,4 +134,20 @@ public class HereDocParsingTest extends MockPsiTest {
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_MARKER_END
         );
     }
+
+    @Test
+    public void testNestedInIf() throws Exception {
+        //if test "X$1"; then
+        //cat <<XX
+        //XX
+        //fi
+        mockTest(hereDoc, Lists.newArrayList("if", "test" ,"'X'", ";", "THEN", "\n", "cat", "<<", "XX", "\n", "XX", "\n", "echo", "\n", "fi"),
+           IF_KEYWORD, WORD, STRING2, SEMI, THEN_KEYWORD, LINE_FEED,
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                WORD, LINE_FEED,
+                FI_KEYWORD
+                );
+
+    }
 }

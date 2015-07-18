@@ -82,6 +82,10 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             return Spacing.getReadOnlySpacing();
         }
 
+        if (rightPsi instanceof BashHereDocEndMarker) {
+            return Spacing.getReadOnlySpacing();
+        }
+
         if (leftType == STRING_BEGIN && rightPsi instanceof BashHereDocMarker) {
             return NO_SPACING;
         }
