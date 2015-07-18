@@ -54,14 +54,14 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "END", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<-"END"
         // TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"END\"", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, WORD, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_END);
 
         //a <<-"END"
         // "TEST
@@ -85,7 +85,7 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<", "END", "\n", "$a", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
         //a << END
         //${a}
@@ -114,6 +114,24 @@ public class HereDocParsingTest extends MockPsiTest {
 
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END
+        );
+    }
+
+    @Test
+    public void testHereDocVar() throws Exception {
+        //  x << X
+        //   abc
+        //   $abc
+        // X
+        mockTest(hereDoc, Lists.newArrayList("x", "<<", "X", "\n", "abc", "$abc", "\n", "X"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, VARIABLE, HEREDOC_MARKER_END
+        );
+
+        //  x << X
+        //   $abc
+        // X
+        mockTest(hereDoc, Lists.newArrayList("x", "<<", "X", "\n", "$abc", "\n", "X"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_MARKER_END
         );
     }
 }

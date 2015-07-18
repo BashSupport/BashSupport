@@ -144,7 +144,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
 
-/* To matche heredoc documents */
+/* To match heredoc documents */
 %xstate S_HEREDOC_MARKER
 %xstate S_HEREDOC
 
@@ -163,9 +163,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     | ("$"? \" [^\"]+ \")+
     | [^ \s\t\n\r\f]+ {
         pushExpectedHeredocMarker(yytext());
-
         backToPreviousState();
-        //goToState(S_HEREDOC);
 
         return HEREDOC_MARKER_START;
     }
@@ -180,7 +178,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   return LINE_FEED;
                                 }
 
-    ^.+  {
+
+    "$ " | "$" {LineTerminator}                     { return HEREDOC_LINE; }
+    {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
+    "$("/[^(]                       { if (!isHeredocEvaluating()) return HEREDOC_LINE; yypushback(1); goToState(S_SUBSHELL_PREFIXED); return DOLLAR; }
+    [^$\n\r]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
@@ -692,7 +694,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {CasePattern}                 { return WORD; }
 }
 
-<YYINITIAL, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                           { return RIGHT_CURLY; }
 }

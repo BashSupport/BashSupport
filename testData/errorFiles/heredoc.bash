@@ -14,3 +14,9 @@ cat << EOF << EOF2
 EOF
     b
 EOF2
+
+abc=1
+cat << EOF
+    a $abc b
+    $abc
+EOF

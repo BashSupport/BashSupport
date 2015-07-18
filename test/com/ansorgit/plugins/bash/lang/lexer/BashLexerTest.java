@@ -864,6 +864,16 @@ public class BashLexerTest {
                 "test\n" +
                 "EOF\n" +
                 "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+
+        testTokenization("cat <<EOF\n" +
+                "$test\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "$(test)\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
     }
 
     @Test

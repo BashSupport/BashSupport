@@ -38,6 +38,11 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
+    public boolean isHeredocEvaluating() {
+        return heredocLexingState.isExpectingEvaluatingHeredoc();
+    }
+
+    @Override
     public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
         this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
     }

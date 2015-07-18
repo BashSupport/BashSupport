@@ -148,6 +148,8 @@ public class RedirectionParsing implements ParsingTool {
             builder.advanceLexer();
             heredocMarker.done(HEREDOC_START_ELEMENT);
 
+            builder.getParsingState().pushHeredocMarker();
+
             marker.done(REDIRECT_ELEMENT);
             return true;
         }

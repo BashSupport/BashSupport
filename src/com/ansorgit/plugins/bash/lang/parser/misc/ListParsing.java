@@ -28,6 +28,7 @@ import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Date: 25.03.2009
@@ -169,32 +170,9 @@ public final class ListParsing implements ParsingTool {
                 composedMarker.drop();
             }
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            if (token == LINE_FEED && (heredocTokens.contains(builder.lookAhead(1)))) {
-                composedMarker.drop();
-
-                //eat the newline
-                builder.advanceLexer();
-
-                // Parse here documents at this place. They follow a statement which opened one.
-                // Several here-docs can be combined
-                while (true) {
-                    if (builder.getTokenType() == HEREDOC_CONTENT) {
-                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_CONTENT_ELEMENT);
-                    }
-
-                    if (builder.getTokenType() == HEREDOC_MARKER_END) {
-                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
-                    } else {
-                        builder.error("Expected heredoc end marker");
-                        break;
-                    }
-
-                    if (!heredocTokens.contains(builder.getTokenType())) {
-                        break;
-                    }
-                }
-
-                return true;
+            boolean heredocResult = parseOptionalHeredoc(builder, composedMarker, token);
+            if (heredocResult) {
+                return heredocResult;
             }
 
             if (token == LINE_FEED && simpleMode) {
@@ -230,6 +208,64 @@ public final class ListParsing implements ParsingTool {
         }
 
         return result;
+    }
+
+    /**
+     * Parses an optional heredoc starting at the current position.
+     * Problem is that a heredoc might start with a variable. But that variable might also be part of the
+     * next command. The lexer state is not available here so we need to look ahead at a limited amount
+     * of following tokens.
+     *
+     * @param builder
+     * @param composedMarker
+     * @param token
+     * @return True if a heredoc was parsed, false if no heredoc was found
+     */
+    private boolean parseOptionalHeredoc(BashPsiBuilder builder, PsiBuilder.Marker composedMarker, IElementType token) {
+        if (token == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
+            composedMarker.drop();
+
+            //eat the newline
+            builder.advanceLexer();
+
+            // Parse here documents at this place. They follow a statement which opened one.
+            // Several here-docs can be combined and will be all parsed by this loop
+            while (true) {
+                //the simple case is a heredoc element followed by a heredoc-end marker
+                while (true) {
+                    if (builder.getTokenType() == LINE_FEED) {
+                        builder.advanceLexer();
+                    } else if (builder.getTokenType() == HEREDOC_CONTENT) {
+                        ParserUtil.markTokenAndAdvance(builder, HEREDOC_CONTENT_ELEMENT);
+                    } else if (Parsing.var.isValid(builder)) {
+                        if (!Parsing.var.parse(builder)) {
+                            break;
+                        }
+                    } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
+                        if (!Parsing.shellCommand.subshellParser.parse(builder)) {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if (builder.getTokenType() == HEREDOC_MARKER_END) {
+                    ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
+                    builder.getParsingState().popHeredocMarker();
+                } else {
+                    if (builder.getParsingState().expectsHeredocMarker()) {
+                        builder.error("Unexpected token");
+                    }
+
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
