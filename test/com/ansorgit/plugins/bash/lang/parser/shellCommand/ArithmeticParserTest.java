@@ -175,6 +175,11 @@ public class ArithmeticParserTest extends MockPsiTest {
     }
 
     @Test
+    public void testIssue244() throws Exception {
+        mockTest(BashVersion.Bash_v4, arithmeticTest, EXPR_ARITH, VARIABLE, VARIABLE, VARIABLE, _EXPR_ARITH);
+    }
+
+    @Test
     public void testIssue201() throws Exception {
         // ((!a))
         mockTest(BashVersion.Bash_v4, arithmeticTest, EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
