@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: ArithmeticFactory.java, Class: ArithmeticFactory
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
     private static ArithmeticParsingFunction simpleExpression = new SimpleArithmeticExpr();
     private static ArithmeticParsingFunction postIncrement = new PostIncrementExpr(simpleExpression);
     private static ArithmeticParsingFunction preIncrement = new PreIncrementExpr(postIncrement);
-    private static ArithmeticParsingFunction negation = repeated(preIncrement, arithmeticNegationOps, ARITH_NEGATION_ELEMENT, "negation");
+    private static ArithmeticParsingFunction negation = prefixRepeated(preIncrement, arithmeticNegationOps, ARITH_NEGATION_ELEMENT, "negation");
     private static ArithmeticParsingFunction exponent = repeated(negation, ARITH_EXPONENT, ARITH_EXPONENT_ELEMENT, "exponent");
     private static ArithmeticParsingFunction multiplication = repeated(exponent, arithmeticProduct, ARITH_MULTIPLICACTION_ELEMENT, "mulitplication");
     private static ArithmeticParsingFunction addition = repeated(multiplication, arithmeticAdditionOps, ARITH_SUM_ELEMENT, "addition");
@@ -62,8 +62,12 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
         return parenExpr;
     }
 
+    private static ArithmeticParsingFunction prefixRepeated(ArithmeticParsingFunction next, TokenSet operators, IElementType marker, String debugInfo) {
+        return new AbstractRepeatedExpr(next, operators, true, marker, -1, debugInfo);
+    }
+
     private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, TokenSet operators, IElementType marker, String debugInfo) {
-        return new AbstractRepeatedExpr(next, operators, marker, -1, debugInfo);
+        return new AbstractRepeatedExpr(next, operators, false, marker, -1, debugInfo);
     }
 
     private static ArithmeticParsingFunction repeated(ArithmeticParsingFunction next, IElementType operator, IElementType marker, String debugInfo) {
