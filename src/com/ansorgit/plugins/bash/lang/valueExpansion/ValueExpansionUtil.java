@@ -105,7 +105,7 @@ public class ValueExpansionUtil {
      * @return The evaluated list of values which. Each element is evaluated and all values are added to the list.
      */
     static List<String> evaluateExpansionPattern(String part, boolean enhancedSyntax) {
-        List<String> stringList = StringUtil.split(part, ",");
+        List<String> stringList = StringUtil.split(part, ",", true, false);
         List<String> result = new LinkedList<String>();
 
         //a range has to be the only expression in an expansion, otherwise it's treated as string / static expression
