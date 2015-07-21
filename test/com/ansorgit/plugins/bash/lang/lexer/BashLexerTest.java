@@ -834,6 +834,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue201() throws Exception {
+        testTokenization("((!foo))", EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
+    }
+
+    @Test
     public void testHeredoc() {
         testTokenization("cat <<END\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
 
