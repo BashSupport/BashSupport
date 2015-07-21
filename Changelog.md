@@ -1,6 +1,9 @@
 ####2015-07-18
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
  
+####2015-07-12
+ - \#246: Minor Single Quote Escaping Issue 
+
 ####2015-07-07
  - \#201: Cannot parse logical not in arithmetic expressions 
  - \#238: Replace with evaluated expansion" works incorrectly
