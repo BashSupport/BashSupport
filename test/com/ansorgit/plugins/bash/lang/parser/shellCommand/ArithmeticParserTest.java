@@ -187,4 +187,9 @@ public class ArithmeticParserTest extends MockPsiTest {
         // ((!(!a)))
         mockTest(BashVersion.Bash_v4, arithmeticTest, EXPR_ARITH, ARITH_BITWISE_NEGATE, LEFT_PAREN, ARITH_NEGATE, WORD, RIGHT_PAREN, _EXPR_ARITH);
     }
+
+    @Test
+    public void testIssue244() throws Exception {
+        mockTest(BashVersion.Bash_v4, arithmeticTest, EXPR_ARITH, VARIABLE, VARIABLE, VARIABLE, _EXPR_ARITH);
+    }
 }
