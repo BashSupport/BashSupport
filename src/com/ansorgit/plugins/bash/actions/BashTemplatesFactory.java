@@ -21,47 +21,59 @@ package com.ansorgit.plugins.bash.actions;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.BashStrings;
-import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptor;
-import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptorFactory;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.ide.fileTemplates.*;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
 
+import java.util.Properties;
+
 /**
- * This class acts as a factory for file templates.
- * <p/>
- * Date: 17.04.2009
- * Time: 20:14:23
+ * This is a factory for new Bash files.
  *
  * @author Joachim Ansorg
  */
 public class BashTemplatesFactory implements FileTemplateGroupDescriptorFactory {
-    private static final String FILE_NAME = "bash-script.sh";
-    private final FileTemplateGroupDescriptor templateGroup;
-    private static final Logger log = Logger.getInstance("#BashTemplateFactory");
+    public static final String DEFAULT_TEMPLATE_FILENAME = "Bash Script.sh";
 
     public BashTemplatesFactory() {
-        templateGroup = new FileTemplateGroupDescriptor(BashStrings.message("file.template.group.title.bash"), BashIcons.BASH_FILE_ICON);
-        templateGroup.addTemplate(FILE_NAME);
     }
 
     public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
+        FileTemplateGroupDescriptor templateGroup = new FileTemplateGroupDescriptor(BashStrings.message("file.template.group.title.bash"), BashIcons.BASH_FILE_ICON);
+        templateGroup.addTemplate(new FileTemplateDescriptor(DEFAULT_TEMPLATE_FILENAME, FileTypeManager.getInstance().getFileTypeByFileName(DEFAULT_TEMPLATE_FILENAME).getIcon()));
+
         return templateGroup;
     }
 
-    public static PsiFile createFromTemplate(final PsiDirectory directory, final String name, String fileName) throws IncorrectOperationException {
-        log.debug("createFromTemplate: dir:" + directory + ", filename: " + fileName);
+    public static PsiFile createFromTemplate(final PsiDirectory directory, String fileName, String templateName) throws IncorrectOperationException {
+        Project project = directory.getProject();
+        FileTemplate template = FileTemplateManager.getInstance().getInternalTemplate(templateName);
 
-        final String text = "#!/usr/bin/env bash\n";
-        final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
+        Properties properties = new Properties(FileTemplateManager.getInstance().getDefaultProperties(project));
 
-        log.debug("Create file from text");
-        final PsiFile file = factory.createFileFromText(fileName, BashFileType.BASH_FILE_TYPE, text);
+        String templateText;
+        try {
+            templateText = template.getText(properties);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to load template for " + FileTemplateManager.getInstance().internalTemplateToSubject(templateName), e);
+        }
 
-        log.debug("Adding file to directory");
-        return (PsiFile) directory.add(file);
+        final PsiFileFactory factory = PsiFileFactory.getInstance(project);
+
+        PsiFile file = factory.createFileFromText(fileName, BashFileType.BASH_FILE_TYPE, templateText);
+        file = (PsiFile) directory.add(file);
+
+        /*
+        if (file != null && allowReformatting && template.isReformatCode()) {
+            new ReformatCodeProcessor(project, file, null, false).run();
+        }
+        */
+
+        return file;
     }
 
 }
