@@ -98,4 +98,10 @@ public class ValueExpansionUtilTest {
         Assert.assertEquals("03 02 01", ValueExpansionUtil.expand("{03..1}", true));
         Assert.assertEquals("03 02 01", ValueExpansionUtil.expand("{03..1..-1}", true));
     }
+
+    @Test
+    public void testIssue238() throws Exception {
+        Assert.assertEquals("a a1 a2 a3", ValueExpansionUtil.expand("a{,1,2,3}", true));
+        Assert.assertEquals("ab a1b ab ab a3b", ValueExpansionUtil.expand("a{,1,,,3}b", true));
+    }
 }
