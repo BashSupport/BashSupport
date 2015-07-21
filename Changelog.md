@@ -1,6 +1,9 @@
 ####2015-07-18
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
  
+####2015-07-07
+ - \#201: Cannot parse logical not in arithmetic expressions 
+
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  
