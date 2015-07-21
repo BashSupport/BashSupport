@@ -1,20 +1,22 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: AbstractHeredocMarker.java, Class: AbstractHeredocMarker
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
@@ -46,11 +48,10 @@ import org.jetbrains.annotations.NotNull;
  */
 abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker, PsiReference {
     private static final Object[] EMPTY = new Object[0];
-    private final Class<? extends BashPsiElement> otherEndsType;
+    private final Class<? extends BashHereDocMarker> otherEndsType;
     private final boolean expectLater;
 
-
-    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashPsiElement> otherEndsType, boolean expectLater) {
+    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashHereDocMarker> otherEndsType, boolean expectLater) {
         super(astNode, name);
         this.otherEndsType = otherEndsType;
         this.expectLater = expectLater;
@@ -63,7 +64,7 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
 
     @Override
     public String getName() {
-        return getText();
+        return getMarkerText();
     }
 
     public PsiElement setName(@NotNull @NonNls String newname) throws IncorrectOperationException {
@@ -80,7 +81,7 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
     }
 
     public String getReferencedName() {
-        return getText();
+        return getMarkerText();
     }
 
     public PsiElement getElement() {
@@ -92,16 +93,19 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
     }
 
     public TextRange getRangeInElement() {
-        return TextRange.from(0, getTextLength());
+        String text = getText();
+        String markerText = getMarkerText();
+
+        return TextRange.from(text.indexOf(markerText), markerText.length());
     }
 
     public PsiElement resolve() {
-        final String varName = getText();
+        final String varName = getReferencedName();
         if (varName == null) {
             return null;
         }
 
-        final ResolveProcessor processor = new BashHereDocMarkerProcessor(getReferencedName(), otherEndsType);
+        final ResolveProcessor processor = new BashHereDocMarkerProcessor(varName, otherEndsType);
         if (expectLater) {
             PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
         } else {
@@ -111,6 +115,7 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
         return processor.getBestResult(true, this);
     }
 
+    @NotNull
     public String getCanonicalText() {
         return getText();
     }

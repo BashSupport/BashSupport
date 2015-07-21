@@ -4,6 +4,7 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInsight.completion.CompletionContributor;
@@ -70,11 +71,12 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
                     return false;
                 }
 
-                if (BashPsiUtils.hasParentOfType((PsiElement) o, BashParameterExpansion.class, 2)) {
+                if (BashPsiUtils.hasParentOfType((PsiElement) o, BashHereDoc.class, 1)) {
                     return false;
                 }
 
-                return true;
+                return !BashPsiUtils.hasParentOfType((PsiElement) o, BashParameterExpansion.class, 2);
+
             }
 
             return false;

@@ -82,11 +82,11 @@ public class RedirectionParsingTest extends MockPsiTest {
 
         //<<&1
         mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("<<", "&1"),
-                REDIRECT_LESS_LESS, FILEDESCRIPTOR);
+                HEREDOC_MARKER_TAG, FILEDESCRIPTOR);
 
         //1<<&1
         mockTestError(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", "<<", "&1"),
-                INTEGER_LITERAL, REDIRECT_LESS_LESS, FILEDESCRIPTOR);
+                INTEGER_LITERAL, HEREDOC_MARKER_TAG, FILEDESCRIPTOR);
 
         //<<<&1
         mockTestSuccessWithErrors(BashVersion.Bash_v3, redirectionTest, Arrays.asList("<<<", "&1"),

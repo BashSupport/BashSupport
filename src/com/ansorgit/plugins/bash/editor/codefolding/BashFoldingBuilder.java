@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.codefolding;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilder;
@@ -70,7 +71,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static TextRange adjustFoldingRange(ASTNode node) {
-        if (node.getElementType() == HEREDOC_ELEMENT) {
+        if (node.getElementType() == BashTokenTypes.HEREDOC_CONTENT) {
             TextRange textRange = node.getTextRange();
             return TextRange.from(textRange.getStartOffset(), textRange.getLength() - 1);
         }
@@ -79,14 +80,14 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static boolean mayContainFoldBlocks(IElementType type) {
-        return type != HEREDOC_ELEMENT;
+        return type != BashTokenTypes.HEREDOC_CONTENT;
     }
 
     private static boolean isFoldable(IElementType type) {
         return type == BLOCK_ELEMENT
                 || type == GROUP_COMMAND
                 || type == CASE_PATTERN_LIST_ELEMENT
-                || type == HEREDOC_ELEMENT;
+                || type == BashTokenTypes.HEREDOC_CONTENT;
     }
 
     private static int minumumLineOffset(IElementType type) {
@@ -100,7 +101,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             return null;
         }
 
-        if (type == HEREDOC_ELEMENT) {
+        if (type == BashTokenTypes.HEREDOC_CONTENT) {
             return "...";
         }
 

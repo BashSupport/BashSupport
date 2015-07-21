@@ -22,7 +22,7 @@ import com.intellij.psi.PsiLanguageInjectionHost;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author jansorg
+ * Based on the original Jetbrains StringLiteralEscaper code.
  */
 public class BashIdentityStringLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
     public BashIdentityStringLiteralEscaper(T host) {

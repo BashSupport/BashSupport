@@ -236,7 +236,7 @@ then
 	fi
 
 	# Split the remaining portion of the progress bar into thirds
-	progress_size=$(((100 - $PROGRESS_STATE) / 3))
+	progress_size=$(( (100 - $PROGRESS_STATE) / 3))
 
 	case "$runlevel" in
 		0|6)

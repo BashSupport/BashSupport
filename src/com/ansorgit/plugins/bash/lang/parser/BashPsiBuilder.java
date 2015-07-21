@@ -62,7 +62,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         }
     });
     private final BackquoteData backquoteData = new BackquoteData();
-    private final HereDocData hereDocData = new HereDocData();
     private final ParsingStateData parsingStateData = new ParsingStateData();
     private final Project project;
 
@@ -180,10 +179,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      */
     public BackquoteData getBackquoteData() {
         return backquoteData;
-    }
-
-    public HereDocData getHereDocData() {
-        return hereDocData;
     }
 
     public final ParsingStateData getParsingState() {

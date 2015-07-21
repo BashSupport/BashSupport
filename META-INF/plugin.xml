@@ -94,10 +94,6 @@
         <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
         </component>
-
-        <component>
-            <implementation-class> com.ansorgit.plugins.bash.editor.highlighting.codeHighlighting.RemoveHighlightingPassFactory</implementation-class>
-        </component>
     </project-components>
 
     <!-- Plugin's module components -->
