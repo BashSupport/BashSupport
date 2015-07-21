@@ -77,8 +77,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     public static final TextAttributesKey VAR_DEF = TextAttributesKey.createTextAttributesKey("BASH.VAR_DEF", VAR_USE);
 
-    public static final TextAttributesKey NONE = HighlighterColors.TEXT;
-
     @NotNull
     public Lexer getHighlightingLexer() {
         return new BashLexer();

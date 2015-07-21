@@ -43,7 +43,6 @@ public final class Parsing {
     public static final PipelineParsing pipeline = new PipelineParsing();
     public static final WordParsing word = new WordParsing();
     public static final VarParsing var = new VarParsing();
-    public static final HereDocParsing hereDoc = new HereDocParsing();
     public static final BraceExpansionParsing braceExpansionParsing = new BraceExpansionParsing();
     public static final ParameterExpansionParsing parameterExpansionParsing = new ParameterExpansionParsing();
     public static final ProcessSubstitutionParsing processSubstitutionParsing = new ProcessSubstitutionParsing();

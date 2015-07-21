@@ -1,3 +1,6 @@
+####2015-07-18
+ - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
+ 
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  

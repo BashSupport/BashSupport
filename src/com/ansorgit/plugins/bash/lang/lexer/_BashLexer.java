@@ -1,7 +1,8 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
-import com.intellij.util.containers.IntStack;
+import com.ansorgit.plugins.bash.util.IntStack;
+import com.google.common.collect.Iterables;
 
 /**
  *
@@ -9,7 +10,7 @@ import com.intellij.util.containers.IntStack;
 public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
-    private final StringParsingState string = new StringParsingState();
+    private final StringLexingtate string = new StringLexingtate();
     //parameter expansion parsing state
     boolean paramExpansionHash = false;
     boolean paramExpansionWord = false;
@@ -18,12 +19,9 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean isBash4 = false;
     //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
     private boolean inCaseBody = false;
-    //True if an arithmetic expression is expected as next token (e.g. in $((a-$((1+34)))) ) we need to
-    //discern between a simple ( and the start of a new subexpression
-    private boolean expectArithExpression = false;
-    private boolean startNewArithExpression = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
+    private HeredocLexingState heredocLexingState = new HeredocLexingState();
 
     public _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
@@ -32,25 +30,30 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public boolean isStartNewArithExpression() {
-        return startNewArithExpression;
+    public boolean isHeredocEnd(String text) {
+        return heredocLexingState.isNextHeredocMarker(text);
     }
 
     @Override
-    public void setStartNewArithExpression(boolean startNewArithExpression) {
-        this.startNewArithExpression = startNewArithExpression;
+    public boolean isHeredocEvaluating() {
+        return heredocLexingState.isExpectingEvaluatingHeredoc();
     }
 
     @Override
-    public boolean isExpectArithExpression() {
-        return expectArithExpression;
+    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
+        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
     }
 
     @Override
-    public void setExpectArithExpression(boolean expectArithExpression) {
-        this.expectArithExpression = expectArithExpression;
+    public void popHeredocMarker(CharSequence marker) {
+        heredocLexingState.popHeredocMarker(marker.toString());
     }
 
+    @Override
+    public boolean isHeredocMarkersEmpty() {
+        return heredocLexingState.isEmpty();
+    }
+    
     @Override
     public boolean isEmptyConditionalCommand() {
         return emptyConditionalCommand;
@@ -62,7 +65,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public StringParsingState stringParsingState() {
+    public StringLexingtate stringParsingState() {
         return string;
     }
 
@@ -97,6 +100,11 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     public void backToPreviousState() {
         // pop() will throw an exception if empty
         yybegin(lastStates.pop());
+    }
+
+    @Override
+    public boolean isInState(int state) {
+        return lastStates.contains(state);
     }
 
     @Override

@@ -1,20 +1,22 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashHereDocImpl.java, Class: BashHereDocImpl
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
@@ -24,8 +26,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.LeafElement;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,9 +39,9 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implements BashHereDoc {
+public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implements BashHereDoc, PsiLanguageInjectionHost {
     public BashHereDocImpl(ASTNode astNode) {
-        super(astNode, "bash hereDoc");
+        super(astNode, "bash here doc");
     }
 
     @Override
@@ -89,12 +92,33 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
     }
 
     public boolean isEvaluatingVariables() {
-        PsiElement start = findStartMarkerElement();
-        return (start instanceof BashHereDocStartMarker) && ((BashHereDocStartMarker) start).isEvaluatingVariables();
+        BashHereDocStartMarker start = findStartMarkerElement();
+        return (start != null) && start.isEvaluatingVariables();
     }
 
     public boolean isStrippingLeadingWhitespace() {
         PsiElement redirectElement = findRedirectElement();
         return (redirectElement != null) && "<<-".equals(redirectElement.getText());
+    }
+
+    @Override
+    public boolean isValidHost() {
+        //heredoc lexing is not yet doing well with injections
+        return false;
+        //return !isEvaluatingVariables();
+    }
+
+    @Override
+    public PsiLanguageInjectionHost updateText(@NotNull String text) {
+        ASTNode valueNode = getNode().getFirstChildNode();
+        assert valueNode instanceof LeafElement;
+        ((LeafElement) valueNode).replaceWithText(text);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
+        return new HeredocLiteralEscaper<PsiLanguageInjectionHost>(this);
     }
 }

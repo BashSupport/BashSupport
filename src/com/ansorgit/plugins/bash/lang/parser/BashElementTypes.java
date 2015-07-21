@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
@@ -42,8 +43,12 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
+import com.intellij.lang.xhtml.XHTMLLanguage;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.ReflectionUtil;
 import org.jetbrains.annotations.NonNls;
@@ -159,14 +164,11 @@ public interface BashElementTypes {
 
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
-
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
-
-    //heredoc
-    IElementType HEREDOC_ELEMENT = new BashElementType("here doc element");
-    IElementType HEREDOC_START_MARKER_ELEMENT = new BashElementType("here doc start marker element");
-    IElementType HEREDOC_END_MARKER_ELEMENT = new BashElementType("here doc end marker element");
-
     IElementType STRING_ELEMENT = new BashElementType("string");
     IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
+
+    IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
+    IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
+    IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
 }
