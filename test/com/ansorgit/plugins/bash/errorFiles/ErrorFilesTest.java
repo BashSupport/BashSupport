@@ -64,7 +64,7 @@ public class ErrorFilesTest extends CodeInsightTestCase {
 
         int count = errors.size();
         if (count > 0) {
-            System.out.println(description(errors));
+            System.err.println(description(errors));
         }
         return count;
     }

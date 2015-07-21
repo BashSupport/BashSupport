@@ -59,7 +59,9 @@ Comment = "#"  {InputCharacter}*
 
 EscapedChar = "\\" [^\n]
 StringStart = "$\"" | "\""
+
 SingleCharacter = [^\'] | {EscapedChar}
+UnescapedCharacter = [^\']
 
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
@@ -627,7 +629,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {StringStart}                 { stringParsingState().reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
-    \'{SingleCharacter}*\'        { return STRING2; }
+    \'{UnescapedCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             {
