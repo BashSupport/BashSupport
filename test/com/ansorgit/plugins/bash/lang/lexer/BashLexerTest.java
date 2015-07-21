@@ -128,8 +128,6 @@ public class BashLexerTest {
 
         testTokenization("$((a=1,1))", DOLLAR, EXPR_ARITH, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, COMMA, ARITH_NUMBER, _EXPR_ARITH);
 
-        testTokenization("$((((1))))", DOLLAR, EXPR_ARITH, LEFT_PAREN, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, RIGHT_PAREN, _EXPR_ARITH);
-
         testTokenization("$((-1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
         testTokenization("$((--1))", DOLLAR, EXPR_ARITH, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
@@ -186,9 +184,11 @@ public class BashLexerTest {
 
         testTokenization("$((1+---45))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_MINUS, ARITH_MINUS, ARITH_MINUS, ARITH_NUMBER, _EXPR_ARITH);
 
-        testTokenization("$(((1 << 10)))", DOLLAR, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH);
+        testTokenization("$(((1 << 10)))", DOLLAR, LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, WHITESPACE, ARITH_SHIFT_LEFT, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
 
         testTokenization("$((1 < \"1\"))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END, _EXPR_ARITH);
+
+        testTokenization("$((((1))))", DOLLAR, LEFT_PAREN, EXPR_ARITH, LEFT_PAREN, ARITH_NUMBER, RIGHT_PAREN, _EXPR_ARITH, RIGHT_PAREN);
     }
 
     @Ignore
@@ -438,9 +438,9 @@ public class BashLexerTest {
     public void testRedirect1() {
         testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
-        testTokenization("<<", REDIRECT_LESS_LESS);
+        testTokenization("<<", HEREDOC_MARKER_TAG);
         testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
-        testTokenization("<<-", REDIRECT_LESS_LESS_MINUS);
+        testTokenization("<<-", HEREDOC_MARKER_TAG);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
         testTokenization(">1", GREATER_THAN, INTEGER_LITERAL);
@@ -831,6 +831,96 @@ public class BashLexerTest {
     @Test
     public void testSubshellExpr() {
         testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+    }
+
+    @Test
+    public void testHeredoc() {
+        testTokenization("cat <<END\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<        END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        \"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        \"END\"\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $\"END\"\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $\"END\"$\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+        testTokenization("cat <<        'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $'END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+        testTokenization("cat <<        $'END''END'", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
+
+        testTokenization("cat <<END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+        testTokenization("cat <<END\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED);
+        testTokenization("cat <<END\nABC\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+        testTokenization("cat <<END\nABC\n\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+        testTokenization("cat <<END\nABC", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+        testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+
+        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+
+        testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<END\nABC\nDEF\n\n\nXYZ DEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("cat <<!\n!", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "test\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+
+        testTokenization("cat <<EOF\n" +
+                "$test\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, VARIABLE, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        testTokenization("{\n" +
+                "cat <<EOF\n" +
+                "$(test)\n" +
+                "EOF\n" +
+                "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+
+        testTokenization("cat <<X <<\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, LINE_FEED);
+
+    }
+
+    @Test
+    public void testMultilineHeredoc() throws Exception {
+        //multiple heredocs in one command line
+        testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+    }
+
+    @Test
+    @Ignore //ignored for now because there is a match-all rule for the heredoc start marker
+    public void _testHeredocErrors() throws Exception {
+        testTokenization("cat <<\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
+
+        //the closing string marker is missing in the heredoc
+        testTokenization("cat <<\"END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, BAD_CHARACTER, BAD_CHARACTER);
+    }
+
+    @Test
+    public void testIssue199() throws Exception {
+        testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
+        testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
+        //limitation of the Bash lexer: no look-ahead to the end of an expression 
+        //Bash parses this (probably) as an arithmetic expression with a parenthesis inside
+        //BashSupport doesn't
+        testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
+
+        //the grammar is a bit complicated, the expression parsed beginning with $((( depends on the end of the expression
+        //bash interprets the tokens $(((1+1)+1)) different than $(((1+1)) && echo)
+        //the first is an arithmetic expression with a sum computation
+        //the second is a subshell with an embedded arithmetic command and an echo command
+        //if an expression starts with three or more parentheses the rule is:
+        //  if the expression ends with a single parenthesis, then the first opening parenthesis opens a subshell
+        //  if the expression ends with two parentheses, then the first two start an arithmetic command
+    }
+
+    @Test
+    public void testIssue242() throws Exception {
+        testTokenization("eval \"$1=\\$(printf 'a' \\\"$1\\\")\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, WORD, WORD, WORD, WORD, VARIABLE, WORD, WORD, STRING_END);
     }
 
     @Test

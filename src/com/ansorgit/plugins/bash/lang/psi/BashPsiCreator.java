@@ -144,15 +144,15 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashGenericCommandImpl(node);
         }
 
-        if (elementType == HEREDOC_START_MARKER_ELEMENT) {
+        if (elementType == HEREDOC_START_ELEMENT) {
             return new BashHereDocStartMarkerImpl(node);
         }
 
-        if (elementType == HEREDOC_ELEMENT) {
+        if (elementType == HEREDOC_CONTENT_ELEMENT) {
             return new BashHereDocImpl(node);
         }
 
-        if (elementType == HEREDOC_END_MARKER_ELEMENT) {
+        if (elementType == HEREDOC_END_ELEMENT) {
             return new BashHereDocEndMarkerImpl(node);
         }
 

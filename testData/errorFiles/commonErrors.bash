@@ -12,7 +12,7 @@ eval "(( $1 ))"
 
 function usage()
 {
-cat <<- EOF
+cat << EOF
 bashdoc generates HTML documentation from bash scripts.
 
 Usage: $(basename $0) [OPTIONS] [--] script [script ...]

@@ -31,12 +31,12 @@ import com.intellij.util.containers.Stack;
  *
  * @author Joachim Ansorg
  */
-final class StringParsingState {
-    private final StringBuilder stringData = new StringBuilder(128);
+final class StringLexingtate {
+    //private final StringBuilder stringData = new StringBuilder(128);
     private final Stack<SubshellState> subshells = new Stack<SubshellState>(5);
 
     public void reset() {
-        stringData.setLength(0);
+//        stringData.setLength(0);
         subshells.clear();
     }
 

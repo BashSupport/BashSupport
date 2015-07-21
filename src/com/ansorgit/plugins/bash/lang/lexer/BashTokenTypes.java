@@ -18,8 +18,16 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
+import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.settings.facet.BashFacetType;
+import com.intellij.lang.CompositeLanguage;
+import com.intellij.lang.Language;
+import com.intellij.lang.xhtml.XHTMLLanguage;
+import com.intellij.openapi.fileTypes.PlainTextLanguage;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -243,6 +251,13 @@ public interface BashTokenTypes {
 
     TokenSet stringLiterals = TokenSet.create(WORD, STRING2, INTEGER_LITERAL, COLON);
 
+    IElementType HEREDOC_MARKER_TAG = new BashElementType("heredoc marker tag");
+    IElementType HEREDOC_MARKER_START = new BashElementType("heredoc start marker");
+    IElementType HEREDOC_MARKER_END = new BashElementType("heredoc end marker");
+    IElementType HEREDOC_LINE = new BashElementType("heredoc line (temporary)");
+    //IElementType HEREDOC_CONTENT = new ILazyParseableElementType("here doc content", BashFileType.BASH_LANGUAGE);
+    IElementType HEREDOC_CONTENT = new BashElementType("here doc content");
+
     // test Operators
     IElementType COND_OP = new BashElementType("cond_op");//all the test operators, e.g. -z, != ...
     IElementType COND_OP_EQ_EQ = new BashElementType("cond_op ==");
@@ -251,14 +266,11 @@ public interface BashTokenTypes {
     TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, BANG_TOKEN, COND_OP_EQ_EQ, COND_OP_REGEX);
 
     //redirects
-    IElementType REDIRECT_LESS_LESS = new BashElementType("<<");
     IElementType REDIRECT_LESS_LESS_LESS = new BashElementType("<<<");
     IElementType REDIRECT_LESS_AMP = new BashElementType("<&");
     IElementType REDIRECT_GREATER_AMP = new BashElementType(">&");
-    IElementType REDIRECT_LESS_LESS_MINUS = new BashElementType("<<-");
     IElementType REDIRECT_LESS_GREATER = new BashElementType("<>");
     IElementType REDIRECT_GREATER_BAR = new BashElementType(">|");
-
     IElementType FILEDESCRIPTOR = new BashElementType("&[0-9] filedescriptor");
 
     //Bash 4:
@@ -266,6 +278,11 @@ public interface BashTokenTypes {
     IElementType REDIRECT_AMP_GREATER = new BashElementType("&>");
 
     TokenSet redirectionSet = TokenSet.create(GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
-            REDIRECT_LESS_LESS, REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_LESS_MINUS, REDIRECT_LESS_GREATER,
-            REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP);
+            REDIRECT_LESS_LESS_LESS, REDIRECT_LESS_GREATER,
+            REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP,
+            HEREDOC_MARKER_TAG);
+
+    //sets
+    //fixme add internal commands?
+    TokenSet identifierTokenSet = TokenSet.orSet(keywords, bracketSet);
 }

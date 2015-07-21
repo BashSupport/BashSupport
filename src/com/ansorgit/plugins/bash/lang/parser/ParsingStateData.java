@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: ParsingStateData.java, Class: ParsingStateData
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,9 +26,10 @@ package com.ansorgit.plugins.bash.lang.parser;
  * Date: Jan 29, 2010
  * Time: 7:12:36 PM
  */
-final class ParsingStateData {
+public final class ParsingStateData {
     //do we have to use the volatile? Currently it's not clear whether a PsiBuilder is called concurrently or not
     private int inSimpleCommand = 0;
+    private int heredocMarkers = 0;
 
     public void enterSimpleCommand() {
         inSimpleCommand += 1;
@@ -40,5 +41,17 @@ final class ParsingStateData {
 
     public boolean isInSimpleCommand() {
         return inSimpleCommand > 0;
+    }
+
+    public void pushHeredocMarker() {
+        heredocMarkers++;
+    }
+
+    public boolean expectsHeredocMarker() {
+        return heredocMarkers > 0;
+    }
+
+    public void popHeredocMarker() {
+        heredocMarkers--;
     }
 }

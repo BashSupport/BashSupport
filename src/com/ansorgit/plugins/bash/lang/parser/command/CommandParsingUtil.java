@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -68,7 +69,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return ok;
     }
 
-    public static enum Mode {
+    public enum Mode {
         /**
          * Only accept an ASSIGNENT_WORD or ARRAY_ASSIGNMENT_WORD in front .
          * The =value part is mandatory.
@@ -266,7 +267,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         if (builder.getTokenType() == LEFT_SQUARE) {
             //this is an array assignment, e.g. a[1]=x
             //parse the arithmetic expression in the array assignment square brackets
-            boolean valid = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+            boolean valid = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
             if (!valid) {
                 ParserUtil.error(builder, "parser.unexpected.token");
                 assignment.drop();
@@ -305,7 +306,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
             if (builder.getTokenType() == LEFT_SQUARE) {
                 //array value assignment to specific position
-                boolean ok = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                boolean ok = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                 if (!ok) {
                     marker.drop();
                     return false;
