@@ -148,6 +148,7 @@ public class HereDocParsingTest extends MockPsiTest {
         //if test "X$1"; then
         //cat <<XX
         //XX
+        //echo
         //fi
         mockTest(hereDoc, Lists.newArrayList("if", "test", "'X'", ";", "THEN", "\n", "cat", "<<", "XX", "\n", "XX", "\n", "echo", "\n", "fi"),
                 IF_KEYWORD, WORD, STRING2, SEMI, THEN_KEYWORD, LINE_FEED,

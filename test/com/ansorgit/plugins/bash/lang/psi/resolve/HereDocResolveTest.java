@@ -22,8 +22,8 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.intellij.psi.PsiReference;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * User: jansorg
@@ -33,18 +33,18 @@ import org.junit.Assert;
 public class HereDocResolveTest extends AbstractResolveTest {
     @Test
     public void testResolveHereDocStartMarker() throws Exception {
-        PsiReference endMarker = configure();
-        Assert.assertNotNull(endMarker);
-        Assert.assertTrue(endMarker instanceof BashHereDocEndMarker);
-        Assert.assertTrue(endMarker.resolve() instanceof BashHereDocStartMarker);
+        PsiReference endMarkerRef = configure();
+        Assert.assertNotNull(endMarkerRef);
+
+        Assert.assertTrue(endMarkerRef.resolve() instanceof BashHereDocStartMarker);
     }
 
     @Test
     public void testResolveHereDocStartMarkerWithEval() throws Exception {
-        PsiReference endMarker = configure();
-        Assert.assertNotNull(endMarker);
-        Assert.assertTrue(endMarker instanceof BashHereDocEndMarker);
-        Assert.assertTrue(endMarker.resolve() instanceof BashHereDocStartMarker);
+        PsiReference endMarkerRef = configure();
+        Assert.assertNotNull(endMarkerRef);
+
+        Assert.assertTrue(endMarkerRef.resolve() instanceof BashHereDocStartMarker);
     }
 
     @Test

@@ -114,9 +114,11 @@ public class RedirectionParsingTest extends MockPsiTest {
     public void testSimpleListParsingWithErrors() {
         //>> >> a
         mockTestSuccessWithErrors(redirectionTest, SHIFT_RIGHT, SHIFT_RIGHT, WORD);
-        //|
-        mockTestSuccessWithErrors(redirectionTest, PIPE);
+
         //a > a a
-        mockTestSuccessWithErrors(redirectionTest, WORD, PIPE, WORD, WORD);
+        mockTestError(redirectionTest, WORD, PIPE, WORD, WORD);
+
+        //|
+        mockTestError(redirectionTest, PIPE);
     }
 }

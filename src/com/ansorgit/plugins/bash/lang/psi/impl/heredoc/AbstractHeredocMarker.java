@@ -20,11 +20,8 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
@@ -32,12 +29,13 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
+import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract base class for heredoc markers.
@@ -46,15 +44,13 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 30, 2010
  * Time: 12:48:49 PM
  */
-abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker, PsiReference {
+abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker {
     private static final Object[] EMPTY = new Object[0];
-    private final Class<? extends BashHereDocMarker> otherEndsType;
-    private final boolean expectLater;
 
-    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashHereDocMarker> otherEndsType, boolean expectLater) {
+    private HeredocMarkerReference reference;
+
+    public AbstractHeredocMarker(ASTNode astNode, String name) {
         super(astNode, name);
-        this.otherEndsType = otherEndsType;
-        this.expectLater = expectLater;
     }
 
     @Override
@@ -67,52 +63,22 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
         return getMarkerText();
     }
 
-    public PsiElement setName(@NotNull @NonNls String newname) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newname)) {
-            throw new IncorrectOperationException("The name is empty");
+    @Override
+    public PsiElement setName(@NotNull String newElementName) throws IncorrectOperationException {
+        if (!BashIdentifierUtil.isValidIdentifier(newElementName)) {
+            throw new IncorrectOperationException("Invalid name");
         }
 
-        return BashPsiUtils.replaceElement(this, BashPsiElementFactory.createWord(getProject(), newname));
+        return BashPsiUtils.replaceElement(this, createMarkerElement(newElementName));
     }
 
     @Override
     public PsiReference getReference() {
-        return this;
-    }
-
-    public String getReferencedName() {
-        return getMarkerText();
-    }
-
-    public PsiElement getElement() {
-        return this;
-    }
-
-    public PsiElement getNameIdentifier() {
-        return this;
-    }
-
-    public TextRange getRangeInElement() {
-        String text = getText();
-        String markerText = getMarkerText();
-
-        return TextRange.from(text.indexOf(markerText), markerText.length());
-    }
-
-    public PsiElement resolve() {
-        final String varName = getReferencedName();
-        if (varName == null) {
-            return null;
+        if (reference == null) {
+            this.reference = new HeredocMarkerReference(this);
         }
 
-        final ResolveProcessor processor = new BashHereDocMarkerProcessor(varName, otherEndsType);
-        if (expectLater) {
-            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-        } else {
-            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-        }
-
-        return processor.getBestResult(true, this);
+        return reference;
     }
 
     @NotNull
@@ -120,24 +86,61 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
         return getText();
     }
 
-    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-        return setName(newElementName);
-    }
+    @Nullable
+    protected abstract PsiElement resolveInner();
 
-    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        throw new IncorrectOperationException("Not yet implemented");
-    }
+    protected abstract PsiElement createMarkerElement(String name);
 
-    public boolean isReferenceTo(PsiElement element) {
-        return otherEndsType.isInstance(element) && element.getText().equals(getText());
-    }
+    private static class HeredocMarkerReference extends CachingReference implements BindablePsiReference {
+        private AbstractHeredocMarker marker;
 
-    @NotNull
-    public Object[] getVariants() {
-        return EMPTY;
-    }
+        public HeredocMarkerReference(AbstractHeredocMarker marker) {
+            this.marker = marker;
+        }
 
-    public boolean isSoft() {
-        return false;
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            return marker.resolveInner();
+        }
+
+        @Override
+        public PsiElement getElement() {
+            return marker;
+        }
+
+        @Override
+        public TextRange getRangeInElement() {
+            String text = marker.getText();
+            String markerText = marker.getMarkerText();
+
+            return TextRange.from(text.indexOf(markerText), markerText.length());
+        }
+
+        @NotNull
+        @Override
+        public String getCanonicalText() {
+            return marker.getText();
+        }
+
+        @Override
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            return marker.setName(newElementName);
+        }
+
+        @Override
+        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            if (element instanceof BashHereDocMarker) {
+                return handleElementRename(((BashHereDocMarker) element).getMarkerText());
+            }
+
+            throw new IncorrectOperationException("Unsupported element type");
+        }
+
+        @NotNull
+        @Override
+        public Object[] getVariants() {
+            return EMPTY;
+        }
     }
 }

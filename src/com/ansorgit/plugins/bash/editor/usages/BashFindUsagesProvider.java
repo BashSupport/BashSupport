@@ -129,7 +129,12 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return StringUtils.stripToEmpty(((BashCommand) element).getReferencedCommandName());
         }
 
-        return StringUtils.stripToEmpty(((PsiNamedElement) element).getName());
+        if (element instanceof PsiNamedElement) {
+            return StringUtils.stripToEmpty(((PsiNamedElement) element).getName());
+        }
+
+        //fixme
+        return "";
     }
 
     @NotNull

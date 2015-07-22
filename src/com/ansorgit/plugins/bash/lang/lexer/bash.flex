@@ -163,7 +163,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
-    | [^ \s\t\n\r\f]+ {
+    | [^ \s\t\n\r\f;&|]+ {
         pushExpectedHeredocMarker(yytext());
         backToPreviousState();
 

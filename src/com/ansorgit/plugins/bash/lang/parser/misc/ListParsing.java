@@ -27,7 +27,6 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * Date: 25.03.2009
@@ -49,8 +48,6 @@ public final class ListParsing implements ParsingTool {
         | 	';'  //eof
         ;
      */
-
-    private static final TokenSet heredocTokens = TokenSet.create(HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
     public boolean isListTerminator(IElementType token) {
         return token == LINE_FEED || token == SEMI || token == null; //fixme null right for eof?
@@ -158,21 +155,17 @@ public final class ListParsing implements ParsingTool {
 
         boolean result = true;
 
-        parseOptionalHeredoc(builder);
-
         final IElementType token = builder.getTokenType();
         if (token == AND_AND || token == OR_OR) {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
             result = parseList1(builder, simpleMode, false, recursionGuard); //with errors
 
-            if (markComposedCommand) {
-                composedMarker.done(COMPOSED_COMMAND);
-            } else {
-                composedMarker.drop();
-            }
+            composedMarker.done(COMPOSED_COMMAND);
         } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            if (token == LINE_FEED && simpleMode) {
+            boolean hasHeredoc = parseOptionalHeredoc(builder);
+
+            if (builder.getTokenType() == LINE_FEED && simpleMode) {
                 composedMarker.drop();
                 return true;
             }
@@ -185,12 +178,24 @@ public final class ListParsing implements ParsingTool {
                 //not followed by a command, return true
                 //the AMP is taken by parseCompoundList
                 start.rollbackTo();
-                composedMarker.drop();
+
+                if (hasHeredoc) {
+                    composedMarker.done(COMPOSED_COMMAND);
+                } else {
+                    composedMarker.drop();
+                }
+
                 return true;
             }
 
             start.drop();
-            composedMarker.drop();
+
+            if (hasHeredoc) {
+                composedMarker.done(COMPOSED_COMMAND);
+            } else {
+                composedMarker.drop();
+            }
+
             result = parseList1(builder, simpleMode, false, recursionGuard);
         } else {
             composedMarker.drop();
@@ -218,7 +223,7 @@ public final class ListParsing implements ParsingTool {
      */
     private boolean parseOptionalHeredoc(BashPsiBuilder builder) {
         if (builder.getTokenType() == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
-            //composedMarker.drop();
+            int startOffset = builder.getCurrentOffset();
 
             //eat the newline
             builder.advanceLexer();
@@ -257,7 +262,8 @@ public final class ListParsing implements ParsingTool {
                 }
             } while (builder.getParsingState().expectsHeredocMarker());
 
-            return true;
+            // return true;
+            return builder.getCurrentOffset() - startOffset > 0;
         }
 
         return false;

@@ -21,16 +21,53 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements BashHereDocStartMarker {
     public BashHereDocStartMarkerImpl(final ASTNode astNode) {
-        super(astNode, "Bash heredoc start marker", BashHereDocEndMarker.class, true);
+        super(astNode, "Bash heredoc start marker");
+    }
+
+    @Nullable
+    @Override
+    protected PsiElement resolveInner() {
+        final String markerName = getMarkerText();
+        if (markerName == null || markerName.isEmpty()) {
+            return null;
+        }
+
+        //walk to the command containing this heredoc start marker
+        //then walk the command's siblings to return the fist matching locator
+        //fixme limitation with multiple heredocs using the same marker name more than once
+
+        BashComposedCommand parent = BashPsiUtils.findParent(this, BashComposedCommand.class);
+        if (parent == null) {
+            return null;
+        }
+
+        final List<BashHereDocEndMarker> startMarkers = Lists.newLinkedList();
+        BashPsiUtils.visitRecursively(parent, new BashVisitor() {
+            @Override
+            public void visitHereDocEndMarker(BashHereDocEndMarker marker) {
+                if (markerName.equals(marker.getMarkerText())) {
+                    startMarkers.add(marker);
+                }
+            }
+        });
+
+        return startMarkers.isEmpty() ? null : startMarkers.get(0);
     }
 
     @Override
@@ -66,5 +103,10 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
         }
 
         return text.substring(start, end);
+    }
+
+    @Override
+    protected PsiElement createMarkerElement(String name) {
+        return BashPsiElementFactory.createHeredocStartMarker(getProject(), name);
     }
 }
