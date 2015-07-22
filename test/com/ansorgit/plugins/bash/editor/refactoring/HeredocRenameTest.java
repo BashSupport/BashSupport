@@ -1,8 +1,6 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
@@ -28,12 +26,36 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testDollarMarkerRename() throws Exception {
+        doRename(new Runnable() {
+            public void run() {
+                myFixture.renameElementAtCaret("$_RENAMED");
+            }
+        }, "source.bash");
+    }
+
+    @Test
     public void testEndMarkerRename() throws Exception {
         doRename(false);
     }
 
     @Test
     public void testNestedHeredocRename() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testWrappedMarkerRename() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testEscapedMarkerRename() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testWrappedPrefixedMarkerRename() throws Exception {
         doRename(false);
     }
 

@@ -46,6 +46,10 @@ class HeredocLexingState {
     }
 
     private String cleanMarker(String marker) {
+        if (marker.equals("$")) {
+            return marker;
+        }
+
         int start = 0;
         int end = marker.length();
 
@@ -53,15 +57,15 @@ class HeredocLexingState {
             start++;
         }
 
-        if (marker.charAt(start) == '\\') {
+        if (start < end && marker.charAt(start) == '\\') {
             start++;
         }
 
-        while (marker.charAt(end - 1) == '\n') {
+        while (end > 0 && marker.charAt(end - 1) == '\n') {
             end--;
         }
 
-        if (marker.charAt(start) == '\'' || marker.charAt(start) == '"') {
+        if (start < end && end > 0 && marker.charAt(start) == '\'' || marker.charAt(start) == '"') {
             start++;
             end--;
         }
