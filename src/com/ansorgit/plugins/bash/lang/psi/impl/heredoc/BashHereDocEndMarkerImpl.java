@@ -45,34 +45,9 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
         super(astNode, "Bash heredoc end marker");
     }
 
-    @Nullable
     @Override
-    protected PsiElement resolveInner() {
-        final String markerName = getMarkerText();
-        if (markerName == null || markerName.isEmpty()) {
-            return null;
-        }
-
-        //walk to the command containing this heredoc end marker
-        //fixme limitation with multiple heredocs using the same marker name more than once
-
-        BashComposedCommand parent = BashPsiUtils.findParent(this, BashComposedCommand.class);
-        if (parent == null) {
-            return null;
-        }
-
-        final List<BashHereDocStartMarker> startMarkers = Lists.newLinkedList();
-
-        BashPsiUtils.visitRecursively(parent, new BashVisitor() {
-            @Override
-            public void visitHereDocStartMarker(BashHereDocStartMarker marker) {
-                if (markerName.equals(marker.getMarkerText())) {
-                    startMarkers.add(marker);
-                }
-            }
-        });
-
-        return startMarkers.isEmpty() ? null : startMarkers.get(0);
+    public HeredocMarkerReference createReference() {
+        return new HeredocEndMarkerReference(BashHereDocEndMarkerImpl.this);
     }
 
     @Override
@@ -89,8 +64,47 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
         return getText().trim();
     }
 
-    @Override
-    protected PsiElement createMarkerElement(String name) {
-        return BashPsiElementFactory.createHeredocEndMarker(getProject(), name);
+    private static class HeredocEndMarkerReference extends HeredocMarkerReference {
+        public HeredocEndMarkerReference(BashHereDocEndMarker marker) {
+            super(marker);
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            final String markerName = marker.getMarkerText();
+            if (markerName == null || markerName.isEmpty()) {
+                return null;
+            }
+
+            //walk to the command containing this heredoc end marker
+            BashComposedCommand parent = BashPsiUtils.findParent(marker, BashComposedCommand.class);
+            if (parent == null) {
+                return null;
+            }
+
+            final List<BashHereDocStartMarker> startMarkers = Lists.newLinkedList();
+            BashPsiUtils.visitRecursively(parent, new BashVisitor() {
+                @Override
+                public void visitHereDocStartMarker(BashHereDocStartMarker marker) {
+                    startMarkers.add(marker);
+                }
+            });
+
+            //find out which position the marker is in a list of multiple
+            int markerPos = 0;
+            for (PsiElement current = marker.getPrevSibling(); current != null; current = current.getPrevSibling()) {
+                if (current instanceof BashHereDocEndMarker) {
+                    markerPos++;
+                }
+            }
+
+            return startMarkers.size() > markerPos ? startMarkers.get(markerPos) : null;
+        }
+
+        @Override
+        protected PsiElement createMarkerElement(String name) {
+            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name);
+        }
     }
 }

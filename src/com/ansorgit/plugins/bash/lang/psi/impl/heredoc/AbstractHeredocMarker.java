@@ -22,20 +22,14 @@ package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
-import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract base class for heredoc markers.
@@ -45,8 +39,6 @@ import org.jetbrains.annotations.Nullable;
  * Time: 12:48:49 PM
  */
 abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker {
-    private static final Object[] EMPTY = new Object[0];
-
     private HeredocMarkerReference reference;
 
     public AbstractHeredocMarker(ASTNode astNode, String name) {
@@ -65,82 +57,23 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
 
     @Override
     public PsiElement setName(@NotNull String newElementName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newElementName)) {
-            throw new IncorrectOperationException("Invalid name");
-        }
-
-        return BashPsiUtils.replaceElement(this, createMarkerElement(newElementName));
+        PsiReference reference = getReference();
+        return reference != null ? reference.handleElementRename(newElementName) : null;
     }
 
     @Override
     public PsiReference getReference() {
         if (reference == null) {
-            this.reference = new HeredocMarkerReference(this);
+            reference = createReference();
         }
 
         return reference;
     }
 
+    public abstract HeredocMarkerReference createReference();
+
     @NotNull
     public String getCanonicalText() {
         return getText();
-    }
-
-    @Nullable
-    protected abstract PsiElement resolveInner();
-
-    protected abstract PsiElement createMarkerElement(String name);
-
-    private static class HeredocMarkerReference extends CachingReference implements BindablePsiReference {
-        private AbstractHeredocMarker marker;
-
-        public HeredocMarkerReference(AbstractHeredocMarker marker) {
-            this.marker = marker;
-        }
-
-        @Nullable
-        @Override
-        public PsiElement resolveInner() {
-            return marker.resolveInner();
-        }
-
-        @Override
-        public PsiElement getElement() {
-            return marker;
-        }
-
-        @Override
-        public TextRange getRangeInElement() {
-            String text = marker.getText();
-            String markerText = marker.getMarkerText();
-
-            return TextRange.from(text.indexOf(markerText), markerText.length());
-        }
-
-        @NotNull
-        @Override
-        public String getCanonicalText() {
-            return marker.getText();
-        }
-
-        @Override
-        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-            return marker.setName(newElementName);
-        }
-
-        @Override
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            if (element instanceof BashHereDocMarker) {
-                return handleElementRename(((BashHereDocMarker) element).getMarkerText());
-            }
-
-            throw new IncorrectOperationException("Unsupported element type");
-        }
-
-        @NotNull
-        @Override
-        public Object[] getVariants() {
-            return EMPTY;
-        }
     }
 }
