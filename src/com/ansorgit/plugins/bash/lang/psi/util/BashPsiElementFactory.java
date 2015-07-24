@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashChangeUtil.java, Class: BashChangeUtil
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,8 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
@@ -53,7 +55,7 @@ public class BashPsiElementFactory {
     public static PsiElement createFileReference(Project project, String content) {
         PsiElement firstChild = createDummyBashFile(project, ". " + content).getFirstChild();
 
-        return ((BashIncludeCommand)firstChild).getFileReference();
+        return ((BashIncludeCommand) firstChild).getFileReference();
     }
 
     public static PsiElement createSymbol(Project project, String name) {
@@ -118,5 +120,15 @@ public class BashPsiElementFactory {
 
         PsiFile file = createDummyBashFile(project, text);
         return PsiTreeUtil.getChildOfType(file, PsiComment.class);
+    }
+
+    public static PsiElement createHeredocStartMarker(Project project, String name) {
+        String data = String.format("cat << %s\n%s", name, name);
+        return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocStartMarker.class);
+    }
+
+    public static PsiElement createHeredocEndMarker(Project project, String name) {
+        String data = String.format("cat << %s\n%s", name, name);
+        return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocEndMarker.class);
     }
 }

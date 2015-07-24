@@ -5,6 +5,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.codeInsight.CodeInsightTestCase;
@@ -90,12 +92,24 @@ public class BashPsiElementFactoryTest extends CodeInsightTestCase {
     @Test
     public void testCreateComment() throws Exception {
         PsiComment element = BashPsiElementFactory.createComment(myProject, "abc");
-        Assert.assertTrue("element is not a command: "+ element, element instanceof PsiComment);
+        Assert.assertTrue("element is not a command: " + element, element instanceof PsiComment);
     }
 
     @Test
     public void testCommand() throws Exception {
         PsiElement element = BashPsiElementFactory.createCommand(myProject, "externalCOmmand");
-        Assert.assertTrue("element is not a command: "+ element, element instanceof BashGenericCommand);
+        Assert.assertTrue("element is not a command: " + element, element instanceof BashGenericCommand);
+    }
+
+    @Test
+    public void testHeredocStartMarker() throws Exception {
+        PsiElement element = BashPsiElementFactory.createHeredocStartMarker(myProject, "EOF");
+        Assert.assertTrue("element is not a start marker: " + element, element instanceof BashHereDocStartMarker);
+    }
+
+    @Test
+    public void testHeredocEndMarker() throws Exception {
+        PsiElement element = BashPsiElementFactory.createHeredocEndMarker(myProject, "EOF");
+        Assert.assertTrue("element is not a start marker: " + element, element instanceof BashHereDocEndMarker);
     }
 }

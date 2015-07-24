@@ -20,23 +20,15 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
-import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -46,15 +38,11 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 30, 2010
  * Time: 12:48:49 PM
  */
-abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker, PsiReference {
-    private static final Object[] EMPTY = new Object[0];
-    private final Class<? extends BashHereDocMarker> otherEndsType;
-    private final boolean expectLater;
+abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker {
+    private HeredocMarkerReference reference;
 
-    public AbstractHeredocMarker(ASTNode astNode, String name, @NotNull Class<? extends BashHereDocMarker> otherEndsType, boolean expectLater) {
+    public AbstractHeredocMarker(ASTNode astNode, String name) {
         super(astNode, name);
-        this.otherEndsType = otherEndsType;
-        this.expectLater = expectLater;
     }
 
     @Override
@@ -67,77 +55,25 @@ abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement
         return getMarkerText();
     }
 
-    public PsiElement setName(@NotNull @NonNls String newname) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newname)) {
-            throw new IncorrectOperationException("The name is empty");
-        }
-
-        return BashPsiUtils.replaceElement(this, BashPsiElementFactory.createWord(getProject(), newname));
+    @Override
+    public PsiElement setName(@NotNull String newElementName) throws IncorrectOperationException {
+        PsiReference reference = getReference();
+        return reference != null ? reference.handleElementRename(newElementName) : null;
     }
 
     @Override
     public PsiReference getReference() {
-        return this;
-    }
-
-    public String getReferencedName() {
-        return getMarkerText();
-    }
-
-    public PsiElement getElement() {
-        return this;
-    }
-
-    public PsiElement getNameIdentifier() {
-        return this;
-    }
-
-    public TextRange getRangeInElement() {
-        String text = getText();
-        String markerText = getMarkerText();
-
-        return TextRange.from(text.indexOf(markerText), markerText.length());
-    }
-
-    public PsiElement resolve() {
-        final String varName = getReferencedName();
-        if (varName == null) {
-            return null;
+        if (reference == null) {
+            reference = createReference();
         }
 
-        final ResolveProcessor processor = new BashHereDocMarkerProcessor(varName, otherEndsType);
-        if (expectLater) {
-            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-        } else {
-            PsiTreeUtil.treeWalkUp(processor, this, this.getContainingFile(), ResolveState.initial());
-        }
-
-        return processor.getBestResult(true, this);
+        return reference;
     }
+
+    public abstract HeredocMarkerReference createReference();
 
     @NotNull
     public String getCanonicalText() {
         return getText();
-    }
-
-    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-        return setName(newElementName);
-    }
-
-    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        throw new IncorrectOperationException("Not yet implemented");
-    }
-
-    public boolean isReferenceTo(PsiElement element) {
-        return otherEndsType.isInstance(element) && element.getText().equals(getText());
-    }
-
-    @NotNull
-    public Object[] getVariants() {
-        return EMPTY;
-    }
-
-    public boolean isSoft() {
-        return false;
     }
 }

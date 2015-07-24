@@ -1,8 +1,8 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
+import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.text.StringUtil;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;
@@ -14,27 +14,19 @@ class HeredocLexingState {
     private LinkedList<Pair<String, Boolean>> expectedHeredocs = Lists.newLinkedList();
 
     public boolean isNextHeredocMarker(String marker) {
-        return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().first.equals(trimNewline(marker));
-    }
-
-    private String trimNewline(String marker) {
-        return StringUtils.removeEnd(marker, "\n");
+        return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().first.equals(HeredocSharedImpl.cleanMarker(marker));
     }
 
     public void pushHeredocMarker(String marker) {
-        expectedHeredocs.add(Pair.create(cleanMarker(marker), isEvaluatingMarker(marker)));
+        expectedHeredocs.add(Pair.create(HeredocSharedImpl.cleanMarker(marker), HeredocSharedImpl.isEvaluatingMarker(marker)));
     }
 
     public boolean isExpectingEvaluatingHeredoc() {
         return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().second;
     }
 
-    private static Boolean isEvaluatingMarker(String marker) {
-        return !marker.startsWith("\"") && !marker.startsWith("'") && !marker.startsWith("\\") && !marker.startsWith("$");
-    }
-
     public void popHeredocMarker(String marker) {
-        if (!isNextHeredocMarker(cleanMarker(marker))) {
+        if (!isNextHeredocMarker(HeredocSharedImpl.cleanMarker(marker))) {
             throw new IllegalStateException("Heredoc marker isn't expected to be removed: " + marker);
         }
 
@@ -43,30 +35,5 @@ class HeredocLexingState {
 
     public boolean isEmpty() {
         return expectedHeredocs.isEmpty();
-    }
-
-    private String cleanMarker(String marker) {
-        int start = 0;
-        int end = marker.length();
-
-        if (marker.charAt(start) == '$') {
-            start++;
-        }
-
-        if (marker.charAt(start) == '\\') {
-            start++;
-        }
-
-        while (marker.charAt(end - 1) == '\n') {
-            end--;
-        }
-
-        if (marker.charAt(start) == '\'' || marker.charAt(start) == '"') {
-            start++;
-            end--;
-        }
-
-        //fixme handle concatenated ''"" parts with optional $ prefix chars
-        return marker.substring(start, end);
     }
 }
