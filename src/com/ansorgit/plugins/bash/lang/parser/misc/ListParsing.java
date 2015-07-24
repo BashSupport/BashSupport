@@ -166,7 +166,12 @@ public final class ListParsing implements ParsingTool {
             boolean hasHeredoc = parseOptionalHeredoc(builder);
 
             if (builder.getTokenType() == LINE_FEED && simpleMode) {
-                composedMarker.drop();
+                if (hasHeredoc) {
+                    composedMarker.done(COMPOSED_COMMAND);
+                } else {
+                    composedMarker.drop();
+                }
+
                 return true;
             }
 

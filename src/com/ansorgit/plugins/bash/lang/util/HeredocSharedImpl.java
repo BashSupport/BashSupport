@@ -1,6 +1,8 @@
 package com.ansorgit.plugins.bash.lang.util;
 
+import com.intellij.openapi.util.Pair;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Shared code for the Heredoc handling.
@@ -15,44 +17,15 @@ public class HeredocSharedImpl {
         int start = startMarkerTextOffset(markerText);
         int end = endMarkerTextOffset(markerText);
 
-        return end < markerText.length() && start < end ? markerText.substring(start, end) : marker;
+        return end <= markerText.length() && start < end ? markerText.substring(start, end) : marker;
     }
 
     public static int startMarkerTextOffset(String markerText) {
-        int start = 0;
-        int length = markerText.length();
-
-        if (markerText.charAt(start) == '\\') {
-            return start + 1;
-        }
-
-        if (markerText.charAt(start) == '$') {
-            start++;
-        }
-
-        if (start < length && markerText.charAt(start) == '\\') {
-            start++;
-        }
-
-        if (start < length && (markerText.charAt(start) == '\'' || markerText.charAt(start) == '"')) {
-            start++;
-        }
-
-        return start;
+        return getStartEndOffsets(markerText).first;
     }
 
     public static int endMarkerTextOffset(String markerText) {
-        int end = markerText.length() - 1;
-
-        while (end > 0  && markerText.charAt(end) == '\n') {
-            end--;
-        }
-
-        if (end > 0 && markerText.charAt(end) == '\'' || markerText.charAt(end) == '"') {
-            end--;
-        }
-
-        return end + 1;
+        return getStartEndOffsets(markerText).second;
     }
 
     public static boolean isEvaluatingMarker(String marker) {
@@ -72,5 +45,40 @@ public class HeredocSharedImpl {
         return (end <= originalMarker.length() && start < end)
                 ? originalMarker.substring(0, start) + newName + originalMarker.substring(end)
                 : newName;
+    }
+
+    public static Pair<Integer, Integer> getStartEndOffsets(@NotNull String markerText) {
+        if (markerText.isEmpty()) {
+            return Pair.create(0, 0);
+        }
+
+        if (markerText.length() == 1) {
+            return Pair.create(0, 1);
+        }
+
+        if (markerText.charAt(0) == '\\' && markerText.length() > 1) {
+            return Pair.create(1, markerText.length());
+        }
+
+        int length = markerText.length();
+        int start = 0;
+        int end = length - 1;
+
+        if (markerText.charAt(start) == '$' && length > 2 && (markerText.charAt(start + 1) == '"' || markerText.charAt(end) == '\'')) {
+            start++;
+            length--;
+        }
+
+        while (end > 0 && markerText.charAt(end) == '\n') {
+            end--;
+        }
+
+        if (length > 0 && (markerText.charAt(start) == '\'' || markerText.charAt(start) == '"') && markerText.charAt(end) == markerText.charAt(start)) {
+            start++;
+            end--;
+            length -= 2;
+        }
+
+        return Pair.create(start, end + 1);
     }
 }

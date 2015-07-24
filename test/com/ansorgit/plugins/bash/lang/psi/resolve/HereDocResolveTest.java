@@ -51,7 +51,6 @@ public class HereDocResolveTest extends AbstractResolveTest {
     public void testResolveHereDocEndMarker() throws Exception {
         PsiReference startMarker = configure();
         Assert.assertNotNull(startMarker);
-        //Assert.assertTrue("start marker is invalid: "+startMarker.getClass(),startMarker instanceof BashHereDocStartMarker);
         Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
     }
 
