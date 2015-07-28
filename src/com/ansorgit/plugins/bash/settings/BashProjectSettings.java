@@ -42,7 +42,12 @@ public class BashProjectSettings implements Serializable {
     private boolean formatterEnabled = false;
 
     public static BashProjectSettings storedSettings(Project project) {
-        return project.getComponent(BashProjectSettingsComponent.class).getState();
+        BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
+        if (component == null) {
+        throw new IllegalStateException("BashProjectSettingsComponent not found Fi ");
+        }
+
+        return component.getState();
     }
 
     public boolean isAutocompleteBuiltinVars() {
