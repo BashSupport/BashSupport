@@ -21,20 +21,33 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
- * User: jansorg
- * Date: Jan 29, 2010
- * Time: 7:03:22 PM
+ * Heredoc end marker implementation.
+ *
+ * @author jansorg
  */
 public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements BashHereDocEndMarker {
     public BashHereDocEndMarkerImpl(final ASTNode astNode) {
-        super(astNode, "Bash heredoc end marker", BashHereDocStartMarker.class, false);
+        super(astNode, "Bash heredoc end marker");
+    }
+
+    @Override
+    public HeredocMarkerReference createReference() {
+        return new HeredocEndMarkerReference(BashHereDocEndMarkerImpl.this);
     }
 
     @Override
@@ -49,5 +62,49 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
     @Override
     public String getMarkerText() {
         return getText().trim();
+    }
+
+    private static class HeredocEndMarkerReference extends HeredocMarkerReference {
+        public HeredocEndMarkerReference(BashHereDocEndMarker marker) {
+            super(marker);
+        }
+
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            final String markerName = marker.getMarkerText();
+            if (markerName == null || markerName.isEmpty()) {
+                return null;
+            }
+
+            //walk to the command containing this heredoc end marker
+            BashComposedCommand parent = BashPsiUtils.findParent(marker, BashComposedCommand.class);
+            if (parent == null) {
+                return null;
+            }
+
+            final List<BashHereDocStartMarker> startMarkers = Lists.newLinkedList();
+            BashPsiUtils.visitRecursively(parent, new BashVisitor() {
+                @Override
+                public void visitHereDocStartMarker(BashHereDocStartMarker marker) {
+                    startMarkers.add(marker);
+                }
+            });
+
+            //find out which position the marker is in a list of multiple
+            int markerPos = 0;
+            for (PsiElement current = marker.getPrevSibling(); current != null; current = current.getPrevSibling()) {
+                if (current instanceof BashHereDocEndMarker) {
+                    markerPos++;
+                }
+            }
+
+            return startMarkers.size() > markerPos ? startMarkers.get(markerPos) : null;
+        }
+
+        @Override
+        protected PsiElement createMarkerElement(String name) {
+            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name);
+        }
     }
 }

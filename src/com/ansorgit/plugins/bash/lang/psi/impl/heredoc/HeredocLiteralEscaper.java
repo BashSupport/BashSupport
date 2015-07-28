@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  */
-public class HeredocLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
+class HeredocLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
     public HeredocLiteralEscaper(T host) {
         super(host);
     }
