@@ -21,16 +21,31 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements BashHereDocStartMarker {
     public BashHereDocStartMarkerImpl(final ASTNode astNode) {
-        super(astNode, "Bash heredoc start marker", BashHereDocEndMarker.class, true);
+        super(astNode, "Bash heredoc start marker");
+    }
+
+    @Override
+    public HeredocMarkerReference createReference() {
+        return new HeredocStartMarkerReference(BashHereDocStartMarkerImpl.this);
     }
 
     @Override
@@ -43,28 +58,61 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
     }
 
     public boolean isEvaluatingVariables() {
-        String text = getText().trim();
-
-        return !text.startsWith("\"") && !text.startsWith("'");
+        return HeredocSharedImpl.isEvaluatingMarker(getText().trim());
 
     }
 
     @Override
     public String getMarkerText() {
-        String text = getText().trim();
+        return HeredocSharedImpl.cleanMarker(getText().trim());
+    }
 
-        int start = 0;
-        int end = text.length();
-
-        if (text.startsWith("$")) {
-            start++;
+    private static class HeredocStartMarkerReference extends HeredocMarkerReference {
+        public HeredocStartMarkerReference(BashHereDocStartMarker marker) {
+            super(marker);
         }
 
-        if (text.charAt(start) == '"' || text.charAt(start) == '\'') {
-            start++;
-            end--;
+        @Nullable
+        @Override
+        public PsiElement resolveInner() {
+            final String markerName = marker.getMarkerText();
+            if (markerName == null || markerName.isEmpty()) {
+                return null;
+            }
+
+            //walk to the command containing this heredoc start marker
+            //then walk the command's siblings to return the fist matching locator
+            BashComposedCommand parent = BashPsiUtils.findParent(marker, BashComposedCommand.class);
+            if (parent == null) {
+                return null;
+            }
+
+            final List<BashHereDocEndMarker> endMarkers = Lists.newLinkedList();
+            BashPsiUtils.visitRecursively(parent, new BashVisitor() {
+                @Override
+                public void visitHereDocEndMarker(BashHereDocEndMarker marker) {
+                    endMarkers.add(marker);
+                }
+            });
+
+            //find out which position the marker is in a list of multiple
+            //a start marker is wrapped in a redirect expression, thus we need to traverse the parent's siblings
+            int markerPos = 0;
+            for (PsiElement current = marker.getParent().getPrevSibling(); current != null; current = current.getPrevSibling()) {
+                BashHereDocStartMarker childMarker = PsiTreeUtil.findChildOfType(current, BashHereDocStartMarker.class);
+                if (childMarker != null) {
+                    markerPos++;
+                }
+            }
+
+            return endMarkers.size() > markerPos ? endMarkers.get(markerPos) : null;
         }
 
-        return text.substring(start, end);
+        @Override
+        protected PsiElement createMarkerElement(String name) {
+            //wrap the new name in the same context as the current marker, i.e. EOF becomes "EOF" if it is a new name for "NAME"
+            String newName = HeredocSharedImpl.wrapMarker(name, marker.getText());
+            return BashPsiElementFactory.createHeredocStartMarker(marker.getProject(), newName);
+        }
     }
 }

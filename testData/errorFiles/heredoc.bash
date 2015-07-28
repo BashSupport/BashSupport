@@ -31,4 +31,3 @@ echo $(cat <<\EOF
 hi there
 EOF
 )
-

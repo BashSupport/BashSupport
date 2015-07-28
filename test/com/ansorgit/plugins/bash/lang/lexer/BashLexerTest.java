@@ -834,8 +834,19 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue201() throws Exception {
+        testTokenization("((!foo))", EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
+    }
+
+    @Test
     public void testHeredoc() {
         testTokenization("cat <<END\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat <<END;\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, SEMI, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat <<END&& test\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, AND_AND, WHITESPACE, WORD, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat <<END && test\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, AND_AND, WHITESPACE, WORD, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat <<END || test\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, OR_OR, WHITESPACE, WORD, LINE_FEED, HEREDOC_MARKER_END);
+
+//        testTokenization("cat <<END&&test\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, AND_AND, WHITESPACE, WORD, LINE_FEED, HEREDOC_MARKER_END);
 
         testTokenization("cat <<        END", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
         testTokenization("cat <<        \"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START);
@@ -854,10 +865,10 @@ public class BashLexerTest {
         testTokenization("cat <<END\nABC", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
 
         testTokenization("cat <<END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
-        testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+        testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
 
-        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
-        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END,LINE_FEED);
+        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
 
         testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
@@ -880,6 +891,17 @@ public class BashLexerTest {
                 "$(test)\n" +
                 "EOF\n" +
                 "}", LEFT_CURLY, LINE_FEED, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_CURLY);
+
+        testTokenization("if test\n" +
+                        "cat <<EOF\n" +
+                        "EOF\n" +
+                        "test\n" +
+                        "fi",
+                IF_KEYWORD, WHITESPACE, WORD, LINE_FEED,
+                WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                WORD, LINE_FEED,
+                FI_KEYWORD);
 
         testTokenization("cat <<X <<\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, LINE_FEED);
 
@@ -916,11 +938,6 @@ public class BashLexerTest {
         //if an expression starts with three or more parentheses the rule is:
         //  if the expression ends with a single parenthesis, then the first opening parenthesis opens a subshell
         //  if the expression ends with two parentheses, then the first two start an arithmetic command
-    }
-
-    @Test
-    public void testIssue201() throws Exception {
-        testTokenization("((!foo))", EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
     }
 
     @Test

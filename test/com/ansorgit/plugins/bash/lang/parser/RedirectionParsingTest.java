@@ -65,8 +65,8 @@ public class RedirectionParsingTest extends MockPsiTest {
     @Test
     public void testRedirectErrors() {
         //1 > out
-//        mockTest(BashVersion.Bash_v3, redirectionTest, Arrays.asList("1", " ", ">", " ", "out"),
-//                INTEGER_LITERAL, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
+        mockTestError(BashVersion.Bash_v3, redirectionTest, true, Arrays.asList("1", " ", ">", " ", "out"),
+                INTEGER_LITERAL, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
 
         //1> &1
         mockTestSuccessWithErrors(redirectionTest, Arrays.asList("1", ">", " ", "&1"),
@@ -114,9 +114,11 @@ public class RedirectionParsingTest extends MockPsiTest {
     public void testSimpleListParsingWithErrors() {
         //>> >> a
         mockTestSuccessWithErrors(redirectionTest, SHIFT_RIGHT, SHIFT_RIGHT, WORD);
-        //|
-        mockTestSuccessWithErrors(redirectionTest, PIPE);
+
         //a > a a
-        mockTestSuccessWithErrors(redirectionTest, WORD, PIPE, WORD, WORD);
+        mockTestError(redirectionTest, WORD, PIPE, WORD, WORD);
+
+        //|
+        mockTestError(redirectionTest, PIPE);
     }
 }

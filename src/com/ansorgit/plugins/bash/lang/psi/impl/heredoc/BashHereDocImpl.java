@@ -20,6 +20,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -60,11 +61,10 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
             return null;
         }
 
-        PsiElement prevSibling = start.getPrevSibling();
-        if (start.isEvaluatingVariables()) {
-            return prevSibling;
-        } else if (prevSibling != null) {
-            return prevSibling.getPrevSibling();
+        for (PsiElement sibling = start.getPrevSibling(); sibling != null; sibling = sibling.getPrevSibling()) {
+            if (sibling.getNode().getElementType() == BashTokenTypes.HEREDOC_MARKER_TAG) {
+                return sibling;
+            }
         }
 
         return null;
@@ -73,11 +73,11 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
     @Nullable
     private BashHereDocStartMarker findStartMarkerElement() {
         BashHereDocEndMarker end = findEndMarkerElement();
-        if (end == null) {
+        if (end == null || end.getReference() == null) {
             return null;
         }
 
-        PsiElement start = end.resolve();
+        PsiElement start = end.getReference().resolve();
         if (start != null && start instanceof BashHereDocStartMarker) {
             return (BashHereDocStartMarker) start;
         }
@@ -98,6 +98,7 @@ public class BashHereDocImpl extends BashBaseStubElementImpl<StubElement> implem
 
     public boolean isStrippingLeadingWhitespace() {
         PsiElement redirectElement = findRedirectElement();
+
         return (redirectElement != null) && "<<-".equals(redirectElement.getText());
     }
 
