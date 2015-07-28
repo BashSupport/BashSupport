@@ -7,7 +7,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.ansorgit.plugins.bash.util.BashFunctions;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -27,7 +26,7 @@ import java.util.Set;
 
 public class BashElementSharedImpl {
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
-        BashFile psiFile = (BashFile) BashPsiUtils.findFileContext(element);
+        PsiFile psiFile = BashPsiUtils.findFileContext(element);
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
