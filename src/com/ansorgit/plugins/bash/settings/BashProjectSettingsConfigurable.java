@@ -80,6 +80,10 @@ public class BashProjectSettingsConfigurable implements ProjectComponent, Config
     }
 
     public boolean isModified() {
+        if (project == null) {
+            return false;
+        }
+
         return settingsPanel != null && settingsPanel.isModified(BashProjectSettings.storedSettings(project));
     }
 

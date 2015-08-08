@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.settings;
 
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -41,10 +42,10 @@ public class BashProjectSettings implements Serializable {
 
     private boolean formatterEnabled = false;
 
-    public static BashProjectSettings storedSettings(Project project) {
+    public static BashProjectSettings storedSettings(@NotNull Project project) {
         BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
         if (component == null) {
-        throw new IllegalStateException("BashProjectSettingsComponent not found Fi ");
+            throw new IllegalStateException("BashProjectSettingsComponent not found Fi ");
         }
 
         return component.getState();
