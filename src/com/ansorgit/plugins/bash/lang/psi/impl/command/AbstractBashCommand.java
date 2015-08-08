@@ -242,39 +242,6 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         return false;
     }
 
-    private static class SelfReference extends PsiReferenceBase<BashCommand> {
-        SelfReference(BashCommand bashCommand) {
-            super(bashCommand, TextRange.from(0, bashCommand.getTextLength()), true);
-        }
-
-        public PsiElement resolve() {
-            return null;
-        }
-
-        @NotNull
-        public String getCanonicalText() {
-            String referencedName = myElement.getReferencedCommandName();
-            return referencedName != null ? referencedName : "";
-        }
-
-        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public boolean isReferenceTo(PsiElement element) {
-            return false;
-        }
-
-        @NotNull
-        public Object[] getVariants() {
-            return EMPTY_ARRAY;
-        }
-    }
-
     private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {
         private final AbstractBashCommand<T> cmd;
 

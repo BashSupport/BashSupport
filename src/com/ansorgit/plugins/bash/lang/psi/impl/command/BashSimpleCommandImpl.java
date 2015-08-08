@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 public class BashSimpleCommandImpl extends AbstractBashCommand<BashCommandStub> implements StubBasedPsiElement<BashCommandStub> {
 
     public BashSimpleCommandImpl(ASTNode astNode) {
-        this(astNode, "Generic Bash command");
+        this(astNode, "Simple command");
     }
 
     public BashSimpleCommandImpl(ASTNode astNode, String name) {

@@ -124,12 +124,6 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         return super.getUseScope();
     }
 
-    @NotNull
-    @Override
-    public GlobalSearchScope getResolveScope() {
-        return super.getResolveScope();
-    }
-
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
         PsiElement newElement = BashPsiElementFactory.createWord(getProject(), text);
