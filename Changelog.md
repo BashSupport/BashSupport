@@ -1,3 +1,6 @@
+####2015-08-18
+ - \#228 Support for the trap command.
+ 
 ####2015-07-18
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
  
