@@ -40,7 +40,6 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public interface BashCommand extends BashPsiElement {
-
     @Nullable
     PsiReference getReference();
 
@@ -125,4 +124,6 @@ public interface BashCommand extends BashPsiElement {
 
     @Nullable
     String getReferencedCommandName();
+
+    boolean isLanguageInjectionContainerFor(PsiElement child);
 }
