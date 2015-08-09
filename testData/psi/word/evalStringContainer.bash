@@ -1,1 +1,1 @@
-eval <caret>'echo this is a new document'
+eval <caret>"echo this is a new document"
