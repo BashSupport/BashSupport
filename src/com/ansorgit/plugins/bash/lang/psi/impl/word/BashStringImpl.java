@@ -19,12 +19,10 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.editor.BashSimpleTextLiteralEscaper;
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -33,7 +31,6 @@ import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.LeafElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
@@ -96,8 +93,12 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @Override
     public boolean isValidHost() {
+        if (getTextLength() == 0) {
+            return false;
+        }
+
         BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
-        return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
+        return command != null && command.isLanguageInjectionContainerFor(this);
     }
 
     @Override
@@ -105,6 +106,7 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
         boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
 
         if (walkOn && isValidHost()) {
+            //fixme does this work on the escaped or unescpaed text?
             InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(getProject());
             List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(this);
             if (injectedPsiFiles != null) {

@@ -1,0 +1,1 @@
+eval <caret>'echo this is a new document'

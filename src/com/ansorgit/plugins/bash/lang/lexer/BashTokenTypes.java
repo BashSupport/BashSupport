@@ -82,6 +82,7 @@ public interface BashTokenTypes {
     IElementType UNTIL_KEYWORD = new BashElementType("until");//until
     IElementType WHILE_KEYWORD = new BashElementType("while");//while
     IElementType TIME_KEYWORD = new BashElementType("time");//time
+    IElementType TRAP_KEYWORD = new BashElementType("trap");//trap
     IElementType BRACKET_KEYWORD = new BashElementType("[[ (left bracket)");//[[
     IElementType _BRACKET_KEYWORD = new BashElementType("]] (right bracket)");//]]
 
@@ -111,10 +112,6 @@ public interface BashTokenTypes {
             CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, ESAC_KEYWORD, FI_KEYWORD, FOR_KEYWORD, FUNCTION_KEYWORD,
             IF_KEYWORD, IN_KEYWORD, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD, TIME_KEYWORD
     );
-
-    //here doc and here string
-    IElementType HERE_STRING = new BashElementType("<<<");//<<<
-    //fixme: missing here doc <<- word\n...\ndelimiter
 
     // single characters
     IElementType BACKSLASH = new BashElementType("\\");

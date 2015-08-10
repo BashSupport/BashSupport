@@ -1,0 +1,1 @@
+trap <caret>"myFunction" RETURN

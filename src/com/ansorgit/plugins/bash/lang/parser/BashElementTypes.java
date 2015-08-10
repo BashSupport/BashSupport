@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
@@ -33,22 +32,15 @@ import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashForImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashSelectImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashUntilImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCaseImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashConditionalCommandImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashIfImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTimeCommandImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.*;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.*;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.xhtml.XHTMLLanguage;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.ReflectionUtil;
 import org.jetbrains.annotations.NonNls;
@@ -62,62 +54,31 @@ import java.lang.reflect.Constructor;
  * @author Joachim Ansorg
  */
 public interface BashElementTypes {
-    class BashCompositeElementType extends IBashElementType implements ICompositeElementType {
-        private final Constructor<? extends ASTNode> myConstructor;
-
-        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass) {
-            this(debugName, nodeClass, false);
-        }
-
-        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass, final boolean leftBound) {
-            super(debugName, leftBound);
-            myConstructor = ReflectionUtil.getDefaultConstructor(nodeClass);
-        }
-
-        @NotNull
-        @Override
-        public ASTNode createCompositeNode() {
-            return ReflectionUtil.createInstance(myConstructor);
-        }
-    }
-
     IStubFileElementType FILE = new BashStubFileElementType();
-
     IElementType FILE_REFERENCE = new BashElementType("File reference");
-
     IElementType SHEBANG_ELEMENT = new BashElementType("shebang element");
-
     IElementType BLOCK_ELEMENT = new BashCompositeElementType("block element", BashBlockImpl.class);
     IElementType GROUP_ELEMENT = new BashCompositeElementType("group element", BashGroupImpl.class);
-
     //Var usage
     //fixme probably unnecessary
     IElementType VAR_ELEMENT = new BashElementType("variable");
     IElementType VAR_COMPOSED_VAR_ELEMENT = new BashElementType("composed variable, like subshell");
     IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
-
     IElementType FUNCTION_DEF_NAME_ELEMENT = new BashElementType("named symbol");
-
     //redirect elements
     IElementType REDIRECT_LIST_ELEMENT = new BashElementType("redirect list");
     IElementType REDIRECT_ELEMENT = new BashElementType("redirect element");
-
     IElementType PROCESS_SUBSTITUTION_ELEMENT = new BashElementType("process substitution element");
-
     //command elements
     BashStubElementType<BashCommandStub, BashCommand> SIMPLE_COMMAND_ELEMENT = new BashCommandElementType();
     BashStubElementType<BashVarDefStub, BashVarDef> VAR_DEF_ELEMENT = new BashVarDefElementType();
-
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
     BashStubElementType<BashIncludeCommandStub, BashIncludeCommand> INCLUDE_COMMAND_ELEMENT = new BashIncludeCommandElementType();
-
     //pipeline commands
     IElementType PIPELINE_COMMAND = new BashElementType("pipeline command");
-
     //composed command, i.e. a && b
     IElementType COMPOSED_COMMAND = new BashElementType("composed command");
-
     //shell commands
     IElementType WHILE_COMMAND = new BashCompositeElementType("while loop", BashWhileImpl.class);
     IElementType UNTIL_COMMAND = new BashCompositeElementType("until loop", BashUntilImpl.class);
@@ -127,14 +88,11 @@ public interface BashElementTypes {
     IElementType CONDITIONAL_COMMAND = new BashCompositeElementType("conditional shellcommand", BashConditionalCommandImpl.class);
     IElementType SUBSHELL_COMMAND = new BashCompositeElementType("subshell shellcommand", BashSubshellCommandImpl.class);
     IElementType BACKQUOTE_COMMAND = new BashCompositeElementType("backquote shellcommand", BashBackquoteImpl.class);
-
+    IElementType TRAP_COMMAND = new BashCompositeElementType("trap command", BashTrapCommandImpl.class);
     BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
-
     IElementType GROUP_COMMAND = new BashCompositeElementType("group command", BashGroupImpl.class);
-
     //arithmetic commands
     IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");
-
     IElementType ARITH_ASSIGNMENT_CHAIN_ELEMENT = new BashElementType("arithmetic assignment chain");
     IElementType ARITH_ASSIGNMENT_ELEMENT = new BashElementType("arithmetic assignment");
     IElementType ARITH_VARIABLE_OPERATOR_ELEMENT = new BashElementType("arithmetic with variable operator");
@@ -154,22 +112,36 @@ public interface BashElementTypes {
     IElementType ARITH_SHIFT_ELEMENT = new BashElementType("arithmetic shift");
     IElementType ARITH_SIMPLE_ELEMENT = new BashElementType("arithmetic simple");
     IElementType ARITH_TERNERAY_ELEMENT = new BashElementType("arithmetic ternary operator");
-
     IElementType ARITH_PARENS_ELEMENT = new BashElementType("arithmetic parenthesis expr");
-
     IElementType CASE_COMMAND = new BashCompositeElementType("case pattern", BashCaseImpl.class);
     IElementType CASE_PATTERN_LIST_ELEMENT = new BashElementType("case pattern list");
     IElementType CASE_PATTERN_ELEMENT = new BashElementType("case pattern");
-
     IElementType TIME_COMMAND = new BashCompositeElementType("time with optional -p", BashTimeCommandImpl.class);
-
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
     IElementType STRING_ELEMENT = new BashElementType("string");
     IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
-
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
+
+    class BashCompositeElementType extends IBashElementType implements ICompositeElementType {
+        private final Constructor<? extends ASTNode> myConstructor;
+
+        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass) {
+            this(debugName, nodeClass, false);
+        }
+
+        private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass, final boolean leftBound) {
+            super(debugName, leftBound);
+            myConstructor = ReflectionUtil.getDefaultConstructor(nodeClass);
+        }
+
+        @NotNull
+        @Override
+        public ASTNode createCompositeNode() {
+            return ReflectionUtil.createInstance(myConstructor);
+        }
+    }
 }
