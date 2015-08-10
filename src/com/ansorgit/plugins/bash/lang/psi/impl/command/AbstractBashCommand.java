@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
@@ -12,6 +13,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTrapCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
@@ -190,6 +192,35 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
     }
 
     @Override
+    public boolean isLanguageInjectionContainerFor(PsiElement candidate) {
+        String referencedCommandName = getReferencedCommandName();
+        if (referencedCommandName == null) {
+            return false;
+        }
+
+        if ("eval".equals(referencedCommandName)) {
+            //only the first child is evaluated as a bash document, the remaining parameters are the options passed to the new bash document
+            //e.g.  eval "echo $@" "first" "second"  outputs "first second"
+            PsiElement command = commandElement();
+            if (command == null) {
+                return false;
+            }
+
+            PsiElement injectionElement = BashPsiUtils.findNextSibling(command, BashTokenTypes.WHITESPACE);
+            return injectionElement != null && PsiManager.getInstance(getProject()).areElementsEquivalent(injectionElement, candidate);
+        }
+
+        BashTrapCommand trapCommand = PsiTreeUtil.getParentOfType(this, BashTrapCommand.class);
+        PsiElement signalHandlerElement = trapCommand != null ? trapCommand.getSignalHandlerElement() : null;
+        if (signalHandlerElement != null) {
+            boolean multipleWords = signalHandlerElement.getText().contains(" ");
+            return multipleWords && PsiManager.getInstance(getProject()).areElementsEquivalent(candidate, signalHandlerElement);
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean canNavigate() {
         return isFunctionCall() || isBashFileCall();
     }
@@ -240,39 +271,6 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
     public boolean isIncludeCommand() {
         return false;
-    }
-
-    private static class SelfReference extends PsiReferenceBase<BashCommand> {
-        SelfReference(BashCommand bashCommand) {
-            super(bashCommand, TextRange.from(0, bashCommand.getTextLength()), true);
-        }
-
-        public PsiElement resolve() {
-            return null;
-        }
-
-        @NotNull
-        public String getCanonicalText() {
-            String referencedName = myElement.getReferencedCommandName();
-            return referencedName != null ? referencedName : "";
-        }
-
-        public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            throw new IncorrectOperationException();
-        }
-
-        public boolean isReferenceTo(PsiElement element) {
-            return false;
-        }
-
-        @NotNull
-        public Object[] getVariants() {
-            return EMPTY_ARRAY;
-        }
     }
 
     private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {

@@ -32,7 +32,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class PipelineParsing implements ParsingTool {
-    private static enum ParseState {
+    private enum ParseState {
         OK_PIPELINE,
         OK_NO_PIPELINE,
         ERROR,

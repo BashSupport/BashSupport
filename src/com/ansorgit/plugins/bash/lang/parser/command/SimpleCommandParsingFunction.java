@@ -66,7 +66,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
 
     /**
      * Parses the command word of a simple command. A command has only to be present
-     * if no other parts are there,i.e. assignments or redirect.
+     * if no other parts are there, i.e. assignments or redirect.
      *
      * @param builder The builder to use
      * @return True if the command has been parsed successfully.
