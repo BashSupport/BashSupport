@@ -18,11 +18,11 @@
 
 package com.ansorgit.plugins.bash.settings;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.picocontainer.Disposable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,9 +43,17 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox enableFormatterCheckbox;
     private JCheckBox autocompletePathCommands;
     private JCheckBox globalFunctionVarDefs;
-    JCheckBox showWeddingNotification;
 
+    @SuppressWarnings("BoundFieldAssignment")
     public void dispose() {
+        this.settingsPane = null;
+        this.globalVarList = null;
+        this.bash4Support = null;
+        this.autocompleteInternalVars = null;
+        this.autocompleteInternalCommands = null;
+        this.enableFormatterCheckbox = null;
+        this.autocompletePathCommands = null;
+        this.globalFunctionVarDefs = null;
     }
 
     public void setData(BashProjectSettings settings) {
@@ -93,7 +101,8 @@ public class BashProjectSettingsPane implements Disposable {
         if (data.length() == 0) {
             return Collections.emptySet();
         }
-        return new HashSet<String>(Arrays.asList(data.split("\\n").clone()));
+
+        return new LinkedHashSet<String>(Arrays.asList(data.split("\\n").clone()));
     }
 
     private void createUIComponents() {
