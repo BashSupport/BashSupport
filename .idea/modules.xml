@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BashSupport.iml" filepath="$PROJECT_DIR$/BashSupport.iml" />
       <module fileurl="file://$USER_HOME$/_DATA/tmp/Source/ideaIC-139.659.2/IntelliJ.iml" filepath="$USER_HOME$/_DATA/tmp/Source/ideaIC-139.659.2/IntelliJ.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../../tmp/Source/idea-branch-135/java/java-tests/IntelliJ Testsrc.iml" filepath="$PROJECT_DIR$/../../../../tmp/Source/idea-branch-135/java/java-tests/IntelliJ Testsrc.iml" />
     </modules>
   </component>
 </project>

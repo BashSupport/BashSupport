@@ -959,6 +959,16 @@ public class BashLexerTest {
         testTokenization("$'hi \\' there'", STRING2);
     }
 
+    @Test
+    public void testTrapLexing() {
+        testTokenization("trap", TRAP_KEYWORD);
+        testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
+        testTokenization("trap -lp", TRAP_KEYWORD, WHITESPACE, WORD);
+        testTokenization("trap FUNCTION", TRAP_KEYWORD, WHITESPACE, WORD);
+        testTokenization("trap FUNCTION SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
+        testTokenization("trap -p SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

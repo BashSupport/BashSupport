@@ -35,6 +35,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.heredoc.BashHereDocStartMarkerImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashCasePatternListElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashTrapCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashExpansionImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;

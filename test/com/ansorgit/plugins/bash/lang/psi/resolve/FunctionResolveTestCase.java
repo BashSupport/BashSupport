@@ -23,7 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -44,7 +44,6 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
 
         Assert.assertTrue(psiReference.resolve() instanceof BashFunctionDef);
         Assert.assertTrue(commandElement.isFunctionCall());
-        //Assert.assertFalse(commandElement.isInternalCommand());
         Assert.assertFalse(commandElement.isVarDefCommand());
         Assert.assertFalse(commandElement.isExternalCommand());
         Assert.assertTrue(commandElement.getReference().isReferenceTo(psiReference.resolve()));
@@ -69,6 +68,11 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testInternalCommandOverride() throws Exception {
+        checkFunctionReference();
+    }
+
+    @Test
+    public void testTrapFunctionResolve() throws Exception {
         checkFunctionReference();
     }
 
