@@ -63,6 +63,10 @@ public class BashProjectSettingsConfigurable implements Configurable {
     }
 
     public boolean isModified() {
+        if (project == null) {
+            return false;
+        }
+
         return settingsPanel != null && settingsPanel.isModified(BashProjectSettings.storedSettings(project));
     }
 
