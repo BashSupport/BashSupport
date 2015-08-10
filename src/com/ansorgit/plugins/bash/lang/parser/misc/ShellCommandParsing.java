@@ -53,6 +53,7 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
         addParsingFunction(ifParser);
         addParsingFunction(subshellParser);
         addParsingFunction(groupCommandParser);
+        addParsingFunction(trapCommandParser);
         addParsingFunction(arithmeticParser);
         addParsingFunction(conditionalCommandParser);
         addParsingFunction(conditionalExpressionParser);
@@ -83,4 +84,6 @@ public class ShellCommandParsing extends ParsingChain implements ParsingTool {
     public final ParsingFunction backtickParser = new BacktickParsingFunction();
 
     public final ParsingFunction historyExpansionParser = new HistoryExpansionParsingFunction();
+
+    public final ParsingFunction trapCommandParser = new TrapCommandParsingFunction();
 }

@@ -20,7 +20,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.editor.BashEnhancedLiteralTextEscaper;
 import com.ansorgit.plugins.bash.editor.BashIdentityStringLiteralEscaper;
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
@@ -35,15 +34,13 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord {
+public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord, PsiLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
 
     public BashWordImpl(final ASTNode astNode) {
@@ -95,16 +92,17 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     @NotNull
     public TextRange getTextContentRange() {
         String text = getText();
+        int textLength = getTextLength();
 
         if (text.startsWith("$'") && text.endsWith("'")) {
-            return TextRange.create(2, getTextLength() - 1);
+            return TextRange.create(2, textLength - 1);
         }
 
         if (text.startsWith("'") && text.endsWith("'")) {
-            return TextRange.create(1, getTextLength() - 1);
+            return TextRange.create(1, textLength - 1);
         }
 
-        return TextRange.create(0, getTextLength());
+        return TextRange.create(0, textLength);
     }
 
     @Override
@@ -113,21 +111,8 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
             return false;
         }
 
-        //fixme make sure that this refers to the eval document element
         BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
-        return command != null && LanguageBuiltins.bashInjectionHostCommand.contains(command.getReferencedCommandName());
-    }
-
-    @NotNull
-    @Override
-    public SearchScope getUseScope() {
-        return super.getUseScope();
-    }
-
-    @NotNull
-    @Override
-    public GlobalSearchScope getResolveScope() {
-        return super.getResolveScope();
+        return command != null && command.isLanguageInjectionContainerFor(this);
     }
 
     @Override
@@ -135,8 +120,6 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         PsiElement newElement = BashPsiElementFactory.createWord(getProject(), text);
         assert newElement instanceof BashWord;
 
-        //getNode().replaceAllChildrenToChildrenOf(newElement.getNode());
-        //return this;
         return BashPsiUtils.replaceElement(this, newElement);
     }
 
@@ -168,10 +151,10 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
 
         //$' prefix -> c-escape codes are interpreted before the injected document is parsed
         if (current.startsWith("$'")) {
-            return new BashEnhancedLiteralTextEscaper<BashWord>(this);
+            return new BashEnhancedLiteralTextEscaper<BashWordImpl>(this);
         }
 
         //no $' prefix -> no escape handling
-        return new BashIdentityStringLiteralEscaper<BashWord>(this);
+        return new BashIdentityStringLiteralEscaper<BashWordImpl>(this);
     }
 }

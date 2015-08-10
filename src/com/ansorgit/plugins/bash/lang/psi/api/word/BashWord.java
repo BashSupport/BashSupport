@@ -27,6 +27,6 @@ import com.intellij.psi.PsiLanguageInjectionHost;
  * Date: 21.05.2009
  * Time: 10:35:20
  */
-public interface BashWord extends BashPsiElement, BashCharSequence, PsiLanguageInjectionHost {
+public interface BashWord extends BashPsiElement, BashCharSequence {
     boolean isWrappable();
 }
