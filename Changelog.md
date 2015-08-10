@@ -1,4 +1,7 @@
 ####2015-07-18
+ - \#237: BashSupport not saving globals entered into "Registered global variables" settings  
+ 
+####2015-07-18
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
  
 ####2015-07-12
