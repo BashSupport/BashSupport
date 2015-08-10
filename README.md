@@ -30,3 +30,7 @@ String parsing is quite adventureous in Bash. Strings can contain subshells whic
 
 ##Bash PSI
 The Bash PSI definition is in com.ansorgit.plugins.bash.lang.psi . The entry point is the class BashPsiCreator, which is used to map a AST node to a newly created PSI node.
+
+#Tools
+<img src="yklogo.png" alt="YourKit Java Profiler" style="float:left; display:inline-block;" /> I'm using Yourkit to locate and fix performance issues of BashSupport. YourKit, LLC kindly provided a
+free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp).
