@@ -1,4 +1,7 @@
-####2015-08-18
+####2015-08-11
+ - \#265: Digit $ is invalid with base 10
+
+####2015-08-09
  - \#228 Support for the trap command.
  
 ####2015-07-18
