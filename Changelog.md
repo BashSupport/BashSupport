@@ -1,4 +1,7 @@
 ####2015-08-18
+ - \#279: Incorrect parsing and 'Unresolved variable' report for heredocs
+ 
+####2015-08-18
  - \#228 Support for the trap command.
  
 ####2015-07-18
