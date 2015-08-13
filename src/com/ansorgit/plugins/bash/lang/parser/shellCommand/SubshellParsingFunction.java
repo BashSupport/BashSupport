@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: SubshellParsingFunction.java, Class: SubshellParsingFunction
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,11 +54,14 @@ public class SubshellParsingFunction implements ParsingFunction {
 
         builder.advanceLexer(); //after the start
 
-        //parse compound list
-        if (!Parsing.list.parseCompoundList(builder, true, false)) {
-            ParserUtil.error(builder, "parser.shell.expectedCommands");
-            subshell.drop();
-            return false;
+        //an empty subshell is legal syntax
+        if (builder.getTokenType() != RIGHT_PAREN) {
+            //parse compound list
+            if (!Parsing.list.parseCompoundList(builder, true, false)) {
+                ParserUtil.error(builder, "parser.shell.expectedCommands");
+                subshell.drop();
+                return false;
+            }
         }
 
         //get and check end token

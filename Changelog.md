@@ -1,3 +1,6 @@
+####2015-08-13
+ - \#271: Empty subshell rejected as invalid
+ 
 ####2015-08-18
  - \#228 Support for the trap command.
  
