@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -130,5 +131,12 @@ public class BashPsiElementFactory {
     public static PsiElement createHeredocEndMarker(Project project, String name) {
         String data = String.format("cat << %s\n%s", name, name);
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocEndMarker.class);
+    }
+
+    public static PsiElement createHeredocContent(Project project, String content) {
+        String markerName = "_BASH_EOF_";
+
+        String data = String.format("cat << %s\n%s\n%s", markerName, content, markerName);
+        return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDoc.class);
     }
 }
