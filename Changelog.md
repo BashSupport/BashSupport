@@ -1,3 +1,6 @@
+####2015-08-13
+ - \#206: NPE in ProgramParametersConfigurator
+ 
 ####2015-08-18
  - \#228 Support for the trap command.
  
