@@ -25,10 +25,10 @@ public class IncludeCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("."), WORD, WORD);
 
         //. "a"
-        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, WORD, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //. "a" abc def
-        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("."), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, WORD);
 
         //. x >& y
         mockTest(parserFunction, Lists.newArrayList("."), WORD, WORD, REDIRECT_GREATER_AMP, WORD);
@@ -44,10 +44,10 @@ public class IncludeCommandTest extends MockPsiTest {
         mockTest(parserFunction, Lists.newArrayList("source"), WORD, WORD);
 
         //source "a"
-        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, WORD, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //source "a" abc def
-        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, WORD, STRING_END, WORD, WORD);
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, WORD);
     }
 
     @Test

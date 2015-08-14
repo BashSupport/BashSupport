@@ -170,6 +170,8 @@
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashCommandManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.word.BashWord"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashWordManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashString"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashStringdManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashHereDocManipulator" />
 

@@ -18,9 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class BashWordManipulator implements ElementManipulator<BashWord> {
     @Override
     public BashWord handleContentChange(@NotNull BashWord element, @NotNull TextRange textRange, String newContent) throws IncorrectOperationException {
-        String equallyWrappedString = element.createEquallyWrappedString(newContent);
-
-        PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), equallyWrappedString);
+        PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
         assert newElement instanceof BashWord;
 
         return BashPsiUtils.replaceElement(element, newElement);

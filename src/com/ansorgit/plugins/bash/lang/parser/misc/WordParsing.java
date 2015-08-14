@@ -72,11 +72,8 @@ public class WordParsing implements ParsingTool {
         }
 
         //accept single Bang tokens as word
-        if (tokenType == BANG_TOKEN && ParserUtil.isWhitespace(builder.rawLookup(1))) {
-            return true;
-        }
+        return tokenType == BANG_TOKEN && ParserUtil.isWhitespace(builder.rawLookup(1));
 
-        return false;
     }
 
     public boolean isComposedString(IElementType tokenType) {
@@ -191,10 +188,13 @@ public class WordParsing implements ParsingTool {
         while (builder.getTokenType() != STRING_END) {
             boolean ok = false;
 
-            if (Parsing.word.isWordToken(builder)) {
-                ok = Parsing.word.parseWord(builder);
+            if (builder.getTokenType() == STRING_CONTENT) {
+                builder.advanceLexer();
+                ok = true;
             } else if (Parsing.var.isValid(builder)) {
                 ok = Parsing.var.parse(builder);
+            } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
+                ok = Parsing.shellCommand.backtickParser.parse(builder);
             }
 
             if (!ok) {

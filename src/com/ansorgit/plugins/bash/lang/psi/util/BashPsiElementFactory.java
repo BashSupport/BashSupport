@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
@@ -74,7 +75,7 @@ public class BashPsiElementFactory {
 
     public static PsiElement createString(Project project, String content) {
         String fileContent = content.startsWith("\"") && content.endsWith("\"") ? content : ("\"" + content + "\"");
-        return createDummyBashFile(project, fileContent).getFirstChild().getFirstChild().getFirstChild();
+        return PsiTreeUtil.findChildOfType(createDummyBashFile(project, fileContent), BashString.class);
     }
 
     public static PsiElement createAssignmentWord(Project project, String name) {
