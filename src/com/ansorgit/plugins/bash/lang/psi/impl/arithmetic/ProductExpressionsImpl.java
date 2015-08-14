@@ -53,6 +53,10 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
         List<ArithmeticExpression> subs = subexpressions();
 
         if (subs.size() == 2 && findOperator() == BashTokenTypes.ARITH_DIV) {
+            if (!subs.get(0).isStatic() || !subs.get(1).isStatic()) {
+                return false;
+            }
+
             long leftValue = subs.get(0).computeNumericValue();
             long rightValue = subs.get(1).computeNumericValue();
 
