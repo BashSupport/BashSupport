@@ -20,12 +20,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.0.142-beta3</version>
+    <version>1.5.0.142-beta4</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 15.0 or later -->
-    <idea-version since-build="142.3230" until-build="142.99999"/>
+    <idea-version since-build="142.3926" until-build="142.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -41,17 +41,25 @@
        <b>Changes in version 1.5.0:</b>
        <ul>
          <li>Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.</li>
-         <li>#246: Minor Single Quote Escaping Issue</li>
+         <li>#90: Feature: Language injection into unevaluated heredoc content, single and double quoted strings</li>
          <li>#201: Cannot parse logical not in arithmetic expressions</li>
+         <li>#206: NPE in ProgramParametersConfigurator</li>
+         <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
+         <li>#228 Support for the trap command.</li>
+         <li>#237: BashSupport not saving globals entered into "Registered global variables" settings</li>
          <li>#238: Replace with evaluated expansion" works incorrectly</li>
-         <li>Bash code passed to eval in single quotes ('') is now parsed, too</li>
+         <li>#265: Digit $ is invalid with base 10</li>
+         <li>#266: Valid parameter expansion ${#} marked as an error</li>
+         <li>#271: Empty subshell rejected as invalid</li>
+         <li>#279: Incorrect parsing and 'Unresolved variable' report for heredocs</li>
          <li>#243: Single line case statement parse error</li>
+         <li>#246: Minor Single Quote Escaping Issue</li>
+         <li>Bash code passed to eval in single quotes ('') is now parsed, too</li>
          <li>Files usages in strings are now processed during a file rename if the option is enabled.</li>
          <li>Renaming files in non-source directories</li>
          <li>References to other Bash script files will now be renamed if the filename is changed</li>
          <li>Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'</li>
          <li>New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.</li>
-         <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
          <li>Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.</li>
          <li>Fixed Bash file renaming, file references to Bash files are changed now</li>
          <li>No keyword completions while typing in a Bash comment</li>
@@ -60,8 +68,10 @@
          <li>Moved README.txt to README.md</li>
        </ul>
 
+       <br/>
        <a href="https://github.com/jansorg/BashSupport/blob/master/Changelog.md">Full changelog</a>
 
+       <br/>
        <b>Recent changes:</b>
        <ul>
          <li>Fixed the "Run before" steps of a Bash run configuration</li>
