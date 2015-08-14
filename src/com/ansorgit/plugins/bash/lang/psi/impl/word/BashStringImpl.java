@@ -21,10 +21,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 import com.ansorgit.plugins.bash.editor.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
@@ -45,7 +45,7 @@ import java.util.List;
  *
  * @author Joachim Ansorg
  */
-public class BashStringImpl extends BashBaseStubElementImpl<StubElement> implements BashString, BashCharSequence {
+public class BashStringImpl extends BashBaseStubElementImpl<StubElement> implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
     }
@@ -93,12 +93,7 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @Override
     public boolean isValidHost() {
-        if (getTextLength() == 0) {
-            return false;
-        }
-
-        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
-        return command != null && command.isLanguageInjectionContainerFor(this);
+        return true;
     }
 
     @Override
@@ -122,15 +117,22 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
-        PsiElement string = BashPsiElementFactory.createString(getProject(), text);
-        assert string instanceof BashString;
-
-        return BashPsiUtils.replaceElement(this, string);
+        return ElementManipulators.handleContentChange(this, text);
     }
 
     @NotNull
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
-        return new BashSimpleTextLiteralEscaper<BashString>(this);
+        return new BashSimpleTextLiteralEscaper<BashStringImpl>(this);
+    }
+
+    @Override
+    public boolean isValidBashLanguageHost() {
+        if (getTextContentRange().getLength() == 0) {
+            return false;
+        }
+
+        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        return command != null && command.isLanguageInjectionContainerFor(this);
     }
 }

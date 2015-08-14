@@ -29,7 +29,7 @@ public class HistoryExpansionParsingFunctionTest extends MockPsiTest {
     @Test
     public void testExpandString() throws Exception {
         //strings are expanded literally, i.e. without interpreting "x" as string content x
-        mockTest(expansionParser, BANG_TOKEN, STRING_BEGIN, WORD, STRING_END);
+        mockTest(expansionParser, BANG_TOKEN, STRING_BEGIN, STRING_CONTENT, STRING_END);
     }
 
     @Test

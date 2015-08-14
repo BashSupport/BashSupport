@@ -121,7 +121,7 @@ public class CaseParsingFunctionTest extends MockPsiTest {
     @Test
     public void testMultiwordPattern() throws Exception {
         //case a in "a b") echo a;; esac
-        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, WORD, WHITESPACE, WORD, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD);
+        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, STRING_CONTENT, WHITESPACE, STRING_CONTENT, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD);
 
     }
 

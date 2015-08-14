@@ -120,7 +120,7 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
                 WORD, PARAM_EXPANSION_OP_UNKNOWN, WORD, RIGHT_CURLY, RIGHT_CURLY);
 
         //{a:"a"}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, STRING_BEGIN, WORD, STRING_END, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UNKNOWN, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_CURLY);
 
         //{!a=x}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, PARAM_EXPANSION_OP_EQ, WORD, RIGHT_CURLY);
@@ -146,7 +146,7 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     @Test
     public void testComposedDefaultValue() throws Exception {
         //{a-"(x)"}
-        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, STRING_BEGIN, WORD, STRING_END, RIGHT_CURLY);
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_CURLY);
 
         //{a-(x)} is a valid expression, same as {a-"(x)"}
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_MINUS, LEFT_PAREN, WORD, RIGHT_PAREN, RIGHT_CURLY);
