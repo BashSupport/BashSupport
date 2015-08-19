@@ -31,7 +31,7 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
             public void run() {
                 myFixture.renameElementAtCaret("$_RENAMED");
             }
-        }, "source.bash");
+        }, "EOF_RENAMED", "source.bash");
     }
 
     @Test
@@ -59,6 +59,16 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
         doRename(false);
     }
 
+    @Test
+    public void testEscapedVariableRename() throws Exception {
+        doRename(new Runnable() {
+            @Override
+            public void run() {
+                myFixture.renameElementAtCaret("X_RENAMED");
+            }
+        }, "X_RENAMED", "source.bash");
+    }
+
     private void doRename(boolean renameWithHandler) {
         doRename(renameWithHandler, "source.bash");
     }
@@ -72,10 +82,10 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
                     myFixture.renameElementAtCaret("EOF_RENAMED");
                 }
             }
-        }, sourceFiles);
+        }, "EOF_RENAMED", sourceFiles);
     }
 
-    private void doRename(Runnable renameLogic, String... sourceFiles) {
+    private void doRename(Runnable renameLogic, String newName, String... sourceFiles) {
         myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
         myFixture.configureByFiles(sourceFiles);
 
@@ -98,7 +108,7 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
 
         PsiReference psiReference = psiElement.getReference();
         Assert.assertNotNull("target file reference wasn't found", psiReference);
-        Assert.assertTrue("Renamed reference wasn't found in the canonical text: " + psiReference.getCanonicalText(), psiReference.getCanonicalText().contains("EOF_RENAMED"));
+        Assert.assertTrue("Renamed reference wasn't found in the canonical text: " + psiReference.getCanonicalText(), psiReference.getCanonicalText().contains(newName));
 
         PsiElement targetMarker = psiReference.resolve();
         Assert.assertNotNull("target file resolve result wasn't found", targetMarker);
