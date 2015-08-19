@@ -1,5 +1,6 @@
-####2015-08-18
+####2015-08-19
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#270: Escape handling in heredoc content
  
 ####2015-08-18
  - \#228 Support for the trap command.
