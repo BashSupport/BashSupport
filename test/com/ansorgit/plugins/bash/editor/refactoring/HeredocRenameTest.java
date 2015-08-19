@@ -59,6 +59,16 @@ public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
         doRename(false);
     }
 
+    @Test
+    public void testEscapedVariableRename() throws Exception {
+        myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
+        myFixture.configureByFiles("source.bash");
+
+        myFixture.renameElementAtCaret("X_RENAMED");
+
+        myFixture.checkResultByFile("source.bash", "source_after.bash", false);
+    }
+
     private void doRename(boolean renameWithHandler) {
         doRename(renameWithHandler, "source.bash");
     }

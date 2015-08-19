@@ -180,6 +180,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   return LINE_FEED;
                                 }
 
+    \\ {Variable}?              { return HEREDOC_LINE; }
+
     {Variable}                {
             if (isHeredocEnd(yytext().toString())) {
                 popHeredocMarker(yytext().toString());
@@ -194,7 +196,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
             return isHeredocEvaluating() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
     }
 
-    [^$\n\r]+  {
+    [^$\n\r\\]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
