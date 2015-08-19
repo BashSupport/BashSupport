@@ -181,10 +181,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                 }
 
 
-    "$ " | "$"{LineTerminator}      { return HEREDOC_LINE; }
+    "\\" | "$ " | "$"{LineTerminator}      { return HEREDOC_LINE; }
+    \\ {Variable}                   { return HEREDOC_LINE; }
     {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
 
-    [^$\n\r]+  {
+    [^$\n\r\\]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
