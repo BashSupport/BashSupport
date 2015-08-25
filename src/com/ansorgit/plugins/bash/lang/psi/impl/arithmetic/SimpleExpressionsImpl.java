@@ -159,12 +159,12 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
             isStatic = false;
 
             if (children.length > 0) {
-                IElementType first = children[0].getElementType();
+                IElementType first = BashPsiUtils.getDeepestEquivalent(children[0]).getElementType();
 
                 if (LiteralType.BaseLiteral.equals(literalType())) {
                     isStatic = children.length == 3;
                     if (isStatic) {
-                        IElementType secondType = children[2].getElementType();
+                        IElementType secondType = BashPsiUtils.getDeepestEquivalent(children[2]).getElementType();
 
                         isStatic = secondType == BashTokenTypes.WORD
                                 || secondType == BashElementTypes.PARSED_WORD_ELEMENT
