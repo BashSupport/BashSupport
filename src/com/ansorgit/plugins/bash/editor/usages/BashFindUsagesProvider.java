@@ -50,7 +50,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
     private static final class BashWordsScanner extends DefaultWordsScanner {
-        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CHAR);
+        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CONTENT);
         private static final TokenSet identifiers = TokenSet.create(VARIABLE);
 
         public BashWordsScanner() {

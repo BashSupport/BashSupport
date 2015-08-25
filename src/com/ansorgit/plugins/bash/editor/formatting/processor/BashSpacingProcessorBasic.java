@@ -266,7 +266,7 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
      * @return True if the on of the nodes is embedded in a string
      */
     private static boolean isNodeInString(ASTNode node) {
-        if (node.getElementType() == STRING_CHAR) {
+        if (node.getElementType() == STRING_CONTENT || node.getElementType() == STRING_DATA) {
             return true;
         }
 

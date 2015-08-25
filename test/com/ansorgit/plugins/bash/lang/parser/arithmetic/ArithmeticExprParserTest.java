@@ -56,7 +56,7 @@ public class ArithmeticExprParserTest extends MockPsiTest {
     @Test
     public void testComplexExpressions() throws Exception {
         //1 < "x"
-        mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, WORD, STRING_END);
+        mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //1 < $(a)
         mockTest(exprParser, ARITH_NUMBER, WHITESPACE, ARITH_LT, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
