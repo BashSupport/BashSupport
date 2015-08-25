@@ -9,9 +9,8 @@
  - \#206: NPE in ProgramParametersConfigurator
  
 ####2015-08-13
-  - \#266: Valid parameter expansion ${#} marked as an error
-
-####2015-08-18
+ - \#266: Valid parameter expansion ${#} marked as an error
+ - \#271: Empty subshell rejected as invalid
  - \#228 Support for the trap command.
  
 ####2015-08-11
