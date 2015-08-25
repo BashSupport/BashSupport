@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class ShellCommandParsingTest extends MockPsiTest {
     private final MockFunction arithmeticParsingTester = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.arithmeticParser.parse(builder);
+            return ShellCommandParsing.arithmeticParser.parse(builder);
         }
     };
 
@@ -148,9 +149,9 @@ public class ShellCommandParsingTest extends MockPsiTest {
     }
 
     @Test
-    public void testSubshellCommandError1() {
+    public void testSubshellCommandEmpty() {
         //()
-        mockTestError(subshellParsingTester, LEFT_PAREN, RIGHT_PAREN);
+        mockTest(subshellParsingTester, LEFT_PAREN, RIGHT_PAREN);
     }
 
     @Test

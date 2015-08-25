@@ -2,13 +2,12 @@
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
  
-####2015-08-18
- - \#228 Support for the trap command.
- 
 ####2015-08-14
  - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
 
 ####2015-08-13
+ - \#271: Empty subshell rejected as invalid
+ - \#228 Support for the trap command.
  - \#206: NPE in ProgramParametersConfigurator
  - \#266: Valid parameter expansion ${#} marked as an error
  - \#228 Support for the trap command.
