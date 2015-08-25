@@ -93,7 +93,12 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     public void checkConfiguration() throws RuntimeConfigurationException {
         super.checkConfiguration();
 
-        ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), getConfigurationModule().getModule());
+        Module module = getConfigurationModule().getModule();
+        if (module == null) {
+            throw new RuntimeConfigurationException("Module wasn't found.");
+        }
+
+        ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
 
         if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
             throw new RuntimeConfigurationException("No interpreter path given.");

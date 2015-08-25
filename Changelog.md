@@ -1,6 +1,9 @@
 ####2015-08-14
  - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
  
+####2015-08-13
+ - \#206: NPE in ProgramParametersConfigurator
+ 
 ####2015-08-18
  - \#228 Support for the trap command.
  
