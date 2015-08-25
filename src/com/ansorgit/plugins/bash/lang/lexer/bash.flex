@@ -195,6 +195,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     }
 
     [^$\n\r]+  {
+    "\\" | "$ " | "$"{LineTerminator}      { return HEREDOC_LINE; }
+    \\ {Variable}                   { return HEREDOC_LINE; }
+    {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
+
+    [^$\n\r\\]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
@@ -712,8 +717,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
-    "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
-    "}"                           { return RIGHT_CURLY; }
+    "${"                        { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
+    "}"                         { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
 
 

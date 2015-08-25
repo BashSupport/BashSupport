@@ -98,10 +98,18 @@ public class HereDocParsingTest extends MockPsiTest {
     @Test
     public void testComplicatedHereDocs() {
         //a <<END
-        // $TEST ()
+        //$TEST
         //END
         mockTest(hereDoc,
-                Lists.newArrayList("a", "<<", "END", "\n", "$", "TEST", "\n", "END"),
+                Lists.newArrayList("a", "<<", "END", "\n", "$TEST", "\n", "END"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        //an escaped heredoc variable
+        //a <<END
+        //\$TEST
+        //END
+        mockTest(hereDoc,
+                Lists.newArrayList("a", "<<", "END", "\n", "\\$TEST", "\n", "END"),
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
