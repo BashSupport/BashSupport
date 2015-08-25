@@ -25,5 +25,5 @@ import com.intellij.psi.PsiLanguageInjectionHost;
  * Date: Jan 24, 2010
  * Time: 9:47:20 PM
  */
-public interface BashString extends BashPsiElement, BashCharSequence, PsiLanguageInjectionHost {
+public interface BashString extends BashPsiElement, BashCharSequence {
 }

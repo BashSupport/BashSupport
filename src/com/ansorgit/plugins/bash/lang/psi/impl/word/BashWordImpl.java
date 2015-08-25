@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.editor.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
@@ -40,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord, PsiLanguageInjectionHost {
+public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
 
     public BashWordImpl(final ASTNode astNode) {
@@ -107,20 +108,13 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
 
     @Override
     public boolean isValidHost() {
-        if (!isWrapped()) {
-            return false;
-        }
-
-        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
-        return command != null && command.isLanguageInjectionContainerFor(this);
+        //only mark text wrapped in '' as valid injection containers
+        return isWrapped();
     }
 
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
-        PsiElement newElement = BashPsiElementFactory.createWord(getProject(), text);
-        assert newElement instanceof BashWord;
-
-        return BashPsiUtils.replaceElement(this, newElement);
+        return ElementManipulators.handleContentChange(this, text);
     }
 
     @Override
@@ -156,5 +150,15 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
 
         //no $' prefix -> no escape handling
         return new BashIdentityStringLiteralEscaper<BashWordImpl>(this);
+    }
+
+    @Override
+    public boolean isValidBashLanguageHost() {
+        if (!isWrapped()) {
+            return false;
+        }
+
+        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        return command != null && command.isLanguageInjectionContainerFor(this);
     }
 }

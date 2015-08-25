@@ -88,11 +88,11 @@ public class IntegrationTest extends MockPsiTest {
          */
 
         mockTest(fileParsingTest,
-                CASE_KEYWORD, STRING_BEGIN, WORD, STRING_END, IN_KEYWORD, LINE_FEED,
+                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, IN_KEYWORD, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
                 CASE_END, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
-                VARIABLE, STRING_BEGIN, WORD, STRING_END, VARIABLE, AMP, LINE_FEED,
+                VARIABLE, STRING_BEGIN, STRING_CONTENT, STRING_END, VARIABLE, AMP, LINE_FEED,
                 WORD, LINE_FEED,
                 ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, LINE_FEED,
                 CASE_END, LINE_FEED,
@@ -113,10 +113,10 @@ public class IntegrationTest extends MockPsiTest {
          */
 
         mockTest(fileParsingTest,
-                CASE_KEYWORD, STRING_BEGIN, WORD, STRING_END, IN_KEYWORD, LINE_FEED,
+                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, IN_KEYWORD, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
-                EXPR_CONDITIONAL, INTEGER_LITERAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL, LINE_FEED,
+                EXPR_CONDITIONAL, INTEGER_LITERAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, LINE_FEED,
                 RIGHT_CURLY, LINE_FEED,
                 CASE_END, LINE_FEED,
                 ESAC_KEYWORD
@@ -138,7 +138,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest,
                 CASE_KEYWORD, WORD, IN_KEYWORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
-                EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL, AND_AND, WORD, SEMI, LINE_FEED,
+                EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, AND_AND, WORD, SEMI, LINE_FEED,
                 RIGHT_CURLY, CASE_END, LINE_FEED,
                 ESAC_KEYWORD
         );
@@ -184,7 +184,7 @@ public class IntegrationTest extends MockPsiTest {
             $(($(echo "$1")))
          */
 
-        mockTest(fileParsingTest, EXPR_ARITH, DOLLAR, LEFT_PAREN, WORD, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN, _EXPR_ARITH);
+        mockTest(fileParsingTest, EXPR_ARITH, DOLLAR, LEFT_PAREN, WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, _EXPR_ARITH);
     }
 
     @Test
@@ -288,19 +288,19 @@ public class IntegrationTest extends MockPsiTest {
         //"case a in a) echo [ \"a\" ];; esac"
         mockTest(fileParsingTest,
                 CASE_KEYWORD, WORD, IN_KEYWORD, WORD,
-                RIGHT_PAREN, WORD, EXPR_CONDITIONAL, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL, CASE_END,
+                RIGHT_PAREN, WORD, EXPR_CONDITIONAL, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, CASE_END,
                 ESAC_KEYWORD);
     }
 
     @Test
     public void testPipelineWithConditional() {
         //echo && [ -z "hi" ]
-        mockTest(fileParsingTest, WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL);
 
         //for f in a; do echo && [ -z "hi" ]; done
         mockTest(fileParsingTest,
                 FOR_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI, DO_KEYWORD,
-                WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL,
+                WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL,
                 SEMI, DONE_KEYWORD);
     }
 
@@ -347,9 +347,9 @@ public class IntegrationTest extends MockPsiTest {
     @Test
     public void testConditionalWithBackquote() {
         //[ `uname -s` = "SunOS" ]
-        mockTest(fileParsingTest, EXPR_CONDITIONAL, BACKQUOTE, WORD, WORD, BACKQUOTE, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, EXPR_CONDITIONAL, BACKQUOTE, WORD, WORD, BACKQUOTE, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL);
         //[ $(uname -s) = "SunOS" ]
-        mockTest(fileParsingTest, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, COND_OP, STRING_BEGIN, WORD, STRING_END, _EXPR_CONDITIONAL);
+        mockTest(fileParsingTest, EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL);
     }
 
     @Test
@@ -498,7 +498,7 @@ public class IntegrationTest extends MockPsiTest {
         //make sure that the -p option is not taken as a variable name
         //$(read -p "")
         mockTest(fileParsingTest, Lists.newArrayList("$", "(", "read", " ", "-p", " "),
-                DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, WORD,
+                DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT,
                 STRING_END, RIGHT_PAREN);
     }
 
@@ -545,7 +545,7 @@ public class IntegrationTest extends MockPsiTest {
         //}
         mockTest(fileParsingTest, Lists.newArrayList("doIt", "(", ")", "{", "\n", "export"),
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
-                WORD, ASSIGNMENT_WORD, EQ, WHITESPACE, STRING_BEGIN, WORD, STRING_END, LINE_FEED,
+                WORD, ASSIGNMENT_WORD, EQ, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_FEED,
                 RIGHT_CURLY);
     }
 
@@ -601,7 +601,7 @@ public class IntegrationTest extends MockPsiTest {
         //  echo a
         //fi
 
-        mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, WORD, STRING_END, _BRACKET_KEYWORD, LINE_FEED,
+        mockTest(fileParsingTest, IF_KEYWORD, BRACKET_KEYWORD, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _BRACKET_KEYWORD, LINE_FEED,
                 THEN_KEYWORD, LINE_FEED, WORD, LINE_FEED, FI_KEYWORD);
     }
 
@@ -639,7 +639,7 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
     public void testComposedVarDefValue() {
-        mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, STRING_BEGIN, WORD, STRING_END, WORD, STRING_BEGIN, STRING_END);
+        mockTest(fileParsingTest, ASSIGNMENT_WORD, EQ, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, STRING_BEGIN, STRING_END);
     }
 
     @Test

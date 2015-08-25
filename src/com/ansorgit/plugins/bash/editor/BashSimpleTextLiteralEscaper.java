@@ -67,7 +67,7 @@ public class BashSimpleTextLiteralEscaper<T extends PsiLanguageInjectionHost> ex
 
     @Override
     public boolean isOneLine() {
-        return true;
+        return false;
     }
 
     /**
