@@ -966,6 +966,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue266() throws Exception {
+        testTokenization("${#}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
