@@ -58,5 +58,4 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
     boolean isHeredocEnd(String text);
 
     boolean isHeredocEvaluating();
-
 }

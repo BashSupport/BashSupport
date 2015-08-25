@@ -971,6 +971,30 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue270() throws Exception {
+        //heredoc without evaluation
+        testTokenization("cat <<'EOF'\n" +
+                "    echo ${counter}\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        //heredoc with evaluation
+        testTokenization("cat <<EOF\n" +
+                "    echo ${counter}\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        //heredoc with escaped variable
+        testTokenization("cat <<EOF\n" +
+                "\\$counter\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+        testTokenization("cat <<EOF\n" +
+                "echo \\$counter\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+        testTokenization("cat <<EOF\n" +
+                "echo \\\n" +
+                "EOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
