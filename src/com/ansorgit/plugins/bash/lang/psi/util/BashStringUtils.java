@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashStringUtils.java, Class: BashStringUtils
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,5 +34,34 @@ public class BashStringUtils {
         }
 
         return count;
+    }
+
+    /**
+     * Escaped occurrences of escapedChar. If the found character is already escaped then it is not escaped again.
+     *
+     * @param content
+     * @param escapedChar
+     * @return New content with escaped occurrences of escapedChar
+     */
+    public static String escape(String content, char escapedChar) {
+        if (content.indexOf(escapedChar) == -1) {
+            return content;
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        char last = 0;
+        for (int i = 0; i < content.length(); i++) {
+            char current = content.charAt(i);
+            if (current == escapedChar && last != '\\') {
+                builder.append('\\');
+            }
+
+            builder.append(current);
+
+            last = current;
+        }
+
+        return builder.toString();
     }
 }

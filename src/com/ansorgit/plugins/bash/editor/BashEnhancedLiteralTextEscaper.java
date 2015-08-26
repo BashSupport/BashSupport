@@ -34,11 +34,14 @@ public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> 
 
     @Override
     public boolean decode(@NotNull final TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
+        return decodeText(rangeInsideHost.substring(myHost.getText()), rangeInsideHost, outChars);
+    }
+
+    protected boolean decodeText(String content, @NotNull TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
         ProperTextRange.assertProperRange(rangeInsideHost);
-        String subText = rangeInsideHost.substring(myHost.getText());
 
         Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
-        boolean result = parseStringCharacters(subText, outChars, sourceOffsetsRef);
+        boolean result = parseStringCharacters(content, outChars, sourceOffsetsRef);
         this.outSourceOffsets = sourceOffsetsRef.get();
 
         return result;
@@ -134,6 +137,10 @@ public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> 
 
                 case '"':
                     outChars.append('"');
+                    break;
+
+                case '\'':
+                    outChars.append('\'');
                     break;
 
                 case '\\':

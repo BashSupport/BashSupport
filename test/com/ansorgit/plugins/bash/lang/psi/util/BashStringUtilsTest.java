@@ -34,4 +34,18 @@ public class BashStringUtilsTest {
         Assert.assertEquals(3, BashStringUtils.countPrefixChars("0001", '0'));
         Assert.assertEquals(10, BashStringUtils.countPrefixChars("00000000001", '0'));
     }
+
+    @Test
+    public void testEscape() throws Exception {
+        Assert.assertEquals("abc", BashStringUtils.escape("abc", '$'));
+        Assert.assertEquals("\\'", BashStringUtils.escape("'", '\''));
+        Assert.assertEquals("\\'\\'", BashStringUtils.escape("''", '\''));
+        Assert.assertEquals("\\'\\'\\'\\'", BashStringUtils.escape("''''", '\''));
+        Assert.assertEquals("abc\\$", BashStringUtils.escape("abc$", '$'));
+        Assert.assertEquals("\\'abc\\'", BashStringUtils.escape("'abc'", '\''));
+        Assert.assertEquals("\\'abc\\'", BashStringUtils.escape("\\'abc'", '\''));
+
+        // \\" ' -> \\" \'
+        Assert.assertEquals("a\\\"\\'", BashStringUtils.escape("a\\\"'", '\''));
+    }
 }
