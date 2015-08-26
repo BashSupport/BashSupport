@@ -32,13 +32,14 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
         if (newContent.startsWith("$'") && newContent.indexOf('\\', contentStart) < contentEnd) {
             //contains backslash characters in the content which need to be escaped
             String toEscape = newContent.substring(contentStart, contentEnd);
-            newContent = "$'" + BashStringUtils.escape(toEscape, '\\') + "'";
+            newContent = "$'" + BashStringUtils.escapeSimpleStringContent(toEscape, '\\') + "'";
+            contentEnd = newContent.length() - 1;
         }
 
         if (newContent.indexOf('\'', contentStart) < contentEnd) {
             //contains string markers in the content which need to be escaped
             String toEscape = newContent.substring(contentStart, contentEnd);
-            newContent = "$'" + BashStringUtils.escape(toEscape, '\'') + "'";
+            newContent = "$'" + BashStringUtils.escapeSimpleStringContent(toEscape, '\'') + "'";
         }
 
         PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);

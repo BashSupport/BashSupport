@@ -6,6 +6,7 @@ import com.intellij.codeInsight.CodeInsightTestCase;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.LiteralTextEscaper;
 import com.intellij.psi.PsiLanguageInjectionHost;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class BashEnhancedLiteralTextEscaperTest extends CodeInsightTestCase {
     }
 
     @Test
-    public void testEscpaed1() throws Exception {
+    public void testEscaped1() throws Exception {
         BashWordImpl psiElement = (BashWordImpl) BashPsiElementFactory.createWord(myProject, "$'a\\'a'");
         Assert.assertNotNull(psiElement);
 
@@ -45,10 +46,10 @@ public class BashEnhancedLiteralTextEscaperTest extends CodeInsightTestCase {
     }
 
     @Test
-    public void testEscpaed2() throws Exception {
+    public void testEscaped2() throws Exception {
         // unescpaed content: a\\"'a
-        // java escaping doubles the backslash
-        // bash escaped \\ to \\\\
+        // java escapes \\ to \\\\
+        // bash escapes \\\\ to \\\\\\\\
         BashWordImpl psiElement = (BashWordImpl) BashPsiElementFactory.createWord(myProject, "$'a\\\\\\\\\"\\'a\\'");
         Assert.assertNotNull(psiElement);
 
@@ -71,18 +72,34 @@ public class BashEnhancedLiteralTextEscaperTest extends CodeInsightTestCase {
     }
 
     @Test
-    public void testEscpaed3() throws Exception {
-        // unescaped content: { "key1": "content",\n"key2": "content \\" \'"\n}
-        BashWordImpl psiElement = (BashWordImpl) BashPsiElementFactory.createWord(myProject, "$'{ \"key1\": \"content\",\n\"key2\": \"content \\\\\\\\\" \\'\"\n}'");
-        Assert.assertNotNull(psiElement);
+    public void testEscaped3() throws Exception {
+        StringBuilder content = unescapeContent("$'{ \"key1\": \"content\",\n\"key2\": \"content \\\\\" \\\\\" \\'\"\n}'");
+
+        //decoded text is a\\"'a
+        Assert.assertEquals("{ \"key1\": \"content\",\n\"key2\": \"content \\\" \\\" '\"\n}", content.toString());
+    }
+
+    /**
+     * Tests that unknown escape sequences are not unescaped (Bash doesn't do this, too)
+     * @throws Exception
+     */
+    @Test
+    public void testEscaped4() throws Exception {
+        StringBuilder content = unescapeContent("$'\\p\\e'");
+
+        //decoded text is a\\"'a
+        Assert.assertEquals("\\p\\e", content.toString());
+    }
+
+    @NotNull
+    private StringBuilder unescapeContent(String source) {
+        BashWordImpl psiElement = (BashWordImpl) BashPsiElementFactory.createWord(myProject, source);
 
         LiteralTextEscaper<? extends PsiLanguageInjectionHost> textEscaper = psiElement.createLiteralTextEscaper();
 
         StringBuilder content = new StringBuilder();
         TextRange range = psiElement.getTextContentRange();
         textEscaper.decode(range, content);
-
-        //decoded text is a\\"'a
-        Assert.assertEquals("{ \"key1\": \"content\",\n\"key2\": \"content \\\\\" '\"\n}", content.toString());
+        return content;
     }
 }

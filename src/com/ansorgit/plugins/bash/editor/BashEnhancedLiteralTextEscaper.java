@@ -32,35 +32,6 @@ public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> 
         super(host);
     }
 
-    @Override
-    public boolean decode(@NotNull final TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
-        return decodeText(rangeInsideHost.substring(myHost.getText()), rangeInsideHost, outChars);
-    }
-
-    protected boolean decodeText(String content, @NotNull TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
-        ProperTextRange.assertProperRange(rangeInsideHost);
-
-        Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
-        boolean result = parseStringCharacters(content, outChars, sourceOffsetsRef);
-        this.outSourceOffsets = sourceOffsetsRef.get();
-
-        return result;
-    }
-
-    public int getOffsetInHost(int offsetInDecoded, @NotNull final TextRange rangeInsideHost) {
-        int result = offsetInDecoded < outSourceOffsets.length ? outSourceOffsets[offsetInDecoded] : -1;
-        if (result == -1) {
-            return -1;
-        }
-
-        return (result <= rangeInsideHost.getLength() ? result : rangeInsideHost.getLength()) + rangeInsideHost.getStartOffset();
-    }
-
-    @Override
-    public boolean isOneLine() {
-        return true;
-    }
-
     /**
      * Handles escape codes in evaluated string, e.g. the string in
      * <code>eval "echo \˜This is the value of \$x: $x\""</code>
@@ -132,19 +103,10 @@ public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> 
 
                 //escaped dollar
                 case '$':
-                    outChars.append('$');
-                    break;
-
                 case '"':
-                    outChars.append('"');
-                    break;
-
                 case '\'':
-                    outChars.append('\'');
-                    break;
-
                 case '\\':
-                    outChars.append('\\');
+                    outChars.append(c);
                     break;
 
                 //octal
@@ -163,12 +125,44 @@ public class BashEnhancedLiteralTextEscaper<T extends PsiLanguageInjectionHost> 
                     }
                     break;
 
+                //all other escape codes do not change the content
                 default:
-                    return false;
+                    outChars.append('\\');
+                    outChars.append(c);
+                    break;
             }
 
             sourceOffsets[outChars.length()] = index;
         }
+        return true;
+    }
+
+    @Override
+    public boolean decode(@NotNull final TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
+        return decodeText(rangeInsideHost.substring(myHost.getText()), rangeInsideHost, outChars);
+    }
+
+    protected boolean decodeText(String content, @NotNull TextRange rangeInsideHost, @NotNull StringBuilder outChars) {
+        ProperTextRange.assertProperRange(rangeInsideHost);
+
+        Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
+        boolean result = parseStringCharacters(content, outChars, sourceOffsetsRef);
+        this.outSourceOffsets = sourceOffsetsRef.get();
+
+        return result;
+    }
+
+    public int getOffsetInHost(int offsetInDecoded, @NotNull final TextRange rangeInsideHost) {
+        int result = offsetInDecoded < outSourceOffsets.length ? outSourceOffsets[offsetInDecoded] : -1;
+        if (result == -1) {
+            return -1;
+        }
+
+        return (result <= rangeInsideHost.getLength() ? result : rangeInsideHost.getLength()) + rangeInsideHost.getStartOffset();
+    }
+
+    @Override
+    public boolean isOneLine() {
         return true;
     }
 }

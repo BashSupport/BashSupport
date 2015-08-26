@@ -43,7 +43,7 @@ public class BashStringUtils {
      * @param escapedChar
      * @return New content with escaped occurrences of escapedChar
      */
-    public static String escape(String content, char escapedChar) {
+    public static String escapeSimpleStringContent(String content, char escapedChar) {
         if (content.indexOf(escapedChar) == -1) {
             return content;
         }
@@ -51,15 +51,16 @@ public class BashStringUtils {
         StringBuilder builder = new StringBuilder();
 
         char last = 0;
-        for (int i = 0; i < content.length(); i++) {
+        for (int i = 0; i < content.length(); ++i) {
             char current = content.charAt(i);
+
             if (current == escapedChar && last != '\\') {
                 builder.append('\\');
             }
 
             builder.append(current);
 
-            last = current;
+            last = (escapedChar == '\\' && current == '\\') ? 0 : current;
         }
 
         return builder.toString();

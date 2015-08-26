@@ -37,15 +37,25 @@ public class BashStringUtilsTest {
 
     @Test
     public void testEscape() throws Exception {
-        Assert.assertEquals("abc", BashStringUtils.escape("abc", '$'));
-        Assert.assertEquals("\\'", BashStringUtils.escape("'", '\''));
-        Assert.assertEquals("\\'\\'", BashStringUtils.escape("''", '\''));
-        Assert.assertEquals("\\'\\'\\'\\'", BashStringUtils.escape("''''", '\''));
-        Assert.assertEquals("abc\\$", BashStringUtils.escape("abc$", '$'));
-        Assert.assertEquals("\\'abc\\'", BashStringUtils.escape("'abc'", '\''));
-        Assert.assertEquals("\\'abc\\'", BashStringUtils.escape("\\'abc'", '\''));
+        Assert.assertEquals("abc", BashStringUtils.escapeSimpleStringContent("abc", '$'));
+        Assert.assertEquals("\\'", BashStringUtils.escapeSimpleStringContent("'", '\''));
+        Assert.assertEquals("\\'\\'", BashStringUtils.escapeSimpleStringContent("''", '\''));
+        Assert.assertEquals("\\'\\'\\'\\'", BashStringUtils.escapeSimpleStringContent("''''", '\''));
+        Assert.assertEquals("abc\\$", BashStringUtils.escapeSimpleStringContent("abc$", '$'));
+        Assert.assertEquals("\\'abc\\'", BashStringUtils.escapeSimpleStringContent("'abc'", '\''));
+        Assert.assertEquals("\\'abc\\'", BashStringUtils.escapeSimpleStringContent("\\'abc'", '\''));
 
         // \\" ' -> \\" \'
-        Assert.assertEquals("a\\\"\\'", BashStringUtils.escape("a\\\"'", '\''));
+        Assert.assertEquals("a\\\"\\'", BashStringUtils.escapeSimpleStringContent("a\\\"'", '\''));
+
+        // \\\" ' ->  \\\" '
+        Assert.assertEquals("\\\\\\\" \\'", BashStringUtils.escapeSimpleStringContent("\\\\\\\" '", '\''));
+        // \\\" ' -> \\\\\\" '
+        Assert.assertEquals("\\\\\\\\\\\\\" '", BashStringUtils.escapeSimpleStringContent("\\\\\\\" '", '\\'));
+        // \a ->  \\a
+        Assert.assertEquals("\\\\a", BashStringUtils.escapeSimpleStringContent("\\a", '\\'));
+
+        // \\ ->  \\\\
+        Assert.assertEquals("\\\\\\\\", BashStringUtils.escapeSimpleStringContent("\\\\", '\\'));
     }
 }
