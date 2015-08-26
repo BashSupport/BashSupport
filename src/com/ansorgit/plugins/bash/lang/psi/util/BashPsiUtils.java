@@ -274,7 +274,9 @@ public final class BashPsiUtils {
         while (scope != null) {
             hasResult |= !scope.processDeclarations(processor, state, prevParent, entrance);
 
-            if (scope == maxScope) break;
+            if (scope == maxScope) {
+                break;
+            }
 
             prevParent = scope;
             scope = prevParent.getContext();
@@ -468,5 +470,21 @@ public final class BashPsiUtils {
         }
 
         return offset;
+    }
+
+    /**
+     * Returns the deepest nested ast node which still covers the same part of the file as the parent node. Happens if a single leaf node is
+     * contained in several composite parent nodes of the same range, e.g. a var in a combined word.
+     * @param parent The element to use as the startin point
+     * @return The deepest node inside of parent which covers the same range or (if none exists) the input element
+     */
+    @NotNull
+    public static ASTNode getDeepestEquivalent(ASTNode parent) {
+        ASTNode element = parent;
+        while (element.getFirstChildNode() != null && element.getFirstChildNode() == element.getLastChildNode() && element.getTextRange().equals(parent.getTextRange())) {
+            element = element.getFirstChildNode();
+        }
+
+        return element;
     }
 }

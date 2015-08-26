@@ -17,4 +17,9 @@ public class FloatArithmeticInspectionTest extends AbstractInspectionTestCase {
     public void testFloatArithmetic() throws Exception {
         doTest("floatArithmeticInspection/floatArithmetic", new FloatArithmeticInspection());
     }
+
+    @Test
+    public void testIssue265() throws Exception {
+        doTest("floatArithmeticInspection/issue265", new FloatArithmeticInspection());
+    }
 }
