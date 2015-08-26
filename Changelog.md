@@ -11,6 +11,9 @@
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
  
+####2015-08-13
+ - \#271: Empty subshell rejected as invalid
+ 
 ####2015-08-18
 ####2015-08-11
  - \#265: Digit $ is invalid with base 10
