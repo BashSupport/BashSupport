@@ -12,7 +12,7 @@
     Another problem is that string can contain unescaped substrings, e.g.
         "$(echo hello "$(echo "world")")" is just one stringParsingState(). But this string contains
     two levels of embedded strings in the embedded subshell command.
-    The lexer parses a string as STRING_BEGIN, STRING_DATA and STRING_END. These
+    The lexer parses a string as STRING_BEGIN, STRING_CHAR and STRING_END. These
     tokens are mapped to a STRING later on by the lexer.MergingLexer class.
 
     Lexing all as a STRING token was the way to go. This worked, but for some strange
@@ -180,21 +180,12 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   return LINE_FEED;
                                 }
 
-    {Variable}                {
-            if (isHeredocEnd(yytext().toString())) {
-                popHeredocMarker(yytext().toString());
 
-                if (isHeredocMarkersEmpty()) {
-                    backToPreviousState();
-                }
+    "\\" | "$ " | "$"{LineTerminator}      { return HEREDOC_LINE; }
+    \\ {Variable}                   { return HEREDOC_LINE; }
+    {Variable}                      { return isHeredocEvaluating() ? VARIABLE : HEREDOC_LINE; }
 
-                return HEREDOC_MARKER_END;
-            }
-
-            return isHeredocEvaluating() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
-    }
-
-    [^$\n\r]+  {
+    [^$\n\r\\]+  {
         if (isHeredocEnd(yytext().toString())) {
             popHeredocMarker(yytext().toString());
 
@@ -203,24 +194,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
             }
 
             return HEREDOC_MARKER_END;
-        }
+        };
 
         return HEREDOC_LINE;
     }
-
-    "$"  {
-         if (isHeredocEnd(yytext().toString())) {
-             popHeredocMarker(yytext().toString());
-
-             if (isHeredocMarkersEmpty()) {
-                 backToPreviousState();
-             }
-
-             return HEREDOC_MARKER_END;
-         }
-
-         return HEREDOC_LINE;
-     }
 
     .                            { return BAD_CHARACTER; }
 }
@@ -545,7 +522,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   \"                            { if (stringParsingState().isNewAllowed()) {
                                     stringParsingState().enterSubstring(); return STRING_BEGIN; //fixme
                                   } else if (stringParsingState().isInSubstring()) {
-                                    stringParsingState().leaveSubstring(); return STRING_DATA;
+                                    stringParsingState().leaveSubstring(); return STRING_CHAR;
                                   } else {
                                     backToPreviousState(); return STRING_END;
                                   }
@@ -554,10 +531,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   //{Variable}                  { return VARIABLE; }
 
   /* Backquote expression inside of evaluated strings */
-  `                           { stringParsingState().advanceToken(); if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
-  {EscapedChar}               { return STRING_DATA; }
-  [^\"]                       { stringParsingState().advanceToken(); return STRING_DATA; }
+  {EscapedChar}               { return WORD; }
+  [^\"]                       { stringParsingState().advanceToken(); return STRING_CHAR; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
@@ -712,8 +689,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
-    "${"                          { goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
-    "}"                           { return RIGHT_CURLY; }
+    "${"                        { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
+    "}"                         { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
 
 
