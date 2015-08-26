@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.google.common.base.Function;
 import com.intellij.lang.PsiBuilder;
@@ -45,7 +46,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
     private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS,
-            PARAM_EXPANSION_OP_STAR, ARITH_NUMBER);
+            PARAM_EXPANSION_OP_STAR, ARITH_NUMBER, PARAM_EXPANSION_OP_HASH);
 
     private static final TokenSet variableMarkingExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_STAR);
@@ -128,7 +129,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
                 boolean isValidReference = ParserUtil.checkAndRollback(builder, new Function<BashPsiBuilder, Boolean>() {
                     public Boolean apply(BashPsiBuilder builder) {
-                        return Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                        return ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                     }
                 });
 
@@ -142,7 +143,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                     ParserUtil.getTokenAndAdvance(builder);
                     ParserUtil.getTokenAndAdvance(builder);
                 } else {
-                    boolean validArrayReference = Parsing.shellCommand.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+                    boolean validArrayReference = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                     if (!validArrayReference) {
                         firstElementMarker.drop();
                         marker.drop();

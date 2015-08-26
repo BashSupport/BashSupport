@@ -106,9 +106,6 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     public void testParseInvalidLengthExpansion() throws Exception {
         //{# a}
         mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WHITESPACE, WORD, RIGHT_CURLY);
-
-        //{#}
-        mockTestError(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
     }
 
     @Test
@@ -170,5 +167,11 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_STAR, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_COLON, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue265() throws Exception {
+        //{#}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
     }
 }

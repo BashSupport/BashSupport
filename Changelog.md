@@ -4,6 +4,9 @@
 ####2015-08-13
  - \#206: NPE in ProgramParametersConfigurator
  
+####2015-08-13
+ - \#266: Valid parameter expansion ${#} marked as an error
+
 ####2015-08-18
 ####2015-08-11
  - \#265: Digit $ is invalid with base 10
