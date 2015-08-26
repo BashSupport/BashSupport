@@ -238,8 +238,10 @@ public interface BashTokenTypes {
 
     // Special characters
     IElementType STRING_BEGIN = new BashElementType("string begin");
-    IElementType STRING_CHAR = new BashElementType("string char");
+    IElementType STRING_DATA = new BashElementType("string data");
     IElementType STRING_END = new BashElementType("string end");
+    //mapped element type
+    IElementType STRING_CONTENT = new BashElementType("string content");
 
     IElementType STRING2 = new BashElementType("unevaluated string (STRING2)");
     IElementType BACKQUOTE = new BashElementType("backquote `");

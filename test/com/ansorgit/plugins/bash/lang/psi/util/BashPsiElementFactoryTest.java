@@ -5,6 +5,7 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -111,5 +112,11 @@ public class BashPsiElementFactoryTest extends CodeInsightTestCase {
     public void testHeredocEndMarker() throws Exception {
         PsiElement element = BashPsiElementFactory.createHeredocEndMarker(myProject, "EOF");
         Assert.assertTrue("element is not a start marker: " + element, element instanceof BashHereDocEndMarker);
+    }
+
+    @Test
+    public void testHeredocContent() throws Exception {
+        PsiElement element = BashPsiElementFactory.createHeredocContent(myProject, "this is my line!");
+        Assert.assertTrue("element is not a content element: " + element, element instanceof BashHereDoc);
     }
 }

@@ -29,6 +29,7 @@
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
+    <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
     Bash support for IntelliJ.<br/>
@@ -167,6 +168,12 @@
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashCommandManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.word.BashWord"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashWordManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashString"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashStringdManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashHereDocManipulator" />
 
         <renamePsiElementProcessor implementation="com.ansorgit.plugins.bash.lang.psi.impl.BashFileRenameProcessor"/>
 

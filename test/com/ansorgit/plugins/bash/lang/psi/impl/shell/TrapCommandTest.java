@@ -20,7 +20,7 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
 
         // a single word in a string used as trap command must not be marked as an injection host
         // because it ist just a single command. Resolving this as a function is faster as injection handling
-        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashWordImpl) word).isValidHost());
+        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashWordImpl) word).isValidBashLanguageHost());
     }
 
     public void testInjectionHostStringSingleWord() throws Exception {
@@ -30,14 +30,14 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
 
         // a single word in a string used as trap command must not be marked as an injection host
         // because it ist just a single command. Resolving this as a function is faster as injection handling
-        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashStringImpl) word).isValidHost());
+        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashStringImpl) word).isValidBashLanguageHost());
     }
 
     public void testInjectionHostWord() throws Exception {
         PsiElement word = configure();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashWordImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashWordImpl) word).isValidHost());
+        Assert.assertTrue(word instanceof BashStringImpl);
+        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashStringImpl) word).isValidBashLanguageHost());
     }
 
     public void testInjectionHostString() throws Exception {
@@ -45,7 +45,7 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
 
         Assert.assertNotNull(current);
         Assert.assertTrue("element is not a String: " + current, current instanceof BashStringImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidHost());
+        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidBashLanguageHost());
     }
 
     protected PsiElement configure() {

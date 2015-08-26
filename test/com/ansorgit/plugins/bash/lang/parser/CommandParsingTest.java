@@ -141,13 +141,13 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(assignmentListTest, LEFT_PAREN, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, EQ, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, WHITESPACE, INTEGER_LITERAL, RIGHT_PAREN);
 
         //("a")
-        mockTest(assignmentListTest, LEFT_PAREN, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN);
 
         //(a, "a")
-        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN);
 
         //(a "a" "b" c d)
-        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, WORD, STRING_END, STRING_BEGIN, WORD, STRING_END, WORD, WORD, RIGHT_PAREN);
+        mockTest(assignmentListTest, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, WORD, RIGHT_PAREN);
 
         //(
         // a
