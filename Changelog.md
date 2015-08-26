@@ -1,26 +1,18 @@
 ####2015-08-14
  - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
- 
+
 ####2015-08-13
  - \#206: NPE in ProgramParametersConfigurator
  
 ####2015-08-13
  - \#266: Valid parameter expansion ${#} marked as an error
-
-####2015-08-19
- - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
- - \#270: Escape handling in heredoc content
- 
-####2015-08-13
  - \#271: Empty subshell rejected as invalid
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#228 Support for the trap command.
  
-####2015-08-18
 ####2015-08-11
  - \#265: Digit $ is invalid with base 10
 
-####2015-08-09
- - \#228 Support for the trap command.
- 
 ####2015-07-18
  - \#237: BashSupport not saving globals entered into "Registered global variables" settings  
  
@@ -33,7 +25,7 @@
 ####2015-07-07
  - \#201: Cannot parse logical not in arithmetic expressions 
  - \#238: Replace with evaluated expansion" works incorrectly
- 
+
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  

@@ -36,8 +36,8 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
     public void testInjectionHostWord() throws Exception {
         PsiElement word = configure();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashStringImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashStringImpl) word).isValidBashLanguageHost());
+        Assert.assertTrue(word instanceof BashWordImpl);
+        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashWordImpl) word).isValidBashLanguageHost());
     }
 
     public void testInjectionHostString() throws Exception {
