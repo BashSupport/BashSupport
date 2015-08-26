@@ -33,7 +33,7 @@ public class BashFileReferenceManipulator implements ElementManipulator {
 
     @Override
     public PsiElement handleContentChange(@NotNull final PsiElement element, final String newContent) throws IncorrectOperationException {
-        return handleContentChange(element, getRangeInElement(element), newContent);
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

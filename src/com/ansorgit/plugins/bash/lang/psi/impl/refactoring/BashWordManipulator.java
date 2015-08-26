@@ -50,7 +50,8 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
 
     @Override
     public BashWord handleContentChange(@NotNull BashWord element, String newContent) throws IncorrectOperationException {
-        return handleContentChange(element, getRangeInElement(element), newContent);
+        //return handleContentChange(element, getRangeInElement(element), newContent);
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

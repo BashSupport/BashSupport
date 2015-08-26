@@ -24,7 +24,7 @@ public class BashHereDocManipulator implements ElementManipulator<BashHereDoc> {
 
     @Override
     public BashHereDoc handleContentChange(@NotNull BashHereDoc element, String newContent) throws IncorrectOperationException {
-        return handleContentChange(element, getRangeInElement(element), newContent);
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

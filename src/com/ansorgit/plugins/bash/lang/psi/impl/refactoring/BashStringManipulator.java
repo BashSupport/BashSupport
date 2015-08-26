@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jansorg
  */
-public class BashStringdManipulator implements ElementManipulator<BashString> {
+public class BashStringManipulator implements ElementManipulator<BashString> {
     @Override
     public BashString handleContentChange(@NotNull BashString element, @NotNull TextRange textRange, String newContent) throws IncorrectOperationException {
         String wrappedContent = element.createEquallyWrappedString(newContent);
@@ -27,7 +27,7 @@ public class BashStringdManipulator implements ElementManipulator<BashString> {
 
     @Override
     public BashString handleContentChange(@NotNull BashString element, String newContent) throws IncorrectOperationException {
-        return handleContentChange(element, getRangeInElement(element), newContent);
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

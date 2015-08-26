@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.io.FileUtil;
@@ -30,10 +29,14 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testInjectedRename() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
     public void testBasicRenameInlined() throws Exception {
         doRename(false);
     }
-
 
     @Test
     public void testEvalRename() throws Exception {
@@ -54,7 +57,7 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     private void doRename(boolean renameWithHandler) {
-        doRename(renameWithHandler, "source.bash");
+        doRename(renameWithHandler, "source.bash", "target.bash");
     }
 
     private void doRename(final boolean renameWithHandler, String... sourceFiles) {
@@ -73,7 +76,6 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
         myFixture.setTestDataPath(getTestDataPath() + getTestName(true));
 
         List<String> filenames = Lists.newArrayList(sourceFiles);
-        filenames.add("target.bash");
         myFixture.configureByFiles(filenames.toArray(new String[filenames.size()]));
 
         renameLogic.run();
