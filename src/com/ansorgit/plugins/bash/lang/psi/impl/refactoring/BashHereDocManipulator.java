@@ -16,7 +16,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BashHereDocManipulator implements ElementManipulator<BashHereDoc> {
     @Override
-    public BashHereDoc handleContentChange(@NotNull BashHereDoc bashHereDoc, @NotNull TextRange textRange, String newContent) throws IncorrectOperationException {
+    public BashHereDoc handleContentChange(@NotNull BashHereDoc bashHereDoc, @NotNull TextRange textRange, String contentForRange) throws IncorrectOperationException {
+        String oldContent = bashHereDoc.getText();
+        String newContent = textRange.replace(oldContent, contentForRange);
+
         PsiElement replacement = BashPsiElementFactory.createHeredocContent(bashHereDoc.getProject(), newContent);
 
         return BashPsiUtils.replaceElement(bashHereDoc, replacement);

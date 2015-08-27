@@ -32,14 +32,14 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
         if (newContent.startsWith("$'") && newContent.indexOf('\\', contentStart) < contentEnd) {
             //contains backslash characters in the content which need to be escaped
             String toEscape = newContent.substring(contentStart, contentEnd);
-            newContent = "$'" + BashStringUtils.escapeSimpleStringContent(toEscape, '\\') + "'";
+            newContent = "$'" + BashStringUtils.escape(toEscape, '\\') + "'";
             contentEnd = newContent.length() - 1;
         }
 
         if (newContent.indexOf('\'', contentStart) < contentEnd) {
             //contains string markers in the content which need to be escaped
             String toEscape = newContent.substring(contentStart, contentEnd);
-            newContent = "$'" + BashStringUtils.escapeSimpleStringContent(toEscape, '\'') + "'";
+            newContent = "$'" + BashStringUtils.escape(toEscape, '\'') + "'";
         }
 
         PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
@@ -50,7 +50,6 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
 
     @Override
     public BashWord handleContentChange(@NotNull BashWord element, String newContent) throws IncorrectOperationException {
-        //return handleContentChange(element, getRangeInElement(element), newContent);
         return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 

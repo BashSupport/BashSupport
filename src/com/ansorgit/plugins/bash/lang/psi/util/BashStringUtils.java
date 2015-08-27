@@ -43,11 +43,7 @@ public class BashStringUtils {
      * @param escapedChar
      * @return New content with escaped occurrences of escapedChar
      */
-    public static String escapeSimpleStringContent(String content, char escapedChar) {
-        if (content.indexOf(escapedChar) == -1) {
-            return content;
-        }
-
+    public static String escape(CharSequence content, char escapedChar) {
         StringBuilder builder = new StringBuilder();
 
         char last = 0;
