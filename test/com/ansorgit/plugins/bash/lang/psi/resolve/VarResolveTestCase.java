@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.LocalSearchScope;
 import org.junit.Assert;
 import org.junit.Test;
 
