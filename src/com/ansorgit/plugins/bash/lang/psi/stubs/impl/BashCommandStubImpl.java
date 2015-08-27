@@ -5,7 +5,6 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.util.io.StringRef;
 
 /**
  * @author ilyas
