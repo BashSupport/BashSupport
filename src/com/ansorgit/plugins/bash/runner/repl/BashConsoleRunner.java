@@ -59,11 +59,8 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory<Language
         commandLine.setExePath(BashInterpreterDetection.instance().findBestLocation());
 
         if (getWorkingDir() != null) {
-            commandLine.setWorkDirectory(getWorkingDir());
+            commandLine.withWorkDirectory(getWorkingDir());
         }
-
-        //fixme
-        //commandLine.addParameters(provider.getArguments());
 
         return commandLine.createProcess();
     }

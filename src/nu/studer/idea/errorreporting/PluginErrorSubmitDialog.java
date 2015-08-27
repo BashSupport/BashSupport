@@ -110,8 +110,7 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
 
     private String getOptionsFilePath() {
         String optionsPath = PathManager.getOptionsPath();
-        String filePath = optionsPath + File.separator + "pluginErrorReportSubmitter.xml";
-        return filePath;
+        return optionsPath + File.separator + "pluginErrorReportSubmitter.xml";
     }
 
     protected JComponent createCenterPanel() {
