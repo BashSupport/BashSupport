@@ -45,7 +45,8 @@ public class BashProjectSettings implements Serializable {
     public static BashProjectSettings storedSettings(@NotNull Project project) {
         BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
         if (component == null) {
-            throw new IllegalStateException("BashProjectSettingsComponent not found Fi ");
+            //in the default settings there is no project available and thus no project components.
+            return new BashProjectSettings();
         }
 
         return component.getState();
