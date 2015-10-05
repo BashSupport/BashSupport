@@ -225,7 +225,9 @@
         <programRunner implementation="com.ansorgit.plugins.bash.runner.BashRunner"/>
 
         <moveFileHandler implementation="com.ansorgit.plugins.bash.refactoring.BashFileMoveHandler" id="BashMove" />
-        
+
+        <spellchecker.support implementationClass="com.ansorgit.plugins.bash.editor.BashSpellCheckingSupport" language="Bash" />
+
         <!-- Repl-->
         <!--
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
