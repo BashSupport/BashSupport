@@ -7,6 +7,7 @@ import com.intellij.psi.PsiLanguageInjectionHost;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Text escape handle for Heredoc elements.
  */
 class HeredocLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralTextEscaper<T> {
     public HeredocLiteralEscaper(T host) {
@@ -29,6 +30,6 @@ class HeredocLiteralEscaper<T extends PsiLanguageInjectionHost> extends LiteralT
 
     @Override
     public boolean isOneLine() {
-        return false;
+        return true;
     }
 }

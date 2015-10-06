@@ -2,7 +2,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;

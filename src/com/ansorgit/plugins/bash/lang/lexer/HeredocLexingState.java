@@ -3,7 +3,6 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;
 

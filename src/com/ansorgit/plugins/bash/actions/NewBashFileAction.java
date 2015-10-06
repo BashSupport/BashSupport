@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.util.BashIcons;
 import com.ansorgit.plugins.bash.util.BashStrings;
 import com.intellij.CommonBundle;
 import com.intellij.ide.actions.CreateElementActionBase;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtilRt;

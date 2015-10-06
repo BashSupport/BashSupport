@@ -21,9 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**

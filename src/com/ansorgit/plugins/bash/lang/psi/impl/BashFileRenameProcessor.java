@@ -5,17 +5,14 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.refactoring.RefactoringSettings;
 import com.intellij.refactoring.rename.RenameDialog;
 import com.intellij.refactoring.rename.RenamePsiFileProcessor;
 import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 

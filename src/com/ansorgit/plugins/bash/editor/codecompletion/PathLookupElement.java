@@ -22,6 +22,7 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.Icons;
+import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -49,7 +50,7 @@ final class PathLookupElement extends LookupElement {
     @Override
     public void renderElement(LookupElementPresentation presentation) {
         super.renderElement(presentation);
-        presentation.setIcon(isFile ? textIcon : Icons.DIRECTORY_CLOSED_ICON);
+        presentation.setIcon(isFile ? textIcon : PlatformIcons.DIRECTORY_CLOSED_ICON);
     }
 
     @NotNull

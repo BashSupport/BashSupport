@@ -169,11 +169,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
             return bashVar.getReferencedName();
         }
 
-        @Override
-        public boolean isReferenceTo(PsiElement element) {
-            return super.isReferenceTo(element);
-        }
-
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
             if (!BashIdentifierUtil.isValidIdentifier(newName)) {
                 throw new IncorrectOperationException("Can't have an empty name");
