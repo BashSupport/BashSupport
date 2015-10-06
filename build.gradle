@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repository.jetbrains.com/repo/" }
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.0.22"
+}
+
+version = '1.5.0-beta5'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repository.jetbrains.com/repo/" }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+
+intellij {
+    version '14.0.4'
+    plugins 'IntelliLang'
+    pluginName 'BashSupport'
+}
+
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+        resources {
+            srcDir 'resources'
+        }
+    }
+    test {
+        java {
+            srcDir 'test'
+        }
+        resources {
+            srcDir 'testResources'
+        }
+    }
+}
+
+test.ignoreFailures = true
+test.testLogging.showStandardStreams = true
+
+test {
+    systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
+}
+
+
+allprojects {
+    plugins.withType(JavaPlugin) {
+        test {
+            ignoreFailures = true
+            systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.6'
+}
