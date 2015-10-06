@@ -1,3 +1,6 @@
+####2015-10-06
+ - Released 1.5.1
+ 
 ####2015-10-05
  - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content 
 
@@ -13,8 +16,6 @@
 
 ####2015-08-13
  - \#206: NPE in ProgramParametersConfigurator
- 
-####2015-08-13
  - \#266: Valid parameter expansion ${#} marked as an error
  - \#271: Empty subshell rejected as invalid
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
@@ -25,8 +26,6 @@
 
 ####2015-07-18
  - \#237: BashSupport not saving globals entered into "Registered global variables" settings  
- 
-####2015-07-18
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.  
  
 ####2015-07-12
