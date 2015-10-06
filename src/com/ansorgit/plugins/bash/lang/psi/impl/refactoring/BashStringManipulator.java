@@ -31,6 +31,18 @@ public class BashStringManipulator implements ElementManipulator<BashString> {
 
     @Override
     public BashString handleContentChange(@NotNull BashString element, String newContent) throws IncorrectOperationException {
+        //fixme
+        //IntelliJ 13.x seems to work differently than >= 14.x
+        //newContent already contains the string markers, thus we need to adjust the replacement range to include only the string content without the quotes
+
+        if (newContent.endsWith("\"")) {
+            if (newContent.startsWith("\"")) {
+                newContent = newContent.substring(1, newContent.length() - 1);
+            } else if (newContent.startsWith("$\"")) {
+                newContent = newContent.substring(2, newContent.length() - 1);
+            }
+        }
+
         return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
