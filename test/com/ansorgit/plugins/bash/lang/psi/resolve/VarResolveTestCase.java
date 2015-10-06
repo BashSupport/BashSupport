@@ -27,6 +27,7 @@ import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.LocalSearchScope;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -193,7 +194,8 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
-    public void testResolveEvalVarEscaped() throws Exception {
+    @Ignore
+    public void _testResolveEvalVarEscaped() throws Exception {
         assertIsWellDefinedVariable();
     }
 
