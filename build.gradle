@@ -10,7 +10,7 @@ plugins {
     id "org.jetbrains.intellij" version "0.0.22"
 }
 
-version = '1.5.0.139'
+version = '1.5.1.139'
 
 repositories {
     mavenLocal()
