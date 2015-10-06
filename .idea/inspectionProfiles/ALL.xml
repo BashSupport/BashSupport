@@ -420,7 +420,6 @@
       <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
     </inspection_tool>
     <inspection_tool class="LoggingConditionDisagreesWithLogStatement" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="LongLiteralsEndingWithLowercaseL" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LoopConditionNotUpdatedInsideLoop" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LoopWithImplicitTerminationCondition" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LossyEncoding" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -591,7 +590,6 @@
     <inspection_tool class="RedundantMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RedundantSuppression" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RedundantThrowsDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RefusedBequest" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RelativeImport" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="Replace with backquote" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="Replace with subshell" enabled="true" level="INFO" enabled_by_default="true" />
