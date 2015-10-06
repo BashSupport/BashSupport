@@ -48,13 +48,12 @@ sourceSets {
     }
 }
 
-test.ignoreFailures = true
+//test.ignoreFailures = true
 test.testLogging.showStandardStreams = true
 
 test {
     systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
 }
-
 
 allprojects {
     plugins.withType(JavaPlugin) {
