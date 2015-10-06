@@ -32,18 +32,19 @@
     <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
-    Bash support for IntelliJ.<br/>
+    Bash language support for IntelliJ.<br/>
     Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
 
-    <change-notes><![CDATA[
-    <html>
-       <b>Changes in version 1.5.0:</b>
-       <ul>
+    <change-notes><![CDATA[<html>
+        <b>Changes in version 1.5.1 compared to 1.4.x:</b>
+        <ul>
             <li>Features:<br/>
                 <ul>
                     <li>#90: Language injection into unevaluated heredoc content, single and double quoted strings</li>
-                    <li>#274: Spellchecker support for double-quoted strings, single-quoted strings and heredoc content</li>
+                    <li>#274: Spellchecker support for double-quoted strings, single-quoted strings and heredoc
+                        content
+                    </li>
                     <li>Bash code passed to eval in single quotes ('') is now parsed, too</li>
                     <li>Files usages in strings are now processed during a file rename if the option is enabled.</li>
                     <li>Renaming files in non-source directories</li>
@@ -52,56 +53,51 @@
                 </ul>
             </li>
             <li>Bugs:<br/>
-               <ul>
-                   <li>Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.</li>
-                   <li>#201: Cannot parse logical not in arithmetic expressions</li>
-                   <li>#206: NPE in ProgramParametersConfigurator</li>
-                   <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
-                   <li>#228 Support for the trap command.</li>
-                   <li>#237: BashSupport not saving globals entered into "Registered global variables" settings</li>
-                   <li>#238: Replace with evaluated expansion" works incorrectly</li>
-                   <li>#265: Digit $ is invalid with base 10</li>
-                   <li>#266: Valid parameter expansion ${#} marked as an error</li>
-                   <li>#271: Empty subshell rejected as invalid</li>
-                   <li>#279: Incorrect parsing and 'Unresolved variable' report for heredocs</li>
-                   <li>#243: Single line case statement parse error</li>
-                   <li>#246: Minor Single Quote Escaping Issue</li>
-                   <li>Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'</li>
-                   <li>New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.</li>
-                   <li>Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.</li>
-                   <li>Fixed Bash file renaming, file references to Bash files are changed now</li>
-                   <li>No keyword completions while typing in a Bash comment</li>
-                   <li>No live template completions while typing in a Bash comment</li>
-               </ul>
-           </li>
-       </ul>
+                <ul>
+                    <li>#201: Cannot parse logical not in arithmetic expressions</li>
+                    <li>#206: NPE in ProgramParametersConfigurator</li>
+                    <li>#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed</li>
+                    <li>#228 Support for the trap command.</li>
+                    <li>#237: BashSupport not saving globals entered into "Registered global variables" settings</li>
+                    <li>#238: Replace with evaluated expansion" works incorrectly</li>
+                    <li>#265: Digit $ is invalid with base 10</li>
+                    <li>#266: Valid parameter expansion ${#} marked as an error</li>
+                    <li>#271: Empty subshell rejected as invalid</li>
+                    <li>#279: Incorrect parsing and 'Unresolved variable' report for heredocs</li>
+                    <li>#243: Single line case statement parse error</li>
+                    <li>#246: Minor Single Quote Escaping Issue</li>
+                    <li>Heredoc parsing improvement: The processing is more robust, more correct and faster</li>
+                    <li>Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'</li>
+                    <li>New Bash files are now created from a template. If you want to customize the default script you
+                        can modify the template "Bash Script" in the IntelliJ settings.
+                    </li>
+                    <li>Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for
+                        references. This is now disabled for Bash files. References are always changed if a Bash file is
+                        renamed.
+                    </li>
+                    <li>Fixed Bash file renaming, file references to Bash files are changed now</li>
+                    <li>No keyword completions while typing in a Bash comment</li>
+                    <li>No live template completions while typing in a Bash comment</li>
+                </ul>
+            </li>
+        </ul>
 
-       <br/>
-       <a href="https://github.com/jansorg/BashSupport/blob/master/Changelog.md">Full changelog</a>
+        <br/>
+        <a href="https://github.com/jansorg/BashSupport/blob/idea-139.x/Changelog.md">Full changelog</a>
 
-       <br/>
-       <b>Recent changes:</b>
-       <ul>
-         <li>Fixed the "Run before" steps of a Bash run configuration</li>
-         <li>Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3</li>
-         <li>The special /usr/bin/env command is now supported by the shebang inspection</li>
-         <li>Parser performance improved (pool for internal marker objects added)</li>
-         <li>Fixed "Local variable definition on global level" inspection</li>
-         <li>Fixed case expressions followed by a backtick character</li>
-         <li>Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed</li>
-         <li>Enabled and fixed the custom error reporting dialog</li>
-         <li>Creating new Bash run configurations now picks up the shell path and shell options of the file's shebang line</li>
-         <li>Disabled debug button for Bash run configuration</li>
-         <li>#166: Support for ToDo-Strings in Bash comments</li>
-         <li>Support for the typeset command                                                                     </li>
-         <li>Initial support for the trap command                                                                </li>
-         <li>Initial support for the eval command                                                                </li>
-         <li>"Replace with ${var}" is not suggested inside of arithmetic expressions any more                    </li>
-         <li>Improved color scheme definitions, looks better with Darcula                                        </li>
-       </ul>
-    </html>
-    ]]>
+        <br/><br/>
+
+        <p>To all, who contributed to my wedding campaign: You are incredible and your kindness is beyond my
+            expectations! :)
+            I'm very grateful for all your great support and kind words. I read all your comments and appreciated every
+            gift.
+            Thank you very much!<br/>
+            A picture, as promised, is available here: <a href="http://www.ansorg-it.com/wedding.jpg">http://www.ansorg-it.com/wedding.jpg</a>
+        </p>
+        </html>
+        ]]>
     </change-notes>
+
 
     <application-components>
         <component>
