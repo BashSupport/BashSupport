@@ -1,11 +1,9 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.refactoring;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.AbstractElementManipulator;
 import com.intellij.psi.ElementManipulator;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -33,7 +31,7 @@ public class BashFileReferenceManipulator implements ElementManipulator {
 
     @Override
     public PsiElement handleContentChange(@NotNull final PsiElement element, final String newContent) throws IncorrectOperationException {
-        return handleContentChange(element, getRangeInElement(element), newContent);
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

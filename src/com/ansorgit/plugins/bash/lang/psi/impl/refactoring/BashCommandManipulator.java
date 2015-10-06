@@ -6,7 +6,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.AbstractElementManipulator;
+import com.intellij.psi.ElementManipulator;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Handles element manipulation of Bash function and file references.
  */
-public class BashCommandManipulator extends AbstractElementManipulator<BashCommand> {
+public class BashCommandManipulator implements ElementManipulator<BashCommand> {
     @Override
     public BashCommand handleContentChange(@NotNull BashCommand cmd, @NotNull TextRange textRange, String newElementName) throws IncorrectOperationException {
         if (StringUtil.isEmpty(newElementName)) {
@@ -30,21 +30,11 @@ public class BashCommandManipulator extends AbstractElementManipulator<BashComma
         BashPsiUtils.replaceElement(commandElement, replacement);
 
         return cmd;
+    }
 
-        /*if (cmd.isExternalCommand()) {
-            BashGenericCommand replacement = BashPsiElementFactory.createCommand(cmd.getProject(), newElementName);
-            BashPsiUtils.replaceElement(commandElement, replacement);
-
-            return cmd;
-        } else {
-            final PsiElement replacement = BashPsiElementFactory.createWord(cmd.getProject(), newElementName);
-
-            //fixme handled psi replacement properly?
-            //BashPsiUtils.replaceElement(original, replacement);
-            cmd.getNode().replaceChild(commandElement.getNode(), replacement.getNode());
-
-            return cmd;
-        } */
+    @Override
+    public BashCommand handleContentChange(@NotNull final BashCommand element, final String newContent) throws IncorrectOperationException {
+        return handleContentChange(element, TextRange.create(0, element.getTextLength()), newContent);
     }
 
     @NotNull

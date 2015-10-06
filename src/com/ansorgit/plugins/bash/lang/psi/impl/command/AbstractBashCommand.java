@@ -374,11 +374,6 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             return cmd.getReferencedCommandName();
         }
 
-        @Override
-        public boolean isReferenceTo(PsiElement element) {
-            return super.isReferenceTo(element);
-        }
-
         @Nullable
         @Override
         public PsiElement resolveInner() {

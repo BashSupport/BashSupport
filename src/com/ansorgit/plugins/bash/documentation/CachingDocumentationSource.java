@@ -41,7 +41,7 @@ class CachingDocumentationSource implements DocumentationSource {
     private final CachableDocumentationSource delegate;
 
     //strong values to compare keys with equals(...)
-    private final Map<String, String> documentationCache = new MapMaker().softValues().makeMap();
+    private final Map<String, String> documentationCache = new MapMaker().weakValues().makeMap();
 
     public CachingDocumentationSource(CachableDocumentationSource source) {
         this.delegate = source;

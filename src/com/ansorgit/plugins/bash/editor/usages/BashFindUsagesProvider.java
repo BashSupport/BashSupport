@@ -57,6 +57,11 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
             setMayHaveFileRefsInLiterals(true);
         }
+
+        @Override
+        public int getVersion() {
+            return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
+        }
     }
 
     public WordsScanner getWordsScanner() {

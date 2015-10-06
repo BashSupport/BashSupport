@@ -186,7 +186,7 @@ abstract class AbstractFileTreeTable<T> extends TreeTable {
             TreeNode child = root.getChildAt(i);
             VirtualFile file = ((FileNode) child).getObject();
             if (VfsUtil.isAncestor(file, toSelect, false)) {
-                if (file == toSelect) {
+                if (file.equals(toSelect)) {
                     TreeUtil.selectNode(getTree(), child);
                     getSelectionModel().clearSelection();
                     addSelectedPath(TreeUtil.getPathFromRoot(child));

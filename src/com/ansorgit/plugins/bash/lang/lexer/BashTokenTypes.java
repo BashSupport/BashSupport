@@ -18,16 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.settings.facet.BashFacetType;
-import com.intellij.lang.CompositeLanguage;
-import com.intellij.lang.Language;
-import com.intellij.lang.xhtml.XHTMLLanguage;
-import com.intellij.openapi.fileTypes.PlainTextLanguage;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**

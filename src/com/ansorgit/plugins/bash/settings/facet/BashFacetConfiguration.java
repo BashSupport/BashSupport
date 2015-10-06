@@ -94,7 +94,7 @@ public class BashFacetConfiguration implements FacetConfiguration, Serializable 
         return mapping.containsKey(null) ? mapping.get(null) : FileMode.defaultMode();
     }
 
-    public static enum OperationMode {
+    public enum OperationMode {
         IgnoreAll, AcceptAll, Custom
     }
 

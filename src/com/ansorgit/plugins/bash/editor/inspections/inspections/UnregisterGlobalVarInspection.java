@@ -56,7 +56,7 @@ public class UnregisterGlobalVarInspection extends LocalInspectionTool {
         @Override
         public void visitVarUse(BashVar bashVar) {
             BashReference ref = bashVar.getReference();
-            if (!bashVar.isBuiltinVar() && ref.resolve() == null) {
+            if (!bashVar.isBuiltinVar() && ref != null && ref.resolve() == null) {
                 String varName = ref.getReferencedName();
 
                 boolean isRegisteredAsGlobal = globalVars.contains(varName);
