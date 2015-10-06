@@ -58,9 +58,8 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             setMayHaveFileRefsInLiterals(true);
         }
 
-        @Override
         public int getVersion() {
-            return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
+            return BashIndexVersion.ID_INDEX_VERSION;
         }
     }
 

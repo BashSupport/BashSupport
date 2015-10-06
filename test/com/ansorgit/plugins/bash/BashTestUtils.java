@@ -18,23 +18,17 @@
 
 package com.ansorgit.plugins.bash;
 
-import com.google.common.io.Files;
-import com.intellij.ide.util.DirectoryUtil;
-import com.intellij.openapi.util.io.FileSystemUtil;
-import com.intellij.openapi.util.io.FileUtilRt;
-import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 public final class BashTestUtils {
 
+    private static volatile String basePath;
+
     private BashTestUtils() {
     }
-
-    private static volatile String basePath;
 
     public static String getBasePath() {
         if (basePath == null) {
@@ -45,7 +39,8 @@ public final class BashTestUtils {
             throw new IllegalStateException("Could not find the testData directory.");
         }
 
-        VfsRootAccess.allowRootAccess(basePath);
+        //fixme not available in 135.x
+        //VfsRootAccess.allowRootAccess(basePath);
 
         return basePath;
     }
@@ -60,7 +55,7 @@ public final class BashTestUtils {
         }
 
         //try to find out from the current classloader
-        URL url = BashTestUtils.class.getClassLoader().getResource("/log4j.xml");
+        URL url = BashTestUtils.class.getClassLoader().getResource("log4j.xml");
         if (url != null) {
             try {
                 File basePath = new File(url.toURI());
@@ -76,7 +71,7 @@ public final class BashTestUtils {
             } catch (Exception e) {
                 //ignore, use fallback below
             }
-        }    else {
+        } else {
             throw new IllegalStateException("Could not find log4jx.ml");
         }
 
