@@ -3,8 +3,6 @@
 
 ####2015-08-13
  - \#206: NPE in ProgramParametersConfigurator
- 
-####2015-08-13
  - \#266: Valid parameter expansion ${#} marked as an error
  - \#271: Empty subshell rejected as invalid
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
@@ -25,6 +23,13 @@
 ####2015-07-07
  - \#201: Cannot parse logical not in arithmetic expressions 
  - \#238: Replace with evaluated expansion" works incorrectly
+
+####2015-09-16
+ - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
+ 
+####2015-08-19
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#270: Escape handling in heredoc content
 
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
