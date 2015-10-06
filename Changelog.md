@@ -1,6 +1,9 @@
 ####2015-10-05
  - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content 
   
+####2015-09-16
+ - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
+  
 ####2015-08-19
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
@@ -37,7 +40,7 @@
 ####2015-08-19
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
-
+   
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  

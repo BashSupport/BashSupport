@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashBlockImpl.java, Class: BashBlockImpl
- * Last modified: 2011-04-30 16:33
+ * File: LogicalOr.java, Class: LogicalOr
+ * Last modified: 2010-02-06 19:40
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.ansorgit.plugins.bash.lang.psi.impl;
+package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
-import com.intellij.psi.PsiElement;
-
-/**
- * Date: 12.04.2009
- * Time: 15:08:57
- *
- * @author Joachim Ansorg
- */
-public class BashBlockImpl extends BashCompositeElement implements BashBlock {
-    public BashBlockImpl() {
-        super(BashElementTypes.BLOCK_ELEMENT);
-    }
-
-    public boolean isCommandGroup() {
-        return false;
-    }
-
-    public PsiElement commandGroup() {
-        return null;
-    }
+public interface VariableOperator {
 }

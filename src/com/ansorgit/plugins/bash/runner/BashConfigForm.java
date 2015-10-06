@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.intellij.execution.ui.CommonProgramParametersPanel;
-import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.ui.LabeledComponent;
@@ -11,7 +10,6 @@ import com.intellij.ui.RawCommandLineEditor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class BashConfigForm extends CommonProgramParametersPanel {
     private LabeledComponent<RawCommandLineEditor> interpreterParametersComponent;

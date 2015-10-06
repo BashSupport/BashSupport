@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.psi.impl.cache.impl.BaseFilterLexer;
 import com.intellij.psi.impl.cache.impl.OccurrenceConsumer;

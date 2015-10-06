@@ -37,6 +37,7 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.Icons;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 

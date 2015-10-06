@@ -59,11 +59,6 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         }
 
         @Override
-        public void processWords(CharSequence fileText, Processor<WordOccurrence> processor) {
-            super.processWords(fileText, processor);
-        }
-
-        @Override
         public int getVersion() {
             return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
         }

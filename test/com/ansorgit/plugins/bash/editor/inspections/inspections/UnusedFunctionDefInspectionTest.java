@@ -1,7 +1,9 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class UnusedFunctionDefInspectionTest extends AbstractInspectionTestCase {
     @Test
     public void testOk() throws Exception {

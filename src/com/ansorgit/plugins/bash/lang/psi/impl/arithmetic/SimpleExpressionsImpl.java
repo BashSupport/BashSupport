@@ -227,7 +227,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                             return Long.valueOf(asString.substring(2), 16);
 
                         case OctalLiteral:
-                            return Long.valueOf(asString.substring(0), 8);
+                            return Long.valueOf(asString, 8);
 
                         default:
                             throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + literalType());

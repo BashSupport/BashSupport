@@ -17,7 +17,6 @@
  ******************************************************************************/
 package nu.studer.idea.errorreporting;
 
-import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -29,9 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 
 /**
  * This class sends logging events to the error receiving server.

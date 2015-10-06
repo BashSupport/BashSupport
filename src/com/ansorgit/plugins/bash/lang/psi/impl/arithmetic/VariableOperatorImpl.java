@@ -1,14 +1,14 @@
 /*******************************************************************************
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashBlockImpl.java, Class: BashBlockImpl
+ * File: LogicalOrmpl.java, Class: LogicalOrmpl
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,28 +16,24 @@
  * limitations under the License.
  ******************************************************************************/
 
-package com.ansorgit.plugins.bash.lang.psi.impl;
+package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
-import com.intellij.psi.PsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.VariableOperator;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
-/**
- * Date: 12.04.2009
- * Time: 15:08:57
- *
- * @author Joachim Ansorg
- */
-public class BashBlockImpl extends BashCompositeElement implements BashBlock {
-    public BashBlockImpl() {
-        super(BashElementTypes.BLOCK_ELEMENT);
+public class VariableOperatorImpl extends AbstractExpression implements VariableOperator {
+    public VariableOperatorImpl(final ASTNode astNode) {
+        super(astNode, "VarOperator", Type.TwoOperands);
     }
 
-    public boolean isCommandGroup() {
+    @Override
+    public boolean isStatic() {
         return false;
     }
 
-    public PsiElement commandGroup() {
+    @Override
+    protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         return null;
     }
 }
