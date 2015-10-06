@@ -18,8 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
-import com.intellij.psi.PsiLanguageInjectionHost;
-
 /**
  * User: jansorg
  * Date: Jan 24, 2010
