@@ -1,3 +1,10 @@
+####2015-10-05
+ - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content 
+  
+####2015-08-19
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#270: Escape handling in heredoc content
+
 ####2015-08-14
  - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
 
