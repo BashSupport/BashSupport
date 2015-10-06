@@ -14,7 +14,8 @@ import com.intellij.spellchecker.tokenizer.Tokenizer;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Bash spell checking support.
+ * Bash spell checking support. Supports spell checking for single-quoted, double quoted and heredoc content elements.
+ * The fallback implementation of IntelliJ also supports spellchecking in comments.
  *
  * @author jansorg
  */
@@ -25,13 +26,11 @@ public class BashSpellCheckingSupport extends SpellcheckingStrategy {
     public Tokenizer getTokenizer(PsiElement psiElement) {
         if (psiElement instanceof BashString) {
             return new BashStringTokenizer();
-        }
-
-        if (psiElement instanceof BashWord) {
-            return new BashWordTokenizer();
-        }
-
-        if (psiElement instanceof BashHereDoc) {
+        } else if (psiElement instanceof BashWord) {
+            if (((BashWord) psiElement).isWrapped()) {
+                return new BashWordTokenizer();
+            }
+        } else if (psiElement instanceof BashHereDoc) {
             return new BashHeredocTokenizer();
         }
 

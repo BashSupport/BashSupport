@@ -21,8 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.intellij.psi.tree.IElementType;
-import junit.framework.Assert;
-import org.junit.Test;
+import org.junit.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +46,6 @@ public abstract class MockPsiTest implements BashTokenTypes {
     }
 
     protected void assertErrors(MockPsiBuilder psi) {
-        printErrors(psi);
         Assert.assertTrue("Expecting parsing errors, but there are none.", psi.hasErrors());
     }
 

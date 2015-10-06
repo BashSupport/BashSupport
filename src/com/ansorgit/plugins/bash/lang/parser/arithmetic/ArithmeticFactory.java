@@ -49,7 +49,7 @@ public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
     private static ArithmeticParsingFunction bitwiseOr = repeated(bitwiseXor, PIPE, ARITH_BIT_OR_ELEMENT, "bitwiseOr");
     private static ArithmeticParsingFunction logicalAnd = repeated(bitwiseOr, AND_AND, ARITH_LOGIC_AND_ELEMENT, "bitwiseAnd");
     private static ArithmeticParsingFunction logicalOr = repeated(logicalAnd, OR_OR, ARITH_LOGIC_OR_ELEMENT, "logicalOr");
-    private static ArithmeticParsingFunction variableOperator = repeated(logicalOr, VARIABLE, ARITH_VARIABLE_OPERATOR_ELEMENT, "varOperator"); //math with a variable as oeprator
+    private static ArithmeticParsingFunction variableOperator = repeated(logicalOr, VARIABLE, ARITH_VARIABLE_OPERATOR_ELEMENT, "varOperator"); //math with a variable as operator
     private static TernaryExpression ternary = new TernaryExpression(variableOperator);
     private static ArithmeticParsingFunction simpleAssignment = new AbstractAssignment(ternary, TokenSet.create(EQ));
     private static ArithmeticParsingFunction assignmentCombination = new AbstractAssignment(simpleAssignment, arithmeticAssign);

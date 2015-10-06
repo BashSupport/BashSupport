@@ -10,7 +10,7 @@ plugins {
     id "org.jetbrains.intellij" version "0.0.22"
 }
 
-version = '1.5.1.142'
+version = '1.5.0.139'
 
 repositories {
     mavenLocal()
@@ -21,7 +21,7 @@ repositories {
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version 'LATEST-EAP-SNAPSHOT'
+    version '14.0.4'
     plugins 'IntelliLang'
     pluginName 'BashSupport'
 }
@@ -48,13 +48,12 @@ sourceSets {
     }
 }
 
-test.ignoreFailures = true
+//test.ignoreFailures = true
 test.testLogging.showStandardStreams = true
 
 test {
     systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
 }
-
 
 allprojects {
     plugins.withType(JavaPlugin) {

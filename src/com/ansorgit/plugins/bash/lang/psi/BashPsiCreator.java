@@ -160,6 +160,10 @@ public class BashPsiCreator implements BashElementTypes {
             return new AssignmentExpressionsImpl(node);
         }
 
+        if (elementType == ARITH_VARIABLE_OPERATOR_ELEMENT) {
+            return new VariableOperatorImpl(node);
+        }
+
         if (elementType == ARITH_BIT_AND_ELEMENT) {
             return new BitwiseAndExpressionsImpl(node);
         }
