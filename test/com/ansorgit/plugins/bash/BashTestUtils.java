@@ -18,6 +18,11 @@
 
 package com.ansorgit.plugins.bash;
 
+import com.google.common.io.Files;
+import com.intellij.ide.util.DirectoryUtil;
+import com.intellij.openapi.util.io.FileSystemUtil;
+import com.intellij.openapi.util.io.FileUtilRt;
+import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -40,6 +45,8 @@ public final class BashTestUtils {
             throw new IllegalStateException("Could not find the testData directory.");
         }
 
+        VfsRootAccess.allowRootAccess(basePath);
+
         return basePath;
     }
 
@@ -53,18 +60,24 @@ public final class BashTestUtils {
         }
 
         //try to find out from the current classloader
-        URL url = BashTestUtils.class.getClassLoader().getResource("log4j.xml");
+        URL url = BashTestUtils.class.getClassLoader().getResource("/log4j.xml");
         if (url != null) {
             try {
-                File resourceFile = new File(url.toURI());
+                File basePath = new File(url.toURI());
+                while (basePath.exists() && !new File(basePath, "testData").isDirectory()) {
+                    basePath = basePath.getParentFile();
+                }
+
                 //we need to cut the out dir and the other resource paths
-                File basePath = resourceFile.getParentFile().getParentFile().getParentFile().getParentFile();
-                if (basePath != null && basePath.isDirectory()) {
-                    return basePath + File.separator + "testData";
+                //File basePath = resourceFile.getParentFile().getParentFile().getParentFile().getParentFile();
+                if (basePath.isDirectory()) {
+                    return new File(basePath, "testData").getAbsolutePath();
                 }
             } catch (Exception e) {
                 //ignore, use fallback below
             }
+        }    else {
+            throw new IllegalStateException("Could not find log4jx.ml");
         }
 
         return null;
