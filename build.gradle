@@ -21,7 +21,7 @@ repositories {
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version '14.1.0'
+    version '14.1.4'
     plugins 'IntelliLang'
     pluginName 'BashSupport'
 }
