@@ -18,15 +18,10 @@
 
 package com.ansorgit.plugins.bash;
 
-import com.google.common.io.Files;
-import com.intellij.ide.util.DirectoryUtil;
-import com.intellij.openapi.util.io.FileSystemUtil;
-import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 public final class BashTestUtils {
@@ -60,7 +55,7 @@ public final class BashTestUtils {
         }
 
         //try to find out from the current classloader
-        URL url = BashTestUtils.class.getClassLoader().getResource("/log4j.xml");
+        URL url = BashTestUtils.class.getClassLoader().getResource("log4j.xml");
         if (url != null) {
             try {
                 File basePath = new File(url.toURI());
