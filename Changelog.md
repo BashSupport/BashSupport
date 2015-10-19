@@ -1,3 +1,6 @@
+####2015-10-19
+ - \#280: Unnecessary error if there is no module available for a run configuration 
+ 
 ####2015-10-06
  - Released 1.5.1
  
