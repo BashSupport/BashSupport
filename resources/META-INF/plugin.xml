@@ -133,7 +133,7 @@
 -->
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
-            <add-to-group group-id="NewGroup" relative-to-action="NDNewFile" anchor="after"/>
+            <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
         </action>
 
 
@@ -152,7 +152,10 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- The factory registers the known file extensions-->
         <fileTypeFactory implementation="com.ansorgit.plugins.bash.file.BashFileTypeLoader"/>
+        <!-- The detector looks at the content of a file and tries to guess if it is a bash file-->
+        <fileTypeDetector implementation="com.ansorgit.plugins.bash.file.BashFileTypeDetector"/>
 
         <!-- Syntax highlighting -->
         <syntaxHighlighter key="Bash" implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>

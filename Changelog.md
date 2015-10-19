@@ -1,3 +1,6 @@
+####2015-10-19
+ - \#282: Improved file type guessing for files without an extension
+ 
 ####2015-10-06
  - Released 1.5.1
  
