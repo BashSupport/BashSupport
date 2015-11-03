@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -50,7 +51,7 @@ class LetCommand implements ParsingFunction, ParsingTool {
         PsiBuilder.Marker marker = builder.mark();
 
         //eat the "let" token
-        builder.advanceLexer();
+        ParserUtil.markTokenAndAdvance(builder, GENERIC_COMMAND_ELEMENT);
 
         PsiBuilder.Marker letExpressionMarker = builder.mark();
 
