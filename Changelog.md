@@ -1,7 +1,8 @@
 ####2015-11-04
+ - \#290: Inspections have no descriptions 
  - \#289: Quickdoc lookup not working for keywords 
  - \#288: Documentation lookup not working for functions 
- - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile" 
+ - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
 
 ####2015-10-19
  - \#282: Improved file type guessing for files without an extension

@@ -43,6 +43,7 @@
             <li>No new features</li>
             <li>Bugs fixed:<br/>
                 <ul>
+                    <li>#290: Inspections have no descriptions</li>
                     <li>#289: Quickdoc lookup not working for keywords</li>
                     <li>#288: Documentation lookup not working for functions</li>
                     <li>#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"</li>
