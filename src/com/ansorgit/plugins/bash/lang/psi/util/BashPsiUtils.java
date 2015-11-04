@@ -422,7 +422,7 @@ public final class BashPsiUtils {
             return null;
         }
 
-        for (PsiElement current = start.getParent(); current != null; current = current.getParent()) {
+        for (PsiElement current = start; current != null; current = current.getParent()) {
             if (parentType.isInstance(current)) {
                 return (T) current;
             }
