@@ -28,16 +28,20 @@ import java.util.List;
  * Helper class to detect if there's is a Bash installation in one of the most common places.
  */
 public class BashInterpreterDetection {
-    public static final List<String> guessLocations = Collections.unmodifiableList(Lists.newArrayList(
+    public static final List<String> POSSIBLE_LOCATIONS = Collections.unmodifiableList(Lists.newArrayList(
+            "/sbin/bash",
             "/bin/bash",
             "/usr/bin/bash",
             "/usr/local/bin/bash",
             "/opt/local/bin/bash",
             "/opt/bin/bash",
+            "/sbin/sh",
             "/bin/sh",
             "/usr/bin/sh",
             "/opt/local/bin/sh",
-            "/opt/bin/sh"
+            "/opt/bin/sh",
+            "/usr/bin/env bash",
+            "/usr/bin/env sh"
     ));
 
     public static final BashInterpreterDetection INSTANCE = new BashInterpreterDetection();
@@ -47,7 +51,7 @@ public class BashInterpreterDetection {
     }
 
     public String findBestLocation() {
-        for (String guessLocation : guessLocations) {
+        for (String guessLocation : POSSIBLE_LOCATIONS) {
             if (isSuitable(guessLocation)) {
                 return guessLocation;
             }

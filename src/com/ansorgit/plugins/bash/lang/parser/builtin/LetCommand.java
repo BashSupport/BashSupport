@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -40,9 +41,7 @@ class LetCommand implements ParsingFunction, ParsingTool {
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
-        IElementType tokenType = builder.getTokenType();
-        String tokenText = builder.getTokenText();
-        return tokenType == WORD && LanguageBuiltins.arithmeticCommands.contains(tokenText);
+        return builder.getTokenType() == LET_KEYWORD;
     }
 
     @Override
@@ -58,8 +57,8 @@ class LetCommand implements ParsingFunction, ParsingTool {
         boolean paramsAreFine = CommandParsingUtil.readCommandParams(builder, VALID_EXTRA_TOKENS);
 
         if (paramsAreFine) {
-            letExpressionMarker.collapse(BashElementTypes.LET_EXPRESSION);
-            marker.done(GENERIC_COMMAND_ELEMENT);
+            letExpressionMarker.collapse(BashElementTypes.LET_LAZY_EXPRESSION);
+            marker.done(LET_COMMAND);
         } else {
             letExpressionMarker.drop();
             marker.drop();

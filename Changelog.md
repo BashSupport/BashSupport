@@ -1,27 +1,41 @@
+####2015-11-04
+ - \#290: Inspections have no descriptions 
+ - \#289: Quickdoc lookup not working for keywords 
+ - \#288: Documentation lookup not working for functions 
+ - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
+ - Released 1.5.2
+
+####2015-10-19
+ - \#282: Improved file type guessing for files without an extension
+  
+####2015-10-19
+ - \#280: Unnecessary error if there is no module available for a run configuration 
+ 
 ####2015-10-06
  - Released 1.5.1
  
 ####2015-10-05
  - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content 
-
+  
 ####2015-09-16
  - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
-   
+  
 ####2015-08-19
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
 
 ####2015-08-14
  - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
- 
+
 ####2015-08-13
  - \#206: NPE in ProgramParametersConfigurator
  - \#266: Valid parameter expansion ${#} marked as an error
  - \#271: Empty subshell rejected as invalid
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#228 Support for the trap command.
  
 ####2015-08-11
-  - \#265: Digit $ is invalid with base 10
+ - \#265: Digit $ is invalid with base 10
 
 ####2015-07-18
  - \#237: BashSupport not saving globals entered into "Registered global variables" settings  
@@ -33,7 +47,14 @@
 ####2015-07-07
  - \#201: Cannot parse logical not in arithmetic expressions 
  - \#238: Replace with evaluated expansion" works incorrectly
+
+####2015-09-16
+ - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
  
+####2015-08-19
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#270: Escape handling in heredoc content
+   
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  

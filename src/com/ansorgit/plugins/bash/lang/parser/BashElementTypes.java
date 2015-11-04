@@ -89,6 +89,7 @@ public interface BashElementTypes {
     IElementType SUBSHELL_COMMAND = new BashCompositeElementType("subshell shellcommand", BashSubshellCommandImpl.class);
     IElementType BACKQUOTE_COMMAND = new BashCompositeElementType("backquote shellcommand", BashBackquoteImpl.class);
     IElementType TRAP_COMMAND = new BashCompositeElementType("trap command", BashTrapCommandImpl.class);
+    IElementType LET_COMMAND = new BashCompositeElementType("let command", BashLetCommandImpl.class);
     BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
     IElementType GROUP_COMMAND = new BashCompositeElementType("group command", BashGroupImpl.class);
     //arithmetic commands
@@ -121,7 +122,7 @@ public interface BashElementTypes {
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
     IElementType STRING_ELEMENT = new BashElementType("string");
-    IElementType LET_EXPRESSION = new BashElementType("lazy LET expression");
+    IElementType LET_LAZY_EXPRESSION = new BashElementType("lazy LET expression");
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");

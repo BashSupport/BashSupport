@@ -94,9 +94,6 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         super.checkConfiguration();
 
         Module module = getConfigurationModule().getModule();
-        if (module == null) {
-            throw new RuntimeConfigurationException("Module wasn't found.");
-        }
 
         ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
 
