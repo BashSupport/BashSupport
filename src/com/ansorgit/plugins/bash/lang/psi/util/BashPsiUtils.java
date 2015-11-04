@@ -33,6 +33,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.PsiElementBase;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
@@ -486,5 +487,15 @@ public final class BashPsiUtils {
         }
 
         return element;
+    }
+
+    @Nullable
+    public static PsiReference selfReference(PsiElement element) {
+        ElementManipulator<PsiElement> manipulator = ElementManipulators.getManipulator(element);
+        if (manipulator == null) {
+            return null;
+        }
+
+        return new PsiReferenceBase.Immediate<PsiElement>(element, manipulator.getRangeInElement(element), true, element);
     }
 }

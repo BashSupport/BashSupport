@@ -175,8 +175,8 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
 
         if (isInternalCommand()) {
-            //return new SelfReference(this);
-            return null;
+            //a reference is required for QuickDoc support, camMavigate avoids the "Go to definition" nvaigation
+            return BashPsiUtils.selfReference(this);
         }
 
         return bashFileReference;

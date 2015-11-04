@@ -1,4 +1,5 @@
 ####2015-11-04
+ - \#289: Quickdoc lookup not working for keywords 
  - \#288: Documentation lookup not working for functions 
  - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile" 
 

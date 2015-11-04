@@ -43,8 +43,10 @@
             <li>No new features</li>
             <li>Bugs fixed:<br/>
                 <ul>
-                    <li>#280: Run configuration error message "Module wasn't found"</li>
+                    <li>#289: Quickdoc lookup not working for keywords</li>
+                    <li>#288: Documentation lookup not working for functions</li>
                     <li>#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"</li>
+                    <li>#280: Run configuration error message "Module wasn't found"</li>
                 </ul>
             </li>
         </ul>
@@ -168,6 +170,8 @@
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashStringManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashHereDocManipulator" />
+        <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashKeyword"
+                                 implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashKeywordManipulator" />
 
         <renamePsiElementProcessor implementation="com.ansorgit.plugins.bash.lang.psi.impl.BashFileRenameProcessor"/>
 

@@ -56,18 +56,6 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
     }
 
     @Nullable
-    @Override
-    public PsiReference getReference() {
-        PsiElement element = commandElement();
-        if (element == null) {
-            return null;
-        }
-
-        TextRange range = TextRange.from(0, element.getTextLength()).shiftRight(element.getStartOffsetInParent());
-        return new PsiReferenceBase.Immediate<PsiElement>(this, range, true, this);
-    }
-
-    @Nullable
     public BashFileReference getFileReference() {
         return findChildByClass(BashFileReference.class);
     }
@@ -112,19 +100,8 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
     }
 
     @Override
-    public boolean canNavigate() {
-        return canNavigateToSource();
-    }
-
-    @Override
     public boolean isBashScriptCall() {
         return false;
-    }
-
-    @Override
-    public boolean canNavigateToSource() {
-        BashFileReference fileReference = getFileReference();
-        return fileReference != null && fileReference.findReferencedFile() != null;
     }
 
     @Override
