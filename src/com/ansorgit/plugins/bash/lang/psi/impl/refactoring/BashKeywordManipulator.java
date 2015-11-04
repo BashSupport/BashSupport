@@ -3,6 +3,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.refactoring;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.ElementManipulator;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,8 @@ public class BashKeywordManipulator implements ElementManipulator<BashKeyword> {
     @NotNull
     @Override
     public TextRange getRangeInElement(@NotNull BashKeyword element) {
-        return TextRange.create(0, element.getTextLength());
+        PsiElement keywordElement = element.keywordElement();
+
+        return TextRange.create(0, keywordElement.getTextLength());
     }
 }
