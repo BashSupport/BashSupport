@@ -10,7 +10,7 @@ plugins {
     id "org.jetbrains.intellij" version "0.0.27"
 }
 
-version = '1.5.2.141'
+version = '1.5.2.139'
 
 repositories {
     mavenLocal()
@@ -21,13 +21,15 @@ repositories {
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version '14.1.2'
+    version '14.0.4'
     plugins 'IntelliLang'
     pluginName 'BashSupport'
+    downloadSources false
 
     publish {
         username 'wallaby'
         pluginId '4230'
+        password System.properties['intellij.publish.password']
     }
 }
 
