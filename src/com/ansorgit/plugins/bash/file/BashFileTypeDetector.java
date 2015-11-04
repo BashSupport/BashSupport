@@ -46,7 +46,6 @@ public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
         return null;
     }
 
-    @Override
     public int getVersion() {
         return 1;
     }
