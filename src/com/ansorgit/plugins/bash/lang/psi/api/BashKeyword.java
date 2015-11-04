@@ -29,7 +29,7 @@ import com.intellij.psi.PsiReference;
  *
  * @author Joachim Ansorg
  */
-public interface BashKeyword {
+public interface BashKeyword extends BashPsiElement {
     /**
      * Returns the PsiElement which is the keyword. For example the PsiElement
      * for "if" is returned if this BashKeyword is an if command implementation.

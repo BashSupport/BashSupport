@@ -197,7 +197,8 @@ public class BashLexerTest {
     @Test
     public void testLetExpressions() throws Exception {
         //fixme unsure how the let expression should be tokenized. A solution might be to parse it as an lazy expression
-        testTokenization("let a+=1", WORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
+        testTokenization("let a+=1", LET_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
+        testTokenization("let", LET_KEYWORD);
     }
 
     @Test

@@ -75,6 +75,7 @@ public interface BashTokenTypes {
     IElementType WHILE_KEYWORD = new BashElementType("while");//while
     IElementType TIME_KEYWORD = new BashElementType("time");//time
     IElementType TRAP_KEYWORD = new BashElementType("trap");//trap
+    IElementType LET_KEYWORD = new BashElementType("let");//let
     IElementType BRACKET_KEYWORD = new BashElementType("[[ (left bracket)");//[[
     IElementType _BRACKET_KEYWORD = new BashElementType("]] (right bracket)");//]]
 
@@ -97,6 +98,8 @@ public interface BashTokenTypes {
             TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
             CASE_END, DOLLAR,
             EXPR_ARITH, _EXPR_ARITH, EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
+
+    TokenSet internalCommands = TokenSet.create(TRAP_KEYWORD, LET_KEYWORD);
 
     //these are keyword tokens which may be used as identifiers, e.g. in a for loop
     //these tokens will be remapped to word tokens if they occur at a position where a word token would be accepted
