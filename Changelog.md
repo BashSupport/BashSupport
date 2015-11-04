@@ -1,3 +1,7 @@
+####2015-11-04
+ - \#288: Documentation lookup not working for functions 
+ - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile" 
+ 
 ####2015-10-19
  - \#280: Unnecessary error if there is no module available for a run configuration 
  
