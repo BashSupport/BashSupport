@@ -97,6 +97,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     static {
         fillMap(attributes1, BashTokenTypes.keywords, KEYWORD);
+        fillMap(attributes1, BashTokenTypes.internalCommands, INTERNAL_COMMAND);
 
         fillMap(attributes1, lineCommentSet, LINE_COMMENT);
 

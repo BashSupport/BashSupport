@@ -352,6 +352,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "while"                       { return WHILE_KEYWORD; }
   "[[ "                         { goToState(S_TEST_COMMAND); return BRACKET_KEYWORD; }
   "trap"                        { return TRAP_KEYWORD; }
+  "let"                         { return LET_KEYWORD; }
 }
 /***************** _______ END OF INITIAL STAATE _______ **************************/
 

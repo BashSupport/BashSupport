@@ -19,6 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -91,7 +92,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             @Override
             public Result<Boolean> compute() {
                 ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                boolean result = command != null && LanguageBuiltins.isInternalCommand(command.getText());
+                boolean result = command != null && LanguageBuiltins.isInternalCommand(command.getText(), BashProjectSettings.storedSettings(getProject()).isSupportBash4());
 
                 return Result.create(result, AbstractBashCommand.this);
             }
@@ -110,7 +111,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             @Override
             public Result<Boolean> compute() {
                 ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                boolean result = command != null && !LanguageBuiltins.isInternalCommand(command.getText());
+                boolean result = command != null && !LanguageBuiltins.isInternalCommand(command.getText(), BashProjectSettings.storedSettings(getProject()).isSupportBash4());
 
                 return Result.create(result, AbstractBashCommand.this);
             }
