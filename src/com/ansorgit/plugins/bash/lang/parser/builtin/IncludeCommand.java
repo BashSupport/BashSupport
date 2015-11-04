@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
@@ -43,7 +42,7 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
 
     public boolean isValid(BashPsiBuilder builder) {
         String tokenText = builder.getTokenText();
-        boolean validStart = LanguageBuiltins.isInternalCommand(tokenText) && acceptedCommands.contains(tokenText);
+        boolean validStart = LanguageBuiltins.isInternalCommand(tokenText, builder.isBash4()) && acceptedCommands.contains(tokenText);
         return validStart && !invalidFollowups.contains(builder.rawLookup(1));
     }
 

@@ -105,7 +105,7 @@ public final class LanguageBuiltins {
         readonlyShellVars.addAll(bashShellParamReferences);
     }
 
-    public static boolean isInternalCommand(String commandName) {
-        return commands.contains(commandName);
+    public static boolean isInternalCommand(String commandName, boolean bash4) {
+        return bash4 && commands_v4.contains(commandName) || commands.contains(commandName);
     }
 }
