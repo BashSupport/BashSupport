@@ -30,7 +30,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
-import static com.ansorgit.plugins.bash.file.BashFileType.DEFAULT_EXTENSION;
+import static com.ansorgit.plugins.bash.file.BashFileType.SH_EXTENSION;
 
 /**
  * Action to create a new Bash file from a template.
@@ -48,7 +48,7 @@ public class NewBashFileAction extends CreateElementActionBase {
         String usedExtension = FileUtilRt.getExtension(inputFilename);
         boolean withExtension = !usedExtension.isEmpty();
 
-        return withExtension ? inputFilename : (inputFilename + "." + DEFAULT_EXTENSION);
+        return withExtension ? inputFilename : (inputFilename + "." + SH_EXTENSION);
     }
 
     protected String getDialogPrompt() {
