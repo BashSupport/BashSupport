@@ -62,30 +62,13 @@ public final class LanguageBuiltins {
             "PS3", "PS4", "PWD", "RANDOM",
             "REPLY", "SECONDS", "SHELL", "SHELLOPTS",
             "SHLVL", "TIMEFORMAT", "TMOUT", "TMPDIR", "UID");
-
-    //register the shell parameter names
-    static {
-        bashShellVars.addAll(bashShellParamReferences);
-    }
-
     public static final Collection<String> bashShellVars_v4 = Sets.newHashSet(
             "BASHPID", "PROMPT_DIRTRIM"
     );
-
     public static final Collection<String> readonlyShellVars = Sets.newHashSet(
             "BASH", "BASHOPTS", "BASHPID", "BASH_SUBSHELL", "BASH_VERSINFO", "BASH_VERSION", "EUID",
             "HOSTNAME", "HOSTTYPE", "OLDPWD", "PPID", "PWD", "UID"
     );
-
-    //add existing definitions to the read-only variable set
-    static {
-        readonlyShellVars.addAll(bashShellParamReferences);
-    }
-
-    public static boolean isInternalCommand(String commandName) {
-        return commands.contains(commandName);
-    }
-
     public static final Collection<String> commands = Sets.newHashSet(
             ".", ":", "alias", "bg", "bind", "break", "builtin", "cd", "caller",
             "command", "compgen", "complete", "continue", "declare", "typeset",
@@ -95,15 +78,12 @@ public final class LanguageBuiltins {
             "read", "readonly", "return", "set", "shift", "shopt", "unset", "source",
             "suspend", "test", "times", "trap", "type", "ulimit", "umask", "unalias", "wait"
     );
-
     public static final Collection<String> commands_v4 = Sets.newHashSet(
             "coproc", "mapfile"
     );
-
     public static final Collection<String> varDefCommands = Sets.newHashSet(
             "export", "read", "declare", "readonly", "typeset", "getopts"
     );
-
     public static final Collection<String> localVarDefCommands = Sets.newHashSet(
             "local"
 
@@ -111,15 +91,21 @@ public final class LanguageBuiltins {
     public static final Collection<String> readonlyVarDefCommands = Sets.newHashSet(
             "readonly"
     );
-    public static final Collection<String> arithmeticCommands = Sets.newHashSet(
-            "let"
-    );
-
-    public static final Collection<String> bashInjectionHostCommand = Sets.newHashSet(
-            "eval", "trap"
-    );
-
     public static final Collection<String> completionKeywords = Sets.newLinkedHashSet(Arrays.asList(
             "if", "then", "elif", "else", "fi", "while", "do", "done", "until", "case", "in", "esac", "true", "false"
     ));
+
+    //register the shell parameter names
+    static {
+        bashShellVars.addAll(bashShellParamReferences);
+    }
+
+    //add existing definitions to the read-only variable set
+    static {
+        readonlyShellVars.addAll(bashShellParamReferences);
+    }
+
+    public static boolean isInternalCommand(String commandName) {
+        return commands.contains(commandName);
+    }
 }
