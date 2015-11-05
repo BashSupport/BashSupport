@@ -21,13 +21,14 @@ repositories {
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version '15.0.0'
+    version '15.0'
     plugins 'IntelliLang'
     pluginName 'BashSupport'
 
     publish {
         username 'wallaby'
         pluginId '4230'
+        password System.properties['intellij.publish.password']
     }
 }
 
