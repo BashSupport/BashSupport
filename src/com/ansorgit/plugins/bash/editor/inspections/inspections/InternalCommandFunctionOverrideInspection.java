@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -38,7 +39,9 @@ public class InternalCommandFunctionOverrideInspection extends LocalInspectionTo
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                if (LanguageBuiltins.isInternalCommand(functionDef.getName())) {
+                boolean bash4 = BashProjectSettings.storedSettings(holder.getProject()).isSupportBash4();
+
+                if (LanguageBuiltins.isInternalCommand(functionDef.getName(), bash4)) {
                     PsiElement targetElement = functionDef.getNameSymbol();
                     if (targetElement == null) {
                         targetElement = functionDef.getNavigationElement();

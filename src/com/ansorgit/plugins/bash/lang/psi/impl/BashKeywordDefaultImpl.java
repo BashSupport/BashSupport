@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -39,7 +40,8 @@ public abstract class BashKeywordDefaultImpl extends BashCompositeElement implem
 
     @Override
     public PsiReference getReference() {
-        return null;
+        //a reference is required for QuickDoc support, camMavigate avoids the "Go to definition" nvaigation
+        return BashPsiUtils.selfReference(this);
     }
 
     @Override
@@ -58,5 +60,10 @@ public abstract class BashKeywordDefaultImpl extends BashCompositeElement implem
                 return null;
             }
         };
+    }
+
+    @Override
+    public boolean canNavigate() {
+        return false;
     }
 }

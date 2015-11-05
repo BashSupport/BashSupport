@@ -1,12 +1,25 @@
+####2015-11-04
+ - \#290: Inspections have no descriptions 
+ - \#289: Quickdoc lookup not working for keywords 
+ - \#288: Documentation lookup not working for functions 
+ - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
+ - Released 1.5.2
+
+####2015-10-19
+ - \#282: Improved file type guessing for files without an extension
+  
+####2015-10-19
+ - \#280: Unnecessary error if there is no module available for a run configuration 
+ 
 ####2015-10-06
  - Released 1.5.1
  
 ####2015-10-05
  - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content 
-
+  
 ####2015-09-16
  - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
-   
+  
 ####2015-08-19
  - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
  - \#270: Escape handling in heredoc content
@@ -35,6 +48,13 @@
  - \#201: Cannot parse logical not in arithmetic expressions 
  - \#238: Replace with evaluated expansion" works incorrectly
 
+####2015-09-16
+ - \#273: An exception was thrown if the Bash settings were opened by the welcome screen 
+ 
+####2015-08-19
+ - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
+ - \#270: Escape handling in heredoc content
+   
 ####2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too 
  

@@ -7,10 +7,10 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.0.22"
+    id "org.jetbrains.intellij" version "0.0.27"
 }
 
-version = '1.5.1.143'
+version = '1.5.2.143'
 
 repositories {
     mavenLocal()
@@ -21,10 +21,14 @@ repositories {
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version '143-SNAPSHOT'
+    version '15.0.0'
     plugins 'IntelliLang'
     pluginName 'BashSupport'
-    updateSinceUntilBuild false
+
+    publish {
+        username 'wallaby'
+        pluginId '4230'
+    }
 }
 
 sourceCompatibility = "1.6"

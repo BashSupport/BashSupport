@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiBuilder;
@@ -68,21 +67,17 @@ public class LetCommandTest extends MockPsiTest {
         }
     };
 
-    @Test
-    public void testBuiltin() {
-        LanguageBuiltins.arithmeticCommands.contains("let");
-    }
 
     @Test
     public void testParse() {
         //let a=1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), LET_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER);
 
         //let a=1+1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), LET_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, EQ, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER);
 
         //let a+=1
-        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
+        mockTest(parserFunction, Lists.newArrayList("let"), LET_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
 
         //let a=1 b=1
 //        mockTest(parserFunction, Lists.newArrayList("let"), WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER, WHITESPACE, ASSIGNMENT_WORD, EQ, NUMBER);

@@ -24,6 +24,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.List;
 
@@ -80,7 +81,9 @@ class FunctionPsiCommentSource implements DocumentationSource {
 
         StringBuilder result = new StringBuilder();
         for (String line : lines) {
-            result.append(StringUtil.trimStart(line.substring(1), " "));
+            String cleanedLine = StringUtil.trimStart(line.substring(1), " ");
+            result.append(StringEscapeUtils.escapeHtml(cleanedLine));
+
             result.append("<br/>\n");
         }
 

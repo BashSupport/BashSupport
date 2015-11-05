@@ -24,6 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
@@ -77,7 +78,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
         start.rollbackTo();
 
-        return ok && LanguageBuiltins.isInternalCommand(currentTokenText) && commandName.equals(currentTokenText);
+        return ok && LanguageBuiltins.isInternalCommand(currentTokenText, builder.isBash4()) && commandName.equals(currentTokenText);
     }
 
     public boolean parse(BashPsiBuilder builder) {
