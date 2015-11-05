@@ -72,3 +72,13 @@ allprojects {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.6'
 }
+
+ant.importBuild("build.xml")
+
+task doJFlex(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME) {
+    doLast {
+        jflex
+    }
+}
+
+compileJava.dependsOn(doJFlex)
