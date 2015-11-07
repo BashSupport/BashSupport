@@ -28,6 +28,7 @@ intellij {
     publish {
         username 'wallaby'
         pluginId '4230'
+	password System.properties['intellij.publish.password']
     }
 }
 
