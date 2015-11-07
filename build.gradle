@@ -64,7 +64,7 @@ test {
 allprojects {
     plugins.withType(JavaPlugin) {
         test {
-            ignoreFailures = true
+            ignoreFailures = false
             systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
         }
     }
