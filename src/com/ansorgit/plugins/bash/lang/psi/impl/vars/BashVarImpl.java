@@ -126,9 +126,13 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
     }
 
     public boolean isArrayUse() {
-        ASTNode next = getNode().getTreeNext();
+        ASTNode prev = getNode().getTreePrev();
+        if (prev != null && isParameterExpansion() && prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH) {
+            return true;
+        }
 
-        if (isParameterExpansion() && next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
+        ASTNode next = getNode().getTreeNext();
+        if (next != null && isParameterExpansion() && next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
             ASTNode firstChild = next.getFirstChildNode();
             return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
         }

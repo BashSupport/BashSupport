@@ -174,4 +174,10 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         //{#}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
     }
+
+    @Test
+    public void testIssue272() throws Exception {
+        //{#array_var[@]}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, RIGHT_CURLY);
+    }
 }

@@ -1,6 +1,9 @@
+####2015-11-10
+ - \#272: Invalid warning about simple array variable use in ${#x}
+
 ####2015-11-04
- - \#290: Inspections have no descriptions 
- - \#289: Quickdoc lookup not working for keywords 
+ - \#290: Inspections have no descriptions
+ - \#289: Quickdoc lookup not working for keywords
  - \#288: Documentation lookup not working for functions 
  - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
  - Released 1.5.2
