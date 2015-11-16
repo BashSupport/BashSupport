@@ -4,7 +4,6 @@ import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashWordImpl;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import org.junit.Assert;
 
 public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
@@ -14,7 +13,7 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
     }
 
     public void testInjectionHostWordSingleWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
         Assert.assertTrue(word instanceof BashWordImpl);
 
@@ -24,7 +23,7 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
     }
 
     public void testInjectionHostStringSingleWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
         Assert.assertTrue(word instanceof BashStringImpl);
 
@@ -34,29 +33,18 @@ public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
     }
 
     public void testInjectionHostWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
         Assert.assertTrue(word instanceof BashWordImpl);
         Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashWordImpl) word).isValidBashLanguageHost());
     }
 
     public void testInjectionHostString() throws Exception {
-        PsiElement current = configure();
+        PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
         Assert.assertTrue("element is not a String: " + current, current instanceof BashStringImpl);
         Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidBashLanguageHost());
     }
 
-    protected PsiElement configure() {
-        myFixture.setTestDataPath(getTestDataPath());
-        myFixture.configureByFile(getTestName(true) + ".bash");
-
-        PsiElement element = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
-        if (element instanceof LeafPsiElement) {
-            return element.getParent();
-        }
-
-        return element;
-    }
 }

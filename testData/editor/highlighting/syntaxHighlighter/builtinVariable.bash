@@ -1,0 +1,1 @@
+<info descr="null" textAttributesKey="BASH.VAR_USE_BUILTIN">$PWD</info>

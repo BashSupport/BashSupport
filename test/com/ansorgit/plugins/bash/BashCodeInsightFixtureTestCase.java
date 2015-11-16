@@ -15,12 +15,12 @@
  */
 package com.ansorgit.plugins.bash;
 
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.testFramework.PlatformTestUtil;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.testFramework.UsefulTestCase;
 import com.intellij.testFramework.builders.EmptyModuleFixtureBuilder;
 import com.intellij.testFramework.builders.ModuleFixtureBuilder;
@@ -29,6 +29,7 @@ import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TestFixtureBuilder;
 import org.jetbrains.annotations.NonNls;
+import org.junit.After;
 
 import java.io.File;
 
@@ -39,13 +40,31 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     protected CodeInsightTestFixture myFixture;
     protected Module myModule;
 
+    protected PsiElement configurePsiAtCaret() {
+        return configurePsiAtCaret(getTestName(true) + ".bash");
+    }
+
+    protected PsiElement configurePsiAtCaret(String fileNameInTestPath) {
+        myFixture.setTestDataPath(getTestDataPath());
+        myFixture.configureByFile(fileNameInTestPath);
+
+        PsiElement element = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
+        if (element instanceof LeafPsiElement) {
+            return element.getParent();
+        }
+
+        return element;
+    }
+
     @Override
+    //@Before
     protected void setUp() throws Exception {
         super.setUp();
 
         String name = getClass().getName() + "." + getName();
         final TestFixtureBuilder<IdeaProjectTestFixture> projectBuilder = IdeaTestFixtureFactory.getFixtureFactory().createFixtureBuilder(name);
         myFixture = IdeaTestFixtureFactory.getFixtureFactory().createCodeInsightFixture(projectBuilder.getFixture());
+
         final T moduleFixtureBuilder = projectBuilder.addModule(getModuleBuilderClass());
         moduleFixtureBuilder.addSourceContentRoot(myFixture.getTempDirPath());
         tuneFixture(moduleFixtureBuilder);
@@ -60,6 +79,7 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     }
 
     @Override
+    @After
     protected void tearDown() throws Exception {
         try {
             myFixture.tearDown();
@@ -92,7 +112,8 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
      */
     @NonNls
     protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + getBasePath();
+        String basePath = getBasePath();
+        return  BashTestUtils.getBasePath() + (basePath.endsWith(File.separator) ? "" : File.separator) + basePath;
     }
 
     protected boolean isCommunity() {

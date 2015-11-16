@@ -498,4 +498,24 @@ public final class BashPsiUtils {
 
         return new PsiReferenceBase.Immediate<PsiElement>(element, manipulator.getRangeInElement(element), true, element);
     }
+
+    public static boolean isSingleChildParent(PsiElement psi, @NotNull IElementType childType) {
+        if (psi == null) {
+            return false;
+        }
+
+        ASTNode child = getDeepestEquivalent(psi.getNode());
+        return child.getTreePrev() == null && child.getTreeNext() == null && (child.getElementType() == childType);
+    }
+
+    public static boolean isSingleChildParent(PsiElement psi, @NotNull  Class<? extends PsiElement> childType) {
+        if (psi == null) {
+            return false;
+        }
+
+        ASTNode child = getDeepestEquivalent(psi.getNode());
+        PsiElement childPsi = child.getPsi();
+
+        return childPsi != null && childType.isInstance(childPsi);
+    }
 }
