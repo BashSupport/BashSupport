@@ -1,12 +1,12 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashWordImpl;
 import com.intellij.psi.PsiElement;
 import org.junit.Assert;
 
-public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
+public class TrapCommandTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/psi/shell/trapCommand/";

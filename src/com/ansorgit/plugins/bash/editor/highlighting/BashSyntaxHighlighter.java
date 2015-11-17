@@ -83,7 +83,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     }
 
     private static final Map<IElementType, TextAttributesKey> attributes1 = Maps.newHashMap();
-    private static final Map<IElementType, TextAttributesKey> attributes2 = Maps.newHashMap();
 
     private static final TokenSet parenthesisSet = TokenSet.create(BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
     private static final TokenSet bracesSet = TokenSet.create(BashTokenTypes.LEFT_CURLY, BashTokenTypes.RIGHT_CURLY);
@@ -120,7 +119,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @NotNull
     public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
-        return pack(attributes1.get(tokenType), attributes2.get(tokenType));
+        return pack(attributes1.get(tokenType));
     }
 }
 

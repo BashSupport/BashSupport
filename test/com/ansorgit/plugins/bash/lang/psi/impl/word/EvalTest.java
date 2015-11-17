@@ -1,12 +1,10 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import org.junit.Assert;
 
-public class EvalTest extends BashCodeInsightFixtureTestCase {
+public class EvalTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/psi/word/";

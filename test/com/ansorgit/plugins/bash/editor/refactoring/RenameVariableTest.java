@@ -1,6 +1,6 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.io.FileUtil;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
+public class RenameVariableTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/RenameVariableTestCase/";

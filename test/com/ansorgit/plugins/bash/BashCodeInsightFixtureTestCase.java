@@ -30,6 +30,7 @@ import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TestFixtureBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.junit.After;
+import org.junit.Before;
 
 import java.io.File;
 
@@ -40,24 +41,11 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     protected CodeInsightTestFixture myFixture;
     protected Module myModule;
 
-    protected PsiElement configurePsiAtCaret() {
-        return configurePsiAtCaret(getTestName(true) + ".bash");
-    }
-
     protected PsiElement configurePsiAtCaret(String fileNameInTestPath) {
-        myFixture.setTestDataPath(getTestDataPath());
-        myFixture.configureByFile(fileNameInTestPath);
-
-        PsiElement element = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
-        if (element instanceof LeafPsiElement) {
-            return element.getParent();
-        }
-
-        return element;
+        return BashTestUtils.configureFixturePsiAtCaret(fileNameInTestPath, myFixture);
     }
 
     @Override
-    //@Before
     protected void setUp() throws Exception {
         super.setUp();
 
@@ -79,7 +67,6 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     }
 
     @Override
-    @After
     protected void tearDown() throws Exception {
         try {
             myFixture.tearDown();

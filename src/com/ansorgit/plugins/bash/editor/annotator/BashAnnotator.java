@@ -139,7 +139,7 @@ public class BashAnnotator implements Annotator {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
         PsiElement child = bashWord.getFirstChild();
 
-        while (child != null) {
+        while (child != null && false) {
             if (!noWordHighlightErase.contains(child.getNode().getElementType())) {
                 Annotation annotation = annotationHolder.createInfoAnnotation(child, null);
                 annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);

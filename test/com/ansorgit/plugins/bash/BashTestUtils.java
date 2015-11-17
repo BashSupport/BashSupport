@@ -19,6 +19,9 @@
 package com.ansorgit.plugins.bash;
 
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -76,5 +79,16 @@ public final class BashTestUtils {
         }
 
         return null;
+    }
+
+    public static PsiElement configureFixturePsiAtCaret(String fileNameInTestPath, CodeInsightTestFixture fixture) {
+        fixture.configureByFile(fileNameInTestPath);
+
+        PsiElement element = fixture.getFile().findElementAt(fixture.getCaretOffset());
+        if (element instanceof LeafPsiElement) {
+            return element.getParent();
+        }
+
+        return element;
     }
 }
