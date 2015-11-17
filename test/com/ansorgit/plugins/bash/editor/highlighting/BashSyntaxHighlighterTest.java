@@ -38,7 +38,6 @@ public class BashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCa
 
     @Test
     public void testLexerHighlighting() {
-        // highlight func declaration first, lest we get an "Extra fragment highlighted" error.
         EditorColorsManager manager = EditorColorsManager.getInstance();
         EditorColorsScheme scheme = (EditorColorsScheme) manager.getGlobalScheme().clone();
         manager.addColorsScheme(scheme);
