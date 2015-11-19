@@ -54,8 +54,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         boolean ok = true;
 
         while (!builder.eof() && ok) {
-            if (Parsing.redirection.isRedirect(builder)) {
-                ok = Parsing.redirection.parseList(builder, false);
+            if (Parsing.redirection.isRedirect(builder, true)) {
+                ok = Parsing.redirection.parseList(builder, false, true);
             } else if (Parsing.word.isWordToken(builder, true)) {
                 ok = Parsing.word.parseWord(builder, true);
             } else if (validExtraTokens.contains(builder.getTokenType())) {
@@ -119,12 +119,11 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     }
 
     public static boolean isAssignmentOrRedirect(BashPsiBuilder builder, Mode assignmentMode, boolean acceptArrayVars) {
-        return isAssignment(builder, assignmentMode, acceptArrayVars) || Parsing.redirection.isRedirect(builder);
+        return isAssignment(builder, assignmentMode, acceptArrayVars) || Parsing.redirection.isRedirect(builder, true);
     }
 
     /**
-     * Reads an optional list of assignments and redirects which
-     * are before a command.
+     * Reads an optional list of assignments and redirects which are before a command.
      *
      * @param builder         The current builder
      * @param markAsVarDef    Mark as a variable definition
@@ -138,8 +137,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         do {
             if (isAssignment(builder, mode, acceptArrayVars)) {
                 ok = readAssignment(builder, mode, markAsVarDef, acceptArrayVars);
-            } else if (Parsing.redirection.isRedirect(builder)) {
-                ok = Parsing.redirection.parseSingleRedirect(builder);
+            } else if (Parsing.redirection.isRedirect(builder, true)) {
+                ok = Parsing.redirection.parseSingleRedirect(builder, true);
             } else if (mode == Mode.LaxAssignmentMode && Parsing.word.isWordToken(builder)) {
                 ok = Parsing.word.parseWord(builder);
             } else {

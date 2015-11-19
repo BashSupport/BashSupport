@@ -29,6 +29,26 @@ public class BashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCa
     }
 
     @Test
+    public void testBackquote() {
+        doHighlightingTest();
+    }
+
+    @Test
+    public void testHeredoc() {
+        doHighlightingTest();
+    }
+
+    @Test
+    public void testRedirect() {
+        doHighlightingTest();
+    }
+
+    @Test
+    public void testSubshell() {
+        doHighlightingTest();
+    }
+
+    @Test
     public void testSimpleVariable() {
         doHighlightingTest();
     }
@@ -40,6 +60,11 @@ public class BashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCa
 
     @Test
     public void testBuiltinCommand() {
+        doHighlightingTest();
+    }
+
+    @Test
+    public void testFunctionDef() {
         doHighlightingTest();
     }
 

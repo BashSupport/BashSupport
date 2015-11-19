@@ -93,7 +93,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
     public boolean isSimpleCommandElement(BashPsiBuilder builder) {
         //   simple_command_element 	:	word | assignment_word | redirection;
         return Parsing.word.isWordToken(builder)
-                || Parsing.redirection.isRedirect(builder)
+                || Parsing.redirection.isRedirect(builder, true)
                 || Parsing.braceExpansionParsing.isValid(builder)
                 //fixme check the array var use
                 || CommandParsingUtil.isAssignment(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);

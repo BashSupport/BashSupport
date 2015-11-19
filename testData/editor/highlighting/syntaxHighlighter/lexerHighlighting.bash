@@ -1,1 +1,0 @@
-<info foreground="0xff0000" background="0xff00ff" effectcolor="0xeeeeee" effecttype="BOXED" fonttype="0">$VAR</info>

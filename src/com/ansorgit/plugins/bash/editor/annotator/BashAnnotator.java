@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.editor.annotator;
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
@@ -48,7 +49,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -70,7 +70,7 @@ public class BashAnnotator implements Annotator {
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
         if (element instanceof BashBackquote) {
-            annotateBackquote(element, annotationHolder);
+            annotateBackquote((BashBackquote) element, annotationHolder);
         } else if (element instanceof BashHereDoc) {
             annotateHereDoc((BashHereDoc) element, annotationHolder);
         } else if (element instanceof BashHereDocStartMarker) {
@@ -184,8 +184,15 @@ public class BashAnnotator implements Annotator {
             return;
         }
 
-        //if the command is a string element, then it shouldn't be marked, either
         if (BashPsiUtils.isSingleChildParent(bashCommand, BashString.class)) {
+            return;
+        }
+
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashBackquote.class)) {
+            return;
+        }
+
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashSubshellCommand.class)) {
             return;
         }
 
@@ -206,9 +213,35 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateBackquote(PsiElement element, AnnotationHolder holder) {
-        final Annotation annotation = holder.createInfoAnnotation(element, null);
-        annotation.setTextAttributes(BashSyntaxHighlighter.BACKQUOTE);
+
+    /**
+     * Annotates the static text in an backquote command with the backquote formatting
+     *
+     * @param element
+     * @param holder
+     */
+    private void annotateBackquote(BashBackquote element, final AnnotationHolder holder) {
+        final BashVisitor wordVisitor = new BashVisitor() {
+            @Override
+            public void visitCombinedWord(BashWord word) {
+                PsiElement firstChild = word.getFirstChild();
+                if (firstChild != null && firstChild.getNode().getElementType() == BashTokenTypes.WORD && !word.isWrapped()) {
+                    holder.createInfoAnnotation(word.getTextRange(), null).setTextAttributes(BashSyntaxHighlighter.BACKQUOTE);
+                }
+            }
+        };
+
+        element.acceptChildren(new BashVisitor() {
+            @Override
+            public void visitGenericCommand(BashCommand bashCommand) {
+                bashCommand.acceptChildren(wordVisitor);
+            }
+
+            @Override
+            public void visitInternalCommand(BashCommand bashCommand) {
+                bashCommand.acceptChildren(wordVisitor);
+            }
+        });
     }
 
     private void annotateHereDoc(BashHereDoc element, AnnotationHolder annotationHolder) {
