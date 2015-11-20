@@ -122,14 +122,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
 
         if (walkOn && isValidHost()) {
-            InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(getProject());
-            List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(this);
-            if (injectedPsiFiles != null) {
-                for (Pair<PsiElement, TextRange> psi_range : injectedPsiFiles) {
-                    //fixme check lastParent ?
-                    walkOn &= psi_range.first.processDeclarations(processor, state, lastParent, place);
-                }
-            }
+            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, walkOn);
         }
 
         return walkOn;

@@ -27,15 +27,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.injection.InjectedLanguageManager;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * A string spanning start and end markers and content elements.
@@ -101,15 +97,8 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
         boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
 
         if (walkOn && isValidHost()) {
-            //fixme does this work on the escaped or unescpaed text?
-            InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(getProject());
-            List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(this);
-            if (injectedPsiFiles != null) {
-                for (Pair<PsiElement, TextRange> psi_range : injectedPsiFiles) {
-                    //fixme check lastParent ?
-                    walkOn &= psi_range.first.processDeclarations(processor, state, lastParent, place);
-                }
-            }
+            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, walkOn);
+
         }
 
         return walkOn;

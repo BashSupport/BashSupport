@@ -51,6 +51,6 @@ public abstract class LightBashCodeInsightFixtureTestCase extends LightPlatformC
     @NonNls
     protected String getTestDataPath() {
         String basePath = getBasePath();
-        return BashTestUtils.getBasePath() + (basePath.endsWith(File.separator) ? "" : File.separator) + basePath;
+        return BashTestUtils.getBasePath() + (basePath.startsWith(File.separator) ? "" : File.separator) + basePath;
     }
 }
