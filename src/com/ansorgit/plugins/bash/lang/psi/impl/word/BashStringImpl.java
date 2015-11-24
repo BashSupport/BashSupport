@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.editor.BashSimpleTextLiteralEscaper;
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
@@ -31,6 +33,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -42,23 +45,46 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashStringImpl extends BashBaseStubElementImpl<StubElement> implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+    private TextRange contentRange;
+    private Boolean isWrapped;
+
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
     }
 
     @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.contentRange = null;
+        this.isWrapped = null;
+    }
+
+    @Override
     public boolean isWrapped() {
-        String text = getText();
-        return text.length() >= 2 && (text.startsWith("\"") || text.startsWith("$\"")) && text.endsWith("\"");
+        if (isWrapped == null) {
+            isWrapped = false;
+
+            if (getTextLength() >= 2) {
+                ASTNode node = getNode();
+                IElementType firstType = node.getFirstChildNode().getElementType();
+                IElementType lastType = node.getLastChildNode().getElementType();
+
+                isWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
+            }
+        }
+
+        return isWrapped;
     }
 
     @Override
     public String createEquallyWrappedString(String newContent) {
-        if (getText().startsWith("$\"")) {
-            return "$\"" + newContent + "\"";
-        }
+        ASTNode node = getNode();
+        ASTNode firstChild = node.getFirstChildNode();
+        ASTNode lastChild = node.getLastChildNode();
 
-        return "\"" + newContent + "\"";
+        StringBuilder result = new StringBuilder(firstChild.getTextLength() + newContent.length() + lastChild.getTextLength());
+        return result.append(firstChild.getText()).append(newContent).append(lastChild.getText()).toString();
     }
 
     public String getUnwrappedCharSequence() {
@@ -66,16 +92,23 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
     }
 
     public boolean isStatic() {
-        return BashPsiUtils.isStaticWordExpr(getFirstChild());
+        return getTextContentRange().getLength() == 0 || BashPsiUtils.isStaticWordExpr(getFirstChild());
     }
 
     @NotNull
     public TextRange getTextContentRange() {
-        if (getText().startsWith("$\"")) {
-            return TextRange.create(2, getTextLength() - 1);
+        if (contentRange == null) {
+            ASTNode node = getNode();
+            ASTNode firstChild = node.getFirstChildNode();
+
+            if (firstChild != null && firstChild.getText().equals("$\"")) {
+                contentRange = TextRange.from(2, getTextLength() - 3);
+            } else {
+                contentRange = TextRange.from(1, getTextLength() - 2);
+            }
         }
 
-        return TextRange.create(1, getTextLength() - 1);
+        return contentRange;
     }
 
     @Override
@@ -96,9 +129,8 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
 
-        if (walkOn && isValidHost()) {
-            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, walkOn);
-
+        if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
+            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
         }
 
         return walkOn;

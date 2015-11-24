@@ -17,6 +17,7 @@ class InjectionUtils {
     protected static boolean walkInjection(PsiElement host, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place, boolean walkOn) {
         //fixme does this work on the escaped or unescpaed text?
         InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(host.getProject());
+
         List<Pair<PsiElement, TextRange>> injectedPsiFiles = injectedLanguageManager.getInjectedPsiFiles(host);
         if (injectedPsiFiles != null) {
             for (Pair<PsiElement, TextRange> psi_range : injectedPsiFiles) {
@@ -24,6 +25,7 @@ class InjectionUtils {
                 walkOn &= psi_range.first.processDeclarations(processor, state, lastParent, place);
             }
         }
+
         return walkOn;
     }
 }

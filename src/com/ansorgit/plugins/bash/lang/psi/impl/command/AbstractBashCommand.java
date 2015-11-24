@@ -23,17 +23,12 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.project.DumbService;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.psi.util.CachedValue;
-import com.intellij.psi.util.CachedValueProvider;
-import com.intellij.psi.util.CachedValuesManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
@@ -46,11 +41,14 @@ import java.util.List;
 import java.util.Set;
 
 public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
-    private final static Key<CachedValue<Boolean>> KEY_INTERNAL = Key.create("internal");
-    private final static Key<CachedValue<Boolean>> KEY_EXTERNAL_OR_FUNCTION = Key.create("external");
-    private final static Key<CachedValue<Boolean>> KEY_FUNCTION_CALL = Key.create("functionCall");
     private final PsiReference functionReference = new CachedFunctionReference<T>(this);
     private final PsiReference bashFileReference = new BashFileReference<T>(this);
+
+    private String referencedCommandName;
+    private boolean hasReferencedCommandName;
+    private Boolean isInternalCommandBash3;
+    private Boolean isInternalCommandBash4;
+    private List<BashPsiElement> parameters;
 
     public AbstractBashCommand(ASTNode astNode, String name) {
         super(astNode, name);
@@ -60,43 +58,37 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         super(stub, nodeType, name);
     }
 
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.hasReferencedCommandName = false;
+        this.referencedCommandName = null;
+        this.isInternalCommandBash3 = null;
+        this.isInternalCommandBash4 = null;
+        this.parameters = null;
+    }
+
     public boolean isFunctionCall() {
-        if (DumbService.isDumb(getProject())) {
-            return false;
-        }
-
-        CachedValuesManager manager = CachedValuesManager.getManager(getProject());
-        return manager.getCachedValue(this, KEY_FUNCTION_CALL, new CachedValueProvider<Boolean>() {
-            @Override
-            public Result<Boolean> compute() {
-                boolean isFunctionCall;
-
-                PsiElement commandElement = commandElement();
-                if (commandElement == null) {
-                    isFunctionCall = false;
-                } else {
-                    ASTNode node = commandElement.getNode();
-                    isFunctionCall = node != null && node.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && functionReference.resolve() != null;
-                }
-
-
-                return Result.create(isFunctionCall, AbstractBashCommand.this);
-            }
-        }, false);
+        ASTNode commandElement = commandElementNode();
+        return commandElement != null && commandElement.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && functionReference.resolve() != null;
     }
 
     public boolean isInternalCommand() {
-        CachedValuesManager manager = CachedValuesManager.getManager(getProject());
-        return manager.getCachedValue(this, KEY_INTERNAL, new CachedValueProvider<Boolean>() {
-            @Nullable
-            @Override
-            public Result<Boolean> compute() {
-                ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                boolean result = command != null && LanguageBuiltins.isInternalCommand(command.getText(), BashProjectSettings.storedSettings(getProject()).isSupportBash4());
+        if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
+            isInternalCommandBash3 = false;
+            isInternalCommandBash4 = false;
 
-                return Result.create(result, AbstractBashCommand.this);
+            ASTNode command = commandElementNode();
+            if (command != null) {
+                String commandText = command.getText();
+                isInternalCommandBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
+                isInternalCommandBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
             }
-        }, false);
+        }
+
+        boolean bash4 = BashProjectSettings.storedSettings(getProject()).isSupportBash4();
+        return bash4 ? isInternalCommandBash4 : isInternalCommandBash3;
     }
 
     public boolean isExternalCommand() {
@@ -105,19 +97,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         //otherwise we might still have isExternal set to true even if a
         //a target exists now, e.g. a Bash function with the right name
 
-        CachedValuesManager manager = CachedValuesManager.getManager(getProject());
-        Boolean cachedValue = manager.getCachedValue(this, KEY_EXTERNAL_OR_FUNCTION, new CachedValueProvider<Boolean>() {
-            @Nullable
-            @Override
-            public Result<Boolean> compute() {
-                ASTNode command = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                boolean result = command != null && !LanguageBuiltins.isInternalCommand(command.getText(), BashProjectSettings.storedSettings(getProject()).isSupportBash4());
-
-                return Result.create(result, AbstractBashCommand.this);
-            }
-        }, false);
-
-        return cachedValue && !isFunctionCall();
+        return !isInternalCommand() && !isFunctionCall();
     }
 
     @Override
@@ -140,28 +120,37 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         return findChildByType(BashElementTypes.VAR_DEF_ELEMENT) != null;
     }
 
+    @Nullable
     public PsiElement commandElement() {
-        return findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+        ASTNode node = commandElementNode();
+        return node != null ? node.getPsi() : null;
+    }
+
+    @Nullable
+    private ASTNode commandElementNode() {
+        return getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
     }
 
     public List<BashPsiElement> parameters() {
-        PsiElement cmd = commandElement();
-        if (cmd == null) {
-            return Collections.emptyList();
-        }
+        if (parameters == null) {
+            PsiElement cmd = commandElement();
+            if (cmd == null) {
+                parameters = Collections.emptyList();
+            } else {
+                parameters = Lists.newLinkedList();
 
-        List<BashPsiElement> result = Lists.newLinkedList();
+                PsiElement nextSibling = cmd.getNextSibling();
+                while (nextSibling != null) {
+                    if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
+                        parameters.add((BashPsiElement) nextSibling);
+                    }
 
-        PsiElement nextSibling = cmd.getNextSibling();
-        while (nextSibling != null) {
-            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
-                result.add((BashPsiElement) nextSibling);
+                    nextSibling = nextSibling.getNextSibling();
+                }
             }
-
-            nextSibling = nextSibling.getNextSibling();
         }
 
-        return result;
+        return parameters;
     }
 
     public BashVarDef[] assignments() {
@@ -184,12 +173,13 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
     @Nullable
     public String getReferencedCommandName() {
-        final PsiElement element = commandElement();
-        if (element != null) {
-            return element.getText();
+        if (!hasReferencedCommandName) {
+            ASTNode command = commandElementNode();
+            referencedCommandName = command != null ? command.getText() : null;
+            hasReferencedCommandName = true;
         }
 
-        return null;
+        return referencedCommandName;
     }
 
     @Override
@@ -223,14 +213,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
     @Override
     public boolean canNavigate() {
-        return isFunctionCall() || isBashFileCall();
-    }
-
-    /**
-     * @return True if this command references a project Bash file.
-     */
-    private boolean isBashFileCall() {
-        return false;
+        return isFunctionCall() || isBashScriptCall();
     }
 
     @Override
@@ -249,6 +232,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
     @Override
     public ItemPresentation getPresentation() {
+        //fixme caching?
         return new ItemPresentation() {
             public String getPresentableText() {
                 final PsiElement element = AbstractBashCommand.this.commandElement();

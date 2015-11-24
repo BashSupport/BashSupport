@@ -15,7 +15,7 @@ import org.junit.Assert;
 
 import java.awt.*;
 
-public class AbstractBashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCase {
+public abstract class AbstractBashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected boolean isWriteActionRequired() {
         return false;

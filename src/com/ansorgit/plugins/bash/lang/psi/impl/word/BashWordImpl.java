@@ -22,16 +22,14 @@ import com.ansorgit.plugins.bash.editor.BashEnhancedLiteralTextEscaper;
 import com.ansorgit.plugins.bash.editor.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.injection.InjectedLanguageManager;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
@@ -39,13 +37,19 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
+    private Boolean isWrapped;
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.isWrapped = null;
     }
 
     @Override
@@ -58,14 +62,34 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     }
 
     public boolean isWrappable() {
-        PsiElement[] children = getChildren();
-        return children.length > 1 && findChildByType(nonWrappableChilds) == null;
+        if (BashPsiUtils.isSingleChildParent(this)) {
+            return false;
+        }
+
+        ASTNode node = getNode();
+        for (ASTNode child = node.getFirstChildNode(); child != null; child = child.getTreeNext()) {
+            if (nonWrappableChilds.contains(child.getElementType())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean isWrapped() {
-        String text = getText();
-        return text.length() >= 2 && (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
+        if (isWrapped == null) {
+            isWrapped = false;
+            if (getTextLength() >= 2) {
+                ASTNode firstChildNode = getNode().getFirstChildNode();
+                if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
+                    String text = firstChildNode.getText();
+                    isWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
+                }
+            }
+        }
+
+        return isWrapped;
     }
 
     @Override
@@ -74,8 +98,8 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
             return newContent;
         }
 
-        String current = getText();
-        if (current.startsWith("$'")) {
+        String firstText = getNode().getFirstChildNode().getText();
+        if (firstText.startsWith("$'")) {
             return "$'" + newContent + "'";
         } else {
             return "'" + newContent + "'";
@@ -87,23 +111,26 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     }
 
     public boolean isStatic() {
-        return BashPsiUtils.isStaticWordExpr(getFirstChild());
+        return isWrapped() || BashPsiUtils.isStaticWordExpr(getFirstChild());
     }
 
     @NotNull
     public TextRange getTextContentRange() {
-        String text = getText();
+        if (!isWrapped()) {
+            return TextRange.from(0, getTextLength());
+        }
+
+        ASTNode node = getNode();
+        String first = node.getFirstChildNode().getText();
+        String last = node.getLastChildNode().getText();
+
         int textLength = getTextLength();
 
-        if (text.startsWith("$'") && text.endsWith("'")) {
-            return TextRange.create(2, textLength - 1);
+        if (first.startsWith("$'") && last.endsWith("'")) {
+            return TextRange.from(2, textLength - 3);
         }
 
-        if (text.startsWith("'") && text.endsWith("'")) {
-            return TextRange.create(1, textLength - 1);
-        }
-
-        return TextRange.create(0, textLength);
+        return TextRange.from(1, textLength - 2);
     }
 
     @Override
@@ -121,8 +148,8 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
 
-        if (walkOn && isValidHost()) {
-            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, walkOn);
+        if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
+            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
         }
 
         return walkOn;

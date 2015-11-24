@@ -29,8 +29,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Sets;
@@ -62,34 +62,48 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  */
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
-
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
-
-    private static final Object[] EMPTY_VARIANTS = new Object[0];
-    private final BashReference cachingReference;
-    private Boolean cachedFunctionScopeLocal;
-
     private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
     private static final Set<String> typeReadOnlyParams = Sets.newHashSet("-r");
+    private static final Object[] EMPTY_VARIANTS = new Object[0];
+
+    private final BashReference cachingReference = new CachedVarDefReference(this);
+
+    private Boolean cachedFunctionScopeLocal;
+    private String name;
+    private PsiElement assignmentWord;
+    private TextRange nameTextRange;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
-        cachingReference = new CachedVarDefReference(this);
     }
 
     public BashVarDefImpl(@NotNull BashVarDefStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType, "Bash var def");
-        cachingReference = new CachedVarDefReference(this);
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.cachedFunctionScopeLocal = null;
+        this.name = null;
+        this.assignmentWord = null;
+        this.nameTextRange = null;
     }
 
     public String getName() {
-        PsiElement element = findAssignmentWord();
-        if (element instanceof BashCharSequence) {
-            return ((BashCharSequence) element).getUnwrappedCharSequence();
+        if (name == null) {
+            PsiElement element = findAssignmentWord();
+            if (element instanceof BashCharSequence) {
+                name = ((BashCharSequence) element).getUnwrappedCharSequence();
+            } else {
+                name = element.getText();
+            }
         }
 
-        return element.getText();
+        return name;
     }
 
     public PsiElement setName(@NotNull @NonNls String newName) throws IncorrectOperationException {
@@ -142,32 +156,28 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
      */
     @NotNull
     public PsiElement findAssignmentWord() {
-        PsiElement element = findChildByType(accepted);
-        if (element != null) {
-            return element;
+        if (assignmentWord == null) {
+            PsiElement element = findChildByType(accepted);
+            if (element != null) {
+                assignmentWord = element;
+            } else {
+                //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
+                //a parsed var
+                PsiElement firstChild = getFirstChild();
+                ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
+
+                ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
+                assignmentWord = (node != null) ? node.getPsi() : firstChild;
+            }
         }
 
-        //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
-        //a parsed var
-        PsiElement firstChild = getFirstChild();
-        ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
-
-        ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-        return (node != null) ? node.getPsi() : firstChild;
+        return assignmentWord;
     }
 
     @Nullable
     protected PsiElement findAssignmentValue() {
         PsiElement last = getLastChild();
         return last != this ? last : null;
-    }
-
-
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        this.cachedFunctionScopeLocal = null;
     }
 
     public boolean isFunctionScopeLocal() {
@@ -238,7 +248,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return findAssignmentWord();
     }
 
-    public String getReferencedName() {
+    public final String getReferencedName() {
         return getName();
     }
 
@@ -281,7 +291,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         String name = getReferencedName();
         boolean v3_var = bashShellVars.contains(name) || bourneShellVars.contains(name);
 
-        return isBash_v4 ? v3_var || bashShellVars_v4.contains(name) : v3_var;
+        return isBash_v4 ? (v3_var || bashShellVars_v4.contains(name)) : v3_var;
     }
 
     public boolean isParameterExpansion() {
@@ -297,12 +307,16 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private TextRange getAssignmentNameTextRange() {
-        PsiElement assignmentWord = findAssignmentWord();
-        if (assignmentWord instanceof BashString) {
-            return ((BashString) assignmentWord).getTextContentRange();
+        if (nameTextRange == null) {
+            PsiElement assignmentWord = findAssignmentWord();
+            if (assignmentWord instanceof BashString) {
+                nameTextRange = ((BashString) assignmentWord).getTextContentRange();
+            } else {
+                nameTextRange = TextRange.from(0, assignmentWord.getTextLength());
+            }
         }
 
-        return TextRange.from(0, assignmentWord.getTextLength());
+        return nameTextRange;
     }
 
     public boolean isReadonly() {

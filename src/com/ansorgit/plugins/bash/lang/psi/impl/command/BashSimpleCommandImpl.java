@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashSimpleCommandImpl extends AbstractBashCommand<BashCommandStub> implements StubBasedPsiElement<BashCommandStub> {
 

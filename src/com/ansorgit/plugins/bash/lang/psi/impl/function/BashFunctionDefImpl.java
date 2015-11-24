@@ -34,9 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
@@ -51,10 +49,13 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
-    private static final Logger log = Logger.getInstance("#Bash.BashFunctionDefImpl");
+    private BashBlock body;
+    private boolean computedBody = false;
+
+    private List<BashPsiElement> referencedParameters;
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");
@@ -62,6 +63,15 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     public BashFunctionDefImpl(@NotNull BashFunctionDefStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType, null);
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.body = null;
+        this.computedBody = false;
+        this.referencedParameters = null;
     }
 
     public PsiElement setName(@NotNull @NonNls String name) throws IncorrectOperationException {
@@ -72,11 +82,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         //fixme validate name
 
         final PsiElement nameNode = getNameSymbol();
-        final PsiElement newNameSymbol = BashPsiElementFactory.createSymbol(getProject(), name);
-
-        if (log.isDebugEnabled()) {
-            log.debug("renamed to symbol " + newNameSymbol);
+        if (nameNode == null) {
+            throw new IncorrectOperationException("invalid name");
         }
+
+        final PsiElement newNameSymbol = BashPsiElementFactory.createSymbol(getProject(), name);
 
         getNode().replaceChild(nameNode.getNode(), newNameSymbol.getNode());
         return this;
@@ -88,35 +98,22 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     }
 
     public BashBlock body() {
-        BashGroupImpl bashGroup = findChildByClass(BashGroupImpl.class);
-
-        if (log.isDebugEnabled()) {
-            log.debug("found commandGroup: " + bashGroup);
+        if (!computedBody) {
+            computedBody = true;
+            body = findChildByClass(BashGroupImpl.class);
         }
 
-        return bashGroup;
+        return body;
     }
 
     public boolean hasCommandGroup() {
-        log.debug("hasCommandGroup");
-
         final BashBlock body = body();
 
         return body != null && body.isCommandGroup();
     }
 
-    Key<BashFunctionDefName> NAME_SYMBOL_KEY = Key.create("nameSymbol");
-
     public BashFunctionDefName getNameSymbol() {
-        final BashFunctionDefName nameWord = findChildByClass(BashFunctionDefName.class);
-
-        if (log.isDebugEnabled()) {
-            log.debug("getNameSymbole result: " + nameWord);
-        }
-
-        putUserData(NAME_SYMBOL_KEY, nameWord);
-
-        return nameWord;
+        return findChildByClass(BashFunctionDefName.class);
     }
 
     public List<PsiComment> findAttachedComment() {
@@ -124,29 +121,25 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     }
 
     @NotNull
-    public List<com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement> findReferencedParameters() {
-        //call the visitor to find all uses of the parameter variables
+    public List<BashPsiElement> findReferencedParameters() {
+        if (referencedParameters == null) {
+            //call the visitor to find all uses of the parameter variables
+            referencedParameters = Lists.newLinkedList();
 
-        List<BashPsiElement> parameters = Lists.newLinkedList();
-
-        for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-            if (var.isParameterReference()) {
-                parameters.add(var);
+            for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
+                if (var.isParameterReference()) {
+                    referencedParameters.add(var);
+                }
             }
         }
 
-        return parameters;
+        return referencedParameters;
     }
-
-    private Key<String> DEFINED_NAME_KEY = Key.create("definedName");
 
     public String getDefinedName() {
         BashFunctionDefName symbol = getNameSymbol();
-        String result = symbol == null ? "" : symbol.getNameString();
 
-        putUserData(DEFINED_NAME_KEY, result);
-
-        return result;
+        return symbol == null ? "" : symbol.getNameString();
     }
 
     @Override

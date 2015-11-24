@@ -33,7 +33,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiElementBase;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
@@ -419,6 +418,11 @@ public final class BashPsiUtils {
 
     @Nullable
     public static <T extends PsiElement> T findParent(@Nullable PsiElement start, Class<T> parentType) {
+        return findParent(start, parentType, PsiFile.class);
+    }
+
+    @Nullable
+    public static <T extends PsiElement> T findParent(@Nullable PsiElement start, Class<T> parentType, Class<? extends PsiElement> breakPoint) {
         if (start == null) {
             return null;
         }
@@ -427,15 +431,27 @@ public final class BashPsiUtils {
             if (parentType.isInstance(current)) {
                 return (T) current;
             }
+
+            if (breakPoint != null && breakPoint.isInstance(current)) {
+                return null;
+            }
         }
 
         return null;
     }
 
     public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps) {
+        return hasParentOfType(start, parentType, maxSteps, PsiFile.class);
+    }
+
+    public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps, Class<? extends PsiElement> breakPoint) {
         for (PsiElement current = start; current != null && maxSteps-- >= 0; current = current.getParent()) {
             if (parentType.isInstance(current)) {
                 return true;
+            }
+
+            if (breakPoint != null && breakPoint.isInstance(current)) {
+                return false;
             }
         }
 

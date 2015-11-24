@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedListMultimap;
@@ -39,7 +40,7 @@ import java.util.Collections;
  *
  * @author Joachim Ansorg
  */
-public abstract class BashAbstractProcessor implements PsiScopeProcessor, ResolveProcessor {
+public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiScopeProcessor, ResolveProcessor {
     private Multimap<Integer, PsiElement> results;
     private boolean preferNeigbourhood;
 

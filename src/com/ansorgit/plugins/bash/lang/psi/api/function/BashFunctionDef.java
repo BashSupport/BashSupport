@@ -44,6 +44,7 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
      *
      * @return The body of the function.
      */
+    @Nullable
     BashBlock body();
 
     /**

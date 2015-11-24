@@ -23,6 +23,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -94,12 +95,10 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
                 }
             });
 
-            //find out which position the marker is in a list of multiple
-            //a start marker is wrapped in a redirect expression, thus we need to traverse the parent's siblings
+            //find out which position the marker is in a list of multiple, all start markers are wrapped in a single parent (a RedirectList)
             int markerPos = 0;
-            for (PsiElement current = marker.getParent().getPrevSibling(); current != null; current = current.getPrevSibling()) {
-                BashHereDocStartMarker childMarker = PsiTreeUtil.findChildOfType(current, BashHereDocStartMarker.class);
-                if (childMarker != null) {
+            for (PsiElement sibling = marker.getPrevSibling(); sibling != null; sibling = sibling.getPrevSibling()) {
+                if (sibling instanceof BashHereDocMarker) {
                     markerPos++;
                 }
             }
