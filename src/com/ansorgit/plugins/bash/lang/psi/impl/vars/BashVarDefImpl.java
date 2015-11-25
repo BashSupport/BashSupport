@@ -204,7 +204,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
         //we would get an infinite recursion
-        final ResolveProcessor processor = new BashVarProcessor(this, false);
+        final ResolveProcessor processor = new BashVarProcessor(this, getReferencedName(), false);
         BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
         if (functionLocalScope == null) {
             return false;
@@ -260,6 +260,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @Override
     public BashReference getReference() {
         return cachingReference;
+    }
+
+    @Override
+    public final boolean isVarDefinition() {
+        return true;
     }
 
     @Override
@@ -410,9 +415,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 return null;
             }
 
-            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : BashPsiUtils.findFileContext(bashVarDef);
+            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : BashPsiUtils.findFileContext(bashVarDef, true);
 
-            ResolveProcessor processor = new BashVarProcessor(bashVarDef, true);
+            ResolveProcessor processor = new BashVarProcessor(bashVarDef, bashVarDef.getReferencedName(), true);
             if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVarDef, resolveScope, ResolveState.initial())) {
                 return processor.getBestResult(false, bashVarDef);
             }

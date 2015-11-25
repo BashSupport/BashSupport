@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-@Ignore
+//@Ignore
 public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHighlighterTest {
     @Override
     protected String getBasePath() {

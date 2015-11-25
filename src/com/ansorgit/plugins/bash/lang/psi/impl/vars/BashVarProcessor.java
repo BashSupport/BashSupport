@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -26,12 +27,12 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -53,21 +54,19 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private boolean ignoreGlobals;
     private boolean functionVarDefsAreGlobal;
     private int startElementTextOffset;
+    private final Set<PsiElement> visitedScopes = ContainerUtil.newIdentityTroveSet();
 
-
-    private final Set<PsiElement> visitedScopes = Sets.newIdentityHashSet();
-
-    public BashVarProcessor(BashVar startElement, boolean checkLocalness) {
-        this(startElement, checkLocalness, true);
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness) {
+        this(startElement, variableName, checkLocalness, true);
     }
 
-    public BashVarProcessor(BashVar startElement, boolean checkLocalness, boolean leaveInjectionHosts) {
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts) {
         super(false);
 
         this.startElement = startElement;
         this.checkLocalness = checkLocalness;
-        this.varName = startElement.getReference().getReferencedName();
-        this.startElementIsVarDef = startElement instanceof BashVarDef;
+        this.varName = variableName;
+        this.startElementIsVarDef = startElement.isVarDefinition();
         this.startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
 
         this.ignoreGlobals = false;
@@ -76,7 +75,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         this.startElementTextOffset = BashPsiUtils.getFileTextOffset(startElement);
     }
 
-    public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
+    public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
         if (visitedScopes.contains(psiElement)) {
             return true;
         }
@@ -129,10 +128,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
 
-        boolean sameFiles = this.leaveInjectionHost
-                ? BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef))
-                : startElement.getContainingFile().equals(varDef.getContainingFile());
-
+        boolean sameFiles = BashPsiUtils.findFileContext(startElement, leaveInjectionHost).equals(BashPsiUtils.findFileContext(varDef, leaveInjectionHost));
         if (sameFiles) {
             int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
             if (startElementTextOffset >= textOffsetVarDef) {

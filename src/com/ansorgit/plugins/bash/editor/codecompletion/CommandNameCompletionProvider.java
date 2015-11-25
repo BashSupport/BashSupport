@@ -37,7 +37,6 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.Icons;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 
@@ -76,7 +75,7 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
 
         PsiElement lookupElement = originalElement != null ? originalElement : element;
         BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor(lookupElement);
-        PsiTreeUtil.treeWalkUp(processor, lookupElement, BashPsiUtils.findFileContext(lookupElement), ResolveState.initial());
+        PsiTreeUtil.treeWalkUp(processor, lookupElement, BashPsiUtils.findFileContext(lookupElement, true), ResolveState.initial());
 
         Collection<LookupElement> functionItems = CompletionProviderUtils.createPsiItems(processor.getFunctionDefs());
         result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));

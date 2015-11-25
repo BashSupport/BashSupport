@@ -58,10 +58,15 @@ public final class BashPsiUtils {
      * then the host file is returned.
      *
      * @param element
+     * @param leaveInjectionHosts
      * @return The file on disk
      */
-    public static PsiFile findFileContext(PsiElement element) {
-        return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
+    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
+        if (leaveInjectionHosts) {
+            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
+        }
+
+        return element.getContainingFile();
     }
 
     /**
@@ -348,7 +353,7 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition).equals(findFileContext(childCandidate));
+        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(childCandidate, true));
 
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {

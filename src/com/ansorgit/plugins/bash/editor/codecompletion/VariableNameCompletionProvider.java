@@ -85,7 +85,7 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
     }
 
     private int addCollectedVariables(PsiElement element, CompletionResultSet result, BashVarCollectorProcessor processor) {
-        PsiTreeUtil.treeWalkUp(processor, element, BashPsiUtils.findFileContext(element), ResolveState.initial());
+        PsiTreeUtil.treeWalkUp(processor, element, BashPsiUtils.findFileContext(element, true), ResolveState.initial());
 
         Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
         result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));

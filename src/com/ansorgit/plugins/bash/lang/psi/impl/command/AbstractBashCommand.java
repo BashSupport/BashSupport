@@ -280,7 +280,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd);
+            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
 
             boolean walkOn = PsiTreeUtil.treeWalkUp(processor, cmd, currentFile, ResolveState.initial());
             if (!walkOn) {
@@ -367,7 +367,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
                 return null;
             }
 
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd);
+            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
             return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
         }
 
@@ -405,8 +405,8 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         @Override
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             if (element instanceof PsiFile) {
-                PsiFile currentFile = BashPsiUtils.findFileContext(cmd);
-
+                //findRelativeFilePath already leaves the injection host file
+                PsiFile currentFile = BashPsiUtils.findFileContext(cmd, false);
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
 
                 return handleElementRename(relativeFilePath);
