@@ -352,12 +352,6 @@
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleArrayUseInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashArrayUseOfSimple"
-                         key="inspection.arrayUseOfSimpleVar.name"
-                         enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ArrayUseOfSimpleVarInspection"/>
-
-        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
                          shortName="BashInternalCommandFunctionOverride"
                          key="inspection.internalCommandOverride.name"
                          enabledByDefault="true"

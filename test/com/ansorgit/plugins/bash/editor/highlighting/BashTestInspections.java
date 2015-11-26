@@ -30,9 +30,7 @@ public class BashTestInspections implements InspectionToolProvider {
                 com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertBackquoteInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionDefInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleArrayUseInspection.class,
-                com.ansorgit.plugins.bash.editor.inspections.inspections.ArrayUseOfSimpleVarInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.InternalCommandFunctionOverrideInspection.class
-
         };
     }
 }
