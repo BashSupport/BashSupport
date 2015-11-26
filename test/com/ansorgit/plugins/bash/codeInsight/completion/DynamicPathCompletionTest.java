@@ -18,7 +18,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testSimpleCompletion() throws Throwable {
         configureByTestName();
 
-        checkItems("./SimpleCompletion.bash");
+        checkItems("./simpleCompletion.bash");
     }
 
     @Test
