@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.RegisterGlobalVariableQuickfix;
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.UnregisterGlobalVariableQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -65,7 +66,12 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
                     String varName = ref.getReferencedName();
 
                     boolean isRegisteredAsGlobal = globalVariables.contains(varName);
-                    if (!isRegisteredAsGlobal) {
+                    if (isRegisteredAsGlobal) {
+                        holder.registerProblem(bashVar, "This variable is currently registered as a global variable",
+                                ProblemHighlightType.INFORMATION,
+                                ref.getRangeInElement(),
+                                new UnregisterGlobalVariableQuickfix(bashVar));
+                    } else {
                         holder.registerProblem(bashVar,
                                 "Unresolved variable",
                                 ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,

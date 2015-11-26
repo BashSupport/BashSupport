@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 //@Ignore
@@ -62,16 +63,19 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
     @Test
     public void testHighlightingPerformanceSmall() throws Exception {
         //Average: 550.4 ms
-        doPerformanceTest("AlsaUtils.bash", 15, 500.0);
+        doPerformanceTest("AlsaUtils.bash", 35, 500.0);
     }
 
-    protected void doPerformanceTest(String filename, int highlightingPasses, double maxTimeMillis) {
+    protected void doPerformanceTest(String filename, int highlightingPasses, double maxTimeMillis) throws IOException, InterruptedException {
         MinMaxValue minMax = new MinMaxValue();
 
         //do one highlighting without counting it to start the plattform
         System.out.println("Starting...");
         myFixture.configureByFile(filename);
         myFixture.doHighlighting();
+
+        System.out.println("Attach ...");
+        Thread.sleep(5000);
 
         for (int i = 1; i <= highlightingPasses; i++) {
             System.out.println(String.format("Highlighting %d/%d,", i, highlightingPasses));
