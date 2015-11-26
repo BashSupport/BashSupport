@@ -34,7 +34,7 @@ public class InternalVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return new BashVisitor() {
+        /*return new BashVisitor() {
             @Override
             public void visitVarDef(BashVarDef varDef) {
                 String name = varDef.getName();
@@ -43,6 +43,8 @@ public class InternalVariableInspection extends LocalInspectionTool {
                     holder.registerProblem(varDef, "Built-in shell variable", LocalQuickFix.EMPTY_ARRAY);
                 }
             }
-        };
+        };*/
+
+        return PsiElementVisitor.EMPTY_VISITOR;
     }
 }

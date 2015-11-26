@@ -39,7 +39,9 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return new BashVisitor() {
+        return PsiElementVisitor.EMPTY_VISITOR;
+
+        /*return new BashVisitor() {
             @Override
             public void visitVarDef(BashVarDef varDef) {
                 if (varDef instanceof BashVar) {
@@ -59,6 +61,6 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
                     }
                 }
             }
-        };
+        };*/
     }
 }
