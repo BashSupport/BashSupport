@@ -59,7 +59,7 @@ public class BashWordImplTest extends LightBashCodeInsightFixtureTestCase {
         BashWord string = configureWord("abcde");
         Assert.assertTrue(string.isStatic());
         Assert.assertFalse(string.isWrapped());
-        Assert.assertTrue("A simple sring should be wrappable", string.isWrappable());
+        Assert.assertTrue("A simple sring should not be wrappable (no unnecessary warning about wrapping a single word)", string.isWrappable());
         Assert.assertEquals(TextRange.create(0, 5), string.getTextContentRange());
         Assert.assertEquals("abcdefghijk", string.createEquallyWrappedString("abcdefghijk"));
     }
