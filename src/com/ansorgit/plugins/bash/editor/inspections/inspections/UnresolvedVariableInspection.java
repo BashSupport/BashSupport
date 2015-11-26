@@ -43,8 +43,7 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return PsiElementVisitor.EMPTY_VISITOR;
-        //return new UnresolvedVariableVisitor(holder);
+        return new UnresolvedVariableVisitor(holder);
     }
 
     private static final class UnresolvedVariableVisitor extends BashVisitor {

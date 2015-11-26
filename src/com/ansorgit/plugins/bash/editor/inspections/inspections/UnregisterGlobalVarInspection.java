@@ -41,8 +41,7 @@ public class UnregisterGlobalVarInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        //return new UnresolvedVarVisitor(holder);
-        return PsiElementVisitor.EMPTY_VISITOR;
+        return new UnresolvedVarVisitor(holder);
     }
 
     private static class UnresolvedVarVisitor extends BashVisitor {

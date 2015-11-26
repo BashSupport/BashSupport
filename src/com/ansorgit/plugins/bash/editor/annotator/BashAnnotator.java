@@ -19,15 +19,11 @@
 package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.RegisterGlobalVariableQuickfix;
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.UnregisterGlobalVariableQuickfix;
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.IncrementExpression;
@@ -42,12 +38,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
-import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -55,12 +48,10 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * The annotator for the the Bash language.
@@ -72,41 +63,12 @@ import java.util.Set;
  * @author Joachim Ansorg
  */
 public class BashAnnotator implements Annotator {
-    private static final TokenSet noWordHighlightErase = TokenSet.orSet(
+    private static TokenSet noWordHighlightErase = TokenSet.orSet(
             TokenSet.create(BashTokenTypes.STRING2),
             BashTokenTypes.arithLiterals,
             TokenSet.create(BashElementTypes.VAR_ELEMENT));
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
-        if (element instanceof BashBackquote) {
-            annotateBackquote((BashBackquote) element, annotationHolder);
-        } else if (element instanceof BashHereDoc) {
-            annotateHereDoc((BashHereDoc) element, annotationHolder);
-        } else if (element instanceof BashHereDocStartMarker) {
-            annotateHereDocStart(element, annotationHolder);
-        } else if (element instanceof BashHereDocEndMarker) {
-            annotateHereDocEnd(element, annotationHolder);
-        } else if (element instanceof BashCommand) {
-            annotateCommand((BashCommand) element, annotationHolder);
-        } else if (element instanceof BashVarDef) {
-            annotateVarDef((BashVarDef) element, annotationHolder);
-        } else if (element instanceof BashVar) {
-            annotateVariable((BashVar) element, annotationHolder);
-        } else if (element instanceof BashWord) {
-            annotateWord(element, annotationHolder);
-        } else if (element instanceof BashString) {
-            annotateString(element, annotationHolder);
-        } else if (element instanceof BashSubshellCommand) {
-            annotateSubshell(element, annotationHolder);
-        } else if (element instanceof IncrementExpression) {
-            annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
-        } else if (element instanceof BashFunctionDefName) {
-            annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
-        } else if (element instanceof BashRedirectExpr) {
-            annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
-        }
-
-        /*
         if (element instanceof BashBackquote) {
             annotateBackquote((BashBackquote) element, annotationHolder);
         } else if (element instanceof BashHereDoc) {
@@ -133,64 +95,18 @@ public class BashAnnotator implements Annotator {
             annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
         } else if (element instanceof BashRedirectExpr) {
             annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
-         */
+        }
     }
 
-    protected void annotateVariable(@NotNull BashVar variable, @NotNull AnnotationHolder annotationHolder) {
-        boolean builtinVar = variable.isBuiltinVar();
-        if (builtinVar) {
+    protected void highlightVariable(@NotNull BashVar element, @NotNull AnnotationHolder annotationHolder) {
+        if (element.isBuiltinVar()) {
             //highlighting for built-in variables
-            Annotation annotation = annotationHolder.createInfoAnnotation(variable, null);
+            Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_BUILTIN);
-        } else if (variable.isParameterExpansion()) {
+        } else if (element.isParameterExpansion()) {
             //highlighting for composed variables
-            Annotation annotation = annotationHolder.createInfoAnnotation(variable, null);
+            Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_COMPOSED);
-        }
-
-        if (!builtinVar) {
-            BashReference ref = variable.getReference();
-            //Set<String> globalVariables = BashProjectSettings.storedSettings(variable.getProject()).getGlobalVariables();
-
-            PsiElement resolved = ref.resolve();
-            if (resolved == null) {
-                //String varName = ref.getReferencedName();
-                //boolean isRegisteredAsGlobal = globalVariables.contains(varName);
-
-                boolean isRegisteredAsGlobal = false; //fixme
-                if (!isRegisteredAsGlobal) {
-                    Annotation annotation = annotationHolder.createAnnotation(HighlightSeverity.WARNING, ref.getRangeInElement().shiftRight(variable.getTextOffset()), "Unresolved variable");
-                    annotation.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
-                    annotation.registerFix(new RegisterGlobalVariableQuickfix(variable));
-                } else {
-                    Annotation annotation = annotationHolder.createAnnotation(HighlightSeverity.WEAK_WARNING, ref.getRangeInElement().shiftRight(variable.getTextOffset()), "This variable is currently registered as a global variable");
-                    //annotation.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
-                    annotation.registerFix(new UnregisterGlobalVariableQuickfix(variable));
-                }
-            }
-        }
-    }
-
-    private void annotateVarDef(BashVarDef varDef, AnnotationHolder annotationHolder) {
-        final PsiElement identifier = varDef.findAssignmentWord();
-        if (identifier != null) {
-            final Annotation annotation = annotationHolder.createInfoAnnotation(identifier, null);
-            annotation.setTextAttributes(BashSyntaxHighlighter.VAR_DEF);
-        }
-
-        String name = varDef.getName();
-        if (LanguageBuiltins.readonlyShellVars.contains(name)) {
-            annotationHolder.createErrorAnnotation(varDef, "Built-in shell variable");
-        } else {
-            PsiElement resolve = varDef.getReference().resolve();
-
-            if (resolve != null && resolve != varDef && resolve instanceof BashVarDef) {
-                BashVarDef originalDefinition = (BashVarDef) resolve;
-
-                if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
-                    annotationHolder.createErrorAnnotation(varDef, "Change to a read-only variable");
-                }
-            }
         }
     }
 
@@ -240,7 +156,6 @@ public class BashAnnotator implements Annotator {
         final Annotation annotation = holder.createInfoAnnotation(TextRange.from(bashString.getTextOffset(), bashString.getTextLength()), null);
         annotation.setTextAttributes(BashSyntaxHighlighter.STRING);
 
-        //fixme better highlight words in strings
         highlightVariables(bashString, holder);
     }
 
@@ -347,6 +262,14 @@ public class BashAnnotator implements Annotator {
     private void annotateHereDocEnd(PsiElement element, AnnotationHolder annotationHolder) {
         final Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.HERE_DOC_END);
+    }
+
+    private void annotateVarDef(BashVarDef bashVarDef, AnnotationHolder annotationHolder) {
+        final PsiElement identifier = bashVarDef.findAssignmentWord();
+        if (identifier != null) {
+            final Annotation annotation = annotationHolder.createInfoAnnotation(identifier, null);
+            annotation.setTextAttributes(BashSyntaxHighlighter.VAR_DEF);
+        }
     }
 
     private void annotateSubshell(PsiElement element, AnnotationHolder holder) {
