@@ -9,7 +9,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -65,19 +64,12 @@ public final class BashResolveUtil {
         }
 
 
-
         //fixme this is very slow atm
-        if (lastParent != null && BashPsiUtils.findParent(place, BashFunctionDef.class) != null) {
-            if (lastParent.getParent() == thisElement) {
-                for (PsiElement child = lastParent.getNextSibling(); child != null; child = child.getNextSibling()) {
-                    if (thisElement != child && !child.processDeclarations(processor, state, null, place)) {
-                        return false;
-                    }
-
-                    //lastChild = child;
+        if (lastParent != null && lastParent.getParent() == thisElement && BashPsiUtils.findParent(place, BashFunctionDef.class) != null) {
+            for (PsiElement child = lastParent.getNextSibling(); child != null; child = child.getNextSibling()) {
+                if (!child.processDeclarations(processor, state, null, place)) {
+                    return false;
                 }
-            }  else {
-                int i = 1;
             }
         }
 
