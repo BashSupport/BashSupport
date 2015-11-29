@@ -75,8 +75,8 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
         myFixture.configureByFile(filename);
         myFixture.doHighlighting();
 
-        System.out.println("Attach ...");
-        Thread.sleep(5000);
+       // System.out.println("Attach ...");
+       // Thread.sleep(5000);
 
         for (int i = 1; i <= highlightingPasses; i++) {
             System.out.println(String.format("Highlighting %d/%d,", i, highlightingPasses));

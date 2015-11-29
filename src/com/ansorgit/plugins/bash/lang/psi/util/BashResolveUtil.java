@@ -64,20 +64,22 @@ public final class BashResolveUtil {
             }
         }
 
-        //the definition has not been found yet, we have to process the function contained in thisElement
 
-        //if the start element is contained in a function then all functions contained in thisElement need to be processed
-        //if the start element is not contained in a function then only functions prior to the start element need to be processed
 
-/*
+        //fixme this is very slow atm
         if (lastParent != null && BashPsiUtils.findParent(place, BashFunctionDef.class) != null) {
-            for (PsiElement child = lastParent.getNextSibling(); child != null; child = child.getNextSibling()) {
-                if (thisElement != child && !child.processDeclarations(processor, state, child, place)) {
-                    return false;
+            if (lastParent.getParent() == thisElement) {
+                for (PsiElement child = lastParent.getNextSibling(); child != null; child = child.getNextSibling()) {
+                    if (thisElement != child && !child.processDeclarations(processor, state, null, place)) {
+                        return false;
+                    }
+
+                    //lastChild = child;
                 }
+            }  else {
+                int i = 1;
             }
         }
-        */
 
         return true;
     }
