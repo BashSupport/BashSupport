@@ -36,10 +36,20 @@ public class PsiScopesUtil {
                                              @NotNull ResolveState state,
                                              PsiElement lastParent,
                                              PsiElement place) {
-        PsiElement child = null;
+
+        for (PsiElement child = thisElement.getFirstChild(); child != null && child != lastParent; child = child.getNextSibling()) {
+            if (!child.processDeclarations(processor, state, null, place)) {
+                return false;
+            }
+        }
+
+
+       /* PsiElement child = null;
         if (lastParent != null && lastParent.getParent() == thisElement) {
             child = lastParent.getPrevSibling();
-            if (child == null) return true; // first element
+            if (child == null) {
+                return true; // first element
+            }
         }
 
         if (child == null) {
@@ -47,9 +57,11 @@ public class PsiScopesUtil {
         }
 
         while (child != null) {
-            if (!child.processDeclarations(processor, state, null, place)) return false;
+            if (!child.processDeclarations(processor, state, null, place)) {
+                return false;
+            }
             child = child.getPrevSibling();
-        }
+        }                 */
 
         return true;
     }

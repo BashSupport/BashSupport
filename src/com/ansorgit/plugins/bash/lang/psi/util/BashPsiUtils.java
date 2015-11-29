@@ -284,7 +284,7 @@ public final class BashPsiUtils {
             }
 
             prevParent = scope;
-            scope = prevParent.getContext();
+            scope = prevParent.getParent();
         }
 
         return !hasResult;

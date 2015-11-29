@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -127,7 +128,11 @@ public class BashStringImpl extends BashBaseStubElementImpl<StubElement> impleme
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
+        if (!processor.execute(this, state)) {
+            return false;
+        }
+
+        boolean walkOn = isStatic() || BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
 
         if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);

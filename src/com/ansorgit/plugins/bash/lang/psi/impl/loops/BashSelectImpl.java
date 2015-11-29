@@ -39,4 +39,9 @@ public class BashSelectImpl extends BashKeywordDefaultImpl implements BashSelect
     public PsiElement keywordElement() {
         return findPsiChildByType(BashTokenTypes.SELECT_KEYWORD);
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }

@@ -185,6 +185,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
             this.bashVar = bashVar;
         }
 
+        @Override
+        public PsiElement resolve() {
+            return super.resolve();
+        }
+
         @Nullable
         @Override
         public PsiElement resolveInner() {

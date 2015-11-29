@@ -53,6 +53,7 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
     }
 
     @Test
+    //@Ignore
     public void testHighlightingPerformanceLarge() throws Exception {
         doPerformanceTest("functions_issue96.bash", 10, 2000.0);
 

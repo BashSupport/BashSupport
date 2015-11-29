@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
+import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
@@ -73,6 +74,7 @@ public class BashElementSharedImpl {
             return GlobalSearchScope.fileScope(currentFile);
         }
 
+        //fixme improve this
         Set<PsiFile> union = Sets.newLinkedHashSet();
         union.addAll(included);
         union.addAll(includers);
@@ -83,9 +85,11 @@ public class BashElementSharedImpl {
     }
 
     public static boolean walkDefinitionScope(PsiElement thisElement, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-
-        //walk the tree from top to bottom because the first definition has higher priority and should still be processed
-        //if a later definition masks it
+        return PsiScopesUtil.walkChildrenScopes(thisElement, processor, state, lastParent, place);
+        /*
+        if (thisElement == lastParent) {
+            return true;
+        }
 
         PsiElement child = thisElement.getFirstChild();
         if (child == lastParent) {
@@ -93,7 +97,7 @@ public class BashElementSharedImpl {
         }
 
         while (child != null) {
-            if (!child.processDeclarations(processor, state, null, place)) {
+            if (!child.processDeclarations(processor, state, lastParent, place)) {
                 return false;
             }
 
@@ -104,31 +108,6 @@ public class BashElementSharedImpl {
             child = child.getNextSibling();
         }
 
-        // If the last processed child is the parent of the place element check if we need to process
-        // the elements after the element
-        // In certain cases the resolving has to continue below the initial place, e.g.
-        // function x() {
-        //    function y() {
-        //        echo $a
-        //    }
-        //
-        //    a=
-        // }
-
-        if (child != null) {
-            PsiElement functionContainer = BashPsiUtils.findParent(child.getNextSibling(), BashFunctionDef.class);
-            if (functionContainer != null && functionContainer != thisElement) {
-                //process the siblings after the parent of place
-                while (child != null) {
-                    if (!child.processDeclarations(processor, state, null, place)) {
-                        return false;
-                    }
-
-                    child = child.getNextSibling();
-                }
-            }
-        }
-
-        return true;
+        return true;*/
     }
 }

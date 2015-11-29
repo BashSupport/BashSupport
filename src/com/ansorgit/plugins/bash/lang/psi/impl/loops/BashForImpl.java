@@ -43,4 +43,9 @@ public class BashForImpl extends BashKeywordDefaultImpl implements BashFor {
     public boolean isArithmetic() {
         return findPsiChildByType(BashElementTypes.ARITHMETIC_COMMAND) != null;
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }

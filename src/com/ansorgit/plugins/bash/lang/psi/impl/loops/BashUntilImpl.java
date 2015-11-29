@@ -39,4 +39,9 @@ public class BashUntilImpl extends BashKeywordDefaultImpl implements BashUntil {
     public PsiElement keywordElement() {
         return findPsiChildByType(BashTokenTypes.UNTIL_KEYWORD);
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }

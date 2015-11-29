@@ -28,6 +28,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -41,6 +42,9 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
     private Boolean isWrapped;
 
+    private boolean singleChildParent;
+    private boolean singleChildParentComputed = false;
+
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
     }
@@ -50,6 +54,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         super.subtreeChanged();
 
         this.isWrapped = null;
+        this.singleChildParentComputed = false;
     }
 
     @Override
@@ -62,7 +67,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
     }
 
     public boolean isWrappable() {
-        if (BashPsiUtils.isSingleChildParent(this)) {
+        if (isSingleChildParent()) {
             return false;
         }
 
@@ -76,6 +81,15 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
         return true;
     }
 
+    private boolean isSingleChildParent() {
+        if (!singleChildParentComputed) {
+            singleChildParent = BashPsiUtils.isSingleChildParent(this);
+            singleChildParentComputed = true;
+        }
+
+        return singleChildParent;
+    }
+
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
@@ -84,6 +98,7 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
                 ASTNode firstChildNode = getNode().getFirstChildNode();
                 if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
                     String text = firstChildNode.getText();
+
                     isWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
                 }
             }
@@ -146,8 +161,15 @@ public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implement
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        boolean walkOn = super.processDeclarations(processor, state, lastParent, place);
+        if (!processor.execute(this, state)) {
+            return false;
+        }
 
+        if (isSingleChildParent() && isWrapped()) {
+            return true;
+        }
+
+        boolean walkOn = BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
         if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
         }

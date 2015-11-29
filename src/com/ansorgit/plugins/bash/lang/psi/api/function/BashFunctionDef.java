@@ -22,9 +22,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDefContainer;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
@@ -45,14 +45,7 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
      * @return The body of the function.
      */
     @Nullable
-    BashBlock body();
-
-    /**
-     * Returns whether the body of this function is wrapped in curly brackets, i.e. in a command group.
-     *
-     * @return True if the body is in a commmand group.
-     */
-    boolean hasCommandGroup();
+    BashBlock functionBody();
 
     @Nullable
     BashFunctionDefName getNameSymbol();

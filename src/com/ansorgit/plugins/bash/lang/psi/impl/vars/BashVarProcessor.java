@@ -54,7 +54,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private boolean ignoreGlobals;
     private boolean functionVarDefsAreGlobal;
     private int startElementTextOffset;
-    private final Set<PsiElement> visitedScopes = ContainerUtil.newIdentityTroveSet();
+    //private final Set<PsiElement> visitedScopes = ContainerUtil.newIdentityTroveSet();
 
     public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness) {
         this(startElement, variableName, checkLocalness, true);
@@ -76,14 +76,14 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     }
 
     public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
-        if (visitedScopes.contains(psiElement)) {
+        /*if (visitedScopes.contains(psiElement)) {
             return true;
-        }
+        } */
 
         if (psiElement instanceof BashVarDef) {
             BashVarDef varDef = (BashVarDef) psiElement;
 
-            if (!varName.equals(varDef.getName()) || startElement.equals(psiElement)) {
+            if (!varName.equals(varDef.getName()) || startElement == psiElement || startElement.equals(psiElement)) {
                 //proceed with the search
                 return true;
             }
@@ -104,7 +104,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             }
         }
 
-        visitedScopes.add(psiElement);
+        //visitedScopes.add(psiElement);
         return true;
     }
 
@@ -217,9 +217,11 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     }
 
     public <T> T getHint(Key<T> key) {
+       /*
         if (key.equals(VISITED_SCOPES_KEY)) {
             return (T) visitedScopes;
         }
+        */
 
         return null;
     }

@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
  * @author ilyas, jansorg
  */
 public abstract class BashIndentProcessor implements BashElementTypes, BashTokenTypes {
-    private static final TokenSet BLOCKS = TokenSet.create(BLOCK_ELEMENT, GROUP_COMMAND, GROUP_ELEMENT, CASE_PATTERN_LIST_ELEMENT);
+    private static final TokenSet BLOCKS = TokenSet.create(GROUP_COMMAND, GROUP_ELEMENT, CASE_PATTERN_LIST_ELEMENT);
 
     /**
      * Calculates indent, based on code style, between parent block and child node

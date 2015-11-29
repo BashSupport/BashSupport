@@ -84,14 +84,14 @@ public final class ListParsing implements ParsingTool {
     */
 
     public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean markAsFoldable) {
-        PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : NullMarker.get();
+        //PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : NullMarker.get();
 
         builder.eatOptionalNewlines(1);
         builder.eatOptionalNewlines();
 
         //this is the list0 parsing here
         if (!parseList1(builder, false, true, RecursionGuard.initial())) {
-            optionalMarker.drop();
+            //optionalMarker.drop();
 
             return false;
         }
@@ -101,7 +101,7 @@ public final class ListParsing implements ParsingTool {
 
         //in contrast to the grammar we assume that compound_list is terminated
         if (token == SEMI || token == LINE_FEED || token == AMP) {
-            optionalMarker.done(BLOCK_ELEMENT);
+            //optionalMarker.done(BLOCK_ELEMENT);
 
             builder.advanceLexer();
             builder.eatOptionalNewlines();
@@ -109,7 +109,7 @@ public final class ListParsing implements ParsingTool {
             return true;
         }
 
-        optionalMarker.done(BLOCK_ELEMENT);
+        //optionalMarker.done(BLOCK_ELEMENT);
 
         return builder.eof() || optionalTerminator;
     }

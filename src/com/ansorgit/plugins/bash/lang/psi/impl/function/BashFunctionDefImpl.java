@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.function;
 
-import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
@@ -26,11 +25,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -54,7 +52,6 @@ import java.util.List;
 public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
     private BashBlock body;
     private boolean computedBody = false;
-
     private List<BashPsiElement> referencedParameters;
 
     public BashFunctionDefImpl(ASTNode astNode) {
@@ -97,19 +94,13 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         return getDefinedName();
     }
 
-    public BashBlock body() {
+    public BashBlock functionBody() {
         if (!computedBody) {
             computedBody = true;
-            body = findChildByClass(BashGroupImpl.class);
+            body = findChildByClass(BashBlock.class);
         }
 
         return body;
-    }
-
-    public boolean hasCommandGroup() {
-        final BashBlock body = body();
-
-        return body != null && body.isCommandGroup();
     }
 
     public BashFunctionDefName getNameSymbol() {
@@ -184,15 +175,10 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        if (!processor.execute(this, state)) {
-            return false;
+        if (lastParent != null && lastParent.equals(functionBody())) {
+            return processor.execute(this, state);
         }
 
-        //the group does its own processing, do not duplicate it here
-        if (!hasCommandGroup()) {
-            return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        }
-
-        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+        return BashResolveUtil.processContainerDeclarations(this, processor, state, lastParent, place);
     }
 }

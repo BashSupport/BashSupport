@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBlockImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashSubshellCommandImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashForImpl;
@@ -57,8 +56,8 @@ public interface BashElementTypes {
     IStubFileElementType FILE = new BashStubFileElementType();
     IElementType FILE_REFERENCE = new BashElementType("File reference");
     IElementType SHEBANG_ELEMENT = new BashElementType("shebang element");
-    IElementType BLOCK_ELEMENT = new BashCompositeElementType("block element", BashBlockImpl.class);
     IElementType GROUP_ELEMENT = new BashCompositeElementType("group element", BashGroupImpl.class);
+
     //Var usage
     //fixme probably unnecessary
     IElementType VAR_ELEMENT = new BashElementType("variable");

@@ -15,9 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-/**
- * @author ilyas
- */
 public class BashStubFileElementType extends IStubFileElementType<BashFileStub> {
 
     public BashStubFileElementType() {
