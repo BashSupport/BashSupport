@@ -44,6 +44,12 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
         super("include-command");
     }
 
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "bash.includeCommand";
+    }
+
     public void serialize(@NotNull BashIncludeCommandStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getIncludedFilename());
         dataStream.writeName(stub.getIncluderFilename());

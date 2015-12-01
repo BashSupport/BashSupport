@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -38,7 +39,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-public class BashWordImpl extends BashBaseStubElementImpl<StubElement> implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
     private Boolean isWrapped;
 

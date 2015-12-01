@@ -25,6 +25,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
+import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Joachim Ansorg
  */
-public abstract class BashBaseStubElementImpl<T extends StubElement> extends StubBasedPsiElementBase<T> implements BashPsiElement {
+public abstract class BashBaseStubElementImpl<T extends StubElement> extends StubBasedPsiElementBase<T> implements BashPsiElement, StubBasedPsiElement<T> {
     private final String name;
 
     public BashBaseStubElementImpl(final ASTNode astNode) {

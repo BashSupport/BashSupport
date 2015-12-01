@@ -27,21 +27,23 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +53,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements BashVar {
+public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, StubBasedPsiElement<BashVarStub> {
     private static final Object[] OBJECTS_EMPTY = new Object[0];
 
     private final BashReference cachingVarReference;
@@ -62,6 +64,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
 
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
+        this.cachingVarReference = new CachedBashVarReference(this);
+    }
+
+    public BashVarImpl(@NotNull BashVarStub stub, @NotNull IStubElementType nodeType) {
+        super(stub, nodeType, "Bash var def");
         this.cachingVarReference = new CachedBashVarReference(this);
     }
 
@@ -107,6 +114,17 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
     @Override
     public String getName() {
         return getReferencedName();
+    }
+
+    @Override
+    public PsiElement setName(@NonNls @NotNull String newName) throws IncorrectOperationException {
+        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
+            throw new IncorrectOperationException("can't have an empty name");
+        }
+
+        PsiElement original = this;                                                                                //fixme
+        PsiElement replacement = BashPsiElementFactory.createVariable(getProject(), newName, isParameterExpansion());
+        return BashPsiUtils.replaceElement(original, replacement);
     }
 
     public String getReferencedName() {

@@ -7,9 +7,6 @@ import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
 
-/**
- * @author ilyas
- */
 public class BashIncludeCommandStubImpl extends StubBase<BashIncludeCommand> implements BashIncludeCommandStub {
     private final StringRef includedFilename;
     private final StringRef includerFilename;

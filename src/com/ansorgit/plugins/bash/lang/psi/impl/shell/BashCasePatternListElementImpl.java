@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashCasePatternListElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
@@ -28,7 +29,7 @@ import com.intellij.psi.stubs.StubElement;
  * Date: 01.08.2009
  * Time: 20:05:01
  */
-public class BashCasePatternListElementImpl extends BashBaseStubElementImpl<StubElement> implements BashCasePatternListElement {
+public class BashCasePatternListElementImpl extends BashBaseElement implements BashCasePatternListElement {
     public BashCasePatternListElementImpl(final ASTNode astNode) {
         super(astNode, "case pattern list element");
     }

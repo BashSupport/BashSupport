@@ -32,7 +32,7 @@ import java.util.Set;
  *
  * @author Joachim Ansorg
  */
-public interface BashFile extends PsiFile, BashPsiElement, PsiFileWithStubSupport {
+public interface BashFile extends PsiFile, BashPsiElement {
     Key<Boolean> LANGUAGE_CONSOLE_MARKER = new Key<Boolean>("Language console marker");
 
     boolean hasShebangLine();

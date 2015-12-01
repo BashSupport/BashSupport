@@ -19,10 +19,10 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
-import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBackquoteImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashGroupImpl;
@@ -32,12 +32,10 @@ import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashSelectImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashUntilImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.*;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.*;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IStubFileElementType;
@@ -59,8 +57,8 @@ public interface BashElementTypes {
     IElementType GROUP_ELEMENT = new BashCompositeElementType("group element", BashGroupImpl.class);
 
     //Var usage
-    //fixme probably unnecessary
-    IElementType VAR_ELEMENT = new BashElementType("variable");
+    IStubElementType<BashVarStub, BashVar> VAR_ELEMENT = new BashVarElementType();
+
     IElementType VAR_COMPOSED_VAR_ELEMENT = new BashElementType("composed variable, like subshell");
     IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
@@ -70,10 +68,10 @@ public interface BashElementTypes {
     IElementType REDIRECT_ELEMENT = new BashElementType("redirect element");
     IElementType PROCESS_SUBSTITUTION_ELEMENT = new BashElementType("process substitution element");
     //command elements
-    BashStubElementType<BashCommandStub, BashCommand> SIMPLE_COMMAND_ELEMENT = new BashCommandElementType();
-    BashStubElementType<BashVarDefStub, BashVarDef> VAR_DEF_ELEMENT = new BashVarDefElementType();
+    IStubElementType<BashCommandStub, BashCommand> SIMPLE_COMMAND_ELEMENT = new BashSimpleCommandElementType();
+    IStubElementType<BashVarDefStub, BashVarDef> VAR_DEF_ELEMENT = new BashVarDefElementType();
     IElementType GENERIC_COMMAND_ELEMENT = new BashElementType("generic bash command");
-    BashStubElementType<BashIncludeCommandStub, BashIncludeCommand> INCLUDE_COMMAND_ELEMENT = new BashIncludeCommandElementType();
+    IStubElementType<BashIncludeCommandStub, BashIncludeCommand> INCLUDE_COMMAND_ELEMENT = new BashIncludeCommandElementType();
     //pipeline commands
     IElementType PIPELINE_COMMAND = new BashElementType("pipeline command");
     //composed command, i.e. a && b
@@ -89,7 +87,7 @@ public interface BashElementTypes {
     IElementType BACKQUOTE_COMMAND = new BashCompositeElementType("backquote shellcommand", BashBackquoteImpl.class);
     IElementType TRAP_COMMAND = new BashCompositeElementType("trap command", BashTrapCommandImpl.class);
     IElementType LET_COMMAND = new BashCompositeElementType("let command", BashLetCommandImpl.class);
-    BashStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
+    IStubElementType<BashFunctionDefStub, BashFunctionDef> FUNCTION_DEF_COMMAND = new BashFunctionDefElementType();
     IElementType GROUP_COMMAND = new BashCompositeElementType("group command", BashGroupImpl.class);
     //arithmetic commands
     IElementType ARITHMETIC_COMMAND = new BashElementType("arithmetic command");

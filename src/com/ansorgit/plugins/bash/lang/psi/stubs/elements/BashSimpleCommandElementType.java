@@ -38,9 +38,15 @@ import java.io.IOException;
 /**
  * @author jansorg
  */
-public class BashCommandElementType extends BashStubElementType<BashCommandStub, BashCommand> {
-    public BashCommandElementType() {
-        super("simple command");
+public class BashSimpleCommandElementType extends BashStubElementType<BashCommandStub, BashCommand> {
+    public BashSimpleCommandElementType() {
+        super("simple-command");
+    }
+
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "bash.simpleCommand";
     }
 
     public void serialize(@NotNull BashCommandStub stub, @NotNull StubOutputStream dataStream) throws IOException {

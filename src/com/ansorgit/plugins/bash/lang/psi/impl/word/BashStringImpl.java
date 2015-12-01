@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -45,7 +46,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashStringImpl extends BashBaseStubElementImpl<StubElement> implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private TextRange contentRange;
     private Boolean isWrapped;
 

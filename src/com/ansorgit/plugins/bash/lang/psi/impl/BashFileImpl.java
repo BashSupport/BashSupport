@@ -19,10 +19,13 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFileStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -43,6 +46,12 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         super(viewProvider, BashFileType.BASH_LANGUAGE);
     }
 
+    @Nullable
+    @Override
+    public BashFileStub getStub() {
+        return (BashFileStub) super.getStub();
+    }
+
     @NotNull
     public FileType getFileType() {
         return BashFileType.BASH_FILE_TYPE;
@@ -60,6 +69,11 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
 
     public BashFunctionDef[] functionDefinitions() {
+        BashFileStub stub = getStub();
+        if (stub != null) {
+            return stub.getChildrenByType(BashElementTypes.FUNCTION_DEF_COMMAND, BashFunctionDefStub.ARRAY_FACTORY);
+        }
+
         return findChildrenByClass(BashFunctionDef.class);
     }
 
