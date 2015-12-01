@@ -211,7 +211,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             return injectionElement != null && PsiManager.getInstance(getProject()).areElementsEquivalent(injectionElement, candidate);
         }
 
-        BashTrapCommand trapCommand = PsiTreeUtil.getParentOfType(this, BashTrapCommand.class);
+        BashTrapCommand trapCommand = PsiTreeUtil.getStubOrPsiParentOfType(this, BashTrapCommand.class);
         PsiElement signalHandlerElement = trapCommand != null ? trapCommand.getSignalHandlerElement() : null;
         if (signalHandlerElement != null) {
             boolean multipleWords = signalHandlerElement.getText().contains(" ");
@@ -292,7 +292,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-            GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
+            /*GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
             Project project = cmd.getProject();
             Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, fileScope, BashFunctionDef.class);
 
@@ -321,9 +321,10 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             }
 
             return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
+            */
 
-            /*
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+
+            //PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
 
             boolean walkOn = PsiTreeUtil.treeWalkUp(processor, cmd, currentFile, ResolveState.initial());
             if (!walkOn) {
@@ -334,13 +335,13 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             //a function call might reference a command from one of the including files
             Set<BashFile> includingFiles = FileInclusionManager.findIncluders(cmd.getProject(), currentFile);
             for (BashFile file : includingFiles) {
-                walkOn = PsiTreeUtil.treeWalkUp(processor, file.getLastChild(), file, ResolveState.initial());
+                walkOn = BashPsiUtils.treeWalkUp(processor, file.getLastChild(), file, ResolveState.initial());
                 if (!walkOn) {
                     return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
                 }
             }
 
-            return null;*/
+            return null;
         }
 
         @Override

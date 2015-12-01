@@ -20,7 +20,9 @@ package com.ansorgit.plugins.bash.lang.psi.api.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.StubBasedPsiElement;
 import org.jetbrains.annotations.NotNull;
 
 /**

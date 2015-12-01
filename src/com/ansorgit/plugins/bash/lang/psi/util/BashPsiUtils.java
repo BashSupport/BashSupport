@@ -36,6 +36,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -284,10 +285,28 @@ public final class BashPsiUtils {
             }
 
             prevParent = scope;
-            scope = prevParent.getParent();
+            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
         }
 
         return !hasResult;
+    }
+
+    public static boolean treeWalkUp(@NotNull final PsiScopeProcessor processor,
+                                     @NotNull final PsiElement entrance,
+                                     @Nullable final PsiElement maxScope,
+                                     @NotNull final ResolveState state) {
+        PsiElement prevParent = entrance;
+        PsiElement scope = entrance;
+
+        while (scope != null) {
+            if (!scope.processDeclarations(processor, state, prevParent, entrance)) return false;
+
+            if (scope == maxScope) break;
+            prevParent = scope;
+            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
+        }
+
+        return true;
     }
 
     @Nullable
