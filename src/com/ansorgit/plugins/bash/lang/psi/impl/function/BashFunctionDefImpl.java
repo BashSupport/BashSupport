@@ -128,6 +128,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     }
 
     public String getDefinedName() {
+        BashFunctionDefStub stub = getStub();
+        if (stub != null) {
+            return stub.getName();
+        }
+
         BashFunctionDefName symbol = getNameSymbol();
 
         return symbol == null ? "" : symbol.getNameString();
