@@ -94,6 +94,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public String getName() {
+        BashVarDefStub stub = getStub();
+        if (stub != null) {
+            return stub.getName();
+        }
+
         if (name == null) {
             PsiElement element = findAssignmentWord();
             if (element instanceof BashCharSequence) {

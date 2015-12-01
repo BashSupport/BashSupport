@@ -135,7 +135,7 @@ public class FileInclusionManager {
             return Collections.emptySet();
         }
 
-        Set<BashFile> includers = Sets.newHashSet();
+        Set<BashFile> includers = Sets.newLinkedHashSet();
         for (BashIncludeCommand command : includeCommands) {
             BashFile includer = (BashFile) command.getContainingFile();
 

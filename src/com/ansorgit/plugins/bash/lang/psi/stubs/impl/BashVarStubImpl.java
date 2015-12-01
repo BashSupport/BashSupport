@@ -14,13 +14,20 @@ import com.intellij.util.io.StringRef;
  */
 public class BashVarStubImpl extends StubBase<BashVar> implements BashVarStub {
     private final StringRef name;
+    private boolean singleWord;
 
-    public BashVarStubImpl(StubElement parent, StringRef name, final IStubElementType elementType) {
+    public BashVarStubImpl(StubElement parent, StringRef name, final IStubElementType elementType, boolean singleWord) {
         super(parent, elementType);
         this.name = name;
+        this.singleWord = singleWord;
     }
 
     public String getName() {
         return StringRef.toString(name);
+    }
+
+    @Override
+    public boolean isSingleWord() {
+        return singleWord;
     }
 }

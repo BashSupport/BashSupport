@@ -3,6 +3,8 @@ package com.ansorgit.plugins.bash.editor.highlighting;
 import com.intellij.codeInspection.InspectionProfileEntry;
 import com.intellij.codeInspection.LocalInspectionEP;
 import com.intellij.openapi.extensions.Extensions;
+import com.intellij.testFramework.PlatformTestUtil;
+import com.intellij.util.ThrowableRunnable;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -55,7 +57,12 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
     @Test
     //@Ignore
     public void testHighlightingPerformanceLarge() throws Exception {
-        doPerformanceTest("functions_issue96.bash", 10, 2000.0);
+        PlatformTestUtil.startPerformanceTest(getTestName(true), 10 * 2000, new ThrowableRunnable() {
+            @Override
+            public void run() throws Throwable {
+                doPerformanceTest("functions_issue96.bash", 10, 2000.0);
+            }
+        }).cpuBound().usesAllCPUCores().assertTiming();
 
         // With tuning:
         //      Finished highlighting 10/10, avg: 20538,100000 ms, min: 18969 ms, max: 22855 ms
@@ -63,8 +70,13 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
 
     @Test
     public void testHighlightingPerformanceSmall() throws Exception {
-        //Average: 550.4 ms
-        doPerformanceTest("AlsaUtils.bash", 35, 500.0);
+        PlatformTestUtil.startPerformanceTest(getTestName(true), 35 * 500, new ThrowableRunnable() {
+            @Override
+            public void run() throws Throwable {
+                //Average: 550.4 ms
+                doPerformanceTest("AlsaUtils.bash", 35, 500.0);
+            }
+        }).cpuBound().usesAllCPUCores().assertTiming();
     }
 
     protected void doPerformanceTest(String filename, int highlightingPasses, double maxTimeMillis) throws IOException, InterruptedException {

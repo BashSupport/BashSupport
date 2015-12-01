@@ -2,15 +2,20 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarProcessor;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 public final class BashResolveUtil {
@@ -27,14 +32,23 @@ public final class BashResolveUtil {
             return null;
         }
 
+        GlobalSearchScope fileScope = GlobalSearchScope.fileScope(bashVar.getContainingFile());
+        Collection<BashVarDef> varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, bashVar.getProject(), fileScope, BashVarDef.class);
+
+        ResolveState initial = ResolveState.initial();
         ResolveProcessor processor = new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts);
-        PsiFile containingFile = BashPsiUtils.findFileContext(bashVar, true);
+        for (BashVarDef varDef : varDefs) {
+            processor.execute(varDef, initial);
+        }
+
+        return processor.getBestResult(false, bashVar);
+        /*PsiFile containingFile = BashPsiUtils.findFileContext(bashVar, true);
 
         if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVar, containingFile, ResolveState.initial())) {
             return processor.getBestResult(false, bashVar);
-        }
+        } */
 
-        return null;
+        //return null;
     }
 
     public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {

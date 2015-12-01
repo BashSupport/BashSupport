@@ -17,18 +17,25 @@ import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTrapCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
@@ -36,9 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final PsiReference functionReference = new CachedFunctionReference<T>(this);
@@ -173,6 +178,11 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
 
     @Nullable
     public String getReferencedCommandName() {
+        T stub = getStub();
+        if (stub instanceof BashCommandStub) {
+            return ((BashCommandStub) stub).getBashCommandFilename();
+        }
+
         if (!hasReferencedCommandName) {
             ASTNode command = commandElementNode();
             referencedCommandName = command != null ? command.getText() : null;
@@ -278,8 +288,41 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
                 return null;
             }
 
+            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
+            GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
+            Project project = cmd.getProject();
+            Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, fileScope, BashFunctionDef.class);
+
+            ResolveState initial = ResolveState.initial();
+            for (BashFunctionDef functionDef : functionDefs) {
+                processor.execute(functionDef, initial);
+            }
+
+            if (!processor.hasResults()) {
+                Set<BashFile> includingFiles = FileInclusionManager.findIncluders(project, currentFile);
+
+                List<GlobalSearchScope> scopes = Lists.newLinkedList();
+                for (BashFile file : includingFiles) {
+                    scopes.add(GlobalSearchScope.fileScope(file));
+                }
+
+                if (!scopes.isEmpty()) {
+                    GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+
+                    functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, scope, BashFunctionDef.class);
+
+                    for (BashFunctionDef def : functionDefs) {
+                        processor.execute(def, initial);
+                    }
+                }
+            }
+
+            return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
+
+            /*
             PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
 
             boolean walkOn = PsiTreeUtil.treeWalkUp(processor, cmd, currentFile, ResolveState.initial());
@@ -297,7 +340,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
                 }
             }
 
-            return null;
+            return null;*/
         }
 
         @Override
@@ -364,6 +407,12 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         public PsiElement resolveInner() {
             final String referencedName = cmd.getReferencedCommandName();
             if (referencedName == null) {
+                return null;
+            }
+
+            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
+            Collection<BashFile> files = StubIndex.getElements(BashScriptNameIndex.KEY, referencedName, cmd.getProject(), scope, BashFile.class);
+            if (files.isEmpty()) {
                 return null;
             }
 

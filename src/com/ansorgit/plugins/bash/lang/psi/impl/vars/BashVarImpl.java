@@ -26,6 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
@@ -34,12 +35,13 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiFileWithStubSupport;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
@@ -53,12 +55,11 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, StubBasedPsiElement<BashVarStub> {
+public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, BashVarUse, StubBasedPsiElement<BashVarStub> {
     private static final Object[] OBJECTS_EMPTY = new Object[0];
 
     private final BashReference cachingVarReference;
     private Boolean singleWord;
-    private Boolean builtinVar;
     private String referencedName;
     private TextRange nameTextRange;
 
@@ -77,7 +78,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         super.subtreeChanged();
 
         this.singleWord = null;
-        this.builtinVar = null;
         this.referencedName = null;
         this.nameTextRange = null;
     }
@@ -128,6 +128,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public String getReferencedName() {
+        BashVarStub stub = getStub();
+        if (stub != null) {
+            return stub.getName();
+        }
+
         if (referencedName == null) {
             final String text = getText();
 
@@ -138,11 +143,16 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     /**
-     * A variable which is just a single word (ABC or def) can appear is a parameter substitution block (e.g. ${ABC}).
+     * A variable which is just a single word (ABC or def) can appear in a parameter substitution block (e.g. ${ABC}).
      *
      * @return True if this variable is just a single, composed word token
      */
-    private boolean isSingleWord() {
+    public boolean isSingleWord() {
+        BashVarStub stub = getStub();
+        if (stub != null) {
+            return stub.isSingleWord();
+        }
+
         if (singleWord == null) {
             singleWord = getTextLength() > 0 && getText().charAt(0) != '$';
         }
@@ -151,12 +161,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public boolean isBuiltinVar() {
-        if (builtinVar == null) {
-            String name = getReferencedName();
-            builtinVar = LanguageBuiltins.bashShellVars.contains(name) || LanguageBuiltins.bourneShellVars.contains(name);
-        }
-
-        return builtinVar;
+        String name = getReferencedName();
+        return LanguageBuiltins.bashShellVars.contains(name) || LanguageBuiltins.bourneShellVars.contains(name);
     }
 
     public boolean isParameterExpansion() {
