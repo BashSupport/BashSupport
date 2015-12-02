@@ -201,7 +201,7 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
             return false;
         }
 
-        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
         return command != null && command.isLanguageInjectionContainerFor(this);
     }
 }

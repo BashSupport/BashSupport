@@ -159,7 +159,7 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
             return false;
         }
 
-        BashCommand command = BashPsiUtils.findParent(this, BashCommand.class);
+        BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
         return command != null && command.isLanguageInjectionContainerFor(this);
     }
 }

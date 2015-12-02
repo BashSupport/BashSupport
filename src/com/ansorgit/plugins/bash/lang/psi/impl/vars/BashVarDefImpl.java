@@ -282,8 +282,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return true;
     }
 
-    public PsiElement findFunctionScope() {
-        return PsiTreeUtil.getContextOfType(this, BashFunctionDef.class, true);
+    public BashFunctionDef findFunctionScope() {
+        return PsiTreeUtil.getStubOrPsiParentOfType(this, BashFunctionDef.class);
     }
 
     @Override

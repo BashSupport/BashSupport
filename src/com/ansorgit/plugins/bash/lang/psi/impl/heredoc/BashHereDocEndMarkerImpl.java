@@ -78,6 +78,7 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
             }
 
             //walk to the command containing this heredoc end marker
+            //fixme fix this stub?
             BashComposedCommand parent = BashPsiUtils.findParent(marker, BashComposedCommand.class);
             if (parent == null) {
                 return null;

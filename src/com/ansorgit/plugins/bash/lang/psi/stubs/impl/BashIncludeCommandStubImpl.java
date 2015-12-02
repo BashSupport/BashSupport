@@ -25,4 +25,14 @@ public class BashIncludeCommandStubImpl extends StubBase<BashIncludeCommand> imp
     public String getIncluderFilename() {
         return StringRef.toString(includerFilename);
     }
+
+    @Override
+    public boolean isGenericCommand() {
+        return false;
+    }
+
+    @Override
+    public boolean isInternalCommand(boolean bash4) {
+        return true;
+    }
 }

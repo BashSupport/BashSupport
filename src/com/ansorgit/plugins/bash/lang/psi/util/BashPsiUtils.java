@@ -28,6 +28,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
@@ -35,12 +36,16 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,16 +103,15 @@ public final class BashPsiUtils {
     public static BashFunctionDef findBroadestFunctionScope(PsiElement startElement) {
         BashFunctionDef lastValidScope = null;
 
-        PsiElement element = startElement.getContext();
+        PsiElement element = PsiTreeUtil.getStubOrPsiParent(startElement);
         while (element != null) {
-            element = element.getContext();
-
-            if (element == null) {
-                return lastValidScope;
-            }
-
             if (element instanceof BashFunctionDef) {
                 lastValidScope = (BashFunctionDef) element;
+            }
+
+            element = PsiTreeUtil.getStubOrPsiParent(element);
+            if (element == null) {
+                return lastValidScope;
             }
         }
 
@@ -115,19 +119,19 @@ public final class BashPsiUtils {
     }
 
     /**
-     * Returns the broadest scope of the variable definition.
+     * Returns the narrowest scope of the variable definition.
      *
      * @param varDef The element to check
      * @return The containing block or null
      */
     public static BashFunctionDef findNextVarDefFunctionDefScope(PsiElement varDef) {
-        PsiElement element = varDef.getContext();
+        PsiElement element = PsiTreeUtil.getStubOrPsiParent(varDef);
         while (element != null) {
-            element = element.getContext();
-
             if (element instanceof BashFunctionDef) {
                 return (BashFunctionDef) element;
             }
+
+            element = PsiTreeUtil.getStubOrPsiParent(element);
         }
 
         return null;
@@ -141,7 +145,7 @@ public final class BashPsiUtils {
      */
     public static PsiElement findEnclosingBlock(PsiElement element) {
         while (element != null) {
-            element = element.getContext();
+            element = PsiTreeUtil.getStubOrPsiParent(element);
 
             if (isValidContainer(element)) {
                 return element;
@@ -173,15 +177,14 @@ public final class BashPsiUtils {
         return 0;
     }
 
-    public static IElementType nodeType(PsiElement element) {
-        ASTNode node = element.getNode();
-        return node == null ? null : node.getElementType();
-    }
-
     public static PsiElement findNextSibling(PsiElement start, IElementType ignoreType) {
+        if (start == null) {
+            return null;
+        }
+
         PsiElement current = start.getNextSibling();
         while (current != null) {
-            if (ignoreType != nodeType(current)) {
+            if (ignoreType != PsiUtil.getElementType(current)) {
                 return current;
             }
 
@@ -192,9 +195,13 @@ public final class BashPsiUtils {
     }
 
     public static PsiElement findPreviousSibling(PsiElement start, IElementType ignoreType) {
+        if (start == null) {
+            return null;
+        }
+
         PsiElement current = start.getPrevSibling();
         while (current != null) {
-            if (ignoreType != nodeType(current)) {
+            if (ignoreType != PsiUtil.getElementType(current)) {
                 return current;
             }
 
@@ -330,7 +337,7 @@ public final class BashPsiUtils {
      * @return The list of commands, may be empty but wont be null
      */
     public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
-        final List<BashCommand> includeCommands = Lists.newLinkedList();
+        /*final List<BashCommand> includeCommands = Lists.newLinkedList();
 
         BashVisitor collecingVisitor = new BashVisitor() {
             @Override
@@ -341,9 +348,18 @@ public final class BashPsiUtils {
             }
         };
 
-        visitRecursively(file, collecingVisitor);
+        visitRecursively(file, collecingVisitor);*/
 
-        return includeCommands;
+        List<BashCommand> result = Lists.newLinkedList();
+
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, includedFile.getName(), file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        for (BashIncludeCommand command : commands) {
+            if (includedFile.equals(findIncludedFile(command))) {
+                result.add(command);
+            }
+        }
+
+        return result;
     }
 
     public static void visitRecursively(PsiElement element, BashVisitor visitor) {
@@ -410,9 +426,9 @@ public final class BashPsiUtils {
     }
 
     public static List<PsiComment> findDocumentationElementComments(PsiElement element) {
-        PsiElement command = findParent(element, BashCommand.class);
+        PsiElement command = findStubParent(element, BashCommand.class);
         if (command == null) {
-            command = findParent(element, BashFunctionDef.class);
+            command = findStubParent(element, BashFunctionDef.class);
         }
 
         if (command == null) {
@@ -438,6 +454,27 @@ public final class BashPsiUtils {
         }
 
         return result;
+    }
+
+    @Nullable
+    public static <T extends PsiElement> T findStubParent(@Nullable PsiElement start, Class<T> parentType) {
+        if (start == null) {
+            return null;
+        }
+
+        Class<? extends PsiElement> breakPoint = PsiFile.class;
+
+        for (PsiElement current = start; current != null; current = PsiTreeUtil.getStubOrPsiParent(current)) {
+            if (parentType.isInstance(current)) {
+                return (T) current;
+            }
+
+            if (breakPoint.isInstance(current)) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     @Nullable

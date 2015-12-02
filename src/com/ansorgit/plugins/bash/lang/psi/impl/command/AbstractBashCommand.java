@@ -18,7 +18,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStubBase;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -34,7 +36,6 @@ import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
@@ -43,11 +44,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
-public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
-    private final PsiReference functionReference = new CachedFunctionReference<T>(this);
-    private final PsiReference bashFileReference = new BashFileReference<T>(this);
+public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
+    private final PsiReference functionReference = new CachedFunctionReference(this);
+    private final PsiReference bashFileReference = new BashFileReference(this);
 
     private String referencedCommandName;
     private boolean hasReferencedCommandName;
@@ -74,26 +78,42 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         this.parameters = null;
     }
 
-    public boolean isFunctionCall() {
-        ASTNode commandElement = commandElementNode();
-        return commandElement != null && commandElement.getElementType() == BashElementTypes.GENERIC_COMMAND_ELEMENT && functionReference.resolve() != null;
+    public boolean isGenericCommand() {
+        T stub = getStub();
+        if (stub != null) {
+            return stub.isGenericCommand();
+        }
+
+        return commandElementNode() != null;
     }
 
-    public boolean isInternalCommand() {
+    public boolean isFunctionCall() {
+        return isGenericCommand() && functionReference.resolve() != null;
+    }
+
+    @Override
+    public boolean isInternalCommand(boolean bash4) {
+        T stub = getStub();
+        if (stub != null) {
+            return stub.isInternalCommand(bash4);
+        }
+
         if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
             isInternalCommandBash3 = false;
             isInternalCommandBash4 = false;
 
-            ASTNode command = commandElementNode();
-            if (command != null) {
-                String commandText = command.getText();
+            if (isGenericCommand()) {
+                String commandText = getReferencedCommandName();
                 isInternalCommandBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
                 isInternalCommandBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
             }
         }
 
-        boolean bash4 = BashProjectSettings.storedSettings(getProject()).isSupportBash4();
         return bash4 ? isInternalCommandBash4 : isInternalCommandBash3;
+    }
+
+    public boolean isInternalCommand() {
+        return isInternalCommand(BashProjectSettings.storedSettings(getProject()).isSupportBash4());
     }
 
     public boolean isExternalCommand() {
@@ -180,7 +200,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
     public String getReferencedCommandName() {
         T stub = getStub();
         if (stub instanceof BashCommandStub) {
-            return ((BashCommandStub) stub).getBashCommandFilename();
+            return ((BashCommandStub) stub).getBashCommandName();
         }
 
         if (!hasReferencedCommandName) {
@@ -268,10 +288,10 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         return false;
     }
 
-    private static class CachedFunctionReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {
-        private final AbstractBashCommand<T> cmd;
+    private static class CachedFunctionReference extends CachingReference implements BashReference, BindablePsiReference {
+        private final AbstractBashCommand<?> cmd;
 
-        public CachedFunctionReference(AbstractBashCommand<T> cmd) {
+        public CachedFunctionReference(AbstractBashCommand<?> cmd) {
             this.cmd = cmd;
         }
 
@@ -288,18 +308,22 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
                 return null;
             }
 
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
-
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-            /*GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
             Project project = cmd.getProject();
+            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+
+
+            GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
+
             Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, fileScope, BashFunctionDef.class);
 
             ResolveState initial = ResolveState.initial();
             for (BashFunctionDef functionDef : functionDefs) {
                 processor.execute(functionDef, initial);
             }
+
+            //find include commands which are relevant for the start element
 
             if (!processor.hasResults()) {
                 Set<BashFile> includingFiles = FileInclusionManager.findIncluders(project, currentFile);
@@ -321,12 +345,11 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
             }
 
             return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
-            */
 
 
             //PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
-
-            boolean walkOn = PsiTreeUtil.treeWalkUp(processor, cmd, currentFile, ResolveState.initial());
+            /*
+            boolean walkOn = BashPsiUtils.treeWalkUp(processor, cmd, currentFile, ResolveState.initial());
             if (!walkOn) {
                 return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
             }
@@ -341,7 +364,7 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
                 }
             }
 
-            return null;
+            return null;  */
         }
 
         @Override
@@ -355,8 +378,8 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
 
         @NotNull
-        private ElementManipulator<AbstractBashCommand<T>> getManipulator() {
-            ElementManipulator<AbstractBashCommand<T>> manipulator = ElementManipulators.getManipulator(cmd);
+        private ElementManipulator<AbstractBashCommand<?>> getManipulator() {
+            ElementManipulator<AbstractBashCommand<?>> manipulator = ElementManipulators.<AbstractBashCommand<?>>getManipulator(cmd);
             if (manipulator == null) {
                 throw new IncorrectOperationException("No element manipulator found for " + cmd);
             }
@@ -391,10 +414,10 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
     }
 
-    private static class BashFileReference<T extends StubElement> extends CachingReference implements BashReference, BindablePsiReference {
-        private final AbstractBashCommand<T> cmd;
+    private static class BashFileReference extends CachingReference implements BashReference, BindablePsiReference {
+        private final AbstractBashCommand<?> cmd;
 
-        public BashFileReference(AbstractBashCommand<T> cmd) {
+        public BashFileReference(AbstractBashCommand<?> cmd) {
             this.cmd = cmd;
         }
 
@@ -432,8 +455,8 @@ public class AbstractBashCommand<T extends StubElement> extends BashBaseStubElem
         }
 
         @NotNull
-        private ElementManipulator<AbstractBashCommand<T>> getManipulator() {
-            ElementManipulator<AbstractBashCommand<T>> manipulator = ElementManipulators.getManipulator(cmd);
+        private ElementManipulator<AbstractBashCommand<?>> getManipulator() {
+            ElementManipulator<AbstractBashCommand<?>> manipulator = ElementManipulators.<AbstractBashCommand<?>>getManipulator(cmd);
             if (manipulator == null) {
                 throw new IncorrectOperationException("No element manipulator found for " + cmd);
             }

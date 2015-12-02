@@ -22,13 +22,12 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -119,7 +118,7 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(c, BashTokenTypes.WHITESPACE);
                 if (opElement != null) {
-                    IElementType operator = BashPsiUtils.nodeType(opElement);
+                    IElementType operator = PsiUtil.getElementType(opElement);
 
                     result = compute(result, operator, nextValue);
                 }
@@ -148,7 +147,7 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
      * @return The operator, if available. Null otherwise.
      */
     public IElementType findOperator() {
-        return BashPsiUtils.nodeType(findOperatorElement());
+        return PsiUtil.getElementType(findOperatorElement());
     }
 
     @Override

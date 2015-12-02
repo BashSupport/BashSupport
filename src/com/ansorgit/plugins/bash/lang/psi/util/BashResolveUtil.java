@@ -10,11 +10,9 @@ import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
-import com.intellij.psi.impl.source.PsiFileImpl;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
-import com.intellij.psi.stubs.StubTree;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -25,7 +23,7 @@ public final class BashResolveUtil {
     }
 
     public static PsiElement resolve(BashVarImpl bashVar, boolean leaveInjectionHosts) {
-        if (bashVar == null) {
+        if (bashVar == null || !bashVar.isPhysical()) {
             return null;
         }
 
@@ -34,20 +32,19 @@ public final class BashResolveUtil {
             return null;
         }
 
-        //ResolveState initial = ResolveState.initial();
+        ResolveState resolveState = ResolveState.initial();
         ResolveProcessor processor = new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts);
 
-        /*        PsiFile containingFile = BashPsiUtils.findFileContext(bashVar, true);
-
-        GlobalSearchScope fileScope = GlobalSearchScope.fileScope(bashVar.getContainingFile());
+        GlobalSearchScope fileScope = GlobalSearchScope.fileScope(BashPsiUtils.findFileContext(bashVar, leaveInjectionHosts));
         Collection<BashVarDef> varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, bashVar.getProject(), fileScope, BashVarDef.class);
 
         for (BashVarDef varDef : varDefs) {
-            processor.execute(varDef, initial);
+            processor.execute(varDef, resolveState);
         }
 
-        return processor.getBestResult(false, bashVar);        */
+        return processor.getBestResult(false, bashVar);
 
+        /*
         PsiFile containingFile = BashPsiUtils.findFileContext(bashVar, true);
 
         if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVar, containingFile, ResolveState.initial())) {
@@ -55,6 +52,7 @@ public final class BashResolveUtil {
         }
 
         return null;
+        */
     }
 
     public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
@@ -83,11 +81,10 @@ public final class BashResolveUtil {
             }
         }
 
-
         //fixme this is very slow atm
-        if (lastParent != null && lastParent.getParent() == thisElement && BashPsiUtils.findParent(place, BashFunctionDef.class) != null) {
-            for (PsiElement child = lastParent.getNextSibling(); child != null; child = child.getNextSibling()) {
-                if (!child.processDeclarations(processor, state, null, place)) {
+        if (lastParent != null && lastParent.getParent() == thisElement && BashPsiUtils.findNextVarDefFunctionDefScope(place) != null) {
+            for (PsiElement sibling = lastParent.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+                if (!sibling.processDeclarations(processor, state, null, place)) {
                     return false;
                 }
             }

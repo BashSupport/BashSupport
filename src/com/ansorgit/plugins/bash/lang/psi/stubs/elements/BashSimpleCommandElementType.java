@@ -50,18 +50,24 @@ public class BashSimpleCommandElementType extends BashStubElementType<BashComman
     }
 
     public void serialize(@NotNull BashCommandStub stub, @NotNull StubOutputStream dataStream) throws IOException {
-        dataStream.writeName(stub.getBashCommandFilename());
+        dataStream.writeName(stub.getBashCommandName());
+        dataStream.writeBoolean(stub.isInternalCommand(false));
+        dataStream.writeBoolean(stub.isInternalCommand(true));
+        dataStream.writeBoolean(stub.isGenericCommand());
     }
 
     @NotNull
     public BashCommandStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         StringRef bashCommandFilename = dataStream.readName();
+        boolean internalCommandBash3 = dataStream.readBoolean();
+        boolean internalCommandBash4 = dataStream.readBoolean();
+        boolean genericCommand = dataStream.readBoolean();
 
-        return new BashCommandStubImpl(parentStub, StringRef.toString(bashCommandFilename), this);
+        return new BashCommandStubImpl(parentStub, StringRef.toString(bashCommandFilename), this, internalCommandBash3, internalCommandBash4, genericCommand);
     }
 
     public BashCommand createPsi(@NotNull BashCommandStub stub) {
-        return new BashSimpleCommandImpl(stub, BashElementTypes.SIMPLE_COMMAND_ELEMENT, null);
+        return new BashSimpleCommandImpl(stub, BashElementTypes.SIMPLE_COMMAND_ELEMENT, "simple command");
     }
 
     public BashCommandStub createStub(@NotNull BashCommand psi, StubElement parentStub) {
@@ -72,12 +78,12 @@ public class BashSimpleCommandElementType extends BashStubElementType<BashComman
             filename = PathUtilRt.getFileName(commandName);
         }
 
-        return new BashCommandStubImpl(parentStub, filename, BashElementTypes.SIMPLE_COMMAND_ELEMENT);
+        return new BashCommandStubImpl(parentStub, filename, BashElementTypes.SIMPLE_COMMAND_ELEMENT, psi.isInternalCommand(false), psi.isInternalCommand(true), psi.isGenericCommand());
     }
 
     @Override
     public void indexStub(@NotNull BashCommandStub stub, @NotNull IndexSink sink) {
-        final String filename = stub.getBashCommandFilename();
+        final String filename = stub.getBashCommandName();
         if (filename != null) {
             sink.occurrence(BashCommandNameIndex.KEY, filename);
         }
