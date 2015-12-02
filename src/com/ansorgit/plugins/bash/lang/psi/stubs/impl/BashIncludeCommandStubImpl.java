@@ -22,7 +22,7 @@ public class BashIncludeCommandStubImpl extends StubBase<BashIncludeCommand> imp
         return StringRef.toString(includedFilename);
     }
 
-    public String getIncluderFilename() {
+    public String getIncluderFilePath() {
         return StringRef.toString(includerFilename);
     }
 

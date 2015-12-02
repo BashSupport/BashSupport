@@ -24,19 +24,18 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: jansorg
@@ -57,9 +56,10 @@ public class FileInclusionManager {
             return Collections.emptySet();
         }
 
+        Project project = sourceFile.getProject();
 
-        Set<PsiFile> includersTodo = Sets.newHashSet(sourceFile.getContainingFile());
-        Set<PsiFile> includersDone = Sets.newHashSet();
+        Set<PsiFile> includersTodo = Sets.newLinkedHashSet(Collections.singletonList(sourceFile));
+        Set<PsiFile> includersDone = Sets.newLinkedHashSet();
 
         Set<PsiFile> allIncludedFiles = Sets.newHashSet();
 
@@ -71,12 +71,12 @@ public class FileInclusionManager {
 
             includersDone.add(file);
 
-            String name = file.getName();
-            if (name == null) {
+            String canonicalPath = file.getVirtualFile().getCanonicalPath();
+            if (canonicalPath == null) {
                 continue;
             }
 
-            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, name, file.getProject(), BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
+            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, canonicalPath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
             if (commands == null) {
                 continue;
             }
@@ -145,5 +145,17 @@ public class FileInclusionManager {
         }
 
         return includers;
+    }
+
+    public static GlobalSearchScope includedFilesUnionScope(PsiFile source) {
+        List<VirtualFile> scopes = Lists.newLinkedList();
+        scopes.add(source.getVirtualFile());
+
+        Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(source, true, true);
+        for (PsiFile file : includedFiles) {
+            scopes.add(file.getVirtualFile());
+        }
+
+        return GlobalSearchScope.filesScope(source.getProject(), scopes);
     }
 }

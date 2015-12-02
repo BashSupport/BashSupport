@@ -6,11 +6,9 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
+import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTrapCommand;
@@ -44,10 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final PsiReference functionReference = new CachedFunctionReference(this);
@@ -313,10 +308,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             Project project = cmd.getProject();
             PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
 
-
-            GlobalSearchScope fileScope = GlobalSearchScope.fileScope(currentFile);
-
-            Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, fileScope, BashFunctionDef.class);
+            GlobalSearchScope allFiles = FileInclusionManager.includedFilesUnionScope(currentFile);
+            Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, allFiles, BashFunctionDef.class);
 
             ResolveState initial = ResolveState.initial();
             for (BashFunctionDef functionDef : functionDefs) {
@@ -324,7 +317,6 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             }
 
             //find include commands which are relevant for the start element
-
             if (!processor.hasResults()) {
                 Set<BashFile> includingFiles = FileInclusionManager.findIncluders(project, currentFile);
 

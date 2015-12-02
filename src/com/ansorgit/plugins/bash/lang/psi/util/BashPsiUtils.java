@@ -306,9 +306,13 @@ public final class BashPsiUtils {
         PsiElement scope = entrance;
 
         while (scope != null) {
-            if (!scope.processDeclarations(processor, state, prevParent, entrance)) return false;
+            if (!scope.processDeclarations(processor, state, prevParent, entrance)) {
+                return false;
+            }
 
-            if (scope == maxScope) break;
+            if (scope == maxScope) {
+                break;
+            }
             prevParent = scope;
             scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
         }
@@ -350,9 +354,14 @@ public final class BashPsiUtils {
 
         visitRecursively(file, collecingVisitor);*/
 
+        String canonicalPath = includedFile.getVirtualFile().getCanonicalPath();
+        if (canonicalPath == null) {
+            return Collections.emptyList();
+        }
+
         List<BashCommand> result = Lists.newLinkedList();
 
-        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, includedFile.getName(), file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, canonicalPath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
         for (BashIncludeCommand command : commands) {
             if (includedFile.equals(findIncludedFile(command))) {
                 result.add(command);
@@ -553,6 +562,7 @@ public final class BashPsiUtils {
     /**
      * Returns the deepest nested ast node which still covers the same part of the file as the parent node. Happens if a single leaf node is
      * contained in several composite parent nodes of the same range, e.g. a var in a combined word.
+     *
      * @param parent The element to use as the startin point
      * @return The deepest node inside of parent which covers the same range or (if none exists) the input element
      */
@@ -594,7 +604,7 @@ public final class BashPsiUtils {
         return child.getTreePrev() == null && child.getTreeNext() == null && (child.getElementType() == childType);
     }
 
-    public static boolean isSingleChildParent(PsiElement psi, @NotNull  Class<? extends PsiElement> childType) {
+    public static boolean isSingleChildParent(PsiElement psi, @NotNull Class<? extends PsiElement> childType) {
         if (psi == null) {
             return false;
         }

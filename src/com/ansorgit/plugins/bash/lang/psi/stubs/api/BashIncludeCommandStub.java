@@ -9,5 +9,5 @@ import com.intellij.psi.stubs.StubElement;
 public interface BashIncludeCommandStub extends BashCommandStubBase<BashIncludeCommand> {
     String getIncludedFilename();
 
-    String getIncluderFilename();
+    String getIncluderFilePath();
 }
