@@ -52,6 +52,10 @@ public class FileInclusionManager {
             return Collections.emptySet();
         }
 
+        if (!sourceFile.isPhysical()) {
+            return Collections.emptySet();
+        }
+
         if (DumbService.isDumb(sourceFile.getProject())) {
             return Collections.emptySet();
         }
@@ -71,7 +75,12 @@ public class FileInclusionManager {
 
             includersDone.add(file);
 
-            String canonicalPath = file.getVirtualFile().getCanonicalPath();
+            VirtualFile virtualFile = file.getVirtualFile();
+            if (virtualFile == null) {
+                continue;
+            }
+
+            String canonicalPath = virtualFile.getCanonicalPath();
             if (canonicalPath == null) {
                 continue;
             }
