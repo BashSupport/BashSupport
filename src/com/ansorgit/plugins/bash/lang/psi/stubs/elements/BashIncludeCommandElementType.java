@@ -78,6 +78,10 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
             filename = fileReference.getFilename();
 
             VirtualFile virtualFile = psi.getContainingFile().getUserData(IndexingDataKeys.VIRTUAL_FILE);
+            if (virtualFile == null) {
+                virtualFile = psi.getContainingFile().getViewProvider().getVirtualFile();
+            }
+
             includer = virtualFile == null ? "" : virtualFile.getCanonicalPath();
         }
 

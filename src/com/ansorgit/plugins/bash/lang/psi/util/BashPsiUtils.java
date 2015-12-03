@@ -354,7 +354,7 @@ public final class BashPsiUtils {
 
         visitRecursively(file, collecingVisitor);*/
 
-        String canonicalPath = includedFile.getVirtualFile().getCanonicalPath();
+        String canonicalPath = file.getVirtualFile().getCanonicalPath();
         if (canonicalPath == null) {
             return Collections.emptyList();
         }

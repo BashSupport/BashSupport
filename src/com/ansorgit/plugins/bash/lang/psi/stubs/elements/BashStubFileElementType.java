@@ -51,7 +51,6 @@ public class BashStubFileElementType extends IStubFileElementType<BashFileStub> 
     @Override
     public void indexStub(@NotNull PsiFileStub stub, @NotNull IndexSink sink) {
         super.indexStub(stub, sink);
-
         assert stub instanceof BashFileStub;
 
         String name = ((BashFileStub) stub).getName().toString();
