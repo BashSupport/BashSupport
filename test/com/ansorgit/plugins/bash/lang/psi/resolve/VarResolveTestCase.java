@@ -221,7 +221,7 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
         //must not resolve because the definition is local due to the previous definition
         PsiElement varDef = psiReference.resolve();
-        Assert.assertNull("The vardef should not be found, because it is local", varDef);
+        Assert.assertNull("The vardef should not be found, because it is local.", varDef);
     }
 
     @Test

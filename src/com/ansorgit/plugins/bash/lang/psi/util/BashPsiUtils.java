@@ -42,6 +42,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.xmlb.annotations.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -341,27 +342,11 @@ public final class BashPsiUtils {
      * @return The list of commands, may be empty but wont be null
      */
     public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
-        /*final List<BashCommand> includeCommands = Lists.newLinkedList();
-
-        BashVisitor collecingVisitor = new BashVisitor() {
-            @Override
-            public void visitIncludeCommand(BashIncludeCommand bashCommand) {
-                if (includedFile.equals(findIncludedFile(bashCommand))) {
-                    includeCommands.add(bashCommand);
-                }
-            }
-        };
-
-        visitRecursively(file, collecingVisitor);*/
-
-        String canonicalPath = file.getVirtualFile().getCanonicalPath();
-        if (canonicalPath == null) {
-            return Collections.emptyList();
-        }
+        String filePath = file.getVirtualFile().getPath();
 
         List<BashCommand> result = Lists.newLinkedList();
 
-        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, canonicalPath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
         for (BashIncludeCommand command : commands) {
             if (includedFile.equals(findIncludedFile(command))) {
                 result.add(command);
@@ -557,6 +542,16 @@ public final class BashPsiUtils {
         }
 
         return offset;
+    }
+
+    public static int getFileTextEndOffset(PsiElement element) {
+        return getFileTextOffset(element) + element.getTextLength();
+    }
+
+    public static TextRange getTextRangeInFile(PsiElement element) {
+        int offset = getFileTextOffset(element);
+
+        return TextRange.from(offset, element.getTextLength());
     }
 
     /**

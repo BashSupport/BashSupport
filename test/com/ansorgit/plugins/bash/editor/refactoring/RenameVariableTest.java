@@ -45,6 +45,16 @@ public class RenameVariableTest extends LightBashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testBasicEvalRename() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
+    public void testBasicEvalRenameInlined() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
     @Ignore //broken atm
     public void _testEvalRenameInlined() throws Exception {
         doRename(new Runnable() {

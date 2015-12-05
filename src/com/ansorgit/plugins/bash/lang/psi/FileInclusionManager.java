@@ -80,12 +80,9 @@ public class FileInclusionManager {
                 continue;
             }
 
-            String canonicalPath = virtualFile.getCanonicalPath();
-            if (canonicalPath == null) {
-                continue;
-            }
+            String filePath = virtualFile.getPath();
 
-            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, canonicalPath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
+            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
             if (commands == null) {
                 continue;
             }

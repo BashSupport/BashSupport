@@ -67,6 +67,12 @@ public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiSc
         return results != null && !results.isEmpty();
     }
 
+    protected final void removeResult(PsiElement element) {
+        if (results != null && results.containsValue(element)) {
+            results.values().remove(element);
+        }
+    }
+
     protected final void storeResult(PsiElement element, Integer rating) {
         if (results == null) {
             results = LinkedListMultimap.create();
@@ -142,5 +148,10 @@ public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiSc
         if (results != null) {
             results.clear();
         }
+    }
+
+    @Override
+    public void prepareResults() {
+
     }
 }

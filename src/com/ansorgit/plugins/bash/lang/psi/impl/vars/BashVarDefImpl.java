@@ -21,7 +21,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.*;
+import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
@@ -29,10 +32,15 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
@@ -40,7 +48,9 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
@@ -49,6 +59,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -186,6 +198,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isFunctionScopeLocal() {
+        //fixme probably not ok because we look at parent elements
         if (cachedFunctionScopeLocal == null) {
             cachedFunctionScopeLocal = doIsFunctionScopeLocal();
         }
@@ -194,6 +207,43 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private boolean doIsFunctionScopeLocal() {
+        if (isLocalVarDef()) {
+            return true;
+        }
+
+        //although this variable has no direct local command,
+        //it's still possible that an earlier usage of the local command declared this
+        //variable as function local
+
+
+        //solve this by using stubs and index and without a processor to prevent SOE in other processors using this function
+
+        //filter all variable definitions which are included in the broadest function scope, all others are out of scope
+        //then iterate and break if there is one def which is local and which occurs before this element
+
+        PsiFile currentFile = getContainingFile();
+        Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
+
+        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
+        if (functionLocalScope == null) {
+            return false;
+        }
+
+        final TextRange validScope = BashPsiUtils.getTextRangeInFile(functionLocalScope);
+
+        for (BashVarDef def : allDefs) {
+            if (def.isLocalVarDef() && validScope.contains(BashPsiUtils.getFileTextOffset(def))) {
+                PsiElement functionScope = def.findFunctionScope();
+                if (functionScope != null && functionScope.isEquivalentTo(functionLocalScope)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isLocalVarDef() {
         //check if the command is a local-var defining command, e.g. local
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
@@ -202,29 +252,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 return true;
             }
         }
-
-        //although this variable has no direct local command,
-        //it's still possible that an earlier usage of the local command declared this
-        //variable as function local
-
-        //we HAVE to disable the calls to isFunctionLocal() in the var processor. Otherwise
-        //we would get an infinite recursion
-        final ResolveProcessor processor = new BashVarProcessor(this, getReferencedName(), false);
-        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
-        if (functionLocalScope == null) {
-            return false;
-        }
-
-        boolean walkOn = PsiTreeUtil.treeWalkUp(processor, this, functionLocalScope, ResolveState.initial());
-        PsiElement element = !walkOn ? processor.getBestResult(false, this) : null;
-
-        if (log.isDebugEnabled()) {
-            log.debug("isFunctionLocal: resolve result: " + this + " resolved to " + element);
-        }
-
-        return element instanceof BashVarDef
-                && !this.equals(element)
-                && ((BashVarDef) element).isFunctionScopeLocal();
+        return false;
     }
 
     public boolean hasAssignmentValue() {
@@ -253,7 +281,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return findAssignmentWord();
     }
 
-    public final String getReferencedName() {
+    public final String getReferenceName() {
         return getName();
     }
 
@@ -298,7 +326,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public boolean isBuiltinVar() {
         boolean isBash_v4 = BashProjectSettings.storedSettings(getProject()).isSupportBash4();
 
-        String name = getReferencedName();
+        String name = getReferenceName();
         boolean v3_var = bashShellVars.contains(name) || bourneShellVars.contains(name);
 
         return isBash_v4 ? (v3_var || bashShellVars_v4.contains(name)) : v3_var;
@@ -367,7 +395,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         @Override
         public String getReferencedName() {
-            return bashVarDef.getReferencedName();
+            return bashVarDef.getReferenceName();
         }
 
         @Override
@@ -383,7 +411,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         @NotNull
         @Override
         public String getCanonicalText() {
-            return bashVarDef.getReferencedName();
+            return bashVarDef.getReferenceName();
         }
 
         @Override
@@ -415,19 +443,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 return null;
             }
 
-            final String varName = bashVarDef.getName();
-            if (varName == null) {
-                return null;
-            }
-
-            PsiElement resolveScope = bashVarDef.isFunctionScopeLocal() ? bashVarDef.findFunctionScope() : BashPsiUtils.findFileContext(bashVarDef, true);
-
-            ResolveProcessor processor = new BashVarProcessor(bashVarDef, bashVarDef.getReferencedName(), true);
-            if (!BashPsiUtils.varResolveTreeWalkUp(processor, bashVarDef, resolveScope, ResolveState.initial())) {
-                return processor.getBestResult(false, bashVarDef);
-            }
-
-            return null;
+            return BashResolveUtil.resolve(bashVarDef, true);
         }
     }
 }

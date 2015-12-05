@@ -218,7 +218,6 @@
 
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex"/>
-        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex"/>

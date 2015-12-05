@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashIndentProcessor.java, Class: BashIndentProcessor
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
  * @author ilyas, jansorg
  */
 public abstract class BashIndentProcessor implements BashElementTypes, BashTokenTypes {
-    private static final TokenSet BLOCKS = TokenSet.create(GROUP_COMMAND, GROUP_ELEMENT, CASE_PATTERN_LIST_ELEMENT);
+    private static final TokenSet BLOCKS = TokenSet.create(GROUP_COMMAND, GROUP_ELEMENT, CASE_PATTERN_LIST_ELEMENT, LOGICAL_BLOCK_ELEMENT);
 
     /**
      * Calculates indent, based on code style, between parent block and child node

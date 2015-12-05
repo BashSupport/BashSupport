@@ -68,5 +68,7 @@ public interface BashVar extends BashPsiElement, PsiNamedElement {
     @NotNull
     BashReference getReference();
 
+    String getReferenceName();
+
     boolean isVarDefinition();
 }

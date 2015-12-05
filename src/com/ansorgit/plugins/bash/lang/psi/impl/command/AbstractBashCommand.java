@@ -25,19 +25,25 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.io.FileSystemUtil;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.PathUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -336,6 +342,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
                 }
             }
 
+            processor.prepareResults();
+
             return processor.hasResults() ? processor.getBestResult(true, cmd) : null;
 
 
@@ -426,9 +434,18 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
                 return null;
             }
 
-            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
+            //clean it up
+            String fileName = PathUtil.getFileName(referencedName);
+
+            //fixme resolve path to full canoncial path and then look it up
+            /*GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
             Collection<BashFile> files = StubIndex.getElements(BashScriptNameIndex.KEY, referencedName, cmd.getProject(), scope, BashFile.class);
             if (files.isEmpty()) {
+                return null;
+            } */
+            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
+            PsiFileSystemItem[] files = FilenameIndex.getFilesByName(cmd.getProject(), fileName, scope, false);
+            if (files.length == 0) {
                 return null;
             }
 

@@ -2,10 +2,8 @@ package com.ansorgit.plugins.bash.lang.psi.stubs.elements;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
-import com.ansorgit.plugins.bash.lang.psi.stubs.BashFileStubBuilder;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFileStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashFileStubImpl;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIndexVersion;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex;
 import com.intellij.psi.PsiFile;
@@ -53,9 +51,11 @@ public class BashStubFileElementType extends IStubFileElementType<BashFileStub> 
         super.indexStub(stub, sink);
         assert stub instanceof BashFileStub;
 
+        //fixme write full canonical path
+        //fixme get rid of double indexing
         String name = ((BashFileStub) stub).getName().toString();
         sink.occurrence(BashScriptNameIndex.KEY, name);
-        sink.occurrence(BashFullScriptNameIndex.KEY, name);
+        //sink.occurrence(BashFullScriptPathIndex.KEY);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class BashStubFileElementType extends IStubFileElementType<BashFileStub> 
     @Override
     public BashFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         StringRef name = dataStream.readName();
+
         return new BashFileStubImpl(null, name);
     }
 }

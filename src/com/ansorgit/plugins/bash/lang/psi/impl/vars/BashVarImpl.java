@@ -113,7 +113,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     @Override
     public String getName() {
-        return getReferencedName();
+        return getReferenceName();
     }
 
     @Override
@@ -127,7 +127,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         return BashPsiUtils.replaceElement(original, replacement);
     }
 
-    public String getReferencedName() {
+    public String getReferenceName() {
         BashVarStub stub = getStub();
         if (stub != null) {
             return stub.getName();
@@ -161,7 +161,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public boolean isBuiltinVar() {
-        String name = getReferencedName();
+        String name = getReferenceName();
         return LanguageBuiltins.bashShellVars.contains(name) || LanguageBuiltins.bourneShellVars.contains(name);
     }
 
@@ -174,12 +174,12 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
             return false;
         }
 
-        if (LanguageBuiltins.bashShellParamReferences.contains(getReferencedName())) {
+        if (LanguageBuiltins.bashShellParamReferences.contains(getReferenceName())) {
             return true;
         }
 
         //slower fallback which checks if the parameter is  a number
-        return NumberUtils.toInt(getReferencedName(), -1) >= 0;
+        return NumberUtils.toInt(getReferenceName(), -1) >= 0;
     }
 
     public boolean isArrayUse() {
@@ -209,11 +209,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
             this.bashVar = bashVar;
         }
 
-        @Override
-        public PsiElement resolve() {
-            return super.resolve();
-        }
-
         @Nullable
         @Override
         public PsiElement resolveInner() {
@@ -226,6 +221,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         @Override
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);
+        }
+
+        @Override
         public TextRange getRangeInElement() {
             return bashVar.getNameTextRange();
         }
@@ -233,7 +233,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         @NotNull
         @Override
         public String getCanonicalText() {
-            return bashVar.getReferencedName();
+            return bashVar.getReferenceName();
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
@@ -262,7 +262,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
         @Override
         public String getReferencedName() {
-            return bashVar.getReferencedName();
+            return bashVar.getReferenceName();
         }
     }
 }

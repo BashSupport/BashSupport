@@ -43,26 +43,6 @@ public class PsiScopesUtil {
             }
         }
 
-
-       /* PsiElement child = null;
-        if (lastParent != null && lastParent.getParent() == thisElement) {
-            child = lastParent.getPrevSibling();
-            if (child == null) {
-                return true; // first element
-            }
-        }
-
-        if (child == null) {
-            child = thisElement.getLastChild();
-        }
-
-        while (child != null) {
-            if (!child.processDeclarations(processor, state, null, place)) {
-                return false;
-            }
-            child = child.getPrevSibling();
-        }                 */
-
         return true;
     }
 }
