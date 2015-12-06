@@ -71,7 +71,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
      * @param builder The builder to use
      * @return True if the command has been parsed successfully.
      */
-    private boolean parseCommandWord(BashPsiBuilder builder) {
+    private boolean  parseCommandWord(BashPsiBuilder builder) {
         boolean isWord = Parsing.word.isWordToken(builder);
         if (!isWord) {
             return false;

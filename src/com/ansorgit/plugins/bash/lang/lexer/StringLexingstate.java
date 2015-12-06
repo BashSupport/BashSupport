@@ -31,12 +31,10 @@ import com.intellij.util.containers.Stack;
  *
  * @author Joachim Ansorg
  */
-final class StringLexingtate {
-    //private final StringBuilder stringData = new StringBuilder(128);
+final class StringLexingstate {
     private final Stack<SubshellState> subshells = new Stack<SubshellState>(5);
 
     public void reset() {
-//        stringData.setLength(0);
         subshells.clear();
     }
 
@@ -91,14 +89,9 @@ final class StringLexingtate {
         }
     }
 
-    public boolean isFreshSubshell() {
-        return !subshells.isEmpty() && subshells.peek().freshStart;
-    }
-
     private static final class SubshellState {
         private boolean inString = false;
         private int openParenths = 0;
-        private boolean freshStart = true;
 
         public boolean isInString() {
             return inString;
@@ -120,7 +113,6 @@ final class StringLexingtate {
         }
 
         public void advanceToken() {
-            freshStart = false;
         }
     }
 }

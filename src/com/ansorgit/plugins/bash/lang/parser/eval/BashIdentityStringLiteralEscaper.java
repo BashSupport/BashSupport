@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ansorgit.plugins.bash.editor;
+package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.intellij.openapi.util.ProperTextRange;
 import com.intellij.openapi.util.TextRange;

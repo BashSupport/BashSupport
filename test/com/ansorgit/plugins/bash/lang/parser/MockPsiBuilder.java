@@ -256,7 +256,6 @@ public class MockPsiBuilder implements PsiBuilder {
     public final class MockMarker implements Marker {
         private final int position;
         private final String details;
-        private boolean addedError = false;
         boolean closed = false;
 
         private MockMarker(int originalPosition, String details) {
@@ -337,7 +336,6 @@ public class MockPsiBuilder implements PsiBuilder {
 
         public void error(String s) {
             MockPsiBuilder.this.error("Marker@" + position + ": " + s);
-            addedError = true;
             finishMarker();
         }
 

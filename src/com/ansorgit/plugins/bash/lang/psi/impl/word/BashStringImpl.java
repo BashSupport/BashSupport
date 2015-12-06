@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.editor.BashSimpleTextLiteralEscaper;
+import com.ansorgit.plugins.bash.lang.parser.eval.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
@@ -27,14 +27,12 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 

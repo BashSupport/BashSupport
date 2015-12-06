@@ -43,30 +43,6 @@ public class LetCommandTest extends MockPsiTest {
         }
     };
 
-    MockFunction parserFunctionWithMarker = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder psi) {
-            return new LetCommand().parse(psi);
-        }
-
-        @Override
-        public boolean postCheck(MockPsiBuilder mockBuilder) {
-            List<Pair<MockPsiBuilder.MockMarker, IElementType>> markers = mockBuilder.getDoneMarkers();
-            if (markers.size() == 0) {
-                return false;
-            }
-
-            //has to contain at least one variable def element marker
-            for (Pair<MockPsiBuilder.MockMarker, IElementType> marker : markers) {
-                if (marker.getSecond() == BashElementTypes.VAR_DEF_ELEMENT) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    };
-
 
     @Test
     public void testParse() {
