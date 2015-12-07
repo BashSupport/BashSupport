@@ -59,7 +59,8 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
                                 @NotNull final ParserDefinition parserDefinition,
                                 @NotNull final Lexer lexer,
                                 @NotNull final ASTNode chameleon,
-                                @NotNull final CharSequence text, TextPreprocessor textProcessor) {
+                                @NotNull final CharSequence text,
+                                @NotNull final TextPreprocessor textProcessor) {
         this(new PsiBuilderImpl(project, parserDefinition, lexer, chameleon, text), textProcessor);
     }
 

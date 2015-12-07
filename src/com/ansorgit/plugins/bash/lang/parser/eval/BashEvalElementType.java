@@ -20,28 +20,27 @@ public class BashEvalElementType extends ILazyParseableElementType {
 
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
-        final Project project = psi.getProject();
-
-        CharSequence chars = chameleon.getChars();
+        Project project = psi.getProject();
+        CharSequence chars = chameleon.getChars().toString();
 
         String prefix = chars.subSequence(0, 1).toString();
-        String suffix = chars.subSequence(chars.length() - 1, chars.length()).toString();
         String content = chars.subSequence(1, chars.length() - 1).toString();
+        String suffix = chars.subSequence(chars.length() - 1, chars.length()).toString();
 
         TextPreprocessor textProcessor = new BashSimpleTextPreprocessor(TextRange.from(1, content.length()));
-
         StringBuilder processedText = new StringBuilder(content.length());
         textProcessor.decode(content, processedText);
 
-        ParserDefinition languageDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
+        String processedComplete = prefix + processedText + suffix;
 
-        Lexer lexer = languageDefinition.createLexer(project);
-        PrefixSuffixAddingLexer wrappingLexer = new PrefixSuffixAddingLexer(lexer,
+        ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
+        PsiParser parser = def.createParser(project);
+        Lexer bashLexer = def.createLexer(project);
+        PrefixSuffixAddingLexer prefixSuffixLexer = new PrefixSuffixAddingLexer(bashLexer,
                 prefix, BashTokenTypes.WORD,
                 suffix, BashTokenTypes.WORD);
 
-        PsiParser parser = languageDefinition.createParser(project);
-        UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project, languageDefinition, wrappingLexer, chameleon, processedText, textProcessor);
+        UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project, def, prefixSuffixLexer, chameleon, processedComplete, textProcessor);
 
         return parser.parse(this, adaptingPsiBuilder).getFirstChildNode();
     }

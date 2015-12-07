@@ -156,7 +156,11 @@ public class PrefixSuffixAddingLexer extends DelegateLexer {
 
     @Override
     public void start(@NotNull CharSequence buffer, int startOffset, int endOffset, int initialState) {
-        myDelegate.start(buffer, startOffset, endOffset, initialState);
+        int newStartOffset = startOffset == 0 ? prefix.length() : startOffset;
+        int newEndOffset = endOffset == buffer.length() ? endOffset - suffix.length() : endOffset;
+
+        CharSequence newBuffer = buffer.subSequence(newStartOffset, newEndOffset);
+        myDelegate.start(newBuffer, 0, newBuffer.length(), initialState);
 
         this.afterPrefix = false;
         this.delegateEOF = false;
