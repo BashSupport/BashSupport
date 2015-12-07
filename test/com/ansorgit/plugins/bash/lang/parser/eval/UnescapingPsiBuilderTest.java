@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
+import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
@@ -9,7 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 public class UnescapingPsiBuilderTest extends LightBashCodeInsightFixtureTestCase {
+    @Override
+    protected String getTestDataPath() {
+        return BashTestUtils.getBasePath() + "/parser/eval/";
+    }
 
     @Test
     public void testNoEscaping() throws Exception {
@@ -20,5 +28,37 @@ public class UnescapingPsiBuilderTest extends LightBashCodeInsightFixtureTestCas
 
         PsiElement[] children = evalBlock.getChildren();
         Assert.assertEquals(5, children.length);
+    }
+
+    @Test
+    public void testBasic() throws Exception {
+        PsiFile file = myFixture.configureByFile("basic/basic.bash");
+        Assert.assertNotNull(file);
+
+        Collection<BashEvalBlock> evalBlocks = PsiTreeUtil.findChildrenOfType(file, BashEvalBlock.class);
+        Assert.assertNotNull(evalBlocks);
+        Assert.assertEquals(2, evalBlocks.size());
+
+        Iterator<BashEvalBlock> iterator = evalBlocks.iterator();
+
+        BashEvalBlock first = iterator.next();
+        Assert.assertEquals(5, first.getChildren().length);
+
+        BashEvalBlock second = iterator.next();
+        Assert.assertEquals(2, second.getChildren().length);
+    }
+
+    @Test
+    public void testSimpleFile() throws Exception {
+        PsiFile file = myFixture.configureByFile("simpleFile/source.bash");
+        Assert.assertNotNull(file);
+
+        Collection<BashEvalBlock> evalBlocks = PsiTreeUtil.findChildrenOfType(file, BashEvalBlock.class);
+        Assert.assertNotNull(evalBlocks);
+        Assert.assertEquals(1, evalBlocks.size());
+
+        Iterator<BashEvalBlock> iterator = evalBlocks.iterator();
+        BashEvalBlock first = iterator.next();
+        Assert.assertEquals(1, first.getChildren().length);
     }
 }

@@ -42,4 +42,6 @@ public interface TextPreprocessor {
     int getOffsetInHost(int offsetInDecoded);
 
     TextRange getContentRange();
+
+    boolean containsRange(int tokenStart, int tokenEnd);
 }

@@ -64,6 +64,11 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
             return true;
         }
 
+        //init with -1
+        for (int i = 0; i < sourceOffsets.length; i++) {
+            sourceOffsets[i] = -1;
+        }
+
         int index = 0;
         while (index < chars.length()) {
             char c = chars.charAt(index);
@@ -86,25 +91,30 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
 
             //handle the escape code character
             c = chars.charAt(index);
-            index++;
 
-            if (c == '"' || c == '$' || c == '`' || c == '\\' || c == '!' || c == '\n') {
+            if (c == '"' || /*c == '$' ||*/ c == '`' || c == '\\' || c == '!' || c == '\n' || hasNext(chars, index, "$(")) {
                 if (c != '\n') {
                     //the current character is a valid escape code and will be replaced with it's escaped value
                     outChars.append(c);
-                } //else {
-                //\<newline> is a line continuation and is effectively ignored
-                //}
+                }
             } else {
                 //all other characters retain their original meaning, i.e. \a is \a without escape code interpretation
                 outChars.append('\\');
                 outChars.append(c);
             }
 
-            //sourceOffsets[outChars.length() - 1] = index;
+            index++;
             sourceOffsets[outChars.length()] = index;
         }
         return true;
+    }
+
+    private static boolean hasNext(CharSequence chars, int index, CharSequence expected) {
+        if (index + expected.length() >= chars.length()) {
+            return false;
+        }
+
+        return chars.subSequence(index, index + expected.length()).equals(expected);
     }
 
     @Override
@@ -119,7 +129,7 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
     }
 
     public int getOffsetInHost(int offsetInDecoded) {
-        int result = offsetInDecoded < outSourceOffsets.length ? outSourceOffsets[offsetInDecoded] : -1;
+        int result = offsetInDecoded >= 0 && offsetInDecoded < outSourceOffsets.length ? outSourceOffsets[offsetInDecoded] : -1;
         if (result == -1) {
             return -1;
         }
@@ -130,5 +140,10 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
     @Override
     public TextRange getContentRange() {
         return contentRange;
+    }
+
+    @Override
+    public boolean containsRange(int tokenStart, int tokenEnd) {
+        return getContentRange().containsRange(tokenStart, tokenEnd);
     }
 }

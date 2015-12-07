@@ -51,6 +51,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private final PsiBuilderImpl myBuilderDelegate;
     private final Lexer myLexer;
     private final TextPreprocessor textProcessor;
+    private CharSequence processedText;
     private List<MyShiftedToken> myShrunkSequence;
     private CharSequence myShrunkCharSequence;
     private int myLexPosition;
@@ -59,14 +60,16 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
                                 @NotNull final ParserDefinition parserDefinition,
                                 @NotNull final Lexer lexer,
                                 @NotNull final ASTNode chameleon,
-                                @NotNull final CharSequence text,
+                                @NotNull CharSequence originalText,
+                                @NotNull final CharSequence processedText,
                                 @NotNull final TextPreprocessor textProcessor) {
-        this(new PsiBuilderImpl(project, parserDefinition, lexer, chameleon, text), textProcessor);
+        this(new PsiBuilderImpl(project, parserDefinition, lexer, chameleon, originalText), textProcessor, processedText);
     }
 
-    private UnescapingPsiBuilder(PsiBuilderImpl builder, TextPreprocessor textProcessor) {
+    private UnescapingPsiBuilder(PsiBuilderImpl builder, TextPreprocessor textProcessor, CharSequence processedText) {
         super(builder);
         this.textProcessor = textProcessor;
+        this.processedText = processedText;
 
         LOG.assertTrue(myDelegate instanceof PsiBuilderImpl);
         myBuilderDelegate = ((PsiBuilderImpl) myDelegate);
@@ -105,7 +108,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
 
         if (delegate.getCurrentOffset() > myShrunkSequence.get(myLexPosition).realStart) {
-            LOG.error("delegate is ahead of my builder!");
+            LOG.warn("delegate is ahead of my builder!");
             return;
         }
 
@@ -254,7 +257,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     }
 
     private void initTokenListAndCharSequence(Lexer lexer) {
-        lexer.start(getDelegate().getOriginalText());
+        lexer.start(processedText);
 
         myShrunkSequence = new ArrayList<MyShiftedToken>();
         StringBuilder charSequenceBuilder = new StringBuilder();
@@ -270,26 +273,31 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
             int realLength = tokenEnd - tokenStart;
 
             int delta = textProcessor.getContentRange().getStartOffset();
-            if (textProcessor.getContentRange().containsRange(tokenStart, tokenEnd)) {
-                int originalStart = textProcessor.getOffsetInHost(tokenStart - delta);
-                int originalEnd = textProcessor.getOffsetInHost(tokenEnd - delta);
+            int originalStart = textProcessor.getOffsetInHost(tokenStart - delta);
+            int originalEnd = textProcessor.getOffsetInHost(tokenEnd - delta);
 
-                assert originalStart != -1;
-                assert originalEnd != -1;
+            if (textProcessor.containsRange(tokenStart, tokenEnd) && originalStart != -1 && originalEnd != -1) {
+
+                //assert originalStart != -1;
+                //assert originalEnd != -1;
 
                 realLength = originalEnd - originalStart;
                 int masqueLength = tokenEnd - tokenStart;
 
+                if (!(originalEnd > originalStart)) {
+                    int i = 1;
+                }
+
                 myShrunkSequence.add(new MyShiftedToken(tokenType,
                         realPos, realPos + realLength,
-                        shrunkPos, shrunkPos + masqueLength));
+                        shrunkPos, shrunkPos + masqueLength, tokenText));
                 charSequenceBuilder.append(tokenText);
 
                 shrunkPos += masqueLength;
             } else {
                 myShrunkSequence.add(new MyShiftedToken(tokenType,
                         realPos, realPos + realLength,
-                        shrunkPos, shrunkPos + realLength));
+                        shrunkPos, shrunkPos + realLength, tokenText));
                 charSequenceBuilder.append(tokenText);
 
                 shrunkPos += realLength;
@@ -332,18 +340,20 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
 
         public final int shrunkStart;
         public final int shrunkEnd;
+        private String tokenText;
 
-        public MyShiftedToken(IElementType elementType, int realStart, int realEnd, int shrunkStart, int shrunkEnd) {
+        public MyShiftedToken(IElementType elementType, int realStart, int realEnd, int shrunkStart, int shrunkEnd, String tokenText) {
             this.elementType = elementType;
             this.realStart = realStart;
             this.realEnd = realEnd;
             this.shrunkStart = shrunkStart;
             this.shrunkEnd = shrunkEnd;
+            this.tokenText = tokenText;
         }
 
         @Override
         public String toString() {
-            return "MSTk: [" + realStart + ", " + realEnd + "] -> [" + shrunkStart + ", " + shrunkEnd + "]: " + elementType.toString();
+            return "MSTk: [" + realStart + ", " + realEnd + "] -> [" + shrunkStart + ", " + shrunkEnd + "]: " + elementType.toString() + " | " + tokenText;
         }
     }
 

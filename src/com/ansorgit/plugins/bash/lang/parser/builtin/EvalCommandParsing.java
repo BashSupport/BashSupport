@@ -32,7 +32,7 @@ import com.intellij.psi.tree.IElementType;
  * fixme this implementation is not yet complete, currently it is just eating the tokens to avoid syntax error markers
  * fixme not variable parsing, etc. is done at the moment
  */
-class EvalCommand implements ParsingFunction, ParsingTool {
+class EvalCommandParsing implements ParsingFunction, ParsingTool {
     @Override
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == WORD && "eval".equals(builder.getTokenText());
@@ -43,23 +43,27 @@ class EvalCommand implements ParsingFunction, ParsingTool {
         //eat the "eval" token
         builder.advanceLexer();
 
-        PsiBuilder.Marker evalMarker = builder.mark();
-
-        boolean ok = false;
         IElementType tokenType = builder.getTokenType();
-        if (tokenType == STRING2) {
-            ok = true;
-            builder.advanceLexer();
-        } else if (Parsing.word.isComposedString(tokenType)) {
-            ok = Parsing.word.parseComposedString(builder);
-        }
+        while (true) {
+            PsiBuilder.Marker evalMarker = builder.mark();
 
-        if (!ok) {
-            evalMarker.drop();
-            return false;
-        }
+            boolean ok = false;
+            if (Parsing.word.isComposedString(tokenType)) {
+                ok = Parsing.word.parseComposedString(builder);
+            } else if (tokenType == WORD || tokenType == STRING2) {
+                builder.advanceLexer();
+                ok = true;
+            }
 
-        evalMarker.collapse(EVAL_BLOCK);
+            if (!ok) {
+                evalMarker.drop();
+                break;
+            }
+
+            evalMarker.collapse(EVAL_BLOCK);
+
+            tokenType = builder.getTokenType();
+        }
 
         return true;
     }

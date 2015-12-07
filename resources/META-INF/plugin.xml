@@ -159,7 +159,7 @@
 
         <lang.tokenSeparatorGenerator language="Bash" implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
 
-        <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>
+        <!--<languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>-->
 
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />

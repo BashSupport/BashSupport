@@ -23,11 +23,11 @@ import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
-public class EvalCommandTest extends MockPsiTest {
+public class EvalCommandParsingTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return new EvalCommand().parse(psi);
+            return new EvalCommandParsing().parse(psi);
         }
     };
 
@@ -39,5 +39,8 @@ public class EvalCommandTest extends MockPsiTest {
 
         //eval "a=1"
         mockTest(parserFunction, Lists.newArrayList("eval"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //eval "echo" "abc" "$1"
+        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END);
     }
 }

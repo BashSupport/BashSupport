@@ -136,7 +136,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         if (referencedName == null) {
             final String text = getText();
 
-            referencedName = isSingleWord() ? text : text.substring(1);
+            referencedName = (isSingleWord() || text.isEmpty()) ? text : text.substring(1);
         }
 
         return referencedName;
