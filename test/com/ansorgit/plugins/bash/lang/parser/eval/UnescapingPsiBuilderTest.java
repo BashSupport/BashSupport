@@ -27,7 +27,7 @@ public class UnescapingPsiBuilderTest extends LightBashCodeInsightFixtureTestCas
         Assert.assertNotNull(evalBlock);
 
         PsiElement[] children = evalBlock.getChildren();
-        Assert.assertEquals(5, children.length);
+        Assert.assertEquals(1, children.length);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class UnescapingPsiBuilderTest extends LightBashCodeInsightFixtureTestCas
         Iterator<BashEvalBlock> iterator = evalBlocks.iterator();
 
         BashEvalBlock first = iterator.next();
-        Assert.assertEquals(5, first.getChildren().length);
+        Assert.assertEquals(1, first.getChildren().length);
 
         BashEvalBlock second = iterator.next();
         Assert.assertEquals(2, second.getChildren().length);

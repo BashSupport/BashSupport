@@ -215,6 +215,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean isLanguageInjectionContainerFor(PsiElement candidate) {
+        return false;
+        /*
         String referencedCommandName = getReferencedCommandName();
         if (referencedCommandName == null) {
             return false;
@@ -239,7 +241,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             return multipleWords && PsiManager.getInstance(getProject()).areElementsEquivalent(candidate, signalHandlerElement);
         }
 
-        return false;
+        return false;        */
     }
 
     @Override

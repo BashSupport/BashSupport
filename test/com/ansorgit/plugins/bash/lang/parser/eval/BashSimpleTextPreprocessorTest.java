@@ -29,7 +29,7 @@ public class BashSimpleTextPreprocessorTest {
 
     @Test
     public void testDecoding() throws Exception {
-        assertDecoding("eval printf '%s\\\\n' \"\\$$varname\"", "");
+        assertDecoding("eval printf '%s\\\\n' \"\\$$varname\"", "eval printf '%s\\n' \"\\$$varname\"");
 
     }
 
