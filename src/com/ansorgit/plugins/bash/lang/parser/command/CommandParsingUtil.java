@@ -94,8 +94,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             case SimpleMode:
                 return ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder)
-                        ;
+                        || Parsing.var.isValid(builder);
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
@@ -178,7 +177,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         assignment.drop();
                         return false;
                     }
-                } else if (!Parsing.word.parseWord(builder)) {
+                } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY)) {
                     assignment.drop();
                     return false;
                 }

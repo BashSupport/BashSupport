@@ -120,7 +120,7 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public String getTokenText() {
         getTokenType();//find the right one
-        return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unkown";
+        return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unknown";
     }
 
 

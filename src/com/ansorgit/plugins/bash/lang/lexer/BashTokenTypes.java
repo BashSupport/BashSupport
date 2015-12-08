@@ -279,4 +279,6 @@ public interface BashTokenTypes {
     //sets
     //fixme add internal commands?
     TokenSet identifierTokenSet = TokenSet.orSet(keywords, bracketSet);
+
+    TokenSet EQ_SET = TokenSet.create(EQ);
 }

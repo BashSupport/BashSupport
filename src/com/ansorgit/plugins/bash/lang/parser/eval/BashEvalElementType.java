@@ -24,6 +24,10 @@ public class BashEvalElementType extends ILazyParseableElementType {
         Project project = psi.getProject();
         CharSequence originalText = chameleon.getChars().toString();
 
+        if (originalText.length() < 3) {
+            return chameleon; //fixme is this right?
+        }
+
         String prefix = originalText.subSequence(0, 1).toString();
         String content = originalText.subSequence(1, originalText.length() - 1).toString();
         String suffix = originalText.subSequence(originalText.length() - 1, originalText.length()).toString();

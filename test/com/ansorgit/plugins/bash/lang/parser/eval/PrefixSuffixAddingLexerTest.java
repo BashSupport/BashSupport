@@ -33,10 +33,15 @@ public class PrefixSuffixAddingLexerTest {
         String suffix = " suffix";
 
         PrefixSuffixAddingLexer lexer = new PrefixSuffixAddingLexer(new BashLexer(BashVersion.Bash_v4), prefix, BashTokenTypes.STRING2, suffix, BashTokenTypes.STRING2);
-        lexer.start("echo hello world");
+        // the text passed to the lexer needs text which will be replaced by prefix and suffix
+        lexer.start("-------echo hello world-------");
 
         //before suffix
         assertPosition(lexer, 0, "prefix ".length(), 0, BashTokenTypes.STRING2, "prefix ");
+        lexer.advance();
+
+        //after "prefix "
+        assertPosition(lexer, "prefix ".length(), "prefix echo".length(), 0, BashTokenTypes.WORD, "echo");
         lexer.advance();
 
         //after "prefix echo"
