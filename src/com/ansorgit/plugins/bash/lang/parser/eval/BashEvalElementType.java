@@ -1,7 +1,6 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
@@ -12,6 +11,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.ILazyParseableElementType;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 public class BashEvalElementType extends ILazyParseableElementType {
@@ -22,17 +22,28 @@ public class BashEvalElementType extends ILazyParseableElementType {
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
-        CharSequence originalText = chameleon.getChars().toString();
+        String originalText = chameleon.getChars().toString();
 
-        if (originalText.length() < 3) {
-            return chameleon; //fixme is this right?
+        if (originalText.length() < 2) {
+            throw new IncorrectOperationException("Can not handle empty strings");
         }
 
-        String prefix = originalText.subSequence(0, 1).toString();
-        String content = originalText.subSequence(1, originalText.length() - 1).toString();
+        boolean enhancedEscaping = originalText.startsWith("$'") && originalText.endsWith("'");
+        boolean simpleEscaping = !enhancedEscaping && originalText.startsWith("\"") && originalText.endsWith("\"");
+
+        String prefix = originalText.subSequence(0, enhancedEscaping ? 2 : 1).toString();
+        String content = originalText.subSequence(enhancedEscaping ? 2 : 1, originalText.length() - 1).toString();
         String suffix = originalText.subSequence(originalText.length() - 1, originalText.length()).toString();
 
-        TextPreprocessor textProcessor = new BashSimpleTextPreprocessor(TextRange.from(1, content.length()));
+        TextPreprocessor textProcessor;
+        if (enhancedEscaping) {
+            textProcessor = new BashEnhancedTextPreprocessor(TextRange.from(2, content.length()));
+        } else if (simpleEscaping) {
+            textProcessor = new BashSimpleTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+        } else {
+            textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+        }
+
         StringBuilder processedContent = new StringBuilder(content.length());
         textProcessor.decode(content, processedContent);
 

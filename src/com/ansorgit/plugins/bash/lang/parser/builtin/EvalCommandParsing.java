@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
@@ -48,9 +49,12 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
             PsiBuilder.Marker evalMarker = builder.mark();
 
             boolean ok = false;
+            boolean emptyContainer = false;
             if (Parsing.word.isComposedString(tokenType)) {
+                emptyContainer = builder.rawLookup(1) == BashTokenTypes.STRING_END;
                 ok = Parsing.word.parseComposedString(builder);
             } else if (tokenType == WORD || tokenType == STRING2) {
+                emptyContainer = builder.getTokenText() == null || builder.getTokenText().length() == 2;
                 builder.advanceLexer();
                 ok = true;
             }
@@ -60,7 +64,12 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
                 break;
             }
 
-            evalMarker.collapse(EVAL_BLOCK);
+            //do not mark empty strings as eval block (with PSI lazy parsing)
+            if (emptyContainer) {
+                evalMarker.drop();
+            } else {
+                evalMarker.collapse(EVAL_BLOCK);
+            }
 
             tokenType = builder.getTokenType();
         }

@@ -1,6 +1,5 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
@@ -69,16 +68,20 @@ public class TrapCommandParsingFunction implements ParsingFunction {
                 commandMarker.done(SIMPLE_COMMAND_ELEMENT);
             } else if (builder.getTokenType() == STRING2 || Parsing.word.isComposedString(builder.getTokenType())) {
                 //eval parsing
+                int startOffset = builder.getCurrentOffset();
                 PsiBuilder.Marker evalMarker = builder.mark();
 
+                boolean emptyBlock;
                 if (builder.getTokenType() == STRING2) {
+                    emptyBlock = builder.getTokenText().length() <= 2;
                     builder.advanceLexer();
                     success = true;
                 } else {
+                    emptyBlock = builder.rawLookup(1) == BashTokenTypes.STRING_END || builder.rawLookup(1) == null;
                     success = Parsing.word.parseComposedString(builder);
                 }
 
-                if (success) {
+                if (success && !emptyBlock) {
                     evalMarker.collapse(BashElementTypes.EVAL_BLOCK);
                 } else {
                     evalMarker.drop();

@@ -35,12 +35,15 @@ public class EvalCommandParsingTest extends MockPsiTest {
     @Test
     public void testParse() {
         //eval 'a=1'
-        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, STRING2);
+        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'"), WORD, STRING2);
 
         //eval "a=1"
-        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //eval "echo" "abc" "$1"
-        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'", "\"abc\"", "\"$1\""), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //eval "" ""
+        mockTest(parserFunction, Lists.newArrayList("eval", "\"\"", "\"\""), WORD, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END);
     }
 }

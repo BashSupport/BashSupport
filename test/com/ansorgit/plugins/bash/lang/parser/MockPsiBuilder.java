@@ -160,7 +160,7 @@ public class MockPsiBuilder implements PsiBuilder {
     public int rawTokenTypeStart(int lookAhead) {
         int requestedPos = elementPosition + lookAhead;
         if (requestedPos >= textTokens.size()) {
-            log.error("Invalid request for rawTokenTypeStart!");
+            log.warn("Invalid request for rawTokenTypeStart!");
             return -1;
         }
 

@@ -19,8 +19,6 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
 
-import static com.ansorgit.plugins.bash.lang.parser.eval.TextProcessorUtil.hasNext;
-
 /**
  * Handles a string which has just the escape codes
  * The Bash manual says about escape codes in strings:
@@ -36,11 +34,11 @@ import static com.ansorgit.plugins.bash.lang.parser.eval.TextProcessorUtil.hasNe
  * @author jansorg
  */
 @SuppressWarnings("Duplicates")
-public class BashSimpleTextPreprocessor implements TextPreprocessor {
+public class BashEnhancedTextPreprocessor implements TextPreprocessor {
     private int[] outSourceOffsets;
     private TextRange contentRange;
 
-    public BashSimpleTextPreprocessor(TextRange contentRange) {
+    public BashEnhancedTextPreprocessor(TextRange contentRange) {
         this.contentRange = contentRange;
     }
 
@@ -57,7 +55,9 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
         int[] sourceOffsets = new int[chars.length() + 1];
         sourceOffsetsRef.set(sourceOffsets);
 
-        //if there is no escape code in the text create a simple offset mapping (source position is target position)
+        //init with -1
+        TextProcessorUtil.resetOffsets(sourceOffsets);
+
         if (chars.indexOf('\\') < 0) {
             outChars.append(chars);
             for (int i = 0; i < sourceOffsets.length; i++) {
@@ -66,49 +66,89 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
             return true;
         }
 
-        //init with -1
-        TextProcessorUtil.resetOffsets(sourceOffsets);
-
         int index = 0;
         while (index < chars.length()) {
-            char c = chars.charAt(index);
-            index++;
+            char c = chars.charAt(index++);
 
             sourceOffsets[outChars.length()] = index - 1;
             sourceOffsets[outChars.length() + 1] = index;
 
             if (c != '\\') {
-                //no escape code
                 outChars.append(c);
                 continue;
             }
 
             if (index == chars.length()) {
-                //backslash is the last character, append it as-is
-                outChars.append(c);
-                return true;
+                return false;
             }
 
-            //handle the escape code character
-            c = chars.charAt(index);
+            c = chars.charAt(index++);
+            switch (c) {
+                //newline
+                case 'n':
+                    outChars.append('\n');
+                    break;
 
-            if (c == '"' || /*c == '$' ||*/ c == '`' || c == '\\' || c == '!' || c == '\n' || (c == '$' && !hasNext(chars, index, "$$"))) {
-                if (c != '\n') {
-                    //the current character is a valid escape code and will be replaced with it's escaped value
+                //return
+                case 'r':
+                    outChars.append('\r');
+                    break;
+
+                //tab
+                case 't':
+                    outChars.append('\t');
+                    break;
+
+                //vertical tab
+                case 'v':
+                    outChars.append(0x0B);
+                    break;
+
+                //backspace
+                case 'b':
+                    outChars.append('\b');
+                    break;
+
+                //alert
+                case 'a':
+                    outChars.append(0x07);
+                    break;
+
+                //escaped dollar
+                case '$':
+                case '"':
+                case '\'':
+                case '\\':
                     outChars.append(c);
-                }
-            } else {
-                //all other characters retain their original meaning, i.e. \a is \a without escape code interpretation
-                outChars.append('\\');
-                outChars.append(c);
+                    break;
+
+                //octal
+                case '0':
+                    //fixme handle 1 to 3 possible octal numbers
+                    if (index + 2 <= chars.length()) {
+                        try {
+                            int v = Integer.parseInt(chars.substring(index, index + 2), 8);
+                            outChars.append((char) v);
+                            index += 2;
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+
+                //all other escape codes do not change the content
+                default:
+                    outChars.append('\\');
+                    outChars.append(c);
+                    break;
             }
 
-            index++;
             sourceOffsets[outChars.length()] = index;
         }
         return true;
     }
-
 
     @Override
     public boolean decode(String content, @NotNull StringBuilder outChars) {
