@@ -66,6 +66,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey EXTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.EXTERNAL_COMMAND");
     public static final TextAttributesKey INTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.INTERNAL_COMMAND", EXTERNAL_COMMAND);
     public static final TextAttributesKey SUBSHELL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.SUBSHELL_COMMAND", EXTERNAL_COMMAND);
+    //also used in the lexer highlighting
     public static final TextAttributesKey BACKQUOTE = TextAttributesKey.createTextAttributesKey("BASH.BACKQUOTE", SUBSHELL_COMMAND);
 
     public static final TextAttributesKey FUNCTION_DEF_NAME = TextAttributesKey.createTextAttributesKey("BASH.FUNCTION_DEF_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
@@ -83,7 +84,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     }
 
     private static final Map<IElementType, TextAttributesKey> attributes1 = Maps.newHashMap();
-    private static final Map<IElementType, TextAttributesKey> attributes2 = Maps.newHashMap();
 
     private static final TokenSet parenthesisSet = TokenSet.create(BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
     private static final TokenSet bracesSet = TokenSet.create(BashTokenTypes.LEFT_CURLY, BashTokenTypes.RIGHT_CURLY);
@@ -91,6 +91,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TokenSet numberSet = TokenSet.orSet(BashTokenTypes.arithLiterals, TokenSet.create(BashTokenTypes.INTEGER_LITERAL));
     private static final TokenSet lineCommentSet = TokenSet.create(BashTokenTypes.COMMENT);
     private static final TokenSet shebangSet = TokenSet.create(BashTokenTypes.SHEBANG);
+    private static final TokenSet backquoteSet = TokenSet.create(BashTokenTypes.BACKQUOTE);
 
 
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
@@ -98,6 +99,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     static {
         fillMap(attributes1, BashTokenTypes.keywords, KEYWORD);
         fillMap(attributes1, BashTokenTypes.internalCommands, INTERNAL_COMMAND);
+
+        fillMap(attributes1, backquoteSet, BACKQUOTE);
 
         fillMap(attributes1, lineCommentSet, LINE_COMMENT);
 
@@ -120,7 +123,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @NotNull
     public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
-        return pack(attributes1.get(tokenType), attributes2.get(tokenType));
+        return pack(attributes1.get(tokenType));
     }
 }
 

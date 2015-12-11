@@ -24,7 +24,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -152,10 +152,11 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testLocalVarDefResolve() throws Exception {
-        //the inner var def must not resolve to the global variable definition
         BashVarDef varDef = assertIsValidVarDef();
-        Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) != null);
-        Assert.assertNull(varDef.getReference().resolve());
+        Assert.assertNotNull("The start must be in a function", BashPsiUtils.findNextVarDefFunctionDefScope(varDef));
+
+        PsiElement resolveTarget = varDef.getReference().resolve();
+        Assert.assertNull("The local variable def must not resolve to the global variable", resolveTarget);
     }
 
     @Test

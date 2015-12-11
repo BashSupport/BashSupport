@@ -39,9 +39,13 @@ public class SimpleArrayUseInspection extends LocalInspectionTool {
         return new BashVisitor() {
             @Override
             public void visitVarUse(BashVar var) {
-                if (!var.isArrayUse()) {
-                    BashVarDef definition = (BashVarDef) var.getReference().resolve();
-                    if (definition != null && definition.isArray() && !BashPsiUtils.hasParentOfType(var, BashString.class, 5)) {
+                BashVarDef definition = (BashVarDef) var.getReference().resolve();
+                if (definition != null) {
+                    if (var.isArrayUse()) {
+                        if (!definition.isArray()) {
+                            holder.registerProblem(var, "Array use of non-array variable", ProblemHighlightType.WEAK_WARNING);
+                        }
+                    } else if (definition.isArray() && !BashPsiUtils.hasParentOfType(var, BashString.class, 5)) {
                         holder.registerProblem(var, "Simple use of array variable", ProblemHighlightType.WEAK_WARNING);
                     }
                 }

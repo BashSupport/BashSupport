@@ -20,12 +20,19 @@ package com.ansorgit.plugins.bash.lang.psi.stubs;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashFileStubImpl;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.stubs.DefaultStubBuilder;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 public class BashFileStubBuilder extends DefaultStubBuilder {
+    @Override
+    public StubElement buildStubTree(@NotNull PsiFile file) {
+        return super.buildStubTree(file);
+    }
+
     @NotNull
     protected StubElement createStubForFile(@NotNull final PsiFile file) {
         if (file instanceof BashFile) {
@@ -33,5 +40,15 @@ public class BashFileStubBuilder extends DefaultStubBuilder {
         }
 
         return super.createStubForFile(file);
+    }
+
+    @Override
+    protected boolean skipChildProcessingWhenBuildingStubs(@NotNull PsiElement parent, @NotNull PsiElement element) {
+        return super.skipChildProcessingWhenBuildingStubs(parent, element);
+    }
+
+    @Override
+    public boolean skipChildProcessingWhenBuildingStubs(@NotNull ASTNode parent, @NotNull ASTNode node) {
+        return super.skipChildProcessingWhenBuildingStubs(parent, node);
     }
 }

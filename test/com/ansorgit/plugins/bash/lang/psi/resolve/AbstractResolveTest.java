@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
+import com.ansorgit.plugins.bash.BashTestUtils;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
@@ -32,6 +33,11 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 
 public abstract class AbstractResolveTest extends ResolveTestCase {
+
+    protected String getTestDataPath() {
+        return BashTestUtils.getBasePath() + "/psi/resolve/resolving/";
+    }
+
     protected PsiReference configure() throws Exception {
         return configure(null);
     }

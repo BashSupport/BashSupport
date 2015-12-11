@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +37,12 @@ public class BashBackquoteImpl extends BashCompositeElement implements BashBackq
     }
 
     public String getCommandText() {
-        String text = getText();
-        return getText().substring(1, text.length() - 1);
+        return getCommandTextRange().substring(getText());
+    }
+
+    @Override
+    public TextRange getCommandTextRange() {
+        return TextRange.from(getStartOffset() + 1, getTextLength() - 2);
     }
 
     @Override

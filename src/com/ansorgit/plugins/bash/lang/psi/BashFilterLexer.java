@@ -8,7 +8,6 @@ import com.intellij.psi.search.UsageSearchContext;
 import com.intellij.psi.tree.IElementType;
 
 public class BashFilterLexer extends BaseFilterLexer {
-
     protected BashFilterLexer(Lexer lexer, OccurrenceConsumer consumer) {
         super(lexer, consumer);
     }
@@ -20,12 +19,9 @@ public class BashFilterLexer extends BaseFilterLexer {
         if (tokenType == BashTokenTypes.COMMENT) {
             scanWordsInToken(UsageSearchContext.IN_COMMENTS, false, false);
             advanceTodoItemCountsInToken();
-        } else if (tokenType == BashTokenTypes.WORD) {
-            addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
-            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);
         } else if (tokenType == BashTokenTypes.STRING2) {
-            addOccurrenceInToken(UsageSearchContext.IN_STRINGS);
-            scanWordsInToken(UsageSearchContext.IN_STRINGS, true, false);
+            addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS | UsageSearchContext.IN_FOREIGN_LANGUAGES);
+            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);
         } else {
             addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
             scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);

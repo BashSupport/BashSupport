@@ -132,7 +132,7 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
 
             state = state.put(visitedIncludeFiles, visitedFiles);
 
-            return includedFile.processDeclarations(processor, state, lastParent, place);
+            return includedFile.processDeclarations(processor, state, null, place);
         }
 
         return true;

@@ -28,19 +28,24 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiElementBase;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,17 +57,6 @@ import java.util.List;
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
-    }
-
-    /**
-     * Finds the file context for a given element. If element is inside of an Bash file injection host (e.g. because the element is in an eval command)
-     * then the host file is returned.
-     *
-     * @param element
-     * @return The file on disk
-     */
-    public static PsiFile findFileContext(PsiElement element) {
-        return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
     }
 
     /**
@@ -93,16 +87,15 @@ public final class BashPsiUtils {
     public static BashFunctionDef findBroadestFunctionScope(PsiElement startElement) {
         BashFunctionDef lastValidScope = null;
 
-        PsiElement element = startElement.getContext();
+        PsiElement element = PsiTreeUtil.getStubOrPsiParent(startElement);
         while (element != null) {
-            element = element.getContext();
-
-            if (element == null) {
-                return lastValidScope;
-            }
-
             if (element instanceof BashFunctionDef) {
                 lastValidScope = (BashFunctionDef) element;
+            }
+
+            element = PsiTreeUtil.getStubOrPsiParent(element);
+            if (element == null) {
+                return lastValidScope;
             }
         }
 
@@ -110,19 +103,19 @@ public final class BashPsiUtils {
     }
 
     /**
-     * Returns the broadest scope of the variable definition.
+     * Returns the narrowest scope of the variable definition.
      *
      * @param varDef The element to check
      * @return The containing block or null
      */
     public static BashFunctionDef findNextVarDefFunctionDefScope(PsiElement varDef) {
-        PsiElement element = varDef.getContext();
+        PsiElement element = PsiTreeUtil.getStubOrPsiParent(varDef);
         while (element != null) {
-            element = element.getContext();
-
             if (element instanceof BashFunctionDef) {
                 return (BashFunctionDef) element;
             }
+
+            element = PsiTreeUtil.getStubOrPsiParent(element);
         }
 
         return null;
@@ -136,7 +129,7 @@ public final class BashPsiUtils {
      */
     public static PsiElement findEnclosingBlock(PsiElement element) {
         while (element != null) {
-            element = element.getContext();
+            element = PsiTreeUtil.getStubOrPsiParent(element);
 
             if (isValidContainer(element)) {
                 return element;
@@ -168,15 +161,14 @@ public final class BashPsiUtils {
         return 0;
     }
 
-    public static IElementType nodeType(PsiElement element) {
-        ASTNode node = element.getNode();
-        return node == null ? null : node.getElementType();
-    }
-
     public static PsiElement findNextSibling(PsiElement start, IElementType ignoreType) {
+        if (start == null) {
+            return null;
+        }
+
         PsiElement current = start.getNextSibling();
         while (current != null) {
-            if (ignoreType != nodeType(current)) {
+            if (ignoreType != PsiUtil.getElementType(current)) {
                 return current;
             }
 
@@ -187,9 +179,13 @@ public final class BashPsiUtils {
     }
 
     public static PsiElement findPreviousSibling(PsiElement start, IElementType ignoreType) {
+        if (start == null) {
+            return null;
+        }
+
         PsiElement current = start.getPrevSibling();
         while (current != null) {
-            if (ignoreType != nodeType(current)) {
+            if (ignoreType != PsiUtil.getElementType(current)) {
                 return current;
             }
 
@@ -280,10 +276,32 @@ public final class BashPsiUtils {
             }
 
             prevParent = scope;
-            scope = prevParent.getContext();
+            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
         }
 
         return !hasResult;
+    }
+
+    public static boolean treeWalkUp(@NotNull final PsiScopeProcessor processor,
+                                     @NotNull final PsiElement entrance,
+                                     @Nullable final PsiElement maxScope,
+                                     @NotNull final ResolveState state) {
+        PsiElement prevParent = entrance;
+        PsiElement scope = entrance;
+
+        while (scope != null) {
+            if (!scope.processDeclarations(processor, state, prevParent, entrance)) {
+                return false;
+            }
+
+            if (scope == maxScope) {
+                break;
+            }
+            prevParent = scope;
+            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
+        }
+
+        return true;
     }
 
     @Nullable
@@ -307,20 +325,18 @@ public final class BashPsiUtils {
      * @return The list of commands, may be empty but wont be null
      */
     public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
-        final List<BashCommand> includeCommands = Lists.newLinkedList();
+        String filePath = file.getVirtualFile().getPath();
 
-        BashVisitor collecingVisitor = new BashVisitor() {
-            @Override
-            public void visitIncludeCommand(BashIncludeCommand bashCommand) {
-                if (includedFile.equals(findIncludedFile(bashCommand))) {
-                    includeCommands.add(bashCommand);
-                }
+        List<BashCommand> result = Lists.newLinkedList();
+
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        for (BashIncludeCommand command : commands) {
+            if (includedFile.equals(findIncludedFile(command))) {
+                result.add(command);
             }
-        };
+        }
 
-        visitRecursively(file, collecingVisitor);
-
-        return includeCommands;
+        return result;
     }
 
     public static void visitRecursively(PsiElement element, BashVisitor visitor) {
@@ -349,7 +365,7 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition).equals(findFileContext(childCandidate));
+        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
 
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
@@ -387,9 +403,9 @@ public final class BashPsiUtils {
     }
 
     public static List<PsiComment> findDocumentationElementComments(PsiElement element) {
-        PsiElement command = findParent(element, BashCommand.class);
+        PsiElement command = findStubParent(element, BashCommand.class);
         if (command == null) {
-            command = findParent(element, BashFunctionDef.class);
+            command = findStubParent(element, BashFunctionDef.class);
         }
 
         if (command == null) {
@@ -418,7 +434,33 @@ public final class BashPsiUtils {
     }
 
     @Nullable
+    public static <T extends PsiElement> T findStubParent(@Nullable PsiElement start, Class<T> parentType) {
+        if (start == null) {
+            return null;
+        }
+
+        Class<? extends PsiElement> breakPoint = PsiFile.class;
+
+        for (PsiElement current = start; current != null; current = PsiTreeUtil.getStubOrPsiParent(current)) {
+            if (parentType.isInstance(current)) {
+                return (T) current;
+            }
+
+            if (breakPoint.isInstance(current)) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
     public static <T extends PsiElement> T findParent(@Nullable PsiElement start, Class<T> parentType) {
+        return findParent(start, parentType, PsiFile.class);
+    }
+
+    @Nullable
+    public static <T extends PsiElement> T findParent(@Nullable PsiElement start, Class<T> parentType, Class<? extends PsiElement> breakPoint) {
         if (start == null) {
             return null;
         }
@@ -427,15 +469,27 @@ public final class BashPsiUtils {
             if (parentType.isInstance(current)) {
                 return (T) current;
             }
+
+            if (breakPoint != null && breakPoint.isInstance(current)) {
+                return null;
+            }
         }
 
         return null;
     }
 
     public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps) {
+        return hasParentOfType(start, parentType, maxSteps, PsiFile.class);
+    }
+
+    public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps, Class<? extends PsiElement> breakPoint) {
         for (PsiElement current = start; current != null && maxSteps-- >= 0; current = current.getParent()) {
             if (parentType.isInstance(current)) {
                 return true;
+            }
+
+            if (breakPoint != null && breakPoint.isInstance(current)) {
+                return false;
             }
         }
 
@@ -473,9 +527,20 @@ public final class BashPsiUtils {
         return offset;
     }
 
+    public static int getFileTextEndOffset(PsiElement element) {
+        return getFileTextOffset(element) + element.getTextLength();
+    }
+
+    public static TextRange getTextRangeInFile(PsiElement element) {
+        int offset = getFileTextOffset(element);
+
+        return TextRange.from(offset, element.getTextLength());
+    }
+
     /**
      * Returns the deepest nested ast node which still covers the same part of the file as the parent node. Happens if a single leaf node is
      * contained in several composite parent nodes of the same range, e.g. a var in a combined word.
+     *
      * @param parent The element to use as the startin point
      * @return The deepest node inside of parent which covers the same range or (if none exists) the input element
      */
@@ -497,5 +562,34 @@ public final class BashPsiUtils {
         }
 
         return new PsiReferenceBase.Immediate<PsiElement>(element, manipulator.getRangeInElement(element), true, element);
+    }
+
+    public static boolean isSingleChildParent(PsiElement psi) {
+        if (psi == null) {
+            return false;
+        }
+
+        ASTNode child = psi.getNode();
+        return child.getTreePrev() == null && child.getTreeNext() == null;
+    }
+
+    public static boolean isSingleChildParent(PsiElement psi, @NotNull IElementType childType) {
+        if (psi == null) {
+            return false;
+        }
+
+        ASTNode child = getDeepestEquivalent(psi.getNode());
+        return child.getTreePrev() == null && child.getTreeNext() == null && (child.getElementType() == childType);
+    }
+
+    public static boolean isSingleChildParent(PsiElement psi, @NotNull Class<? extends PsiElement> childType) {
+        if (psi == null) {
+            return false;
+        }
+
+        ASTNode child = getDeepestEquivalent(psi.getNode());
+        PsiElement childPsi = child.getPsi();
+
+        return childPsi != null && childType.isInstance(childPsi);
     }
 }

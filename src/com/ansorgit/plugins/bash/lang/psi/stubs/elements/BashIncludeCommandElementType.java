@@ -27,10 +27,12 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashIncludeCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashIncludeCommandStubImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
+import com.intellij.util.indexing.IndexingDataKeys;
 import com.intellij.util.io.StringRef;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,9 +46,15 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
         super("include-command");
     }
 
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "bash.includeCommand";
+    }
+
     public void serialize(@NotNull BashIncludeCommandStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getIncludedFilename());
-        dataStream.writeName(stub.getIncluderFilename());
+        dataStream.writeName(stub.getIncluderFilePath());
     }
 
     @NotNull
@@ -68,7 +76,13 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
 
         if (fileReference != null && fileReference.isStatic()) {
             filename = fileReference.getFilename();
-            includer = psi.getContainingFile().getName();
+
+            VirtualFile virtualFile = psi.getContainingFile().getUserData(IndexingDataKeys.VIRTUAL_FILE);
+            if (virtualFile == null) {
+                virtualFile = psi.getContainingFile().getViewProvider().getVirtualFile();
+            }
+
+            includer = virtualFile.getPath();
         }
 
         return new BashIncludeCommandStubImpl(parentStub, StringRef.fromString(filename), StringRef.fromString(includer), BashElementTypes.INCLUDE_COMMAND_ELEMENT);
@@ -81,9 +95,9 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
             sink.occurrence(BashIncludedFilenamesIndex.KEY, filenamef);
         }
 
-        String includerFilename = stub.getIncluderFilename();
-        if (includerFilename != null) {
-            sink.occurrence(BashIncludeCommandIndex.KEY, includerFilename);
+        String includerFilePath = stub.getIncluderFilePath();
+        if (includerFilePath != null) {
+            sink.occurrence(BashIncludeCommandIndex.KEY, includerFilePath);
         }
     }
 }

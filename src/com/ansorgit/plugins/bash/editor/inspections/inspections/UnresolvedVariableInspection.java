@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.RegisterGlobalVariableQuickfix;
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.UnregisterGlobalVariableQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -57,19 +58,26 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
 
         @Override
         public void visitVarUse(BashVar bashVar) {
-            BashReference ref = bashVar.getReference();
+            if (!bashVar.isBuiltinVar()) {
+                BashReference ref = bashVar.getReference();
 
-            PsiElement resolved = ref.resolve();
-            if (!bashVar.isBuiltinVar() && resolved == null) {
-                String varName = ref.getReferencedName();
+                PsiElement resolved = ref.resolve();
+                if (resolved == null) {
+                    String varName = ref.getReferencedName();
 
-                boolean isRegisteredAsGlobal = globalVariables.contains(varName);
-                if (!isRegisteredAsGlobal) {
-                    holder.registerProblem(bashVar,
-                            "Unresolved variable",
-                            ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,
-                            ref.getRangeInElement(),
-                            new RegisterGlobalVariableQuickfix(bashVar));
+                    boolean isRegisteredAsGlobal = globalVariables.contains(varName);
+                    if (isRegisteredAsGlobal) {
+                        holder.registerProblem(bashVar, "This variable is currently registered as a global variable",
+                                ProblemHighlightType.INFORMATION,
+                                ref.getRangeInElement(),
+                                new UnregisterGlobalVariableQuickfix(bashVar));
+                    } else {
+                        holder.registerProblem(bashVar,
+                                "Unresolved variable",
+                                ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,
+                                ref.getRangeInElement(),
+                                new RegisterGlobalVariableQuickfix(bashVar));
+                    }
                 }
             }
         }

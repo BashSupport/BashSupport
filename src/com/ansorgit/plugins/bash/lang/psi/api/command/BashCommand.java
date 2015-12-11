@@ -65,6 +65,14 @@ public interface BashCommand extends BashPsiElement {
     boolean isInternalCommand();
 
     /**
+     * Checks whether this command is a call of an bash-internal command, like "echo" or "cd".
+     * It checks the command state with the given Bash version.
+     *
+     * @return True if this commmand is an internal command.
+     */
+    boolean isInternalCommand(boolean bash4);
+
+    /**
      * Returns true if this command is a call to an external program.
      *
      * @return True if this is an external command.
@@ -107,6 +115,12 @@ public interface BashCommand extends BashPsiElement {
      */
     @Nullable
     PsiElement commandElement();
+
+    /**
+     * Returns whether this commad is a free-form/generic command.
+     * @return
+     */
+    boolean isGenericCommand();
 
     /**
      * Returns the elements which are parameters to the command

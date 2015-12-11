@@ -149,7 +149,7 @@ public class WordParsing implements ParsingTool {
                 //parsing token stream which is not a expansion but has curly brackets
                 builder.advanceLexer();
                 processedTokens++;
-            } else if (nextToken == DOLLAR) {
+            } else if (nextToken == DOLLAR || nextToken == EQ) {
                 builder.advanceLexer();
                 processedTokens++;
             } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespace(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {

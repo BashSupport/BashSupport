@@ -35,7 +35,7 @@ public abstract class AbstractShellCommandTest extends CodeInsightTestCase {
     }
 
     protected VirtualFile configure() throws Exception {
-        return configureByFile(getTestName(false) + ".bash", "");
+        return configureByFile(getTestName(true) + ".bash", "");
     }
 
     protected String getTestDataPath() {

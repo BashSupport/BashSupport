@@ -14,9 +14,4 @@ public abstract class BashStubElementType<S extends StubElement, T extends BashP
     public BashStubElementType(@NonNls @NotNull String debugName) {
         super(debugName, BashFileType.BASH_LANGUAGE);
     }
-
-    @NotNull
-    public String getExternalId() {
-        return "bash." + super.toString();
-    }
 }

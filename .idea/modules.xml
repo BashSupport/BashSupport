@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BashSupport.iml" filepath="$PROJECT_DIR$/BashSupport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../go-lang-idea-plugin/go-lang-idea-plugin.iml" filepath="$PROJECT_DIR$/../../go-lang-idea-plugin/go-lang-idea-plugin.iml" />
     </modules>
   </component>
 </project>

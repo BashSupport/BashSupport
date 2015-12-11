@@ -84,8 +84,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static boolean isFoldable(IElementType type) {
-        return type == BLOCK_ELEMENT
-                || type == GROUP_COMMAND
+        return type == GROUP_COMMAND
                 || type == CASE_PATTERN_LIST_ELEMENT
                 || type == BashTokenTypes.HEREDOC_CONTENT;
     }

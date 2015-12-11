@@ -20,6 +20,8 @@ package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
@@ -35,6 +37,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -62,11 +65,12 @@ import java.util.List;
 public class BashAnnotator implements Annotator {
     private static TokenSet noWordHighlightErase = TokenSet.orSet(
             TokenSet.create(BashTokenTypes.STRING2),
-            BashTokenTypes.arithLiterals);
+            BashTokenTypes.arithLiterals,
+            TokenSet.create(BashElementTypes.VAR_ELEMENT));
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
         if (element instanceof BashBackquote) {
-            annotateBackquote(element, annotationHolder);
+            annotateBackquote((BashBackquote) element, annotationHolder);
         } else if (element instanceof BashHereDoc) {
             annotateHereDoc((BashHereDoc) element, annotationHolder);
         } else if (element instanceof BashHereDocStartMarker) {
@@ -78,7 +82,7 @@ public class BashAnnotator implements Annotator {
         } else if (element instanceof BashVarDef) {
             annotateVarDef((BashVarDef) element, annotationHolder);
         } else if (element instanceof BashVar) {
-            BashVarAnnotator.annotateVar((BashVar) element, annotationHolder);
+            highlightVariable((BashVar) element, annotationHolder);
         } else if (element instanceof BashWord) {
             annotateWord(element, annotationHolder);
         } else if (element instanceof BashString) {
@@ -91,6 +95,18 @@ public class BashAnnotator implements Annotator {
             annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
         } else if (element instanceof BashRedirectExpr) {
             annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
+        }
+    }
+
+    protected void highlightVariable(@NotNull BashVar element, @NotNull AnnotationHolder annotationHolder) {
+        if (element.isBuiltinVar()) {
+            //highlighting for built-in variables
+            Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
+            annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_BUILTIN);
+        } else if (element.isParameterExpansion()) {
+            //highlighting for composed variables
+            Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
+            annotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE_COMPOSED);
         }
     }
 
@@ -123,7 +139,7 @@ public class BashAnnotator implements Annotator {
         //we have to mark the remaped tokens (which are words now) to have the default word formatting.
         PsiElement child = bashWord.getFirstChild();
 
-        while (child != null) {
+        while (child != null && false) {
             if (!noWordHighlightErase.contains(child.getNode().getElementType())) {
                 Annotation annotation = annotationHolder.createInfoAnnotation(child, null);
                 annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
@@ -162,6 +178,24 @@ public class BashAnnotator implements Annotator {
         PsiElement cmdElement = null;
         TextAttributesKey attributesKey = null;
 
+        //if the command consists of a single variable then it should not be highlighted
+        //otherwise the variable would be shown without its own variable highlighting
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashTokenTypes.VARIABLE)) {
+            return;
+        }
+
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashString.class)) {
+            return;
+        }
+
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashBackquote.class)) {
+            return;
+        }
+
+        if (BashPsiUtils.isSingleChildParent(bashCommand, BashSubshellCommand.class)) {
+            return;
+        }
+
         if (bashCommand.isFunctionCall()) {
             cmdElement = bashCommand.commandElement();
             attributesKey = BashSyntaxHighlighter.FUNCTION_CALL;
@@ -179,9 +213,35 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateBackquote(PsiElement element, AnnotationHolder holder) {
-        final Annotation annotation = holder.createInfoAnnotation(element, null);
-        annotation.setTextAttributes(BashSyntaxHighlighter.BACKQUOTE);
+
+    /**
+     * Annotates the static text in an backquote command with the backquote formatting
+     *
+     * @param element
+     * @param holder
+     */
+    private void annotateBackquote(BashBackquote element, final AnnotationHolder holder) {
+        final BashVisitor wordVisitor = new BashVisitor() {
+            @Override
+            public void visitCombinedWord(BashWord word) {
+                PsiElement firstChild = word.getFirstChild();
+                if (firstChild != null && firstChild.getNode().getElementType() == BashTokenTypes.WORD && !word.isWrapped()) {
+                    holder.createInfoAnnotation(word.getTextRange(), null).setTextAttributes(BashSyntaxHighlighter.BACKQUOTE);
+                }
+            }
+        };
+
+        element.acceptChildren(new BashVisitor() {
+            @Override
+            public void visitGenericCommand(BashCommand bashCommand) {
+                bashCommand.acceptChildren(wordVisitor);
+            }
+
+            @Override
+            public void visitInternalCommand(BashCommand bashCommand) {
+                bashCommand.acceptChildren(wordVisitor);
+            }
+        });
     }
 
     private void annotateHereDoc(BashHereDoc element, AnnotationHolder annotationHolder) {

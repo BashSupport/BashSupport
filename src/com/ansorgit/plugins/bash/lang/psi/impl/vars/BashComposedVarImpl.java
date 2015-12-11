@@ -18,14 +18,13 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.StubElement;
 
-public class BashComposedVarImpl extends BashBaseStubElementImpl<StubElement> implements BashComposedVar {
+public class BashComposedVarImpl extends BashBaseElement implements BashComposedVar {
     public BashComposedVarImpl(final ASTNode astNode) {
         super(astNode, "BashComposedVar");
     }

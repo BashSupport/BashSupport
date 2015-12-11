@@ -101,7 +101,7 @@ public final class ListParsing implements ParsingTool {
 
         //in contrast to the grammar we assume that compound_list is terminated
         if (token == SEMI || token == LINE_FEED || token == AMP) {
-            optionalMarker.done(BLOCK_ELEMENT);
+            optionalMarker.done(LOGICAL_BLOCK_ELEMENT);
 
             builder.advanceLexer();
             builder.eatOptionalNewlines();
@@ -109,7 +109,7 @@ public final class ListParsing implements ParsingTool {
             return true;
         }
 
-        optionalMarker.done(BLOCK_ELEMENT);
+        optionalMarker.done(LOGICAL_BLOCK_ELEMENT);
 
         return builder.eof() || optionalTerminator;
     }
