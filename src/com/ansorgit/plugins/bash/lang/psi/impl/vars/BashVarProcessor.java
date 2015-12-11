@@ -49,25 +49,17 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private final BashFunctionDef startElementScope;
     private boolean checkLocalness;
     private String varName;
-    private boolean startElementIsVarDef;
     private boolean ignoreGlobals;
     private boolean functionVarDefsAreGlobal;
     private int startElementTextOffset;
+    private Set<PsiElement> globalVariables = Sets.newLinkedHashSet();
 
-
-    private final Set<PsiElement> visitedScopes = Sets.newIdentityHashSet();
-
-    public BashVarProcessor(BashVar startElement, boolean checkLocalness) {
-        this(startElement, checkLocalness, true);
-    }
-
-    public BashVarProcessor(BashVar startElement, boolean checkLocalness, boolean leaveInjectionHosts) {
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts) {
         super(false);
 
         this.startElement = startElement;
         this.checkLocalness = checkLocalness;
-        this.varName = startElement.getReference().getReferencedName();
-        this.startElementIsVarDef = startElement instanceof BashVarDef;
+        this.varName = variableName;
         this.startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
 
         this.ignoreGlobals = false;
@@ -76,36 +68,36 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         this.startElementTextOffset = BashPsiUtils.getFileTextOffset(startElement);
     }
 
-    public boolean execute(@NotNull PsiElement psiElement, ResolveState resolveState) {
-        if (visitedScopes.contains(psiElement)) {
-            return true;
-        }
-
+    public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
         if (psiElement instanceof BashVarDef) {
             BashVarDef varDef = (BashVarDef) psiElement;
 
-            if (!varName.equals(varDef.getName()) || startElement.equals(psiElement)) {
+            if (!varName.equals(varDef.getName()) || startElement == psiElement || startElement.equals(psiElement)) {
                 //proceed with the search
                 return true;
             }
 
             //we have the same name, so it's a possible hit
             //now check the scope
-            boolean varDefIsLocal = checkLocalness && varDef.isFunctionScopeLocal();
-            boolean isValid = varDefIsLocal
+            boolean localVarDef = varDef.isFunctionScopeLocal();
+            boolean isValid = checkLocalness && localVarDef
                     ? isValidLocalDefinition(varDef, resolveState)
                     : isValidDefinition(varDef, resolveState);
 
             //if we found a valid local variable definition we must ignore all (otherwise matching) global variable definitions
-            ignoreGlobals = ignoreGlobals || (isValid && varDefIsLocal);
+            ignoreGlobals = ignoreGlobals || (isValid && checkLocalness && localVarDef);
 
             if (isValid) {
                 storeResult(varDef, BashPsiUtils.blockNestingLevel(varDef));
+
+                if (!varDef.isLocalVarDef()) {
+                    globalVariables.add(varDef);
+                }
+
                 return false;
             }
         }
 
-        visitedScopes.add(psiElement);
         return true;
     }
 
@@ -115,6 +107,11 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         }
 
         if (!varDef.isStaticAssignmentWord()) {
+            return false;
+        }
+
+        //if the start element is a variable definition and is local then the new definition is invalid
+        if (startElement.isVarDefinition() && ((BashVarDef)startElement).isLocalVarDef()) {
             return false;
         }
 
@@ -129,10 +126,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
 
-        boolean sameFiles = this.leaveInjectionHost
-                ? BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef))
-                : startElement.getContainingFile().equals(varDef.getContainingFile());
-
+        boolean sameFiles = startElement.getContainingFile().equals(varDef.getContainingFile());
         if (sameFiles) {
             int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
             if (startElementTextOffset >= textOffsetVarDef) {
@@ -150,7 +144,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             //in this case it is only valid if start element is in a nested function definition inside of varDefScope
             // The found variable definition is defined in a function. If the settings is enabled, i.e. less strict checking, then the variable definition is valid
             // if two var defs are compared then the varDef candidate (which occurs later in the file) is not a possible definition
-            if (functionVarDefsAreGlobal && startElementScope != null && !startElementIsVarDef && !varDefScope.equals(startElementScope)) {
+            if (functionVarDefsAreGlobal && startElementScope != null && !startElement.isVarDefinition() && !varDefScope.equals(startElementScope)) {
                 return true;
             }
 
@@ -160,8 +154,9 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         } else {
             //working on a definition in an included file (maybe even over several include-steps)
             Multimap<VirtualFile, PsiElement> includedFiles = resolveState.get(visitedIncludeFiles);
-            Collection<PsiElement> includeCommands = includedFiles != null ? includedFiles.get(varDef.getContainingFile().getVirtualFile()) : null;
 
+            VirtualFile varDefFile = varDef.getContainingFile().getVirtualFile();
+            Collection<PsiElement> includeCommands = includedFiles != null ? includedFiles.get(varDefFile) : null;
             if (includeCommands == null || includeCommands.isEmpty()) {
                 return false;
             }
@@ -195,7 +190,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         if (startElementScope == null) {
             //if the start element is on global level, then the var def has to be global, too, if the start element is a var def, also
             //if it it just a variabale which references the definition, then varDef is a valid definition for it
-            return varDefScope == null || !startElementIsVarDef;
+            return varDefScope == null || !startElement.isVarDefinition();
         }
 
         return varDefScope == null || varDefScope.equals(startElementScope) || !PsiTreeUtil.isAncestor(startElementScope, varDefScope, true);
@@ -220,11 +215,16 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         return validScope && BashPsiUtils.getFileTextOffset(varDef) < BashPsiUtils.getFileTextOffset(startElement);
     }
 
-    public <T> T getHint(Key<T> key) {
-        if (key.equals(VISITED_SCOPES_KEY)) {
-            return (T) visitedScopes;
+    @Override
+    public void prepareResults() {
+        if (ignoreGlobals) {
+            for (PsiElement globalVar : globalVariables) {
+                removeResult(globalVar);
+            }
         }
+    }
 
+    public <T> T getHint(@NotNull Key<T> key) {
         return null;
     }
 }

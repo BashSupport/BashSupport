@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashFileReferenceImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashFunctionDefNameImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashProcessSubstitutionImpl;
@@ -238,6 +239,10 @@ public class BashPsiCreator implements BashElementTypes {
 
         if (elementType == PROCESS_SUBSTITUTION_ELEMENT) {
             return new BashProcessSubstitutionImpl(node);
+        }
+
+        if (elementType == EVAL_BLOCK) {
+            return new BashEvalBlock(node);
         }
 
         log.warn("MISSING PSI for" + node);

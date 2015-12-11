@@ -1,62 +1,62 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.lang.psi.impl.word.BashStringImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.word.BashWordImpl;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTrapCommand;
+import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import org.junit.Assert;
 
-public class TrapCommandTest extends BashCodeInsightFixtureTestCase {
+public class TrapCommandTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/psi/shell/trapCommand/";
     }
 
     public void testInjectionHostWordSingleWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashWordImpl);
-
-        // a single word in a string used as trap command must not be marked as an injection host
-        // because it ist just a single command. Resolving this as a function is faster as injection handling
-        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashWordImpl) word).isValidBashLanguageHost());
+        Assert.assertTrue("Element is not a eval block: " + word, word instanceof BashEvalBlock);
     }
 
     public void testInjectionHostStringSingleWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashStringImpl);
-
-        // a single word in a string used as trap command must not be marked as an injection host
-        // because it ist just a single command. Resolving this as a function is faster as injection handling
-        Assert.assertFalse("The element must not be an injection host: " + word.getText(), ((BashStringImpl) word).isValidBashLanguageHost());
+        Assert.assertTrue(word instanceof BashEvalBlock);
     }
 
     public void testInjectionHostWord() throws Exception {
-        PsiElement word = configure();
+        PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashWordImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashWordImpl) word).isValidBashLanguageHost());
+        Assert.assertTrue(word instanceof BashEvalBlock);
     }
 
     public void testInjectionHostString() throws Exception {
-        PsiElement current = configure();
+        PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not a String: " + current, current instanceof BashStringImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidBashLanguageHost());
+        Assert.assertTrue("element is not an eval block: " + current, current instanceof BashEvalBlock);
     }
 
-    protected PsiElement configure() {
-        myFixture.setTestDataPath(getTestDataPath());
-        myFixture.configureByFile(getTestName(true) + ".bash");
+    public void testInjectionWordUnquotedWord() throws Exception {
+        PsiElement current = configurePsiAtCaret();
 
-        PsiElement element = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
-        if (element instanceof LeafPsiElement) {
-            return element.getParent();
-        }
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not a command: " + current, current instanceof BashGenericCommand);
+    }
 
-        return element;
+    public void testInjectionEmptyWord() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not an empty trap command: " + current, current instanceof BashTrapCommand);
+    }
+
+    public void testInjectionEmptyString() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not an empty trap command: " + current, current instanceof BashString);
     }
 }

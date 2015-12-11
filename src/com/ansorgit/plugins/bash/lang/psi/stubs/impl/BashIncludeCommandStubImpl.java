@@ -7,9 +7,6 @@ import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
 
-/**
- * @author ilyas
- */
 public class BashIncludeCommandStubImpl extends StubBase<BashIncludeCommand> implements BashIncludeCommandStub {
     private final StringRef includedFilename;
     private final StringRef includerFilename;
@@ -25,7 +22,17 @@ public class BashIncludeCommandStubImpl extends StubBase<BashIncludeCommand> imp
         return StringRef.toString(includedFilename);
     }
 
-    public String getIncluderFilename() {
+    public String getIncluderFilePath() {
         return StringRef.toString(includerFilename);
+    }
+
+    @Override
+    public boolean isGenericCommand() {
+        return false;
+    }
+
+    @Override
+    public boolean isInternalCommand(boolean bash4) {
+        return true;
     }
 }

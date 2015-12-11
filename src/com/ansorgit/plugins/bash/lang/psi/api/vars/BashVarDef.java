@@ -66,13 +66,20 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
     PsiElement findAssignmentWord();
 
     /**
-     * Returns whether this variable definition is a local variable in a function.
-     * If a variable is declared using the "local" keyword in a function it is a function local variable,
+     * Returns whether this variable definition defines a local variable or already is defined as a local variable.
+     * If a variable is declared using the "local" keyword in a function then it is a function local variable,
      * i.e. this method returns true in that case.
      *
      * @return True if it's local in a function
      */
     boolean isFunctionScopeLocal();
+
+    /**
+     * Returns whether this variable definition defines a local variable definition.
+     *
+     * @return
+     */
+    boolean isLocalVarDef();
 
     PsiElement findFunctionScope();
 
@@ -85,7 +92,6 @@ public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIden
     BashReference getReference();
 
     /**
-     *
      * @return True if the value of the assignment word is static, false otherwise. Something like export "$a"=b is not a static assignment word
      */
     boolean isStaticAssignmentWord();

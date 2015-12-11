@@ -159,8 +159,6 @@
 
         <lang.tokenSeparatorGenerator language="Bash" implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
 
-        <languageInjector implementation="com.ansorgit.plugins.bash.lang.BashLanguageInjector"/>
-
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand"
@@ -218,12 +216,11 @@
 
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex"/>
-        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFullScriptNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex"/>
         <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex"/>
-        <!-- todo implement com.intellij.psi.impl.include.FileIncludeProvider  -->
+        <stubIndex implementation="com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarIndex"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashFixShebang"
@@ -297,12 +294,6 @@
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
 
-        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
-                         shortName="BashUnregisterGlobalVariable"
-                         key="inspection.unregisterGlovalVariable.name"
-                         enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnregisterGlobalVarInspection"/>
-
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashEvaluateArithmeticExpression"
                          key="inspection.evaluateArithmeticExpression.name"
@@ -356,12 +347,6 @@
                          key="inspection.simpleArrayUse.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleArrayUseInspection"/>
-
-        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
-                         shortName="BashArrayUseOfSimple"
-                         key="inspection.arrayUseOfSimpleVar.name"
-                         enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ArrayUseOfSimpleVarInspection"/>
 
         <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
                          shortName="BashInternalCommandFunctionOverride"

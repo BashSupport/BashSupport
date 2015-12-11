@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: FunctionDefInspection.java, Class: FunctionDefInspection
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.FunctionBodyQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -39,8 +40,11 @@ public class FunctionDefInspection extends LocalInspectionTool {
         return new BashVisitor() {
             @Override
             public void visitFunctionDef(BashFunctionDef functionDef) {
-                if (isOnTheFly && !functionDef.hasCommandGroup() && functionDef.body() != null) {
-                    holder.registerProblem(functionDef.body(), "Wrap function body", new FunctionBodyQuickfix(functionDef));
+                if (isOnTheFly) {
+                    BashBlock body = functionDef.functionBody();
+                    if (body != null && !body.isCommandGroup()) {
+                        holder.registerProblem(body, "Wrap function body", new FunctionBodyQuickfix(functionDef));
+                    }
                 }
             }
         };

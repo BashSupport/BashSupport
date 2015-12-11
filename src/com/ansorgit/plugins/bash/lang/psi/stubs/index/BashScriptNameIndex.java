@@ -3,6 +3,7 @@ package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User: jansorg
@@ -12,6 +13,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 public class BashScriptNameIndex extends StringStubIndexExtension<BashFile> {
     public static final StubIndexKey<String, BashFile> KEY = StubIndexKey.createIndexKey("bash.script.name");
 
+    @NotNull
     @Override
     public StubIndexKey<String, BashFile> getKey() {
         return KEY;

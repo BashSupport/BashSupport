@@ -127,10 +127,6 @@ public class BashBlock implements Block, BashElementTypes {
             return new ChildAttributes(Indent.getNoneIndent(), null);
         }
 
-        if (BLOCK_ELEMENT == astNode.getElementType()) {
-            return new ChildAttributes(Indent.getNormalIndent(), null);
-        }
-
         return new ChildAttributes(Indent.getNoneIndent(), null);
     }
 

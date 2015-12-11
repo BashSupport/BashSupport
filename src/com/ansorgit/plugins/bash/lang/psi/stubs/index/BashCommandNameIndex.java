@@ -5,11 +5,6 @@ import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * User: jansorg
- * Date: 11.01.12
- * Time: 22:46
- */
 public class BashCommandNameIndex extends StringStubIndexExtension<BashCommand> {
     public static final StubIndexKey<String, BashCommand> KEY = StubIndexKey.createIndexKey("bash.scriptCommandReference");
 

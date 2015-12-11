@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarCollectorProcessor;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarVariantsProcessor;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.codeInsight.completion.*;
@@ -85,7 +84,7 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
     }
 
     private int addCollectedVariables(PsiElement element, CompletionResultSet result, BashVarCollectorProcessor processor) {
-        PsiTreeUtil.treeWalkUp(processor, element, BashPsiUtils.findFileContext(element), ResolveState.initial());
+        PsiTreeUtil.treeWalkUp(processor, element, element.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
         result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));

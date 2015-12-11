@@ -1004,6 +1004,10 @@ public class BashLexerTest {
         testTokenization("trap FUNCTION SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization("trap -p SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
     }
+    @Test
+    public void testEvalLexing() {
+        testTokenization("$a=$a", VARIABLE, EQ, VARIABLE);
+    }
 
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);

@@ -77,6 +77,11 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testNestedFunctionResolve() throws Exception {
+        checkFunctionReference();
+    }
+
+    @Test
     public void testBasicFunctionResolveToFirstDef() throws Exception {
         checkFunctionReference();
 

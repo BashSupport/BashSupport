@@ -1,6 +1,7 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
@@ -14,7 +15,7 @@ import org.junit.Test;
  *
  * @author jansorg
  */
-public class HeredocRenameTest extends BashCodeInsightFixtureTestCase {
+public class HeredocRenameTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/HeredocTestCase/";

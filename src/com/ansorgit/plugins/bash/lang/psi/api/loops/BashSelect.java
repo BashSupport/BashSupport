@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.loops;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 
 /**
@@ -26,5 +27,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
  *
  * @author Joachim Ansorg
  */
-public interface BashSelect extends BashKeyword {
+public interface BashSelect extends BashKeyword, BashBlock {
 }
