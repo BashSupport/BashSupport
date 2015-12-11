@@ -29,13 +29,13 @@
     <property name="lexer.skeleton" value="lib/idea-flex.skeleton"/>
     <property name="jflex.jar" value="lib/JFlex.jar"/>
 
-    <target name="clean">
+    <target name="jflex-clean">
         <delete file="${lexer.file}~"/>
         <delete file="${lexer.file}"/>
         <delete file="${lexer.log}"/>
     </target>
 
-    <target name="copy-resources">
+<!--    <target name="jflex-copy-resources">
         <copy todir="out/production/BashPlugin/resources">
             <fileset dir="resources"/>
         </copy>
@@ -43,10 +43,11 @@
             <fileset dir="doc"/>
         </copy>
     </target>
+    -->
 
     <target name="jflex"
             description="Generate lexer from bash.flex, using idea flex skeleton and patched JFlex"
-            depends="clean">
+            depends="jflex-clean">
         <java jar="${jflex.jar}" output="${lexer.log}" fork="true">
             <arg value="--charat"/>
             <!-- <arg value="- -nomin"/>-->

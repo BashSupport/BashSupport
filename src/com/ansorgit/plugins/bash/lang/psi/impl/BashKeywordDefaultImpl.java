@@ -20,10 +20,14 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -36,6 +40,11 @@ import javax.swing.*;
 public abstract class BashKeywordDefaultImpl extends BashCompositeElement implements BashKeyword {
     protected BashKeywordDefaultImpl(IElementType type) {
         super(type);
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return BashResolveUtil.processContainerDeclarations(this, processor, state, lastParent, place);
     }
 
     @Override

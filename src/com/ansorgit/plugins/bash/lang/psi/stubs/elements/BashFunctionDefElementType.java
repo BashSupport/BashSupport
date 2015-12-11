@@ -25,6 +25,12 @@ public class BashFunctionDefElementType extends BashStubElementType<BashFunction
         super("function-def-element");
     }
 
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "bash.functionDef";
+    }
+
     public void serialize(@NotNull BashFunctionDefStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }

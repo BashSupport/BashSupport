@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of variable definitions.
@@ -37,6 +38,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 abstract class AbstractVariableDefParsing implements ParsingFunction {
+    public static final TokenSet EQ_SET = TokenSet.create(EQ);
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
     private final String commandName;
@@ -122,8 +124,8 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         builder.getTokenText();
 
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
-            boolean ok = Parsing.word.parseWord(builder);
-            builder.getTokenText();
+            boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY);
+            //builder.getTokenText();
 
             if (!ok) {
                 return false;
@@ -142,9 +144,10 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         final PsiBuilder.Marker start = builder.mark();
 
         if (builder.getTokenType() == BashTokenTypes.ASSIGNMENT_WORD) {
-            builder.advanceLexer();
+            start.drop();
+            return true;
         } else if (Parsing.word.isWordToken(builder)) {
-            if (!Parsing.word.parseWord(builder)) {
+            if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY)) {
                 start.rollbackTo();
 
                 return false;

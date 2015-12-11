@@ -21,6 +21,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: Jan 30, 2010
  * Time: 12:48:49 PM
  */
-abstract class AbstractHeredocMarker extends BashBaseStubElementImpl<StubElement> implements BashHereDocMarker {
+abstract class AbstractHeredocMarker extends BashBaseElement implements BashHereDocMarker {
     private HeredocMarkerReference reference;
 
     public AbstractHeredocMarker(ASTNode astNode, String name) {

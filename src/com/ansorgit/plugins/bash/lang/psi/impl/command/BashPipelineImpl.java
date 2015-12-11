@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashPipeline;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
@@ -28,7 +29,7 @@ import com.intellij.psi.stubs.StubElement;
  * Date: Dec 3, 2009
  * Time: 10:46:40 AM
  */
-public class BashPipelineImpl extends BashBaseStubElementImpl<StubElement> implements BashPipeline {
+public class BashPipelineImpl extends BashBaseElement implements BashPipeline {
     public BashPipelineImpl(final ASTNode astNode) {
         super(astNode, "pipeline command");
     }

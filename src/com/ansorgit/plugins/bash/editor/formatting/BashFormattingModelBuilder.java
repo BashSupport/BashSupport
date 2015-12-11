@@ -43,7 +43,7 @@ public class BashFormattingModelBuilder implements FormattingModelBuilder {
         ASTNode node = element.getNode();
         assert node != null;
 
-        PsiFile containingFile = element.getContainingFile();//.getViewProvider().getPsi(BashFileType.BASH_LANGUAGE);
+        PsiFile containingFile = element.getContainingFile();
         ASTNode astNode = containingFile.getNode();
         assert astNode != null;
 

@@ -10,26 +10,26 @@ import org.junit.Test;
 public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCase {
     @Test
     public void testSimpleAccess() throws Exception {
-        doTest("arrayUseOfSimpleVarInspection/simpleVar", new ArrayUseOfSimpleVarInspection());
+        doTest("arrayUseOfSimpleVarInspection/simpleVar", new SimpleArrayUseInspection());
     }
 
     @Test
     public void testSimpleAccessDeclared() throws Exception {
-        doTest("arrayUseOfSimpleVarInspection/simpleVarDeclared", new ArrayUseOfSimpleVarInspection());
+        doTest("arrayUseOfSimpleVarInspection/simpleVarDeclared", new SimpleArrayUseInspection());
     }
 
     @Test
     public void testSimpleAccessTypeset() throws Exception {
-        doTest("arrayUseOfSimpleVarInspection/arrayVarTypeset", new ArrayUseOfSimpleVarInspection());
+        doTest("arrayUseOfSimpleVarInspection/arrayVarTypeset", new SimpleArrayUseInspection());
     }
 
     @Test
     public void testArrayAccess() throws Exception {
-        doTest("arrayUseOfSimpleVarInspection/arrayVar", new ArrayUseOfSimpleVarInspection());
+        doTest("arrayUseOfSimpleVarInspection/arrayVar", new SimpleArrayUseInspection());
     }
 
     @Test
     public void testArrayAccessDeclared() throws Exception {
-        doTest("arrayUseOfSimpleVarInspection/arrayVarDeclared", new ArrayUseOfSimpleVarInspection());
+        doTest("arrayUseOfSimpleVarInspection/arrayVarDeclared", new SimpleArrayUseInspection());
     }
 }

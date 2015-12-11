@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.valueExpansion.ValueExpansionUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
@@ -34,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: Nov 14, 2009
  * Time: 3:04:41 PM
  */
-public class BashExpansionImpl extends BashBaseStubElementImpl<StubElement> implements BashExpansion {
+public class BashExpansionImpl extends BashBaseElement implements BashExpansion {
     public BashExpansionImpl(ASTNode astNode) {
         super(astNode, "Bash expansion");
     }

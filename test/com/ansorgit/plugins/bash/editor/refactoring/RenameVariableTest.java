@@ -45,6 +45,31 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testBasicEvalRename() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
+    public void testBasicEvalRenameInlined() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
+    public void testEvalRenameEscaped() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testEvalRenameEscaped2() throws Exception {
+        doRename(false);
+    }
+
+    @Test
+    public void testEvalRenameEscapedSimple() throws Exception {
+        doRename(false);
+    }
+
+    @Test
     @Ignore //broken atm
     public void _testEvalRenameInlined() throws Exception {
         doRename(new Runnable() {

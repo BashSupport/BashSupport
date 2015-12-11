@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api;
 
+import com.intellij.openapi.util.TextRange;
+
 /**
  * User: jansorg
  * Date: 21.05.2009
@@ -25,4 +27,6 @@ package com.ansorgit.plugins.bash.lang.psi.api;
  */
 public interface BashBackquote extends BashPsiElement {
     String getCommandText();
+
+    TextRange getCommandTextRange();
 }

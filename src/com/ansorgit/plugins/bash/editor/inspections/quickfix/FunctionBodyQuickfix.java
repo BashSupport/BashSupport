@@ -58,10 +58,10 @@ public class FunctionBodyQuickfix extends AbstractBashPsiElementQuickfix {
 
         BashFunctionDef functionDef = (BashFunctionDef) startElement;
 
-        final BashBlock block = functionDef.body();
+        final BashBlock block = functionDef.functionBody();
         if (block != null) {
             StringBuilder builder = new StringBuilder();
-            final BashBlock body = functionDef.body();
+            final BashBlock body = functionDef.functionBody();
             builder.append("{ ").append(body.getText()).append(" }");
 
             int startOffset = body.getTextOffset();

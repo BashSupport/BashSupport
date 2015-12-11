@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
@@ -39,20 +40,8 @@ public class BashGroupImpl extends BashCompositeElement implements BashBlock {
         return true;
     }
 
-    public PsiElement commandGroup() {
-        return this;
-    }
-
-    private boolean isFunctionBody() {
-        return getParent() instanceof BashFunctionDef;
-    }
-
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        if (isFunctionBody()) {
-            return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        }
-
-        return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+        return BashResolveUtil.processContainerDeclarations(this, processor, state, lastParent, place);
     }
 }

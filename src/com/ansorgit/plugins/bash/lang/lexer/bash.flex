@@ -90,7 +90,6 @@ Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | 
 ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 
 IntegerLiteral = [0] | ([1-9][0-9]*)
-//BaseIntegerLiteral = [1-9][0-9]* "#" [0-9a-zA-Z@_]+
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
@@ -354,7 +353,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "trap"                        { return TRAP_KEYWORD; }
   "let"                         { return LET_KEYWORD; }
 }
-/***************** _______ END OF INITIAL STAATE _______ **************************/
+/***************** _______ END OF INITIAL STATE _______ **************************/
 
 <S_TEST_COMMAND> {
   " ]]"                         { backToPreviousState(); return _BRACKET_KEYWORD; }
@@ -546,15 +545,13 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* string literals */
 <S_STRINGMODE> {
   \"                            { if (stringParsingState().isNewAllowed()) {
-                                    stringParsingState().enterSubstring(); return STRING_BEGIN; //fixme
+                                    stringParsingState().enterSubstring(); return STRING_BEGIN;
                                   } else if (stringParsingState().isInSubstring()) {
                                     stringParsingState().leaveSubstring(); return STRING_DATA;
                                   } else {
                                     backToPreviousState(); return STRING_END;
                                   }
                                 }
-
-  //{Variable}                  { return VARIABLE; }
 
   /* Backquote expression inside of evaluated strings */
   `                           { stringParsingState().advanceToken(); if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }

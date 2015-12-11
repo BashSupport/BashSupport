@@ -2,7 +2,6 @@ package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.util.IntStack;
-import com.google.common.collect.Iterables;
 
 /**
  *
@@ -10,7 +9,7 @@ import com.google.common.collect.Iterables;
 public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
-    private final StringLexingtate string = new StringLexingtate();
+    private final StringLexingstate string = new StringLexingstate();
     //parameter expansion parsing state
     boolean paramExpansionHash = false;
     boolean paramExpansionWord = false;
@@ -65,7 +64,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public StringLexingtate stringParsingState() {
+    public StringLexingstate stringParsingState() {
         return string;
     }
 

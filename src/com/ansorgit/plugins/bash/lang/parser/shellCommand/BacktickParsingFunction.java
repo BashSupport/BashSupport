@@ -47,12 +47,11 @@ public class BacktickParsingFunction implements ParsingFunction {
         /*
           backquote: '`' compound_list '`'
          */
-        log.assertTrue(isValid(builder));
 
         final PsiBuilder.Marker backquote = builder.mark();
         builder.advanceLexer(); //after the initial backquote
-        builder.getBackquoteData().enterBackquote();
 
+        builder.getBackquoteData().enterBackquote();
         try {
             final boolean empty = builder.getTokenType() == BashTokenTypes.BACKQUOTE;
 

@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BashFunctionProcessor.java, Class: BashFunctionProcessor
  * Last modified: 2011-03-08 20:41
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,15 +26,10 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-/**
- * Date: 12.04.2009
- * Time: 23:20:07
- *
- * @author Joachim Ansorg
- */
 public class BashFunctionProcessor extends BashAbstractProcessor {
     private final String symboleName;
     private final boolean ignoreExecuteResult;
@@ -51,18 +46,12 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
         this.ignoreExecuteResult = ignoreExecuteResult;
     }
 
-    public boolean execute(PsiElement element, ResolveState resolveState) {
-       /* if (visitedElements.contains(element)) {
-            return true;
-        }
-
-        visitedElements.add(element);*/
-
+    public boolean execute(@NotNull PsiElement element, @NotNull ResolveState resolveState) {
         if (element instanceof BashFunctionDef) {
-            final BashFunctionDef f = (BashFunctionDef) element;
+            BashFunctionDef funcDef = (BashFunctionDef) element;
 
-            if (symboleName.equals(f.getName())) {
-                storeResult(element, BashPsiUtils.blockNestingLevel(f));
+            if (symboleName.equals(funcDef.getName())) {
+                storeResult(element, BashPsiUtils.blockNestingLevel(funcDef));
                 return ignoreExecuteResult;
             }
         }
@@ -70,7 +59,7 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
         return true;
     }
 
-    public <T> T getHint(Key<T> key) {
+    public <T> T getHint(@NotNull Key<T> key) {
         if (key.equals(Keys.VISITED_SCOPES_KEY)) {
             return (T) visitedElements;
         }

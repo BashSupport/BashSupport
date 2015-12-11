@@ -18,7 +18,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public void testSimpleCompletion() throws Throwable {
         configureByTestName();
 
-        checkItems("./SimpleCompletion.bash");
+        checkItems("./simpleCompletion.bash");
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DynamicPathCompletionTest extends AbstractCompletionTest {
 
         complete();
 
-        Assert.assertNotNull(myItems);
+        Assert.assertNotNull("Expected completion, but got " + myItems, myItems);
         Assert.assertTrue("No completions for $HOME", myItems.length >= 1);
 
         for (LookupElement item : myItems) {

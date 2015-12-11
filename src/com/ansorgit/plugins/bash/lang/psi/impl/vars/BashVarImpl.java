@@ -26,9 +26,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.lang.ASTNode;
@@ -36,12 +38,14 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
+import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,13 +55,31 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Joachim Ansorg
  */
-public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements BashVar {
+public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, BashVarUse, StubBasedPsiElement<BashVarStub> {
     private static final Object[] OBJECTS_EMPTY = new Object[0];
+
     private final BashReference cachingVarReference;
+    private Boolean singleWord;
+    private String referencedName;
+    private TextRange nameTextRange;
 
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
         this.cachingVarReference = new CachedBashVarReference(this);
+    }
+
+    public BashVarImpl(@NotNull BashVarStub stub, @NotNull IStubElementType nodeType) {
+        super(stub, nodeType, "Bash var def");
+        this.cachingVarReference = new CachedBashVarReference(this);
+    }
+
+    @Override
+    public void subtreeChanged() {
+        super.subtreeChanged();
+
+        this.singleWord = null;
+        this.referencedName = null;
+        this.nameTextRange = null;
     }
 
     @Override
@@ -80,33 +102,66 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
         return cachingVarReference;
     }
 
+    @Override
+    public final boolean isVarDefinition() {
+        return false;
+    }
+
     public PsiElement getElement() {
         return this;
     }
 
     @Override
     public String getName() {
-        return getReferencedName();
+        return getReferenceName();
     }
 
-    public String getReferencedName() {
-        final String text = getText();
+    @Override
+    public PsiElement setName(@NonNls @NotNull String newName) throws IncorrectOperationException {
+        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
+            throw new IncorrectOperationException("can't have an empty name");
+        }
 
-        return isSingleWord() ? text : text.substring(1);
+        PsiElement original = this;                                                                                //fixme
+        PsiElement replacement = BashPsiElementFactory.createVariable(getProject(), newName, isParameterExpansion());
+        return BashPsiUtils.replaceElement(original, replacement);
+    }
+
+    public String getReferenceName() {
+        BashVarStub stub = getStub();
+        if (stub != null) {
+            return stub.getName();
+        }
+
+        if (referencedName == null) {
+            final String text = getText();
+
+            referencedName = (isSingleWord() || text.isEmpty()) ? text : text.substring(1);
+        }
+
+        return referencedName;
     }
 
     /**
-     * A variable which is just a single word (ABC or def) can appear is a parameter substitution block (e.g. ${ABC}).
+     * A variable which is just a single word (ABC or def) can appear in a parameter substitution block (e.g. ${ABC}).
      *
      * @return True if this variable is just a single, composed word token
      */
-    private boolean isSingleWord() {
-        String text = getText();
-        return text.length() > 0 && text.charAt(0) != '$';
+    public boolean isSingleWord() {
+        BashVarStub stub = getStub();
+        if (stub != null) {
+            return stub.isSingleWord();
+        }
+
+        if (singleWord == null) {
+            singleWord = getTextLength() > 0 && getText().charAt(0) != '$';
+        }
+
+        return singleWord;
     }
 
     public boolean isBuiltinVar() {
-        String name = getReferencedName();
+        String name = getReferenceName();
         return LanguageBuiltins.bashShellVars.contains(name) || LanguageBuiltins.bourneShellVars.contains(name);
     }
 
@@ -115,14 +170,16 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
     }
 
     public boolean isParameterReference() {
-        if (LanguageBuiltins.bashShellParamReferences.contains(getReferencedName())) {
+        if (getTextLength() > 2) {
+            return false;
+        }
+
+        if (LanguageBuiltins.bashShellParamReferences.contains(getReferenceName())) {
             return true;
         }
 
         //slower fallback which checks if the parameter is  a number
-        int numericValue = NumberUtils.toInt(getReferencedName(), -1);
-        return numericValue >= 0;
-
+        return NumberUtils.toInt(getReferenceName(), -1) >= 0;
     }
 
     public boolean isArrayUse() {
@@ -134,6 +191,15 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
         }
 
         return false;
+    }
+
+    protected TextRange getNameTextRange() {
+        if (nameTextRange == null) {
+            int offset = isSingleWord() ? 0 : 1;
+            nameTextRange = TextRange.create(offset, getTextLength());
+        }
+
+        return nameTextRange;
     }
 
     private static class CachedBashVarReference extends CachingReference implements BashReference, BindablePsiReference {
@@ -155,18 +221,19 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
         }
 
         @Override
-        public TextRange getRangeInElement() {
-            if (bashVar.isSingleWord()) {
-                return TextRange.from(0, getReferencedName().length());
-            }
+        public boolean isReferenceTo(PsiElement element) {
+            return super.isReferenceTo(element);
+        }
 
-            return TextRange.from(1, getReferencedName().length());
+        @Override
+        public TextRange getRangeInElement() {
+            return bashVar.getNameTextRange();
         }
 
         @NotNull
         @Override
         public String getCanonicalText() {
-            return bashVar.getReferencedName();
+            return bashVar.getReferenceName();
         }
 
         public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
@@ -195,7 +262,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<StubElement> implements
 
         @Override
         public String getReferencedName() {
-            return bashVar.getReferencedName();
+            return bashVar.getReferenceName();
         }
     }
 }

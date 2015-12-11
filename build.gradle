@@ -1,83 +1,54 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url "http://repository.jetbrains.com/repo/" }
-    }
-}
-
 plugins {
-    id "org.jetbrains.intellij" version "0.0.27"
+    id "org.jetbrains.intellij" version "0.0.31"
 }
 
-version = '1.5.2.135'
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "http://repository.jetbrains.com/repo/" }
-}
-
-apply plugin: 'org.jetbrains.intellij'
-
-intellij {
-    version '13.1.0'
-    plugins 'IntelliLang'
-    pluginName 'BashSupport'
-    updateSinceUntilBuild false
-
-    publish {
-        username 'wallaby'
-        pluginId '4230'
-    }
-}
-
-sourceCompatibility = "1.6"
-targetCompatibility = "1.6"
-
-sourceSets {
-    main {
-        java {
-            srcDirs 'src'
-        }
-        resources {
-            srcDir 'resources'
-        }
-    }
-    test {
-        java {
-            srcDir 'test'
-        }
-        resources {
-            srcDir 'testResources'
-        }
-    }
-}
-
-//test.ignoreFailures = true
-test.testLogging.showStandardStreams = true
-
-test {
-    systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
-}
-
+version = "${version}"
 allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
     plugins.withType(JavaPlugin) {
         test {
-            ignoreFailures = false
             systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
         }
     }
+
+    sourceSets {
+        main {
+            java.srcDirs 'src'
+            resources.srcDir 'resources'
+        }
+        test {
+            java.srcDir 'test'
+            resources.srcDir 'testResources'
+        }
+    }
+
+    apply plugin: 'org.jetbrains.intellij'
+    intellij {
+        version ideaVersion
+        pluginName 'BashSupport'
+        plugins 'IntelliLang'
+        downloadSources Boolean.valueOf(sources)
+        publish {
+            pluginId '4230'
+            username 'wallaby'
+            password System.properties['intellij.publish.password']
+        }
+    }
+
+    ant.importBuild("build.xml")
+    task doJFlex(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME) {
+        doLast {
+            jflex
+        }
+    }
+
+    compileJava.dependsOn(doJFlex)
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.6'
-}
-
-ant.importBuild("build.xml")
-
-task doJFlex(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME) {
-    doLast {
-        jflex
-    }
+    gradleVersion = '2.9'
 }
