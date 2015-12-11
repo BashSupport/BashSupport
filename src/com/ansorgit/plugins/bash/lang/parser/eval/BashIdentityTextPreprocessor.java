@@ -46,4 +46,10 @@ public class BashIdentityTextPreprocessor implements TextPreprocessor {
     public boolean containsRange(int tokenStart, int tokenEnd) {
         return getContentRange().containsRange(tokenStart, tokenEnd);
     }
+
+    @Override
+    public String patchOriginal(String originalText) {
+        return originalText;
+    }
+
 }

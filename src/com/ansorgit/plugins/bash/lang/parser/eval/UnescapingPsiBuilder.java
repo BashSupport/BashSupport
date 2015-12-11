@@ -60,7 +60,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
                                 @NotNull final ParserDefinition parserDefinition,
                                 @NotNull final Lexer lexer,
                                 @NotNull final ASTNode chameleon,
-                                @NotNull CharSequence originalText,
+                                @NotNull final CharSequence originalText,
                                 @NotNull final CharSequence processedText,
                                 @NotNull final TextPreprocessor textProcessor) {
         this(new PsiBuilderImpl(project, parserDefinition, lexer, chameleon, originalText), textProcessor, processedText);
@@ -277,16 +277,8 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
             int originalEnd = textProcessor.getOffsetInHost(tokenEnd - delta);
 
             if (textProcessor.containsRange(tokenStart, tokenEnd) && originalStart != -1 && originalEnd != -1) {
-
-                //assert originalStart != -1;
-                //assert originalEnd != -1;
-
                 realLength = originalEnd - originalStart;
                 int masqueLength = tokenEnd - tokenStart;
-
-                if (!(originalEnd > originalStart)) {
-                    int i = 1;
-                }
 
                 myShrunkSequence.add(new MyShiftedToken(tokenType,
                         realPos, realPos + realLength,

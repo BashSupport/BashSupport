@@ -1,10 +1,8 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.LanguageParserDefinitions;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiParser;
+import com.intellij.lang.*;
+import com.intellij.lang.impl.PsiBuilderImpl;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
@@ -47,6 +45,8 @@ public class BashEvalElementType extends ILazyParseableElementType {
         StringBuilder processedContent = new StringBuilder(content.length());
         textProcessor.decode(content, processedContent);
 
+        String patchedContent = textProcessor.patchOriginal(content);
+
         String processedComplete = prefix + processedContent + suffix;
 
         ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
@@ -57,14 +57,17 @@ public class BashEvalElementType extends ILazyParseableElementType {
                 prefix, TokenType.WHITE_SPACE,
                 suffix, TokenType.WHITE_SPACE);
 
-        UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project,
+        /*UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project,
                 def,
                 prefixSuffixLexer,
                 chameleon,
-                originalText,
+                prefix + patchedContent + suffix,
                 processedComplete,
                 textProcessor);
+          */
 
-        return parser.parse(this, adaptingPsiBuilder).getFirstChildNode();
+        PsiBuilder builder =  new PsiBuilderImpl(project, def, prefixSuffixLexer, chameleon,  prefix + patchedContent + suffix);
+
+        return parser.parse(this, builder).getFirstChildNode();
     }
 }

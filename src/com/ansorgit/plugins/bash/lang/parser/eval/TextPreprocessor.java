@@ -44,4 +44,6 @@ public interface TextPreprocessor {
     TextRange getContentRange();
 
     boolean containsRange(int tokenStart, int tokenEnd);
+
+    String patchOriginal(String originalText);
 }

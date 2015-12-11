@@ -42,7 +42,6 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.xmlb.annotations.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,22 +57,6 @@ import java.util.List;
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
-    }
-
-    /**
-     * Finds the file context for a given element. If element is inside of an Bash file injection host (e.g. because the element is in an eval command)
-     * then the host file is returned.
-     *
-     * @param element
-     * @param leaveInjectionHosts
-     * @return The file on disk
-     */
-    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
-        if (leaveInjectionHosts) {
-            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
-        }
-
-        return element.getContainingFile();
     }
 
     /**
@@ -382,7 +365,7 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(childCandidate, true));
+        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
 
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {

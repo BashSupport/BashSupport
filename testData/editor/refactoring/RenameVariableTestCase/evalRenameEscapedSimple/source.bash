@@ -1,3 +1,2 @@
 . target.bash
-<caret>$a
-eval $'\$a=$a'
+eval $'a=$<caret>a'

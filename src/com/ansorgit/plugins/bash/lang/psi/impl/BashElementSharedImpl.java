@@ -5,9 +5,7 @@ import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.util.BashFunctions;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -27,7 +25,7 @@ import java.util.Set;
 
 public class BashElementSharedImpl {
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
-        PsiFile psiFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile psiFile = element.getContainingFile();
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
@@ -40,7 +38,7 @@ public class BashElementSharedImpl {
         //all files which include this element's file belong to the requested scope
         //bash files can call other bash files, thus the scope needs to be the module scope at minumum
         //fixme can this be optimized?
-        PsiFile currentFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile currentFile = element.getContainingFile();
         if (currentFile == null) {
             //no other fallback possible here
             return GlobalSearchScope.projectScope(project);
@@ -62,7 +60,7 @@ public class BashElementSharedImpl {
                         BashCommand.class);
                 if (commands != null) {
                     for (BashCommand command : commands) {
-                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command, true));
+                        referencingScriptFiles.add(command.getContainingFile());
                     }
                 }
             }
@@ -86,28 +84,5 @@ public class BashElementSharedImpl {
 
     public static boolean walkDefinitionScope(PsiElement thisElement, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(thisElement, processor, state, lastParent, place);
-        /*
-        if (thisElement == lastParent) {
-            return true;
-        }
-
-        PsiElement child = thisElement.getFirstChild();
-        if (child == lastParent) {
-            return true;
-        }
-
-        while (child != null) {
-            if (!child.processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-
-            if (child == lastParent) {
-                break;
-            }
-
-            child = child.getNextSibling();
-        }
-
-        return true;*/
     }
 }

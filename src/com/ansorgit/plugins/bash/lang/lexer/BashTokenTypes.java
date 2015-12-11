@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
+import com.ansorgit.plugins.bash.lang.parser.eval.BashEvalElementType;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;

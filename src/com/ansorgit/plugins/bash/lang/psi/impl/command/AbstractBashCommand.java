@@ -2,45 +2,35 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.lang.psi.api.shell.BashTrapCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStubBase;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashFunctionNameIndex;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashScriptNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.io.FileSystemUtil;
-import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubIndex;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PathUtil;
@@ -314,7 +304,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
             Project project = cmd.getProject();
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+            PsiFile currentFile = cmd.getContainingFile();
 
             GlobalSearchScope allFiles = FileInclusionManager.includedFilesUnionScope(currentFile);
             Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, allFiles, BashFunctionDef.class);
@@ -451,7 +441,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
                 return null;
             }
 
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+            PsiFile currentFile = cmd.getContainingFile();
             return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
         }
 
@@ -490,7 +480,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             if (element instanceof PsiFile) {
                 //findRelativeFilePath already leaves the injection host file
-                PsiFile currentFile = BashPsiUtils.findFileContext(cmd, false);
+                PsiFile currentFile = cmd.getContainingFile();
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
 
                 return handleElementRename(relativeFilePath);

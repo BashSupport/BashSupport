@@ -37,8 +37,8 @@ public class PsiScopesUtil {
                                              PsiElement lastParent,
                                              PsiElement place) {
 
-        for (PsiElement child = thisElement.getFirstChild(); child != null && child != lastParent; child = child.getNextSibling()) {
-            if (!child.processDeclarations(processor, state, null, place)) {
+        for (PsiElement child = thisElement.getFirstChild(); child != null; child = child.getNextSibling()) {
+            if (child != lastParent && !child.processDeclarations(processor, state, null, place)) {
                 return false;
             }
         }

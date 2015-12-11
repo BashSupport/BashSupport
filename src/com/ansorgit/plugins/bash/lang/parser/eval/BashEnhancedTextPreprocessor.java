@@ -30,6 +30,9 @@ import org.jetbrains.annotations.NotNull;
  * with  a  backslash.  If enabled, history expansion will be performed unless an !  appearing in double quotes is
  * escaped using a backslash.  The backslash preceding the !  is not removed.
  *  </pre>
+ * <p/>
+ * THis text preprocessor is used for $'' ASNI escaped strings. The valid escape values are documented at
+ * http://wiki.bash-hackers.org/syntax/quoting .
  *
  * @author jansorg
  */
@@ -42,120 +45,10 @@ public class BashEnhancedTextPreprocessor implements TextPreprocessor {
         this.contentRange = contentRange;
     }
 
-    /**
-     * Handles escape codes in evaluated string, e.g. the string in
-     * <code>eval "echo \˜This is the value of \$x: $x\""</code>
-     *
-     * @param chars
-     * @param outChars
-     * @param sourceOffsetsRef
-     * @return
-     */
-    private static boolean parseStringCharacters(String chars, StringBuilder outChars, Ref<int[]> sourceOffsetsRef) {
-        int[] sourceOffsets = new int[chars.length() + 1];
-        sourceOffsetsRef.set(sourceOffsets);
-
-        //init with -1
-        TextProcessorUtil.resetOffsets(sourceOffsets);
-
-        if (chars.indexOf('\\') < 0) {
-            outChars.append(chars);
-            for (int i = 0; i < sourceOffsets.length; i++) {
-                sourceOffsets[i] = i;
-            }
-            return true;
-        }
-
-        int index = 0;
-        while (index < chars.length()) {
-            char c = chars.charAt(index++);
-
-            sourceOffsets[outChars.length()] = index - 1;
-            sourceOffsets[outChars.length() + 1] = index;
-
-            if (c != '\\') {
-                outChars.append(c);
-                continue;
-            }
-
-            if (index == chars.length()) {
-                return false;
-            }
-
-            c = chars.charAt(index++);
-            switch (c) {
-                //newline
-                case 'n':
-                    outChars.append('\n');
-                    break;
-
-                //return
-                case 'r':
-                    outChars.append('\r');
-                    break;
-
-                //tab
-                case 't':
-                    outChars.append('\t');
-                    break;
-
-                //vertical tab
-                case 'v':
-                    outChars.append(0x0B);
-                    break;
-
-                //backspace
-                case 'b':
-                    outChars.append('\b');
-                    break;
-
-                //alert
-                case 'a':
-                    outChars.append(0x07);
-                    break;
-
-                //escaped dollar
-                case '$':
-                case '"':
-                case '\'':
-                case '\\':
-                    outChars.append(c);
-                    break;
-
-                //octal
-                case '0':
-                    //fixme handle 1 to 3 possible octal numbers
-                    if (index + 2 <= chars.length()) {
-                        try {
-                            int v = Integer.parseInt(chars.substring(index, index + 2), 8);
-                            outChars.append((char) v);
-                            index += 2;
-                        } catch (Exception e) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                    break;
-
-                //all other escape codes do not change the content
-                default:
-                    outChars.append('\\');
-                    outChars.append(c);
-                    break;
-            }
-
-            sourceOffsets[outChars.length()] = index;
-        }
-        return true;
-    }
-
     @Override
     public boolean decode(String content, @NotNull StringBuilder outChars) {
         Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
-
-        boolean result = parseStringCharacters(content, outChars, sourceOffsetsRef);
-
+        boolean result = TextProcessorUtil.enhancedParseStringCharacters(content, outChars, sourceOffsetsRef);
         this.outSourceOffsets = sourceOffsetsRef.get();
 
         return result;
@@ -178,5 +71,10 @@ public class BashEnhancedTextPreprocessor implements TextPreprocessor {
     @Override
     public boolean containsRange(int tokenStart, int tokenEnd) {
         return getContentRange().containsRange(tokenStart, tokenEnd);
+    }
+
+    @Override
+    public String patchOriginal(String originalText) {
+        return TextProcessorUtil.patchOriginal(originalText, outSourceOffsets);
     }
 }

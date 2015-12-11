@@ -1,5 +1,10 @@
+####2015-12-11
+ - Up to 35x faster file highlighting
+ - Improved eval and trap parsing
+ - Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets
+
 ####2015-11-04
- - \#290: Inspections have no descriptions 
+ - \#290: Inspections have no descriptions
  - \#289: Quickdoc lookup not working for keywords 
  - \#288: Documentation lookup not working for functions 
  - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"

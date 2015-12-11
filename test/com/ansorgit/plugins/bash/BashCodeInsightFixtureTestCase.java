@@ -20,7 +20,6 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.testFramework.UsefulTestCase;
 import com.intellij.testFramework.builders.EmptyModuleFixtureBuilder;
 import com.intellij.testFramework.builders.ModuleFixtureBuilder;
@@ -29,8 +28,6 @@ import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TestFixtureBuilder;
 import org.jetbrains.annotations.NonNls;
-import org.junit.After;
-import org.junit.Before;
 
 import java.io.File;
 
@@ -40,6 +37,10 @@ import java.io.File;
 public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuilder> extends UsefulTestCase {
     protected CodeInsightTestFixture myFixture;
     protected Module myModule;
+
+    protected PsiElement configurePsiAtCaret() {
+        return configurePsiAtCaret(getTestName(true) + ".bash");
+    }
 
     protected PsiElement configurePsiAtCaret(String fileNameInTestPath) {
         return BashTestUtils.configureFixturePsiAtCaret(fileNameInTestPath, myFixture);
@@ -100,7 +101,7 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     @NonNls
     protected String getTestDataPath() {
         String basePath = getBasePath();
-        return  BashTestUtils.getBasePath() + (basePath.endsWith(File.separator) ? "" : File.separator) + basePath;
+        return BashTestUtils.getBasePath() + (basePath.endsWith(File.separator) ? "" : File.separator) + basePath;
     }
 
     protected boolean isCommunity() {

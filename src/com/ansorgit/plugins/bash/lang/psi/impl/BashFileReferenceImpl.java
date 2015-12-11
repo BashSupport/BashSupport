@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -34,11 +33,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
+    private final PsiReference fileReference = new CachingFileReference(this);
+
     public BashFileReferenceImpl(final ASTNode astNode) {
         super(astNode, "Bash File reference");
     }
-
-    private final PsiReference fileReference = new CachingFileReference(this);
 
     @Nullable
     @Override
@@ -124,7 +123,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         public PsiElement bindToElement(@NotNull PsiElement targetElement) throws IncorrectOperationException {
             if (targetElement instanceof PsiFile) {
                 //findRelativePath already leaves the injection host file
-                PsiFile currentFile = BashPsiUtils.findFileContext(this.element, false);
+                PsiFile currentFile = this.element.getContainingFile();
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) targetElement);
 
                 return handleElementRename(relativeFilePath);
@@ -155,7 +154,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
         @Nullable
         public PsiElement resolveInner() {
-            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), false);
+            PsiFile containingFile = getElement().getContainingFile();
             if (!containingFile.isPhysical()) {
                 return null;
             }

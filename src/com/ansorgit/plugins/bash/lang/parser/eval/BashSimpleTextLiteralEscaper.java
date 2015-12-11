@@ -49,8 +49,7 @@ public class BashSimpleTextLiteralEscaper<T extends PsiLanguageInjectionHost> ex
         String subText = rangeInsideHost.substring(myHost.getText());
 
         Ref<int[]> sourceOffsetsRef = new Ref<int[]>();
-        boolean result = parseStringCharacters(subText, outChars, sourceOffsetsRef);
-
+        boolean result = TextProcessorUtil.parseStringCharacters(subText, outChars, sourceOffsetsRef);
         this.outSourceOffsets = sourceOffsetsRef.get();
 
         return result;
@@ -70,68 +69,4 @@ public class BashSimpleTextLiteralEscaper<T extends PsiLanguageInjectionHost> ex
         return true;
     }
 
-    /**
-     * Handles escape codes in evaluated string, e.g. the string in
-     * <code>eval "echo \˜This is the value of \$x: $x\""</code>
-     *
-     * @param chars
-     * @param outChars
-     * @param sourceOffsetsRef
-     * @return
-     */
-    private static boolean parseStringCharacters(String chars, StringBuilder outChars, Ref<int[]> sourceOffsetsRef) {
-        int[] sourceOffsets = new int[chars.length() + 1];
-        sourceOffsetsRef.set(sourceOffsets);
-
-        //if there is no escape code in the text create a simple offset mapping (source position is target position)
-        if (chars.indexOf('\\') < 0) {
-            outChars.append(chars);
-            for (int i = 0; i < sourceOffsets.length; i++) {
-                sourceOffsets[i] = i;
-            }
-            return true;
-        }
-
-        int index = 0;
-        while (index < chars.length()) {
-            char c = chars.charAt(index);
-            index++;
-
-            sourceOffsets[outChars.length()] = index - 1;
-            sourceOffsets[outChars.length() + 1] = index;
-
-            if (c != '\\') {
-                //no escape code
-                outChars.append(c);
-                continue;
-            }
-
-            if (index == chars.length()) {
-                //backslash is the last character, append it as-is
-                outChars.append(c);
-                return true;
-            }
-
-            //handle the escape code character
-            c = chars.charAt(index);
-            index++;
-
-            if (c == '"' || c == '$' || c == '`' || c == '\\' || c == '!' || c == '\n') {
-                if (c != '\n') {
-                    //the current character is a valid escape code and will be replaced with it's escaped value
-                    outChars.append(c);
-                } else {
-                    //\<newline> is a line continuation and is effectively ignored
-                }
-            } else {
-                //all other characters retain their original meaning, i.e. \a is \a without escape code interpretation
-                outChars.append('\\');
-                outChars.append(c);
-            }
-
-            //sourceOffsets[outChars.length() - 1] = index;
-            sourceOffsets[outChars.length()] = index;
-        }
-        return true;
-    }
 }

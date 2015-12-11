@@ -130,7 +130,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         PsiElement original = findAssignmentWord();
         PsiElement replacement = BashPsiElementFactory.createAssignmentWord(getProject(), newName);
-        return BashPsiUtils.replaceElement(original, replacement);
+        BashPsiUtils.replaceElement(original, replacement);
+        return this;
     }
 
     public boolean isArray() {

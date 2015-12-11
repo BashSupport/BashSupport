@@ -1,6 +1,6 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
-import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.io.FileUtil;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-public class RenameVariableTest extends LightBashCodeInsightFixtureTestCase {
+public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/RenameVariableTestCase/";
@@ -56,12 +56,17 @@ public class RenameVariableTest extends LightBashCodeInsightFixtureTestCase {
 
     @Test
     public void testEvalRenameEscaped() throws Exception {
-        doRename(false, "source.bash");
+        doRename(false);
+    }
+
+    @Test
+    public void testEvalRenameEscaped2() throws Exception {
+        doRename(false);
     }
 
     @Test
     public void testEvalRenameEscapedSimple() throws Exception {
-        doRename(false, "source.bash");
+        doRename(false);
     }
 
     @Test
