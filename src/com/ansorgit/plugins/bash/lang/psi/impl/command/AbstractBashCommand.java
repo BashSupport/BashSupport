@@ -5,7 +5,10 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
-import com.ansorgit.plugins.bash.lang.psi.api.*;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
+import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -38,7 +41,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
     private final PsiReference functionReference = new CachedFunctionReference(this);
@@ -324,7 +330,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
                 }
 
                 if (!scopes.isEmpty()) {
-                    GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+                    //GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+                    GlobalSearchScope scope = GlobalSearchScope.EMPTY_SCOPE;
+                    for (GlobalSearchScope searchScope : scopes) {
+                        scope = scope.uniteWith(searchScope);
+                    }
 
                     functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, scope, BashFunctionDef.class);
 
