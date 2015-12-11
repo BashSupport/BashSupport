@@ -122,16 +122,16 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
             literalType = LiteralType.Other;
 
             PsiElement child = getFirstChild();
-            if (child != null && BashTokenTypes.arithmeticAdditionOps.contains(PsiUtil.getElementType(child))) {
+            if (child != null && BashTokenTypes.arithmeticAdditionOps.contains(BashPsiUtils.getElementType(child))) {
                 //ignore prefix operators
                 child = child.getNextSibling();
             }
 
             if (child != null) {
-                IElementType elementType = PsiUtil.getElementType(child);
+                IElementType elementType = BashPsiUtils.getElementType(child);
 
                 PsiElement second = child.getNextSibling();
-                IElementType typeSecond = second != null ? PsiUtil.getElementType(second) : null;
+                IElementType typeSecond = second != null ? BashPsiUtils.getElementType(second) : null;
 
                 if (elementType == BashTokenTypes.ARITH_HEX_NUMBER) {
                     literalType = LiteralType.HexLiteral;

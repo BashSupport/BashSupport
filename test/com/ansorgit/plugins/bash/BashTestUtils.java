@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash;
 
-import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;

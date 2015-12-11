@@ -168,7 +168,7 @@ public final class BashPsiUtils {
 
         PsiElement current = start.getNextSibling();
         while (current != null) {
-            if (ignoreType != PsiUtil.getElementType(current)) {
+            if (ignoreType != BashPsiUtils.getElementType(current)) {
                 return current;
             }
 
@@ -185,7 +185,7 @@ public final class BashPsiUtils {
 
         PsiElement current = start.getPrevSibling();
         while (current != null) {
-            if (ignoreType != PsiUtil.getElementType(current)) {
+            if (ignoreType != BashPsiUtils.getElementType(current)) {
                 return current;
             }
 
@@ -591,5 +591,10 @@ public final class BashPsiUtils {
         PsiElement childPsi = child.getPsi();
 
         return childPsi != null && childType.isInstance(childPsi);
+    }
+
+    //added for IDEA 13.x
+    public static IElementType getElementType(PsiElement element) {
+        return element == null || element.getNode() == null ? null : element.getNode().getElementType();
     }
 }
