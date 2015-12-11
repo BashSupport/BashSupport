@@ -324,7 +324,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
                 }
 
                 if (!scopes.isEmpty()) {
-                    GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+                    //GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+                    GlobalSearchScope scope = GlobalSearchScope.EMPTY_SCOPE;
+                    for (GlobalSearchScope searchScope : scopes) {
+                        scope = scope.uniteWith(searchScope);
+                    }
 
                     functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, scope, BashFunctionDef.class);
 
