@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashFunctionDefNameImpl extends BashBaseStubElementImpl<StubElement> implements BashFunctionDefName {
+public class BashFunctionDefNameImpl extends BashBaseElement implements BashFunctionDefName {
     public BashFunctionDefNameImpl(ASTNode astNode) {
         super(astNode, "BashFunctionDefName");
     }

@@ -39,4 +39,9 @@ public class BashWhileImpl extends BashKeywordDefaultImpl implements BashWhile {
     public PsiElement keywordElement() {
         return findPsiChildByType(BashTokenTypes.WHILE_KEYWORD);
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }

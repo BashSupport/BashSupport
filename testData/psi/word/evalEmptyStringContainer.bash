@@ -1,0 +1,1 @@
+eval <caret>""       && echo hi

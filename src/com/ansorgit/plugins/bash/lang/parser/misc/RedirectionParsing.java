@@ -44,8 +44,8 @@ public class RedirectionParsing implements ParsingTool {
             HEREDOC_MARKER_TAG
     );
 
-    public boolean parseList(BashPsiBuilder builder, boolean optional) {
-        if (!isRedirect(builder)) {
+    public boolean parseList(BashPsiBuilder builder, boolean optional, boolean allowHeredocs) {
+        if (!isRedirect(builder, true)) {
             if (!optional) {
                 error(builder, "parser.redirect.expected.notFound");
             }
@@ -56,8 +56,8 @@ public class RedirectionParsing implements ParsingTool {
         final PsiBuilder.Marker redirectList = builder.mark();
 
         do {
-            parseSingleRedirect(builder);
-        } while (isRedirect(builder));
+            parseSingleRedirect(builder, allowHeredocs);
+        } while (isRedirect(builder, allowHeredocs)); //fixme isRedirect is inefficient because it does a rollback every time
 
         redirectList.done(REDIRECT_LIST_ELEMENT);
 
@@ -66,7 +66,7 @@ public class RedirectionParsing implements ParsingTool {
 
     //fixme profile and improve, if necessary. This implementation is not very smart at the moment.
     //fixme optimize this for performance
-    public boolean isRedirect(BashPsiBuilder builder) {
+    public boolean isRedirect(BashPsiBuilder builder, boolean allowHeredocs) {
         if (builder.eof()) {
             return false;
         }
@@ -74,7 +74,7 @@ public class RedirectionParsing implements ParsingTool {
         PsiBuilder.Marker marker = builder.mark();
         builder.enterNewErrorLevel(false);
 
-        boolean result = parseSingleRedirect(builder, true);
+        boolean result = parseSingleRedirect(builder, true, allowHeredocs);
 
         builder.leaveLastErrorLevel();
 
@@ -82,11 +82,11 @@ public class RedirectionParsing implements ParsingTool {
         return result;
     }
 
-    public boolean parseSingleRedirect(BashPsiBuilder builder) {
-        return parseSingleRedirect(builder, false);
+    public boolean parseSingleRedirect(BashPsiBuilder builder, boolean allowHeredoc) {
+        return parseSingleRedirect(builder, false, allowHeredoc);
     }
 
-    public boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode) {
+    public boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode, boolean allowHeredoc) {
         PsiBuilder.Marker marker = builder.mark();
 
         IElementType firstToken = builder.getTokenType();
@@ -132,7 +132,7 @@ public class RedirectionParsing implements ParsingTool {
         //eat second token
         builder.advanceLexer();
 
-        if (heredocStarters.contains(secondToken)) {
+        if (allowHeredoc && heredocStarters.contains(secondToken)) {
             if (inCheckMode) {
                 marker.drop();
 
@@ -144,13 +144,12 @@ public class RedirectionParsing implements ParsingTool {
                 return false;
             }
 
-            PsiBuilder.Marker heredocMarker = builder.mark();
-            builder.advanceLexer();
-            heredocMarker.done(HEREDOC_START_ELEMENT);
+            marker.drop();
+
+            ParserUtil.markTokenAndAdvance(builder, HEREDOC_START_ELEMENT);
 
             builder.getParsingState().pushHeredocMarker();
 
-            marker.done(REDIRECT_ELEMENT);
             return true;
         }
 

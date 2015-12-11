@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashInternalCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.BashFunctionVariantsProcessor;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.codeInsight.completion.CompletionContributor;
@@ -37,7 +36,6 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.Icons;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 
@@ -76,7 +74,7 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
 
         PsiElement lookupElement = originalElement != null ? originalElement : element;
         BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor(lookupElement);
-        PsiTreeUtil.treeWalkUp(processor, lookupElement, BashPsiUtils.findFileContext(lookupElement), ResolveState.initial());
+        PsiTreeUtil.treeWalkUp(processor, lookupElement, lookupElement.getContainingFile(), ResolveState.initial());
 
         Collection<LookupElement> functionItems = CompletionProviderUtils.createPsiItems(processor.getFunctionDefs());
         result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));

@@ -1,8 +1,8 @@
 function f() {
     function x() {
-        <ref>a=1
+        <ref>a="re-definition"
     }
 
-    a=1
+    a=definition!
 }
 

@@ -30,13 +30,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIndexVersion;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
-import com.intellij.lang.cacheBuilder.WordOccurrence;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
-import com.intellij.util.Processor;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,21 +47,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
-    private static final class BashWordsScanner extends DefaultWordsScanner {
-        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CONTENT);
-        private static final TokenSet identifiers = TokenSet.create(VARIABLE);
-
-        public BashWordsScanner() {
-            super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
-            setMayHaveFileRefsInLiterals(true);
-        }
-
-        @Override
-        public int getVersion() {
-            return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
-        }
-    }
-
     public WordsScanner getWordsScanner() {
         return new BashWordsScanner();
     }
@@ -135,5 +118,20 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     @NotNull
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
         return getDescriptiveName(element);
+    }
+
+    private static final class BashWordsScanner extends DefaultWordsScanner {
+        private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CONTENT);
+        private static final TokenSet identifiers = TokenSet.create(VARIABLE);
+
+        public BashWordsScanner() {
+            super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
+            setMayHaveFileRefsInLiterals(true);
+        }
+
+        @Override
+        public int getVersion() {
+            return BashIndexVersion.ID_INDEX_VERSION + super.getVersion();
+        }
     }
 }

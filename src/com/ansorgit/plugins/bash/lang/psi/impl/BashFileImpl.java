@@ -19,11 +19,14 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFileStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
@@ -32,7 +35,6 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.SearchScope;
-import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +44,12 @@ import org.jetbrains.annotations.Nullable;
 public class BashFileImpl extends PsiFileBase implements BashFile {
     public BashFileImpl(FileViewProvider viewProvider) {
         super(viewProvider, BashFileType.BASH_LANGUAGE);
+    }
+
+    @Nullable
+    @Override
+    public BashFileStub getStub() {
+        return (BashFileStub) super.getStub();
     }
 
     @NotNull
@@ -61,51 +69,17 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
 
 
     public BashFunctionDef[] functionDefinitions() {
+        BashFileStub stub = getStub();
+        if (stub != null) {
+            return stub.getChildrenByType(BashElementTypes.FUNCTION_DEF_COMMAND, BashFunctionDefStub.ARRAY_FACTORY);
+        }
+
         return findChildrenByClass(BashFunctionDef.class);
     }
 
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
-        if (!processor.execute(this, state)) {
-            return false;
-        }
-
-        boolean walkDeep = BooleanUtils.toBooleanDefaultIfNull(processor.getHint(Keys.FILE_WALK_GO_DEEP), true);
-        boolean moreProcessing = true;
-        if (walkDeep) {
-            PsiElement child = getFirstChild();
-
-            while (child != null) {
-                if (child != lastParent && !child.processDeclarations(processor, state, lastParent, place)) {
-                    moreProcessing = false;
-                }
-
-                child = child.getNextSibling();
-            }
-        } else {
-            //walk the toplevel psi elements without diving into them
-            //we can compute the first element to walk a bit smarter than getFirstChild().
-            //It's the next toplevel element after place, i.e. starting element
-
-            PsiElement child = getFirstChild();
-            while (child != null) {
-                if (!processor.execute(child, state)) {
-                    moreProcessing = false;
-                    break;
-                }
-
-                //include commands have to be visited, though
-                if (child instanceof BashIncludeCommand) {
-                    if (!child.processDeclarations(processor, state, lastParent, place)) {
-                        moreProcessing = false;
-                    }
-                }
-
-                child = child.getNextSibling();
-            }
-        }
-
-        return moreProcessing;
+        return BashResolveUtil.processContainerDeclarations(this, processor, state, lastParent, place);
     }
 
     @NotNull

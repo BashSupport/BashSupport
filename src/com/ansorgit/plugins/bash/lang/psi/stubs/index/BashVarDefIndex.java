@@ -3,6 +3,7 @@ package com.ansorgit.plugins.bash.lang.psi.stubs.index;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User: jansorg
@@ -12,6 +13,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 public class BashVarDefIndex extends StringStubIndexExtension<BashVarDef> {
     public static final StubIndexKey<String, BashVarDef> KEY = StubIndexKey.createIndexKey("bash.vardef");
 
+    @NotNull
     @Override
     public StubIndexKey<String, BashVarDef> getKey() {
         return KEY;

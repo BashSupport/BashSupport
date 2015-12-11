@@ -28,4 +28,10 @@ public class SimpleCommandParsingFunctionTest extends MockPsiTest {
         //${x[ (( 1+1 )) ]}
         mockTest(function, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, RIGHT_SQUARE, RIGHT_CURLY);
     }
+
+    @Test
+    public void testDollarCommand() throws Exception {
+        //$x=$x
+        mockTest(function, VARIABLE, EQ, VARIABLE);
+    }
 }

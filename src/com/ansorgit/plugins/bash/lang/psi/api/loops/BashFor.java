@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.loops;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
@@ -27,7 +28,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  *
  * @author Joachim Ansorg
  */
-public interface BashFor extends BashLoop, BashPsiElement, BashKeyword {
+public interface BashFor extends BashLoop, BashPsiElement, BashKeyword, BashBlock {
     /**
      * Returns true if this for loop is arithmetic.
      *

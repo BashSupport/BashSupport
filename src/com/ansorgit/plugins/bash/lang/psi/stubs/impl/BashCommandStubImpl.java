@@ -10,15 +10,32 @@ import com.intellij.psi.stubs.StubElement;
  * @author ilyas
  */
 public class BashCommandStubImpl extends StubBase<BashCommand> implements BashCommandStub {
+    private final String bashCommandFilename;
+    private boolean internalCommandBash4;
+    private boolean internalCommandBash3;
+    private boolean genericCommand;
+
     @Override
-    public String getBashCommandFilename() {
+    public boolean isGenericCommand() {
+        return genericCommand;
+    }
+
+    public BashCommandStubImpl(StubElement parent, String bashCommandFilename, final IStubElementType elementType, boolean internalCommandBash3, boolean internalCommandBash4, boolean genericCommand) {
+        super(parent, elementType);
+
+        this.bashCommandFilename = bashCommandFilename;
+        this.internalCommandBash3 = internalCommandBash3;
+        this.internalCommandBash4 = internalCommandBash4;
+        this.genericCommand = genericCommand;
+    }
+
+    @Override
+    public String getBashCommandName() {
         return bashCommandFilename;
     }
 
-    private final String bashCommandFilename;
-
-    public BashCommandStubImpl(StubElement parent, String bashCommandFilename, final IStubElementType elementType) {
-        super(parent, elementType);
-        this.bashCommandFilename = bashCommandFilename;
+    @Override
+    public boolean isInternalCommand(boolean bash4) {
+        return bash4 ? internalCommandBash4 : internalCommandBash3;
     }
 }

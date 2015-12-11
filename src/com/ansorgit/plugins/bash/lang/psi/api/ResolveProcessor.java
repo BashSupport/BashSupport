@@ -38,4 +38,6 @@ public interface ResolveProcessor extends PsiScopeProcessor {
     boolean hasResults();
 
     void reset();
+
+    void prepareResults();
 }

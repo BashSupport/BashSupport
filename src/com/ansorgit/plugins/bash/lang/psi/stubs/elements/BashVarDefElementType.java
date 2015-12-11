@@ -24,6 +24,12 @@ public class BashVarDefElementType extends BashStubElementType<BashVarDefStub, B
         super("var-def-element");
     }
 
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "bash.varDef";
+    }
+
     public void serialize(@NotNull BashVarDefStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }

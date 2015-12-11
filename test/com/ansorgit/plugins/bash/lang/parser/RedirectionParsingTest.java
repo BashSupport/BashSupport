@@ -19,8 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
-import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -35,7 +33,7 @@ import java.util.Collections;
 public class RedirectionParsingTest extends MockPsiTest {
     private MockFunction redirectionTest = new MockFunction() {
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.redirection.parseList(builder, false);
+            return Parsing.redirection.parseList(builder, false, true);
         }
     };
 
@@ -104,13 +102,11 @@ public class RedirectionParsingTest extends MockPsiTest {
     }
 
     @Test
-    //@Ignore
     public void testBash4Errors() {
         mockTestSuccessWithErrors(BashVersion.Bash_v4, redirectionTest, Collections.<String>emptyList(), PIPE_AMP);
     }
 
     @Test
-    //@Ignore
     public void testSimpleListParsingWithErrors() {
         //>> >> a
         mockTestSuccessWithErrors(redirectionTest, SHIFT_RIGHT, SHIFT_RIGHT, WORD);

@@ -27,7 +27,7 @@ import com.intellij.psi.stubs.StubElement;
  * Date: 13.07.2010
  * Time: 18:54:48
  */
-public class BashProcessSubstitutionImpl extends BashBaseStubElementImpl<StubElement> implements BashProcessSubstitution {
+public class BashProcessSubstitutionImpl extends BashBaseElement implements BashProcessSubstitution {
     public BashProcessSubstitutionImpl(final ASTNode astNode) {
         super(astNode, "process substitution element");
     }

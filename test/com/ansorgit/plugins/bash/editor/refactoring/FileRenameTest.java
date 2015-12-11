@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.google.common.collect.Lists;
@@ -27,7 +28,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-public class FileRenameTest extends BashCodeInsightFixtureTestCase {
+public class FileRenameTest extends LightBashCodeInsightFixtureTestCase {
     @Override
     protected String getBasePath() {
         return "/editor/refactoring/FileRenameTestCase/";

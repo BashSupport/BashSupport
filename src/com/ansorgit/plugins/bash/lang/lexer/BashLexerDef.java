@@ -43,7 +43,7 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
 
     void setInCaseBody(boolean inCaseBody);
 
-    StringLexingtate stringParsingState();
+    StringLexingstate stringParsingState();
 
     boolean isEmptyConditionalCommand();
 

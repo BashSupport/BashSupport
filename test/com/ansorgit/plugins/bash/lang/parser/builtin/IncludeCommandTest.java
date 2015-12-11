@@ -48,6 +48,9 @@ public class IncludeCommandTest extends MockPsiTest {
 
         //source "a" abc def
         mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, WORD);
+
+        //source=x
+        mockTest(parserFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
     }
 
     @Test
@@ -60,8 +63,5 @@ public class IncludeCommandTest extends MockPsiTest {
 
         //source
         mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD);
-
-        //source=x
-        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
     }
 }

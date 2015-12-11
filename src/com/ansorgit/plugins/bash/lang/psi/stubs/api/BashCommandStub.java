@@ -6,6 +6,6 @@ import com.intellij.psi.stubs.StubElement;
 /**
  * @author jansorg
  */
-public interface BashCommandStub extends StubElement<BashCommand> {
-    String getBashCommandFilename();
+public interface BashCommandStub extends BashCommandStubBase<BashCommand> {
+    String getBashCommandName();
 }

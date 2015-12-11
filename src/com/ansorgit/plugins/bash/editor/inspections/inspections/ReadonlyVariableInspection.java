@@ -19,8 +19,6 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
@@ -42,20 +40,13 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
         return new BashVisitor() {
             @Override
             public void visitVarDef(BashVarDef varDef) {
-                if (varDef instanceof BashVar) {
-                    BashVar var = (BashVar) varDef;
+                PsiElement resolve = varDef.getReference().resolve();
 
-                    BashReference reference = var.getReference();
-                    if (reference != null) {
-                        PsiElement resolve = reference.resolve();
+                if (resolve != varDef && resolve instanceof BashVarDef) {
+                    BashVarDef originalDefinition = (BashVarDef) resolve;
 
-                        if (resolve != varDef && resolve instanceof BashVarDef) {
-                            BashVarDef originalDefinition = (BashVarDef) resolve;
-
-                            if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
-                                holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
-                            }
-                        }
+                    if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
+                        holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
                     }
                 }
             }

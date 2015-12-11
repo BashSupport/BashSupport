@@ -63,8 +63,8 @@ public class BashVisitor extends PsiElementVisitor {
         visitElement(shebang);
     }
 
-    public void visitCombinedWord(BashWord shebang) {
-        visitElement(shebang);
+    public void visitCombinedWord(BashWord word) {
+        visitElement(word);
     }
 
     public void visitBackquoteCommand(BashBackquote backquote) {

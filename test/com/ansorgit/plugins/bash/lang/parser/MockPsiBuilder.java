@@ -120,7 +120,7 @@ public class MockPsiBuilder implements PsiBuilder {
 
     public String getTokenText() {
         getTokenType();//find the right one
-        return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unkown";
+        return textTokens.size() > elementPosition ? textTokens.get(elementPosition) : "unknown";
     }
 
 
@@ -160,7 +160,7 @@ public class MockPsiBuilder implements PsiBuilder {
     public int rawTokenTypeStart(int lookAhead) {
         int requestedPos = elementPosition + lookAhead;
         if (requestedPos >= textTokens.size()) {
-            log.error("Invalid request for rawTokenTypeStart!");
+            log.warn("Invalid request for rawTokenTypeStart!");
             return -1;
         }
 
@@ -256,7 +256,6 @@ public class MockPsiBuilder implements PsiBuilder {
     public final class MockMarker implements Marker {
         private final int position;
         private final String details;
-        private boolean addedError = false;
         boolean closed = false;
 
         private MockMarker(int originalPosition, String details) {
@@ -337,7 +336,6 @@ public class MockPsiBuilder implements PsiBuilder {
 
         public void error(String s) {
             MockPsiBuilder.this.error("Marker@" + position + ": " + s);
-            addedError = true;
             finishMarker();
         }
 

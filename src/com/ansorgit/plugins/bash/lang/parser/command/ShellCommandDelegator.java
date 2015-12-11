@@ -41,6 +41,6 @@ public class ShellCommandDelegator implements ParsingFunction {
         //parse optional redirect list, if the shell command parsed
 
         //fixme is this still required
-        return ok && (Parsing.redirection.parseList(builder, true) || !ok);
+        return ok && (Parsing.redirection.parseList(builder, true, true) || !ok);
     }
 }
