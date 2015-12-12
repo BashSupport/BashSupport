@@ -241,10 +241,6 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashProcessSubstitutionImpl(node);
         }
 
-        if (elementType == EVAL_BLOCK) {
-            return new BashEvalBlock(node);
-        }
-
         log.warn("MISSING PSI for" + node);
 
         return new ASTWrapperPsiElement(node);

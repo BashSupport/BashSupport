@@ -128,6 +128,11 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
         return isWrapped() || BashPsiUtils.isStaticWordExpr(getFirstChild());
     }
 
+    @Override
+    public PsiReference findReferenceAt(int offset) {
+        return super.findReferenceAt(offset);
+    }
+
     @NotNull
     public TextRange getTextContentRange() {
         if (!isWrapped()) {

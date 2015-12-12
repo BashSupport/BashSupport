@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
-import com.ansorgit.plugins.bash.lang.parser.eval.BashEvalElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -128,7 +127,7 @@ public interface BashElementTypes {
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
 
-    IElementType EVAL_BLOCK = new BashEvalElementType();
+    //IElementType EVAL_BLOCK = new BashEvalElementType();
 
     class BashCompositeElementType extends IBashElementType implements ICompositeElementType {
         private final Constructor<? extends ASTNode> myConstructor;

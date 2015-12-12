@@ -14,6 +14,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
+import com.intellij.psi.impl.cache.impl.BaseFilterLexerUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
@@ -37,7 +38,7 @@ public final class BashResolveUtil {
             return null;
         }
 
-        PsiFile psiFile = bashVar.getContainingFile();
+        PsiFile psiFile = BashPsiUtils.findFileContext(bashVar, true);
         VirtualFile virtualFile = psiFile.getVirtualFile();
 
         String filePath = virtualFile != null ? virtualFile.getPath() : null;
