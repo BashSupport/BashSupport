@@ -136,7 +136,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         if (referencedName == null) {
             final String text = getText();
 
-            referencedName = (isSingleWord() || text.isEmpty()) ? text : text.substring(1);
+            referencedName = (text.isEmpty() || isSingleWord()) ? text : (text.substring(text.startsWith("\\$") ? 2 : 1));
         }
 
         return referencedName;
@@ -154,7 +154,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (singleWord == null) {
-            singleWord = getTextLength() > 0 && getText().charAt(0) != '$';
+            String text = getText();
+            singleWord = !text.startsWith("$") && !text.startsWith("\\$");
         }
 
         return singleWord;

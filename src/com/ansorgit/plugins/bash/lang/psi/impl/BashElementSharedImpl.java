@@ -86,28 +86,5 @@ public class BashElementSharedImpl {
 
     public static boolean walkDefinitionScope(PsiElement thisElement, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(thisElement, processor, state, lastParent, place);
-        /*
-        if (thisElement == lastParent) {
-            return true;
-        }
-
-        PsiElement child = thisElement.getFirstChild();
-        if (child == lastParent) {
-            return true;
-        }
-
-        while (child != null) {
-            if (!child.processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-
-            if (child == lastParent) {
-                break;
-            }
-
-            child = child.getNextSibling();
-        }
-
-        return true;*/
     }
 }

@@ -30,7 +30,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
@@ -112,6 +111,7 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
             return false;
         }
 
+        //fixme right file?
         PsiFile containingFile = getContainingFile();
         PsiFile includedFile = BashPsiUtils.findIncludedFile(this);
 

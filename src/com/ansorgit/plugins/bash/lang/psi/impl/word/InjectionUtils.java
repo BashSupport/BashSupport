@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-class InjectionUtils {
+public class InjectionUtils {
     private InjectionUtils() {
     }
 
-    protected static boolean walkInjection(PsiElement host, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place, boolean walkOn) {
+    public static boolean walkInjection(PsiElement host, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place, boolean walkOn) {
         //fixme does this work on the escaped or unescpaed text?
         InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(host.getProject());
 

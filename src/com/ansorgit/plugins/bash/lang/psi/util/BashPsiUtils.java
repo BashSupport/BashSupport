@@ -392,6 +392,7 @@ public final class BashPsiUtils {
             //we need to find the include command and check the offset
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
+            //fixme right files?
             List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
             //currently we only support global include commands

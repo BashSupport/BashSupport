@@ -4,9 +4,11 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashStringUtils;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.ElementManipulator;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.tree.LeafElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,10 +44,16 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
             newContent = "$'" + BashStringUtils.escape(toEscape, '\'') + "'";
         }
 
-        PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
-        assert newElement instanceof BashWord : "Element created for text not a word: " + newContent;
+        //PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
+        //assert newElement instanceof BashWord : "Element created for text not a word: " + newContent;
 
-        return BashPsiUtils.replaceElement(element, newElement);
+        ASTNode valueNode = element.getNode().getFirstChildNode();
+        assert valueNode instanceof LeafElement;
+        ((LeafElement)valueNode).replaceWithText(newContent);
+
+        return element;
+
+        //return BashPsiUtils.replaceElement(element, newElement);
     }
 
     @Override

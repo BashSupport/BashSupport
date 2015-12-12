@@ -155,7 +155,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
         @Nullable
         public PsiElement resolveInner() {
-            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), false);
+            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), true);
             if (!containingFile.isPhysical()) {
                 return null;
             }

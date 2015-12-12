@@ -436,21 +436,15 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
             //clean it up
             String fileName = PathUtil.getFileName(referencedName);
+            PsiFile fileContext = BashPsiUtils.findFileContext(cmd, true);
 
-            //fixme resolve path to full canoncial path and then look it up
-            /*GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
-            Collection<BashFile> files = StubIndex.getElements(BashScriptNameIndex.KEY, referencedName, cmd.getProject(), scope, BashFile.class);
-            if (files.isEmpty()) {
-                return null;
-            } */
-            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
+            GlobalSearchScope scope = BashSearchScopes.moduleScope(fileContext);
             PsiFileSystemItem[] files = FilenameIndex.getFilesByName(cmd.getProject(), fileName, scope, false);
             if (files.length == 0) {
                 return null;
             }
 
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
-            return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
+            return BashPsiFileUtils.findRelativeFile(fileContext, referencedName);
         }
 
         @Override
