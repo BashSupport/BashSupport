@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
@@ -62,7 +63,8 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not an empty command (with empty evsl blok): " + current, current instanceof BashComposedCommand);
+        Assert.assertTrue("empty eval string is not a word " + current, current instanceof BashWord);
+        Assert.assertFalse("empty eval block must not be a valid injection host for bash " + current, ((BashLanguageInjectionHost)current).isValidBashLanguageHost());
     }
 
     public void testEvalSmallStringContainer() throws Exception {

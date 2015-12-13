@@ -19,6 +19,8 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashElementType;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionStub;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
@@ -35,7 +37,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.loops.BashWhileImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.shell.*;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.*;
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.*;
-import com.intellij.lang.*;
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.ICompositeElementType;
 import com.intellij.psi.tree.IElementType;
@@ -63,7 +65,7 @@ public interface BashElementTypes {
     IStubElementType<BashVarStub, BashVar> VAR_ELEMENT = new BashVarElementType();
 
     IElementType VAR_COMPOSED_VAR_ELEMENT = new BashElementType("composed variable, like subshell");
-    IElementType PARSED_WORD_ELEMENT = new BashElementType("combined word");
+    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> PARSED_WORD_ELEMENT = new BashWordElementType();
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
     IElementType FUNCTION_DEF_NAME_ELEMENT = new BashElementType("named symbol");
     //redirect elements
@@ -121,7 +123,7 @@ public interface BashElementTypes {
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
-    IElementType STRING_ELEMENT = new BashElementType("string");
+    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> STRING_ELEMENT = new BashStringElementType();
     IElementType LET_LAZY_EXPRESSION = new BashElementType("lazy LET expression");
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");

@@ -25,19 +25,27 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionStub;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+import java.util.List;
+
+public class BashWordImpl extends BashBaseStubElementImpl<BashLanguageInjectionStub> implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
     private Boolean isWrapped;
 
@@ -46,6 +54,10 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
+    }
+
+    public BashWordImpl(BashLanguageInjectionStub stub, IStubElementType elementType) {
+        super(stub, elementType, "bash combined word");
     }
 
     @Override
@@ -200,11 +212,22 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     @Override
     public boolean isValidBashLanguageHost() {
-        if (!isWrapped()) {
+        if (!isWrapped() || getTextLength() <= 2) {
             return false;
         }
 
         BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
         return command != null && command.isLanguageInjectionContainerFor(this);
+    }
+
+
+    @Override
+    public List<BashVarUse> getVariableUses() {
+        return InjectionUtils.collectVariableUses(this);
+    }
+
+    @Override
+    public List<BashVarDef> getVariableDefinitions() {
+        return InjectionUtils.collectVariableDefinitions(this);
     }
 }
