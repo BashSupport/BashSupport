@@ -73,7 +73,7 @@ public class BashPsiElementFactory {
         return (BashGenericCommand) createDummyBashFile(project, command).getFirstChild().getFirstChild();
     }
 
-    public static PsiElement createString(Project project, String content) {
+    public static BashString createString(Project project, String content) {
         String fileContent = content.startsWith("\"") && content.endsWith("\"") ? content : ("\"" + content + "\"");
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, fileContent), BashString.class);
     }

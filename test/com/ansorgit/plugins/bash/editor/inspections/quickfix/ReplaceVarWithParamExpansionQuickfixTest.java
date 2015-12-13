@@ -14,6 +14,11 @@ public class ReplaceVarWithParamExpansionQuickfixTest extends LightQuickFixParam
         super.doSingleTest(fileSuffix, testDataPath);
     }
 
+    @Override
+    protected boolean isRunInWriteAction() {
+        return true;
+    }
+
     @NotNull
     @Override
     protected String getTestDataPath() {
