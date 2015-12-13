@@ -36,12 +36,4 @@ public class BashFunctions {
             }
         };
     }
-
-    public static Function<? super PsiElement, PsiFile> psiToContainingFile() {
-        return new Function<PsiElement, PsiFile>() {
-            public PsiFile apply(PsiElement psi) {
-                return psi.getContainingFile();
-            }
-        };
-    }
 }

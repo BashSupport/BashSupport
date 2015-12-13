@@ -18,23 +18,29 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.lang.parser.eval.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.eval.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
+import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionStub;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * A string spanning start and end markers and content elements.
@@ -44,12 +50,16 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+public class BashStringImpl extends BashBaseStubElementImpl<BashLanguageInjectionStub> implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
     private TextRange contentRange;
     private Boolean isWrapped;
 
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
+    }
+
+    public BashStringImpl(BashLanguageInjectionStub stub, IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> type) {
+        super(stub, type, null);
     }
 
     @Override
@@ -159,5 +169,16 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
 
         BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
         return command != null && command.isLanguageInjectionContainerFor(this);
+    }
+
+
+    @Override
+    public List<BashVarUse> getVariableUses() {
+        return InjectionUtils.collectVariableUses(this);
+    }
+
+    @Override
+    public List<BashVarDef> getVariableDefinitions() {
+        return InjectionUtils.collectVariableDefinitions(this);
     }
 }

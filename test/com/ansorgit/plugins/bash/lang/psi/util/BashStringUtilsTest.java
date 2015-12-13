@@ -57,5 +57,10 @@ public class BashStringUtilsTest {
 
         // \\ ->  \\\\
         Assert.assertEquals("\\\\\\\\", BashStringUtils.escape("\\\\", '\\'));
+
+        //already escaped shouldn't be escaped again
+        Assert.assertEquals("\\$", BashStringUtils.escape("\\$", '$'));
+
+        Assert.assertEquals("\\$", BashStringUtils.escape("\\$", '\\', new char[]{'$'}));
     }
 }

@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludedFilenamesIndex;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -143,7 +144,7 @@ public class FileInclusionManager {
 
         Set<BashFile> includers = Sets.newLinkedHashSet();
         for (BashIncludeCommand command : includeCommands) {
-            BashFile includer = (BashFile) command.getContainingFile();
+            BashFile includer = (BashFile) BashPsiUtils.findFileContext(command, true);
 
             if (!file.equals(includer)) {
                 includers.add(includer);

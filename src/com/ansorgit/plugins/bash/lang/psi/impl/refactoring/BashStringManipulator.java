@@ -4,9 +4,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashStringUtils;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.ElementManipulator;
-import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.tree.LeafElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,13 +19,17 @@ import org.jetbrains.annotations.NotNull;
 public class BashStringManipulator implements ElementManipulator<BashString> {
     @Override
     public BashString handleContentChange(@NotNull BashString element, @NotNull TextRange textRange, String contentForRange) throws IncorrectOperationException {
-        String oldContent = element.getText();
+        TextRange elementContentRange = element.getTextContentRange();
+
+        if (contentForRange.length() > 2 && textRange.getStartOffset() == 0 && textRange.getLength() == element.getTextLength()) {
+            contentForRange = contentForRange.substring(1, contentForRange.length() - 1);
+        }
+
         String escapedContent = BashStringUtils.escape(contentForRange, '"');
+        String newContent = elementContentRange.replace(element.getText(), escapedContent);
 
-        String newContent = textRange.replace(oldContent, escapedContent);
-
-        PsiElement replacement = BashPsiElementFactory.createString(element.getProject(), newContent);
-        assert replacement instanceof BashString;
+        BashString replacement = BashPsiElementFactory.createString(element.getProject(), newContent);
+        assert replacement != null;
 
         return BashPsiUtils.replaceElement(element, replacement);
     }

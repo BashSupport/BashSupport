@@ -42,6 +42,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.xmlb.annotations.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,6 +58,22 @@ import java.util.List;
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
+    }
+
+    /**
+     * Finds the file context for a given element. If element is inside of an Bash file injection host (e.g. because the element is in an eval command)
+     * then the host file is returned.
+     *
+     * @param element
+     * @param leaveInjectionHosts
+     * @return The file on disk
+     */
+    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
+        if (leaveInjectionHosts) {
+            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
+        }
+
+        return element.getContainingFile();
     }
 
     /**
@@ -365,7 +382,7 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
+        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(childCandidate, true));
 
         if (sameFile) {
             if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
@@ -375,6 +392,7 @@ public final class BashPsiUtils {
             //we need to find the include command and check the offset
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
+            //fixme right files?
             List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
             //currently we only support global include commands

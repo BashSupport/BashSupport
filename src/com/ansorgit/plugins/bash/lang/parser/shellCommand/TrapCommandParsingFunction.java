@@ -1,7 +1,5 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
@@ -55,43 +53,21 @@ public class TrapCommandParsingFunction implements ParsingFunction {
             //the next token is the name of a command to attach the signal spec to
             //we need to nest the elements in the same way as BashSimpleCommandImpl
             //fixme improve this handling, if possible
+            PsiBuilder.Marker commandMarker = builder.mark();
+            PsiBuilder.Marker innerCommandMarker = builder.mark();
 
-            //if the handler is an unquoted string, then we wrap it in the same structure as a simple command
-            //if it is a quoted string, then we need to parse the code like eval does
-            if (builder.getTokenType() == BashTokenTypes.WORD) {
-                PsiBuilder.Marker commandMarker = builder.mark();
-                PsiBuilder.Marker innerCommandMarker = builder.mark();
+            success = Parsing.word.parseWord(builder);
 
-                builder.advanceLexer();
-
+            if (success) {
                 innerCommandMarker.done(GENERIC_COMMAND_ELEMENT);
                 commandMarker.done(SIMPLE_COMMAND_ELEMENT);
-            } else if (builder.getTokenType() == STRING2 || Parsing.word.isComposedString(builder.getTokenType())) {
-                //eval parsing
-                int startOffset = builder.getCurrentOffset();
-                PsiBuilder.Marker evalMarker = builder.mark();
-
-                boolean emptyBlock;
-                if (builder.getTokenType() == STRING2) {
-                    emptyBlock = builder.getTokenText().length() <= 2;
-                    builder.advanceLexer();
-                    success = true;
-                } else {
-                    emptyBlock = builder.rawLookup(1) == BashTokenTypes.STRING_END || builder.rawLookup(1) == null;
-                    success = Parsing.word.parseComposedString(builder);
-                }
-
-                if (success && !emptyBlock) {
-                    evalMarker.collapse(BashElementTypes.EVAL_BLOCK);
-                } else {
-                    evalMarker.drop();
-                }
             } else {
-                builder.error("Expected function or code block");
+                innerCommandMarker.drop();
+                commandMarker.drop();
             }
         }
 
-        if (success && Parsing.word.isWordToken(builder)) {
+        if (Parsing.word.isWordToken(builder)) {
             success = Parsing.word.parseWordList(builder, false, true);
         }
 
