@@ -31,6 +31,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
@@ -38,12 +39,8 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
@@ -60,7 +57,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -73,7 +69,6 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  * @author Joachim Ansorg
  */
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
-    private static final Logger log = Logger.getInstance("#Bash.BashVarDef");
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
     private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
@@ -130,8 +125,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
         PsiElement original = findAssignmentWord();
         PsiElement replacement = BashPsiElementFactory.createAssignmentWord(getProject(), newName);
-        BashPsiUtils.replaceElement(original, replacement);
-        return this;
+        return BashPsiUtils.replaceElement(original, replacement);
     }
 
     public boolean isArray() {
@@ -275,7 +269,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                                        @NotNull ResolveState resolveState,
                                        PsiElement lastParent,
                                        @NotNull PsiElement place) {
-        return processor.execute(this, resolveState);
+        if (!processor.execute(this, resolveState)) {
+            return false;
+        }
+
+        return BashElementSharedImpl.walkDefinitionScope(this, processor, resolveState, lastParent, place);
     }
 
     public PsiElement getNameIdentifier() {

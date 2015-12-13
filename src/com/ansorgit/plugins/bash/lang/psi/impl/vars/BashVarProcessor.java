@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -32,6 +33,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -53,6 +55,10 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private boolean functionVarDefsAreGlobal;
     private int startElementTextOffset;
     private Set<PsiElement> globalVariables = Sets.newLinkedHashSet();
+
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness) {
+        this(startElement, variableName, checkLocalness, true);
+    }
 
     public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts) {
         super(false);
@@ -126,7 +132,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
 
-        boolean sameFiles = startElement.getContainingFile().equals(varDef.getContainingFile());
+        boolean sameFiles = BashPsiUtils.findFileContext(startElement, leaveInjectionHost).equals(BashPsiUtils.findFileContext(varDef, leaveInjectionHost));
         if (sameFiles) {
             int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
             if (startElementTextOffset >= textOffsetVarDef) {
@@ -155,7 +161,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             //working on a definition in an included file (maybe even over several include-steps)
             Multimap<VirtualFile, PsiElement> includedFiles = resolveState.get(visitedIncludeFiles);
 
-            VirtualFile varDefFile = varDef.getContainingFile().getVirtualFile();
+            VirtualFile varDefFile = BashPsiUtils.findFileContext(varDef, true).getVirtualFile();
             Collection<PsiElement> includeCommands = includedFiles != null ? includedFiles.get(varDefFile) : null;
             if (includeCommands == null || includeCommands.isEmpty()) {
                 return false;

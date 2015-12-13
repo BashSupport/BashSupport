@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
@@ -55,6 +56,6 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
     }
 
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        invoke(project, null, descriptor.getPsiElement().getContainingFile());
+        invoke(project, null, BashPsiUtils.findFileContext(descriptor.getPsiElement(), true));
     }
 }

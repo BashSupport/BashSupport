@@ -21,7 +21,7 @@ public class BashFilterLexer extends BaseFilterLexer {
             advanceTodoItemCountsInToken();
         } else if (tokenType == BashTokenTypes.STRING2) {
             addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS | UsageSearchContext.IN_FOREIGN_LANGUAGES);
-            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);
+            scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, true);
         } else {
             addOccurrenceInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS);
             scanWordsInToken(UsageSearchContext.IN_CODE | UsageSearchContext.IN_STRINGS, true, false);

@@ -70,6 +70,11 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testEvalRenameEscapedString() throws Exception {
+        doRename(false);
+    }
+
+    @Test
     @Ignore //broken atm
     public void _testEvalRenameInlined() throws Exception {
         doRename(new Runnable() {
