@@ -3,6 +3,9 @@
  - Improved eval and trap parsing
  - Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets
 
+####2015-11-10
+ - \#272: Invalid warning about simple array variable use in ${#x}
+
 ####2015-11-04
  - \#290: Inspections have no descriptions
  - \#289: Quickdoc lookup not working for keywords 

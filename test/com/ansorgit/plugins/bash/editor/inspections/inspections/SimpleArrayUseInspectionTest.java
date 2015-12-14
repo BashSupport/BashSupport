@@ -27,4 +27,13 @@ public class SimpleArrayUseInspectionTest extends AbstractInspectionTestCase {
     public void testArrayStringUse() throws Exception {
         doTest("simpleArrayUseInspection/arrayStringUse", new SimpleArrayUseInspection());
     }
+
+    @Test
+    public void testIssue272() throws Exception {
+        //array length compuatation should not trigger a warning
+        doTest("simpleArrayUseInspection/arrayLength", new SimpleArrayUseInspection());
+
+        //array element expansion should trigger a warning
+        doTest("simpleArrayUseInspection/arrayExpansion", new SimpleArrayUseInspection());
+    }
 }
