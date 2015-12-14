@@ -219,6 +219,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         PsiFile currentFile = getContainingFile();
         Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
 
+        //fixme handle injected code in functions
+
         BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
         if (functionLocalScope == null) {
             return false;
@@ -243,7 +245,13 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
             final BashCommand parentCmd = (BashCommand) context;
-            if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedCommandName())) {
+            String commandName = parentCmd.getReferencedCommandName();
+            if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(commandName)) {
+                return true;
+            }
+
+            //fixme better support for declare
+            if ("declare".equals(commandName) && BashPsiUtils.findNextVarDefFunctionDefScope(context) != null) {
                 return true;
             }
         }
