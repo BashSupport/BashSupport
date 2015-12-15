@@ -31,6 +31,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
@@ -38,12 +39,8 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
@@ -60,7 +57,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -251,7 +247,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             //declared by either delcare or typeset in a function block
             if (localVarDefCommands.contains(commandName) && BashPsiUtils.findNextVarDefFunctionDefScope(context) != null) {
                 return true;
-        }
+            }
         }
 
         return false;
@@ -364,11 +360,6 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isReadonly() {
-        BashVarDefStub stub = getStub();
-        if (stub != null) {
-            return stub.isReadOnly();
-        }
-
         PsiElement context = getParent();
         if (context instanceof BashCommand) {
             BashCommand command = (BashCommand) context;
@@ -387,16 +378,16 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private boolean isCommandWithParamter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
-            PsiElement commandElement = command.commandElement();
+        PsiElement commandElement = command.commandElement();
         if (commandElement != null && validCommands.contains(commandElement.getText())) {
-                List<BashPsiElement> parameters = command.parameters();
+            List<BashPsiElement> parameters = command.parameters();
 
-                for (BashPsiElement param : parameters) {
+            for (BashPsiElement param : parameters) {
                 if (validParams.contains(param.getText())) {
-                        return true;
-                    }
+                    return true;
                 }
             }
+        }
         return false;
     }
 
