@@ -1,3 +1,6 @@
+####2015-12-15
+ - \#263: Warning for modifications of variables re-defined as readonly
+
 ####2015-12-11
  - Up to 35x faster file highlighting
  - Improved eval and trap parsing

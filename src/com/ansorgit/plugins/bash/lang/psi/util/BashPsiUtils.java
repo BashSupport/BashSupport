@@ -381,11 +381,11 @@ public final class BashPsiUtils {
         return false;
     }
 
-    public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(childCandidate, true));
+    public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
+        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(referenceToDefCandidate, true));
 
         if (sameFile) {
-            if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
+            if (!isValidGlobalOffset(referenceToDefCandidate, variableDefinition)) {
                 return false;
             }
         } else {
@@ -393,11 +393,11 @@ public final class BashPsiUtils {
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
             //fixme right files?
-            List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
+            List<BashCommand> includeCommands = findIncludeCommands(referenceToDefCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
             //currently we only support global include commands
             for (BashCommand includeCommand : includeCommands) {
-                if (!isValidGlobalOffset(childCandidate, includeCommand)) {
+                if (!isValidGlobalOffset(referenceToDefCandidate, includeCommand)) {
                     return false;
                 }
             }
