@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.intellij.execution.impl.BaseExecuteBeforeRunDialog;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import org.junit.Assert;
@@ -172,6 +171,25 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         BashVarDef varDef = assertIsValidVarDef();
         //the found var def has to be on global level
         Assert.assertTrue(varDef.isLocalVarDef());
+    }
+
+    @Test
+    public void testIssue262Typeset() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+        //the found var def has to be on global level
+        Assert.assertTrue(varDef.isLocalVarDef());
+    }
+
+    @Test
+    public void testIssue262NoGlobalResolve() throws Exception {
+        //declare used in a function defines a local variable
+        assertIsInvalidVarDef();
+    }
+
+    @Test
+    public void testIssue262TypesetNoGlobalResolve() throws Exception {
+        //declare used in a function defines a local variable
+        assertIsInvalidVarDef();
     }
 
     protected String getTestDataPath() {
