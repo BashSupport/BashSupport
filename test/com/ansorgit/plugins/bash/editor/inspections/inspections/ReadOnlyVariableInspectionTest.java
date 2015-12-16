@@ -38,4 +38,13 @@ public class ReadOnlyVariableInspectionTest extends AbstractInspectionTestCase {
         doTest("readOnlyVarInspection/issue263", new ReadOnlyVariableInspection());
     }
 
+    @Test
+    public void testIssue263_included() throws Exception {
+        doTest("readOnlyVarInspection/issue263_included", new ReadOnlyVariableInspection());
+    }
+
+    @Test
+    public void testIssue263_eval() throws Exception {
+        doTest("readOnlyVarInspection/issue263_eval", new ReadOnlyVariableInspection());
+    }
 }
