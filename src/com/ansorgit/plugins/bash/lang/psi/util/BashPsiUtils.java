@@ -296,28 +296,6 @@ public final class BashPsiUtils {
         return !hasResult;
     }
 
-    public static boolean treeWalkUp(@NotNull final PsiScopeProcessor processor,
-                                     @NotNull final PsiElement entrance,
-                                     @Nullable final PsiElement maxScope,
-                                     @NotNull final ResolveState state) {
-        PsiElement prevParent = entrance;
-        PsiElement scope = entrance;
-
-        while (scope != null) {
-            if (!scope.processDeclarations(processor, state, prevParent, entrance)) {
-                return false;
-            }
-
-            if (scope == maxScope) {
-                break;
-            }
-            prevParent = scope;
-            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
-        }
-
-        return true;
-    }
-
     @Nullable
     public static PsiFile findIncludedFile(BashCommand bashCommand) {
         if (bashCommand instanceof BashIncludeCommand) {

@@ -20,10 +20,12 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
+import com.google.common.base.Function;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jansorg
  */
-public class ReadonlyVariableInspection extends LocalInspectionTool {
+public class ReadOnlyVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -71,6 +73,6 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
     }
 
     private void registerWarning(BashVarDef varDef, @NotNull ProblemsHolder holder) {
-                        holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
-                    }
-                }
+        holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
+    }
+}
