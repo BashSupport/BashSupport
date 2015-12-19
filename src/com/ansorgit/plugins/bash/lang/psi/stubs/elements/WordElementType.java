@@ -1,5 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi.stubs.elements;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashStubElementType;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionStub;
@@ -8,31 +9,44 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.impl.word.BashWordImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashLanguageInjectionStubImpl;
 import com.google.common.collect.Sets;
-import com.intellij.psi.stubs.*;
+import com.intellij.psi.stubs.IndexSink;
+import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.stubs.StubInputStream;
+import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 
-public abstract class AbstractInjectionHostElementType extends BashStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> {
-    private String externalId;
+public class WordElementType extends BashStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> {
+    public WordElementType() {
+        super("word type");
+    }
 
-    public AbstractInjectionHostElementType(String externalId, String debugName) {
-        super(debugName);
-        this.externalId = externalId;
+    @Override
+    public BashLanguageInjectionHost createPsi(@NotNull BashLanguageInjectionStub stub) {
+        return new BashWordImpl(stub, BashElementTypes.PARSED_WORD_ELEMENT);
     }
 
     @Override
     public BashLanguageInjectionStub createStub(@NotNull BashLanguageInjectionHost psi, StubElement parentStub) {
-        Set<String> variableDefinitions = Sets.newHashSet();
-        for (BashVarDef varDef : psi.getVariableDefinitions()) {
-            variableDefinitions.add(varDef.getName());
-        }
+        boolean validBashHost = psi.isValidBashLanguageHost();
 
-        Set<String> variableUses = Sets.newHashSet();
-        for (BashVarUse varUse : psi.getVariableUses()) {
-            variableUses.add(varUse.getName());
+        Set<String> variableDefinitions = Collections.emptySet();
+        Set<String> variableUses = Collections.emptySet();
+
+        if (validBashHost) {
+            variableDefinitions = Sets.newHashSet();
+            for (BashVarDef varDef : psi.getVariableDefinitions()) {
+                variableDefinitions.add(varDef.getName());
+            }
+
+            variableUses = Sets.newHashSet();
+            for (BashVarUse varUse : psi.getVariableUses()) {
+                variableUses.add(varUse.getName());
+            }
         }
 
         return new BashLanguageInjectionStubImpl(parentStub, this, variableDefinitions, variableUses);
@@ -41,7 +55,7 @@ public abstract class AbstractInjectionHostElementType extends BashStubElementTy
     @NotNull
     @Override
     public String getExternalId() {
-        return externalId;
+        return "bash.wordType";
     }
 
     @Override
