@@ -32,12 +32,15 @@ public class BashVarDefElementType extends BashStubElementType<BashVarDefStub, B
 
     public void serialize(@NotNull BashVarDefStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
+        dataStream.writeBoolean(stub.isReadOnly());
     }
 
     @NotNull
     public BashVarDefStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         StringRef ref = dataStream.readName();
-        return new BashVarDefStubImpl(parentStub, ref, this);
+        boolean readOnly = dataStream.readBoolean();
+
+        return new BashVarDefStubImpl(parentStub, ref, this, readOnly);
     }
 
     public BashVarDef createPsi(@NotNull BashVarDefStub stub) {
@@ -45,7 +48,7 @@ public class BashVarDefElementType extends BashStubElementType<BashVarDefStub, B
     }
 
     public BashVarDefStub createStub(@NotNull BashVarDef psi, StubElement parentStub) {
-        return new BashVarDefStubImpl(parentStub, StringRef.fromString(psi.getName()), BashElementTypes.VAR_DEF_ELEMENT);
+        return new BashVarDefStubImpl(parentStub, StringRef.fromString(psi.getName()), BashElementTypes.VAR_DEF_ELEMENT, psi.isReadonly());
     }
 
     @Override

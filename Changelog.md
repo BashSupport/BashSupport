@@ -1,4 +1,7 @@
 ####2015-12-15
+ - \#263: Warning for modifications of variables re-defined as readonly
+
+####2015-12-15
  - \#262: Variables declared by declare or typeset in a function are local
 
 ####2015-12-11

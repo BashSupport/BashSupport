@@ -12,13 +12,20 @@ import com.intellij.util.io.StringRef;
  */
 public class BashVarDefStubImpl extends StubBase<BashVarDef> implements BashVarDefStub {
     private final StringRef name;
+    private boolean readOnly;
 
-    public BashVarDefStubImpl(StubElement parent, StringRef name, final IStubElementType elementType) {
+    public BashVarDefStubImpl(StubElement parent, StringRef name, final IStubElementType elementType, boolean readOnly) {
         super(parent, elementType);
         this.name = name;
+        this.readOnly = readOnly;
     }
 
     public String getName() {
         return StringRef.toString(name);
+    }
+
+    @Override
+    public boolean isReadOnly() {
+        return readOnly;
     }
 }

@@ -360,6 +360,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isReadonly() {
+        BashVarDefStub stub = getStub();
+        if (stub != null) {
+            return stub.isReadOnly();
+        }
+
         PsiElement context = getParent();
         if (context instanceof BashCommand) {
             BashCommand command = (BashCommand) context;

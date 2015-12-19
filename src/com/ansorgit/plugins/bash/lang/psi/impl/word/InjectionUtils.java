@@ -37,7 +37,7 @@ public class InjectionUtils {
         return walkOn;
     }
 
-    static List<BashVarUse> collectVariableUses(BashLanguageInjectionHost host) {
+    public static List<BashVarUse> collectVariableUses(BashLanguageInjectionHost host) {
         List<Pair<PsiElement, TextRange>> injectedPsiFiles = InjectedLanguageManager.getInstance(host.getProject()).getInjectedPsiFiles(host);
         if (injectedPsiFiles == null || injectedPsiFiles.isEmpty()) {
             return Collections.emptyList();
@@ -56,7 +56,7 @@ public class InjectionUtils {
         return variables;
     }
 
-    static List<BashVarDef> collectVariableDefinitions(BashLanguageInjectionHost host) {
+    public static List<BashVarDef> collectVariableDefinitions(BashLanguageInjectionHost host) {
         List<Pair<PsiElement, TextRange>> injectedPsiFiles = InjectedLanguageManager.getInstance(host.getProject()).getInjectedPsiFiles(host);
         if (injectedPsiFiles == null || injectedPsiFiles.isEmpty()) {
             return Collections.emptyList();

@@ -65,7 +65,7 @@ public interface BashElementTypes {
     IStubElementType<BashVarStub, BashVar> VAR_ELEMENT = new BashVarElementType();
 
     IElementType VAR_COMPOSED_VAR_ELEMENT = new BashElementType("composed variable, like subshell");
-    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> PARSED_WORD_ELEMENT = new BashWordElementType();
+    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> PARSED_WORD_ELEMENT = new WordElementType();
     IElementType PARAM_EXPANSION_ELEMENT = new BashElementType("var substitution");
     IElementType FUNCTION_DEF_NAME_ELEMENT = new BashElementType("named symbol");
     //redirect elements
@@ -123,7 +123,7 @@ public interface BashElementTypes {
     //misc
     IElementType EXPANSION_ELEMENT = new BashElementType("single bash expansion");
     IElementType VAR_ASSIGNMENT_LIST = new BashElementType("array assignment list");
-    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> STRING_ELEMENT = new BashStringElementType();
+    IStubElementType<BashLanguageInjectionStub, BashLanguageInjectionHost> STRING_ELEMENT = new StringElementType();
     IElementType LET_LAZY_EXPRESSION = new BashElementType("lazy LET expression");
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
