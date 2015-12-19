@@ -195,6 +195,20 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testIssue263_ResolveReadonlyVar() throws Exception {
+        BashVarDef varDef = assertIsWellDefinedVariable();
+
+        Assert.assertTrue("varDef needs to be marked as read-only", varDef.isReadonly());
+    }
+
+    @Test
+    public void testIssue263_ResolveReadonlyVarRedefine() throws Exception {
+        BashVarDef varDef = assertIsWellDefinedVariable();
+
+        Assert.assertFalse("varDef is redefined later, the original definition is not read-only.", varDef.isReadonly());
+    }
+
+    @Test
     @Ignore
     public void _testResolveEvalVarEscaped() throws Exception {
         assertIsWellDefinedVariable();

@@ -30,6 +30,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
@@ -42,14 +43,10 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.xmlb.annotations.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: jansorg
@@ -299,28 +296,6 @@ public final class BashPsiUtils {
         return !hasResult;
     }
 
-    public static boolean treeWalkUp(@NotNull final PsiScopeProcessor processor,
-                                     @NotNull final PsiElement entrance,
-                                     @Nullable final PsiElement maxScope,
-                                     @NotNull final ResolveState state) {
-        PsiElement prevParent = entrance;
-        PsiElement scope = entrance;
-
-        while (scope != null) {
-            if (!scope.processDeclarations(processor, state, prevParent, entrance)) {
-                return false;
-            }
-
-            if (scope == maxScope) {
-                break;
-            }
-            prevParent = scope;
-            scope = PsiTreeUtil.getStubOrPsiParent(prevParent);
-        }
-
-        return true;
-    }
-
     @Nullable
     public static PsiFile findIncludedFile(BashCommand bashCommand) {
         if (bashCommand instanceof BashIncludeCommand) {
@@ -338,17 +313,48 @@ public final class BashPsiUtils {
      * Returns the commands of file which include the other file.
      *
      * @param file
-     * @param includedFile
-     * @return The list of commands, may be empty but wont be null
+     * @return The list of files which are included in the first file
      */
-    public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
-        String filePath = file.getVirtualFile().getPath();
+    public static Set<PsiFile> findIncludedFiles(PsiFile file, boolean followNestedFiles) {
+        Set<PsiFile> files = Sets.newLinkedHashSet();
 
-        List<BashCommand> result = Lists.newLinkedList();
+        collectIncludedFiles(file, files, followNestedFiles);
+
+        return files;
+    }
+
+    public static void collectIncludedFiles(PsiFile file, Set<PsiFile> files, boolean followNestedFiles) {
+        String filePath = file.getVirtualFile().getPath();
 
         Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
         for (BashIncludeCommand command : commands) {
-            if (includedFile.equals(findIncludedFile(command))) {
+            PsiFile includedFile = findIncludedFile(command);
+            if (includedFile != null) {
+                boolean followFile = followNestedFiles && !files.contains(includedFile);
+                files.add(includedFile);
+
+                if (followFile) {
+                    collectIncludedFiles(includedFile, files, true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the commands of file which include the other file.
+     *
+     * @param file
+     * @param filterByFile
+     * @return The list of commands, may be empty but wont be null
+     */
+    public static List<BashIncludeCommand> findIncludeCommands(PsiFile file, @Nullable final PsiFile filterByFile) {
+        String filePath = file.getVirtualFile().getPath();
+
+        List<BashIncludeCommand> result = Lists.newLinkedList();
+
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        for (BashIncludeCommand command : commands) {
+            if (filterByFile == null || filterByFile.equals(findIncludedFile(command))) {
                 result.add(command);
             }
         }
@@ -381,11 +387,11 @@ public final class BashPsiUtils {
         return false;
     }
 
-    public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(childCandidate, true));
+    public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
+        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(referenceToDefCandidate, true));
 
         if (sameFile) {
-            if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
+            if (!isValidGlobalOffset(referenceToDefCandidate, variableDefinition)) {
                 return false;
             }
         } else {
@@ -393,11 +399,11 @@ public final class BashPsiUtils {
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
             //fixme right files?
-            List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
+            List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceToDefCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
             //currently we only support global include commands
             for (BashCommand includeCommand : includeCommands) {
-                if (!isValidGlobalOffset(childCandidate, includeCommand)) {
+                if (!isValidGlobalOffset(referenceToDefCandidate, includeCommand)) {
                     return false;
                 }
             }

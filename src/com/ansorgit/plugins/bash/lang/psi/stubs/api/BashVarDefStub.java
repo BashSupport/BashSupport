@@ -7,5 +7,5 @@ import com.intellij.psi.stubs.NamedStub;
  * @author jansorg
  */
 public interface BashVarDefStub extends NamedStub<BashVarDef> {
-
+    boolean isReadOnly();
 }

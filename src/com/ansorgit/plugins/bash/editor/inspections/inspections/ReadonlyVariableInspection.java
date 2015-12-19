@@ -20,10 +20,12 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
+import com.google.common.base.Function;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,23 +35,44 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jansorg
  */
-public class ReadonlyVariableInspection extends LocalInspectionTool {
+public class ReadOnlyVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new BashVisitor() {
             @Override
-            public void visitVarDef(BashVarDef varDef) {
-                PsiElement resolve = varDef.getReference().resolve();
-
-                if (resolve != varDef && resolve instanceof BashVarDef) {
-                    BashVarDef originalDefinition = (BashVarDef) resolve;
-
-                    if (originalDefinition.isReadonly() && varDef.hasAssignmentValue()) {
-                        holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
-                    }
+            public void visitVarDef(final BashVarDef visitedVarDef) {
+                if (visitedVarDef.isReadonly() || !visitedVarDef.hasAssignmentValue()) {
+                    //if directly declared as read-only then an assignment is not seen as modification, e.g. in "declare -r a=b"
+                    return;
                 }
+
+                String name = visitedVarDef.getName();
+                if (name == null) {
+                    return;
+                }
+
+                BashResolveUtil.walkVariableDefinitions(visitedVarDef, new Function<BashVarDef, Boolean>() {
+                    @Override
+                    public Boolean apply(BashVarDef varDef) {
+                        //check if the found read-only definition is a definition for the visited definition
+                        if (varDef != visitedVarDef
+                                && !visitedVarDef.isEquivalentTo(varDef)
+                                && varDef.isReadonly()
+                                && BashPsiUtils.isValidReferenceScope(visitedVarDef, varDef)) {
+
+                            registerWarning(visitedVarDef, holder);
+                            return false;
+                        }
+
+                        return true;
+                    }
+                });
             }
         };
+    }
+
+    private void registerWarning(BashVarDef varDef, @NotNull ProblemsHolder holder) {
+        holder.registerProblem(varDef, "Change to a read-only variable", LocalQuickFix.EMPTY_ARRAY);
     }
 }
