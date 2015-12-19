@@ -10,41 +10,41 @@ import org.junit.Test;
 public class ReadOnlyVariableInspectionTest extends AbstractInspectionTestCase {
     @Test
     public void testOk() throws Exception {
-        doTest("readOnlyVarInspection/ok", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/ok", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testSimpleVar() throws Exception {
-        doTest("readOnlyVarInspection/simpleVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/simpleVar", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testTypesetVar() throws Exception {
-        doTest("readOnlyVarInspection/typesetVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/typesetVar", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testDeclaredVar() throws Exception {
-        doTest("readOnlyVarInspection/declaredVar", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/declaredVar", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testIssue229() throws Exception {
-        doTest("readOnlyVarInspection/issue229", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/issue229", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testIssue263() throws Exception {
-        doTest("readOnlyVarInspection/issue263", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/issue263", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testIssue263_included() throws Exception {
-        doTest("readOnlyVarInspection/issue263_included", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/issue263_included", new ReadonlyVariableInspection());
     }
 
     @Test
     public void testIssue263_eval() throws Exception {
-        doTest("readOnlyVarInspection/issue263_eval", new ReadOnlyVariableInspection());
+        doTest("readOnlyVarInspection/issue263_eval", new ReadonlyVariableInspection());
     }
 }
