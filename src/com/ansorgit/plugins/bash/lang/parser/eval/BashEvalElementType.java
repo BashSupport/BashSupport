@@ -1,9 +1,9 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.intellij.lang.*;
-import com.intellij.lang.impl.PsiBuilderImpl;
-import com.intellij.lexer.Lexer;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -20,8 +20,8 @@ public class BashEvalElementType extends ILazyParseableElementType {
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
-        String originalText = chameleon.getChars().toString();
 
+        String originalText = chameleon.getChars().toString();
         if (originalText.length() < 2) {
             throw new IncorrectOperationException("Can not handle empty strings");
         }
@@ -42,32 +42,24 @@ public class BashEvalElementType extends ILazyParseableElementType {
             textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
         }
 
-        StringBuilder processedContent = new StringBuilder(content.length());
-        textProcessor.decode(content, processedContent);
+        StringBuilder unescapedContent = new StringBuilder(content.length());
+        textProcessor.decode(content, unescapedContent);
 
-        String patchedContent = textProcessor.patchOriginal(content);
-
-        String processedComplete = prefix + processedContent + suffix;
+        String unescpaedComplete = prefix + unescapedContent + suffix;
 
         ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
-        PsiParser parser = def.createParser(project);
-        Lexer bashLexer = def.createLexer(project);
-
-        PrefixSuffixAddingLexer prefixSuffixLexer = new PrefixSuffixAddingLexer(bashLexer,
+        PrefixSuffixAddingLexer prefixSuffixLexer = new PrefixSuffixAddingLexer(def.createLexer(project),
                 prefix, TokenType.WHITE_SPACE,
                 suffix, TokenType.WHITE_SPACE);
 
-        /*UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project,
+        UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project,
                 def,
                 prefixSuffixLexer,
                 chameleon,
-                prefix + patchedContent + suffix,
-                processedComplete,
+                originalText,
+                unescpaedComplete,
                 textProcessor);
-          */
 
-        PsiBuilder builder =  new PsiBuilderImpl(project, def, prefixSuffixLexer, chameleon,  prefix + patchedContent + suffix);
-
-        return parser.parse(this, builder).getFirstChildNode();
+        return def.createParser(project).parse(this, adaptingPsiBuilder).getFirstChildNode();
     }
 }

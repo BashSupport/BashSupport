@@ -20,7 +20,6 @@ package com.ansorgit.plugins.bash.lang.psi;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashFileReferenceImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashFunctionDefNameImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashProcessSubstitutionImpl;

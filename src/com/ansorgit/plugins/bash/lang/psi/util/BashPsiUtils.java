@@ -30,6 +30,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
@@ -45,10 +46,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: jansorg
@@ -57,6 +55,22 @@ import java.util.List;
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
+    }
+
+    /**
+     * Finds the file context for a given element. If element is inside of an Bash file injection host (e.g. because the element is in an eval command)
+     * then the host file is returned.
+     *
+     * @param element
+     * @param leaveInjectionHosts
+     * @return The file on disk
+     */
+    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
+        if (leaveInjectionHosts) {
+            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
+        }
+
+        return element.getContainingFile();
     }
 
     /**
@@ -321,17 +335,48 @@ public final class BashPsiUtils {
      * Returns the commands of file which include the other file.
      *
      * @param file
-     * @param includedFile
-     * @return The list of commands, may be empty but wont be null
+     * @return The list of files which are included in the first file
      */
-    public static List<BashCommand> findIncludeCommands(PsiFile file, final PsiFile includedFile) {
-        String filePath = file.getVirtualFile().getPath();
+    public static Set<PsiFile> findIncludedFiles(PsiFile file, boolean followNestedFiles) {
+        Set<PsiFile> files = Sets.newLinkedHashSet();
 
-        List<BashCommand> result = Lists.newLinkedList();
+        collectIncludedFiles(file, files, followNestedFiles);
+
+        return files;
+    }
+
+    public static void collectIncludedFiles(PsiFile file, Set<PsiFile> files, boolean followNestedFiles) {
+        String filePath = file.getVirtualFile().getPath();
 
         Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
         for (BashIncludeCommand command : commands) {
-            if (includedFile.equals(findIncludedFile(command))) {
+            PsiFile includedFile = findIncludedFile(command);
+            if (includedFile != null) {
+                boolean followFile = followNestedFiles && !files.contains(includedFile);
+                files.add(includedFile);
+
+                if (followFile) {
+                    collectIncludedFiles(includedFile, files, true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the commands of file which include the other file.
+     *
+     * @param file
+     * @param filterByFile
+     * @return The list of commands, may be empty but wont be null
+     */
+    public static List<BashIncludeCommand> findIncludeCommands(PsiFile file, @Nullable final PsiFile filterByFile) {
+        String filePath = file.getVirtualFile().getPath();
+
+        List<BashIncludeCommand> result = Lists.newLinkedList();
+
+        Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, file.getProject(), GlobalSearchScope.fileScope(file), BashIncludeCommand.class);
+        for (BashIncludeCommand command : commands) {
+            if (filterByFile == null || filterByFile.equals(findIncludedFile(command))) {
                 result.add(command);
             }
         }
@@ -364,22 +409,23 @@ public final class BashPsiUtils {
         return false;
     }
 
-    public static boolean isValidReferenceScope(PsiElement childCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = variableDefinition.getContainingFile().equals(childCandidate.getContainingFile());
+    public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
+        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(referenceToDefCandidate, true));
 
         if (sameFile) {
-            if (!isValidGlobalOffset(childCandidate, variableDefinition)) {
+            if (!isValidGlobalOffset(referenceToDefCandidate, variableDefinition)) {
                 return false;
             }
         } else {
             //we need to find the include command and check the offset
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
-            List<BashCommand> includeCommands = findIncludeCommands(childCandidate.getContainingFile(), variableDefinition.getContainingFile());
+            //fixme right files?
+            List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceToDefCandidate.getContainingFile(), variableDefinition.getContainingFile());
 
             //currently we only support global include commands
             for (BashCommand includeCommand : includeCommands) {
-                if (!isValidGlobalOffset(childCandidate, includeCommand)) {
+                if (!isValidGlobalOffset(referenceToDefCandidate, includeCommand)) {
                     return false;
                 }
             }

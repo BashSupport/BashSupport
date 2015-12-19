@@ -8,13 +8,14 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
-class InjectionUtils {
+public class InjectionUtils {
     private InjectionUtils() {
     }
 
-    protected static boolean walkInjection(PsiElement host, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place, boolean walkOn) {
+    public static boolean walkInjection(PsiElement host, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place, boolean walkOn) {
         //fixme does this work on the escaped or unescpaed text?
         InjectedLanguageManager injectedLanguageManager = InjectedLanguageManager.getInstance(host.getProject());
 
@@ -27,5 +28,43 @@ class InjectionUtils {
         }
 
         return walkOn;
+    }
+
+    public static List<BashVarUse> collectVariableUses(BashLanguageInjectionHost host) {
+        List<Pair<PsiElement, TextRange>> injectedPsiFiles = InjectedLanguageManager.getInstance(host.getProject()).getInjectedPsiFiles(host);
+        if (injectedPsiFiles == null || injectedPsiFiles.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        final List<BashVarUse> variables = Lists.newLinkedList();
+        for (Pair<PsiElement, TextRange> psiFilePair : injectedPsiFiles) {
+            BashPsiUtils.visitRecursively(psiFilePair.first, new BashVisitor() {
+                @Override
+                public void visitVarUse(BashVar var) {
+                    variables.add((BashVarUse) var);
+                }
+            });
+        }
+
+        return variables;
+    }
+
+    public static List<BashVarDef> collectVariableDefinitions(BashLanguageInjectionHost host) {
+        List<Pair<PsiElement, TextRange>> injectedPsiFiles = InjectedLanguageManager.getInstance(host.getProject()).getInjectedPsiFiles(host);
+        if (injectedPsiFiles == null || injectedPsiFiles.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        final List<BashVarDef> variables = Lists.newLinkedList();
+        for (Pair<PsiElement, TextRange> psiFilePair : injectedPsiFiles) {
+            BashPsiUtils.visitRecursively(psiFilePair.first, new BashVisitor() {
+                @Override
+                public void visitVarDef(BashVarDef varDef) {
+                    variables.add(varDef);
+                }
+            });
+        }
+
+        return variables;
     }
 }

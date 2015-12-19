@@ -18,12 +18,16 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import org.apache.commons.lang.ArrayUtils;
+
 /**
  * User: jansorg
  * Date: Dec 2, 2009
  * Time: 6:49:23 PM
  */
 public class BashStringUtils {
+    private static final char[] EMPTY = new char[0];
+
     private BashStringUtils() {
     }
 
@@ -36,6 +40,11 @@ public class BashStringUtils {
         return count;
     }
 
+    public static String escape(CharSequence content, char escapedChar) {
+        return escape(content, escapedChar, EMPTY);
+    }
+
+
     /**
      * Escaped occurrences of escapedChar. If the found character is already escaped then it is not escaped again.
      *
@@ -43,7 +52,7 @@ public class BashStringUtils {
      * @param escapedChar
      * @return New content with escaped occurrences of escapedChar
      */
-    public static String escape(CharSequence content, char escapedChar) {
+    public static String escape(CharSequence content, char escapedChar, char[] ignoredIfFollowedBy) {
         StringBuilder builder = new StringBuilder();
 
         char last = 0;
@@ -51,7 +60,9 @@ public class BashStringUtils {
             char current = content.charAt(i);
 
             if (current == escapedChar && last != '\\') {
+                if (i == content.length() - 1 || !ArrayUtils.contains(ignoredIfFollowedBy, content.charAt(i + 1))) {
                 builder.append('\\');
+            }
             }
 
             builder.append(current);

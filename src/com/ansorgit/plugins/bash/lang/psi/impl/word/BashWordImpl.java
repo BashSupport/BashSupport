@@ -195,11 +195,14 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     @Override
     public boolean isValidBashLanguageHost() {
-        if (!isWrapped()) {
+        return false;
+        /*
+        if (!isWrapped() || getTextLength() <= 2) {
             return false;
         }
 
         BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
         return command != null && command.isLanguageInjectionContainerFor(this);
+        */
     }
 }

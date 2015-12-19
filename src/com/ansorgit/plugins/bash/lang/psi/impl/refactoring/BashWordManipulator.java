@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
  * @author jansorg
  */
 public class BashWordManipulator implements ElementManipulator<BashWord> {
+    private static final char[] DOLLAR_IGNORED = new char[]{'$'};
+
     @Override
     public BashWord handleContentChange(@NotNull BashWord element, @NotNull TextRange textRange, String contentForRange) throws IncorrectOperationException {
         String oldContent = element.getText();
@@ -32,7 +34,7 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
         if (newContent.startsWith("$'") && newContent.indexOf('\\', contentStart) < contentEnd) {
             //contains backslash characters in the content which need to be escaped
             String toEscape = newContent.substring(contentStart, contentEnd);
-            newContent = "$'" + BashStringUtils.escape(toEscape, '\\') + "'";
+            newContent = "$'" + BashStringUtils.escape(toEscape, '\\', DOLLAR_IGNORED) + "'";
             contentEnd = newContent.length() - 1;
         }
 
@@ -42,10 +44,16 @@ public class BashWordManipulator implements ElementManipulator<BashWord> {
             newContent = "$'" + BashStringUtils.escape(toEscape, '\'') + "'";
         }
 
-        PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
-        assert newElement instanceof BashWord : "Element created for text not a word: " + newContent;
+        //PsiElement newElement = BashPsiElementFactory.createWord(element.getProject(), newContent);
+        //assert newElement instanceof BashWord : "Element created for text not a word: " + newContent;
 
-        return BashPsiUtils.replaceElement(element, newElement);
+        ASTNode valueNode = element.getNode().getFirstChildNode();
+        assert valueNode instanceof LeafElement;
+        ((LeafElement)valueNode).replaceWithText(newContent);
+
+        return element;
+
+        //return BashPsiUtils.replaceElement(element, newElement);
     }
 
     @Override

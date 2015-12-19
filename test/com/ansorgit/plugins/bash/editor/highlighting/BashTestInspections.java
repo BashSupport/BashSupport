@@ -23,7 +23,7 @@ public class BashTestInspections implements InspectionToolProvider {
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateArithmeticExpressionInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.FloatArithmeticInspection.class,
-                com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection.class,
+                ReadonlyVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.InternalVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnusedFunctionParameterInspection.class,

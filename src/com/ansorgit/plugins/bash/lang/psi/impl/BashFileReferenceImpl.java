@@ -33,11 +33,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BashFileReferenceImpl extends BashBaseElement implements BashFileReference {
-    private final PsiReference fileReference = new CachingFileReference(this);
-
     public BashFileReferenceImpl(final ASTNode astNode) {
         super(astNode, "Bash File reference");
     }
+
+    private final PsiReference fileReference = new CachingFileReference(this);
 
     @Nullable
     @Override
@@ -123,7 +123,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         public PsiElement bindToElement(@NotNull PsiElement targetElement) throws IncorrectOperationException {
             if (targetElement instanceof PsiFile) {
                 //findRelativePath already leaves the injection host file
-                PsiFile currentFile = this.element.getContainingFile();
+                PsiFile currentFile = BashPsiUtils.findFileContext(this.element, false);
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) targetElement);
 
                 return handleElementRename(relativeFilePath);
@@ -154,7 +154,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
         @Nullable
         public PsiElement resolveInner() {
-            PsiFile containingFile = getElement().getContainingFile();
+            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), true);
             if (!containingFile.isPhysical()) {
                 return null;
             }

@@ -112,6 +112,7 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
             return false;
         }
 
+        //fixme right file?
         PsiFile containingFile = getContainingFile();
         PsiFile includedFile = BashPsiUtils.findIncludedFile(this);
 
