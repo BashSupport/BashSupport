@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>4</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Read-only variable</problem_class>
+        <description>Change to a read-only variable</description>
+    </problem>
+</problems>

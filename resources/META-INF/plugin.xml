@@ -314,7 +314,7 @@
                          shortName="BashReadOnlyVariable"
                          key="inspection.readOnlyVar.name"
                          enabledByDefault="true"
-                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection"/>
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ReadOnlyVariableInspection"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashBuiltInVariable"
