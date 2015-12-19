@@ -1,5 +1,7 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;

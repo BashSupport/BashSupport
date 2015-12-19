@@ -1,5 +1,7 @@
 package com.ansorgit.plugins.bash.editor.highlighting;
 
+import com.ansorgit.plugins.bash.editor.inspections.inspections.FloatArithmeticInspection;
+import com.ansorgit.plugins.bash.editor.inspections.inspections.ReadonlyVariableInspection;
 import com.intellij.codeInspection.InspectionToolProvider;
 
 /**
@@ -22,7 +24,7 @@ public class BashTestInspections implements InspectionToolProvider {
                 com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateExpansionInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.EvaluateArithmeticExpressionInspection.class,
-                com.ansorgit.plugins.bash.editor.inspections.inspections.FloatArithmeticInspection.class,
+                FloatArithmeticInspection.class,
                 ReadonlyVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.InternalVariableInspection.class,
                 com.ansorgit.plugins.bash.editor.inspections.inspections.UnknownFiledescriptorInspection.class,

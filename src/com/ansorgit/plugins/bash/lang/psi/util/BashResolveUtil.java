@@ -1,16 +1,13 @@
 package com.ansorgit.plugins.bash.lang.psi.util;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
-import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarProcessor;
-import com.ansorgit.plugins.bash.lang.psi.impl.word.InjectionUtils;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashInjectionVarDefinitionsIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -91,21 +88,6 @@ public final class BashResolveUtil {
                 }
             }
         }
-
-        //process the injected variable definitions
-        Collection<BashLanguageInjectionHost> injectionsHosts = StubIndex.getElements(BashInjectionVarDefinitionsIndex.KEY, varName, project, filesScope, BashLanguageInjectionHost.class);
-        for (BashLanguageInjectionHost host : injectionsHosts) {
-            List<BashVarDef> varDefs = InjectionUtils.collectVariableDefinitions(host);
-
-            for (BashVarDef candidate : varDefs) {
-                if (referenceDefinition.isEquivalentTo(candidate) || referenceDefinition.isEquivalentTo(candidate.getReference().resolve())) {
-                    Boolean walkOn = varDefProcessor.apply(candidate);
-                    if (walkOn == null || !walkOn) {
-                        return;
-                    }
-                }
-            }
-        }
     }
 
     public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts) {
@@ -134,25 +116,17 @@ public final class BashResolveUtil {
             processor.execute(varDef, resolveState);
         }
 
-        walkInjectionHosts(bashVar, varName, project, resolveState, processor, fileScope);
-
         if (filePath != null) {
             Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, fileScope, BashIncludeCommand.class);
-        if (!includeCommands.isEmpty()) {
-            boolean varIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar) != null;
+            if (!includeCommands.isEmpty()) {
+                boolean varIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar) != null;
 
-            for (BashIncludeCommand command : includeCommands) {
-                boolean includeIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(command) != null;
+                for (BashIncludeCommand command : includeCommands) {
+                    boolean includeIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(command) != null;
 
-                //either one of var or include command is in a function or the var is used after the include command
-                if (varIsInFunction || includeIsInFunction || (BashPsiUtils.getFileTextOffset(bashVar) > BashPsiUtils.getFileTextEndOffset(command))) {
-                    command.processDeclarations(processor, resolveState, command, bashVar);
-
-                        BashFileReference fileReference = command.getFileReference();
-                        PsiFile includedFile = fileReference != null ? fileReference.findReferencedFile() : null;
-                        if (includedFile != null) {
-                            walkInjectionHosts(bashVar, varName, project, resolveState, processor, GlobalSearchScope.fileScope(includedFile));
-                        }
+                    //either one of var or include command is in a function or the var is used after the include command
+                    if (varIsInFunction || includeIsInFunction || (BashPsiUtils.getFileTextOffset(bashVar) > BashPsiUtils.getFileTextEndOffset(command))) {
+                        command.processDeclarations(processor, resolveState, command, bashVar);
                     }
                 }
             }
