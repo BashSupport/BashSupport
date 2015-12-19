@@ -166,6 +166,32 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) == null);
     }
 
+    @Test
+    public void testIssue262() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+        //the found var def has to be on global level
+        Assert.assertTrue(varDef.isLocalVarDef());
+    }
+
+    @Test
+    public void testIssue262Typeset() throws Exception {
+        BashVarDef varDef = assertIsValidVarDef();
+        //the found var def has to be on global level
+        Assert.assertTrue(varDef.isLocalVarDef());
+    }
+
+    @Test
+    public void testIssue262NoGlobalResolve() throws Exception {
+        //declare used in a function defines a local variable
+        assertIsInvalidVarDef();
+    }
+
+    @Test
+    public void testIssue262TypesetNoGlobalResolve() throws Exception {
+        //declare used in a function defines a local variable
+        assertIsInvalidVarDef();
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/resolve/varDef/";
     }

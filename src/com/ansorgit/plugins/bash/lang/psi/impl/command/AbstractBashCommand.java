@@ -61,7 +61,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     private final PsiReference bashFileReference = new BashFileReference(this);
 
     private String referencedCommandName;
-    private boolean hasReferencedCommandName;
+    private boolean hasReferencedCommandName = false;
     private Boolean isInternalCommandBash3;
     private Boolean isInternalCommandBash4;
     private List<BashPsiElement> parameters;
