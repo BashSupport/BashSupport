@@ -54,7 +54,7 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
                 emptyContainer = builder.rawLookup(1) == BashTokenTypes.STRING_END;
                 ok = Parsing.word.parseComposedString(builder);
             } else if (tokenType == WORD || tokenType == STRING2) {
-                emptyContainer = builder.getTokenText() == null || builder.getTokenText().length() == 2;
+                emptyContainer = builder.getTokenText() == null || builder.getTokenText().length() <= 2;
                 builder.advanceLexer();
                 ok = true;
             }

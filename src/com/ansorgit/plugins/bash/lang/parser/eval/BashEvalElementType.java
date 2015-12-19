@@ -23,7 +23,7 @@ public class BashEvalElementType extends ILazyParseableElementType {
 
         String originalText = chameleon.getChars().toString();
         if (originalText.length() < 2) {
-            throw new IncorrectOperationException("Can not handle empty strings");
+            throw new IncorrectOperationException("Can not handle empty string: " + originalText);
         }
 
         boolean enhancedEscaping = originalText.startsWith("$'") && originalText.endsWith("'");

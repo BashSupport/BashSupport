@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.intellij.embedding.MasqueradingLexer;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.ITokenTypeRemapper;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.impl.DelegateMarker;
@@ -55,6 +56,8 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private List<MyShiftedToken> myShrunkSequence;
     private CharSequence myShrunkCharSequence;
     private int myLexPosition;
+    private IElementType currentRemapped;
+    private ITokenTypeRemapper remapper;
 
     public UnescapingPsiBuilder(@NotNull final Project project,
                                 @NotNull final ParserDefinition parserDefinition,
@@ -188,15 +191,43 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         return myLexPosition < myShrunkSequence.size() ? myShrunkSequence.get(myLexPosition).shrunkStart : myShrunkCharSequence.length();
     }
 
+    @Override
+    public void remapCurrentToken(IElementType type) {
+        currentRemapped = type;
+    }
+
+    @Override
+    public void setTokenTypeRemapper(ITokenTypeRemapper remapper) {
+        this.remapper = remapper;
+        super.setTokenTypeRemapper(remapper);
+    }
+
     @Nullable
     @Override
     public IElementType getTokenType() {
         if (allIsEmpty()) {
             return TokenType.DUMMY_HOLDER;
         }
+
         skipWhitespace();
 
-        return myLexPosition < myShrunkSequence.size() ? myShrunkSequence.get(myLexPosition).elementType : null;
+        if (currentRemapped != null) {
+            IElementType result = currentRemapped;
+            currentRemapped = null;
+            //replace in the sequence?
+            return result;
+        }
+
+        IElementType result = myLexPosition < myShrunkSequence.size() ? myShrunkSequence.get(myLexPosition).elementType : null;
+
+        if (remapper != null && result != null) {
+            String tokenText = getTokenText();
+            int offset = getCurrentOffset();
+            int end = offset + (tokenText != null ? tokenText.length() : 0);
+            return remapper.filter(result, offset, end, tokenText);
+        }
+
+        return result;
     }
 
     @Nullable
