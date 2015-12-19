@@ -1,3 +1,6 @@
+####2015-12-15
+ - \#262: Variables declared by declare or typeset in a function are local
+
 ####2015-12-11
  - Up to 35x faster file highlighting
  - Improved eval and trap parsing

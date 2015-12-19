@@ -71,6 +71,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
     private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
+    private static final Set<String> localVarDefCommands = Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
     private static final Set<String> typeReadOnlyParams = Sets.newHashSet("-r");
     private static final Object[] EMPTY_VARIANTS = new Object[0];
@@ -146,16 +147,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (parentElement instanceof BashCommand) {
             BashCommand command = (BashCommand) parentElement;
 
-            PsiElement commandElement = command.commandElement();
-            if (commandElement != null && typeCommands.contains(commandElement.getText())) {
-                List<BashPsiElement> parameters = command.parameters();
-
-                for (BashPsiElement param : parameters) {
-                    if (typeArrayDeclarationParams.contains(param.getText())) {
-                        return true;
-                    }
-                }
-            }
+            return isCommandWithParamter(command, typeCommands, typeArrayDeclarationParams);
         }
 
         return false;
@@ -219,6 +211,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         PsiFile currentFile = getContainingFile();
         Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
 
+        //fixme handle injected code in functions
+
         BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
         if (functionLocalScope == null) {
             return false;
@@ -243,10 +237,19 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
             final BashCommand parentCmd = (BashCommand) context;
-            if (parentCmd.isVarDefCommand() && localVarDefCommands.contains(parentCmd.getReferencedCommandName())) {
+            String commandName = parentCmd.getReferencedCommandName();
+
+            //declared by "local"
+            if (parentCmd.isVarDefCommand() && LanguageBuiltins.localVarDefCommands.contains(commandName)) {
+                return true;
+            }
+
+            //declared by either delcare or typeset in a function block
+            if (localVarDefCommands.contains(commandName) && BashPsiUtils.findNextVarDefFunctionDefScope(context) != null) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -366,18 +369,25 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             }
 
             //check for declare -r or typeset -r
-            PsiElement commandElement = command.commandElement();
-            if (commandElement != null && typeCommands.contains(commandElement.getText())) {
-                List<BashPsiElement> parameters = command.parameters();
-
-                for (BashPsiElement param : parameters) {
-                    if (typeReadOnlyParams.contains(param.getText())) {
-                        return true;
-                    }
-                }
+            if (isCommandWithParamter(command, typeCommands, typeReadOnlyParams)) {
+                return true;
             }
         }
 
+        return false;
+    }
+
+    private boolean isCommandWithParamter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
+        PsiElement commandElement = command.commandElement();
+        if (commandElement != null && validCommands.contains(commandElement.getText())) {
+            List<BashPsiElement> parameters = command.parameters();
+
+            for (BashPsiElement param : parameters) {
+                if (validParams.contains(param.getText())) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
