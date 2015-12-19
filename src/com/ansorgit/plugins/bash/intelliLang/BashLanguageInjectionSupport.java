@@ -1,7 +1,7 @@
 package com.ansorgit.plugins.bash.intelliLang;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import org.intellij.plugins.intelliLang.inject.AbstractLanguageInjectionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -12,11 +12,7 @@ public class BashLanguageInjectionSupport extends AbstractLanguageInjectionSuppo
 
     @Override
     public boolean isApplicableTo(PsiLanguageInjectionHost host) {
-        if (host instanceof BashLanguageInjectionHost) {
-            return !((BashLanguageInjectionHost) host).isValidBashLanguageHost();
-        }
-
-        return host instanceof BashPsiElement;
+        return host instanceof BashWord || host instanceof BashString;
     }
 
     @NotNull

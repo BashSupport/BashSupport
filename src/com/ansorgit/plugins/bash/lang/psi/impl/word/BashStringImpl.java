@@ -23,9 +23,7 @@ import com.ansorgit.plugins.bash.lang.parser.eval.BashSimpleTextLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
-import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -44,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Joachim Ansorg
  */
-public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost {
     private TextRange contentRange;
     private Boolean isWrapped;
 
@@ -133,7 +131,7 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
 
         boolean walkOn = isStatic() || BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
 
-        if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
+        if (walkOn && isValidHost()) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
         }
 
@@ -149,15 +147,5 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
         return new BashSimpleTextLiteralEscaper<BashStringImpl>(this);
-    }
-
-    @Override
-    public boolean isValidBashLanguageHost() {
-        if (getTextContentRange().getLength() == 0) {
-            return false;
-        }
-
-        BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
-        return command != null && command.isLanguageInjectionContainerFor(this);
     }
 }

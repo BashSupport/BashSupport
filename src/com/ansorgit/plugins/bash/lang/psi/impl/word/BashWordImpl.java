@@ -22,10 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.eval.BashEnhancedLiteralTextEscaper
 import com.ansorgit.plugins.bash.lang.parser.eval.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.BashScopeProcessor;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
@@ -37,7 +34,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost, BashLanguageInjectionHost {
+public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
     private Boolean isWrapped;
 
@@ -169,7 +166,7 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
         }
 
         boolean walkOn = BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        if (walkOn && (processor instanceof BashScopeProcessor ? isValidBashLanguageHost() : isValidHost())) {
+        if (walkOn && isValidHost()) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
         }
 
@@ -191,18 +188,5 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
         //no $' prefix -> no escape handling
         return new BashIdentityStringLiteralEscaper<BashWordImpl>(this);
-    }
-
-    @Override
-    public boolean isValidBashLanguageHost() {
-        return false;
-        /*
-        if (!isWrapped() || getTextLength() <= 2) {
-            return false;
-        }
-
-        BashCommand command = BashPsiUtils.findStubParent(this, BashCommand.class);
-        return command != null && command.isLanguageInjectionContainerFor(this);
-        */
     }
 }
