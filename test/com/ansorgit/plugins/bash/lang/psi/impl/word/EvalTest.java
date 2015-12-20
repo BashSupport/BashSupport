@@ -107,15 +107,6 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
     }
 
     @Test
-    public void testIssue286Simple() throws Exception {
-        PsiElement current = configurePsiAtCaret();
-
-        Assert.assertNotNull(current);
-        Assert.assertEquals("Not completely covered", "value=abc", current.getText());
-        Assert.assertTrue("element is not a variable: " + current, current instanceof BashVarDef);
-    }
-
-    @Test
     public void testIssue286() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
