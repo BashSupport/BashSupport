@@ -33,7 +33,8 @@ import com.intellij.psi.tree.TokenSet;
  * fixme not variable parsing, etc. is done at the moment
  */
 class EvalCommandParsing implements ParsingFunction, ParsingTool {
-    private static final TokenSet accepted = TokenSet.create(STRING2, ASSIGNMENT_WORD, EQ, WORD, VARIABLE, DOLLAR, LEFT_CURLY, RIGHT_CURLY, LEFT_PAREN, RIGHT_PAREN);
+    //this is a simple definition of allowed tokens per eval-code-block
+    private static final TokenSet accepted = TokenSet.create(STRING2, ASSIGNMENT_WORD, EQ, WORD, VARIABLE, DOLLAR, LEFT_CURLY, RIGHT_CURLY);
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
