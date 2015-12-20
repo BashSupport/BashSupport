@@ -24,10 +24,6 @@ public class BashEvalElementType extends ILazyParseableElementType {
         Project project = psi.getProject();
 
         String originalText = chameleon.getChars().toString();
-        if (originalText.length() < 2) {
-            throw new IncorrectOperationException("Can not handle empty string: " + originalText);
-        }
-
         ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
 
         boolean isDoubleQuoted = originalText.startsWith("\"") && originalText.endsWith("\"");
