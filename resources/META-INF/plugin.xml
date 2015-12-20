@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,21 +38,24 @@
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.5.2 compared to 1.5.1:</b>
+        <b>Changes in version 1.5.3 compared to 1.5.2:</b>
         <ul>
-            <li>No new features</li>
+            <li>Features:
+                <ul>
+                    <li>Up to 35x faster file highlighting</li>
+                    <li>Improved eval and trap parsing</li>
+                    <li>Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets</li>
+                </ul>
+            </li>
             <li>Bugs fixed:<br/>
                 <ul>
-                    <li>#290: Inspections have no descriptions</li>
-                    <li>#289: Quickdoc lookup not working for keywords</li>
-                    <li>#288: Documentation lookup not working for functions</li>
-                    <li>#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"</li>
-                    <li>#280: Run configuration error message "Module wasn't found"</li>
+                    <li>#286: Eval parsing of code not inside a string</li>
+                    <li>#263: Warning for modifications of variables re-defined as readonly</li>
                 </ul>
             </li>
         </ul>
 
-        <b>New features in version 1.5.1 compared to 1.4.x:</b>
+        <b>New features in version 1.5.x compared to 1.4.x:</b>
         <ul>
             <li>#90: Language injection into unevaluated heredoc content, single and double quoted strings</li>
             <li>#274: Spellchecker support for double-quoted strings, single-quoted strings and heredoc
