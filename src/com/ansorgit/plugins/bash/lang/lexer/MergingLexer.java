@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: MergingLexer.java, Class: MergingLexer
  * Last modified: 2011-04-30 16:33
- * <p/>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.lexer.MergeFunction;
 import com.intellij.lexer.MergingLexerAdapterBase;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -34,7 +33,6 @@ import com.intellij.psi.tree.TokenSet;
  * @author Joachim Ansorg
  */
 class MergingLexer extends MergingLexerAdapterBase {
-    private final LexerMergeFunction mergeFunction;
 
     /**
      * Create a merging lexer which works with the merge definitions given in the mergeTuples parameter.
@@ -43,26 +41,20 @@ class MergingLexer extends MergingLexerAdapterBase {
      * @param mergeTuples The token merge definitions.
      */
     public MergingLexer(final Lexer original, final MergeTuple... mergeTuples) {
-        super(original);
-        this.mergeFunction = new LexerMergeFunction(mergeTuples);
+        super(original, new MergeFunction(mergeTuples));
     }
 
-    @Override
-    public MergeFunction getMergeFunction() {
-        return mergeFunction;
-    }
+    private static class MergeFunction implements MergingLexerAdapterBase.MergeFunction {
+        private final MergeTuple[] mergeTuples;
 
-    private static class LexerMergeFunction implements MergeFunction {
-        private MergeTuple[] mergeTuples;
-
-        public LexerMergeFunction(MergeTuple[] mergeTuples) {
+        public MergeFunction(MergeTuple... mergeTuples) {
             this.mergeTuples = mergeTuples;
         }
 
         @Override
         public IElementType merge(IElementType type, Lexer lexer) {
-            for (MergeTuple currentTuple : mergeTuples) {
-                TokenSet tokensToMerge = currentTuple.getTokensToMerge();
+            for (final MergeTuple currentTuple : mergeTuples) {
+                final TokenSet tokensToMerge = currentTuple.getTokensToMerge();
 
                 if (tokensToMerge.contains(type)) {
                     IElementType current = lexer.getTokenType();

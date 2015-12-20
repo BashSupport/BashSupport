@@ -15,7 +15,6 @@
  */
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
-import com.intellij.embedding.MasqueradingLexer;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ITokenTypeRemapper;
 import com.intellij.lang.ParserDefinition;
@@ -380,7 +379,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
     }
 
-    private class MyMarker extends DelegateMarker {
+    private class MyMarker extends DelegateMarker{
 
         private int myBuilderPosition;
 
