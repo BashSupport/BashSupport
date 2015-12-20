@@ -2,10 +2,10 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashLanguageInjectionHost;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
@@ -25,30 +25,24 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
     public void testEvalWordContainer() throws Exception {
         PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
-        Assert.assertTrue(word instanceof BashWordImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + word.getText(), ((BashWordImpl) word).isValidHost());
-
+        Assert.assertTrue("Container is not an eval block", word instanceof BashEvalBlock);
     }
 
     public void testEvalStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not a String: " + current, current instanceof BashStringImpl);
-        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidHost());
+        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
     }
 
     public void testEvalMultiStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashString);
+        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
 
-        Collection<BashString> stringContainer = PsiTreeUtil.findChildrenOfType(current.getParent(), BashString.class);
-        Assert.assertEquals("Expected three eval block", 3, stringContainer.size());
-        for (BashString string : stringContainer) {
-            Assert.assertTrue("Should be a valid injection host", ((BashStringImpl)string).isValidHost());
-        }
+        Collection<BashEvalBlock> evalBlocks = PsiTreeUtil.findChildrenOfType(current.getParent(), BashEvalBlock.class);
+        Assert.assertEquals("Expected three eval block", 3, evalBlocks.size());
     }
 
     public void testEvalEmptyStringContainer() throws Exception {
@@ -63,24 +57,42 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("empty eval string is not a word " + current, current instanceof BashWord);
-        Assert.assertFalse("empty eval block must not be a valid injection host for bash " + current, ((BashLanguageInjectionHost)current).isValidBashLanguageHost());
+        Assert.assertTrue("element is not an empty command (with empty evsl blok): " + current, current instanceof BashComposedCommand);
     }
 
     public void testEvalSmallStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashString);
-        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashStringImpl) current).isValidHost());
+        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
     }
 
     public void testEvalSmallWordContainers() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashWord);
-        Assert.assertTrue("The element is not a valid injection host: " + current.getText(), ((BashWordImpl) current).isValidHost());
+        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
+        Assert.assertEquals("parent element must have two eval containers", 2, PsiTreeUtil.findChildrenOfType(current.getParent(), BashEvalBlock.class).size());
+    }
+
+    public void testEvalEcho() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not a var: " + current, current instanceof BashVar);
+        Assert.assertNotNull("element is not in an eval block: " + current, PsiTreeUtil.getParentOfType(current, BashEvalBlock.class));
+
+        Assert.assertNull("File must not contain errors", PsiTreeUtil.findChildOfType(current.getContainingFile(), PsiErrorElement.class));
+    }
+
+    public void testEvalEcho2() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not a eval block: " + current, current instanceof BashVar);
+        Assert.assertNotNull("element is not in an eval block: " + current, PsiTreeUtil.getParentOfType(current, BashEvalBlock.class));
+
+        Assert.assertNull("File must not contain errors", PsiTreeUtil.findChildOfType(current.getContainingFile(), PsiErrorElement.class));
     }
 
     public void testEvalError() throws Exception {

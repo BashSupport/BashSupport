@@ -6,7 +6,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.impl.BashVarStubImpl;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarIndex;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -33,15 +32,15 @@ public class BashVarElementType extends BashStubElementType<BashVarStub, BashVar
 
     public void serialize(@NotNull BashVarStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
-        dataStream.writeBoolean(stub.isSingleWord());
+        dataStream.writeInt(stub.getPrefixLength());
     }
 
     @NotNull
     public BashVarStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         StringRef ref = dataStream.readName();
-        boolean singleWord = dataStream.readBoolean();
+        int prefixLength = dataStream.readInt();
 
-        return new BashVarStubImpl(parentStub, ref, this, singleWord);
+        return new BashVarStubImpl(parentStub, ref, this, prefixLength);
     }
 
     public BashVar createPsi(@NotNull BashVarStub stub) {
@@ -49,7 +48,7 @@ public class BashVarElementType extends BashStubElementType<BashVarStub, BashVar
     }
 
     public BashVarStub createStub(@NotNull BashVar psi, StubElement parentStub) {
-        return new BashVarStubImpl(parentStub, StringRef.fromString(psi.getName()), BashElementTypes.VAR_ELEMENT, psi.isBuiltinVar());
+        return new BashVarStubImpl(parentStub, StringRef.fromString(psi.getName()), BashElementTypes.VAR_ELEMENT, psi.getPrefixLength());
     }
 
     @Override

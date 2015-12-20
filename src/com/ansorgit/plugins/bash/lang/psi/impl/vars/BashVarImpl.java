@@ -59,7 +59,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     private static final Object[] OBJECTS_EMPTY = new Object[0];
 
     private final BashReference cachingVarReference;
-    private Boolean singleWord;
+    private int prefixLength = -1;
     private String referencedName;
     private TextRange nameTextRange;
 
@@ -77,7 +77,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.singleWord = null;
+        this.prefixLength = -1;
         this.referencedName = null;
         this.nameTextRange = null;
     }
@@ -122,9 +122,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
             throw new IncorrectOperationException("can't have an empty name");
         }
 
-        PsiElement original = this;                                                                                //fixme
         PsiElement replacement = BashPsiElementFactory.createVariable(getProject(), newName, isParameterExpansion());
-        return BashPsiUtils.replaceElement(original, replacement);
+        return BashPsiUtils.replaceElement(this, replacement);
     }
 
     public String getReferenceName() {
@@ -134,9 +133,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (referencedName == null) {
-            final String text = getText();
-
-            referencedName = (text.isEmpty() || isSingleWord()) ? text : (text.substring(text.startsWith("\\$") ? 2 : 1));
+            referencedName = getNameTextRange().substring(getText());
         }
 
         return referencedName;
@@ -147,18 +144,19 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
      *
      * @return True if this variable is just a single, composed word token
      */
-    public boolean isSingleWord() {
+    @Override
+    public int getPrefixLength() {
         BashVarStub stub = getStub();
         if (stub != null) {
-            return stub.isSingleWord();
+            return stub.getPrefixLength();
         }
 
-        if (singleWord == null) {
+        if (prefixLength == -1) {
             String text = getText();
-            singleWord = !text.startsWith("$") && !text.startsWith("\\$");
+            prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
         }
 
-        return singleWord;
+        return prefixLength;
     }
 
     public boolean isBuiltinVar() {
@@ -167,7 +165,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public boolean isParameterExpansion() {
-        return isSingleWord() && (getParent() instanceof BashComposedVar || getParent() instanceof BashParameterExpansion);
+        return getPrefixLength() == 0 && (getParent() instanceof BashComposedVar || getParent() instanceof BashParameterExpansion);
     }
 
     public boolean isParameterReference() {
@@ -200,8 +198,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     protected TextRange getNameTextRange() {
         if (nameTextRange == null) {
-            int offset = isSingleWord() ? 0 : 1;
-            nameTextRange = TextRange.create(offset, getTextLength());
+            nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
         }
 
         return nameTextRange;
@@ -246,8 +243,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
                 throw new IncorrectOperationException("Can't have an empty name");
             }
 
-            //if this is variable which doesn't have a $ sign prefix
-            if (bashVar.isSingleWord()) {
+            //if this is variable which doesn't have a $ or escaped \$ sign prefix
+            if (bashVar.getPrefixLength() == 0) {
                 return BashPsiUtils.replaceElement(bashVar, BashPsiElementFactory.createVariable(bashVar.getProject(), newName, true));
             }
 
