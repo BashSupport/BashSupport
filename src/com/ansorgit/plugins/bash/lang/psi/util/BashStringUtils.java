@@ -61,8 +61,8 @@ public class BashStringUtils {
 
             if (current == escapedChar && last != '\\') {
                 if (i == content.length() - 1 || !ArrayUtils.contains(ignoredIfFollowedBy, content.charAt(i + 1))) {
-                    builder.append('\\');
-                }
+                builder.append('\\');
+            }
             }
 
             builder.append(current);

@@ -303,6 +303,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     @Override
+    public int getPrefixLength() {
+        return 0;
+    }
+
+    @Override
     public boolean isStaticAssignmentWord() {
         PsiElement word = findAssignmentWord();
         if (word instanceof BashCharSequence) {
@@ -360,11 +365,6 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isReadonly() {
-        BashVarDefStub stub = getStub();
-        if (stub != null) {
-            return stub.isReadOnly();
-        }
-
         PsiElement context = getParent();
         if (context instanceof BashCommand) {
             BashCommand command = (BashCommand) context;

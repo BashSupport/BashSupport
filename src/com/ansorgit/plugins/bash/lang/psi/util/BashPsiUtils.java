@@ -66,9 +66,9 @@ public final class BashPsiUtils {
      * @return The file on disk
      */
     public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
-        if (leaveInjectionHosts) {
+        /*if (leaveInjectionHosts) {
             return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
-        }
+        } */
 
         return element.getContainingFile();
     }

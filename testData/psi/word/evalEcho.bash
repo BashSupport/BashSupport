@@ -1,2 +1,3 @@
-x=1
+x=
+echo a=$x
 eval 'echo a=$<caret>x'

@@ -221,7 +221,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean isLanguageInjectionContainerFor(PsiElement candidate) {
-        String referencedCommandName = getReferencedCommandName();
+        return false;
+       /* String referencedCommandName = getReferencedCommandName();
         if (referencedCommandName == null) {
             return false;
         }
@@ -245,7 +246,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             return multipleWords && PsiManager.getInstance(getProject()).areElementsEquivalent(candidate, signalHandlerElement);
         }
 
-        return false;
+        return false;        */
     }
 
     @Override
@@ -318,7 +319,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             final ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
             Project project = cmd.getProject();
-            PsiFile currentFile = BashPsiUtils.findFileContext(cmd, true);
+            PsiFile currentFile = cmd.getContainingFile();
 
             GlobalSearchScope allFiles = FileInclusionManager.includedFilesUnionScope(currentFile);
             Collection<BashFunctionDef> functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, allFiles, BashFunctionDef.class);
@@ -446,15 +447,21 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
             //clean it up
             String fileName = PathUtil.getFileName(referencedName);
-            PsiFile fileContext = BashPsiUtils.findFileContext(cmd, true);
 
-            GlobalSearchScope scope = BashSearchScopes.moduleScope(fileContext);
+            //fixme resolve path to full canoncial path and then look it up
+            /*GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
+            Collection<BashFile> files = StubIndex.getElements(BashScriptNameIndex.KEY, referencedName, cmd.getProject(), scope, BashFile.class);
+            if (files.isEmpty()) {
+                return null;
+            } */
+            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
             PsiFileSystemItem[] files = FilenameIndex.getFilesByName(cmd.getProject(), fileName, scope, false);
             if (files.length == 0) {
                 return null;
             }
 
-            return BashPsiFileUtils.findRelativeFile(fileContext, referencedName);
+            PsiFile currentFile = cmd.getContainingFile();
+            return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
         }
 
         @Override
@@ -492,7 +499,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
             if (element instanceof PsiFile) {
                 //findRelativeFilePath already leaves the injection host file
-                PsiFile currentFile = BashPsiUtils.findFileContext(cmd, false);
+                PsiFile currentFile = cmd.getContainingFile();
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
 
                 return handleElementRename(relativeFilePath);
