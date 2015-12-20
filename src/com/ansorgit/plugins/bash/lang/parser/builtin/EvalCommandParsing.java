@@ -18,13 +18,12 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * let Argument [Argument ...]
@@ -34,6 +33,8 @@ import com.intellij.psi.tree.IElementType;
  * fixme not variable parsing, etc. is done at the moment
  */
 class EvalCommandParsing implements ParsingFunction, ParsingTool {
+    private static final TokenSet accepted = TokenSet.create(STRING2, ASSIGNMENT_WORD, EQ, WORD, VARIABLE, DOLLAR, LEFT_CURLY, RIGHT_CURLY, LEFT_PAREN, RIGHT_PAREN);
+
     @Override
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == WORD && "eval".equals(builder.getTokenText());
@@ -44,34 +45,33 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
         //eat the "eval" token
         builder.advanceLexer();
 
-        IElementType tokenType = builder.getTokenType();
         while (true) {
+            int start = builder.rawTokenIndex();
+
+            //advance to the next non-whitespace token before reading an eval block
+            builder.getTokenType();
+
             PsiBuilder.Marker evalMarker = builder.mark();
 
-            boolean ok = false;
-            boolean emptyContainer = false;
-            if (Parsing.word.isComposedString(tokenType)) {
-                emptyContainer = builder.rawLookup(1) == BashTokenTypes.STRING_END;
+            boolean ok;
+            if (Parsing.word.isComposedString(builder.getTokenType(true))) {
                 ok = Parsing.word.parseComposedString(builder);
-            } else if (tokenType == WORD || tokenType == STRING2) {
-                emptyContainer = builder.getTokenText() == null || builder.getTokenText().length() <= 2;
-                builder.advanceLexer();
+            } else if (accepted.contains(builder.getTokenType(true))) {
+                while (accepted.contains(builder.getTokenType(true))) {
+                    builder.advanceLexer();
+                }
+
                 ok = true;
+            } else {
+                ok = false;
             }
 
-            if (!ok) {
+            if (ok && builder.rawTokenIndex() > start) {
+                evalMarker.collapse(EVAL_BLOCK);
+            } else {
                 evalMarker.drop();
                 break;
             }
-
-            //do not mark empty strings as eval block (with PSI lazy parsing)
-            if (emptyContainer) {
-                evalMarker.drop();
-            } else {
-                evalMarker.collapse(EVAL_BLOCK);
-            }
-
-            tokenType = builder.getTokenType();
         }
 
         return true;

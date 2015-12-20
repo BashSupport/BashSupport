@@ -1,3 +1,6 @@
+####2015-12-20
+ - \#286: Eval parsing of code not inside a string
+
 ####2015-12-15
  - \#263: Warning for modifications of variables re-defined as readonly
 
