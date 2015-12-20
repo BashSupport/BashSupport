@@ -4,6 +4,8 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -26,40 +28,43 @@ public class BashEvalElementType extends ILazyParseableElementType {
             throw new IncorrectOperationException("Can not handle empty string: " + originalText);
         }
 
-        boolean enhancedEscaping = originalText.startsWith("$'") && originalText.endsWith("'");
-        boolean simpleEscaping = !enhancedEscaping && originalText.startsWith("\"") && originalText.endsWith("\"");
+        ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
 
-        String prefix = originalText.subSequence(0, enhancedEscaping ? 2 : 1).toString();
-        String content = originalText.subSequence(enhancedEscaping ? 2 : 1, originalText.length() - 1).toString();
-        String suffix = originalText.subSequence(originalText.length() - 1, originalText.length()).toString();
+        boolean isDoubleQuoted = originalText.startsWith("\"") && originalText.endsWith("\"");
+        boolean isSingleQuoted = originalText.startsWith("'") && originalText.endsWith("'");
+        boolean isEscapingSingleQuoted = originalText.startsWith("$'") && originalText.endsWith("'");
+        boolean isUnquoted = !isDoubleQuoted && !isSingleQuoted && !isEscapingSingleQuoted;
+
+        String prefix = isUnquoted ? "" : originalText.subSequence(0, isEscapingSingleQuoted ? 2 : 1).toString();
+        String content = isUnquoted ? originalText : originalText.subSequence(isEscapingSingleQuoted ? 2 : 1, originalText.length() - 1).toString();
+        String suffix = isUnquoted ? "" : originalText.subSequence(originalText.length() - 1, originalText.length()).toString();
 
         TextPreprocessor textProcessor;
-        if (enhancedEscaping) {
+        if (isEscapingSingleQuoted) {
             textProcessor = new BashEnhancedTextPreprocessor(TextRange.from(2, content.length()));
-        } else if (simpleEscaping) {
-            textProcessor = new BashSimpleTextPreprocessor(TextRange.from(prefix.length(), content.length()));
-        } else {
+        } else if (isSingleQuoted) {
+            //no escape handling for single-quoted strings
             textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+        } else {
+            //fallback to simple escape handling
+            textProcessor = new BashSimpleTextPreprocessor(TextRange.from(prefix.length(), content.length()));
         }
 
         StringBuilder unescapedContent = new StringBuilder(content.length());
         textProcessor.decode(content, unescapedContent);
 
-        String unescpaedComplete = prefix + unescapedContent + suffix;
+        Lexer lexer = isUnquoted
+                ? def.createLexer(project)
+                : new PrefixSuffixAddingLexer(def.createLexer(project), prefix, TokenType.WHITE_SPACE, suffix, TokenType.WHITE_SPACE);
 
-        ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
-        PrefixSuffixAddingLexer prefixSuffixLexer = new PrefixSuffixAddingLexer(def.createLexer(project),
-                prefix, TokenType.WHITE_SPACE,
-                suffix, TokenType.WHITE_SPACE);
-
-        UnescapingPsiBuilder adaptingPsiBuilder = new UnescapingPsiBuilder(project,
+        PsiBuilder psiBuilder = new UnescapingPsiBuilder(project,
                 def,
-                prefixSuffixLexer,
+                lexer,
                 chameleon,
                 originalText,
-                unescpaedComplete,
+                prefix + unescapedContent + suffix,
                 textProcessor);
 
-        return def.createParser(project).parse(this, adaptingPsiBuilder).getFirstChildNode();
+        return def.createParser(project).parse(this, psiBuilder).getFirstChildNode();
     }
 }

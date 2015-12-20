@@ -2,9 +2,9 @@ package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.BashString;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Lists;
@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,12 +23,14 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         return "/psi/word/";
     }
 
+    @Test
     public void testEvalWordContainer() throws Exception {
         PsiElement word = configurePsiAtCaret();
         Assert.assertNotNull(word);
         Assert.assertTrue("Container is not an eval block", word instanceof BashEvalBlock);
     }
 
+    @Test
     public void testEvalStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -35,6 +38,7 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
     }
 
+    @Test
     public void testEvalMultiStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -45,21 +49,25 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertEquals("Expected three eval block", 3, evalBlocks.size());
     }
 
+    @Test
     public void testEvalEmptyStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not an empty string: " + current, current instanceof BashString);
+//        Assert.assertTrue("element is not an empty string: " + current, current instanceof BashString);
         Assert.assertTrue("element is not an empty string: " + current, current.getText().equals("\"\""));
     }
 
+    @Test
     public void testEvalEmptyWordContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
         Assert.assertNotNull(current);
-        Assert.assertTrue("element is not an empty command (with empty evsl blok): " + current, current instanceof BashComposedCommand);
+        Assert.assertTrue("element is not an empty string: " + current, current.getText().equals("''"));
+//        Assert.assertTrue("element is not an empty command (with empty evsl blok): " + current, current instanceof BashComposedCommand);
     }
 
+    @Test
     public void testEvalSmallStringContainer() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -67,6 +75,7 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertTrue("element is not a eval block: " + current, current instanceof BashEvalBlock);
     }
 
+    @Test
     public void testEvalSmallWordContainers() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -75,6 +84,7 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertEquals("parent element must have two eval containers", 2, PsiTreeUtil.findChildrenOfType(current.getParent(), BashEvalBlock.class).size());
     }
 
+    @Test
     public void testEvalEcho() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -85,6 +95,7 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertNull("File must not contain errors", PsiTreeUtil.findChildOfType(current.getContainingFile(), PsiErrorElement.class));
     }
 
+    @Test
     public void testEvalEcho2() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
@@ -95,6 +106,31 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertNull("File must not contain errors", PsiTreeUtil.findChildOfType(current.getContainingFile(), PsiErrorElement.class));
     }
 
+    @Test
+    public void testIssue286Simple() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertEquals("Not completely covered", "value=abc", current.getText());
+        Assert.assertTrue("element is not a variable: " + current, current instanceof BashVarDef);
+    }
+
+    @Test
+    public void testIssue286() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not a variable: " + current, current instanceof BashVarUse);
+
+        PsiElement def = current.getReference().resolve();
+        Assert.assertNotNull("var must resolve: " + def, def);
+        Assert.assertNotNull("var must resolve to a var def: " + def, def instanceof BashVarDef);
+
+        //make sure that the eval block covers all expected data
+        Assert.assertEquals("Eval must cover all text", "value=\\$myvar${index}", PsiTreeUtil.getParentOfType(def, BashEvalBlock.class).getText());
+    }
+
+    @Test
     public void testEvalError() throws Exception {
         PsiElement current = configurePsiAtCaret();
 
