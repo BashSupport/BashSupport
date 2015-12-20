@@ -1,8 +1,6 @@
 package com.ansorgit.plugins.bash.lang.psi.stubs.impl;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
@@ -14,12 +12,12 @@ import com.intellij.util.io.StringRef;
  */
 public class BashVarStubImpl extends StubBase<BashVar> implements BashVarStub {
     private final StringRef name;
-    private boolean singleWord;
+    private int prefixLength;
 
-    public BashVarStubImpl(StubElement parent, StringRef name, final IStubElementType elementType, boolean singleWord) {
+    public BashVarStubImpl(StubElement parent, StringRef name, final IStubElementType elementType, int prefixLength) {
         super(parent, elementType);
         this.name = name;
-        this.singleWord = singleWord;
+        this.prefixLength = prefixLength;
     }
 
     public String getName() {
@@ -27,7 +25,7 @@ public class BashVarStubImpl extends StubBase<BashVar> implements BashVarStub {
     }
 
     @Override
-    public boolean isSingleWord() {
-        return singleWord;
+    public int getPrefixLength() {
+        return prefixLength;
     }
 }

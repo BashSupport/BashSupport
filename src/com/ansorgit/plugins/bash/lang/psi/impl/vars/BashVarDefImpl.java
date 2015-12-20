@@ -303,6 +303,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     @Override
+    public int getPrefixLength() {
+        return 0;
+    }
+
+    @Override
     public boolean isStaticAssignmentWord() {
         PsiElement word = findAssignmentWord();
         if (word instanceof BashCharSequence) {

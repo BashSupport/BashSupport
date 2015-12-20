@@ -131,9 +131,9 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
 
         boolean walkOn = isStatic() || BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
 
-        if (walkOn && isValidHost()) {
+        /*if (walkOn && isValidHost()) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
-        }
+        } */
 
         return walkOn;
     }

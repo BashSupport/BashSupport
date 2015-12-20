@@ -166,9 +166,9 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
         }
 
         boolean walkOn = BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        if (walkOn && isValidHost()) {
+        /*if (walkOn && isValidHost()) {
             walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
-        }
+        } */
 
         return walkOn;
     }
