@@ -211,7 +211,6 @@
 
         <projectConfigurable instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
 
-        <projectConfigurable instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>
 
