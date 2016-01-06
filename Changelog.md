@@ -1,3 +1,6 @@
+####2016-01-06:
+ - \#299: ClassNotFound exception in PHPStorm
+
 ####2015-12-20
  - \#286: Eval parsing of code not inside a string
 
