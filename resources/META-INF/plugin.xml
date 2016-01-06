@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,15 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.5.4 compared to 1.5.3:</b>
+        <ul>
+            <li>Bugs fixed:<br/>
+                <ul>
+                    <li>#299: ClassNotFound exception in PHPStorm</li>
+                </ul>
+            </li>
+        </ul>
+
         <b>Changes in version 1.5.3 compared to 1.5.2:</b>
         <ul>
             <li>Features:
