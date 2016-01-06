@@ -26,7 +26,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.psi.util.PsiUtilCore;
 
 import java.util.List;
 
@@ -122,16 +122,16 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
             literalType = LiteralType.Other;
 
             PsiElement child = getFirstChild();
-            if (child != null && BashTokenTypes.arithmeticAdditionOps.contains(PsiUtil.getElementType(child))) {
+            if (child != null && BashTokenTypes.arithmeticAdditionOps.contains(PsiUtilCore.getElementType(child))) {
                 //ignore prefix operators
                 child = child.getNextSibling();
             }
 
             if (child != null) {
-                IElementType elementType = PsiUtil.getElementType(child);
+                IElementType elementType = PsiUtilCore.getElementType(child);
 
                 PsiElement second = child.getNextSibling();
-                IElementType typeSecond = second != null ? PsiUtil.getElementType(second) : null;
+                IElementType typeSecond = second != null ? PsiUtilCore.getElementType(second) : null;
 
                 if (elementType == BashTokenTypes.ARITH_HEX_NUMBER) {
                     literalType = LiteralType.HexLiteral;

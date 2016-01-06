@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -118,7 +118,7 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(c, BashTokenTypes.WHITESPACE);
                 if (opElement != null) {
-                    IElementType operator = PsiUtil.getElementType(opElement);
+                    IElementType operator = PsiUtilCore.getElementType(opElement);
 
                     result = compute(result, operator, nextValue);
                 }
@@ -147,7 +147,7 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
      * @return The operator, if available. Null otherwise.
      */
     public IElementType findOperator() {
-        return PsiUtil.getElementType(findOperatorElement());
+        return PsiUtilCore.getElementType(findOperatorElement());
     }
 
     @Override
