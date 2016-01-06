@@ -41,7 +41,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -182,7 +182,7 @@ public final class BashPsiUtils {
 
         PsiElement current = start.getNextSibling();
         while (current != null) {
-            if (ignoreType != PsiUtil.getElementType(current)) {
+            if (ignoreType != PsiUtilCore.getElementType(current)) {
                 return current;
             }
 
@@ -199,7 +199,7 @@ public final class BashPsiUtils {
 
         PsiElement current = start.getPrevSibling();
         while (current != null) {
-            if (ignoreType != PsiUtil.getElementType(current)) {
+            if (ignoreType != PsiUtilCore.getElementType(current)) {
                 return current;
             }
 
