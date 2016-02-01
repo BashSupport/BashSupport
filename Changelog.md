@@ -1,3 +1,6 @@
+####2016-02-01:
+ - \#303: Multiline lists not recognised
+ 
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
