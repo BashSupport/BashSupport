@@ -254,7 +254,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "$" / "("               { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
 
-<YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_TEST_COMMAND, S_PARAM_EXPANSION, S_CASE> {
+<YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_PARAM_EXPANSION, S_CASE> {
     //this is not lexed in state S_SUBSHELL, because BashSupport treats ((((x)))) as subshell>arithmetic and not as subshell>subshell>arithmetic
     //this is different to the official Bash interpreter
     //currently it's too much effort to rewrite the lexer and parser for this feature
@@ -359,6 +359,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   " ]]"                         { backToPreviousState(); return _BRACKET_KEYWORD; }
   "&&"                          { return AND_AND; }
   "||"                          { return OR_OR; }
+  "("                           { return LEFT_PAREN; }
+  ")"                           { return RIGHT_PAREN; }
 }
 
 <S_TEST> {
