@@ -1,3 +1,6 @@
+####2016-02-20:
+ - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
