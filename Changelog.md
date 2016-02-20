@@ -1,3 +1,6 @@
+####2016-02-20:
+ - \#312: Newlines are not accepted in parameter expansions
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
