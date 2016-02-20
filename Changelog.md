@@ -1,3 +1,6 @@
+####2016-02-20:
+ - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
