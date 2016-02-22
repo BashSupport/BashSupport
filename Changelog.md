@@ -1,6 +1,9 @@
 ####2016-02-20:
  - \#297: File includes with directories or / in the path reference are not working as expected
 
+####2016-02-01:
+ - \#300: Variables are not recognized in case
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
