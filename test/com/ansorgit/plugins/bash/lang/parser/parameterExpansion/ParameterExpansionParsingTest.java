@@ -180,4 +180,16 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         //{#array_var[@]}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, RIGHT_CURLY);
     }
+
+    @Test
+    public void testIssue312() throws Exception {
+        //${A/a/x}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, WORD, PARAM_EXPANSION_OP_SLASH, WORD, RIGHT_CURLY);
+
+        //${A/\n/ }
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, LINE_FEED, PARAM_EXPANSION_OP_SLASH, WHITESPACE, RIGHT_CURLY);
+
+        //${A//\n/x}
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_OP_SLASH, LINE_FEED, PARAM_EXPANSION_OP_SLASH, WHITESPACE, RIGHT_CURLY);
+    }
 }

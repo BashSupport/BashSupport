@@ -6,6 +6,9 @@
 - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
 ####2016-02-20:
+ - \#312: Newlines are not accepted in parameter expansions
+
+####2016-02-20:
  - \#297: File includes with directories or / in the path reference are not working as expected
 
 ####2016-02-01:
