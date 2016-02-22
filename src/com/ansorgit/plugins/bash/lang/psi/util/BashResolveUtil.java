@@ -12,6 +12,7 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.intellij.ide.scratch.ScratchFileService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -20,8 +21,10 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -90,7 +93,8 @@ public final class BashResolveUtil {
         }
     }
 
-    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts) {
+
+    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode) {
         if (bashVar == null || !bashVar.isPhysical()) {
             return null;
         }
@@ -111,12 +115,18 @@ public final class BashResolveUtil {
 
         GlobalSearchScope fileScope = GlobalSearchScope.fileScope(psiFile);
 
-        Collection<BashVarDef> varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, project, fileScope, BashVarDef.class);
+        Collection<BashVarDef> varDefs;
+        if (dumbMode || isScratchFile(virtualFile)) {
+            varDefs = PsiTreeUtil.collectElementsOfType(psiFile, BashVarDef.class);
+        } else {
+            varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, project, fileScope, BashVarDef.class);
+        }
+
         for (BashVarDef varDef : varDefs) {
             processor.execute(varDef, resolveState);
         }
 
-        if (filePath != null) {
+        if (!dumbMode && filePath != null) {
             Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, fileScope, BashIncludeCommand.class);
             if (!includeCommands.isEmpty()) {
                 boolean varIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar) != null;
@@ -173,5 +183,13 @@ public final class BashResolveUtil {
         }
 
         return true;
+    }
+
+    public static boolean isScratchFile(@Nullable PsiFile file) {
+        return file != null && isScratchFile(file.getVirtualFile());
+    }
+
+    public static boolean isScratchFile(@Nullable VirtualFile file) {
+        return file != null && ScratchFileService.getInstance().getRootType(file) != null;
     }
 }

@@ -138,6 +138,4 @@ public interface BashCommand extends BashPsiElement {
 
     @Nullable
     String getReferencedCommandName();
-
-    boolean isLanguageInjectionContainerFor(PsiElement child);
 }

@@ -1,3 +1,10 @@
+####2016-02-22:
+- No keyword and live-template autocompletion in command arguments
+- Performance fixes for less latency in the editor
+- Variables and functions can now be resolved in scratch files again
+- \#306: Index access during dumb mode
+- \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+
 ####2016-02-20:
  - \#297: File includes with directories or / in the path reference are not working as expected
 

@@ -21,11 +21,12 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,14 +40,33 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class VarResolveTestCase extends AbstractResolveTest {
     private BashVarDef assertIsWellDefinedVariable() throws Exception {
-        PsiReference start = configure();
-        PsiElement varDef = start.resolve();
-        //Assert.assertTrue("The reference is NOT a var reference", start.getElement() instanceof BashVarUse);
-        Assert.assertNotNull("Could not find a definition for the reference: " + start.getElement().getText(), varDef);
-        Assert.assertTrue("The definition is NOT a variable definition: " + varDef, varDef instanceof BashVarDef);
-        Assert.assertTrue("The reference is NOT a reference to the definition", start.isReferenceTo(varDef));
+        PsiElement varDefSmart = doAssertIsWellDefined(false);
+        PsiElement varDefDumb = doAssertIsWellDefined(true);
 
-        return (BashVarDef) varDef;
+        //simple equality check
+        Assert.assertEquals(varDefSmart.getText(), varDefDumb.getText());
+        Assert.assertEquals(varDefSmart.getTextRange(), varDefDumb.getTextRange());
+
+        return (BashVarDef) varDefSmart;
+    }
+
+    @NotNull
+    private PsiElement doAssertIsWellDefined(boolean dumMode) throws Exception {
+        DumbServiceImpl instance = DumbServiceImpl.getInstance(myProject);
+
+        boolean oldDumb = instance.isDumb();
+        instance.setDumb(dumMode);
+        try {
+            PsiReference start = configure();
+            PsiElement varDef = start.resolve();
+            //Assert.assertTrue("The reference is NOT a var reference", start.getElement() instanceof BashVarUse);
+            Assert.assertNotNull("Could not find a definition for the reference: " + start.getElement().getText(), varDef);
+            Assert.assertTrue("The definition is NOT a variable definition: " + varDef, varDef instanceof BashVarDef);
+            Assert.assertTrue("The reference is NOT a reference to the definition", start.isReferenceTo(varDef));
+            return varDef;
+        } finally {
+            instance.setDumb(oldDumb);
+        }
     }
 
     @Test
