@@ -1,3 +1,8 @@
+####2016-02-22:
+- Variables and functions can now be resolved in scratch files again
+- \#306: Index access during dumb mode
+- \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 

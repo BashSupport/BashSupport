@@ -4,7 +4,8 @@ import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.*;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
+import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -13,6 +14,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStubBase;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -25,14 +27,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
-    private final PsiReference functionReference = new CachedFunctionReference(this);
-    private final PsiReference functionReferenceDumbMode = new CachedFunctionReferenceDumbMode(this);
+    private final PsiReference functionReference = new SmartFunctionReference(this);
+    private final PsiReference dumbFunctionReference = new DumbFunctionReference(this);
 
-    private final PsiReference bashFileReference = new BashFileReference(this);
-    private final PsiReference bashFileReferenceDumbMode = new BashFileReferenceDumbMode(this);
+    private final PsiReference bashFileReference = new SmartBashFileReference(this);
+    private final PsiReference dumbBashFileReference = new DumbBashFileReference(this);
 
     private String referencedCommandName;
     private boolean hasReferencedCommandName = false;
@@ -46,6 +49,12 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     public AbstractBashCommand(T stub, IStubElementType nodeType, String name) {
         super(stub, nodeType, name);
+    }
+
+    @NotNull
+    @Override
+    public BashFile getContainingFile() {
+        return (BashFile)super.getContainingFile();
     }
 
     @Override
@@ -69,9 +78,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     public boolean isFunctionCall() {
-        boolean isDumb = DumbService.isDumb(getProject());
-        if (isDumb) {
-            return isGenericCommand() && functionReferenceDumbMode.resolve() != null;
+        if (DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile())) {
+            return isGenericCommand() && dumbFunctionReference.resolve() != null;
         }
 
         return isGenericCommand() && functionReference.resolve() != null;
@@ -113,8 +121,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean isBashScriptCall() {
-        if (DumbService.isDumb(getProject())) {
-            return bashFileReferenceDumbMode.resolve() != null;
+        if (DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile())) {
+            return dumbBashFileReference.resolve() != null;
         }
 
         return bashFileReference.resolve() != null;
@@ -174,8 +182,10 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public PsiReference getReference() {
+        boolean slowFallback = DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile());
+
         if (isFunctionCall()) {
-            return functionReference;
+            return slowFallback ? dumbFunctionReference : functionReference;
         }
 
         if (isInternalCommand()) {
@@ -183,11 +193,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             return BashPsiUtils.selfReference(this);
         }
 
-        if (DumbService.isDumb(getProject())) {
-            return bashFileReferenceDumbMode;
-        }
-
-        return bashFileReference;
+        return slowFallback ? dumbBashFileReference : bashFileReference;
     }
 
     @Nullable

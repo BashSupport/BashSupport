@@ -37,20 +37,18 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -74,9 +72,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private static final Set<String> localVarDefCommands = Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
     private static final Set<String> typeReadOnlyParams = Sets.newHashSet("-r");
-    private static final Object[] EMPTY_VARIANTS = new Object[0];
 
-    private final BashReference cachingReference = new CachedVarDefReference(this);
+    private final BashReference reference = new SmartVarDefReference(this);
+    private final BashReference dumbReference = new DumbVarDefReference(this);
 
     private Boolean cachedFunctionScopeLocal;
     private String name;
@@ -198,27 +196,26 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             return true;
         }
 
-        //although this variable has no direct local command,
+        //Although this variable has no direct local command,
         //it's still possible that an earlier usage of the local command declared this
         //variable as function local
-
-
-        //solve this by using stubs and index and without a processor to prevent SOE in other processors using this function
-
+        //
+        //Solve this by using stubs and index and without a processor to prevent SOE in other processors using this function
         //filter all variable definitions which are included in the broadest function scope, all others are out of scope
         //then iterate and break if there is one def which is local and which occurs before this element
 
-        PsiFile currentFile = getContainingFile();
-        Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
-
         //fixme handle injected code in functions
-
         BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
         if (functionLocalScope == null) {
             return false;
         }
 
         final TextRange validScope = BashPsiUtils.getTextRangeInFile(functionLocalScope);
+
+        PsiFile currentFile = getContainingFile();
+        Collection<BashVarDef> allDefs = DumbService.isDumb(getProject())
+                ? PsiTreeUtil.collectElementsOfType(functionLocalScope, BashVarDef.class)
+                : StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
 
         for (BashVarDef def : allDefs) {
             if (def.isLocalVarDef() && validScope.contains(BashPsiUtils.getFileTextOffset(def))) {
@@ -294,7 +291,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @NotNull
     @Override
     public BashReference getReference() {
-        return cachingReference;
+        return DumbService.isDumb(getProject()) ? dumbReference : reference;
     }
 
     @Override
@@ -351,7 +348,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return false;
     }
 
-    private TextRange getAssignmentNameTextRange() {
+    public TextRange getAssignmentNameTextRange() {
         if (nameTextRange == null) {
             PsiElement assignmentWord = findAssignmentWord();
             if (assignmentWord instanceof BashString) {
@@ -400,64 +397,4 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return BashPsiUtils.findDocumentationElementComments(this);
     }
 
-    private static final class CachedVarDefReference extends CachingReference implements BashReference, BindablePsiReference {
-        private final BashVarDefImpl bashVarDef;
-
-        public CachedVarDefReference(BashVarDefImpl bashVarDef) {
-            this.bashVarDef = bashVarDef;
-        }
-
-        @Override
-        public String getReferencedName() {
-            return bashVarDef.getReferenceName();
-        }
-
-        @Override
-        public PsiElement getElement() {
-            return bashVarDef;
-        }
-
-        @Override
-        public TextRange getRangeInElement() {
-            return bashVarDef.getAssignmentNameTextRange();
-        }
-
-        @NotNull
-        @Override
-        public String getCanonicalText() {
-            return bashVarDef.getReferenceName();
-        }
-
-        @Override
-        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-            bashVarDef.setName(newElementName);
-            return bashVarDef;
-        }
-
-        @Override
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-            if (isReferenceTo(element)) {
-                return bashVarDef;
-            }
-
-            //fixme right?
-            return handleElementRename(element.getText());
-        }
-
-        @NotNull
-        @Override
-        public Object[] getVariants() {
-            return EMPTY_VARIANTS;
-        }
-
-        @Nullable
-        @Override
-        public PsiElement resolveInner() {
-            if (bashVarDef.isCommandLocal()) {
-                return null;
-            }
-
-            return BashResolveUtil.resolve(bashVarDef, true);
-        }
-    }
 }

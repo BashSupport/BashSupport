@@ -2,56 +2,31 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashSearchScopes;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.ElementManipulator;
+import com.intellij.psi.ElementManipulators;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.resolve.reference.impl.CachingReference;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.refactoring.rename.BindablePsiReference;
 import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.PathUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * Reference to another file, used in include commands. This implementation handles the dumb mode and turns off index
- * access during dumb  mode operations.
+ * Abstract file reference implementation to allow implementations for smart and dumb mode.
  *
  * @author jansorg
  */
-class BashFileReference extends CachingReference implements BashReference, BindablePsiReference {
-    private final AbstractBashCommand<?> cmd;
+abstract class AbstractBashFileReference extends CachingReference implements BashReference, BindablePsiReference {
+    protected final AbstractBashCommand<?> cmd;
 
-    public BashFileReference(AbstractBashCommand<?> cmd) {
+    public AbstractBashFileReference(AbstractBashCommand<?> cmd) {
         this.cmd = cmd;
     }
 
     @Override
     public String getReferencedName() {
         return cmd.getReferencedCommandName();
-    }
-
-    @Nullable
-    @Override
-    public PsiElement resolveInner() {
-        final String referencedName = cmd.getReferencedCommandName();
-        if (referencedName == null) {
-            return null;
-        }
-
-        if (!DumbService.isDumb(cmd.getProject())) {
-            String fileName = PathUtil.getFileName(referencedName);
-            GlobalSearchScope scope = BashSearchScopes.moduleScope(cmd.getContainingFile());
-            PsiFileSystemItem[] files = FilenameIndex.getFilesByName(cmd.getProject(), fileName, scope, false);
-            if (files.length == 0) {
-                return null;
-            }
-        }
-
-        PsiFile currentFile = cmd.getContainingFile();
-        return BashPsiFileUtils.findRelativeFile(currentFile, referencedName);
     }
 
     @Override
