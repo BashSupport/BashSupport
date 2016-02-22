@@ -4,8 +4,11 @@ import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
+import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -18,6 +21,7 @@ import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,7 +79,15 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
                     return false;
                 }
 
-                return !BashPsiUtils.hasParentOfType((PsiElement) o, BashParameterExpansion.class, 2);
+                if (BashPsiUtils.hasParentOfType((PsiElement) o, BashParameterExpansion.class, 2)) {
+                    return false;
+                }
+
+                if (BashPsiUtils.isCommandParameterWord((PsiElement) o)) {
+                    return false;
+                }
+
+                return true;
 
             }
 
