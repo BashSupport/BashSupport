@@ -143,7 +143,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             } else {
                 break;
             }
-        } while (!builder.eof() && ok);
+        } while (ok && !builder.eof());
 
         return ok;
     }

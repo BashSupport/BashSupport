@@ -42,6 +42,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     private Boolean isInternalCommandBash3;
     private Boolean isInternalCommandBash4;
     private List<BashPsiElement> parameters;
+    private ASTNode genericCommandElement;
 
     public AbstractBashCommand(ASTNode astNode, String name) {
         super(astNode, name);
@@ -61,6 +62,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     public void subtreeChanged() {
         super.subtreeChanged();
 
+        this.genericCommandElement = null;
         this.hasReferencedCommandName = false;
         this.referencedCommandName = null;
         this.isInternalCommandBash3 = null;
@@ -151,7 +153,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Nullable
     private ASTNode commandElementNode() {
-        return getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+        if (genericCommandElement == null) {
+            genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+        }
+
+        return genericCommandElement;
     }
 
     public List<BashPsiElement> parameters() {

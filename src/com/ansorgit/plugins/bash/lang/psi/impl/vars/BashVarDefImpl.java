@@ -55,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -69,9 +70,9 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
     private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
-    private static final Set<String> localVarDefCommands = Sets.newHashSet("declare", "typeset");
-    private static final Set<String> typeArrayDeclarationParams = Sets.newHashSet("-a");
-    private static final Set<String> typeReadOnlyParams = Sets.newHashSet("-r");
+    private static final Set<String> localVarDefCommands = typeCommands; // Sets.newHashSet("declare", "typeset");
+    private static final Set<String> typeArrayDeclarationParams = Collections.singleton("-a");
+    private static final Set<String> typeReadOnlyParams = Collections.singleton("-r");
 
     private final BashReference reference = new SmartVarDefReference(this);
     private final BashReference dumbReference = new DumbVarDefReference(this);
@@ -145,7 +146,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (parentElement instanceof BashCommand) {
             BashCommand command = (BashCommand) parentElement;
 
-            return isCommandWithParamter(command, typeCommands, typeArrayDeclarationParams);
+            return isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
         }
 
         return false;
@@ -371,7 +372,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             }
 
             //check for declare -r or typeset -r
-            if (isCommandWithParamter(command, typeCommands, typeReadOnlyParams)) {
+            if (isCommandWithParameter(command, typeCommands, typeReadOnlyParams)) {
                 return true;
             }
         }
@@ -379,8 +380,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return false;
     }
 
-    private boolean isCommandWithParamter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
+    private boolean isCommandWithParameter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
         PsiElement commandElement = command.commandElement();
+
         if (commandElement != null && validCommands.contains(commandElement.getText())) {
             List<BashPsiElement> parameters = command.parameters();
 
@@ -390,6 +392,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 }
             }
         }
+
         return false;
     }
 
