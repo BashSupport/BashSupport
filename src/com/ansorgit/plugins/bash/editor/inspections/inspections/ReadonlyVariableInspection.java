@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jansorg
  */
-public class ReadonlyVariableInspection extends LocalInspectionTool {
+public class ReadOnlyVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
