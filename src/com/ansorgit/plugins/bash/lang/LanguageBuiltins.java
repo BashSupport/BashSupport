@@ -22,6 +22,7 @@ import com.google.common.collect.Sets;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Contains definitions of built-in resources like variables or functions.
@@ -84,10 +85,10 @@ public final class LanguageBuiltins {
     public static final Collection<String> varDefCommands = Sets.newHashSet(
             "export", "read", "declare", "readonly", "typeset", "getopts"
     );
-    public static final Collection<String> localVarDefCommands = Sets.newHashSet(
+    public static final Collection<String> localVarDefCommands = Collections.singleton(
             "local"
     );
-    public static final Collection<String> readonlyVarDefCommands = Sets.newHashSet(
+    public static final Collection<String> readonlyVarDefCommands = Collections.singleton(
             "readonly"
     );
     public static final Collection<String> completionKeywords = Sets.newLinkedHashSet(Arrays.asList(

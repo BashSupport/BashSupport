@@ -33,7 +33,8 @@ public class BashLiveTemplatesContext extends TemplateContextType {
 
             return !BashPsiUtils.hasParentOfType(element, PsiComment.class, 3)
                     && !BashPsiUtils.hasParentOfType(element, BashShebang.class, 3)
-                    && !BashPsiUtils.hasParentOfType(element, BashHereDoc.class, 1);
+                    && !BashPsiUtils.hasParentOfType(element, BashHereDoc.class, 1)
+                    && !BashPsiUtils.isCommandParameterWord(element);
         }
 
         return false;

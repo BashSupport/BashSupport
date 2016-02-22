@@ -21,8 +21,11 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,18 +40,40 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         checkFunctionReference();
     }
 
-    private PsiReference checkFunctionReference() throws Exception {
-        PsiReference psiReference = configure();
-        Assert.assertTrue(psiReference.getElement() instanceof BashCommand);
-        BashCommand commandElement = (BashCommand) psiReference.getElement();
+    private PsiElement checkFunctionReference() throws Exception {
+        PsiElement functionSmart = doCheckFunctionReference(false);
+        PsiElement functionDumb = doCheckFunctionReference(true);
 
-        Assert.assertTrue(psiReference.resolve() instanceof BashFunctionDef);
-        Assert.assertTrue(commandElement.isFunctionCall());
-        Assert.assertFalse(commandElement.isVarDefCommand());
-        Assert.assertFalse(commandElement.isExternalCommand());
-        Assert.assertTrue(commandElement.getReference().isReferenceTo(psiReference.resolve()));
+        Assert.assertNotNull(functionSmart);
+        Assert.assertNotNull(functionDumb);
 
-        return psiReference;
+        //simple equality check
+        Assert.assertEquals(functionSmart.getText(), functionDumb.getText());
+        Assert.assertEquals(functionSmart.getTextRange(), functionDumb.getTextRange());
+
+        return functionSmart;
+    }
+
+    @NotNull
+    private PsiElement doCheckFunctionReference(boolean dumbMode) throws Exception {
+        boolean oldDumb = DumbService.isDumb(myProject);
+
+        DumbServiceImpl.getInstance(myProject).setDumb(dumbMode);
+        try {
+            PsiReference psiReference = configure();
+            Assert.assertTrue(psiReference.getElement() instanceof BashCommand);
+            BashCommand commandElement = (BashCommand) psiReference.getElement();
+
+            Assert.assertTrue(psiReference.resolve() instanceof BashFunctionDef);
+            Assert.assertTrue(commandElement.isFunctionCall());
+            Assert.assertFalse(commandElement.isVarDefCommand());
+            Assert.assertFalse(commandElement.isExternalCommand());
+            Assert.assertTrue(commandElement.getReference().isReferenceTo(psiReference.resolve()));
+
+            return psiReference.resolve();
+        } finally {
+            DumbServiceImpl.getInstance(myProject).setDumb(oldDumb);
+        }
     }
 
     @Test
