@@ -12,6 +12,9 @@
  - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
 
 ####2016-02-01:
+ - \#308: Grouping in test commands not properly parsed
+
+####2016-02-01:
  - \#300: Variables are not recognized in case
 
 ####2016-02-01:
