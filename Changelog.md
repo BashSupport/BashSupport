@@ -1,4 +1,7 @@
 ####2016-02-20:
+ - \#297: File includes with directories or / in the path reference are not working as expected
+
+####2016-02-20:
  - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
 
 ####2016-01-06:

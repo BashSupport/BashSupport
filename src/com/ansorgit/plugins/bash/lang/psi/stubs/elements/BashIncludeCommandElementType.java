@@ -76,6 +76,10 @@ public class BashIncludeCommandElementType extends BashStubElementType<BashInclu
 
         if (fileReference != null && fileReference.isStatic()) {
             filename = fileReference.getFilename();
+            if (filename.contains("/") && !filename.endsWith("/")) {
+                int index = filename.lastIndexOf("/");
+                filename = filename.substring(index + 1);
+            }
 
             VirtualFile virtualFile = psi.getContainingFile().getUserData(IndexingDataKeys.VIRTUAL_FILE);
             if (virtualFile == null) {
