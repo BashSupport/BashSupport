@@ -210,6 +210,11 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testIssue300_CaseResolve() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    @Test
     @Ignore
     public void _testResolveEvalVarEscaped() throws Exception {
         assertIsWellDefinedVariable();

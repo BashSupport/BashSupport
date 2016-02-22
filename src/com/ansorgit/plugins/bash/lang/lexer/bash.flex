@@ -93,8 +93,8 @@ IntegerLiteral = [0] | ([1-9][0-9]*)
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst={EscapedChar} | [^|\"')(# \n\r\f\t\f]
-CaseAfter={EscapedChar} | [^|\"'`)( \n\r\f\t\f;]
+CaseFirst={EscapedChar} | [^|\"'$)(# \n\r\f\t\f]
+CaseAfter={EscapedChar} | [^|\"'$`)( \n\r\f\t\f;]
 CasePattern = {CaseFirst}{CaseAfter}*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
@@ -707,15 +707,14 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "\\"                          { return BACKSLASH; }
 }
 
-<S_CASE_PATTERN> {
-  {CasePattern}                 { return WORD; }
-}
-
 <YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
     "${"                        { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                         { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
 
+<S_CASE_PATTERN> {
+  {CasePattern}                 { return WORD; }
+}
 
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY> {
     {IntegerLiteral}            { return INTEGER_LITERAL; }

@@ -1001,6 +1001,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue300() throws Exception {
+        testTokenization("case x in\nabc${a}) ;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
