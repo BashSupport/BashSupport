@@ -7,6 +7,18 @@
 ####2016-02-01:
  - \#300: Variables are not recognized in case
 
+####2016-02-01:
+ - \#303: Multiline lists not recognised
+
+####2016-02-20:
+ - \#297: File includes with directories or / in the path reference are not working as expected
+
+####2016-02-20:
+ - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
+
+####2016-02-01:
+ - \#300: Variables are not recognized in case
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
