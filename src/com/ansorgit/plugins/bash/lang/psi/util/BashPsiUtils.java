@@ -24,10 +24,12 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -504,6 +506,18 @@ public final class BashPsiUtils {
 
     public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps) {
         return hasParentOfType(start, parentType, maxSteps, PsiFile.class);
+    }
+
+    public static boolean isCommandParameterWord(PsiElement start) {
+        BashCommand command = PsiTreeUtil.getParentOfType(start, BashCommand.class);
+        if (command == null) {
+            return false;
+        }
+
+        BashWord word = PsiTreeUtil.getParentOfType(start, BashWord.class);
+
+        return word != null && PsiTreeUtil.getPrevSiblingOfType(word, BashGenericCommand.class) != null;
+
     }
 
     public static boolean hasParentOfType(PsiElement start, Class<? extends PsiElement> parentType, int maxSteps, Class<? extends PsiElement> breakPoint) {

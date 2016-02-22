@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: BraceExpansionParsing.java, Class: BraceExpansionParsing
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,31 +21,46 @@ package com.ansorgit.plugins.bash.lang.parser.misc;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing function for brace expansions.
- * <p/>
- * User: jansorg
- * Date: Nov 14, 2009
- * Time: 11:57:59 PM
+ *
+ * @author jansorg
  */
 public class BraceExpansionParsing implements ParsingFunction {
     private static final TokenSet validExpansionTokens = TokenSet.create(WORD, INTEGER_LITERAL);
 
+    /**
+     * @param builder The provider of the psi tokens
+     * @return
+     */
     public boolean isValid(BashPsiBuilder builder) {
+        //full parsing is expensive, try be smarter than dumb ;)
+        //check if there is a curly bracket in the next tokens, if not then its not a brace expansion
+        if (!ParserUtil.containsTokenInLookahead(builder, LEFT_CURLY, 10, false)) {
+            return false;
+        }
+
         PsiBuilder.Marker start = builder.mark();
 
-        boolean result = parse(builder);
+        boolean result = doParse(builder, true);
 
         start.rollbackTo();
+
         return result;
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        PsiBuilder.Marker marker = builder.mark();
+        return doParse(builder, false);
+    }
+
+    private boolean doParse(BashPsiBuilder builder, boolean checkMode) {
+        PsiBuilder.Marker marker = checkMode ? new NullMarker() : builder.mark();
 
         //read in the prefix
         while (true) {

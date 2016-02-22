@@ -138,7 +138,7 @@ public interface BashElementTypes {
         }
 
         private BashCompositeElementType(@NonNls final String debugName, final Class<? extends ASTNode> nodeClass, final boolean leftBound) {
-            super(debugName, leftBound);
+            super(debugName);
             myConstructor = ReflectionUtil.getDefaultConstructor(nodeClass);
         }
 
