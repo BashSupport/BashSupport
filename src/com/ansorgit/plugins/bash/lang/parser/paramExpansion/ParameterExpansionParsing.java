@@ -40,7 +40,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN,
-            LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN), paramExpansionOperators);
+            LEFT_SQUARE, RIGHT_SQUARE, LEFT_PAREN, RIGHT_PAREN, LINE_FEED), paramExpansionOperators);
 
     private static final TokenSet prefixlessExpansionsOperators = TokenSet.create(PARAM_EXPANSION_OP_HASH);
 
