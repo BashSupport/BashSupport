@@ -526,7 +526,7 @@ public class IntegrationTest extends MockPsiTest {
         //done
         //fixme fail or error?
         mockTestError(BashVersion.Bash_v3, fileParsingTest, false,
-                Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF", "\n", "heredoccontent", "(", "\n", "   ", "EOF", "\n", "done"),
+                false, Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF", "\n", "heredoccontent", "(", "\n", "   ", "EOF", "\n", "done"),
                 FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI,
                 DO_KEYWORD, WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD, LEFT_PAREN, LINE_FEED, WHITESPACE, WORD, LINE_FEED,
                 DONE_KEYWORD);

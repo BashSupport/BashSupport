@@ -93,12 +93,12 @@ public class ForLoopParsingFunction implements ParsingFunction {
             builder.advanceLexer();
             builder.eatOptionalNewlines();
         } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
-            builder.advanceLexer();
-
-            //already after "in"
+            builder.advanceLexer(); //in keyword
 
             //parse the optional word list
-            if (!Parsing.word.parseWordList(builder, true, false)) {
+            if (builder.getTokenType() == SEMI) {
+                builder.advanceLexer();
+            } else if (!Parsing.word.parseWordList(builder, true, false)) {
                 forLoop.drop();//fixme
                 return false;
             }
@@ -106,7 +106,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
             builder.eatOptionalNewlines();
         }
 
-        if (!LoopParserUtil.parseLoopBody(builder, true)) {
+        if (!LoopParserUtil.parseLoopBody(builder, true, false)) {
             forLoop.drop();
             return false;
         }
@@ -167,7 +167,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
             builder.eatOptionalNewlines();
         }
 
-        if (!LoopParserUtil.parseLoopBody(builder, true)) {
+        if (!LoopParserUtil.parseLoopBody(builder, true, false)) {
             marker.drop();
             return false;
         }

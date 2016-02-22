@@ -18,7 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.lang.BashVersion;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Date: 26.03.2009
@@ -56,11 +59,13 @@ public class ShellLoopParsingTest extends MockPsiTest {
 
     @Test
     public void testWhileLoopError1() {
+        //the following code is invalid code, it is parsed completely though
+
         //while a; do ; done
-        mockTestFail(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTestError(BashVersion.Bash_v3, whileLoopTester, false, true, Collections.<String>emptyList(), WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
 
         //while ; do ; done
-        mockTestFail(whileLoopTester, WHILE_KEYWORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTestError(BashVersion.Bash_v3, whileLoopTester, false, true, Collections.<String>emptyList(), WHILE_KEYWORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
     }
 
     @Test

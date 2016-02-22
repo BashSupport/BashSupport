@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: SelectParsingFunction.java, Class: SelectParsingFunction
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,8 @@ public class SelectParsingFunction implements ParsingFunction {
             ;
          */
 
-        //log.assertTrue(isSelectCommand(builder.getTokenType()));
         final PsiBuilder.Marker selectCommand = builder.mark();
-        builder.advanceLexer();//after the select
+        builder.advanceLexer(); //after the select
 
         if (ParserUtil.isIdentifier(builder.getTokenType())) {
             ParserUtil.markTokenAndAdvance(builder, VAR_DEF_ELEMENT);
@@ -64,17 +63,23 @@ public class SelectParsingFunction implements ParsingFunction {
 
         if (builder.getTokenType() == IN_KEYWORD) {
             builder.advanceLexer();//after the IN
-            boolean parsed = Parsing.word.parseWordList(builder, true, false); //include the terminator
-            if (!parsed) {
-                selectCommand.drop();
-                return false;
+
+            if (ParserUtil.isEmptyListFollowedBy(builder, DO_KEYWORD)) {
+                ParserUtil.error(builder, "parser.unexpected.token");
+                ParserUtil.readEmptyListFollowedBy(builder, DO_KEYWORD);
+            } else {
+                boolean parsed = Parsing.word.parseWordList(builder, true, false); //include the terminator
+                if (!parsed) {
+                    selectCommand.drop();
+                    return false;
+                }
             }
         }
 
         builder.eatOptionalNewlines();
 
         //now parse the body
-        if (!LoopParserUtil.parseLoopBody(builder, false)) {
+        if (!LoopParserUtil.parseLoopBody(builder, false, false)) {
             selectCommand.drop();
             return false;
         }

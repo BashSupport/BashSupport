@@ -232,4 +232,94 @@ public class ParserUtil {
 
         return false;
     }
+
+
+    /**
+     * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
+     * This is useful to detect empty commands in if/while/...
+     *
+     * @param token The token to check
+     * @return true if an empty list of commands is followed by the token
+     */
+    public static boolean isEmptyListFollowedBy(BashPsiBuilder builder, IElementType token) {
+        return isEmptyListFollowedBy(builder, TokenSet.create(token));
+    }
+
+    /**
+     * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
+     * This is useful to detect empty commands in if/while/...
+     *
+     * @param tokens The tokens to check
+     * @return true if an empty list of commands is followed by the token
+     */
+    public static boolean isEmptyListFollowedBy(BashPsiBuilder builder, TokenSet tokens) {
+        if (tokens.contains(builder.getTokenType())) {
+            return true;
+        }
+
+        int steps = 0;
+
+        while (builder.lookAhead(steps) == BashTokenTypes.LINE_FEED) {
+            steps++;
+        }
+
+        if (builder.lookAhead(steps) == BashTokenTypes.SEMI) {
+            steps++;
+        }
+
+        while (builder.lookAhead(steps) == BashTokenTypes.LINE_FEED) {
+            steps++;
+        }
+
+        return tokens.contains(builder.lookAhead(steps));
+    }
+
+    /**
+     * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
+     * This is useful to detect empty commands in if/while/...
+     *
+     * @param token The token to check
+     * @return true if an empty list of commands is followed by the token
+     */
+    public static boolean readEmptyListFollowedBy(BashPsiBuilder builder, IElementType token) {
+        return readEmptyListFollowedBy(builder, TokenSet.create(token));
+    }
+
+    /**
+     * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
+     * This is useful to detect empty commands in if/while/...
+     *
+     * @param tokens The tokens to check
+     * @return true if an empty list of commands is followed by the token
+     */
+    public static boolean readEmptyListFollowedBy(BashPsiBuilder builder, TokenSet tokens) {
+        if (tokens.contains(builder.getTokenType())) {
+            return true;
+        }
+
+        int steps = 0;
+
+        while (builder.lookAhead(steps) == BashTokenTypes.LINE_FEED) {
+            steps++;
+        }
+
+        if (builder.lookAhead(steps) == BashTokenTypes.SEMI) {
+            steps++;
+        }
+
+        while (builder.lookAhead(steps) == BashTokenTypes.LINE_FEED) {
+            steps++;
+        }
+
+        if (tokens.contains(builder.lookAhead(steps))) {
+            for (int i = 0; i < steps; i++) {
+                builder.advanceLexer();
+                builder.getTokenType();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 }
