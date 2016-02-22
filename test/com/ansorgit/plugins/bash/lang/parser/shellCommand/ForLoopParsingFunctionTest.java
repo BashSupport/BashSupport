@@ -18,10 +18,13 @@
 
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
+import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * User: jansorg
@@ -38,6 +41,9 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
 
     @Test
     public void testForLoopCompoundBlock() {
+        //for a in; do echo; done
+        mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD);
+
         //for f in 1; do {
         //echo 1
         //} done
@@ -60,5 +66,20 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
 
         //for A do echo $A; done
         mockTest(forLoop, FOR_KEYWORD, WORD, DO_KEYWORD, WHITESPACE, WORD, VARIABLE, SEMI, DONE_KEYWORD);
+    }
+
+    @Test
+    public void testErrors() throws Exception {
+        //for a in; do echo done
+        mockTestError(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, SEMI, DO_KEYWORD, WORD, DONE_KEYWORD);
+
+    }
+
+    @Test
+    public void testIncompleteParse() throws Exception {
+        //error markers must be present, but the incomplete if should be parsed without remaining elements
+
+        // for f in a; do; done
+        mockTestError(BashVersion.Bash_v3, forLoop, false, true, Collections.<String>emptyList(), FOR_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
     }
 }

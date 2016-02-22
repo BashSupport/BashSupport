@@ -6,6 +6,9 @@
 - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
 ####2016-02-20:
+ - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+
+####2016-02-20:
  - \#312: Newlines are not accepted in parameter expansions
 
 ####2016-02-20:

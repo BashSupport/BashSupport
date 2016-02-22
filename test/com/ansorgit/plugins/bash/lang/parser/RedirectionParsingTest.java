@@ -63,7 +63,7 @@ public class RedirectionParsingTest extends MockPsiTest {
     @Test
     public void testRedirectErrors() {
         //1 > out
-        mockTestError(BashVersion.Bash_v3, redirectionTest, true, Arrays.asList("1", " ", ">", " ", "out"),
+        mockTestError(BashVersion.Bash_v3, redirectionTest, true, false, Arrays.asList("1", " ", ">", " ", "out"),
                 INTEGER_LITERAL, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
 
         //1> &1

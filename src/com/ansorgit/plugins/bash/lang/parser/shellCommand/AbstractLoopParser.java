@@ -57,7 +57,10 @@ public class AbstractLoopParser implements ParsingTool, ParsingFunction {
         final PsiBuilder.Marker loopMarker = builder.mark();
         builder.advanceLexer();
 
-        if (!Parsing.list.parseCompoundList(builder, false)) {
+        if (ParserUtil.isEmptyListFollowedBy(builder, DO_KEYWORD)) {
+            ParserUtil.error(builder, "parser.shell.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, DO_KEYWORD);
+        } else if (!Parsing.list.parseCompoundList(builder, false)) {
             loopMarker.drop();
             return false;
         }
@@ -66,8 +69,11 @@ public class AbstractLoopParser implements ParsingTool, ParsingFunction {
             return false;
         }
 
-        if (!Parsing.list.parseCompoundList(builder, true)) {
-            //builder.error("x");
+
+        if (ParserUtil.isEmptyListFollowedBy(builder, DONE_KEYWORD)) {
+            ParserUtil.error(builder, "parser.shell.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, DONE_KEYWORD);
+        } else if (!Parsing.list.parseCompoundList(builder, true)) {
             loopMarker.drop();
             return false;
         }
