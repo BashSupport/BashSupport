@@ -7,6 +7,13 @@
 ####2016-02-01:
  - \#303: Multiline lists not recognised
 
+####2016-02-22:
+- No keyword and live-template autocompletion in command arguments
+- Performance fixes for less latency in the editor
+- Variables and functions can now be resolved in scratch files again
+- \#306: Index access during dumb mode
+- \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 

@@ -53,6 +53,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private final TextPreprocessor textProcessor;
     private CharSequence processedText;
     private List<MyShiftedToken> myShrunkSequence;
+    private int myShrunkSequenceSize;
     private CharSequence myShrunkCharSequence;
     private int myLexPosition;
     private IElementType currentRemapped;
@@ -101,8 +102,8 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private void synchronizePositions(boolean exact) {
         final PsiBuilder delegate = getDelegate();
 
-        if (myLexPosition >= myShrunkSequence.size() || delegate.eof()) {
-            myLexPosition = myShrunkSequence.size();
+        if (myLexPosition >= myShrunkSequenceSize || delegate.eof()) {
+            myLexPosition = myShrunkSequenceSize;
             while (!delegate.eof()) {
                 delegate.advanceLexer();
             }
@@ -152,20 +153,20 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
 
         while (steps > 0) {
             ++cur;
-            while (cur < myShrunkSequence.size() && isWhiteSpaceOnPos(cur)) {
+            while (cur < myShrunkSequenceSize && isWhiteSpaceOnPos(cur)) {
                 cur++;
             }
 
             steps--;
         }
 
-        return cur < myShrunkSequence.size() ? myShrunkSequence.get(cur).elementType : null;
+        return cur < myShrunkSequenceSize ? myShrunkSequence.get(cur).elementType : null;
     }
 
     @Override
     public IElementType rawLookup(int steps) {
         int cur = myLexPosition + steps;
-        return cur >= 0 && cur < myShrunkSequence.size() ? myShrunkSequence.get(cur).elementType : null;
+        return cur >= 0 && cur < myShrunkSequenceSize ? myShrunkSequence.get(cur).elementType : null;
     }
 
     @Override
@@ -174,7 +175,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         if (cur < 0) {
             return -1;
         }
-        if (cur >= myShrunkSequence.size()) {
+        if (cur >= myShrunkSequenceSize) {
             return getOriginalText().length();
         }
         return myShrunkSequence.get(cur).shrunkStart;
@@ -187,7 +188,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
 
     @Override
     public int getCurrentOffset() {
-        return myLexPosition < myShrunkSequence.size() ? myShrunkSequence.get(myLexPosition).shrunkStart : myShrunkCharSequence.length();
+        return myLexPosition < myShrunkSequenceSize ? myShrunkSequence.get(myLexPosition).shrunkStart : myShrunkCharSequence.length();
     }
 
     @Override
@@ -217,7 +218,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
             return result;
         }
 
-        IElementType result = myLexPosition < myShrunkSequence.size() ? myShrunkSequence.get(myLexPosition).elementType : null;
+        IElementType result = myLexPosition < myShrunkSequenceSize ? myShrunkSequence.get(myLexPosition).elementType : null;
 
         if (remapper != null && result != null) {
             String tokenText = getTokenText();
@@ -235,9 +236,10 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         if (allIsEmpty()) {
             return getDelegate().getOriginalText().toString();
         }
+
         skipWhitespace();
 
-        if (myLexPosition >= myShrunkSequence.size()) {
+        if (myLexPosition >= myShrunkSequenceSize) {
             return null;
         }
 
@@ -247,7 +249,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
 
     @Override
     public boolean eof() {
-        boolean isEof = myLexPosition >= myShrunkSequence.size();
+        boolean isEof = myLexPosition >= myShrunkSequenceSize;
         if (!isEof) {
             return false;
         }
@@ -268,11 +270,11 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     }
 
     private boolean allIsEmpty() {
-        return myShrunkSequence.isEmpty() && getDelegate().getOriginalText().length() != 0;
+        return myShrunkSequenceSize == 0 && getDelegate().getOriginalText().length() != 0;
     }
 
     private void skipWhitespace() {
-        while (myLexPosition < myShrunkSequence.size() && isWhiteSpaceOnPos(myLexPosition)) {
+        while (myLexPosition < myShrunkSequenceSize && isWhiteSpaceOnPos(myLexPosition)) {
             myLexPosition++;
         }
     }
@@ -289,7 +291,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private void initTokenListAndCharSequence(Lexer lexer) {
         lexer.start(processedText);
 
-        myShrunkSequence = new ArrayList<MyShiftedToken>();
+        myShrunkSequence = new ArrayList<MyShiftedToken>(512); //assume a larger token size by default
         StringBuilder charSequenceBuilder = new StringBuilder();
 
         int realPos = 0;
@@ -331,13 +333,14 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
 
         myShrunkCharSequence = charSequenceBuilder.toString();
+        myShrunkSequenceSize = myShrunkSequence.size();
     }
 
     @SuppressWarnings({"StringConcatenationInsideStringBufferAppend", "UnusedDeclaration"})
     private void logPos() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\nmyLexPosition=" + myLexPosition + "/" + myShrunkSequence.size());
-        if (myLexPosition < myShrunkSequence.size()) {
+        sb.append("\nmyLexPosition=" + myLexPosition + "/" + myShrunkSequenceSize);
+        if (myLexPosition < myShrunkSequenceSize) {
             final MyShiftedToken token = myShrunkSequence.get(myLexPosition);
             sb.append("\nshrunk:" + token.shrunkStart + "," + token.shrunkEnd);
             sb.append("\nreal:" + token.realStart + "," + token.realEnd);
@@ -379,8 +382,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
     }
 
-    private class MyMarker extends DelegateMarker{
-
+    private class MyMarker extends DelegateMarker {
         private int myBuilderPosition;
 
         public MyMarker(Marker delegate, int builderPosition) {

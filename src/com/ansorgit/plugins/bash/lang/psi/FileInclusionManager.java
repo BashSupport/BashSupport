@@ -108,7 +108,7 @@ public class FileInclusionManager {
             }
 
             if (!diveDeep) {
-                //the first iteratopm is the original source
+                //the first iteration is the original source
                 break;
             }
         }
@@ -158,7 +158,7 @@ public class FileInclusionManager {
         List<VirtualFile> scopes = Lists.newLinkedList();
         scopes.add(source.getVirtualFile());
 
-        Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(source, true, true);
+        Set<PsiFile> includedFiles = findIncludedFiles(source, true, true);
         for (PsiFile file : includedFiles) {
             scopes.add(file.getVirtualFile());
         }
