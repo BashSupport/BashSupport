@@ -1,9 +1,12 @@
+####2016-02-23:
+ - Release 1.5.5
+
 ####2016-02-22:
-- No keyword and live-template autocompletion in command arguments
-- Performance fixes for less latency in the editor
-- Variables and functions can now be resolved in scratch files again
-- \#306: Index access during dumb mode
-- \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+ - No keyword and live-template autocompletion in command arguments
+ - Performance fixes for less latency in the editor
+ - Variables and functions can now be resolved in scratch files again
+ - \#306: Index access during dumb mode
+ - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
 ####2016-02-20:
  - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
