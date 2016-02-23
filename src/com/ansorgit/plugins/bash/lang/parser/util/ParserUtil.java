@@ -213,4 +213,23 @@ public class ParserUtil {
     public static boolean isWhitespace(IElementType token) {
         return (token == BashTokenTypes.WHITESPACE) || (token == BashTokenTypes.LINE_FEED);
     }
+
+    public static boolean containsTokenInLookahead(PsiBuilder builder, IElementType token, int maxLookahead, boolean allowWhitespace) {
+        int i = 0;
+
+        while (i < maxLookahead) {
+            IElementType current = allowWhitespace ? builder.lookAhead(i) : builder.rawLookup(i);
+            if (current == null) {
+                return false;
+            }
+
+            if (current == token) {
+                return true;
+            }
+
+            i++;
+        }
+
+        return false;
+    }
 }
