@@ -59,7 +59,11 @@ class SmartFunctionReference extends AbstractFunctionReference {
             }
 
             if (!scopes.isEmpty()) {
-                GlobalSearchScope scope = GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
+                GlobalSearchScope scope = GlobalSearchScope.EMPTY_SCOPE;
+                for (GlobalSearchScope searchScope : scopes) {
+                    scope = scope.uniteWith(searchScope);
+                }
+                //GlobalSearchScope.union(scopes.toArray(new GlobalSearchScope[scopes.size()]));
 
                 functionDefs = StubIndex.getElements(BashFunctionNameIndex.KEY, referencedName, project, scope, BashFunctionDef.class);
 
