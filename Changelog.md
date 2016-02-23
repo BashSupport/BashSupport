@@ -1,5 +1,33 @@
+####2016-02-23:
+ - Release 1.5.5
+
+####2016-02-22:
+ - No keyword and live-template autocompletion in command arguments
+ - Performance fixes for less latency in the editor
+ - Variables and functions can now be resolved in scratch files again
+ - \#306: Index access during dumb mode
+ - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+
+####2016-02-20:
+ - \#312: Newlines are not accepted in parameter expansions
+
 ####2016-02-20:
  - \#297: File includes with directories or / in the path reference are not working as expected
+
+####2016-02-20:
+ - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
+
+####2016-02-20:
+ - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+
+####2016-02-20:
+ - \#297: File includes with directories or / in the path reference are not working as expected
+
+####2016-02-20:
+ - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
+
+####2016-02-01:
+ - \#308: Grouping in test commands not properly parsed
 
 ####2016-02-01:
  - \#300: Variables are not recognized in case
@@ -7,21 +35,8 @@
 ####2016-02-01:
  - \#303: Multiline lists not recognised
 
-####2016-02-22:
-- No keyword and live-template autocompletion in command arguments
-- Performance fixes for less latency in the editor
-- Variables and functions can now be resolved in scratch files again
-- \#306: Index access during dumb mode
-- \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
-
 ####2016-02-01:
- - \#308: Grouping in test commands not properly parsed
-
-####2016-02-20:
- - \#312: Newlines are not accepted in parameter expansions
-
-####2016-02-20:
- - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+ - \#300: Variables are not recognized in case
 
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
@@ -39,14 +54,8 @@
 
 ####2015-11-04
  - \#290: Inspections have no descriptions
- - \#289: Quickdoc lookup not working for keywords
-####2015-12-15
- - \#262: Variables declared by declare or typeset in a function are local
-
-####2015-11-10
- - \#272: Invalid warning about simple array variable use in ${#x}
-
- - \#288: Documentation lookup not working for functions
+ - \#289: Quickdoc lookup not working for keywords 
+ - \#288: Documentation lookup not working for functions 
  - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
  - Released 1.5.2
 
