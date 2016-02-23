@@ -101,22 +101,27 @@ public abstract class MockPsiTest implements BashTokenTypes {
     }
 
     public void mockTestError(BashVersion version, MockFunction f, List<String> textTokens, IElementType... elements) {
-        mockTestError(version, f, true, textTokens, elements);
+        mockTestError(version, f, true, false, textTokens, elements);
     }
 
-    public void mockTestError(BashVersion version, MockFunction f, boolean checkResult, List<String> textTokens, IElementType... elements) {
+    public void mockTestError(BashVersion version, MockFunction f, IElementType... elements) {
+        mockTestError(version, f, Collections.<String>emptyList(), elements);
+    }
+
+    public void mockTestError(BashVersion version, MockFunction f, boolean checkResult, boolean checkRemainingElements, List<String> textTokens, IElementType... elements) {
         MockPsiBuilder mockPsiBuilder = builderFor(textTokens, elements);
         BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(null, mockPsiBuilder, version);
 
         boolean ok = f.apply(bashPsiBuilder);
         assertErrors(mockPsiBuilder);
+
+        if (checkRemainingElements) {
+            Assert.assertEquals("Not all elements have been processed.", elements.length, mockPsiBuilder.processedElements());
+        }
+
         if (checkResult) {
             Assert.assertFalse(ok);
         }
-    }
-
-    public void mockTestError(BashVersion version, MockFunction f, IElementType... elements) {
-        mockTestError(version, f, Collections.<String>emptyList(), elements);
     }
 
     public void mockTestFail(MockFunction f, IElementType... elements) {
@@ -145,9 +150,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
         Assert.assertTrue("Post condition failed", f.postCheck(mockBuilder));
 
         assertErrors(mockBuilder);
-
     }
-
 
     public void mockTestFail(BashVersion version, MockFunction f, IElementType... elements) {
         MockPsiBuilder mockPsiBuilder = builderFor(Collections.<String>emptyList(), elements);

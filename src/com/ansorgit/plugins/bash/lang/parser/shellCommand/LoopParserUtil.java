@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: LoopParserUtil.java, Class: LoopParserUtil
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +25,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * Helper class to provide parsing of a loop body. This code is shared between while and
- * until loops.
+ * Helper class to provide parsing of a loop body. This code is shared between while, until and for loops.
  * <p/>
  * Date: 02.05.2009
  * Time: 17:51:04
@@ -43,10 +42,24 @@ class LoopParserUtil implements BashTokenTypes {
      *
      * @param builder           The builder which provides the data.
      * @param parseCompoundList True if a compound list is expected as loop body. False if a normal list is expteced.
+     * @param enforcedDoKeyword
      * @return True if the parsing was successful
      */
-    static boolean parseLoopBody(BashPsiBuilder builder, boolean parseCompoundList) {
+    static boolean parseLoopBody(BashPsiBuilder builder, boolean parseCompoundList, boolean enforcedDoKeyword) {
         final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
+
+        if (firstToken == DO_KEYWORD && ParserUtil.isEmptyListFollowedBy(builder, DONE_KEYWORD)) {
+            ParserUtil.error(builder, "parser.shell.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, DONE_KEYWORD);
+            builder.advanceLexer(); //DONE keyword
+            return true;
+        }
+
+        if (enforcedDoKeyword && firstToken != DO_KEYWORD) {
+            ParserUtil.error(builder, "parser.unexpected.token");
+            return false;
+        }
+
         if (firstToken == DO_KEYWORD || firstToken == LEFT_CURLY) {
             boolean parsed = parseCompoundList
                     ? Parsing.list.parseCompoundList(builder, true, true)
@@ -63,7 +76,8 @@ class LoopParserUtil implements BashTokenTypes {
 
                 return ok;
             } else {
-                //ParserUtil.error(builder, "parser.shell.loop.expectedBody");
+                ParserUtil.error(builder, "parser.unexpected.token");
+
                 return false;
             }
         }
