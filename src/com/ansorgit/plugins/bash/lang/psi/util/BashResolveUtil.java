@@ -12,7 +12,6 @@ import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.intellij.ide.scratch.ScratchFileService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -190,6 +189,6 @@ public final class BashResolveUtil {
     }
 
     public static boolean isScratchFile(@Nullable VirtualFile file) {
-        return file != null && ScratchFileService.getInstance().getRootType(file) != null;
+        return false;
     }
 }
