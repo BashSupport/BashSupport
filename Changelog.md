@@ -14,6 +14,9 @@
 - \#306: Index access during dumb mode
 - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
+####2016-02-01:
+ - \#308: Grouping in test commands not properly parsed
+
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm
 
