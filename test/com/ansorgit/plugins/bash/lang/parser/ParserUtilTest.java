@@ -63,4 +63,27 @@ public class ParserUtilTest {
         Assert.assertEquals(WHITESPACE, b.rawLookup(2));
         Assert.assertEquals(ARITH_NUMBER, b.rawLookup(3));
     }
+
+    @Test
+    public void testEmptyListFollowedBy() throws Exception {
+        BashPsiBuilder b = new BashPsiBuilder(null, new MockPsiBuilder(IF_KEYWORD), Bash_v3);
+        Assert.assertTrue(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+
+        b = new BashPsiBuilder(null, new MockPsiBuilder(SEMI, IF_KEYWORD), Bash_v3);
+        Assert.assertTrue(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+
+        b = new BashPsiBuilder(null, new MockPsiBuilder(LINE_FEED, LINE_FEED, SEMI, IF_KEYWORD), Bash_v3);
+        Assert.assertTrue(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+
+        b = new BashPsiBuilder(null, new MockPsiBuilder(LINE_FEED, WHITESPACE, LINE_FEED, SEMI, LINE_FEED, WHITESPACE, IF_KEYWORD, THEN_KEYWORD), Bash_v3);
+        Assert.assertTrue(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+        Assert.assertEquals(IF_KEYWORD, b.getTokenType());
+
+        //negative checks
+        b = new BashPsiBuilder(null, new MockPsiBuilder(WHILE_KEYWORD), Bash_v3);
+        Assert.assertFalse(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+
+        b = new BashPsiBuilder(null, new MockPsiBuilder(LINE_FEED, WHITESPACE, LINE_FEED, SEMI, LINE_FEED, WHITESPACE, WHILE_KEYWORD), Bash_v3);
+        Assert.assertFalse(ParserUtil.readEmptyListFollowedBy(b, IF_KEYWORD));
+    }
 }

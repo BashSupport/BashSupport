@@ -2,13 +2,13 @@
  * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
  * File: IfParsingFunction.java, Class: IfParsingFunction
  * Last modified: 2011-04-30 16:33
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,13 +19,11 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing function for if expressions.
@@ -36,6 +34,7 @@ import com.intellij.psi.tree.IElementType;
  * @author Joachim Ansorg
  */
 public class IfParsingFunction implements ParsingFunction {
+    private static final TokenSet ELSE_ELIF_FI = TokenSet.create(ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == BashTokenTypes.IF_KEYWORD;
@@ -51,16 +50,12 @@ public class IfParsingFunction implements ParsingFunction {
          */
 
         final PsiBuilder.Marker ifCommand = builder.mark();
-        final IElementType tokenType = builder.getTokenType();
+        ParserUtil.getTokenAndAdvance(builder); //if keyword
 
-        if (tokenType != BashTokenTypes.IF_KEYWORD) {
-            ParserUtil.error(ifCommand, "parser.shell.if.expectedIf");//fixme
-            return false;
-        }
-
-        builder.advanceLexer();
-
-        if (!Parsing.list.parseCompoundList(builder, false)) {
+        if (ParserUtil.isEmptyListFollowedBy(builder, THEN_KEYWORD)) {
+            ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, THEN_KEYWORD);
+        } else if (!Parsing.list.parseCompoundList(builder, false)) {
             ParserUtil.error(builder, "parser.shell.if.expectedCommands");
             ifCommand.drop();
             return false;
@@ -73,23 +68,31 @@ public class IfParsingFunction implements ParsingFunction {
             return false;
         }
 
-        if (!Parsing.list.parseCompoundList(builder, true)) {
+        if (ParserUtil.isEmptyListFollowedBy(builder, ELSE_ELIF_FI)) {
+            ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, ELSE_ELIF_FI);
+        } else if (!Parsing.list.parseCompoundList(builder, true)) {
             ifCommand.drop();
             return false;
         }
 
         if (builder.getTokenType() == BashTokenTypes.ELIF_KEYWORD) {
-            if (!parseElifClause(builder)) {
+            if (ParserUtil.isEmptyListFollowedBy(builder, ELSE_KEYWORD)) {
+                ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+                ParserUtil.readEmptyListFollowedBy(builder, ELSE_KEYWORD);
+            } else if (parseElifClause(builder) == ParseResult.ERRORS) {
                 ifCommand.drop();//fixme
                 return false;
             }
         }
 
         if (builder.getTokenType() == BashTokenTypes.ELSE_KEYWORD) {
-            builder.advanceLexer();
-            //after the else keyword now
+            builder.advanceLexer(); //after the else keyword now
 
-            if (!Parsing.list.parseCompoundList(builder, true)) {
+            if (ParserUtil.isEmptyListFollowedBy(builder, FI_KEYWORD)) {
+                ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+                ParserUtil.readEmptyListFollowedBy(builder, FI_KEYWORD);
+            } else if (!Parsing.list.parseCompoundList(builder, true)) {
                 ifCommand.drop();
                 return false;
             }
@@ -106,7 +109,7 @@ public class IfParsingFunction implements ParsingFunction {
         return true;
     }
 
-    private boolean parseElifClause(BashPsiBuilder builder) {
+    private ParseResult parseElifClause(BashPsiBuilder builder) {
         /*
           elif_clause:
             ELIF compound_list THEN compound_list
@@ -114,28 +117,37 @@ public class IfParsingFunction implements ParsingFunction {
         |   ELIF compound_list THEN compound_list elif_clause
         ;
        */
+        boolean withErrors = false;
 
         final IElementType token = ParserUtil.getTokenAndAdvance(builder);
         if (token != BashTokenTypes.ELIF_KEYWORD) {
             ParserUtil.error(builder, "parser.shell.if.expectedElif");//fixme
-            return false;
+            return ParseResult.ERRORS;
         }
 
-        if (!Parsing.list.parseCompoundList(builder, false)) {
+        if (ParserUtil.isEmptyListFollowedBy(builder, THEN_KEYWORD)) {
+            ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, THEN_KEYWORD);
+            withErrors = true;
+        } else if (!Parsing.list.parseCompoundList(builder, false)) {
             ParserUtil.error(builder, "parser.command.expected.command");
-            return false;
+            return ParseResult.ERRORS;
         }
 
         final IElementType thenToken = ParserUtil.getTokenAndAdvance(builder);
         if (thenToken != BashTokenTypes.THEN_KEYWORD) {
             ParserUtil.error(builder, "parser.shell.if.expectedThen");
-            return false;
+            return ParseResult.ERRORS;
         }
 
         //commands after "then"
-        if (!Parsing.list.parseCompoundList(builder, true)) {
+        if (ParserUtil.isEmptyListFollowedBy(builder, ELSE_ELIF_FI)) {
+            ParserUtil.error(builder, "parser.shell.if.expectedCommands");
+            ParserUtil.readEmptyListFollowedBy(builder, ELSE_ELIF_FI);
+            withErrors = true;
+        } else if (!Parsing.list.parseCompoundList(builder, true)) {
             ParserUtil.error(builder, "parser.command.expected.command");
-            return false;
+            return ParseResult.ERRORS;
         }
 
         if (builder.getTokenType() == BashTokenTypes.ELIF_KEYWORD) {
@@ -143,6 +155,6 @@ public class IfParsingFunction implements ParsingFunction {
         }
 
         //the else is handled by the parseIfCommand method
-        return true;
+        return withErrors ? ParseResult.ERRORS_OK : ParseResult.OK;
     }
 }
