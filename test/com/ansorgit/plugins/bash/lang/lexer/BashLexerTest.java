@@ -835,7 +835,7 @@ public class BashLexerTest {
 
     @Test
     public void testSubshellExpr() {
-        testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, IF_KEYWORD, EQ, WORD, BACKQUOTE);
+        testTokenization("`dd if=a`", BACKQUOTE, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD, BACKQUOTE);
     }
 
     @Test
