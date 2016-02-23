@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFilesOrDirectoriesProcessor;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Set;
@@ -31,7 +32,8 @@ public class FileMoveTest extends BashCodeInsightFixtureTestCase {
      * @throws Exception
      */
     @Test
-    public void testBasicFileRename() throws Exception {
+    @Ignore
+    public void _testBasicFileRename() throws Exception {
         doMove(new String[]{"source.bash", "subdir/source2.bash"}, "target.bash", "subdir");
 
         PsiReference targetBashRef = myFixture.getReferenceAtCaretPositionWithAssertion("source.bash");
