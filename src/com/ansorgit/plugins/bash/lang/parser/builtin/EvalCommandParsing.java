@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
@@ -34,7 +35,8 @@ import com.intellij.psi.tree.TokenSet;
  */
 class EvalCommandParsing implements ParsingFunction, ParsingTool {
     //this is a simple definition of allowed tokens per eval-code-block
-    private static final TokenSet accepted = TokenSet.create(STRING2, ASSIGNMENT_WORD, EQ, WORD, VARIABLE, DOLLAR, LEFT_CURLY, RIGHT_CURLY);
+    private static final TokenSet accepted = TokenSet.create(STRING2, ASSIGNMENT_WORD, EQ, WORD, VARIABLE, DOLLAR,
+            LEFT_CURLY, RIGHT_CURLY);
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
@@ -48,6 +50,16 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
 
         while (true) {
             int start = builder.rawTokenIndex();
+
+            //advance to the next non-whitespace token before reading an eval block
+            builder.getTokenType();
+
+            while (true) {
+                //do nothing, the conidition advances the PSI builder
+                if (!(readEvaluatedBeforeCode(builder))) {
+                    break;
+                }
+            }
 
             //advance to the next non-whitespace token before reading an eval block
             builder.getTokenType();
@@ -76,5 +88,25 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
         }
 
         return true;
+    }
+
+    private boolean readEvaluatedBeforeCode(BashPsiBuilder builder) {
+        if (Parsing.shellCommand.subshellParser.isValid(builder)) {
+            return Parsing.shellCommand.subshellParser.parse(builder);
+        }
+
+        if (Parsing.shellCommand.backtickParser.isValid(builder)) {
+            return Parsing.shellCommand.backtickParser.parse(builder);
+        }
+
+        if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
+            return ShellCommandParsing.arithmeticParser.parse(builder);
+        }
+
+        if (Parsing.shellCommand.conditionalCommandParser.isValid(builder)) {
+            return Parsing.shellCommand.conditionalCommandParser.parse(builder);
+        }
+
+        return false;
     }
 }

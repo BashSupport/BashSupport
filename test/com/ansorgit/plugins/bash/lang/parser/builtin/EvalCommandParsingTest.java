@@ -46,4 +46,11 @@ public class EvalCommandParsingTest extends MockPsiTest {
         //eval "" ""
         mockTest(parserFunction, Lists.newArrayList("eval", "\"\"", "\"\""), WORD, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END);
     }
+
+    @Test
+    public void testIssue302() throws Exception {
+        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+
+        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, DOLLAR, EXPR_ARITH, WORD, _EXPR_ARITH);
+    }
 }
