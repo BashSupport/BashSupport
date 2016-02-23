@@ -215,6 +215,11 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testIssue305_SubshellResolve() throws Exception {
+        BashVarDef varDef = assertIsWellDefinedVariable();
+    }
+
+    @Test
     @Ignore
     public void _testResolveEvalVarEscaped() throws Exception {
         assertIsWellDefinedVariable();
