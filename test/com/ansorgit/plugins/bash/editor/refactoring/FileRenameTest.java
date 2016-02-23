@@ -1,7 +1,5 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
@@ -12,15 +10,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.RefactoringSettings;
-import com.intellij.testFramework.builders.ModuleFixtureBuilder;
-import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
