@@ -37,6 +37,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.PsiManagerEx;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -390,7 +391,10 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
-        final boolean sameFile = findFileContext(variableDefinition, true).equals(findFileContext(referenceToDefCandidate, true));
+        PsiFile definitionFile = findFileContext(variableDefinition, true);
+        PsiFile referenceFile = findFileContext(referenceToDefCandidate, true);
+
+        boolean sameFile = definitionFile.equals(referenceFile);
 
         if (sameFile) {
             if (!isValidGlobalOffset(referenceToDefCandidate, variableDefinition)) {
@@ -400,8 +404,8 @@ public final class BashPsiUtils {
             //we need to find the include command and check the offset
             //the include command must fullfil the same condition as the normal variable definition above:
             //either var use and definition are both in functions or it the use is invalid
-            //fixme right files?
-            List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceToDefCandidate.getContainingFile(), variableDefinition.getContainingFile());
+
+            List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceFile, definitionFile);
 
             //currently we only support global include commands
             for (BashCommand includeCommand : includeCommands) {
@@ -414,18 +418,39 @@ public final class BashPsiUtils {
         return true;
     }
 
+    /**
+     * Checks whether the given definition is a valid definition for the referenceElement.
+     * If both have the same definition context, then the text offsets are compared.
+     * If the definition contexts are different functions then the definition is valid.
+     * A global reference to a definition in a function is checked by text offset.
+     * A reference in a function to a global definition is also checked by reference.
+     *
+     * @param referenceElement The element checked
+     * @param definition The definition checked
+     * @return True if definition may be a valid definition for the reference
+     */
     private static boolean isValidGlobalOffset(PsiElement referenceElement, PsiElement definition) {
-        if (definition.getTextOffset() > referenceElement.getTextOffset()) {
-            if (isGlobal(referenceElement)) {
-                return false;
-            }
+        BashFunctionDef refScope = findNextVarDefFunctionDefScope(referenceElement);
+        BashFunctionDef defScope = findNextVarDefFunctionDefScope(definition);
+
+        int refOffset = referenceElement.getTextOffset();
+        int defOffset = definition.getTextOffset();
+
+        //both global or both in the same function
+        if (refScope == defScope || (refScope != null && refScope.isEquivalentTo(defScope))) {
+            //both may be null or a function scope
+            return refOffset > defOffset;
         }
 
-        return true;
-    }
+        //ref and def are in different functions
+        if (refScope != null && defScope != null) {
+            return true;
+        }
 
-    private static boolean isGlobal(PsiElement element) {
-        return findBroadestFunctionScope(element) == null;
+        //def global: ref function must be after the definition context
+        //ref global: ref must be after the definition context
+
+        return refOffset > defOffset;
     }
 
     public static List<PsiComment> findDocumentationElementComments(PsiElement element) {

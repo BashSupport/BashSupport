@@ -233,6 +233,7 @@ public class ParserUtil {
         return false;
     }
 
+
     /**
      * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
      * This is useful to detect empty commands in if/while/...
