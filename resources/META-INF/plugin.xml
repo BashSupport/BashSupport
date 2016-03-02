@@ -24,8 +24,8 @@
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 143.23 or later -->
-    <idea-version since-build="143.24" until-build="143.99999"/>
+    <!-- Requires IDEA 145.x or later -->
+    <idea-version since-build="145.0" until-build="145.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -42,18 +42,18 @@
         <ul>
             <li>Bugs fixed:<br/>
                 <ul>
-                    <li>No keyword and live-template autocompletion in command arguments</li>li>
-                    <li>Performance fixes for less latency in the editor</li>li>
-                    <li>Variables and functions can now be resolved in scratch files again</li>li>
-                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>li>
-                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>li>
-                    <li>#300: Variables are not recognized in case</li>li>
-                    <li>#303: Multiline lists not recognised</li>li>
-                    <li>#306: Index access during dumb mode</li>li>
-                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>li>
-                    <li>#308: Grouping in test commands not properly parsed</li>li>
-                    <li>#312: Newlines are not accepted in parameter expansions</li>li>
-                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>li>
+                    <li>No keyword and live-template autocompletion in command arguments</li>
+                    <li>Performance fixes for less latency in the editor</li>
+                    <li>Variables and functions can now be resolved in scratch files again</li>
+                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>
+                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>
+                    <li>#300: Variables are not recognized in case</li>
+                    <li>#303: Multiline lists not recognised</li>
+                    <li>#306: Index access during dumb mode</li>
+                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>
+                    <li>#308: Grouping in test commands not properly parsed</li>
+                    <li>#312: Newlines are not accepted in parameter expansions</li>
+                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>
                 </ul>
             </li>
         </ul>
