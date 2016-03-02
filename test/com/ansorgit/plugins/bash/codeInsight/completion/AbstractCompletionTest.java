@@ -1,18 +1,16 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.util.OSPathUtil;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.completion.CompletionTestCase;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.util.Function;
-import com.intellij.util.containers.ContainerUtil;
-import junit.framework.Assert;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 abstract class AbstractCompletionTest extends CompletionTestCase {
     protected static final String[] NO_COMPLETIONS = new String[0];
@@ -27,7 +25,7 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
     }
 
     public AbstractCompletionTest(String basePath, boolean autoInsertionEnabled) {
-        this.basePath = basePath;
+        this.basePath = StringUtils.replace(basePath, "/", File.separator);
         this.autoInsertionEnabled = autoInsertionEnabled;
     }
 
@@ -59,11 +57,11 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
 
     @NotNull
     protected String getFullTestDataPath() {
-        return BashTestUtils.getBasePath() + basePath;
+        return OSPathUtil.toBashCompatible(BashTestUtils.getBasePath() + basePath);
     }
 
     protected void configureByTestName(String... additionalFiles) throws Exception {
-        String testnameFile = basePath + "/" + getTestName(true) + ".bash";
+        String testnameFile = basePath + File.separator + getTestName(true) + ".bash";
 
         ArrayList<String> files = Lists.newArrayList(testnameFile);
         if (additionalFiles != null && additionalFiles.length > 0) {

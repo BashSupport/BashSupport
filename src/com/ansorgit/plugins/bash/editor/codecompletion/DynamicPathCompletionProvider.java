@@ -25,6 +25,7 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -86,7 +87,7 @@ class DynamicPathCompletionProvider extends AbstractBashCompletionProvider {
     @Nullable
     private String findBaseDir(CompletionParameters parameters, String usedPrefix) {
         if (homePrefixes.contains(usedPrefix)) {
-            return System.getenv("HOME");
+            return SystemInfo.isWindows ? System.getenv("USERPROFILE") : System.getenv("HOME");
         }
 
         PsiDirectory file = parameters.getOriginalFile().getParent();

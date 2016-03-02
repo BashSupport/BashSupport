@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
     private static final List<String> VALID_SHEBANGS = Lists.newArrayList();
+    private static final List<String> VALID_SHEBANGS_WINDOWS = Lists.newArrayList();
 
     static {
         for (String location : BashInterpreterDetection.POSSIBLE_LOCATIONS) {

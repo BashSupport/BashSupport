@@ -21,6 +21,7 @@ package com.ansorgit.plugins.bash.util;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.util.SystemInfoRt;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -48,7 +49,9 @@ public class CompletionUtil {
      */
     @NotNull
     public static List<String> completeAbsolutePath(@NotNull String prefix, Predicate<File> accept) {
-        File base = new File(prefix);
+        String nativePath = prefix.startsWith("/") && SystemInfoRt.isWindows ? OSPathUtil.bashCompatibleToNative(prefix) : prefix;
+
+        File base = new File(nativePath);
 
         //a dot tricks Java into thinking dir/. is equal to dir and thus exists
         boolean dotSuffix = prefix.endsWith(".") && !prefix.startsWith(".");
@@ -77,11 +80,14 @@ public class CompletionUtil {
                 continue;
             }
 
+            String resultPath;
             if (fileCandidate.isDirectory()) {
-                result.add(fileCandidate.getAbsolutePath() + "/");
+                resultPath = fileCandidate.getAbsolutePath() + File.separator;
             } else {
-                result.add(fileCandidate.getAbsolutePath());
+                resultPath = fileCandidate.getAbsolutePath();
             }
+
+            result.add(OSPathUtil.toBashCompatible(resultPath));
         }
 
         return result;
@@ -99,9 +105,11 @@ public class CompletionUtil {
     public static List<String> completeRelativePath(@NotNull String baseDir, @NotNull String shownBaseDir, @NotNull String relativePath) {
         List<String> result = Lists.newLinkedList();
 
-        for (String path : completeAbsolutePath(baseDir + "/" + relativePath, Predicates.<File>alwaysTrue())) {
-            if (path.startsWith(baseDir)) {
-                result.add(shownBaseDir + path.substring(baseDir.length()));
+        String bashBaseDir = OSPathUtil.toBashCompatible(baseDir);
+
+        for (String path : completeAbsolutePath(baseDir + File.separator + relativePath, Predicates.<File>alwaysTrue())) {
+            if (path.startsWith(bashBaseDir)) {
+                result.add(shownBaseDir + path.substring(bashBaseDir.length()));
             }
         }
 

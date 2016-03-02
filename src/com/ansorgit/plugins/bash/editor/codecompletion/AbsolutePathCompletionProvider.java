@@ -22,9 +22,11 @@ import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
+import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -62,7 +64,8 @@ class AbsolutePathCompletionProvider extends AbstractBashCompletionProvider {
             public boolean apply(File file) {
                 //accept hidden file with more than one invocation
                 //return file.isHidden() ? invocationCount >= 2 : true;
-                return (file.isHidden() && (invocationCount >= 2)) || ((invocationCount >= 1) && !file.isHidden());
+                boolean isHidden = file.isHidden() || file.getName().startsWith(".");
+                return (isHidden && (invocationCount >= 2)) || ((invocationCount >= 1) && !isHidden);
             }
         };
 
