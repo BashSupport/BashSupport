@@ -13,6 +13,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Bash run config producer which looks at the current context to create a new run configuation.
@@ -74,7 +75,8 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
 
         //fallback location if none was found
         if (StringUtil.isEmptyOrSpaces(configuration.getInterpreterPath())) {
-            configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
+            String bashPath = BashInterpreterDetection.instance().findBestLocation();
+            configuration.setInterpreterPath(StringUtils.trimToEmpty(bashPath));
         }
 
         return true;

@@ -54,14 +54,13 @@ public class BashConsoleRunner extends AbstractConsoleRunnerWithHistory<Language
 
     @Override
     protected Process createProcess() throws ExecutionException {
+        String bashLocation = BashInterpreterDetection.instance().findBestLocation();
+        if (bashLocation == null) {
+            throw new ExecutionException("Could not locate the bash executable");
+        }
+
         GeneralCommandLine commandLine = new GeneralCommandLine().withWorkDirectory(getWorkingDir());
-
-        //fixme make this configurable
-        commandLine.setExePath(BashInterpreterDetection.instance().findBestLocation());
-
-        //fixme
-        //commandLine.addParameters(provider.getArguments());
-
+        commandLine.setExePath(bashLocation);
         return commandLine.createProcess();
     }
 

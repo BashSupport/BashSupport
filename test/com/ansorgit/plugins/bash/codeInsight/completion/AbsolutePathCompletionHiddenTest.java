@@ -1,7 +1,7 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.util.OSPathUtil;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import org.junit.Test;
 
 public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
@@ -35,7 +35,7 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
     @Test
     public void testSimpleCompletionShowHidden() throws Throwable {
         String prefix = getFullTestDataPath();
-        String cygwinPrefix = OSPathUtil.toBashCompatible(prefix);
+        String cygwinPrefix = OSUtil.toBashCompatible(prefix);
 
         configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s<caret>", cygwinPrefix));
 

@@ -1,7 +1,7 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.util.OSPathUtil;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.completion.CompletionTestCase;
@@ -57,7 +57,7 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
 
     @NotNull
     protected String getFullTestDataPath() {
-        return OSPathUtil.toBashCompatible(BashTestUtils.getBasePath() + basePath);
+        return OSUtil.toBashCompatible(BashTestUtils.getBasePath() + basePath);
     }
 
     protected void configureByTestName(String... additionalFiles) throws Exception {

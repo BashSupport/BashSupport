@@ -18,7 +18,7 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
-import com.ansorgit.plugins.bash.util.OSPathUtil;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -75,7 +75,7 @@ class CompletionProviderUtils {
             osPathes = Lists.transform(osPathes, new Function<String, String>() {
                 @Override
                 public String apply(String path) {
-                   return OSPathUtil.toBashCompatible(path);
+                   return OSUtil.toBashCompatible(path);
                 }
             });
         }

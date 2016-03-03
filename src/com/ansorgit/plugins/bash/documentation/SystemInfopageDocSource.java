@@ -19,7 +19,7 @@
 package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.util.SystemPathUtil;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.diagnostic.Logger;
@@ -50,8 +50,8 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     public static final int TIMEOUT_IN_MILLISECONDS = (int) TimeUnit.SECONDS.toMillis(4);
 
     SystemInfopageDocSource() {
-        infoExecutable = SystemPathUtil.findBestExecutable("info");
-        txt2htmlExecutable = SystemPathUtil.findBestExecutable("txt2html");
+        infoExecutable = OSUtil.findBestExecutable("info");
+        txt2htmlExecutable = OSUtil.findBestExecutable("txt2html");
     }
 
     public String documentation(PsiElement element, PsiElement originalElement) {

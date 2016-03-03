@@ -60,8 +60,9 @@ public class BashConfigurationType extends ConfigurationTypeBase {
             RunManagerEx.getInstanceEx(configuration.getProject()).setBeforeRunTasks(configuration, Collections.<BeforeRunTask>emptyList(), false);
         }
 
+        @NotNull
         @Override
-        public RunConfiguration createTemplateConfiguration(Project project) {
+        public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
             BashRunConfiguration configuration = new BashRunConfiguration(new RunConfigurationModule(project), this, "");
             configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
 

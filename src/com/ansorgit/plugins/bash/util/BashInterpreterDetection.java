@@ -20,6 +20,8 @@ package com.ansorgit.plugins.bash.util;
 
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.SystemInfoRt;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Collections;
@@ -70,6 +72,7 @@ public class BashInterpreterDetection {
         return INSTANCE;
     }
 
+    @Nullable
     public String findBestLocation() {
         List<String> locations = SystemInfo.isWindows ? POSSIBLE_EXE_LOCATIONS_WINDOWS : POSSIBLE_EXE_LOCATIONS;
 
@@ -79,7 +82,8 @@ public class BashInterpreterDetection {
             }
         }
 
-        return "";
+        String pathLocation = OSUtil.findBestExecutable(SystemInfoRt.isWindows ? "bash.exe" : "bash");
+        return isSuitable(pathLocation) ? pathLocation : null;
     }
 
     public boolean isSuitable(String guessLocation) {

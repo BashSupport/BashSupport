@@ -49,7 +49,7 @@ public class CompletionUtil {
      */
     @NotNull
     public static List<String> completeAbsolutePath(@NotNull String prefix, Predicate<File> accept) {
-        String nativePath = prefix.startsWith("/") && SystemInfoRt.isWindows ? OSPathUtil.bashCompatibleToNative(prefix) : prefix;
+        String nativePath = prefix.startsWith("/") && SystemInfoRt.isWindows ? OSUtil.bashCompatibleToNative(prefix) : prefix;
 
         File base = new File(nativePath);
 
@@ -87,7 +87,7 @@ public class CompletionUtil {
                 resultPath = fileCandidate.getAbsolutePath();
             }
 
-            result.add(OSPathUtil.toBashCompatible(resultPath));
+            result.add(OSUtil.toBashCompatible(resultPath));
         }
 
         return result;
@@ -105,7 +105,7 @@ public class CompletionUtil {
     public static List<String> completeRelativePath(@NotNull String baseDir, @NotNull String shownBaseDir, @NotNull String relativePath) {
         List<String> result = Lists.newLinkedList();
 
-        String bashBaseDir = OSPathUtil.toBashCompatible(baseDir);
+        String bashBaseDir = OSUtil.toBashCompatible(baseDir);
 
         for (String path : completeAbsolutePath(baseDir + File.separator + relativePath, Predicates.<File>alwaysTrue())) {
             if (path.startsWith(bashBaseDir)) {
