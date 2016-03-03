@@ -35,6 +35,16 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testBasicRenameSubdir() throws Exception {
+        doRename(false, "source.bash", "subdir/subdir_source.bash");
+    }
+
+    @Test
+    public void testBasicRenameSubdirHandler() throws Exception {
+        doRename(true, "source.bash", "subdir/subdir_source.bash");
+    }
+
+    @Test
     public void testBasicRenameInlined() throws Exception {
         doRename(false);
     }
