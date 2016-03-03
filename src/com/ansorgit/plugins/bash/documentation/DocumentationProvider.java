@@ -20,6 +20,7 @@ package com.ansorgit.plugins.bash.documentation;
 
 import com.google.common.collect.Lists;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.psi.PsiElement;
 import org.apache.commons.lang.StringUtils;
 
@@ -43,8 +44,10 @@ class DocumentationProvider {
         sourceList.add(new FunctionPsiCommentSource());
         sourceList.add(new BashKeywordDocSource());
         sourceList.add(new InternalCommandDocumentation());
-        sourceList.add(new CachingDocumentationSource(new SystemInfopageDocSource()));
         sourceList.add(new ManpageDocSource());
+        if (!SystemInfoRt.isWindows) {
+            sourceList.add(new CachingDocumentationSource(new SystemInfopageDocSource()));
+        }
     }
 
     /**
