@@ -1,3 +1,6 @@
+####2016-03-12:
+ - Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.
+
 ####2016-02-23:
  - Release 1.5.5
 

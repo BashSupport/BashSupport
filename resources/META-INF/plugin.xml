@@ -109,10 +109,6 @@
         </component>
 
         <component>
-            <implementation-class>com.ansorgit.plugins.bash.settings.facet.BashFacetLoader</implementation-class>
-        </component>
-
-        <component>
             <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
         </component>
     </application-components>
@@ -221,8 +217,6 @@
         <annotator language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.annotator.BashAnnotator"/>
 
         <codeInsight.lineMarkerProvider language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.BashLineMarkerProvider"/>
-
-        <frameworkSupport implementation="com.ansorgit.plugins.bash.settings.facet.BashFacetTypeFrameworkSupportProvider"/>
 
         <runConfigurationProducer implementation="com.ansorgit.plugins.bash.runner.BashRunConfigProducer"/>
         <configurationType implementation="com.ansorgit.plugins.bash.runner.BashConfigurationType"/>
