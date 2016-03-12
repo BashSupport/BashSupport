@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * Patched version taken from IntelliJ sources.
  * Changes:
- *  - fixed file_path_regex to allow more characters in file names
+ *  - fixed FILE_PATH_REGEX to allow more characters in file names
  *
  * @author Yura Cangea
  * @version 1.0

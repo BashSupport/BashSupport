@@ -105,10 +105,6 @@
 
     <application-components>
         <component>
-            <implementation-class>com.ansorgit.plugins.bash.lang.BashLoader</implementation-class>
-        </component>
-
-        <component>
             <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
         </component>
     </application-components>
@@ -143,7 +139,7 @@
                class="com.intellij.openapi.actionSystem.DefaultActionGroup"
                text="Bash REPL" description="Bash" popup="false">
 
-            <action id="com.ansorgit.plugins.bash.actions.AddReplAction"
+            <action id="Bash.AddReplAction"
                     class="com.ansorgit.plugins.bash.actions.AddReplAction" text="Add new Bash console"
                     description="Open a new Bash console window">
             </action>
