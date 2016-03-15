@@ -120,7 +120,7 @@ public abstract class MockPsiTest implements BashTokenTypes {
         }
 
         if (checkResult) {
-            Assert.assertFalse(ok);
+            Assert.assertFalse("The parsing result must be 'false'", ok);
         }
     }
 

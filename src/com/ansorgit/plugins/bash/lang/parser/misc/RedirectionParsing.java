@@ -50,11 +50,11 @@ public class RedirectionParsing implements ParsingTool {
             return optional;
         }
 
-        final PsiBuilder.Marker redirectList = builder.mark();
+        PsiBuilder.Marker redirectList = builder.mark();
 
         do {
             parseSingleRedirect(builder, allowHeredocs);
-        } while (isRedirect(builder, allowHeredocs)); //fixme isRedirect is inefficient because it does a rollback every time
+        } while (isRedirect(builder, allowHeredocs));
 
         redirectList.done(REDIRECT_LIST_ELEMENT);
 
@@ -65,6 +65,16 @@ public class RedirectionParsing implements ParsingTool {
     //fixme optimize this for performance
     public boolean isRedirect(BashPsiBuilder builder, boolean allowHeredocs) {
         if (builder.eof()) {
+            return false;
+        }
+
+        //avoid to parse a process substitution as a redirect expression
+        int i = 0;
+        while (builder.rawLookup(i) == WHITESPACE) {
+            i++;
+        }
+
+        if ((builder.rawLookup(i) == LESS_THAN || builder.rawLookup(i) == GREATER_THAN) && builder.rawLookup(i+1)  == LEFT_PAREN){
             return false;
         }
 
@@ -83,7 +93,7 @@ public class RedirectionParsing implements ParsingTool {
         return parseSingleRedirect(builder, false, allowHeredoc);
     }
 
-    public boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode, boolean allowHeredoc) {
+    private boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode, boolean allowHeredoc) {
         PsiBuilder.Marker marker = builder.mark();
 
         IElementType firstToken = builder.getTokenType();
@@ -102,16 +112,6 @@ public class RedirectionParsing implements ParsingTool {
         if (!redirectionSet.contains(secondToken)) {
             marker.drop();
             return false;
-        }
-
-        // Process substitution
-        if (isProcessSubstitution(builder, secondToken)) {
-            if (!parseProcessSubstitution(builder, marker)) {
-                return false;
-            }
-
-            marker.done(REDIRECT_ELEMENT);
-            return true;
         }
 
         if (validBeforeFiledescriptor.contains(secondToken) && ParserUtil.hasNextTokens(builder, true, secondToken, FILEDESCRIPTOR)) {
@@ -165,30 +165,6 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         //an invalid redirect should not break the whole parsing, thus we return true here
-        return true;
-    }
-
-    private boolean isProcessSubstitution(BashPsiBuilder builder, IElementType secondToken) {
-        return (secondToken == LESS_THAN || secondToken == GREATER_THAN) && builder.rawLookup(1) == LEFT_PAREN;
-    }
-
-    private boolean parseProcessSubstitution(BashPsiBuilder builder, PsiBuilder.Marker marker) {
-        builder.advanceLexer(); //eat the < or > token
-        builder.advanceLexer(); //eat the left parentheses
-        if (!Parsing.list.parseCompoundList(builder, true, false)) {
-            marker.drop();
-            return false;
-        }
-
-        //now a right parentheses has to follow to close the process substitution
-        IElementType substitutionEnd = builder.getTokenType(true);
-        if (substitutionEnd == RIGHT_PAREN) {
-            builder.advanceLexer();
-        } else {
-            marker.drop();
-            return false;
-        }
-
         return true;
     }
 }

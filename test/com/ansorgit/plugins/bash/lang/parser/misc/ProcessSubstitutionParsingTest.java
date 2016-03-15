@@ -29,7 +29,7 @@ import org.junit.Test;
  * Time: 15:37:48
  */
 public class ProcessSubstitutionParsingTest extends MockPsiTest {
-    MockFunction parsingFunction = new MockFunction() {
+    private MockFunction parsingFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.processSubstitutionParsing.parse(psi);

@@ -22,15 +22,11 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 
 /**
- * Parses a simple command. A simple command is a combination of assignments, redirects,
- * a command and parameters.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:33:30
+ * Parses a simple command. A simple command is a combination of assignments, redirects, a command and parameters.
  *
  * @author Joachim Ansorg
  */
-public class SimpleCommandParsingFunction implements ParsingFunction {
+class SimpleCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         return isSimpleCommandElement(builder);
     }
@@ -87,7 +83,7 @@ public class SimpleCommandParsingFunction implements ParsingFunction {
     }
 
 
-    public boolean isSimpleCommandElement(BashPsiBuilder builder) {
+    private boolean isSimpleCommandElement(BashPsiBuilder builder) {
         //   simple_command_element 	:	word | assignment_word | redirection;
         return Parsing.word.isWordToken(builder)
                 || Parsing.redirection.isRedirect(builder, true)

@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -53,17 +54,17 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
         open = false;
     }
 
-    public void done(IElementType type) {
+    public void done(@NotNull IElementType type) {
         delegate.done(type);
         open = false;
     }
 
-    public void doneBefore(IElementType type, PsiBuilder.Marker before) {
+    public void doneBefore(@NotNull IElementType type, @NotNull PsiBuilder.Marker before) {
         delegate.doneBefore(type, before);
         open = false;
     }
 
-    public void doneBefore(IElementType type, PsiBuilder.Marker before, String errorMessage) {
+    public void doneBefore(@NotNull IElementType type, @NotNull PsiBuilder.Marker before, String errorMessage) {
         delegate.doneBefore(type, before, errorMessage);
         open = false;
     }
@@ -73,7 +74,7 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
         open = false;
     }
 
-    public void collapse(IElementType iElementType) {
+    public void collapse(@NotNull IElementType iElementType) {
         delegate.collapse(iElementType);
     }
 
@@ -81,7 +82,7 @@ public final class BashSmartMarker implements PsiBuilder.Marker {
         delegate.setCustomEdgeTokenBinders(whitespacesAndCommentsBinder, whitespacesAndCommentsBinder1);
     }
 
-    public void errorBefore(String message, PsiBuilder.Marker marker) {
+    public void errorBefore(String message, @NotNull PsiBuilder.Marker marker) {
         delegate.errorBefore(message, marker);
         open = false;
     }

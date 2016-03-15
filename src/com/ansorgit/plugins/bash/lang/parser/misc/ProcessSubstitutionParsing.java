@@ -43,10 +43,6 @@ public class ProcessSubstitutionParsing implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (!isValid(builder)) {
-            return false;
-        }
-
         PsiBuilder.Marker marker = builder.mark();
 
         builder.getTokenType();

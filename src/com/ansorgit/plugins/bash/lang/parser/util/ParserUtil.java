@@ -230,6 +230,25 @@ public class ParserUtil {
         return false;
     }
 
+    public static boolean containsTokenInLookahead(PsiBuilder builder, TokenSet tokens, int maxLookahead, boolean allowWhitespace) {
+        int i = 0;
+
+        while (i < maxLookahead) {
+            IElementType current = allowWhitespace ? builder.lookAhead(i) : builder.rawLookup(i);
+            if (current == null) {
+                return false;
+            }
+
+            if (tokens.contains(current)) {
+                return true;
+            }
+
+            i++;
+        }
+
+        return false;
+    }
+
     /**
      * Returns true if the next tokens are 0..n newlines followed by an optional semicolon followed by the given token
      * This is useful to detect empty commands in if/while/...

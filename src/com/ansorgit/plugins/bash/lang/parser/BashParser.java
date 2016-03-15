@@ -48,7 +48,7 @@ public class BashParser implements PsiParser {
     }
 
     @NotNull
-    public ASTNode parse(final IElementType root, final PsiBuilder psiBuilder) {
+    public ASTNode parse(@NotNull final IElementType root, @NotNull final PsiBuilder psiBuilder) {
         final BashPsiBuilder builder = new BashPsiBuilder(project, psiBuilder, version);
 
         if (debugMode) {

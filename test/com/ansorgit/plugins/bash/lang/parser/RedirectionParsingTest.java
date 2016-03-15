@@ -58,6 +58,8 @@ public class RedirectionParsingTest extends MockPsiTest {
         //>& 1
         mockTest(BashVersion.Bash_v3, redirectionTest, 3, Arrays.asList(">&", " ", "1"),
                 REDIRECT_GREATER_AMP, WHITESPACE, INTEGER_LITERAL);
+        //2>OUT
+        mockTest(redirectionTest, INTEGER_LITERAL, GREATER_THAN, WORD);
     }
 
     @Test
@@ -97,8 +99,20 @@ public class RedirectionParsingTest extends MockPsiTest {
     }
 
     @Test
-    public void testProcessRedirection() {
-        mockTest(redirectionTest, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+    public void testProcessSubstitution() {
+        // < <(true)
+        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+        // > >(true)
+        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+        // < <(true && false)
+        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+        // > >(true && false)
+        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+
+        // < < (true)
+        mockTestSuccessWithErrors(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
+        // > > (true)
+        mockTestSuccessWithErrors(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
     }
 
     @Test
