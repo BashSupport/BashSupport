@@ -81,7 +81,7 @@ public class FileInclusionManager {
             String filePath = virtualFile.getPath();
 
             Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
-            if (commands == null) {
+            if (commands.isEmpty()) {
                 continue;
             }
 
@@ -141,7 +141,7 @@ public class FileInclusionManager {
 
         Set<BashFile> includers = Sets.newLinkedHashSet();
         for (BashIncludeCommand command : includeCommands) {
-            BashFile includer = (BashFile) BashPsiUtils.findFileContext(command, true);
+            BashFile includer = (BashFile) BashPsiUtils.findFileContext(command);
 
             if (!file.equals(includer)) {
                 includers.add(includer);

@@ -27,7 +27,7 @@ import com.intellij.psi.search.GlobalSearchScope;
  * Date: 12.01.12
  * Time: 01:54
  */
-public class BashSearchScopes {
+public final class BashSearchScopes {
     private BashSearchScopes() {
     }
 

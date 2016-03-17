@@ -22,11 +22,11 @@ import org.apache.commons.lang.StringUtils;
  * Date: Feb 8, 2010
  * Time: 9:55:14 PM
  */
-public class BashIdentifierUtil {
-    public static boolean isValidIdentifier(String name) {
-        return StringUtils.stripToNull(name) != null && !name.contains(" ");
+public final class BashIdentifierUtil {
+    private BashIdentifierUtil() {
     }
 
-    private BashIdentifierUtil() {
+    public static boolean isValidIdentifier(String name) {
+        return StringUtils.stripToNull(name) != null && !name.contains(" ");
     }
 }

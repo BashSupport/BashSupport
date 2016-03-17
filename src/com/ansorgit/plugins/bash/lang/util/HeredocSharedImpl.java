@@ -22,7 +22,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Shared code for the Heredoc handling.
  */
-public class HeredocSharedImpl {
+public final class HeredocSharedImpl {
+    private HeredocSharedImpl() {
+    }
+
     public static String cleanMarker(String marker) {
         String markerText = trimNewline(marker);
         if (markerText.equals("$")) {
@@ -49,10 +52,6 @@ public class HeredocSharedImpl {
         return !markerText.startsWith("\"") && !markerText.startsWith("'") && !markerText.startsWith("\\") && !markerText.startsWith("$");
     }
 
-    private static String trimNewline(String marker) {
-        return StringUtils.removeEnd(marker, "\n");
-    }
-
     public static String wrapMarker(String newName, String originalMarker) {
         int start = startMarkerTextOffset(originalMarker);
         int end = endMarkerTextOffset(originalMarker);
@@ -62,7 +61,11 @@ public class HeredocSharedImpl {
                 : newName;
     }
 
-    public static Pair<Integer, Integer> getStartEndOffsets(@NotNull String markerText) {
+    private static String trimNewline(String marker) {
+        return StringUtils.removeEnd(marker, "\n");
+    }
+
+    private static Pair<Integer, Integer> getStartEndOffsets(@NotNull String markerText) {
         if (markerText.isEmpty()) {
             return Pair.create(0, 0);
         }
@@ -91,7 +94,6 @@ public class HeredocSharedImpl {
         if (length > 0 && (markerText.charAt(start) == '\'' || markerText.charAt(start) == '"') && markerText.charAt(end) == markerText.charAt(start)) {
             start++;
             end--;
-            length -= 2;
         }
 
         return Pair.create(start, end + 1);

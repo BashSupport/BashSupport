@@ -36,11 +36,11 @@ import org.jetbrains.annotations.NotNull;
  * @author jansorg
  */
 @SuppressWarnings("Duplicates")
-public class BashEnhancedTextPreprocessor implements TextPreprocessor {
+class BashEnhancedTextPreprocessor implements TextPreprocessor {
     private int[] outSourceOffsets;
-    private TextRange contentRange;
+    private final TextRange contentRange;
 
-    public BashEnhancedTextPreprocessor(TextRange contentRange) {
+    BashEnhancedTextPreprocessor(TextRange contentRange) {
         this.contentRange = contentRange;
     }
 

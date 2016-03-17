@@ -20,7 +20,6 @@ import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.util.BashFunctions;
@@ -42,7 +41,7 @@ import java.util.Set;
 
 public class BashElementSharedImpl {
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
-        PsiFile psiFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile psiFile = BashPsiUtils.findFileContext(element);
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
@@ -55,7 +54,7 @@ public class BashElementSharedImpl {
         //all files which include this element's file belong to the requested scope
         //bash files can call other bash files, thus the scope needs to be the module scope at minumum
         //fixme can this be optimized?
-        PsiFile currentFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile currentFile = BashPsiUtils.findFileContext(element);
         if (currentFile == null) {
             //no other fallback possible here
             return GlobalSearchScope.projectScope(project);
@@ -77,7 +76,7 @@ public class BashElementSharedImpl {
                         BashCommand.class);
                 if (commands != null) {
                     for (BashCommand command : commands) {
-                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command, true));
+                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command));
                     }
                 }
             }

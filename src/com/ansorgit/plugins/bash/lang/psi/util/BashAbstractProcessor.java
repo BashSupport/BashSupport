@@ -39,7 +39,7 @@ import java.util.Collections;
  */
 public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiScopeProcessor, ResolveProcessor {
     private Multimap<Integer, PsiElement> results;
-    private boolean preferNeigbourhood;
+    private final boolean preferNeigbourhood;
 
     protected BashAbstractProcessor(boolean preferNeighbourhood) {
         this.preferNeigbourhood = preferNeighbourhood;

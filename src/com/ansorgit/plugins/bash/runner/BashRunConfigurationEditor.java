@@ -22,10 +22,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class BashRunConfigurationEditor extends SettingsEditor<BashRunConfiguration> {
+class BashRunConfigurationEditor extends SettingsEditor<BashRunConfiguration> {
     private BashConfigForm form;
 
-    public BashRunConfigurationEditor(Module module) {
+    BashRunConfigurationEditor(Module module) {
         this.form = new BashConfigForm();
         this.form.setModuleContext(module);
     }

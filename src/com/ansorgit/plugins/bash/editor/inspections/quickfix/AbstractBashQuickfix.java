@@ -53,6 +53,6 @@ abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
     }
 
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        invoke(project, null, BashPsiUtils.findFileContext(descriptor.getPsiElement(), true));
+        invoke(project, null, BashPsiUtils.findFileContext(descriptor.getPsiElement()));
     }
 }

@@ -47,7 +47,7 @@ public class BashConfigurationType extends ConfigurationTypeBase {
     }
 
     private static class BashConfigurationFactory extends ConfigurationFactoryEx {
-        public BashConfigurationFactory(BashConfigurationType configurationType) {
+        BashConfigurationFactory(BashConfigurationType configurationType) {
             super(configurationType);
         }
 

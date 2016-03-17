@@ -43,7 +43,7 @@ public class AddShebangQuickfix extends AbstractBashQuickfix {
         // work around a problem in a 9.0.2 eap which need a write session
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             public void run() {
-                Document document = PsiDocumentManager.getInstance(project).getDocument(BashPsiUtils.findFileContext(file, false));
+                Document document = PsiDocumentManager.getInstance(project).getDocument(BashPsiUtils.findFileContext(file));
                 if (document != null) {
                     document.insertString(0, "#!/usr/bin/env bash\n");
                     PsiDocumentManager.getInstance(project).commitDocument(document);

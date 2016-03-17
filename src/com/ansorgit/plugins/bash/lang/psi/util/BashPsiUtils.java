@@ -34,7 +34,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiManagerEx;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -62,14 +61,9 @@ public final class BashPsiUtils {
      * then the host file is returned.
      *
      * @param element
-     * @param leaveInjectionHosts
      * @return The file on disk
      */
-    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
-        /*if (leaveInjectionHosts) {
-            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
-        } */
-
+    public static PsiFile findFileContext(PsiElement element) {
         return element.getContainingFile();
     }
 
@@ -388,8 +382,8 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
-        PsiFile definitionFile = findFileContext(variableDefinition, true);
-        PsiFile referenceFile = findFileContext(referenceToDefCandidate, true);
+        PsiFile definitionFile = findFileContext(variableDefinition);
+        PsiFile referenceFile = findFileContext(referenceToDefCandidate);
 
         boolean sameFile = definitionFile.equals(referenceFile);
 
@@ -464,7 +458,7 @@ public final class BashPsiUtils {
 
         PsiElement current = command.getPrevSibling();
 
-        LinkedList<PsiComment> result = Lists.newLinkedList();
+        List<PsiComment> result = Lists.newLinkedList();
 
         while (current != null && current.getNode() != null && current.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
             current = current.getPrevSibling();

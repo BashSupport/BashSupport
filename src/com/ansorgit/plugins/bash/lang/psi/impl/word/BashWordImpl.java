@@ -162,24 +162,14 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
             return true;
         }
 
-        boolean walkOn = BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        /*if (walkOn && isValidHost()) {
-            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
-        } */
-
-        return walkOn;
+        return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
     }
 
     @NotNull
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
-        //if the word is of the form $'abc' then the content is escape-code evaluated
-        //if the word is not prefixed by a dollar character then no escape code interpretation is performed
-
-        String current = getText();
-
         //$' prefix -> c-escape codes are interpreted before the injected document is parsed
-        if (current.startsWith("$'")) {
+        if (getText().startsWith("$'")) {
             return new BashEnhancedLiteralTextEscaper<BashWordImpl>(this);
         }
 

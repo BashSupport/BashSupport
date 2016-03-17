@@ -26,10 +26,10 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.util.ProgramParametersUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class BashCommandLineState extends CommandLineState {
+class BashCommandLineState extends CommandLineState {
     private final BashRunConfiguration runConfig;
 
-    protected BashCommandLineState(BashRunConfiguration runConfig, ExecutionEnvironment environment) {
+    BashCommandLineState(BashRunConfiguration runConfig, ExecutionEnvironment environment) {
         super(environment);
         this.runConfig = runConfig;
     }

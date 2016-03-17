@@ -72,7 +72,7 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
 
         PsiElement lookupElement = originalElement != null ? originalElement : element;
         BashFunctionVariantsProcessor processor = new BashFunctionVariantsProcessor(lookupElement);
-        PsiTreeUtil.treeWalkUp(processor, lookupElement, BashPsiUtils.findFileContext(lookupElement, true), ResolveState.initial());
+        PsiTreeUtil.treeWalkUp(processor, lookupElement, BashPsiUtils.findFileContext(lookupElement), ResolveState.initial());
 
         Collection<LookupElement> functionItems = CompletionProviderUtils.createPsiItems(processor.getFunctionDefs());
         result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.Function.ordinal(), functionItems));

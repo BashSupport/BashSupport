@@ -44,7 +44,7 @@ public class BashPsiFileUtils {
      */
     @Nullable
     public static PsiFile findRelativeFile(PsiFile start, String relativePath) {
-        PsiDirectory startDirectory = BashPsiUtils.findFileContext(start, true).getContainingDirectory();
+        PsiDirectory startDirectory = BashPsiUtils.findFileContext(start).getContainingDirectory();
         if (startDirectory == null || StringUtil.isEmptyOrSpaces(relativePath)) {
             return null;
         }
@@ -76,13 +76,13 @@ public class BashPsiFileUtils {
 
     @Nullable
     public static String findRelativeFilePath(PsiFile base, PsiFile targetFile) {
-        PsiFile currentFile = BashPsiUtils.findFileContext(base, true);
+        PsiFile currentFile = BashPsiUtils.findFileContext(base);
         VirtualFile baseVirtualFile = currentFile.getVirtualFile();
         if (!(baseVirtualFile.getFileSystem() instanceof LocalFileSystem)) {
             throw new IncorrectOperationException("Can not rename file refeferences in non-local files");
         }
 
-        VirtualFile targetVirtualFile = BashPsiUtils.findFileContext(targetFile, true).getVirtualFile();
+        VirtualFile targetVirtualFile = BashPsiUtils.findFileContext(targetFile).getVirtualFile();
         if (!(targetVirtualFile.getFileSystem() instanceof LocalFileSystem)) {
             throw new IncorrectOperationException("Can not bind to non-local files");
         }

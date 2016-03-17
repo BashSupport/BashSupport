@@ -285,7 +285,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                                     return RIGHT_PAREN;
                                   } else {
-                                    stringParsingState().advanceToken();
                                     backToPreviousState();
 
                                     return _EXPR_ARITH;
@@ -546,20 +545,19 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* string literals */
 <S_STRINGMODE> {
-  \"                            { if (stringParsingState().isNewAllowed()) {
-                                    stringParsingState().enterSubstring(); return STRING_BEGIN;
-                                  } else if (stringParsingState().isInSubstring()) {
-                                    stringParsingState().leaveSubstring(); return STRING_DATA;
-                                  } else {
+  \"                            { stringParsingState().leaveString();
+                                  if (!stringParsingState().isInSubstring()) {
                                     backToPreviousState(); return STRING_END;
+                                  } else {
+                                    return STRING_DATA;
                                   }
                                 }
 
   /* Backquote expression inside of evaluated strings */
-  `                           { stringParsingState().advanceToken(); if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
   {EscapedChar}               { return STRING_DATA; }
-  [^\"]                       { stringParsingState().advanceToken(); return STRING_DATA; }
+  [^\"]                       { return STRING_DATA; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
@@ -654,7 +652,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
-    {StringStart}                 { stringParsingState().reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
+    {StringStart}                 { stringParsingState().enterString(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
     \'{UnescapedCharacter}*\'        { return STRING2; }

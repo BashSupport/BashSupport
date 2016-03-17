@@ -121,7 +121,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         public PsiElement bindToElement(@NotNull PsiElement targetElement) throws IncorrectOperationException {
             if (targetElement instanceof PsiFile) {
                 //findRelativePath already leaves the injection host file
-                PsiFile currentFile = BashPsiUtils.findFileContext(this.element, false);
+                PsiFile currentFile = BashPsiUtils.findFileContext(this.element);
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) targetElement);
 
                 return handleElementRename(relativeFilePath);
@@ -152,7 +152,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
         @Nullable
         public PsiElement resolveInner() {
-            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), true);
+            PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
             if (!containingFile.isPhysical()) {
                 return null;
             }

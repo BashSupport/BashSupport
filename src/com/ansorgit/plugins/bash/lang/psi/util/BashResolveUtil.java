@@ -50,7 +50,7 @@ public final class BashResolveUtil {
     }
 
     public static GlobalSearchScope varDefSearchScope(BashVar reference, boolean withIncludedFiles) {
-        PsiFile referenceFile = BashPsiUtils.findFileContext(reference, true);
+        PsiFile referenceFile = BashPsiUtils.findFileContext(reference);
         if (!withIncludedFiles) {
             return GlobalSearchScope.fileScope(referenceFile.getProject(), referenceFile.getVirtualFile());
         }
@@ -119,7 +119,7 @@ public final class BashResolveUtil {
             return null;
         }
 
-        PsiFile psiFile = BashPsiUtils.findFileContext(bashVar, true);
+        PsiFile psiFile = BashPsiUtils.findFileContext(bashVar);
         VirtualFile virtualFile = psiFile.getVirtualFile();
 
         String filePath = virtualFile != null ? virtualFile.getPath() : null;

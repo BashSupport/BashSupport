@@ -22,7 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
  * Date: Dec 2, 2009
  * Time: 6:49:23 PM
  */
-public class BashStringUtils {
+public final class BashStringUtils {
     private static final char[] EMPTY = new char[0];
 
     private BashStringUtils() {

@@ -22,8 +22,8 @@ import com.intellij.psi.impl.cache.impl.OccurrenceConsumer;
 import com.intellij.psi.search.UsageSearchContext;
 import com.intellij.psi.tree.IElementType;
 
-public class BashFilterLexer extends BaseFilterLexer {
-    protected BashFilterLexer(Lexer lexer, OccurrenceConsumer consumer) {
+class BashFilterLexer extends BaseFilterLexer {
+    BashFilterLexer(Lexer lexer, OccurrenceConsumer consumer) {
         super(lexer, consumer);
     }
 

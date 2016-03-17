@@ -40,7 +40,7 @@ public class AddShebangInspection extends LocalInspectionTool implements CustomS
 
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-        PsiFile checkedFile = BashPsiUtils.findFileContext(file, false);
+        PsiFile checkedFile = BashPsiUtils.findFileContext(file);
 
         if (checkedFile instanceof BashFile && !BashPsiUtils.isInjectedElement(file)) {
             BashFile bashFile = (BashFile) checkedFile;

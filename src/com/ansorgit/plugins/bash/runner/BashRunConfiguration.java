@@ -44,14 +44,14 @@ import java.util.Collection;
  *
  * @author wibotwi, jansorg
  */
-public class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams, RunConfigurationWithSuppressedDefaultDebugAction {
+class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams, RunConfigurationWithSuppressedDefaultDebugAction {
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
     private String scriptName;
     private String programsParameters;
 
-    protected BashRunConfiguration(RunConfigurationModule runConfigurationModule, ConfigurationFactory configurationFactory, String name) {
+    BashRunConfiguration(RunConfigurationModule runConfigurationModule, ConfigurationFactory configurationFactory, String name) {
         super(name, runConfigurationModule, configurationFactory);
     }
 
