@@ -32,6 +32,7 @@ import java.util.List;
 public class ValueExpansionUtilTest {
     @Test
     public void testInvalidPatternExpand() {
+        Assert.assertFalse(ValueExpansionUtil.isValid("", false));
         Assert.assertFalse(ValueExpansionUtil.isValid("{a..}", false));
         Assert.assertFalse(ValueExpansionUtil.isValid("a..}", false));
 

@@ -92,14 +92,15 @@ public final class LanguageBuiltins {
             "if", "then", "elif", "else", "fi", "while", "do", "done", "until", "case", "in", "esac", "true", "false"
     ));
 
-    //register the shell parameter names
     static {
+        //register the shell parameter names
         bashShellVars.addAll(bashShellParamReferences);
+
+        //add existing definitions to the read-only variable set
+        readonlyShellVars.addAll(bashShellParamReferences);
     }
 
-    //add existing definitions to the read-only variable set
-    static {
-        readonlyShellVars.addAll(bashShellParamReferences);
+    private LanguageBuiltins() {
     }
 
     public static boolean isInternalCommand(String commandName, boolean bash4) {

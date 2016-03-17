@@ -33,7 +33,10 @@ import java.util.List;
  * Date: Nov 11, 2009
  * Time: 8:21:06 PM
  */
-public class ValueExpansionUtil {
+public final class ValueExpansionUtil {
+    private ValueExpansionUtil() {
+    }
+
     public static boolean isValid(String spec, boolean enhancedSyntax) {
         if (StringUtils.isEmpty(spec)) {
             return false;
