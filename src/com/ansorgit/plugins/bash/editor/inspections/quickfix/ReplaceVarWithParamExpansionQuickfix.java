@@ -45,7 +45,7 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
         this.variableName = var.getReference().getReferencedName();
     }
 
-    public static boolean isAvailableAt(@NotNull Project project, @NotNull PsiFile file, @NotNull BashVar var) {
+    public static boolean isAvailableAt(@NotNull BashVar var) {
         if (BashPsiUtils.hasParentOfType(var, BashString.class, 4) || BashPsiUtils.hasParentOfType(var, ArithmeticExpression.class, 4)) {
             return false;
         }
@@ -55,7 +55,7 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
 
     @Override
     public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        return startElement instanceof BashVar && isAvailableAt(project, file, (BashVar) startElement);
+        return startElement instanceof BashVar && isAvailableAt((BashVar) startElement);
     }
 
     @NotNull

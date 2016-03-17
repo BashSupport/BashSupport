@@ -36,8 +36,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Joachim Ansorg
  */
 public class FunctionBodyQuickfix extends AbstractBashPsiElementQuickfix {
-    private static final Logger log = Logger.getInstance("#bash.FunctionBodyQuickfix");
-
     public FunctionBodyQuickfix(BashFunctionDef functionDef) {
         super(functionDef);
     }

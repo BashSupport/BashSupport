@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * Time: 11:05:40
  */
 abstract class AbstractWordWrapQuickfix extends AbstractBashPsiElementQuickfix {
-    public AbstractWordWrapQuickfix(BashWord word) {
+    AbstractWordWrapQuickfix(BashWord word) {
         super(word);
     }
 

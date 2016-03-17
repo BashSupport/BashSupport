@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RegisterShebangCommandQuickfix extends AbstractBashQuickfix {
     private final FixShebangInspection inspection;
-    private final BashShebang shebang;
+    private final BashShebang shebang; //fixme!
 
     public RegisterShebangCommandQuickfix(FixShebangInspection fixShebangInspection, BashShebang shebang) {
         this.inspection = fixShebangInspection;
