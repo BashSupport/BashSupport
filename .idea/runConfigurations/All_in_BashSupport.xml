@@ -1,9 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All in BashSupport" type="JUnit" factoryName="JUnit">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+    <extension name="coverage" enabled="false" merge="false" per_test_coverage_enabled="false" sample_coverage="true" runner="idea">
       <pattern>
         <option name="PATTERN" value="com.ansorgit.plugins.bash.*" />
         <option name="ENABLED" value="true" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.lexer._BashLexerBase" />
+        <option name="ENABLED" value="false" />
       </pattern>
     </extension>
     <module name="BashSupport" />
