@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.openapi.util.text.StringUtil;
