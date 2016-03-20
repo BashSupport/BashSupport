@@ -32,6 +32,9 @@ import java.util.List;
 public class OSUtil {
     private static final String CYGWIN_PREFIX = "/cygdrive/";
 
+    private OSUtil() {
+    }
+
     public static String toBashCompatible(String path) {
         path = StringUtils.replace(path, File.separator, "/");
         if (path.length() > 3 && path.substring(1, 3).equals(":/")) {

@@ -393,6 +393,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return false;
     }
 
+    @Nullable
     public List<PsiComment> findAttachedComment() {
         return BashPsiUtils.findDocumentationElementComments(this);
     }

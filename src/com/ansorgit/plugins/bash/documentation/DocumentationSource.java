@@ -20,19 +20,16 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A documentation source provides HTML formatted data for a given PSI element.
- * <p/>
- * Date: 03.05.2009
- * Time: 18:22:52
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 interface DocumentationSource {
     /**
      * Returns the documentation for the given element. If there is no
      * documentation available null is returned.
      *
-     * @param element         The element for which the documentation should be provided.
-     * @param originalElement
+     * @param element         The resolved target element if the original element was a reference, for example
+     * @param originalElement The element on which the documentation operation was invoked
      * @return The documentation or null if the PsiElement is not supported by this source.
      */
     @Nullable
@@ -42,8 +39,8 @@ interface DocumentationSource {
      * Return the URL which provides further information for the given PSI element and the given
      * original element.
      *
-     * @param element         The PSI element for which the documentation URL should be provided.
-     * @param originalElement
+     * @param element         The resolved target element if the original element was a reference, for example
+     * @param originalElement The element on which the documentation operation was invoked
      * @return A String which is an URL to an external source with more information about the command.
      */
     @Nullable

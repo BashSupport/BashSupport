@@ -52,24 +52,31 @@ public abstract class BashKeywordDefaultImpl extends BashCompositeElement implem
 
     @Override
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
-            public String getPresentableText() {
-                final PsiElement element = keywordElement();
-                return element != null ? element.getText() : null;
-            }
-
-            public String getLocationString() {
-                return null;
-            }
-
-            public Icon getIcon(boolean open) {
-                return null;
-            }
-        };
+        return new KeywordPresentation(keywordElement());
     }
 
     @Override
     public boolean canNavigate() {
         return false;
+    }
+
+    private class KeywordPresentation implements ItemPresentation {
+        private final PsiElement element;
+
+        KeywordPresentation(PsiElement element) {
+            this.element = element;
+        }
+
+        public String getPresentableText() {
+            return element != null ? element.getText() : null;
+        }
+
+        public String getLocationString() {
+            return null;
+        }
+
+        public Icon getIcon(boolean open) {
+            return null;
+        }
     }
 }

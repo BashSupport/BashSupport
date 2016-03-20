@@ -25,7 +25,7 @@ import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
 
 public class BashBaseElement extends ASTWrapperPsiElement implements BashPsiElement {
-    private String name;
+    private final String name;
 
     public BashBaseElement(@NotNull ASTNode node, String name) {
         super(node);

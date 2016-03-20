@@ -16,13 +16,12 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.psi.PsiComment;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
  * User: jansorg
- * Date: 12.02.11
- * Time: 11:56
  */
 public interface DocumentationAwareElement {
     /**
@@ -31,5 +30,6 @@ public interface DocumentationAwareElement {
      *
      * @return The comment psi element, if found. If unavailable null is returned.
      */
+    @Nullable
     List<PsiComment> findAttachedComment();
 }

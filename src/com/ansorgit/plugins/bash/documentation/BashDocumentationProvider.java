@@ -15,10 +15,19 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.google.common.collect.Lists;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,17 +42,46 @@ import java.util.List;
  * @author Joachim Ansorg
  */
 public class BashDocumentationProvider extends AbstractDocumentationProvider {
-    private static final Logger log = Logger.getInstance("#bash.BashDocumentationProvider");
+    private final List<DocumentationSource> sourceList;
 
+    public BashDocumentationProvider() {
+        sourceList = Lists.newArrayList();
+        sourceList.add(new PsiElementCommentSource());
+        sourceList.add(new BashKeywordDocSource());
+        sourceList.add(new InternalCommandDocumentation());
+        sourceList.add(new ManpageDocSource());
+
+        if (!SystemInfoRt.isWindows) {
+            //there is currently not support for the cygwin info command
+            sourceList.add(new CachingDocumentationSource(new SystemInfopageDocSource()));
+        }
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement) {
+        if (contextElement instanceof BashVar) {
+            return null;
+        }
+
+        return BashPsiUtils.findParent(contextElement, BashGenericCommand.class);
+    }
+
+    @Override
     public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
         return null;
     }
 
     @Override
     public List<String> getUrlFor(PsiElement element, PsiElement originalElement) {
-        log.info("getUrlFor " + element);
-        String url = DocumentationProvider.documentationUrl(element, originalElement);
-        return url != null ? Collections.singletonList(url) : null;
+        for (DocumentationSource source : sourceList) {
+            String url = source.documentationUrl(element, originalElement);
+            if (StringUtils.stripToNull(url) != null) {
+                return Collections.singletonList(url);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -57,20 +95,23 @@ public class BashDocumentationProvider extends AbstractDocumentationProvider {
      */
     @Override
     public String generateDoc(PsiElement element, PsiElement originalElement) {
-        log.info("generateDoc() for " + element + " and " + originalElement);
+        for (DocumentationSource source : sourceList) {
+            String doc = source.documentation(element, originalElement);
+            if (StringUtils.stripToNull(doc) != null) {
+                return doc;
+            }
+        }
 
-        return DocumentationProvider.documentation(element, originalElement);
+        return null;
     }
 
     @Override
     public PsiElement getDocumentationElementForLookupItem(PsiManager psiManager, Object object, PsiElement element) {
-        log.info("getDocumentationElementForLookupItem: element: " + element);
         return element;
     }
 
     @Override
     public PsiElement getDocumentationElementForLink(PsiManager psiManager, String link, PsiElement context) {
-        log.info("getDocumentationElementForLink: element: " + context);
         return context;
     }
 }

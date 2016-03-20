@@ -16,6 +16,8 @@
 package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.util.OSUtil;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
@@ -37,14 +39,12 @@ import java.util.concurrent.TimeUnit;
  * Time: 11:10:51
  */
 class SystemInfopageDocSource implements DocumentationSource, CachableDocumentationSource {
-    private String infoExecutable;
-    private String txt2htmlExecutable;
-
-    Logger log = Logger.getInstance("#SystemInfopageDocSource");
-
     @NonNls
-    public static final String CHARSET_NAME = "utf-8";
-    public static final int TIMEOUT_IN_MILLISECONDS = (int) TimeUnit.SECONDS.toMillis(4);
+    private static final String CHARSET_NAME = "utf-8";
+    private static final int TIMEOUT_IN_MILLISECONDS = (int) TimeUnit.SECONDS.toMillis(4);
+    private final String infoExecutable;
+    private final String txt2htmlExecutable;
+    private final Logger log = Logger.getInstance("#SystemInfopageDocSource");
 
     SystemInfopageDocSource() {
         infoExecutable = OSUtil.findBestExecutable("info");
@@ -56,12 +56,12 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
             return null;
         }
 
-        if (!(element instanceof BashCommand)) {
+        if (!(element instanceof BashCommand) && !(element instanceof BashGenericCommand)) {
             return null;
         }
 
-        BashCommand command = (BashCommand) element;
-        if (!command.isExternalCommand()) {
+        BashCommand command = BashPsiUtils.findParent(element, BashCommand.class);
+        if (command == null || !command.isExternalCommand()) {
             return null;
         }
 
@@ -134,12 +134,9 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     }
 
     private String simpleTextToHtml(String infoPageData) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<html><bead></head><body><pre>");
-        builder.append(infoPageData);
-        builder.append("</pre></body>");
-
-        return builder.toString();
+        return "<html><bead></head><body><pre>" +
+                infoPageData +
+                "</pre></body>";
     }
 
     public String findCacheKey(PsiElement element, PsiElement originalElement) {
@@ -153,7 +150,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     private class MyCapturingProcessHandler extends CapturingProcessHandler {
         private final String stdinData;
 
-        public MyCapturingProcessHandler(Process process, String stdinData) {
+        MyCapturingProcessHandler(Process process, String stdinData) {
             super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME));
             this.stdinData = stdinData;
         }

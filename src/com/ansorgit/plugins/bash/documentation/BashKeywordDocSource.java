@@ -20,19 +20,22 @@ import com.intellij.psi.PsiElement;
 
 /**
  * Provides documentation for Bash keyword elements like "if", "while" and "for".
- * <p/>
- * Date: 06.05.2009
- * Time: 12:37:14
  *
  * @author Joachim Ansorg
  */
-class BashKeywordDocSource implements DocumentationSource {
-    public String documentation(PsiElement element, PsiElement originalElement) {
-        if (!(element instanceof BashKeyword)) {
-            return null;
-        }
+class BashKeywordDocSource extends ClasspathDocSource {
+    BashKeywordDocSource() {
+        super("/documentation/internal");
+    }
 
-        return ClasspathDocumentationReader.readFromClasspath("/documentation/internal", ((BashKeyword) element).keywordElement().getText());
+    @Override
+    String resourceNameForElement(PsiElement element) {
+        return ((BashKeyword) element).keywordElement().getText();
+    }
+
+    @Override
+    boolean isValid(PsiElement element, PsiElement originalElement) {
+        return element instanceof BashKeyword;
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {

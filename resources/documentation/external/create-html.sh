@@ -84,4 +84,5 @@ xsltproc
 zip
 zless"
 
+export LANG=en_US
 for f in $commands; do echo $f; man -E UTF-8 "$f" | txt2html -8 > "$f.html"; done;

@@ -16,6 +16,8 @@
 package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -29,18 +31,34 @@ import com.intellij.psi.PsiElement;
  * @author Joachim Ansorg
  */
 class ManpageDocSource extends ClasspathDocSource {
-    protected ManpageDocSource() {
+    ManpageDocSource() {
         super("/documentation/external");
     }
 
+    @Override
+    String resourceNameForElement(PsiElement element) {
+        return commandElement(element).getReferencedCommandName();
+    }
+
     boolean isValid(PsiElement element, PsiElement originalElement) {
-        return element instanceof BashCommand && ((BashCommand) element).isExternalCommand();
+        BashCommand command = commandElement(element);
+
+        return command != null && command.isExternalCommand();
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {
-        if (!isValid(element, originalElement)) return null;
+        if (!isValid(element, originalElement)) {
+            return null;
+        }
 
-        BashCommand cmd = (BashCommand) element;
-        return "http://www.linuxmanpages.com/man1/" + cmd.getReferencedCommandName() + ".1.php";
+        return String.format("http://man.he.net/man1/%s", commandElement(element).getReferencedCommandName());
+    }
+
+    private BashCommand commandElement(PsiElement element) {
+        if (element instanceof BashGenericCommand) {
+            return BashPsiUtils.findParent(element, BashCommand.class);
+        }
+
+        return (BashCommand) element;
     }
 }

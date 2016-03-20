@@ -17,9 +17,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.stubs.StubElement;
 
 public class BashGenericCommandImpl extends BashBaseElement implements BashGenericCommand {
     public BashGenericCommandImpl(ASTNode astNode) {

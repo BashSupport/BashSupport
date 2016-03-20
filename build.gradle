@@ -1,8 +1,13 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.0.40"
+    id "org.jetbrains.intellij" version "0.0.43"
+}
+
+repositories {
+    mavenCentral()
 }
 
 version = "${version}"
+
 allprojects {
     apply plugin: 'java'
     sourceCompatibility = javaVersion
@@ -36,6 +41,17 @@ allprojects {
             pluginId '4230'
             username 'wallaby'
             password System.properties['intellij.publish.password']
+        }
+    }
+
+    apply plugin: 'jacoco'
+    jacoco {
+        toolVersion = "0.7.6.201602180812"
+    }
+
+    test {
+        jacoco {
+            includes ["com.ansorgit.*"]
         }
     }
 

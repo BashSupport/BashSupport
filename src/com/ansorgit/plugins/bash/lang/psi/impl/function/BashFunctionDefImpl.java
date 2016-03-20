@@ -39,6 +39,7 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -104,6 +105,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         return findChildByClass(BashFunctionDefName.class);
     }
 
+    @Nullable
     public List<PsiComment> findAttachedComment() {
         return BashPsiUtils.findDocumentationElementComments(this);
     }

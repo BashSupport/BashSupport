@@ -17,10 +17,12 @@ package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.intellij.openapi.diagnostic.Logger;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.List;
@@ -28,26 +30,24 @@ import java.util.List;
 /**
  * Provides the comment right before a function definition as documentation for a function call psi element and
  * for the definition itself.
- * <p/>
- * User: jansorg
- * Date: Nov 10, 2009
- * Time: 7:12:28 PM
+ *
+ * @author jansorg
  */
-class FunctionPsiCommentSource implements DocumentationSource {
-    private static final Logger log = Logger.getInstance("#bash.FunctionPsiCommentSource");
-
+class PsiElementCommentSource implements DocumentationSource {
     public String documentation(PsiElement element, PsiElement originalElement) {
         if (element instanceof DocumentationAwareElement) {
-            log.debug("Looking for doc for doc aware psi element");
             return psiElementDocumentation((DocumentationAwareElement) element);
+        }
+
+        if (element instanceof BashGenericCommand) {
+            element = BashPsiUtils.findParent(element, BashCommand.class);
         }
 
         if (element instanceof BashCommand) {
             BashCommand command = (BashCommand) element;
-            if (command.isFunctionCall()) {
-                log.debug("Looking for doc for function call");
-
-                PsiElement function = command.getReference().resolve();
+            PsiReference reference = command.getReference();
+            if (command.isFunctionCall() && reference != null) {
+                PsiElement function = reference.resolve();
 
                 if (function instanceof DocumentationAwareElement) {
                     return psiElementDocumentation((DocumentationAwareElement) function);
@@ -81,7 +81,7 @@ class FunctionPsiCommentSource implements DocumentationSource {
             String cleanedLine = StringUtil.trimStart(line.substring(1), " ");
             result.append(StringEscapeUtils.escapeHtml(cleanedLine));
 
-            result.append("<br/>\n");
+            result.append("<br/>");
         }
 
         return result.toString();

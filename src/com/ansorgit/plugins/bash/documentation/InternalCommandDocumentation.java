@@ -20,15 +20,17 @@ import com.intellij.psi.PsiElement;
 
 /**
  * Provides documentation for internal commands.
- * <p/>
- * Date: 03.05.2009
- * Time: 18:25:29
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class InternalCommandDocumentation extends ClasspathDocSource {
     InternalCommandDocumentation() {
         super("/documentation/internal");
+    }
+
+    @Override
+    String resourceNameForElement(PsiElement element) {
+        return ((BashCommand) element).getReferencedCommandName();
     }
 
     boolean isValid(PsiElement element, PsiElement originalElement) {
@@ -36,6 +38,10 @@ class InternalCommandDocumentation extends ClasspathDocSource {
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {
-        return null;
+        return urlForCommand(resourceNameForElement(element));
+    }
+
+    String urlForCommand(String commandName) {
+        return String.format("http://ss64.com/bash/%s.html", commandName);
     }
 }

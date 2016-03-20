@@ -40,7 +40,7 @@ class CachingDocumentationSource implements DocumentationSource {
     //strong values to compare keys with equals(...)
     private final Map<String, String> documentationCache = new MapMaker().weakValues().makeMap();
 
-    public CachingDocumentationSource(CachableDocumentationSource source) {
+    CachingDocumentationSource(CachableDocumentationSource source) {
         this.delegate = source;
     }
 
