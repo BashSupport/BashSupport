@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.util.BashFunctions;
+import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.project.Project;
@@ -39,13 +39,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Set;
 
-public class BashElementSharedImpl {
+public final class BashElementSharedImpl {
+    private BashElementSharedImpl() {
+    }
+
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
         PsiFile psiFile = BashPsiUtils.findFileContext(element);
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
-        Collection<VirtualFile> files = Collections2.transform(includedFiles, BashFunctions.psiToVirtualFile());
+        Collection<VirtualFile> files = Collections2.transform(includedFiles, psiToVirtualFile());
 
         return currentFileScope.uniteWith(GlobalSearchScope.filesScope(project, files));
     }
@@ -94,11 +97,19 @@ public class BashElementSharedImpl {
         union.addAll(includers);
         union.addAll(referencingScriptFiles);
 
-        Collection<VirtualFile> virtualFiles = Collections2.transform(union, BashFunctions.psiToVirtualFile());
+        Collection<VirtualFile> virtualFiles = Collections2.transform(union, psiToVirtualFile());
         return GlobalSearchScope.fileScope(currentFile).union(GlobalSearchScope.filesScope(project, virtualFiles));
     }
 
     public static boolean walkDefinitionScope(PsiElement thisElement, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(thisElement, processor, state, lastParent, place);
+    }
+
+    private static Function<? super PsiFile, VirtualFile> psiToVirtualFile() {
+        return new Function<PsiFile, VirtualFile>() {
+            public VirtualFile apply(PsiFile psiFile) {
+                return psiFile.getVirtualFile();
+            }
+        };
     }
 }

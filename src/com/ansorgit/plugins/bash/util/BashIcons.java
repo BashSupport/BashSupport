@@ -27,8 +27,6 @@ import javax.swing.*;
 public interface BashIcons {
     Icon BASH_FILE_ICON = IconLoader.getIcon("/icons/bash.png");
 
-    Icon FUNCTION_DEF_ICON = IconLoader.findIcon("/icons/function-16.png");
-
     Icon GLOBAL_VAR_ICON = IconLoader.findIcon("/icons/global-var-16.png");
 
     Icon BASH_VAR_ICON = IconLoader.findIcon("/icons/bash-var-16.png");

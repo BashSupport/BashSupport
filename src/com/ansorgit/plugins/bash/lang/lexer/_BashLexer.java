@@ -115,7 +115,7 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
 
     @Override
     public boolean isInState(int state) {
-        return lastStates.contains(state);
+        return (state == 0 && lastStates.empty()) || lastStates.contains(state);
     }
 
     @Override

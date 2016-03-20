@@ -36,7 +36,7 @@ public class IntStack {
 
     public void push(int t) {
         if (size >= data.length) {
-            int[] newdata = new int[data.length * 3 / 2];
+            int[] newdata = new int[(int) Math.ceil(data.length * 1.5)];
             System.arraycopy(data, 0, newdata, 0, size);
             data = newdata;
         }

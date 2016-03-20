@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-public class OSUtil {
+public final class OSUtil {
     private static final String CYGWIN_PREFIX = "/cygdrive/";
 
     private OSUtil() {

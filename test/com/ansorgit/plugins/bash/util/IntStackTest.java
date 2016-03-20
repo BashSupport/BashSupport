@@ -20,8 +20,6 @@ import org.junit.Test;
 
 import java.util.EmptyStackException;
 
-/**
- */
 public class IntStackTest {
     @Test
     public void testStack() throws Exception {
@@ -50,6 +48,58 @@ public class IntStackTest {
         Assert.assertTrue(stack.empty());
         Assert.assertFalse(stack.contains(123));
         Assert.assertFalse(stack.contains(456));
+    }
+
+    @Test
+    public void testEmpty() throws Exception {
+        IntStack stack = new IntStack();
+        Assert.assertTrue(stack.empty());
+
+        stack.push(123);
+        Assert.assertFalse(stack.empty());
+
+        stack.clear();
+        Assert.assertTrue(stack.empty());
+    }
+
+    @Test
+    public void testEquals() throws Exception {
+        IntStack stack1 = new IntStack();
+        stack1.push(100);
+
+        IntStack stack2 = new IntStack();
+        stack2.push(100);
+
+        IntStack other = new IntStack();
+        other.push(100);
+        other.push(123);
+
+        IntStack other2 = new IntStack();
+        other2.push(200);
+
+        Assert.assertEquals(stack1, stack2);
+        Assert.assertEquals(stack2, stack1);
+
+        Assert.assertNotEquals(stack1, null);
+        Assert.assertNotEquals(stack1, "abc");
+        Assert.assertNotEquals(stack1, other);
+        Assert.assertNotEquals(stack1, other2);
+    }
+
+    @Test
+    public void testGrow() throws Exception {
+        IntStack stack = new IntStack(1);
+        for (int i = 0; i < 100; i++) {
+            stack.push(i);
+            Assert.assertTrue(stack.contains(i));
+        }
+
+        //with default size
+        stack = new IntStack();
+        for (int i = 0; i < 100; i++) {
+            stack.push(i);
+            Assert.assertTrue(stack.contains(i));
+        }
     }
 
     @Test(expected = EmptyStackException.class)
