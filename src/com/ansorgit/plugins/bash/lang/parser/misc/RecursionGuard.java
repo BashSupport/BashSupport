@@ -23,9 +23,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
  * not be reproduced.
  */
 final class RecursionGuard {
-    //the highest level found in the test files was 76 (as of 2015-02-28)
-    private static final int MAX_NESTING = 300;
-
     private final int max;
     private int level = 0;
 
@@ -33,17 +30,22 @@ final class RecursionGuard {
         this.max = max;
     }
 
+    //the highest level found in the test files was 76 (as of 2015-02-28)
+    //https://github.com/jansorg/BashSupport/issues/310 needs more than 150 levels
     public static RecursionGuard initial() {
-        return new RecursionGuard(MAX_NESTING);
+        return initial(350);
+    }
+
+    public static RecursionGuard initial(int maxNestingLevel) {
+        return new RecursionGuard(maxNestingLevel);
     }
 
     public boolean next(BashPsiBuilder builder) {
-        if (this.level > max) {
+        if (++level > max) {
             builder.error("Internal parser error: Maximum level of nested calls reached. Please report this at https://github.com/jansorg/BashSupport/issues");
             return false;
         }
 
-        this.level++;
         return true;
     }
 }

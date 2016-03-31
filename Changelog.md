@@ -1,3 +1,6 @@
+####2016-03-31:
+ - \#310: Workaround for deeply nested structures
+
 ####2016-03-12:
  - Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.
  - Added more test cases for improved test coverage
