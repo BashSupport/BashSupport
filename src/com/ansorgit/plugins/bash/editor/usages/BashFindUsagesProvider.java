@@ -64,34 +64,34 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     @NotNull
     public String getType(@NotNull PsiElement element) {
         if (element instanceof BashFunctionDef || element instanceof BashFunctionDefName) {
-            return "function";
+            return "Function";
         }
 
         if (element instanceof BashCommand) {
             if (((BashCommand) element).isFunctionCall()) {
-                return "function";
+                return "Function";
             }
 
             if (((BashCommand) element).isBashScriptCall()) {
                 return "Bash script call";
             }
 
-            return "command";
+            return "Command";
         }
 
         if (element instanceof BashVarDef) {
-            return "variable";
+            return "Variable";
         }
 
         if (element instanceof BashHereDocMarker) {
-            return "heredoc marker";
+            return "Heredoc";
         }
 
         if (element instanceof BashFile) {
             return "Bash file";
         }
 
-        return "unknown type";
+        return "Unknown type";
     }
 
     @NotNull
@@ -116,7 +116,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CONTENT);
         private static final TokenSet identifiers = TokenSet.create(VARIABLE);
 
-        protected BashWordsScanner() {
+        BashWordsScanner() {
             super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
             setMayHaveFileRefsInLiterals(true);
         }
