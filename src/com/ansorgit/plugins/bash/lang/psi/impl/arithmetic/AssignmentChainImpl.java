@@ -23,9 +23,7 @@ import com.intellij.psi.tree.IElementType;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 12:13:49 PM
+ * @author jansorg
  */
 public class AssignmentChainImpl extends AbstractExpression implements AssignmentChain {
     @Override

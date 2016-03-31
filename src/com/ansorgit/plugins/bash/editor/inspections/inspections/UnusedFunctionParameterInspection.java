@@ -34,14 +34,12 @@ import java.util.Set;
 
 /**
  * Inspects function calls and checks whether the given parameters are actually used in the function definition.
- * <p/>
+ * <br>
  * This inspection is not capable to evaluate the control flow, e.g. parameter references in unreachable if
  * statements are still evaluated.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: 28.12.10
- * Time: 12:41
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public class UnusedFunctionParameterInspection extends LocalInspectionTool {
     @NotNull

@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
  * Defines the implementation of the Bash parser. This is  the starting point for the parse.
  * This class is referenced in the plugin.xml file.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashParserDefinition implements ParserDefinition, BashElementTypes {
     // These tokens are used e.g. during the "find references in strings" search

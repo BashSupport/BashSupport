@@ -34,10 +34,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 16.04.2009
- * Time: 16:48:49
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashPsiElementFactory {
     private static final String TEMP_FILE_NAME = "__.sh";

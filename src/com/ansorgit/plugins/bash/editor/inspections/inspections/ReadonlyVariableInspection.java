@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection marks unresolved variables.
- * <p/>
+ * <br>
  *
  * @author jansorg
  */

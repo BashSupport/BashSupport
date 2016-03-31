@@ -28,9 +28,7 @@ import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Nov 14, 2009
- * Time: 3:04:41 PM
+ * @author jansorg
  */
 public class BashExpansionImpl extends BashBaseElement implements BashExpansion {
     public BashExpansionImpl(ASTNode astNode) {

@@ -28,10 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Date: 14.04.2009
- * Time: 17:34:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVarVariantsProcessor extends BashAbstractProcessor implements BashVarCollectorProcessor {
     private final List<BashVarDef> variables = Lists.newLinkedList();

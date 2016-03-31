@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.editor.formatting;
 import com.intellij.lang.ASTNode;
 
 /**
- * User: jansorg
- * Date: Nov 4, 2009
- * Time: 7:56:08 PM
+ * @author jansorg
  */
 public class SpacingUtil {
     public static boolean isWhiteSpace(ASTNode treePrev) {

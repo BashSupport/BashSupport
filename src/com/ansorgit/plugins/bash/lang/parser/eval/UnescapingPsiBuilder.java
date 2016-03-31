@@ -38,9 +38,9 @@ import java.util.List;
  * The original positions are maintained.
  * The text processing may only remove characters. It must not add any new characters.
  * Removed characters will be output as whitespace to the object using this PsiBuilde
- * <p/>
+ * <br>
  * === This is a copy of {@link com.intellij.embedding.MasqueradingPsiBuilderAdapter}. ===
- * <p/>
+ * <br>
  * A delegate PsiBuilder that hides or substitutes some tokens (namely, the ones provided by {@link MasqueradingLexer})
  * from a parser, however, _still inserting_ them into a production tree in their initial appearance.
  *

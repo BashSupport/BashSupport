@@ -28,11 +28,8 @@ import com.intellij.psi.tree.IElementType;
  * Parsing function for arithmetic expressions.
  * It delegates to the actual arithmetic expression parser implementation but takes
  * care of start and end marker tokens.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:13:45
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public final class ArithmeticParser implements ParsingFunction {
     private static final ParsingFunction arithmeticExprParser = ArithmeticFactory.entryPoint();

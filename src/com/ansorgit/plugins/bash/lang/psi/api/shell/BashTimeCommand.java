@@ -18,10 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.shell;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 
 /**
- * Date: 06.05.2009
- * Time: 13:21:12
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashTimeCommand extends BashKeyword {
 }

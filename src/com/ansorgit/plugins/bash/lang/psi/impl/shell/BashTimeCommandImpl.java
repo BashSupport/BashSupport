@@ -23,7 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashTimeCommandImpl extends BashKeywordDefaultImpl implements BashTimeCommand {
     public BashTimeCommandImpl() {

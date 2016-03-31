@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Utility class to generate myBlock hierarchy
- * <p/>
+ * <br>
  * This code was taken from the Groovy plugin.
  *
  * @author ilyas, jansorg

@@ -22,7 +22,7 @@ import javax.swing.*;
 /**
  * Contains the paths for the various Bash icons.
  *
- * @author Joachim Ansorg, mail@ansorg-it.com.
+ * @author jansorg, mail@ansorg-it.com.
  */
 public interface BashIcons {
     Icon BASH_FILE_ICON = IconLoader.getIcon("/icons/bash.png");

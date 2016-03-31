@@ -29,12 +29,9 @@ import java.util.List;
  * either be an internal bash command, an external bash command or a function call.
  * It's also possible that a command has just assignments and no actual call to
  * a function or internal/external command. Then it's a pure assignment call.
- * <p/>
- * <p/>
- * Date: 12.04.2009
- * Time: 21:33:53
- *
- * @author Joachim Ansorg
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public interface BashCommand extends BashPsiElement {
     @Nullable

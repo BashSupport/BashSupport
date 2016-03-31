@@ -25,11 +25,8 @@ import com.ansorgit.plugins.bash.lang.parser.variable.VarParsing;
  * The registry for all parsing related helper classes.
  * It gives access to the available parsing helpers. The instances are only created
  * one.
- * <p/>
- * Date: 24.03.2009
- * Time: 21:34:44
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public final class Parsing {
     public static final FileParsing file = new FileParsing();

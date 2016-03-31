@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public abstract class BashBaseStubElementImpl<T extends StubElement> extends StubBasedPsiElementBase<T> implements BashPsiElement, StubBasedPsiElement<T> {
     private final String name;

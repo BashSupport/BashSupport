@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 7:14:40 PM
+ * @author jansorg
  */
 public interface BitwiseXor {
 }

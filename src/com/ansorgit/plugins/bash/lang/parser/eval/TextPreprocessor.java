@@ -46,7 +46,7 @@ public interface TextPreprocessor {
      * getOffsetInHost(1)==2
      * getOffsetInHost(2)==3
      * getOffsetInHost(3)==-1  (out of range)
-     * <p/>
+     * <br>
      * Similarly, for some language fragment xyz being injected into xml text inside xml tag 'tag': <tag>xyz</tag>
      * getOffsetInHost(0)==0 (there is an 'x' at offset 0 in injected fragment,
      * and that 'x' occurs in xyz xml text at offset 0)

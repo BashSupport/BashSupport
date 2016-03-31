@@ -28,11 +28,9 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Handles the default parsing of yet unknown / unsupported parameter expansions.
- * <p/>
- * User: jansorg
- * Date: 03.12.10
- * Time: 19:40
- * <p/>
+ * <br>
+ * @author jansorg
+ * <br>
  * fixme rewrite this parsing function, it doesn't support all cases yet is too complicated to maintain
  */
 public class ParameterExpansionParsing implements ParsingFunction {

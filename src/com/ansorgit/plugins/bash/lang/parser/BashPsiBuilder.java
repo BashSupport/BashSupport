@@ -31,12 +31,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The PsiBuilder which has been enhanced to be more helpful for Bash parsing.
  * It provides the possiblity to enable whitespace tokens on demand.
- * <p/>
- * <p/>
- * Date: 10.04.2009
- * Time: 00:35:17
- *
- * @author Joachim Ansorg
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
@@ -256,7 +253,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     /**
      * An enhanced marker which takes care of error reporting.
      *
-     * @author Joachim Ansorg, mail@ansorg-it.com
+     * @author jansorg, mail@ansorg-it.com
      */
     private static final class BashPsiMarker implements Marker {
         BashPsiBuilder psiBuilder;

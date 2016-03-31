@@ -19,9 +19,7 @@ import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Nov 2, 2009
- * Time: 8:46:06 PM
+ * @author jansorg
  */
 public interface BashCharSequence extends BashPsiElement {
     boolean isWrapped();

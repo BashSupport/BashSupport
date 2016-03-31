@@ -26,11 +26,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of conditional statements, like [ -z "" ] .
- * <p/>
- * Date: 02.05.2009
- * Time: 11:22:03
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ConditionalExpressionParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalParsingFunction");

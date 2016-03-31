@@ -53,11 +53,8 @@ import java.util.List;
 /**
  * The annotator for the the Bash language.
  * It takes care of the advanced syntax highlighting options.
- * <p/>
- * Date: 12.04.2009
- * Time: 13:28:15
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashAnnotator implements Annotator {
     private static TokenSet noWordHighlightErase = TokenSet.orSet(

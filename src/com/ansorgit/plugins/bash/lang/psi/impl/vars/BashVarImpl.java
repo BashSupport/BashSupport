@@ -44,10 +44,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 14.04.2009
- * Time: 17:16:55
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, BashVarUse, StubBasedPsiElement<BashVarStub> {
     private final BashReference varReference = new SmartBashVarReference(this);

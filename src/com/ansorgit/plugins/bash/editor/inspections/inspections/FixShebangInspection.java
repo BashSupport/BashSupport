@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * This inspection offers quickfixes to replace an unknwown shebang line with well-known shebang commands.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class FixShebangInspection extends LocalInspectionTool {
     private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/sh");

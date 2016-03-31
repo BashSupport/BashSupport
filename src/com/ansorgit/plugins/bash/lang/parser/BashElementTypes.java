@@ -47,7 +47,7 @@ import java.lang.reflect.Constructor;
 /**
  * The available Bash parser element types.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashElementTypes {
     IStubFileElementType FILE = new BashStubFileElementType();

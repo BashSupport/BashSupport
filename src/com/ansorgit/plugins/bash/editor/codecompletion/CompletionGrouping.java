@@ -17,12 +17,10 @@ package com.ansorgit.plugins.bash.editor.codecompletion;
 
 /**
  * The global order of completion suggestions
- * <p/>
+ * <br>
  * The defined order is the reverse of what is displayed in the autocomletion popup.
- * <p/>
- * User: jansorg
- * Date: 07.02.11
- * Time: 20:31
+ * <br>
+ * @author jansorg
  */
 enum CompletionGrouping {
     BuiltInVar,

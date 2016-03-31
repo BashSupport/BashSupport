@@ -27,11 +27,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for subshell expressions.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:20:54
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class SubshellParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.SubshellParsingFunction");

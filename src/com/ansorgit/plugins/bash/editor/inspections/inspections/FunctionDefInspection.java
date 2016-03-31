@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * In Bash a function definition must not have a command block as body. A body block is good style, though.
  * This inspection offers a quickfix to wrap the body in a block.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class FunctionDefInspection extends LocalInspectionTool {
     @NotNull

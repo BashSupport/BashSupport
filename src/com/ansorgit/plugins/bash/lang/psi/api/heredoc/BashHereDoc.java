@@ -18,7 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.heredoc;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashHereDoc extends BashPsiElement {
     /**

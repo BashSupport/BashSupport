@@ -20,10 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * Date: 11.04.2009
- * Time: 23:45:12
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashFor extends BashLoop, BashPsiElement, BashKeyword, BashBlock {
     /**

@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Provides Bash line markers for a given element.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLineMarkerProvider implements com.intellij.codeInsight.daemon.LineMarkerProvider {
     @Nullable

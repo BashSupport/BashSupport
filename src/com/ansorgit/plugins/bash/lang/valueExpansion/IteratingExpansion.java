@@ -21,10 +21,8 @@ import java.util.List;
 
 /**
  * A single expansion block with more than one value.
- * <p/>
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:47:00 PM
+ * <br>
+ * @author jansorg
  */
 class IteratingExpansion implements Expansion {
     private final List<String> values = new LinkedList<String>();

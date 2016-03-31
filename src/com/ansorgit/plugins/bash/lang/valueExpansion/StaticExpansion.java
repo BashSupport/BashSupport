@@ -18,11 +18,9 @@ package com.ansorgit.plugins.bash.lang.valueExpansion;
 /**
  * A single expansion which just one element.
  * It mirrors the flipped state of the preceeding element.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:43:53 PM
+ * <br>
+ * <br>
+ * @author jansorg
  */
 class StaticExpansion implements Expansion {
     private final String value;

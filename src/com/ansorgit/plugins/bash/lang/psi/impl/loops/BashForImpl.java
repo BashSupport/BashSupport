@@ -23,10 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**
- * Date: 11.04.2009
- * Time: 23:44:49
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashForImpl extends BashKeywordDefaultImpl implements BashFor {
     public BashForImpl() {

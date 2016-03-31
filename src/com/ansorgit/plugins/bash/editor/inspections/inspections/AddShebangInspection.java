@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This inspection detects a missing shebang line and offers a file-level quickfix to add one.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class AddShebangInspection extends LocalInspectionTool implements CustomSuppressableInspectionTool, BatchSuppressableTool {
     public AddShebangInspection() {

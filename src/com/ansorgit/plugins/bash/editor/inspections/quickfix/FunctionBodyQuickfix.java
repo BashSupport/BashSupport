@@ -29,11 +29,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Wrap a function body in curly brackets.
- * <p/>
- * Date: 12.04.2009
- * Time: 15:22:48
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class FunctionBodyQuickfix extends AbstractBashPsiElementQuickfix {
     public FunctionBodyQuickfix(BashFunctionDef functionDef) {

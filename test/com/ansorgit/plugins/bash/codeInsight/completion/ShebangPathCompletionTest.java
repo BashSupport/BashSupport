@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.io.File;
 
 /**
- * User: jansorg
- * Date: 09.02.11
- * Time: 20:59
+ * @author jansorg
  */
 public class ShebangPathCompletionTest extends AbstractCompletionTest {
     public ShebangPathCompletionTest() {

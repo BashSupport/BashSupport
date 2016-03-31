@@ -24,7 +24,7 @@ import com.intellij.lang.PsiBuilder;
 /**
  * Parses a simple command. A simple command is a combination of assignments, redirects, a command and parameters.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class SimpleCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

@@ -34,10 +34,8 @@ import java.util.Set;
 /**
  * Completion provider which provides completion even if the current path contains dynamic
  * parts like $HOME or ~ .
- * <p/>
- * User: jansorg
- * Date: Dec 3, 2009
- * Time: 10:32:06 PM
+ * <br>
+ * @author jansorg
  */
 class DynamicPathCompletionProvider extends AbstractBashCompletionProvider {
     private static final Set<String> homePrefixes = Sets.newHashSet("$HOME", "~");

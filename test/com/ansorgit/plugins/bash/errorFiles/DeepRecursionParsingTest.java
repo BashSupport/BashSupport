@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Tests deep nesting during parsing.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class DeepRecursionParsingTest extends LightBashCodeInsightFixtureTestCase {
     public void testIssue310() throws Exception {

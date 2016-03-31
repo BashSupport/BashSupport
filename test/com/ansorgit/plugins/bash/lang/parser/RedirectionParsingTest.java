@@ -25,10 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Date: 24.03.2009
- * Time: 21:56:59
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class RedirectionParsingTest extends MockPsiTest {
     private MockFunction redirectionTest = new MockFunction() {

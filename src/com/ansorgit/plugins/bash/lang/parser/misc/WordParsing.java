@@ -26,11 +26,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
- * <p/>
- * Date: 26.03.2009
- * Time: 15:55:24
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class WordParsing implements ParsingTool {
     private static final TokenSet singleDollarFollowups = TokenSet.create(STRING_END, WHITESPACE, LINE_FEED);
@@ -88,9 +85,9 @@ public class WordParsing implements ParsingTool {
     /**
      * Parses a word token. Several word tokens not seperated by whitespace are read
      * as a single word token.
-     * <p/>
+     * <br>
      * It accepts whitespace tokens in the beginning of the stream.
-     * <p/>
+     * <br>
      * A word can be a combination of several tokens, words are seperated by whitespace.
      *
      * @param builder         The builder

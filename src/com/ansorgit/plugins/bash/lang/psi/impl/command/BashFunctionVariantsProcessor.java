@@ -26,10 +26,7 @@ import com.intellij.psi.ResolveState;
 import java.util.List;
 
 /**
- * Date: 12.04.2009
- * Time: 23:20:07
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFunctionVariantsProcessor extends BashAbstractProcessor {
     private final List<BashFunctionDef> functionDefs = Lists.newArrayList();

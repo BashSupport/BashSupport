@@ -27,17 +27,15 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 12.04.2009
- * Time: 20:26:26
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class BashStructureViewModel extends TextEditorBasedStructureViewModel implements StructureViewModel {
-    private final PsiFile myFile;
     private static final Class[] CLASSS = new Class[]{BashFunctionDef.class};
     private static final Sorter[] SORTERS = new Sorter[]{Sorter.ALPHA_SORTER};
 
-    protected BashStructureViewModel(Editor editor, PsiFile file) {
+    private final PsiFile myFile;
+
+    BashStructureViewModel(Editor editor, PsiFile file) {
         super(editor, file);
         this.myFile = file;
     }

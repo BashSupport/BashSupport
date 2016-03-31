@@ -26,14 +26,14 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Consumes a stream of Bash tokens and generates a PSI tree for a Bash file.
- * <p/>
+ * <br>
  * The parsing code is split up in logical files. Each file has a descriptive name
  * which says what it does. The instances of those parsing helper classes are
  * available at Parsing.
- * <p/>
+ * <br>
  * The package builtin contains the parsing tools to parse the syntax of internal commands.
  *
- * @author Joachim Ansorg, mail@ansorg-it.com
+ * @author jansorg, mail@ansorg-it.com
  */
 public class BashParser implements PsiParser {
     private static final Logger log = Logger.getInstance("BashParser");

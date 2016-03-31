@@ -23,11 +23,8 @@ import java.util.List;
  * Basically this is a delegating ParsingFunction  which delegates to the first
  * parsing function which understands the token sequence. If no such function can be found
  * false is returned.
- * <p/>
- * Date: 02.05.2009
- * Time: 10:08:19
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public abstract class ParsingChain implements ParsingFunction {
     private final List<ParsingFunction> parsingFunctions = new LinkedList<ParsingFunction>();

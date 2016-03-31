@@ -26,7 +26,7 @@ import javax.swing.*;
 /**
  * The file type implementation for Bash files.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFileType extends LanguageFileType {
     public static final BashFileType BASH_FILE_TYPE = new BashFileType();

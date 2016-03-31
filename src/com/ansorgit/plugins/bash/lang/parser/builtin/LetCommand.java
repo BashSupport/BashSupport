@@ -29,7 +29,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * let Argument [Argument ...]
  * Each argument is evaluated as an arithmetic expression
- * <p/>
+ * <br>
  * fixme this implementation is not yet complete, currently it is just eating the tokens to avoid syntax error markers
  * fixme not variable parsing, etc. is done at the moment
  */

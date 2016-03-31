@@ -26,9 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Abstract base class to wrap words in something else.
- * User: jansorg
- * Date: 21.05.2009
- * Time: 11:05:40
+ * @author jansorg
  */
 abstract class AbstractWordWrapQuickfix extends AbstractBashPsiElementQuickfix {
     AbstractWordWrapQuickfix(BashWord word) {

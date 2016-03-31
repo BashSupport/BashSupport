@@ -31,11 +31,8 @@ import java.util.Collections;
 
 /**
  * The base class for psi processors.
- * <p/>
- * Date: 14.04.2009
- * Time: 17:30:27
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiScopeProcessor, ResolveProcessor {
     private Multimap<Integer, PsiElement> results;

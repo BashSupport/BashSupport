@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * This inspection detects recursive file inclusion.
  * It can detect whether another file actually back-includes this file.
- * <p/>
+ * <br>
  * @author jansorg #
  */
 public class RecursiveIncludeFileInspection extends LocalInspectionTool {

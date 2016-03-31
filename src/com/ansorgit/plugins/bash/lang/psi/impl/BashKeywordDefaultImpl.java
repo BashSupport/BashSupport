@@ -29,10 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 /**
- * Date: 06.05.2009
- * Time: 12:19:43
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public abstract class BashKeywordDefaultImpl extends BashCompositeElement implements BashKeyword {
     protected BashKeywordDefaultImpl(IElementType type) {

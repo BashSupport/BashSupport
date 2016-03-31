@@ -21,11 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The definition of a Bash element type.
- * <p/>
- * Date: 22.03.2009
- * Time: 12:06:39
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashElementType extends IElementType {
     public BashElementType(@NotNull String debugName) {

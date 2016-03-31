@@ -32,10 +32,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Quickfix to register an unknown / unresolved variable as a globally defined variable.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 10:36:04 PM
+ * <br>
+ * @author jansorg
  */
 public class RegisterGlobalVariableQuickfix extends AbstractBashPsiElementQuickfix {
     public RegisterGlobalVariableQuickfix(BashVar bashVar) {

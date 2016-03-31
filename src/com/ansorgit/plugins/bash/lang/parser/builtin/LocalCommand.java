@@ -19,13 +19,10 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
  * Syntax: local [option] name[=value]  ...
- * <p/>
+ * <br>
  * Makes the assignments available to the reference detection.
- * <p/>
- * Date: 01.05.2009
- * Time: 20:55:46
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 class LocalCommand extends AbstractVariableDefParsing implements ParsingTool {
     public LocalCommand() {

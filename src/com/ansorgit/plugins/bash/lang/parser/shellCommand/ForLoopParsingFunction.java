@@ -27,11 +27,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for for loops statements.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:21:19
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ForLoopParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ForLoopParsingFunction");

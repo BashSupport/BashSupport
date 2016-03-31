@@ -23,9 +23,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Jan 28, 2010
- * Time: 7:50:10 PM
+ * @author jansorg
  */
 public class BashVarUtils {
     /**

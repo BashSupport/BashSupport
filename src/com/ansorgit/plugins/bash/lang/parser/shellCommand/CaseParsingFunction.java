@@ -25,11 +25,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for case statements.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:20:22
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class CaseParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.CaseCommandParsingFunction");

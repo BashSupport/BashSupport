@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Highlights unused function definitions.
- * <p/>
+ * <br>
  * The inspection is empty, the work is done by the PostHighlightingPass.
  */
 public class UnusedFunctionDefInspection extends LocalInspectionTool implements UnfairLocalInspectionTool {

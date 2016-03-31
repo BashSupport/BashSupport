@@ -56,7 +56,7 @@ import java.util.Properties;
  * This class is notified about errors caused by its owning plugin. It bundles the information to be sent to the error receiving server. Configuration
  * options like the email recipient etc. are first extracted from the plugin descriptor (vendor's email etc.) but can be overwritten through
  * properties specified in the properties file (email.to, email.cc, and server.address).
- * <p/>
+ * <br>
  * An indirection is applied when looking up the error receiving server address. This allows to change the location, i.e. address of the error
  * receiving server without having to reconfigure/recompile the plugin (all that needs to be changed is the server address returned by the lookup
  * server).

@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.shell;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * User: jansorg
- * Date: 01.08.2009
- * Time: 20:05:28
+ * @author jansorg
  */
 public interface BashCasePatternListElement extends BashPsiElement {
 }

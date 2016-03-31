@@ -26,11 +26,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Abstract base class for loops.
- * <p/>
- * Date: 02.05.2009
- * Time: 17:39:14
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class AbstractLoopParser implements ParsingTool, ParsingFunction {
     private final IElementType startToken;

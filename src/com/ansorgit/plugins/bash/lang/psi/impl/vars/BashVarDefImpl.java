@@ -59,10 +59,7 @@ import java.util.Set;
 import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 
 /**
- * Date: 14.04.2009
- * Time: 17:02:37
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);

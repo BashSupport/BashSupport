@@ -26,11 +26,9 @@ import javax.swing.*;
 /**
  * Lookup element which contains a simple path element.
  * The icon is shown according to the type (file / directory entry).
- * <p/>
- * <p/>
- * User: jansorg
- * Date: Dec 3, 2009
- * Time: 2:52:31 PM
+ * <br>
+ * <br>
+ * @author jansorg
  */
 final class PathLookupElement extends LookupElement {
     private static final Icon textIcon = IconLoader.getIcon("/fileTypes/text.png");

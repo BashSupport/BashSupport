@@ -21,10 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.shellCommand.*;
 
 /**
- * Date: 25.03.2009
- * Time: 11:17:35
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ShellCommandParsing extends ParsingChain implements ParsingTool {
     public ShellCommandParsing() {

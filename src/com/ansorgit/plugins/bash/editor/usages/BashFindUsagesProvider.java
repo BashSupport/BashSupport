@@ -37,11 +37,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The find usages provider implementation for Bash.
- * <p/>
- * Date: 06.05.2009
- * Time: 20:42:06
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
     public WordsScanner getWordsScanner() {

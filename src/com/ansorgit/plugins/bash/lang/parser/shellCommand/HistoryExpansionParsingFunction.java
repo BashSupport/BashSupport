@@ -23,7 +23,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class HistoryExpansionParsingFunction implements ParsingFunction {
     @Override

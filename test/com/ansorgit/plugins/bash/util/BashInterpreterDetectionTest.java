@@ -26,9 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 22.07.2010
- * Time: 19:05:25
+ * @author jansorg
  */
 public class BashInterpreterDetectionTest {
     @Test

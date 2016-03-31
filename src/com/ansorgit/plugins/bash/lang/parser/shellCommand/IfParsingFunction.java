@@ -24,11 +24,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing function for if expressions.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:24:54
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class IfParsingFunction implements ParsingFunction {
     private static final TokenSet ELSE_ELIF_FI = TokenSet.create(ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD);

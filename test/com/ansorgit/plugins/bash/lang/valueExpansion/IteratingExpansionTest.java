@@ -25,9 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 9:12:54 PM
+ * @author jansorg
  */
 public class IteratingExpansionTest {
     @Test

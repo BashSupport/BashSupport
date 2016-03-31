@@ -23,10 +23,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * Date: 26.03.2009
- * Time: 13:04:49
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class IntegrationTest extends MockPsiTest {
     private static final MockFunction fileParsingTest = new MockFunction() {

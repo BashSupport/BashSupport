@@ -38,9 +38,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: 18.02.11
- * Time: 20:17
+ * @author jansorg
  */
 public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeCommandStub> implements BashIncludeCommand, StubBasedPsiElement<BashIncludeCommandStub> {
     public BashIncludeCommandImpl(ASTNode astNode) {

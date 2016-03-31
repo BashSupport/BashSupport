@@ -24,14 +24,12 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses process substitution expressions, i.e.
- * <p/>
+ * <br>
  * <(bash subshell expression)
- * <p/>
+ * <br>
  * >(bash susbshell expression)
- * <p/>
- * User: jansorg
- * Date: 10.07.2010
- * Time: 15:2
+ * <br>
+ * @author jansorg
  * 3:12
  */
 public class ProcessSubstitutionParsing implements ParsingFunction {

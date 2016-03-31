@@ -27,11 +27,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of variable definitions.
- * <p/>
- * Date: 01.05.2009
- * Time: 20:59:13
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 abstract class AbstractVariableDefParsing implements ParsingFunction {
     public static final TokenSet EQ_SET = TokenSet.create(EQ);

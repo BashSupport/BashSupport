@@ -20,10 +20,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 /**
  * Marker interface for psi elements which may contain child variable definitions which are visible outside of
  * the element itself.
- * <p/>
- * User: jansorg
- * Date: 29.07.2009
- * Time: 20:36:15
+ * <br>
+ * @author jansorg
  */
 public interface BashVarDefContainer extends BashPsiElement {
 }

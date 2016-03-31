@@ -26,11 +26,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for blocks / group commands.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:20:45
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class GroupCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

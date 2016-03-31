@@ -28,10 +28,8 @@ import java.util.List;
 
 /**
  * A no-op block used when the formatter feature is turned off.
- * <p/>
- * User: jansorg
- * Date: Mar 30, 2010
- * Time: 9:29:43 PM
+ * <br>
+ * @author jansorg
  */
 public class NoOpBlock implements Block {
     private final ASTNode astNode;

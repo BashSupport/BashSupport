@@ -27,10 +27,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing function for commands.
- * <p/>
- * User: jansorg
- * Date: Nov 26, 2009
- * Time: 9:16:36 PM
+ * <br>
+ * @author jansorg
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     private final static TokenSet assignmentSeparators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
@@ -277,7 +275,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * Parses an assignment list like a=(1 2 3)
      * Grammar (selfmade):
      * assignment_list ::= "(" array_assignment {" " {array_assignment}* ")"
-     * <p/>
+     * <br>
      * array_assignment ::=
      * WORD_EXPR
      * |    STRING

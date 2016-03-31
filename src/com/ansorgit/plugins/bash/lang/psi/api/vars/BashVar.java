@@ -23,10 +23,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 14.04.2009
- * Time: 17:16:16
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashVar extends BashPsiElement, PsiNamedElement {
     /**

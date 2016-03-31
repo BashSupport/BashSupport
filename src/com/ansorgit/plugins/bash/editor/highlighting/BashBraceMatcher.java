@@ -25,11 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Braces matcher for bash files. Referenced by the plugin.xml file.
- * <p/>
- * Date: 23.03.2009
- * Time: 15:06:18
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{

@@ -22,9 +22,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 
 /**
- * User: jansorg
- * Date: 26.03.11
- * Time: 19:45
+ * @author jansorg
  */
 public class BashAssignmentListImpl extends BashBaseElement implements BashAssignmentList {
     public BashAssignmentListImpl(ASTNode node) {

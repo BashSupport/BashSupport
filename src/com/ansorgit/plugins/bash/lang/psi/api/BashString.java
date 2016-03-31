@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 /**
- * User: jansorg
- * Date: Jan 24, 2010
- * Time: 9:47:20 PM
+ * @author jansorg
  */
 public interface BashString extends BashPsiElement, BashCharSequence {
 }

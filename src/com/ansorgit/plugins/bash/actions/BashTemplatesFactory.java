@@ -31,7 +31,7 @@ import java.util.Properties;
 /**
  * Factory for new bash files. It is used by the {@link NewBashFileAction} action.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class BashTemplatesFactory {
     static final String DEFAULT_TEMPLATE_FILENAME = "Bash Script.sh";

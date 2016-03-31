@@ -24,7 +24,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public final class ListParsing implements ParsingTool {
     /* Grammar:

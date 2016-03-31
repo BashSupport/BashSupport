@@ -21,9 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.intellij.psi.tree.TokenSet;
 
 /**
- * User: jansorg
- * Date: 09.11.11
- * Time: 21:20
+ * @author jansorg
  */
 public class ConditionalParsingUtil {
     private static TokenSet operators = TokenSet.create(BashTokenTypes.COND_OP, BashTokenTypes.COND_OP_EQ_EQ, BashTokenTypes.COND_OP_REGEX);

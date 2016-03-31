@@ -32,9 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: 07.02.11
- * Time: 18:38
+ * @author jansorg
  */
 class CompletionProviderUtils {
     private CompletionProviderUtils() {

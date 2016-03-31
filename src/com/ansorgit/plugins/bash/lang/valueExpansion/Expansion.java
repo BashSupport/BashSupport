@@ -18,10 +18,8 @@ package com.ansorgit.plugins.bash.lang.valueExpansion;
 /**
  * An expansion is a single block in a combined expansion. E.g. {1..3}a is a combined expansion
  * which consists of one iterating expansion {1..3} and one static expansion (a).
- * <p/>
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:41:57 PM
+ * <br>
+ * @author jansorg
  */
 interface Expansion {
     /**

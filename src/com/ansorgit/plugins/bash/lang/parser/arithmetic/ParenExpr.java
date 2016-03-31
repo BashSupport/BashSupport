@@ -21,10 +21,8 @@ import com.intellij.lang.PsiBuilder;
 
 /**
  * Parses an optional parantheses expression. If not found it delegates to another function.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 10:21:56 PM
+ * <br>
+ * @author jansorg
  */
 class ParenExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

@@ -23,10 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Wraps a PsiBuilder marker and keeps track whether it's still open or not.
- * <p/>
- * User: jansorg
- * Date: Jan 30, 2010
- * Time: 12:18:29 PM
+ * <br>
+ * @author jansorg
  */
 public final class BashSmartMarker implements PsiBuilder.Marker {
     private PsiBuilder.Marker delegate;

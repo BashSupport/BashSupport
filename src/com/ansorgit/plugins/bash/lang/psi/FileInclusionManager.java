@@ -36,9 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /**
- * User: jansorg
- * Date: 06.02.11
- * Time: 20:36
+ * @author jansorg
  */
 public class FileInclusionManager {
     private FileInclusionManager() {

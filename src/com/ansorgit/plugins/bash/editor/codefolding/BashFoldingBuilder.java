@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Code folding builder for the Bash language.
  *
- * @author Joachim Ansorg, mail@joachim-ansorg.de
+ * @author jansorg, mail@joachim-ansorg.de
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     @NotNull

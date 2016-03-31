@@ -19,9 +19,7 @@ import com.intellij.openapi.components.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Oct 30, 2009
- * Time: 9:12:54 PM
+ * @author jansorg
  */
 @State(
         name = "BashSupportProjectSettings",

@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  * with  a  backslash.  If enabled, history expansion will be performed unless an !  appearing in double quotes is
  * escaped using a backslash.  The backslash preceding the !  is not removed.
  *  </pre>
- * <p/>
+ * <br>
  * THis text preprocessor is used for $'' ASNI escaped strings. The valid escape values are documented at
  * http://wiki.bash-hackers.org/syntax/quoting .
  *

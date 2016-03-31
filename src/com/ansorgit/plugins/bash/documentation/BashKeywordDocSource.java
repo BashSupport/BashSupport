@@ -21,7 +21,7 @@ import com.intellij.psi.PsiElement;
 /**
  * Provides documentation for Bash keyword elements like "if", "while" and "for".
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class BashKeywordDocSource extends ClasspathDocSource {
     BashKeywordDocSource() {

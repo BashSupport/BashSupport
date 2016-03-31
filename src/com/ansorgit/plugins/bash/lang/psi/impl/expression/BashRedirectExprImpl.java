@@ -25,9 +25,7 @@ import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Oct 29, 2009
- * Time: 8:44:28 PM
+ * @author jansorg
  */
 public class BashRedirectExprImpl extends BashBaseElement implements BashRedirectExpr {
     public BashRedirectExprImpl(final ASTNode astNode) {

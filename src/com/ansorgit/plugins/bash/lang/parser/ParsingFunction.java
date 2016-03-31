@@ -19,11 +19,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 
 /**
  * A parsing function provides a common interface to parse a single aspect of the grammar.
- * <p/>
- * Date: 02.05.2009
- * Time: 18:07:32
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public interface ParsingFunction extends BashTokenTypes, BashElementTypes {
     /**

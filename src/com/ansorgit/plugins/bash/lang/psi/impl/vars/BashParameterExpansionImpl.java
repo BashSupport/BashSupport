@@ -23,10 +23,8 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * A Bash parameter expansion container may contain one or more variables.
- * <p/>
- * User: jansorg
- * Date: Nov 7, 2009
- * Time: 1:03:28 PM
+ * <br>
+ * @author jansorg
  */
 public class BashParameterExpansionImpl extends BashBaseElement implements BashParameterExpansion {
     public BashParameterExpansionImpl(final ASTNode astNode) {

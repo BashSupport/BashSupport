@@ -23,9 +23,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
 /**
- * User: jansorg
- * Date: 09.12.10
- * Time: 19:49
+ * @author jansorg
  */
 public class BashReadWriteAccessDetector extends ReadWriteAccessDetector {
     @Override

@@ -19,11 +19,8 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingChain;
 
 /**
  * Comination of a list of internal command implementations.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:38:05
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BuiltinCommandParser extends ParsingChain {
     public BuiltinCommandParser() {

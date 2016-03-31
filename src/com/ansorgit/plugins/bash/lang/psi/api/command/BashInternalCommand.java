@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.command;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * User: jansorg
- * Date: Oct 29, 2009
- * Time: 8:18:53 PM
+ * @author jansorg
  */
 public interface BashInternalCommand extends BashPsiElement {
 }

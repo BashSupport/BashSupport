@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.shell;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * User: jansorg
- * Date: 06.08.2009
- * Time: 22:43:56
+ * @author jansorg
  */
 public interface BashConditionalCommand extends BashPsiElement {
 }

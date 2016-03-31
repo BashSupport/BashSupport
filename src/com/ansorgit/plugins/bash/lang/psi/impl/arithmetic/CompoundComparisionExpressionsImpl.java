@@ -21,9 +21,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 12:13:49 PM
+ * @author jansorg
  */
 public class CompoundComparisionExpressionsImpl extends AbstractExpression implements CompoundComparision {
     public CompoundComparisionExpressionsImpl(final ASTNode astNode) {

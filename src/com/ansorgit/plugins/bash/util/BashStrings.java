@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * Manages the resource bundle(s) of the plugin.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashStrings {
     private static Reference<ResourceBundle> ourBundle;

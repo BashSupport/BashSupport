@@ -25,10 +25,10 @@ import com.intellij.psi.tree.TokenSet;
  * Lexer which can merge several tokens into a new token type.
  * This lexer takes a set of token merge definitions. Each of these definitions
  * are used to create a new, merged token stream at runtime.
- * <p/>
+ * <br>
  * The base code was taken from MergingLexerAdapter of the OpenAPI.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 class MergingLexer extends MergingLexerAdapterBase {
     private final LexerMergeFunction mergeFunction;

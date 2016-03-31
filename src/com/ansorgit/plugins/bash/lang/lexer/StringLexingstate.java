@@ -23,7 +23,7 @@ import com.intellij.util.containers.Stack;
  * Each subshell command contains a separate string.  To parse this we need a stack of parsing states.
  * This is what this class does.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 final class StringLexingstate {
     private final Stack<SubshellState> subshells = new Stack<SubshellState>(5);

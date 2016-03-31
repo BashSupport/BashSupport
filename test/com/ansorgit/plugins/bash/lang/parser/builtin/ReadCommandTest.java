@@ -25,9 +25,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 23.05.2009
- * Time: 23:51:45
+ * @author jansorg
  */
 public class ReadCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {

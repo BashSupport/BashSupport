@@ -20,10 +20,7 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 
 /**
- * Date: 02.05.2009
- * Time: 21:34:56
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class SimpleVarParsing implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

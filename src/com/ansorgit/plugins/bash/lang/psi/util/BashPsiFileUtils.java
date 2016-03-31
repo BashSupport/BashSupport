@@ -29,9 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Nov 2, 2009
- * Time: 8:50:30 PM
+ * @author jansorg
  */
 public class BashPsiFileUtils {
     /**

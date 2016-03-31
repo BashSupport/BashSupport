@@ -33,7 +33,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.localVarDefCommand
 /**
  * This inspection detects local variable declarations on the global level, i.e. outside of functions.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class GlobalLocalVarDefInspection extends LocalInspectionTool {
     @NotNull

@@ -18,10 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 import com.intellij.psi.PsiReference;
 
 /**
- * Date: 12.04.2009
- * Time: 23:11:00
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashReference extends PsiReference {
     String getReferencedName();

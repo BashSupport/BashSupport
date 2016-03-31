@@ -21,10 +21,8 @@ import com.intellij.lang.PsiBuilder;
 
 /**
  * Parsing of prefix increment operators.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 4:27:55 PM
+ * <br>
+ * @author jansorg
  */
 class PreIncrementExpr implements ArithmeticParsingFunction {
     private ArithmeticParsingFunction next;

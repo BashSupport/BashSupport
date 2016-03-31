@@ -21,12 +21,9 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 /**
  * Parsing of all sorts variables. Includes $(), ${} and $(()).
  * Delegates to the certain parsing functions.
- * <p/>
- * <p/>
- * Date: 27.03.2009
- * Time: 11:07:41
- *
- * @author Joachim Ansorg
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public class VarParsing extends ParsingChain implements ParsingTool {
     public VarParsing() {

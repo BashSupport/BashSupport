@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 /**
- * User: jansorg
- * Date: 13.07.2010
- * Time: 18:54:26
+ * @author jansorg
  */
 public interface BashProcessSubstitution extends BashPsiElement {
 }

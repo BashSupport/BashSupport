@@ -23,10 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**
- * Date: 06.05.2009
- * Time: 12:48:16
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashSelectImpl extends BashKeywordDefaultImpl implements BashSelect {
     public BashSelectImpl() {

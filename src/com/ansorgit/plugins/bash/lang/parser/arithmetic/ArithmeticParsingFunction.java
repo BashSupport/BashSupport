@@ -19,10 +19,8 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 
 /**
  * Extended parsing function for parsing of arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Apr 17, 2010
- * Time: 10:47:30 PM
+ * <br>
+ * @author jansorg
  */
 public interface ArithmeticParsingFunction extends ParsingFunction {
 }

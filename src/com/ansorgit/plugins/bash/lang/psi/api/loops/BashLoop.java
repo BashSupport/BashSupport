@@ -19,9 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
  * Marker interface for loops.
- * User: jansorg
- * Date: Mar 12, 2010
- * Time: 7:52:50 PM
+ * @author jansorg
  */
 public interface BashLoop extends BashPsiElement {
 }

@@ -20,13 +20,10 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 /**
  * Syntax:typeset [-afFirtx] [-p] name[=value] ...
  * Typeset is an obsolete command
- * <p/>
+ * <br>
  * Parses the typeset command. It makes the assignments available to the reference detection.
- * <p/>
- * Date: 15.04.2009
- * Time: 22:12:32
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 class TypesetCommand extends AbstractVariableDefParsing implements ParsingTool {
     TypesetCommand() {

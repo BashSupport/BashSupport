@@ -25,10 +25,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing of a simple arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 5:52:20 PM
+ * <br>
+ * @author jansorg
  */
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

@@ -24,10 +24,8 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Abstract class for a repeated expression which delegates the parsing of the subexpressions to
  * another parsing function.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 5:22:23 PM
+ * <br>
+ * @author jansorg
  */
 class AbstractRepeatedExpr implements ArithmeticParsingFunction {
     private final ArithmeticParsingFunction expressionParser;

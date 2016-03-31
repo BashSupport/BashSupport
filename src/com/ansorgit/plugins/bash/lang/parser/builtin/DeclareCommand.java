@@ -19,13 +19,10 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
  * Syntax: declare [-afFirtx] [-p] [name[=value] ...]
- * <p/>
+ * <br>
  * Parses the declare command. It makes the assignments available to the reference detection.
- * <p/>
- * Date: 15.04.2009
- * Time: 22:12:32
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 class DeclareCommand extends AbstractVariableDefParsing implements ParsingTool {
     DeclareCommand() {

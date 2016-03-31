@@ -25,10 +25,7 @@ import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 14.04.2009
- * Time: 17:01:51
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashVarDef extends BashPsiElement, PsiNamedElement, PsiNameIdentifierOwner, NavigationItem, DocumentationAwareElement, BashVar {
     String getName();

@@ -23,11 +23,8 @@ import com.intellij.lang.PsiBuilder;
 
 /**
  * Parsing function for select statements.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:20:35
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class SelectParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

@@ -22,11 +22,8 @@ import com.ansorgit.plugins.bash.lang.parser.builtin.BuiltinCommandParser;
 /**
  * The parsing of commands. A command is either a simple command, a shell command or a function
  * definition.
- * <p/>
- * Date: 24.03.2009
- * Time: 23:03:27
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class CommandParsing extends ParsingChain implements ParsingTool {
     public final SimpleCommandParsingFunction simpleCommandParser = new SimpleCommandParsingFunction();

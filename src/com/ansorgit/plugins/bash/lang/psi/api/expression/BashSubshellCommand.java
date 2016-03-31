@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.expression;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * User: jansorg
- * Date: 21.05.2009
- * Time: 14:01:59
+ * @author jansorg
  */
 public interface BashSubshellCommand extends BashPsiElement {
     String getCommandText();

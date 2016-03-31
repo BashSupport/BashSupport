@@ -20,11 +20,8 @@ import com.intellij.psi.PsiReference;
 
 /**
  * Interface to mark a class which implements a bash keyword construct.
- * <p/>
- * Date: 06.05.2009
- * Time: 12:33:51
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public interface BashKeyword extends BashPsiElement {
     /**

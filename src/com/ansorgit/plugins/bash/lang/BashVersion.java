@@ -19,10 +19,8 @@ package com.ansorgit.plugins.bash.lang;
  * Enumeration of the supported Bash versions.
  * The plugin has a Bash v4 mode and a Bash v3 mode. The parser and lexer
  * can be configured to also support the v4 features / changes.
- * <p/>
- * User: jansorg
- * Date: Dec 1, 2009
- * Time: 7:47:20 PM
+ * <br>
+ * @author jansorg
  */
 public enum BashVersion {
     Bash_v3, Bash_v4

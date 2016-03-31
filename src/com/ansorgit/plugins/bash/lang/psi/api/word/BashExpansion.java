@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api.word;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 
 /**
- * User: jansorg
- * Date: Nov 14, 2009
- * Time: 3:03:54 PM
+ * @author jansorg
  */
 public interface BashExpansion extends BashPsiElement, BashWord {
     boolean isValidExpansion();

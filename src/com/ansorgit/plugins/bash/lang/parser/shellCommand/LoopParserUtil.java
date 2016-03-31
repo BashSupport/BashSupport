@@ -23,11 +23,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Helper class to provide parsing of a loop body. This code is shared between while, until and for loops.
- * <p/>
- * Date: 02.05.2009
- * Time: 17:51:04
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 class LoopParserUtil implements BashTokenTypes {
     private LoopParserUtil() {

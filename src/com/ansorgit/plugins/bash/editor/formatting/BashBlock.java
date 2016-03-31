@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * Block implementation for the Bash formatter.
- * <p/>
+ * <br>
  * This class is based on the block code for the Groovy formatter.
  *
  * @author ilyas, jansorg

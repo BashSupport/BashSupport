@@ -17,10 +17,8 @@ package com.ansorgit.plugins.bash.lang.psi.api.arithmetic;
 
 /**
  * An simple arithmetic expression.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 10:57:11 AM
+ * <br>
+ * @author jansorg
  */
 public interface SimpleExpression extends ArithmeticExpression {
     LiteralType literalType();

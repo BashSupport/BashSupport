@@ -24,7 +24,7 @@
     If you really want to hack on this lexer: Be careful :)
     There are unit tests for the lexer but there's no 100% coverage for all cases.
 
-     @author Joachim Ansorg, mail@ansorg-it.com
+     @author jansorg, mail@ansorg-it.com
 **/
 
 /** Based on the arc lexer (http://code.google.com/p/intelli-arc/) **/

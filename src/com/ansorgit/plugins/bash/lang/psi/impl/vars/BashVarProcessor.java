@@ -35,10 +35,7 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
- * Date: 14.04.2009
- * Time: 17:34:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private final boolean leaveInjectionHost;
@@ -200,7 +197,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     /**
      * A local var def is a valid definition for our start element if it's scope contains the start
      * element.
-     * <p/>
+     * <br>
      * Also, the checked variable definition has to appear before the start element.
      *
      * @param varDef       The variable definition in question

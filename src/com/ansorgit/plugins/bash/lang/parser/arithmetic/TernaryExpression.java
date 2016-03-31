@@ -21,10 +21,8 @@ import com.intellij.lang.PsiBuilder;
 
 /**
  * Parsing of ternary arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 4:29:05 PM
+ * <br>
+ * @author jansorg
  */
 class TernaryExpression implements ArithmeticParsingFunction {
     private ArithmeticParsingFunction next;

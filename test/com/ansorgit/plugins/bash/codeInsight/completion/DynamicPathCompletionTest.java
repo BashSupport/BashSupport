@@ -5,9 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 09.02.11
- * Time: 20:59
+ * @author jansorg
  */
 public class DynamicPathCompletionTest extends AbstractCompletionTest {
     public DynamicPathCompletionTest() {

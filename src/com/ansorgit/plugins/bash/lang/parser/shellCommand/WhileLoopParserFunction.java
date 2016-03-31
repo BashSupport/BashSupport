@@ -19,11 +19,8 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 
 /**
  * Parsing function for while loops.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:11:11
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class WhileLoopParserFunction extends AbstractLoopParser {
     public WhileLoopParserFunction() {

@@ -23,10 +23,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * Date: 25.03.2009
- * Time: 11:37:48
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class PipelineParsing implements ParsingTool {
     private enum ParseState {

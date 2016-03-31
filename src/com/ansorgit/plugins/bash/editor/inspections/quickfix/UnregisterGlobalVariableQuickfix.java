@@ -29,10 +29,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Unregisters a global variable.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 10:30:22 PM
+ * <br>
+ * @author jansorg
  */
 public class UnregisterGlobalVariableQuickfix extends AbstractBashPsiElementQuickfix {
     public UnregisterGlobalVariableQuickfix(BashVar variable) {

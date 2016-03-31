@@ -21,9 +21,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 6:31:03 PM
+ * @author jansorg
  */
 class AbstractAssignment implements ArithmeticParsingFunction {
     private final ArithmeticParsingFunction next;

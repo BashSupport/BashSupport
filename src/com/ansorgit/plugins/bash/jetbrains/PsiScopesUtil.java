@@ -16,8 +16,6 @@
 /**
  * Created by IntelliJ IDEA.
  * User: igork
- * Date: Nov 25, 2002
- * Time: 2:05:49 PM
  * To change this template use Options | File Templates.
  */
 package com.ansorgit.plugins.bash.jetbrains;

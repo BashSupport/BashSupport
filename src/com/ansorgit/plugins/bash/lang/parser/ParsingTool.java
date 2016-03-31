@@ -20,11 +20,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 /**
  * The base class for pasing helps. It just provides the token types as
  * direcly accessible references.
- * <p/>
- * Date: 24.03.2009
- * Time: 21:31:26
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public interface ParsingTool extends BashTokenTypes, BashElementTypes {
 }

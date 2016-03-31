@@ -24,9 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 10:56:51 AM
+ * @author jansorg
  */
 public interface ArithmeticExpression extends BashPsiElement {
 

@@ -23,10 +23,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 22.03.2009
- * Time: 11:12:46
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLanguage extends Language {
     public BashLanguage() {

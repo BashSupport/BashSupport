@@ -30,10 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Date: 11.04.2009
- * Time: 23:47:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, NavigationItem, PsiNameIdentifierOwner, BashVarDefContainer, DocumentationAwareElement {
     /**

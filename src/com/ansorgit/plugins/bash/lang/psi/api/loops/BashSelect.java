@@ -19,10 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 
 /**
- * Date: 06.05.2009
- * Time: 12:48:01
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashSelect extends BashKeyword, BashBlock {
 }

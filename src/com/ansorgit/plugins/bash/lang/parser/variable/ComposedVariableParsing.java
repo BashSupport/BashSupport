@@ -26,11 +26,8 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Parses a combined variable. A combined variable can be a subshell expression, a
  * parameter expansion or an arithmetic subexpression.
- * <p/>
- * Date: 02.05.2009
- * Time: 21:38:08
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ComposedVariableParsing implements ParsingFunction {
     private static final TokenSet acceptedStarts = TokenSet.create(

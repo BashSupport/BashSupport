@@ -25,9 +25,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
- * User: jansorg
- * Date: 08.05.2010
- * Time: 12:04:49
+ * @author jansorg
  */
 public class SystemInfopageDocSourceTest {
     @Test

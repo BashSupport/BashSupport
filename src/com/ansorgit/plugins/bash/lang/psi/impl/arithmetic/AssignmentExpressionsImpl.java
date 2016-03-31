@@ -22,9 +22,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 12:13:49 PM
+ * @author jansorg
  */
 public class AssignmentExpressionsImpl extends AbstractExpression implements AssignmentExpression {
     public AssignmentExpressionsImpl(final ASTNode astNode) {

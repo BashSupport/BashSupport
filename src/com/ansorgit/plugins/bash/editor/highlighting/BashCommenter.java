@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Comment handler for the Bash language.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashCommenter implements CodeDocumentationAwareCommenter, BashTokenTypes {
     public String getLineCommentPrefix() {

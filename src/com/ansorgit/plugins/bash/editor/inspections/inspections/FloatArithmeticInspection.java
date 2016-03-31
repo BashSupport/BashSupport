@@ -26,9 +26,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This inspection detects floating point arithmetic using Bash arithmetic (so it probably does not produce
  * the intended results).
- * <p/>
+ * <br>
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class FloatArithmeticInspection extends LocalInspectionTool {
     @NotNull

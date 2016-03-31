@@ -34,10 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
- * Date: 15.05.2009
- * Time: 14:48:18
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVisitor extends PsiElementVisitor {
     public void visitFile(BashFile file) {

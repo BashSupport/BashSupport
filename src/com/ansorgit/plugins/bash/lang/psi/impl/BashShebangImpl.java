@@ -30,10 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Date: 16.04.2009
- * Time: 14:52:33
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashShebangImpl extends BashBaseElement implements BashShebang {
     private final static Logger log = Logger.getInstance("#bash.BashShebang");

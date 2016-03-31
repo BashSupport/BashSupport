@@ -35,11 +35,9 @@ import java.util.List;
 /**
  * This is the bash documentation provider. A documentation provider is called
  * for PsiElements which implement the interface PsiReference.
- * <p/>
- * Date: 12.04.2009
- * Time: 21:26:50
+ * <br>
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashDocumentationProvider extends AbstractDocumentationProvider {
     private final List<DocumentationSource> sourceList;
@@ -52,7 +50,7 @@ public class BashDocumentationProvider extends AbstractDocumentationProvider {
         sourceList.add(new ManpageDocSource());
 
         if (!SystemInfoRt.isWindows) {
-            //there is currently not support for the cygwin info command
+            //there is currently no support for the cygwin info command
             sourceList.add(new CachingDocumentationSource(new SystemInfopageDocSource()));
         }
     }

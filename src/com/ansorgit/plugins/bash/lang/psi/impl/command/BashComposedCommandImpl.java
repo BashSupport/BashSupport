@@ -22,9 +22,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 
 /**
- * User: jansorg
- * Date: Dec 3, 2009
- * Time: 11:25:39 AM
+ * @author jansorg
  */
 public class BashComposedCommandImpl extends BashBaseElement implements BashComposedCommand {
     public BashComposedCommandImpl(ASTNode astNode) {

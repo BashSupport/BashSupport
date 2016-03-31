@@ -23,9 +23,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 
 /**
- * User: jansorg
- * Date: 12.01.12
- * Time: 01:54
+ * @author jansorg
  */
 public final class BashSearchScopes {
     private BashSearchScopes() {

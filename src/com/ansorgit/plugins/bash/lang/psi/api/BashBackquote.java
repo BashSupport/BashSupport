@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.api;
 import com.intellij.openapi.util.TextRange;
 
 /**
- * User: jansorg
- * Date: 21.05.2009
- * Time: 13:47:15
+ * @author jansorg
  */
 public interface BashBackquote extends BashPsiElement {
     String getCommandText();

@@ -20,9 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 
 /**
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:35:20
+ * @author jansorg
  */
 public interface BashWord extends BashPsiElement, BashCharSequence {
     boolean isWrappable();

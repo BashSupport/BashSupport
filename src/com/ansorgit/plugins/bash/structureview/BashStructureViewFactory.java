@@ -26,24 +26,29 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Creates the structure view builder for Bash files.
- * <p/>
- * Date: 12.04.2009
- * Time: 20:25:32
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashStructureViewFactory implements PsiStructureViewFactory {
     public StructureViewBuilder getStructureViewBuilder(final PsiFile psiFile) {
-        return new TreeBasedStructureViewBuilder() {
-            @NotNull
-            @Override
-            public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
-                return new BashStructureViewModel(editor, psiFile);
-            }
+        return new BashTreeBasedStructureViewBuilder(psiFile);
+    }
 
-            public boolean isRootNodeShown() {
-                return false;
-            }
-        };
+    private static class BashTreeBasedStructureViewBuilder extends TreeBasedStructureViewBuilder {
+        private final PsiFile psiFile;
+
+        BashTreeBasedStructureViewBuilder(PsiFile psiFile) {
+            this.psiFile = psiFile;
+        }
+
+        @NotNull
+        @Override
+        public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
+            return new BashStructureViewModel(editor, psiFile);
+        }
+
+        public boolean isRootNodeShown() {
+            return false;
+        }
     }
 }

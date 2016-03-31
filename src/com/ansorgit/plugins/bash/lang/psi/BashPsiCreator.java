@@ -45,11 +45,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Static factory class which creates PsiElements for the different token / element types.
- * <p/>
- * Date: 11.04.2009
- * Time: 23:12:51
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashPsiCreator implements BashElementTypes {
     private static final Logger log = Logger.getInstance("#BashPsiCreator");

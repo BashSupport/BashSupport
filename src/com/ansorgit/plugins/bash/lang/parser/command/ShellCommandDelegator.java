@@ -22,11 +22,8 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 /**
  * This simply delegates the parsing to the shellcommands. This way internal shell commands
  * are marked as commands, too.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:39:57
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ShellCommandDelegator implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

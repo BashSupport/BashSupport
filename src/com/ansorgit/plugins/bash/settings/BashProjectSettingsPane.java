@@ -26,9 +26,7 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * User: jansorg
- * Date: Oct 30, 2009
- * Time: 9:18:52 PM
+ * @author jansorg
  */
 public class BashProjectSettingsPane implements Disposable {
     private JPanel settingsPane;

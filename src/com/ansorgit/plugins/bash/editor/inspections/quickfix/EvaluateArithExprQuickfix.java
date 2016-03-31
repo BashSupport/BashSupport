@@ -27,10 +27,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Replaces a static arithmetic expression with the evaluated result.
- * <p/>
- * User: jansorg
- * Date: Nov 15, 2009
- * Time: 12:50:35 AM
+ * <br>
+ * @author jansorg
  */
 public class EvaluateArithExprQuickfix extends AbstractBashPsiElementQuickfix {
     private final String expressionText;

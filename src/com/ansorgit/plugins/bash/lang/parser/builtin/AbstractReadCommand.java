@@ -19,9 +19,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 
 /**
  * Base class which accepts a list of "read" style words as variables.
- * User: jansorg
- * Date: 24.05.2009
- * Time: 13:37:14
+ * @author jansorg
  */
 abstract class AbstractReadCommand extends AbstractVariableDefParsing {
     public AbstractReadCommand(String command) {

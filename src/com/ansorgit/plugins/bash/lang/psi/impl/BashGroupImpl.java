@@ -26,7 +26,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashGroupImpl extends BashCompositeElement implements BashBlock {
     public BashGroupImpl() {

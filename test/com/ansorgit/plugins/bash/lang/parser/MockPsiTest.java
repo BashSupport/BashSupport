@@ -29,11 +29,8 @@ import java.util.List;
 /**
  * This is the base class for the parser tests. It takes a mock parsing function and a set of tokens which
  * are passed to the function.
- * <p/>
- * Date: 24.03.2009
- * Time: 22:23:54
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public abstract class MockPsiTest implements BashTokenTypes {
     protected MockPsiBuilder builderFor(List<String> textTokens, IElementType... elements) {

@@ -26,11 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Definition of the refactoring support available in this plugin.
- * <p/>
- * Date: 01.05.2009
- * Time: 10:41:12
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashRefactoringSupport extends RefactoringSupportProvider {
     @Override

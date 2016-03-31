@@ -20,7 +20,7 @@ import com.intellij.psi.PsiElement;
 /**
  * Marker interface for Bash psi elements.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashPsiElement extends PsiElement {
 }

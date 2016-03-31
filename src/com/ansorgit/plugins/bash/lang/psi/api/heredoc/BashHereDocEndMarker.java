@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api.heredoc;
 
 /**
- * User: jansorg
- * Date: Jan 29, 2010
- * Time: 7:02:44 PM
+ * @author jansorg
  */
 public interface BashHereDocEndMarker extends BashHereDocMarker {
 }

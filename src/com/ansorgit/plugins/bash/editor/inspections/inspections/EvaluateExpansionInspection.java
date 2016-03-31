@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This inspection detects expansions and offers a quickfix to calculate the expansion
  * and insert it instead of the original expansion placeholder.
- * <p/>
+ * <br>
  *
  * @author jansorg
  */

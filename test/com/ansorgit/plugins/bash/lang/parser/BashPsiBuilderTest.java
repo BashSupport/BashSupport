@@ -7,9 +7,7 @@ import org.junit.Test;
 import java.util.Collections;
 
 /**
- * User: jansorg
- * Date: 09.11.11
- * Time: 22:21
+ * @author jansorg
  */
 public class BashPsiBuilderTest extends MockPsiTest {
     @Test

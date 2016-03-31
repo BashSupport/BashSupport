@@ -26,10 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Quickfix to convert a backtick command into a subshell command.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 13:53:59
+ * <br>
+ * @author jansorg
  */
 public class BackquoteQuickfix extends AbstractBashPsiElementQuickfix {
     public BackquoteQuickfix(BashBackquote backquote) {

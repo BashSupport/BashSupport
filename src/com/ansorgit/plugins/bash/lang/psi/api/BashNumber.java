@@ -16,10 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 /**
- * Date: 11.04.2009
- * Time: 23:28:05
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashNumber extends BashPsiElement {
 }

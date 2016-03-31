@@ -34,7 +34,7 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 /**
  * Tests the bash lexer.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLexerTest {
     @Test

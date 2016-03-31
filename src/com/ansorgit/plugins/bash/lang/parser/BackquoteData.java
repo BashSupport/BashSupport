@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 /**
- * User: jansorg
- * Date: Jan 29, 2010
- * Time: 7:12:52 PM
+ * @author jansorg
  */
 public final class BackquoteData {
     private boolean inBackquote = false;

@@ -23,10 +23,7 @@ import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 12.04.2009
- * Time: 13:11:14
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashBackquoteImpl extends BashCompositeElement implements BashBackquote {
     public BashBackquoteImpl() {

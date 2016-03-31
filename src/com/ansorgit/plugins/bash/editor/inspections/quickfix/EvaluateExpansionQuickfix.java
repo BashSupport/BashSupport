@@ -28,10 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Evaluates an expansion and replaces the placeholder with the evaluated result.
- * <p/>
- * User: jansorg
- * Date: Nov 15, 2009
- * Time: 12:50:35 AM
+ * <br>
+ * @author jansorg
  */
 public class EvaluateExpansionQuickfix extends AbstractBashPsiElementQuickfix {
     private final boolean enableBash4;

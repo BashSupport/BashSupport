@@ -25,9 +25,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:23:15 PM
+ * @author jansorg
  */
 public class ValueExpansionUtilTest {
     @Test

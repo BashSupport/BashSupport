@@ -21,9 +21,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: 11.01.12
- * Time: 22:46
+ * @author jansorg
  */
 public class BashVarDefIndex extends StringStubIndexExtension<BashVarDef> {
     public static final StubIndexKey<String, BashVarDef> KEY = StubIndexKey.createIndexKey("bash.vardef");

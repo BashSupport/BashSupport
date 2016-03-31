@@ -23,11 +23,8 @@ import com.intellij.psi.PsiElement;
 
 /**
  * Implementation of an if command.
- * <p/>
- * Date: 06.05.2009
- * Time: 12:52:39
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashIfImpl extends BashKeywordDefaultImpl implements BashIf {
     public BashIfImpl() {

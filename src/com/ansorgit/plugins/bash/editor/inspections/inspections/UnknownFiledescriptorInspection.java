@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Detects invalid filedescriptors. Bash only supports the descriptors 0-9.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class UnknownFiledescriptorInspection extends LocalInspectionTool {
     public UnknownFiledescriptorInspection() {

@@ -33,11 +33,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A string spanning start and end markers and content elements.
- * <p/>
- * Date: 12.04.2009
- * Time: 13:13:15
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost {
     private TextRange contentRange;

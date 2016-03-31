@@ -33,10 +33,8 @@ import java.util.List;
 
 /**
  * Base class for arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 12:14:33 PM
+ * <br>
+ * @author jansorg
  */
 public abstract class AbstractExpression extends BashBaseElement implements ArithmeticExpression {
     private final Type type;

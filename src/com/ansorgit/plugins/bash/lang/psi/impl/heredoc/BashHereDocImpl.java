@@ -30,10 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Date: 12.04.2009
- * Time: 13:35:12
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashHereDocImpl extends BashBaseElement implements BashHereDoc, PsiLanguageInjectionHost {
     public BashHereDocImpl(ASTNode astNode) {

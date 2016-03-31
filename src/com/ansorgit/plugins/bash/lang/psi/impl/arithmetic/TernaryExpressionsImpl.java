@@ -22,9 +22,7 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 12:13:49 PM
+ * @author jansorg
  */
 public class TernaryExpressionsImpl extends AbstractExpression implements TernaryExpression {
     public TernaryExpressionsImpl(final ASTNode astNode) {

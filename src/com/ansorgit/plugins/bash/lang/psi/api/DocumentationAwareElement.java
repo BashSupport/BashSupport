@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * User: jansorg
+ * @author jansorg
  */
 public interface DocumentationAwareElement {
     /**

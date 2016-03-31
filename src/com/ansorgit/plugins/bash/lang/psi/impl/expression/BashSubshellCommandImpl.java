@@ -23,9 +23,7 @@ import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User: jansorg
- * Date: 21.05.2009
- * Time: 14:02:27
+ * @author jansorg
  */
 public class BashSubshellCommandImpl extends BashCompositeElement implements BashSubshellCommand {
     public BashSubshellCommandImpl() {

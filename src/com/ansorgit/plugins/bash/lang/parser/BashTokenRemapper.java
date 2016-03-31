@@ -24,11 +24,8 @@ import com.intellij.psi.tree.TokenSet;
  * Token remapper for the BashPsiBuilder.
  * It remapps certain tokens to words if remapping is enabled in the PsiBuilder
  * instance. The remapping is activated by the parsing functions.
- * <p/>
- * Date: 12.04.2009
- * Time: 16:25:28
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 final class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
     private static final TokenSet mappedToWord = TokenSet.create(

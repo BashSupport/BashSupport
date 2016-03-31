@@ -31,10 +31,10 @@ import static com.ansorgit.plugins.bash.file.BashFileType.SH_EXTENSION;
 
 /**
  * Action to create a new Bash file from a template.
- * <p/>
+ * <br>
  * The template data is stored in resources/fileTemplates/internal/Bash Script.sh.ft
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class NewBashFileAction extends CreateElementActionBase {
     public NewBashFileAction() {

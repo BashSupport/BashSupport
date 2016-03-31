@@ -25,10 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This inspection can convert the backquote commands into subshell commands.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 13:49:05
+ * <br>
+ * @author jansorg
  */
 public class ConvertBackquoteInspection extends LocalInspectionTool {
     @NotNull

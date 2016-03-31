@@ -27,11 +27,8 @@ import org.jetbrains.annotations.PropertyKey;
 
 /**
  * Useful helper methods for the language parsing.
- * <p/>
- * Date: 24.03.2009
- * Time: 21:22:30
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ParserUtil {
     @NonNls

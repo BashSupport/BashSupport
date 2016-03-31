@@ -21,10 +21,7 @@ import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 12.04.2009
- * Time: 20:40:29
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFunctionDefNameImpl extends BashBaseElement implements BashFunctionDefName {
     public BashFunctionDefNameImpl(ASTNode astNode) {

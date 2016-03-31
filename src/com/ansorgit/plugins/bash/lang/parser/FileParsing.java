@@ -19,11 +19,8 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 
 /**
  * Parsing of Bash files. This is the entry to parse full bash scripts.
- * <p/>
- * Date: 24.03.2009
- * Time: 20:36:37
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class FileParsing implements ParsingTool {
     public boolean parseFile(BashPsiBuilder builder) {

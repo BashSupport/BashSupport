@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import org.apache.commons.lang.ArrayUtils;
 
 /**
- * User: jansorg
- * Date: Dec 2, 2009
- * Time: 6:49:23 PM
+ * @author jansorg
  */
 public final class BashStringUtils {
     private static final char[] EMPTY = new char[0];

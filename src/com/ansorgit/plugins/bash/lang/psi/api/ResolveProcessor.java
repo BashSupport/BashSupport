@@ -20,10 +20,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Date: 12.04.2009
- * Time: 23:38:25
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface ResolveProcessor extends PsiScopeProcessor {
     @Nullable

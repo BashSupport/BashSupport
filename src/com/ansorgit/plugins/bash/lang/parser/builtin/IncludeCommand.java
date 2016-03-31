@@ -29,9 +29,7 @@ import com.intellij.psi.tree.TokenSet;
 import java.util.Set;
 
 /**
- * User: jansorg
- * Date: 18.02.11
- * Time: 19:37
+ * @author jansorg
  */
 class IncludeCommand implements ParsingFunction, ParsingTool {
     private static final Set<String> acceptedCommands = Sets.newHashSet(".", "source");

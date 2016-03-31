@@ -23,9 +23,7 @@ import com.intellij.psi.PsiElement;
 import java.util.Set;
 
 /**
- * User: jansorg
- * Date: 06.02.11
- * Time: 18:27
+ * @author jansorg
  */
 public interface Keys {
     Key<Multimap<VirtualFile, PsiElement>> visitedIncludeFiles = new Key<Multimap<VirtualFile, PsiElement>>("visitedIncludeFiles");

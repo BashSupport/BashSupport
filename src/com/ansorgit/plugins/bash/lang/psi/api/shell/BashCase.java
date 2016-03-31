@@ -21,10 +21,7 @@ import com.intellij.psi.PsiElement;
 import java.util.Collection;
 
 /**
- * Date: 06.05.2009
- * Time: 13:22:51
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashCase extends BashPsiElement {
     /**

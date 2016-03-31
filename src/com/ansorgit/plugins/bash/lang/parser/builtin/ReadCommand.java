@@ -17,10 +17,8 @@ package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 /**
  * Implements the read command.
- * <p/>
- * User: jansorg
- * Date: 23.05.2009
- * Time: 23:45:48
+ * <br>
+ * @author jansorg
  */
 class ReadCommand extends AbstractReadCommand {
     public ReadCommand() {

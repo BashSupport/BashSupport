@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The file type loader of the BashSupport plugin. Registered in the plugin.xml file.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFileTypeLoader extends FileTypeFactory {
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {

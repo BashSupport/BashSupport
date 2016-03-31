@@ -33,10 +33,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Provides documentation by calling the systems info program and converts the output to html.
- * <p/>
- * User: jansorg
- * Date: 08.05.2010
- * Time: 11:10:51
+ * <br>
+ * @author jansorg
  */
 class SystemInfopageDocSource implements DocumentationSource, CachableDocumentationSource {
     @NonNls

@@ -27,11 +27,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for backtic / backquote calls.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:17:08
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BacktickParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.BackquoteParsing");

@@ -27,11 +27,9 @@ import java.util.List;
 /**
  * Class to work with expansions.
  * It can expand static expansions into the value which would be printed by a bash shell.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:21:06 PM
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public final class ValueExpansionUtil {
     private ValueExpansionUtil() {
@@ -97,7 +95,7 @@ public final class ValueExpansionUtil {
      * Evaluates a pattern like a,b,c or a..c. The string input is expected to be a comma
      * separated list. Each element is either a string or a range. A range cen either be numeric (1..10) or
      * a range between characters (a..z).
-     * <p/>
+     * <br>
      * Valid patterns examples: "a", "a,b", "a..z", "1..999", "abc,def"
      *
      * @param part           The element list to evaluate

@@ -6,9 +6,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 26.01.11
- * Time: 19:58
+ * @author jansorg
  */
 public class ComposedVariableParsingTest extends MockPsiTest {
     protected MockFunction mockFunction = new MockFunction() {

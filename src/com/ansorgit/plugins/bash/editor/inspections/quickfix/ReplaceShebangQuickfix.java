@@ -26,11 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Replaces an existing, but invalid shebang command with a known command.
- * <p/>
- * Date: 06.05.2009
- * Time: 13:52:33
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ReplaceShebangQuickfix extends AbstractBashPsiElementQuickfix {
     private final String command;

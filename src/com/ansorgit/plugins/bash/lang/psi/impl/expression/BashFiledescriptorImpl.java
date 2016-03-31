@@ -26,9 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * User: jansorg
- * Date: 10.05.2010
- * Time: 19:57:38
+ * @author jansorg
  */
 public class BashFiledescriptorImpl extends BashBaseElement implements BashFiledescriptor {
     public BashFiledescriptorImpl(ASTNode astNode) {

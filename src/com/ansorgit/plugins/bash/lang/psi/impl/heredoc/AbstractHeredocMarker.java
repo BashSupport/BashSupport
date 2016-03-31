@@ -29,10 +29,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Abstract base class for heredoc markers.
- * <p/>
- * User: jansorg
- * Date: Jan 30, 2010
- * Time: 12:48:49 PM
+ * <br>
+ * @author jansorg
  */
 abstract class AbstractHeredocMarker extends BashBaseElement implements BashHereDocMarker {
     private HeredocMarkerReference reference;

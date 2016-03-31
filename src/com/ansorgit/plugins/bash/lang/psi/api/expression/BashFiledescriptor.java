@@ -19,9 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * User: jansorg
- * Date: 10.05.2010
- * Time: 19:56:50
+ * @author jansorg
  */
 public interface BashFiledescriptor extends BashPsiElement {
     @Nullable

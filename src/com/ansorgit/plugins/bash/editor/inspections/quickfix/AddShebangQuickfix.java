@@ -26,10 +26,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 15.05.2009
- * Time: 16:15:38
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class AddShebangQuickfix extends AbstractBashQuickfix {
 

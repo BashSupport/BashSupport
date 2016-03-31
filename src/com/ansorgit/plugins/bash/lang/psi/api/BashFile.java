@@ -24,10 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 /**
- * Date: 11.04.2009
- * Time: 23:22:57
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashFile extends PsiFile, BashPsiElement {
     Key<Boolean> LANGUAGE_CONSOLE_MARKER = new Key<Boolean>("Language console marker");

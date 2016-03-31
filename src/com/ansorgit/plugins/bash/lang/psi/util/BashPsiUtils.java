@@ -48,9 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * User: jansorg
- * Date: 04.08.2009
- * Time: 21:45:47
+ * @author jansorg
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {

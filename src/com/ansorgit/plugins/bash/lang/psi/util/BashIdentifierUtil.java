@@ -18,9 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * User: jansorg
- * Date: Feb 8, 2010
- * Time: 9:55:14 PM
+ * @author jansorg
  */
 public final class BashIdentifierUtil {
     private BashIdentifierUtil() {

@@ -23,7 +23,7 @@ import com.intellij.psi.tree.TokenSet;
  * Identifies all of the token types (at least, the ones we'll care about) in Arc.
  * Used by the lexer to break a Bash source file down into tokens.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashTokenTypes {
     IElementType BAD_CHARACTER = TokenType.BAD_CHARACTER;

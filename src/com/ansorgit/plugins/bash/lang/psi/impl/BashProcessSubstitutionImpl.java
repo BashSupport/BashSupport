@@ -20,9 +20,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 
 /**
- * User: jansorg
- * Date: 13.07.2010
- * Time: 18:54:48
+ * @author jansorg
  */
 public class BashProcessSubstitutionImpl extends BashBaseElement implements BashProcessSubstitution {
     public BashProcessSubstitutionImpl(final ASTNode astNode) {

@@ -27,12 +27,11 @@ import java.util.Map;
 /**
  * Caches the result of the delegate documentation source after the first invocation for a certain command name.
  * The cache is done in a weak key hash map to prevent too much memory allocation.
- * <p/>
+ * <br>
  * The urls are not cached.
- * <p/>
- * User: jansorg
- * Date: 08.05.2010
- * Time: 12:59:53
+ * <br>
+ *
+ * @author jansorg
  */
 class CachingDocumentationSource implements DocumentationSource {
     private final CachableDocumentationSource delegate;

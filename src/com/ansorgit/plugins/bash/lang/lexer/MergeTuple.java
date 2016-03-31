@@ -20,10 +20,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * A single mapping of a set of tokens to a target element.
- * <p/>
- * User: jansorg
- * Date: 28.07.2009
- * Time: 18:59:05
+ * <br>
+ * @author jansorg
  */
 public final class MergeTuple {
     private final TokenSet tokensToMerge;

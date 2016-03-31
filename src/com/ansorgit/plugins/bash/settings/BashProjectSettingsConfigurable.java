@@ -25,10 +25,7 @@ import org.jetbrains.annotations.Nls;
 import javax.swing.*;
 
 /**
- * Date: 12.05.2009
- * Time: 18:51:48
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashProjectSettingsConfigurable implements Configurable {
     private final Project project;

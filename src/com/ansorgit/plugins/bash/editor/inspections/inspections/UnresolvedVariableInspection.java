@@ -32,10 +32,8 @@ import java.util.Set;
 
 /**
  * This inspection marks unresolved variables.
- * <p/>
- * User: jansorg
- * Date: Jan 25, 2010
- * Time: 10:11:49 PM
+ * <br>
+ * @author jansorg
  */
 public class UnresolvedVariableInspection extends LocalInspectionTool {
     @NotNull

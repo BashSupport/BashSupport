@@ -28,11 +28,8 @@ import java.net.URL;
 /**
  * Base class for documentation source implementations
  * which load data from the classpath.
- * <p/>
- * Date: 03.05.2009
- * Time: 22:28:17
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 abstract class ClasspathDocSource implements DocumentationSource {
     private static final Logger log = Logger.getInstance("#bash.DocumentationReader");

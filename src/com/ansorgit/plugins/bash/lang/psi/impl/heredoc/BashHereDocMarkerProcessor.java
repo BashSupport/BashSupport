@@ -24,10 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * PSI tree processor which collects heredoc markers in the tree.
- * <p/>
- * User: jansorg
- * Date: Jan 30, 2010
- * Time: 12:55:10 PM
+ * <br>
+ * @author jansorg
  */
 class BashHereDocMarkerProcessor extends BashAbstractProcessor {
     private final String referencedName;

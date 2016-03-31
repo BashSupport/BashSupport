@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 26.05.2010
- * Time: 21:49:24
+ * @author jansorg
  */
 public class SimpleExpressionsImplTest {
     @Test

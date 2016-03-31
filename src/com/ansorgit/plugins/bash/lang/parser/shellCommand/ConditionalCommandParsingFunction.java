@@ -27,10 +27,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of conditional commands like [[ -f x.txt && -d dir1 ]]
- * <p/>
- * User: jansorg
- * Date: 09.11.11
- * Time: 20:06
+ * <br>
+ * @author jansorg
  */
 public class ConditionalCommandParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalCommandParsingFunction");
@@ -44,22 +42,22 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
 
     /**
      * From http://www.gnu.org/software/bash/manual/bashref.html#Conditional-Constructs :
-     * <p/>
-     * <p/>
+     * <br>
+     * <br>
      * <code>( expression )</code>
      * Returns the value of expression. This may be used to override the normal precedence of operators.
-     * <p/>
+     * <br>
      * <code>! expression</code>
      * True if expression is false.
-     * <p/>
+     * <br>
      * <code>expression1 && expression2</code>
      * True if both expression1 and expression2 are true.
-     * <p/>
+     * <br>
      * <code>expression1 || expression2</code>
      * True if either expression1 or expression2 is true.
-     * <p/>
+     * <br>
      * The && and || operators do not evaluate expression2 if the value of expression1 is sufficient to determine the return value of the entire conditional expression.
-     * <p/>
+     * <br>
      * An expression is a normal test expression as used in the conditional expression parsing function.
      *
      * @param builder The provider of the tokens.

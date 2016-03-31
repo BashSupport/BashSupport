@@ -23,7 +23,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLogicalBlockImpl extends BashCompositeElement {
     public BashLogicalBlockImpl() {

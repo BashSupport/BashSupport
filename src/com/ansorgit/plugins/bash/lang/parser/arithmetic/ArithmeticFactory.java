@@ -21,9 +21,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
- * User: jansorg
- * Date: 17.07.2010
- * Time: 18:36:58
+ * @author jansorg
  */
 public class ArithmeticFactory implements BashTokenTypes, BashElementTypes {
     private static final ParenExpr parenExpr = new ParenExpr();

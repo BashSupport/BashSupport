@@ -24,11 +24,8 @@ import com.intellij.psi.PsiElement;
  * Looks up the documentation for external commands by calling the "man" program.
  * At the moment it uses pre-made HTML files. The aim is that it directly accesses the system's
  * man pages, parses them and returns HTML for it.
- * <p/>
- * Date: 03.05.2009
- * Time: 20:22:55
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 class ManpageDocSource extends ClasspathDocSource {
     ManpageDocSource() {

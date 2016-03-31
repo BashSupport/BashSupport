@@ -20,10 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Wraps a word like a in a quoted string, i.e. "a".
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:40:37
+ * <br>
+ * @author jansorg
  */
 public class WordToDoublequotedStringQuickfix extends AbstractWordWrapQuickfix {
     public WordToDoublequotedStringQuickfix(BashWord word) {

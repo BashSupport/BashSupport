@@ -20,10 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Converts a word like into an unquoted string 'a'.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:40:37
+ * <br>
+ * @author jansorg
  */
 public class WordToSinglequotedStringQuickfix extends AbstractWordWrapQuickfix {
 

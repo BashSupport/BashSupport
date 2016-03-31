@@ -22,9 +22,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 
 /**
- * User: jansorg
- * Date: Oct 29, 2009
- * Time: 8:46:18 PM
+ * @author jansorg
  */
 public class BashCasePatternImpl extends BashBaseElement implements BashCasePattern {
     public BashCasePatternImpl(final ASTNode astNode) {

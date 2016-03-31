@@ -28,10 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Abstract base class for Bash quickfixes.
- * <p/>
- * User: jansorg
- * Date: 21.05.2009
- * Time: 10:47:27
+ * <br>
+ * @author jansorg
  */
 abstract class AbstractBashQuickfix implements LocalQuickFix, IntentionAction {
     @NotNull

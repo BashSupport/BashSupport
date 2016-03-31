@@ -26,10 +26,7 @@ import com.intellij.psi.tree.TokenSet;
 import static com.ansorgit.plugins.bash.lang.parser.util.ParserUtil.error;
 
 /**
- * Date: 24.03.2009
- * Time: 20:52:54
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 //fixme refactor this
 public class RedirectionParsing implements ParsingTool {

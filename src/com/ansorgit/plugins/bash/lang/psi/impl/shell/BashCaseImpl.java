@@ -27,11 +27,8 @@ import java.util.Collection;
 
 /**
  * Implements the Bash Case construct.
- * <p/>
- * Date: 06.05.2009
- * Time: 13:23:01
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashCaseImpl extends BashKeywordDefaultImpl implements BashCase {
     public BashCaseImpl() {
