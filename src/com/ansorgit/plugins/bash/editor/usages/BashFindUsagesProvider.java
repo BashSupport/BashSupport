@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The find usages provider implementation for Bash.
  * <br>
+ *
  * @author jansorg
  */
 public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenTypes {
@@ -51,7 +53,8 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
                 || psi instanceof BashFileReference
                 || psi instanceof BashCommand
                 || psi instanceof BashHereDocMarker
-                || psi instanceof BashFunctionDef;
+                || psi instanceof BashFunctionDef
+                || psi instanceof BashFunctionDefName;
     }
 
     public String getHelpId(@NotNull PsiElement psiElement) {
@@ -60,7 +63,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     @NotNull
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof BashFunctionDef) {
+        if (element instanceof BashFunctionDef || element instanceof BashFunctionDefName) {
             return "function";
         }
 
@@ -93,10 +96,6 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
 
     @NotNull
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (!canFindUsagesFor(element)) {
-            return "";
-        }
-
         if (element instanceof BashCommand) {
             return StringUtils.stripToEmpty(((BashCommand) element).getReferencedCommandName());
         }
@@ -105,7 +104,6 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return StringUtils.stripToEmpty(((PsiNamedElement) element).getName());
         }
 
-        //fixme
         return "";
     }
 
@@ -118,7 +116,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
         private static final TokenSet literals = TokenSet.create(BashElementTypes.STRING_ELEMENT, STRING2, INTEGER_LITERAL, WORD, STRING_CONTENT);
         private static final TokenSet identifiers = TokenSet.create(VARIABLE);
 
-        public BashWordsScanner() {
+        protected BashWordsScanner() {
             super(new BashLexer(), identifiers, BashTokenTypes.commentTokens, literals);
             setMayHaveFileRefsInLiterals(true);
         }

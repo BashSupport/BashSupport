@@ -41,7 +41,9 @@ public class BashSpellCheckingSupport extends SpellcheckingStrategy {
     public Tokenizer getTokenizer(PsiElement psiElement) {
         if (psiElement instanceof BashString) {
             return new BashStringTokenizer();
-        } else if (psiElement instanceof BashWord) {
+        }
+
+        if (psiElement instanceof BashWord) {
             if (((BashWord) psiElement).isWrapped()) {
                 return new BashWordTokenizer();
             }

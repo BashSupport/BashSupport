@@ -28,12 +28,17 @@ import com.intellij.psi.PsiReference;
 public class BashReadWriteAccessDetector extends ReadWriteAccessDetector {
     @Override
     public boolean isReadWriteAccessible(PsiElement element) {
-        return element instanceof BashVar || element instanceof BashVarDef || element instanceof BashFile;
+        return element instanceof BashVar || element instanceof BashFile;
     }
 
     @Override
     public boolean isDeclarationWriteAccess(PsiElement element) {
-        return true;
+        if (element instanceof BashVarDef) {
+            BashVarDef varDef = (BashVarDef) element;
+            return varDef.hasAssignmentValue();
+        }
+
+        return false;
     }
 
     @Override
@@ -43,22 +48,10 @@ public class BashReadWriteAccessDetector extends ReadWriteAccessDetector {
 
     @Override
     public Access getExpressionAccess(PsiElement expression) {
-        if (expression instanceof BashVarDef && expression instanceof BashVar) {
-            return Access.ReadWrite;
-        }
-
         if (expression instanceof BashVarDef) {
             return Access.Write;
         }
 
-        if (expression instanceof BashVar) {
-            return Access.Read;
-        }
-
-        if (expression instanceof BashFile) {
-            return Access.Read;
-        }
-
-        return Access.ReadWrite;
+        return Access.Read;
     }
 }
