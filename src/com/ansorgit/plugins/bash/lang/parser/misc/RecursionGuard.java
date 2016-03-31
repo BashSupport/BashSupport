@@ -22,11 +22,11 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
  * https://code.google.com/p/bashsupport/issues/detail?id=152 is a report of an appareantly endless recursion which could
  * not be reproduced.
  */
-public final class RecursionGuard {
+final class RecursionGuard {
     //the highest level found in the test files was 76 (as of 2015-02-28)
-    private static final int MAX_NESTING = 150;
+    private static final int MAX_NESTING = 300;
 
-    private int max;
+    private final int max;
     private int level = 0;
 
     private RecursionGuard(int max) {
@@ -38,11 +38,12 @@ public final class RecursionGuard {
     }
 
     public boolean next(BashPsiBuilder builder) {
-        if (this.level++ > max) {
-            builder.error("Internal parser error: Maximum level of nested calls reached. Please report this.");
+        if (this.level > max) {
+            builder.error("Internal parser error: Maximum level of nested calls reached. Please report this at https://github.com/jansorg/BashSupport/issues");
             return false;
         }
 
+        this.level++;
         return true;
     }
 }
