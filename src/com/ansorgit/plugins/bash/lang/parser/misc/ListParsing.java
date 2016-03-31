@@ -24,9 +24,6 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
 /**
- * Date: 25.03.2009
- * Time: 11:28:38
- *
  * @author Joachim Ansorg
  */
 public final class ListParsing implements ParsingTool {
