@@ -248,8 +248,8 @@ public interface BashTokenTypes {
     IElementType HEREDOC_MARKER_TAG = new BashElementType("heredoc marker tag");
     IElementType HEREDOC_MARKER_START = new BashElementType("heredoc start marker");
     IElementType HEREDOC_MARKER_END = new BashElementType("heredoc end marker");
+    IElementType HEREDOC_MARKER_IGNORING_TABS_END = new BashElementType("heredoc end marker (ignoring tabs)");
     IElementType HEREDOC_LINE = new BashElementType("heredoc line (temporary)");
-    //IElementType HEREDOC_CONTENT = new ILazyParseableElementType("here doc content", BashFileType.BASH_LANGUAGE);
     IElementType HEREDOC_CONTENT = new BashElementType("here doc content");
 
     // test Operators

@@ -3,56 +3,34 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.util.IntStack;
 
-/**
- *
- */
-public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
+final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
     private final StringLexingstate string = new StringLexingstate();
     //parameter expansion parsing state
-    boolean paramExpansionHash = false;
-    boolean paramExpansionWord = false;
-    boolean paramExpansionOther = false;
+    private boolean paramExpansionHash = false;
+    private boolean paramExpansionWord = false;
+    private boolean paramExpansionOther = false;
     private int openParenths = 0;
     private boolean isBash4 = false;
     //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
     private boolean inCaseBody = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
-    private HeredocLexingState heredocLexingState = new HeredocLexingState();
 
-    public _BashLexer(BashVersion version, java.io.Reader in) {
+    @Override
+    public HeredocLexingState heredocState() {
+        return heredocState;
+    }
+
+    private final HeredocLexingState heredocState = new HeredocLexingState();
+
+    _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
     }
 
-    @Override
-    public boolean isHeredocEnd(String text) {
-        return heredocLexingState.isNextHeredocMarker(text);
-    }
-
-    @Override
-    public boolean isHeredocEvaluating() {
-        return heredocLexingState.isExpectingEvaluatingHeredoc();
-    }
-
-    @Override
-    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
-        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
-    }
-
-    @Override
-    public void popHeredocMarker(CharSequence marker) {
-        heredocLexingState.popHeredocMarker(marker.toString());
-    }
-
-    @Override
-    public boolean isHeredocMarkersEmpty() {
-        return heredocLexingState.isEmpty();
-    }
-    
     @Override
     public boolean isEmptyConditionalCommand() {
         return emptyConditionalCommand;

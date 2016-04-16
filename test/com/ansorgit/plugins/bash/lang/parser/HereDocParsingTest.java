@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author Joachim Ansorg
  */
 public class HereDocParsingTest extends MockPsiTest {
-    MockFunction hereDoc = new MockFunction() {
+    private MockFunction hereDoc = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.file.parseFile(psi);
@@ -54,28 +54,28 @@ public class HereDocParsingTest extends MockPsiTest {
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "END", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
 
         //a <<-"END"
         // TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"END\"", "\n", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
 
         //a <<-"END"
         // "TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "\"END\"", "\n", "\"", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END);
 
         //a <<-'END'
         // "TEST
         //END
         mockTest(hereDoc,
                 Lists.newArrayList("a", "<<-", "'END'", "\n", "\"", "TEST", "\n", "END"),
-                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END);
     }
 
     @Test
@@ -122,6 +122,23 @@ public class HereDocParsingTest extends MockPsiTest {
 
         mockTest(hereDoc, Lists.newArrayList("x", "<<", "!", "\n", "Text", "\n", "!"),
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END
+        );
+    }
+
+    @Test
+    public void testHereWhitespacePrefix() throws Exception {
+        //  x <<- EOL
+        //  \t\tText
+        // EOL
+        mockTest(hereDoc, Lists.newArrayList("x", "<<-", "EOL", "\n", "\t\tText", "\n", "EOL"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END
+        );
+
+        //  x <<- EOL
+        //  \t\tText
+        // \tEOL
+        mockTest(hereDoc, Lists.newArrayList("x", "<<-", "EOL", "\n", "\t\tText", "\n", "\tEOL"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END
         );
     }
 

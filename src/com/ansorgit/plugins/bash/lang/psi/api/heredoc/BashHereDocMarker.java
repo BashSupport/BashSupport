@@ -23,11 +23,12 @@ import com.intellij.psi.PsiNamedElement;
 
 /**
  * Marker interface for all heredoc marker psi elements.
- * <p/>
- * User: jansorg
- * Date: Jan 30, 2010
- * Time: 1:57:34 PM
  */
 public interface BashHereDocMarker extends BashPsiElement, PsiNamedElement {
     String getMarkerText();
+
+    /**
+     * @return @{code true} if leading tabs in this marker name should be ignored. Only makes sense for end markers.
+     */
+    boolean isIgnoringTabs();
 }

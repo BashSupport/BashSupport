@@ -223,7 +223,7 @@ public final class ListParsing implements ParsingTool {
      * next command. The lexer state is not available here so we need to look ahead at a limited amount
      * of following tokens.
      *
-     * @param builder
+     * @param builder Bash psi builder
      * @return True if a heredoc was parsed, false if no heredoc was found
      */
     private boolean parseOptionalHeredoc(BashPsiBuilder builder) {
@@ -257,6 +257,9 @@ public final class ListParsing implements ParsingTool {
 
                 if (builder.getTokenType() == HEREDOC_MARKER_END) {
                     ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_ELEMENT);
+                    builder.getParsingState().popHeredocMarker();
+                } else if (builder.getTokenType() == HEREDOC_MARKER_IGNORING_TABS_END) {
+                    ParserUtil.markTokenAndAdvance(builder, HEREDOC_END_IGNORING_TABS_ELEMENT);
                     builder.getParsingState().popHeredocMarker();
                 } else {
                     if (builder.getParsingState().expectsHeredocMarker()) {

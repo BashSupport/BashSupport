@@ -34,6 +34,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -129,8 +130,8 @@ public class BashPsiElementFactory {
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocStartMarker.class);
     }
 
-    public static PsiElement createHeredocEndMarker(Project project, String name) {
-        String data = String.format("cat << %s\n%s", name, name);
+    public static PsiElement createHeredocEndMarker(Project project, String name, int leadingTabs) {
+        String data = String.format("cat <<- %s\n%s", name, StringUtils.repeat("\t", leadingTabs) + name);
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocEndMarker.class);
     }
 

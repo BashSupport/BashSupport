@@ -20,6 +20,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -60,12 +61,12 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
     }
 
     @Override
-    public String getMarkerText() {
-        return getText().trim();
+    public boolean isIgnoringTabs() {
+        return getNode().getElementType() == BashElementTypes.HEREDOC_END_IGNORING_TABS_ELEMENT;
     }
 
     private static class HeredocEndMarkerReference extends HeredocMarkerReference {
-        public HeredocEndMarkerReference(BashHereDocEndMarker marker) {
+        HeredocEndMarkerReference(BashHereDocEndMarker marker) {
             super(marker);
         }
 
@@ -105,7 +106,14 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
 
         @Override
         protected PsiElement createMarkerElement(String name) {
-            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name);
+            String markerText = getElement().getText();
+
+            int leadingTabs = 0;
+            for (int i = 0; i < markerText.length() && markerText.charAt(i) == '\t'; i++) {
+                leadingTabs++;
+            }
+
+            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name, leadingTabs);
         }
     }
 }

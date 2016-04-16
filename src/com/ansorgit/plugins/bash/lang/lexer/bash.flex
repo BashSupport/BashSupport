@@ -146,6 +146,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* To match heredoc documents */
 %xstate S_HEREDOC_MARKER
+%xstate S_HEREDOC_MARKER_IGNORE_TABS
 %xstate S_HEREDOC
 
 %%
@@ -155,15 +156,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {Comment}                     { return COMMENT; }
 }
 
-<S_HEREDOC_MARKER> {
+<S_HEREDOC_MARKER, S_HEREDOC_MARKER_IGNORE_TABS> {
     {WhiteSpace}+                { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }     //fixme
+    {ContinuedLine}+             { /* ignored */ }
     {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
     | [^ \s\t\n\r\f;&|]+ {
-        pushExpectedHeredocMarker(yytext());
+        heredocState().pushMarker(yytext(), yystate() == S_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
 
         return HEREDOC_MARKER_START;
@@ -173,8 +174,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_HEREDOC> {
-    {LineTerminator}+           { if (!isHeredocMarkersEmpty()) {
-                                        return HEREDOC_LINE;
+    {LineTerminator}+           { if (!heredocState().isEmpty()) {
+                                    return HEREDOC_LINE;
                                   }
                                   return LINE_FEED;
                                 }
@@ -182,45 +183,51 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     \\ {Variable}?              { return HEREDOC_LINE; }
 
     {Variable}                {
-            if (isHeredocEnd(yytext().toString())) {
-                popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-                if (isHeredocMarkersEmpty()) {
+                heredocState().popMarker(yytext());
+
+                if (heredocState().isEmpty()) {
                     backToPreviousState();
                 }
 
-                return HEREDOC_MARKER_END;
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
 
-            return isHeredocEvaluating() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
+            return heredocState().isExpectingEvaluatingHeredoc() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
     }
 
     [^$\n\r\\]+  {
-        if (isHeredocEnd(yytext().toString())) {
-            popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-            if (isHeredocMarkersEmpty()) {
-                backToPreviousState();
+                heredocState().popMarker(yytext());
+
+                if (heredocState().isEmpty()) {
+                    backToPreviousState();
+                }
+
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
 
-            return HEREDOC_MARKER_END;
-        }
-
-        return HEREDOC_LINE;
+            return HEREDOC_LINE;
     }
 
     "$"  {
-         if (isHeredocEnd(yytext().toString())) {
-             popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-             if (isHeredocMarkersEmpty()) {
-                 backToPreviousState();
-             }
+                heredocState().popMarker(yytext());
 
-             return HEREDOC_MARKER_END;
-         }
+                if (heredocState().isEmpty()) {
+                    backToPreviousState();
+                }
 
-         return HEREDOC_LINE;
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
+            }
+
+            return HEREDOC_LINE;
      }
 
     .                            { return BAD_CHARACTER; }
@@ -251,7 +258,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 // Parenthesis lexing
 <S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE, S_CASE> {
-    "$" / "("               { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
+    "$" / "("               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_PARAM_EXPANSION, S_CASE> {
@@ -659,9 +666,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "$"\'{SingleCharacter}*\'     |
     \'{UnescapedCharacter}*\'        { return STRING2; }
 
-    /* Single line feeds are required to properly parse heredocs*/
+    /* Single line feeds are required to properly parse heredocs */
     {LineTerminator}             {
-                                        if (!isHeredocMarkersEmpty()) {
+                                        if (!heredocState().isEmpty()) {
+                                            // first linebreak after the start marker 
                                             goToState(S_HEREDOC);
                                         }
 
@@ -689,7 +697,11 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "@"                           { return AT; }
     "$"                           { return DOLLAR; }
     ";"                           { return SEMI; }
-    "<<" | "<<-" {
+    "<<-" {
+        goToState(S_HEREDOC_MARKER_IGNORE_TABS);
+        return HEREDOC_MARKER_TAG;
+    }
+    "<<" {
         goToState(S_HEREDOC_MARKER);
         return HEREDOC_MARKER_TAG;
     }
@@ -710,8 +722,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
-    "${"                        { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
-    "}"                         { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; return RIGHT_CURLY; }
+    "${"                        { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
+    "}"                         { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
 
 <S_CASE_PATTERN> {

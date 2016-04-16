@@ -127,6 +127,7 @@ public interface BashElementTypes {
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
+    IElementType HEREDOC_END_IGNORING_TABS_ELEMENT = new BashElementType("heredoc end element (ignoring tabs)");
 
     IElementType EVAL_BLOCK = new BashEvalElementType();
 

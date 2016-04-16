@@ -32,7 +32,6 @@ import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +40,11 @@ import java.util.List;
 public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements BashHereDocStartMarker {
     public BashHereDocStartMarkerImpl(final ASTNode astNode) {
         super(astNode, "Bash heredoc start marker");
+    }
+
+    @Override
+    public boolean isIgnoringTabs() {
+        return false;
     }
 
     @Override
@@ -62,13 +66,8 @@ public class BashHereDocStartMarkerImpl extends AbstractHeredocMarker implements
 
     }
 
-    @Override
-    public String getMarkerText() {
-        return HeredocSharedImpl.cleanMarker(getText().trim());
-    }
-
     private static class HeredocStartMarkerReference extends HeredocMarkerReference {
-        public HeredocStartMarkerReference(BashHereDocStartMarker marker) {
+        HeredocStartMarkerReference(BashHereDocStartMarker marker) {
             super(marker);
         }
 

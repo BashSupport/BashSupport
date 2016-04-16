@@ -1,3 +1,6 @@
+####2016-04-16:
+ - \#321: Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
+
 ####2016-02-23:
  - Release 1.5.5
 

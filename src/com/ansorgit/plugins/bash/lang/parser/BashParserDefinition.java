@@ -84,7 +84,8 @@ public class BashParserDefinition implements ParserDefinition, BashElementTypes 
         return stringLiterals;
     }
 
-    private static final TokenSet heredocTokens = TokenSet.create(BashTokenTypes.HEREDOC_CONTENT, BashTokenTypes.HEREDOC_MARKER_START, BashTokenTypes.HEREDOC_MARKER_START);
+    private static final TokenSet heredocTokens = TokenSet.create(BashTokenTypes.HEREDOC_CONTENT,
+            BashTokenTypes.HEREDOC_MARKER_START, BashTokenTypes.HEREDOC_MARKER_END, BashTokenTypes.HEREDOC_MARKER_IGNORING_TABS_END);
 
     public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode leftAst, ASTNode rightAst) {
         final IElementType left = leftAst.getElementType();
