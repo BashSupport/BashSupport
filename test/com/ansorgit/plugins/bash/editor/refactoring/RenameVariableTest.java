@@ -75,6 +75,11 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testRenameArrayArithmeticVar() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
     @Ignore //broken atm
     public void _testEvalRenameInlined() throws Exception {
         doRename(new Runnable() {

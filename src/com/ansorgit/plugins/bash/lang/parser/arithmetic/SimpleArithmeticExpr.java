@@ -28,15 +28,11 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing of a simple arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 5:52:20 PM
  */
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
-        return tokenType == WORD
+        return tokenType == WORD || tokenType == ASSIGNMENT_WORD
                 || arithLiterals.contains(tokenType)
                 || arithmeticAdditionOps.contains(builder.getTokenType())
                 || Parsing.var.isValid(builder)
@@ -89,11 +85,15 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                     //mark "a" as a variable and not as a regular word token
                     ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
                     ok = true;
+                } else if (tokenType == ASSIGNMENT_WORD) {
+                    //mark "a[...]" as a variable and not as a regular word token
+                    ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
+                    ok = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                 } else if (arithLiterals.contains(tokenType)) {
                     builder.advanceLexer();
                     ok = true;
                 } else if (Parsing.var.isValid(builder)) {
-                    //fixme whitespace on?
+                    //fixme parse with whitespace on?
                     ok = Parsing.var.parse(builder);
                 } else if (Parsing.word.isComposedString(tokenType)) {
                     ok = Parsing.word.parseComposedString(builder);

@@ -1034,6 +1034,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue320() throws Exception {
+        testTokenization("(( a[0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+        testTokenization("(( a[0x0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
