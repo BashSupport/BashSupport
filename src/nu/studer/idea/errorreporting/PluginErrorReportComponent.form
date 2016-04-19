@@ -13,7 +13,7 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text resource-bundle="nu/studer/idea/errorreporting/PluginErrorReportSubmitterBundle" key="submission.dialog.explanation"/>
+          <text value="The error report is send to the author of BashSupport. Only the information displayed here will be transmitted." noi18n="true"/>
         </properties>
       </component>
       <component id="5c7fc" class="javax.swing.JTextArea" binding="descriptionField">
@@ -34,7 +34,7 @@
           <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text resource-bundle="nu/studer/idea/errorreporting/PluginErrorReportSubmitterBundle" key="submission.dialog.stacktrace"/>
+          <text value="Exception stack trace:" noi18n="true"/>
         </properties>
       </component>
       <component id="8ca82" class="javax.swing.JLabel">
@@ -42,7 +42,7 @@
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text resource-bundle="nu/studer/idea/errorreporting/PluginErrorReportSubmitterBundle" key="submission.dialog.label.description"/>
+          <text value="Description (optional):" noi18n="true"/>
         </properties>
       </component>
       <component id="3e1a0" class="javax.swing.JLabel">
@@ -50,7 +50,7 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text resource-bundle="nu/studer/idea/errorreporting/PluginErrorReportSubmitterBundle" key="submission.dialog.label.user"/>
+          <text value="Name/Email (optional):" noi18n="true"/>
         </properties>
       </component>
       <component id="392c1" class="javax.swing.JTextField" binding="nameField">
@@ -90,7 +90,7 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Version:"/>
+          <text value="Version:" noi18n="true"/>
         </properties>
       </component>
       <component id="74c11" class="javax.swing.JTextField" binding="versionField">

@@ -1,3 +1,7 @@
+####2016-04-19:
+ - \#324 Error reporting component is broken
+ - Switched the exception error reporting to use https.
+
 ####2016-02-23:
  - Release 1.5.5
 
