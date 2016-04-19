@@ -1034,6 +1034,15 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue325() throws Exception {
+        testTokenization("cat << USE\nUSE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat << THEUSAGE\nTHEUSAGE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        //theUsage triggers a JFlex bug (apparently) if the marker regex includes [\s]
+        testTokenization("cat << theUsage\ntheUsage", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat << _theUsage\n_theUsage", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
