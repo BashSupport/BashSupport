@@ -179,7 +179,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   return LINE_FEED;
                                 }
 
-    \\ {Variable}?              { return HEREDOC_LINE; }
+    \\ "$" ?                    { return HEREDOC_LINE; }
 
     {Variable}                {
             if (isHeredocEnd(yytext().toString())) {

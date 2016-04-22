@@ -1,3 +1,6 @@
+####2016-04-22:
+ - \#327: Heredoc parser doesn't recognize \$( or \${ construction
+
 ####2016-02-23:
  - Release 1.5.5
 

@@ -1034,6 +1034,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue327() throws Exception {
+        testTokenization("<< EOF\n\\$(a)\nEOF", HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
