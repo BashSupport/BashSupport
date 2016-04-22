@@ -73,5 +73,8 @@ public class ArithmeticExprParserTest extends MockPsiTest {
 
         // a[0x0]
         mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE);
+
+        // a[a[0]]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE);
     }
 }

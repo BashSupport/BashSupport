@@ -1,3 +1,6 @@
+####2016-04-22:
+ - \#320: Array use in arithmetic expressions wasn't working as expected
+
 ####2016-02-23:
  - Release 1.5.5
 

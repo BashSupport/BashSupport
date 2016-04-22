@@ -143,6 +143,7 @@ public final class BashResolveUtil {
         }
 
         processor.prepareResults();
+
         return processor.getBestResult(false, bashVar);
     }
 
