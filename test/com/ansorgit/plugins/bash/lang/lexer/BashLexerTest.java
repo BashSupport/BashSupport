@@ -930,6 +930,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue125() throws Exception {
+        testTokenization("read 'test' a[0]", WORD, WHITESPACE, STRING2, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
+    }
+
+    @Test
     public void testIssue199() throws Exception {
         testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
         testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);

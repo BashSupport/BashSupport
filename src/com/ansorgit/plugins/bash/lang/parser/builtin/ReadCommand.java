@@ -26,7 +26,7 @@ package com.ansorgit.plugins.bash.lang.parser.builtin;
  * Time: 23:45:48
  */
 class ReadCommand extends AbstractReadCommand {
-    public ReadCommand() {
+    ReadCommand() {
         super("read");
     }
 }

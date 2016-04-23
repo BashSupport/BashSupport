@@ -39,6 +39,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     private final static TokenSet assignmentSeparators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
     private final static TokenSet validWordTokens = TokenSet.create(ARITH_NUMBER);
 
+    private CommandParsingUtil() {
+    }
+
     public static boolean readCommandParams(final BashPsiBuilder builder) {
         return readCommandParams(builder, TokenSet.EMPTY);
     }
@@ -69,30 +72,12 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return ok;
     }
 
-    public enum Mode {
-        /**
-         * Only accept an ASSIGNENT_WORD or ARRAY_ASSIGNMENT_WORD in front .
-         * The =value part is mandatory.
-         */
-        StrictAssignmentMode,
-        /**
-         * Optional =value part and allows simple word tokens and variable names in front
-         */
-        LaxAssignmentMode,
-        /**
-         * Only single word tokens are valid, used for read commands.
-         */
-        SimpleMode
-    }
-
-    private CommandParsingUtil() {
-    }
-
     public static boolean isAssignment(final BashPsiBuilder builder, Mode mode, boolean acceptArrayVars) {
         final IElementType tokenType = builder.getTokenType();
         switch (mode) {
             case SimpleMode:
-                return ParserUtil.isWordToken(tokenType)
+                return (acceptArrayVars && ParserUtil.hasNextTokens(builder, false, ASSIGNMENT_WORD, LEFT_SQUARE))
+                        || ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
                         || Parsing.var.isValid(builder);
 
@@ -148,7 +133,6 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return ok;
     }
 
-
     /**
      * Reads a single assignment
      *
@@ -163,6 +147,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
         switch (mode) {
             case SimpleMode:
+                if (acceptArrayVars && builder.getTokenType() == ASSIGNMENT_WORD) {
+                    break;
+                }
                 if (!Parsing.word.parseWord(builder)) {
                     assignment.drop();
                     return false;
@@ -350,6 +337,22 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
         marker.done(VAR_ASSIGNMENT_LIST);
         return true;
+    }
+
+    public enum Mode {
+        /**
+         * Only accept an ASSIGNENT_WORD or ARRAY_ASSIGNMENT_WORD in front .
+         * The =value part is mandatory.
+         */
+        StrictAssignmentMode,
+        /**
+         * Optional =value part and allows simple word tokens and variable names in front
+         */
+        LaxAssignmentMode,
+        /**
+         * Only single word tokens are valid, used for read commands.
+         */
+        SimpleMode
     }
 
 }
