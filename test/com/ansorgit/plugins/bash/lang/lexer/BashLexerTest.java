@@ -1034,6 +1034,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue89() throws Exception {
+        testTokenization("function a {\n}function", FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, LEFT_CURLY, LINE_FEED, RIGHT_CURLY, FUNCTION_KEYWORD);
+
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);

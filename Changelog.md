@@ -1,3 +1,6 @@
+####2016-04-24:
+ - \#89: Function expands incorrectly when defined above another function
+
 ####2016-02-23:
  - Release 1.5.5
 

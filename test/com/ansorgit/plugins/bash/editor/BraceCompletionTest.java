@@ -9,7 +9,7 @@ public class BraceCompletionTest extends BashCodeInsightFixtureTestCase {
     @Test
     public void testIssue89() throws Exception {
         //tests brace completion of a function defined above another function
-        configurePsiAtCaret();
+        configurePsiAtCaret("issue89.bash");
 
         doTyping();
     }
@@ -30,10 +30,11 @@ public class BraceCompletionTest extends BashCodeInsightFixtureTestCase {
     }
 
     private void doTyping() {
-        myFixture.type("\n"); //trigger the brace expansion
+        myFixture.type("\n"); //trigger the brace completion
 
         String expectedText = "function above() {\n" +
                 "\n" +
+                "\n" + //two \n seem to be inserted by InteeliJ's default behaviour
                 "}\n" +
                 "function below() {\n" +
                 "    echo\n" +

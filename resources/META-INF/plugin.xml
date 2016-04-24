@@ -232,6 +232,8 @@
 
         <spellchecker.support implementationClass="com.ansorgit.plugins.bash.editor.BashSpellCheckingSupport" language="Bash" />
 
+        <enterHandlerDelegate implementation="com.ansorgit.plugins.bash.editor.BashUnmatchedBraceEnterProcessor" order="FIRST" id="BashUnmatchedBrace" />
+
         <!-- Repl-->
         <!--
         <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
