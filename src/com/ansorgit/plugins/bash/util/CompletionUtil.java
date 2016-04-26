@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: CompletionUtil.java, Class: CompletionUtil
- * Last modified: 2013-02-03
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +18,7 @@ package com.ansorgit.plugins.bash.util;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.util.SystemInfoRt;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -48,7 +46,9 @@ public class CompletionUtil {
      */
     @NotNull
     public static List<String> completeAbsolutePath(@NotNull String prefix, Predicate<File> accept) {
-        File base = new File(prefix);
+        String nativePath = prefix.startsWith("/") && SystemInfoRt.isWindows ? OSUtil.bashCompatibleToNative(prefix) : prefix;
+
+        File base = new File(nativePath);
 
         //a dot tricks Java into thinking dir/. is equal to dir and thus exists
         boolean dotSuffix = prefix.endsWith(".") && !prefix.startsWith(".");
@@ -77,11 +77,14 @@ public class CompletionUtil {
                 continue;
             }
 
+            String resultPath;
             if (fileCandidate.isDirectory()) {
-                result.add(fileCandidate.getAbsolutePath() + "/");
+                resultPath = fileCandidate.getAbsolutePath() + File.separator;
             } else {
-                result.add(fileCandidate.getAbsolutePath());
+                resultPath = fileCandidate.getAbsolutePath();
             }
+
+            result.add(OSUtil.toBashCompatible(resultPath));
         }
 
         return result;
@@ -99,9 +102,11 @@ public class CompletionUtil {
     public static List<String> completeRelativePath(@NotNull String baseDir, @NotNull String shownBaseDir, @NotNull String relativePath) {
         List<String> result = Lists.newLinkedList();
 
-        for (String path : completeAbsolutePath(baseDir + "/" + relativePath, Predicates.<File>alwaysTrue())) {
-            if (path.startsWith(baseDir)) {
-                result.add(shownBaseDir + path.substring(baseDir.length()));
+        String bashBaseDir = OSUtil.toBashCompatible(baseDir);
+
+        for (String path : completeAbsolutePath(baseDir + File.separator + relativePath, Predicates.<File>alwaysTrue())) {
+            if (path.startsWith(bashBaseDir)) {
+                result.add(shownBaseDir + path.substring(bashBaseDir.length()));
             }
         }
 

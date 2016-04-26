@@ -7,9 +7,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 18.02.11
- * Time: 19:47
+ * @author jansorg
  */
 public class IncludeCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {

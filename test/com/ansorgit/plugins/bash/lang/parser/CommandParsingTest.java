@@ -23,10 +23,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * Date: 24.03.2009
- * Time: 23:12:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class CommandParsingTest extends MockPsiTest {
     private MockFunction simpleCommandTest = new MockFunction() {

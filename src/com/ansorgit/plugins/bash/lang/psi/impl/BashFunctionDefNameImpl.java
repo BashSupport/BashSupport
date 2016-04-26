@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BashFunctionDefNameImpl.java, Class: BashFunctionDefNameImpl
- * Last modified: 2013-01-25
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +21,7 @@ import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 12.04.2009
- * Time: 20:40:29
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashFunctionDefNameImpl extends BashBaseElement implements BashFunctionDefName {
     public BashFunctionDefNameImpl(ASTNode astNode) {

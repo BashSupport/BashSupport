@@ -1,10 +1,9 @@
 /*
- * Copyright 2000-2013 JetBrains s.r.o.
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -34,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * Patched version taken from IntelliJ sources.
  * Changes:
- *  - fixed file_path_regex to allow more characters in file names
+ *  - fixed FILE_PATH_REGEX to allow more characters in file names
  *
  * @author Yura Cangea
  * @version 1.0

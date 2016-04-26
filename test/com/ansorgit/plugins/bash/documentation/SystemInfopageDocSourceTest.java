@@ -18,38 +18,41 @@
 
 package com.ansorgit.plugins.bash.documentation;
 
-import junit.framework.Assert;
+import com.intellij.openapi.util.SystemInfoRt;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 
 /**
- * User: jansorg
- * Date: 08.05.2010
- * Time: 12:04:49
+ * @author jansorg
  */
 public class SystemInfopageDocSourceTest {
     @Test
     public void testInfoPageCall() throws IOException {
-        SystemInfopageDocSource source = new SystemInfopageDocSource();
-        String bashInfoPage = source.loadPlainTextInfoPage("bash");
+        if (!SystemInfoRt.isWindows) {
+            SystemInfopageDocSource source = new SystemInfopageDocSource();
+            String bashInfoPage = source.loadPlainTextInfoPage("bash");
 
-        Assert.assertNotNull(bashInfoPage);
-        Assert.assertTrue(bashInfoPage.length() > 500);
+            Assert.assertNotNull(bashInfoPage);
+            Assert.assertTrue(bashInfoPage.length() > 500);
 
-        String html = source.callTextToHtml("abc");
-        Assert.assertNotNull(html);
-        Assert.assertTrue(html.contains("abc"));
+            String html = source.callTextToHtml("abc");
+            Assert.assertNotNull(html);
+            Assert.assertTrue(html.contains("abc"));
 
-        html = source.callTextToHtml(bashInfoPage);
-        Assert.assertNotNull(html);
-        Assert.assertTrue(html.length() > 500);
+            html = source.callTextToHtml(bashInfoPage);
+            Assert.assertNotNull(html);
+            Assert.assertTrue(html.length() > 500);
+        }
     }
 
     @Test
     public void testInfoFileExists() throws IOException {
-        SystemInfopageDocSource source = new SystemInfopageDocSource();
-        Assert.assertTrue(source.infoFileExists("info"));
-        Assert.assertFalse(source.infoFileExists("thisCommandDoesNotExist"));
+        if (!SystemInfoRt.isWindows) {
+            SystemInfopageDocSource source = new SystemInfopageDocSource();
+            Assert.assertTrue(source.infoFileExists("info"));
+            Assert.assertFalse(source.infoFileExists("thisCommandDoesNotExist"));
+        }
     }
 }

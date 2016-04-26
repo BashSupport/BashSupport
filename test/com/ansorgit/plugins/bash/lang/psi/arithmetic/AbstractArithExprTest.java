@@ -27,9 +27,7 @@ import com.intellij.psi.PsiFile;
 import org.junit.Assert;
 
 /**
- * User: jansorg
- * Date: 17.07.2010
- * Time: 12:51:15
+ * @author jansorg
  */
 public abstract class AbstractArithExprTest extends CodeInsightTestCase {
     protected ArithmeticExpression configureTopArithExpression() throws Exception {

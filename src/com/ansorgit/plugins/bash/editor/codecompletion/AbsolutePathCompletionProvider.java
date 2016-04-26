@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: AbsolutePathCompletionProvider.java, Class: AbsolutePathCompletionProvider
- * Last modified: 2013-02-03
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,9 +19,11 @@ import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
+import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -62,7 +61,8 @@ class AbsolutePathCompletionProvider extends AbstractBashCompletionProvider {
             public boolean apply(File file) {
                 //accept hidden file with more than one invocation
                 //return file.isHidden() ? invocationCount >= 2 : true;
-                return (file.isHidden() && (invocationCount >= 2)) || ((invocationCount >= 1) && !file.isHidden());
+                boolean isHidden = file.isHidden() || file.getName().startsWith(".");
+                return (isHidden && (invocationCount >= 2)) || ((invocationCount >= 1) && !isHidden);
             }
         };
 

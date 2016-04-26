@@ -10,9 +10,7 @@ import org.junit.Test;
 import java.util.Set;
 
 /**
- * User: jansorg
- * Date: 06.02.11
- * Time: 12:57
+ * @author jansorg
  */
 public class InvalidIncludesTestCase extends AbstractFileIncludeTest {
     @Override

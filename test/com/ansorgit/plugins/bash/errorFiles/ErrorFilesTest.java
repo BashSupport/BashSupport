@@ -17,9 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * User: jansorg
- * Date: 12.03.11
- * Time: 13:04
+ * @author jansorg
  */
 public class ErrorFilesTest extends CodeInsightTestCase {
     protected String getTestDataPath() {

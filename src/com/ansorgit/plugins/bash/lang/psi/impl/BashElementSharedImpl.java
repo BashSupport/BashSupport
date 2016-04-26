@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
@@ -5,10 +20,9 @@ import com.ansorgit.plugins.bash.lang.psi.FileInclusionManager;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashCommandNameIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.util.BashFunctions;
+import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.project.Project;
@@ -25,13 +39,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Set;
 
-public class BashElementSharedImpl {
+public final class BashElementSharedImpl {
+    private BashElementSharedImpl() {
+    }
+
     public static GlobalSearchScope getElementGlobalSearchScope(BashPsiElement element, Project project) {
-        PsiFile psiFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile psiFile = BashPsiUtils.findFileContext(element);
         GlobalSearchScope currentFileScope = GlobalSearchScope.fileScope(psiFile);
 
         Set<PsiFile> includedFiles = FileInclusionManager.findIncludedFiles(psiFile, true, true);
-        Collection<VirtualFile> files = Collections2.transform(includedFiles, BashFunctions.psiToVirtualFile());
+        Collection<VirtualFile> files = Collections2.transform(includedFiles, psiToVirtualFile());
 
         return currentFileScope.uniteWith(GlobalSearchScope.filesScope(project, files));
     }
@@ -40,7 +57,7 @@ public class BashElementSharedImpl {
         //all files which include this element's file belong to the requested scope
         //bash files can call other bash files, thus the scope needs to be the module scope at minumum
         //fixme can this be optimized?
-        PsiFile currentFile = BashPsiUtils.findFileContext(element, true);
+        PsiFile currentFile = BashPsiUtils.findFileContext(element);
         if (currentFile == null) {
             //no other fallback possible here
             return GlobalSearchScope.projectScope(project);
@@ -62,7 +79,7 @@ public class BashElementSharedImpl {
                         BashCommand.class);
                 if (commands != null) {
                     for (BashCommand command : commands) {
-                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command, true));
+                        referencingScriptFiles.add(BashPsiUtils.findFileContext(command));
                     }
                 }
             }
@@ -80,11 +97,19 @@ public class BashElementSharedImpl {
         union.addAll(includers);
         union.addAll(referencingScriptFiles);
 
-        Collection<VirtualFile> virtualFiles = Collections2.transform(union, BashFunctions.psiToVirtualFile());
+        Collection<VirtualFile> virtualFiles = Collections2.transform(union, psiToVirtualFile());
         return GlobalSearchScope.fileScope(currentFile).union(GlobalSearchScope.filesScope(project, virtualFiles));
     }
 
     public static boolean walkDefinitionScope(PsiElement thisElement, @NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(thisElement, processor, state, lastParent, place);
+    }
+
+    private static Function<? super PsiFile, VirtualFile> psiToVirtualFile() {
+        return new Function<PsiFile, VirtualFile>() {
+            public VirtualFile apply(PsiFile psiFile) {
+                return psiFile.getVirtualFile();
+            }
+        };
     }
 }

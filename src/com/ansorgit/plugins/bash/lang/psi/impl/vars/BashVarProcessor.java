@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashVarProcessor.java, Class: BashVarProcessor
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
@@ -33,17 +29,13 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Set;
 
 /**
- * Date: 14.04.2009
- * Time: 17:34:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     private final boolean leaveInjectionHost;
@@ -132,7 +124,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
 
-        boolean sameFiles = BashPsiUtils.findFileContext(startElement, leaveInjectionHost).equals(BashPsiUtils.findFileContext(varDef, leaveInjectionHost));
+        boolean sameFiles = BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef));
         if (sameFiles) {
             int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
             if (startElementTextOffset >= textOffsetVarDef) {
@@ -161,7 +153,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             //working on a definition in an included file (maybe even over several include-steps)
             Multimap<VirtualFile, PsiElement> includedFiles = resolveState.get(visitedIncludeFiles);
 
-            VirtualFile varDefFile = BashPsiUtils.findFileContext(varDef, true).getVirtualFile();
+            VirtualFile varDefFile = BashPsiUtils.findFileContext(varDef).getVirtualFile();
             Collection<PsiElement> includeCommands = includedFiles != null ? includedFiles.get(varDefFile) : null;
             if (includeCommands == null || includeCommands.isEmpty()) {
                 return false;
@@ -205,7 +197,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     /**
      * A local var def is a valid definition for our start element if it's scope contains the start
      * element.
-     * <p/>
+     * <br>
      * Also, the checked variable definition has to appear before the start element.
      *
      * @param varDef       The variable definition in question

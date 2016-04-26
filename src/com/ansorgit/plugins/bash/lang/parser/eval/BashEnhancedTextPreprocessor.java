@@ -1,10 +1,9 @@
 /*
- * Copyright 2000-2009 JetBrains s.r.o.
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -30,18 +29,18 @@ import org.jetbrains.annotations.NotNull;
  * with  a  backslash.  If enabled, history expansion will be performed unless an !  appearing in double quotes is
  * escaped using a backslash.  The backslash preceding the !  is not removed.
  *  </pre>
- * <p/>
+ * <br>
  * THis text preprocessor is used for $'' ASNI escaped strings. The valid escape values are documented at
  * http://wiki.bash-hackers.org/syntax/quoting .
  *
  * @author jansorg
  */
 @SuppressWarnings("Duplicates")
-public class BashEnhancedTextPreprocessor implements TextPreprocessor {
+class BashEnhancedTextPreprocessor implements TextPreprocessor {
     private int[] outSourceOffsets;
-    private TextRange contentRange;
+    private final TextRange contentRange;
 
-    public BashEnhancedTextPreprocessor(TextRange contentRange) {
+    BashEnhancedTextPreprocessor(TextRange contentRange) {
         this.contentRange = contentRange;
     }
 

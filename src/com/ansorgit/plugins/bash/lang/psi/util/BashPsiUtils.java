@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashPsiUtils.java, Class: BashPsiUtils
- * Last modified: 2013-05-12
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +34,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.injection.InjectedLanguageManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiManagerEx;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -52,9 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * User: jansorg
- * Date: 04.08.2009
- * Time: 21:45:47
+ * @author jansorg
  */
 public final class BashPsiUtils {
     private BashPsiUtils() {
@@ -65,14 +59,9 @@ public final class BashPsiUtils {
      * then the host file is returned.
      *
      * @param element
-     * @param leaveInjectionHosts
      * @return The file on disk
      */
-    public static PsiFile findFileContext(PsiElement element, boolean leaveInjectionHosts) {
-        /*if (leaveInjectionHosts) {
-            return InjectedLanguageManager.getInstance(element.getProject()).getTopLevelFile(element);
-        } */
-
+    public static PsiFile findFileContext(PsiElement element) {
         return element.getContainingFile();
     }
 
@@ -391,8 +380,8 @@ public final class BashPsiUtils {
     }
 
     public static boolean isValidReferenceScope(PsiElement referenceToDefCandidate, PsiElement variableDefinition) {
-        PsiFile definitionFile = findFileContext(variableDefinition, true);
-        PsiFile referenceFile = findFileContext(referenceToDefCandidate, true);
+        PsiFile definitionFile = findFileContext(variableDefinition);
+        PsiFile referenceFile = findFileContext(referenceToDefCandidate);
 
         boolean sameFile = definitionFile.equals(referenceFile);
 
@@ -467,7 +456,7 @@ public final class BashPsiUtils {
 
         PsiElement current = command.getPrevSibling();
 
-        LinkedList<PsiComment> result = Lists.newLinkedList();
+        List<PsiComment> result = Lists.newLinkedList();
 
         while (current != null && current.getNode() != null && current.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
             current = current.getPrevSibling();

@@ -35,10 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Date: 24.03.2009
- * Time: 21:58:36
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class MockPsiBuilder implements PsiBuilder {
     private static final Logger log = Logger.getInstance("#bash.MockPsiBuilder");

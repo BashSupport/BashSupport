@@ -10,7 +10,7 @@ import java.util.Collections;
 
 @SuppressWarnings("Duplicates")
 public class SelectParsingFunctionTest extends MockPsiTest {
-    MockPsiTest.MockFunction loopParser = new MockPsiTest.MockFunction() {
+    private MockPsiTest.MockFunction loopParser = new MockPsiTest.MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.shellCommand.selectParser.parse(psi);
