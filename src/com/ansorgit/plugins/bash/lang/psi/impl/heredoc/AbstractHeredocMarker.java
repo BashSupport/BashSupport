@@ -1,48 +1,40 @@
-/**
- * ****************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: AbstractHeredocMarker.java, Class: AbstractHeredocMarker
- * Last modified: 2011-04-30 16:33
- * <p/>
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ****************************************************************************
  */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Abstract base class for heredoc markers.
- * <p/>
- * User: jansorg
- * Date: Jan 30, 2010
- * Time: 12:48:49 PM
+ * <br>
+ * @author jansorg
  */
 abstract class AbstractHeredocMarker extends BashBaseElement implements BashHereDocMarker {
     private HeredocMarkerReference reference;
 
-    public AbstractHeredocMarker(ASTNode astNode, String name) {
+    AbstractHeredocMarker(ASTNode astNode, String name) {
         super(astNode, name);
     }
 
@@ -54,6 +46,11 @@ abstract class AbstractHeredocMarker extends BashBaseElement implements BashHere
     @Override
     public String getName() {
         return getMarkerText();
+    }
+
+    @Override
+    public String getMarkerText() {
+        return HeredocSharedImpl.cleanMarker(getText(), isIgnoringTabs());
     }
 
     @Override

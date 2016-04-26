@@ -30,19 +30,10 @@ import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * User: jansorg
- * Date: 17.07.2010
- * Time: 10:32:04
- */
 public class BashStructureViewModelTest extends CodeInsightTestCase {
-    private interface MyTest {
-        void test(StructureViewComponent component);
-    }
-
     protected void doTest(final MyTest myTest) {
         assert myFile != null : "configure first";
 
@@ -60,10 +51,11 @@ public class BashStructureViewModelTest extends CodeInsightTestCase {
             component = (StructureViewComponent) builder.createStructureView(fileEditor, myProject);
             myTest.test(component);
         } finally {
-            if (component != null) Disposer.dispose(component);
+            if (component != null) {
+                Disposer.dispose(component);
+            }
         }
     }
-
 
     @Test
     public void testStructureView() throws Exception {
@@ -100,5 +92,9 @@ public class BashStructureViewModelTest extends CodeInsightTestCase {
 
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/structureview/";
+    }
+
+    private interface MyTest {
+        void test(StructureViewComponent component);
     }
 }

@@ -6,9 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 18.02.11
- * Time: 20:25
+ * @author jansorg
  */
 public class FileReferenceTest extends AbstractFileIncludeTest {
     @Override

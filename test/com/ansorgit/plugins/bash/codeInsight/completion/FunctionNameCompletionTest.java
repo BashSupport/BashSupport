@@ -22,9 +22,7 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 09.02.11
- * Time: 22:07
+ * @author jansorg
  */
 public class FunctionNameCompletionTest extends AbstractCompletionTest {
     public FunctionNameCompletionTest() {

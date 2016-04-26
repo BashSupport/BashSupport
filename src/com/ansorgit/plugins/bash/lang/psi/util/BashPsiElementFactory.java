@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashChangeUtil.java, Class: BashChangeUtil
- * Last modified: 2011-04-30 16:33
- * <p/>
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
@@ -34,13 +31,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Date: 16.04.2009
- * Time: 16:48:49
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashPsiElementFactory {
     private static final String TEMP_FILE_NAME = "__.sh";
@@ -129,8 +124,8 @@ public class BashPsiElementFactory {
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocStartMarker.class);
     }
 
-    public static PsiElement createHeredocEndMarker(Project project, String name) {
-        String data = String.format("cat << %s\n%s", name, name);
+    public static PsiElement createHeredocEndMarker(Project project, String name, int leadingTabs) {
+        String data = String.format("cat <<- %s\n%s", name, StringUtils.repeat("\t", leadingTabs) + name);
         return PsiTreeUtil.findChildOfType(createDummyBashFile(project, data), BashHereDocEndMarker.class);
     }
 

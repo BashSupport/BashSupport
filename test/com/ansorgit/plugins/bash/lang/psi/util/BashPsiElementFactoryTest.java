@@ -3,7 +3,6 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.*;
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -110,8 +109,12 @@ public class BashPsiElementFactoryTest extends CodeInsightTestCase {
 
     @Test
     public void testHeredocEndMarker() throws Exception {
-        PsiElement element = BashPsiElementFactory.createHeredocEndMarker(myProject, "EOF");
-        Assert.assertTrue("element is not a start marker: " + element, element instanceof BashHereDocEndMarker);
+        PsiElement element = BashPsiElementFactory.createHeredocEndMarker(myProject, "EOF", 0);
+        Assert.assertTrue("element is not an end marker: " + element, element instanceof BashHereDocEndMarker);
+
+        PsiElement elementWithTabs = BashPsiElementFactory.createHeredocEndMarker(myProject, "EOF", 3);
+        Assert.assertTrue("element is not an end marker: " + elementWithTabs, elementWithTabs instanceof BashHereDocEndMarker);
+        Assert.assertEquals("element must have leading tabs " + elementWithTabs, "\t\t\tEOF", elementWithTabs.getText());
     }
 
     @Test

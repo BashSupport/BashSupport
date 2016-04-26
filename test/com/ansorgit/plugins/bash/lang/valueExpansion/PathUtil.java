@@ -18,9 +18,11 @@
 
 package com.ansorgit.plugins.bash.lang.valueExpansion;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -99,5 +101,4 @@ public class PathUtil {
         s = s.substring(0, s.lastIndexOf('/'));
         return s;
     }
-
 }

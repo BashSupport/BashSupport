@@ -146,6 +146,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* To match heredoc documents */
 %xstate S_HEREDOC_MARKER
+%xstate S_HEREDOC_MARKER_IGNORE_TABS
 %xstate S_HEREDOC
 
 %%
@@ -155,15 +156,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {Comment}                     { return COMMENT; }
 }
 
-<S_HEREDOC_MARKER> {
+<S_HEREDOC_MARKER, S_HEREDOC_MARKER_IGNORE_TABS> {
     {WhiteSpace}+                { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }     //fixme
+    {ContinuedLine}+             { /* ignored */ }
     {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
-    | [^ \s\t\n\r\f;&|]+ {
-        pushExpectedHeredocMarker(yytext());
+    | [^ \t\n\r\f;&|]+ {
+        heredocState().pushMarker(yytext(), yystate() == S_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
 
         return HEREDOC_MARKER_START;
@@ -173,51 +174,57 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_HEREDOC> {
-    {LineTerminator}+           { if (!isHeredocMarkersEmpty()) {
+    {LineTerminator}+           { if (!heredocState().isEmpty()) {
                                         return HEREDOC_LINE;
                                   }
                                   return LINE_FEED;
                                 }
 
-    \\ {Variable}?              { return HEREDOC_LINE; }
+    \\ "$" ?                    { return HEREDOC_LINE; }
 
     {Variable}                {
-            if (isHeredocEnd(yytext().toString())) {
-                popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-                if (isHeredocMarkersEmpty()) {
+                heredocState().popMarker(yytext());
+
+                if (heredocState().isEmpty()) {
                     backToPreviousState();
                 }
 
-                return HEREDOC_MARKER_END;
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
 
-            return isHeredocEvaluating() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
+            return heredocState().isExpectingEvaluatingHeredoc() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
     }
 
     [^$\n\r\\]+  {
-        if (isHeredocEnd(yytext().toString())) {
-            popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-            if (isHeredocMarkersEmpty()) {
+                heredocState().popMarker(yytext());
+
+                if (heredocState().isEmpty()) {
                 backToPreviousState();
             }
 
-            return HEREDOC_MARKER_END;
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
         }
 
         return HEREDOC_LINE;
     }
 
     "$"  {
-         if (isHeredocEnd(yytext().toString())) {
-             popHeredocMarker(yytext().toString());
+            if (heredocState().isNextMarker(yytext())) {
+                boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-             if (isHeredocMarkersEmpty()) {
+                heredocState().popMarker(yytext());
+
+                if (heredocState().isEmpty()) {
                  backToPreviousState();
              }
 
-             return HEREDOC_MARKER_END;
+                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
          }
 
          return HEREDOC_LINE;
@@ -251,7 +258,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 // Parenthesis lexing
 <S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_ARRAY_MODE, S_ARITH_SQUARE_MODE, S_CASE> {
-    "$" / "("               { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
+    "$" / "("               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_PARAM_EXPANSION, S_CASE> {
@@ -285,7 +292,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                                     return RIGHT_PAREN;
                                   } else {
-                                    stringParsingState().advanceToken();
                                     backToPreviousState();
 
                                     return _EXPR_ARITH;
@@ -511,6 +517,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "#"                           { return ARITH_BASE_CHAR; }
 
+  {AssignmentWord} / "["
+                                { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
+
   {ArithWord}                   { return WORD; }
 }
 
@@ -546,20 +555,19 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* string literals */
 <S_STRINGMODE> {
-  \"                            { if (stringParsingState().isNewAllowed()) {
-                                    stringParsingState().enterSubstring(); return STRING_BEGIN;
-                                  } else if (stringParsingState().isInSubstring()) {
-                                    stringParsingState().leaveSubstring(); return STRING_DATA;
-                                  } else {
+  \"                            { stringParsingState().leaveString();
+                                  if (!stringParsingState().isInSubstring()) {
                                     backToPreviousState(); return STRING_END;
+                                  } else {
+                                    return STRING_DATA;
                                   }
                                 }
 
   /* Backquote expression inside of evaluated strings */
-  `                           { stringParsingState().advanceToken(); if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
 
   {EscapedChar}               { return STRING_DATA; }
-  [^\"]                       { stringParsingState().advanceToken(); return STRING_DATA; }
+  [^\"]                       { return STRING_DATA; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
@@ -654,14 +662,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
-    {StringStart}                 { stringParsingState().reset(); goToState(S_STRINGMODE); return STRING_BEGIN; }
+    {StringStart}                 { stringParsingState().enterString(); goToState(S_STRINGMODE); return STRING_BEGIN; }
 
     "$"\'{SingleCharacter}*\'     |
     \'{UnescapedCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
     {LineTerminator}             {
-                                        if (!isHeredocMarkersEmpty()) {
+                                        if (!heredocState().isEmpty()) {
+                                            // first linebreak after the start marker
                                             goToState(S_HEREDOC);
                                         }
 
@@ -689,16 +698,17 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "@"                           { return AT; }
     "$"                           { return DOLLAR; }
     ";"                           { return SEMI; }
-    "<<" | "<<-" {
+    "<<-" {
+        goToState(S_HEREDOC_MARKER_IGNORE_TABS);
+        return HEREDOC_MARKER_TAG;
+    }
+    "<<" {
         goToState(S_HEREDOC_MARKER);
         return HEREDOC_MARKER_TAG;
     }
     ">"                           { return GREATER_THAN; }
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
-
-    /* Arithmetic expression */
-    //"(("                          { goToState(S_ARITH); return EXPR_ARITH; }
 
     <S_STRINGMODE>{
         {Variable}                 { return VARIABLE; }
@@ -710,8 +720,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
-    "${"                        { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
-    "}"                         { if (yystate() == S_HEREDOC && !isHeredocEvaluating()) return HEREDOC_LINE; return RIGHT_CURLY; }
+    "${"                        { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
+    "}"                         { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
 
 <S_CASE_PATTERN> {

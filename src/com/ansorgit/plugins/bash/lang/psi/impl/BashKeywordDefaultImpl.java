@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashKeywordDefaultImpl.java, Class: BashKeywordDefaultImpl
- * Last modified: 2013-05-02
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,10 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 /**
- * Date: 06.05.2009
- * Time: 12:19:43
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public abstract class BashKeywordDefaultImpl extends BashCompositeElement implements BashKeyword {
     protected BashKeywordDefaultImpl(IElementType type) {
@@ -55,24 +49,31 @@ public abstract class BashKeywordDefaultImpl extends BashCompositeElement implem
 
     @Override
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
-            public String getPresentableText() {
-                final PsiElement element = keywordElement();
-                return element != null ? element.getText() : null;
-            }
-
-            public String getLocationString() {
-                return null;
-            }
-
-            public Icon getIcon(boolean open) {
-                return null;
-            }
-        };
+        return new KeywordPresentation(keywordElement());
     }
 
     @Override
     public boolean canNavigate() {
         return false;
+    }
+
+    private class KeywordPresentation implements ItemPresentation {
+        private final PsiElement element;
+
+        KeywordPresentation(PsiElement element) {
+            this.element = element;
+        }
+
+        public String getPresentableText() {
+            return element != null ? element.getText() : null;
+        }
+
+        public String getLocationString() {
+            return null;
+        }
+
+        public Icon getIcon(boolean open) {
+            return null;
+        }
     }
 }

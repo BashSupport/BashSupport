@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: SimpleArrayUseInspection.java, Class: SimpleArrayUseInspection
- * Last modified: 2013-05-09
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +17,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
+import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -28,6 +26,7 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
+import sun.tools.tree.BinaryArithmeticExpression;
 
 /**
  * This inspection detects use of array variables without array element qualifiers.
@@ -45,7 +44,10 @@ public class SimpleArrayUseInspection extends LocalInspectionTool {
                         if (!definition.isArray()) {
                             holder.registerProblem(var, "Array use of non-array variable", ProblemHighlightType.WEAK_WARNING);
                         }
-                    } else if (definition.isArray() && !BashPsiUtils.hasParentOfType(var, BashString.class, 5)) {
+                    } else if (definition.isArray()
+                            && !BashPsiUtils.hasParentOfType(var, BashString.class, 5)
+                            && !BashPsiUtils.hasParentOfType(var, ArithmeticExpression.class, 5)) {
+
                         holder.registerProblem(var, "Simple use of array variable", ProblemHighlightType.WEAK_WARNING);
                     }
                 }

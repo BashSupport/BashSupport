@@ -1,58 +1,51 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.util.IntStack;
 
-/**
- *
- */
-public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
+final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
     private final StringLexingstate string = new StringLexingstate();
     //parameter expansion parsing state
-    boolean paramExpansionHash = false;
-    boolean paramExpansionWord = false;
-    boolean paramExpansionOther = false;
+    private boolean paramExpansionHash = false;
+    private boolean paramExpansionWord = false;
+    private boolean paramExpansionOther = false;
     private int openParenths = 0;
     private boolean isBash4 = false;
     //True if the parser is in the case body. Necessary for proper lexing of the IN keyword
     private boolean inCaseBody = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
-    private HeredocLexingState heredocLexingState = new HeredocLexingState();
 
-    public _BashLexer(BashVersion version, java.io.Reader in) {
+    @Override
+    public HeredocLexingState heredocState() {
+        return heredocState;
+    }
+
+    private final HeredocLexingState heredocState = new HeredocLexingState();
+
+    _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
     }
 
-    @Override
-    public boolean isHeredocEnd(String text) {
-        return heredocLexingState.isNextHeredocMarker(text);
-    }
-
-    @Override
-    public boolean isHeredocEvaluating() {
-        return heredocLexingState.isExpectingEvaluatingHeredoc();
-    }
-
-    @Override
-    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
-        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
-    }
-
-    @Override
-    public void popHeredocMarker(CharSequence marker) {
-        heredocLexingState.popHeredocMarker(marker.toString());
-    }
-
-    @Override
-    public boolean isHeredocMarkersEmpty() {
-        return heredocLexingState.isEmpty();
-    }
-    
     @Override
     public boolean isEmptyConditionalCommand() {
         return emptyConditionalCommand;
@@ -103,7 +96,7 @@ public final class _BashLexer extends _BashLexerBase implements BashLexerDef {
 
     @Override
     public boolean isInState(int state) {
-        return lastStates.contains(state);
+        return (state == 0 && lastStates.empty()) || lastStates.contains(state);
     }
 
     @Override

@@ -1,3 +1,30 @@
+####2016-04-22:
+ - \#320: Array use in arithmetic expressions wasn't working as expected
+
+####2016-04-16:
+ - \#321: Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
+
+####2016-04-19:
+ - \#324 Error reporting component is broken
+ - Switched the exception error reporting to use https.
+
+####2016-04-22:
+ - \#327: Heredoc parser doesn't recognize \$( or \${ construction
+
+####2016-04-24:
+ - \#89: Function expands incorrectly when defined above another function
+
+####2016-03-31:
+ - \#310: Workaround for deeply nested structures
+
+####2016-03-12:
+ - Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.
+ - Added more test cases for improved test coverage
+ - Configured copyright plugin
+
+####2016-02-23:
+ - \#125: Array element gives "Unexpected token"
+
 ####2016-02-23:
  - Release 1.5.5
 

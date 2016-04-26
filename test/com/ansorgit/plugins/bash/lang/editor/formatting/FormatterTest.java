@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Test suite for static formatting. Compares two files:
  * before and after formatting
- * <p/>
+ * <br>
  * (Based on the code from the GroovyPlugin).
  *
  * @author Ilya.Sergey, Joachim Ansorg

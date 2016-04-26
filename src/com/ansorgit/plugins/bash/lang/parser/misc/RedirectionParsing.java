@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: RedirectionParsing.java, Class: RedirectionParsing
- * Last modified: 2012-12-11
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,10 +26,7 @@ import com.intellij.psi.tree.TokenSet;
 import static com.ansorgit.plugins.bash.lang.parser.util.ParserUtil.error;
 
 /**
- * Date: 24.03.2009
- * Time: 20:52:54
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 //fixme refactor this
 public class RedirectionParsing implements ParsingTool {
@@ -53,11 +47,11 @@ public class RedirectionParsing implements ParsingTool {
             return optional;
         }
 
-        final PsiBuilder.Marker redirectList = builder.mark();
+        PsiBuilder.Marker redirectList = builder.mark();
 
         do {
             parseSingleRedirect(builder, allowHeredocs);
-        } while (isRedirect(builder, allowHeredocs)); //fixme isRedirect is inefficient because it does a rollback every time
+        } while (isRedirect(builder, allowHeredocs));
 
         redirectList.done(REDIRECT_LIST_ELEMENT);
 
@@ -68,6 +62,16 @@ public class RedirectionParsing implements ParsingTool {
     //fixme optimize this for performance
     public boolean isRedirect(BashPsiBuilder builder, boolean allowHeredocs) {
         if (builder.eof()) {
+            return false;
+        }
+
+        //avoid to parse a process substitution as a redirect expression
+        int i = 0;
+        while (builder.rawLookup(i) == WHITESPACE) {
+            i++;
+        }
+
+        if ((builder.rawLookup(i) == LESS_THAN || builder.rawLookup(i) == GREATER_THAN) && builder.rawLookup(i+1)  == LEFT_PAREN){
             return false;
         }
 
@@ -86,7 +90,7 @@ public class RedirectionParsing implements ParsingTool {
         return parseSingleRedirect(builder, false, allowHeredoc);
     }
 
-    public boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode, boolean allowHeredoc) {
+    private boolean parseSingleRedirect(BashPsiBuilder builder, boolean inCheckMode, boolean allowHeredoc) {
         PsiBuilder.Marker marker = builder.mark();
 
         IElementType firstToken = builder.getTokenType();
@@ -105,16 +109,6 @@ public class RedirectionParsing implements ParsingTool {
         if (!redirectionSet.contains(secondToken)) {
             marker.drop();
             return false;
-        }
-
-        // Process substitution
-        if (isProcessSubstitution(builder, secondToken)) {
-            if (!parseProcessSubstitution(builder, marker)) {
-                return false;
-            }
-
-            marker.done(REDIRECT_ELEMENT);
-            return true;
         }
 
         if (validBeforeFiledescriptor.contains(secondToken) && ParserUtil.hasNextTokens(builder, true, secondToken, FILEDESCRIPTOR)) {
@@ -168,30 +162,6 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         //an invalid redirect should not break the whole parsing, thus we return true here
-        return true;
-    }
-
-    private boolean isProcessSubstitution(BashPsiBuilder builder, IElementType secondToken) {
-        return (secondToken == LESS_THAN || secondToken == GREATER_THAN) && builder.rawLookup(1) == LEFT_PAREN;
-    }
-
-    private boolean parseProcessSubstitution(BashPsiBuilder builder, PsiBuilder.Marker marker) {
-        builder.advanceLexer(); //eat the < or > token
-        builder.advanceLexer(); //eat the left parentheses
-        if (!Parsing.list.parseCompoundList(builder, true, false)) {
-            marker.drop();
-            return false;
-        }
-
-        //now a right parentheses has to follow to close the process substitution
-        IElementType substitutionEnd = builder.getTokenType(true);
-        if (substitutionEnd == RIGHT_PAREN) {
-            builder.advanceLexer();
-        } else {
-            marker.drop();
-            return false;
-        }
-
         return true;
     }
 }

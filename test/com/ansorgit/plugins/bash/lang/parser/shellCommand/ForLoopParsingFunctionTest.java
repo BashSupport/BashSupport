@@ -27,9 +27,7 @@ import org.junit.Test;
 import java.util.Collections;
 
 /**
- * User: jansorg
- * Date: 05.06.2010
- * Time: 18:07:14
+ * @author jansorg
  */
 public class ForLoopParsingFunctionTest extends MockPsiTest {
     MockFunction forLoop = new MockFunction() {

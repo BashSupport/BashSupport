@@ -23,9 +23,7 @@ import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 27.05.2010
- * Time: 20:18:34
+ * @author jansorg
  */
 public class ArithmeticExprParserTest extends MockPsiTest {
     MockFunction exprParser = new MockFunction() {
@@ -64,5 +62,17 @@ public class ArithmeticExprParserTest extends MockPsiTest {
         //123#$a
         //a variable as value
         mockTest(exprParser, ARITH_NUMBER, ARITH_BASE_CHAR, VARIABLE);
+    }
+
+    @Test
+    public void testIssue320() throws Exception {
+        // a[0]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
+
+        // a[0x0]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE);
+
+        // a[a[0]]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE);
     }
 }

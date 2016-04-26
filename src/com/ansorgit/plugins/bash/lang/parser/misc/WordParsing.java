@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: WordParsing.java, Class: WordParsing
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
@@ -29,11 +26,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
- * <p/>
- * Date: 26.03.2009
- * Time: 15:55:24
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class WordParsing implements ParsingTool {
     private static final TokenSet singleDollarFollowups = TokenSet.create(STRING_END, WHITESPACE, LINE_FEED);
@@ -91,9 +85,9 @@ public class WordParsing implements ParsingTool {
     /**
      * Parses a word token. Several word tokens not seperated by whitespace are read
      * as a single word token.
-     * <p/>
+     * <br>
      * It accepts whitespace tokens in the beginning of the stream.
-     * <p/>
+     * <br>
      * A word can be a combination of several tokens, words are seperated by whitespace.
      *
      * @param builder         The builder

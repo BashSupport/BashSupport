@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: ParserUtil.java, Class: ParserUtil
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,11 +27,8 @@ import org.jetbrains.annotations.PropertyKey;
 
 /**
  * Useful helper methods for the language parsing.
- * <p/>
- * Date: 24.03.2009
- * Time: 21:22:30
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class ParserUtil {
     @NonNls
@@ -224,6 +218,25 @@ public class ParserUtil {
             }
 
             if (current == token) {
+                return true;
+            }
+
+            i++;
+        }
+
+        return false;
+    }
+
+    public static boolean containsTokenInLookahead(PsiBuilder builder, TokenSet tokens, int maxLookahead, boolean allowWhitespace) {
+        int i = 0;
+
+        while (i < maxLookahead) {
+            IElementType current = allowWhitespace ? builder.lookAhead(i) : builder.rawLookup(i);
+            if (current == null) {
+                return false;
+            }
+
+            if (tokens.contains(current)) {
                 return true;
             }
 

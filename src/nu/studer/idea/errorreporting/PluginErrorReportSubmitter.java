@@ -41,6 +41,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.net.HttpConfigurable;
 import com.intellij.util.net.IOExceptionDialog;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +57,7 @@ import java.util.Properties;
  * This class is notified about errors caused by its owning plugin. It bundles the information to be sent to the error receiving server. Configuration
  * options like the email recipient etc. are first extracted from the plugin descriptor (vendor's email etc.) but can be overwritten through
  * properties specified in the properties file (email.to, email.cc, and server.address).
- * <p/>
+ * <br>
  * An indirection is applied when looking up the error receiving server address. This allows to change the location, i.e. address of the error
  * receiving server without having to reconfigure/recompile the plugin (all that needs to be changed is the server address returned by the lookup
  * server).
@@ -69,9 +70,9 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
     private static final Logger LOGGER = Logger.getInstance(TextStreamLoggingEventSubmitter.class.getName());
 
     @NonNls
-    private static final String SERVER_LOOKUP_URL = "http://www.ansorg-it.com/errorReceiverRedirect.txt";
+    private static final String SERVER_LOOKUP_URL = "https://www.ansorg-it.com/bashsupport/errorReceiverRedirect.txt";
     @NonNls
-    private static final String FALLBACK_SERVER_URL = "http://www.ansorg-it.com/bashsupport/errorReceiver.pl";
+    private static final String FALLBACK_SERVER_URL = "https://www.ansorg-it.com/bashsupport/errorReceiver.pl";
     @NonNls
     private static final String ERROR_SUBMITTER_PROPERTIES_PATH = "errorReporter.properties";
 
@@ -92,7 +93,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
     private String serverUrl;
 
     public String getReportActionText() {
-        return PluginErrorReportSubmitterBundle.message("report.error.to.plugin.vendor");
+        return "Report error to plugin vendor";
     }
 
     @Override
@@ -136,7 +137,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                             ApplicationManager.getApplication().invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
+                                    Messages.showInfoMessage(parentComponent, "The error report has been submitted successfully. Thank you for your feedback!", "BashSupport Error Submission");
                                 }
                             });
                         }
@@ -188,10 +189,10 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
             return;
         }
 
-        Task.Backgroundable task = new Task.Backgroundable(project, PluginErrorReportSubmitterBundle.message("progress.dialog.title"), false) {
+        Task.Backgroundable task = new Task.Backgroundable(project, "BashSupport Error Submission", false) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
-                indicator.setText(PluginErrorReportSubmitterBundle.message("progress.dialog.text"));
+                indicator.setText("Submitting BashSupport error report...");
                 indicator.setIndeterminate(true);
 
                 LoggingEventSubmitter submitter = new TextStreamLoggingEventSubmitter(serverUrl);
@@ -224,9 +225,8 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 httpConfigurable.prepareURL(serverUrl);
             } catch (IOException ioe) {
                 LOGGER.info("Connection error", ioe);
-                tryAgain = IOExceptionDialog.showErrorDialog(
-                        PluginErrorReportSubmitterBundle.message("error.dialog.title"),
-                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", serverUrl)
+                tryAgain = IOExceptionDialog.showErrorDialog("Error",
+                        String.format("Unable to connect to \"%s\". Make sure your proxy settings are correct.", serverUrl)
                 );
 
                 // abort if cannot connect to server and user does not want to try again
@@ -299,11 +299,12 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
             // try to query server URL from lookup location --> this indirection allows to change the
             // server URL without having to redistribute a new version of the error report submitter
             @NonNls String serverUrl = readUrlContentWithProxy(SERVER_LOOKUP_URL);
-            if (serverUrl == null) {
+            if (StringUtils.isBlank(serverUrl) || !serverUrl.startsWith("http")) {
                 // as a last resort, fallback to hard-coded server URL
                 serverUrl = FALLBACK_SERVER_URL;
                 LOGGER.warn("Cannot determine server URL, using default server URL " + serverUrl);
             }
+
             this.serverUrl = serverUrl;
             LOGGER.debug("Server URL " + this.serverUrl);
         }
@@ -320,8 +321,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 httpConfigurable.prepareURL(urlString);
             } catch (IOException ioe) {
                 LOGGER.info("Connection error", ioe);
-                tryAgain = IOExceptionDialog.showErrorDialog(PluginErrorReportSubmitterBundle.message("error.dialog.title"),
-                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", urlString));
+                tryAgain = IOExceptionDialog.showErrorDialog("Error", String.format("Unable to connect to \"%s\". Make sure your proxy settings are correct.", urlString));
 
                 // abort if cannot connect to server and user does not want to try again
                 if (!tryAgain) {

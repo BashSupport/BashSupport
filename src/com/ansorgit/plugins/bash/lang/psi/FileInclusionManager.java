@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: FileInclusionManager.java, Class: FileInclusionManager
- * Last modified: 2011-07-17 20:06
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi;
 
@@ -39,9 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /**
- * User: jansorg
- * Date: 06.02.11
- * Time: 20:36
+ * @author jansorg
  */
 public class FileInclusionManager {
     private FileInclusionManager() {
@@ -84,7 +79,7 @@ public class FileInclusionManager {
             String filePath = virtualFile.getPath();
 
             Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
-            if (commands == null) {
+            if (commands.isEmpty()) {
                 continue;
             }
 
@@ -144,7 +139,7 @@ public class FileInclusionManager {
 
         Set<BashFile> includers = Sets.newLinkedHashSet();
         for (BashIncludeCommand command : includeCommands) {
-            BashFile includer = (BashFile) BashPsiUtils.findFileContext(command, true);
+            BashFile includer = (BashFile) BashPsiUtils.findFileContext(command);
 
             if (!file.equals(includer)) {
                 includers.add(includer);
