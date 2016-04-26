@@ -1,3 +1,6 @@
+####2016-04-24:
+ - \#89: Function expands incorrectly when defined above another function
+
 ####2016-03-31:
  - \#310: Workaround for deeply nested structures
 

@@ -151,4 +151,11 @@ public class ListParsingTest extends MockPsiTest {
         mockTest(listSimpleParsingTest, 1, WORD, LINE_FEED, WORD, SEMI, WORD, SEMI); // a \n a; a;
     }
 
+    @Test
+    public void testIssue89() {
+        //function keyword after a closing brace is an error
+        mockTestError(listSimpleParsingTest, FUNCTION_KEYWORD, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY,
+                FUNCTION_KEYWORD, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
+    }
+
 }
