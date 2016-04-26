@@ -30,9 +30,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 15.06.2010
- * Time: 19:14:20
+ * @author jansorg
  */
 public class FunctionResolveTestCase extends AbstractResolveTest {
     @Test

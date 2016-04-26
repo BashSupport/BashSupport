@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: LetCommand.java, Class: LetCommand
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +26,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * let Argument [Argument ...]
  * Each argument is evaluated as an arithmetic expression
- * <p/>
+ * <br>
  * fixme this implementation is not yet complete, currently it is just eating the tokens to avoid syntax error markers
  * fixme not variable parsing, etc. is done at the moment
  */

@@ -21,10 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 import org.junit.Test;
 
 /**
- * Date: 25.03.2009
- * Time: 12:27:01
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class PiplelineParsingTest extends MockPsiTest {
     private final MockFunction testPipeline = new MockFunction() {

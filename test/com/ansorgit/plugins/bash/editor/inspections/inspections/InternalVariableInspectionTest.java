@@ -3,9 +3,7 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 28.12.10
- * Time: 19:47
+ * @author jansorg
  */
 public class InternalVariableInspectionTest extends AbstractInspectionTestCase {
     @Test

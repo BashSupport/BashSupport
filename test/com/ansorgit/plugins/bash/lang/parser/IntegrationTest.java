@@ -23,10 +23,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * Date: 26.03.2009
- * Time: 13:04:49
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class IntegrationTest extends MockPsiTest {
     private static final MockFunction fileParsingTest = new MockFunction() {
@@ -573,10 +570,18 @@ public class IntegrationTest extends MockPsiTest {
     public void testRedirects() {
         //> OUT
         mockTest(fileParsingTest, WHITESPACE, GREATER_THAN, WORD);
+        //echo > OUT
+        mockTest(fileParsingTest, WORD, WHITESPACE, GREATER_THAN, WORD);
+        //2>OUT
+        mockTest(fileParsingTest, INTEGER_LITERAL, GREATER_THAN, WORD);
+        //echo 2>OUT
+        mockTest(fileParsingTest, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, WORD);
         //: > OUT
         mockTest(fileParsingTest, COLON, WHITESPACE, GREATER_THAN, WORD);
         //&> OUT
         mockTest(BashVersion.Bash_v4, fileParsingTest, REDIRECT_AMP_GREATER, WORD);
+        //(echo) 2>OUT
+        mockTest(fileParsingTest, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, WORD);
 
         //exec 9 <& 0 < /etc/fstab
         mockTest(fileParsingTest, WORD, INTEGER_LITERAL, WHITESPACE, REDIRECT_LESS_AMP, WHITESPACE, INTEGER_LITERAL,
@@ -622,10 +627,13 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
     public void testProcessSubstitution() {
+        // <(printf '%s\n' "${BEFORE[@]}" | LC_ALL=C sort)
+        mockTest(fileParsingTest, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, WORD, WORD, PIPE,
+                ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+
         //while read line ; do echo $line ; done < <(echo :)
         mockTest(fileParsingTest, WHILE_KEYWORD, WORD, WORD, SEMI, DO_KEYWORD, WORD, VARIABLE, SEMI,
                 DONE_KEYWORD, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, COLON, RIGHT_PAREN);
-
 
         //echo <(echo a) $var
         mockTest(fileParsingTest, WORD, LESS_THAN, LEFT_PAREN, WORD, WORD, RIGHT_PAREN, VARIABLE);

@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: ParsingTool.java, Class: ParsingTool
- * Last modified: 2010-02-06 10:50
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser;
 
@@ -23,11 +20,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 /**
  * The base class for pasing helps. It just provides the token types as
  * direcly accessible references.
- * <p/>
- * Date: 24.03.2009
- * Time: 21:31:26
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public interface ParsingTool extends BashTokenTypes, BashElementTypes {
 }

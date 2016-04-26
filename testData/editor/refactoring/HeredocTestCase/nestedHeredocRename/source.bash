@@ -2,6 +2,6 @@ if test; then
     if test; then
         echo && cat <<- <caret>EOF
     Heredoc content!
-EOF
+		EOF
     fi
 fi

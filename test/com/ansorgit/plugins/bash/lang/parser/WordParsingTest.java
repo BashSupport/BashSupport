@@ -21,10 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser;
 import org.junit.Test;
 
 /**
- * Date: 26.03.2009
- * Time: 16:13:05
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class WordParsingTest extends MockPsiTest {
     private MockFunction wordTestParser = new MockFunction() {

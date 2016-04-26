@@ -28,7 +28,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class UnsetCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {

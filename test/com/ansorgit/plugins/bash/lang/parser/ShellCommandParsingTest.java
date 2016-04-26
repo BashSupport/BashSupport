@@ -25,10 +25,7 @@ import org.junit.Test;
 import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
 
 /**
- * Date: 25.03.2009
- * Time: 14:07:10
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ShellCommandParsingTest extends MockPsiTest {
     private final MockFunction arithmeticParsingTester = new MockFunction() {

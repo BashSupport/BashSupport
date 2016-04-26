@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.StringReader;
 import java.util.List;
 
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
@@ -33,10 +34,20 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 /**
  * Tests the bash lexer.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLexerTest {
-    private static final com.intellij.openapi.diagnostic.Logger log = com.intellij.openapi.diagnostic.Logger.getInstance("BashLexerTest");
+    @Test
+    public void testInitialState() throws Exception {
+        _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("abc"));
+        Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
+    }
+
+    @Test
+    public void testAfterStringState() throws Exception {
+        _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("\"abc"));
+        Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
+    }
 
     @Test
     public void testSimpleDefTokenization() {
@@ -340,6 +351,19 @@ public class BashLexerTest {
 
         testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,
                 RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+    }
+
+    @Test
+    public void testSubshellSubstring() throws Exception {
+        testTokenization("\"$( \"echo\" )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( ( \"\" \"\" ) )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( ( \"\" ))\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, RIGHT_PAREN, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( \"$( echo )\" )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, RIGHT_PAREN, STRING_END, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$(\"$(\"abcd\")\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, STRING_END, RIGHT_PAREN, STRING_END);
     }
 
     @Test
@@ -872,8 +896,8 @@ public class BashLexerTest {
         testTokenization("cat <<END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
         testTokenization("cat << END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
 
-        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
-        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+        testTokenization("cat <<-END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END, LINE_FEED);
+        testTokenization("cat <<- END\nABC\nDEF\nEND\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_IGNORING_TABS_END, LINE_FEED);
 
         testTokenization("cat <<END\nABC\nDEF\nEND", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
 
@@ -912,6 +936,16 @@ public class BashLexerTest {
 
         testTokenization("cat <<$\n$", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
         testTokenization("cat <<$_X\n$_X", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+
+        //tab prefixed end marker is valid if started by <<-
+        //no tab
+        testTokenization("cat <<-EOF\nEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
+        testTokenization("cat <<- EOF\nEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
+        //with tab
+        testTokenization("cat <<-EOF\n\tEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
+        testTokenization("cat <<- EOF\n\tEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
+        //with tab but without <<-
+        testTokenization("cat <<EOF\n\tEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
     }
 
     @Test
@@ -930,10 +964,15 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue125() throws Exception {
+        testTokenization("read 'test' a[0]", WORD, WHITESPACE, STRING2, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
+    }
+
+    @Test
     public void testIssue199() throws Exception {
         testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
         testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
-        //limitation of the Bash lexer: no look-ahead to the end of an expression 
+        //limitation of the Bash lexer: no look-ahead to the end of an expression
         //Bash parses this (probably) as an arithmetic expression with a parenthesis inside
         //BashSupport doesn't
         testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
@@ -1034,6 +1073,40 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue89() throws Exception {
+        testTokenization("function a {\n}function", FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, LEFT_CURLY, LINE_FEED, RIGHT_CURLY, FUNCTION_KEYWORD);
+
+    }
+
+    @Test
+    public void testIssue320() throws Exception {
+        testTokenization("(( a[0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+        testTokenization("(( A[0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+
+        testTokenization("(( a[0x0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+        testTokenization("(( A[0x0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+
+        testTokenization("(( a[a[b]] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+        testTokenization("(( a[a[0]] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+
+        testTokenization("(( A[A[0]] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
+    }
+
+    @Test
+    public void testIssue325() throws Exception {
+        testTokenization("cat << USE\nUSE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat << THEUSAGE\nTHEUSAGE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        //theUsage triggers a JFlex bug (apparently) if the marker regex includes [\s]
+        testTokenization("cat << theUsage\ntheUsage", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+        testTokenization("cat << _theUsage\n_theUsage", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
+    }
+
+    @Test
+    public void testIssue327() throws Exception {
+        testTokenization("<< EOF\n\\$(a)\nEOF", HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
@@ -1042,6 +1115,7 @@ public class BashLexerTest {
         testTokenization("trap FUNCTION SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization("trap -p SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
     }
+
     @Test
     public void testEvalLexing() {
         testTokenization("$a=$a", VARIABLE, EQ, VARIABLE);

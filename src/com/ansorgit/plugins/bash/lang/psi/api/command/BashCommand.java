@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashCommand.java, Class: BashCommand
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,12 +29,9 @@ import java.util.List;
  * either be an internal bash command, an external bash command or a function call.
  * It's also possible that a command has just assignments and no actual call to
  * a function or internal/external command. Then it's a pure assignment call.
- * <p/>
- * <p/>
- * Date: 12.04.2009
- * Time: 21:33:53
- *
- * @author Joachim Ansorg
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public interface BashCommand extends BashPsiElement {
     @Nullable

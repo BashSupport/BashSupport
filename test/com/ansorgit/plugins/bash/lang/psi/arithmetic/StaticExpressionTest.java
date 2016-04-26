@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 17.07.2010
- * Time: 12:50:01
+ * @author jansorg
  */
 public class StaticExpressionTest extends AbstractArithExprTest {
     @Test

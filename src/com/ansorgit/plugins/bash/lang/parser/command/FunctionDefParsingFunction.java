@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: FunctionDefParsingFunction.java, Class: FunctionDefParsingFunction
- * Last modified: 2013-01-25
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,11 +26,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for function definitions.
- * <p/>
- * Date: 02.05.2009
- * Time: 11:32:25
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class FunctionDefParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

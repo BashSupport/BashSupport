@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashWordImpl.java, Class: BashWordImpl
- * Last modified: 2011-02-18 20:12
- * <p/>
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
@@ -165,24 +162,14 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
             return true;
         }
 
-        boolean walkOn = BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-        /*if (walkOn && isValidHost()) {
-            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
-        } */
-
-        return walkOn;
+        return BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
     }
 
     @NotNull
     @Override
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
-        //if the word is of the form $'abc' then the content is escape-code evaluated
-        //if the word is not prefixed by a dollar character then no escape code interpretation is performed
-
-        String current = getText();
-
         //$' prefix -> c-escape codes are interpreted before the injected document is parsed
-        if (current.startsWith("$'")) {
+        if (getText().startsWith("$'")) {
             return new BashEnhancedLiteralTextEscaper<BashWordImpl>(this);
         }
 

@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: ProcessSubstitutionParsing.java, Class: ProcessSubstitutionParsing
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
@@ -27,14 +24,12 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parses process substitution expressions, i.e.
- * <p/>
+ * <br>
  * <(bash subshell expression)
- * <p/>
+ * <br>
  * >(bash susbshell expression)
- * <p/>
- * User: jansorg
- * Date: 10.07.2010
- * Time: 15:2
+ * <br>
+ * @author jansorg
  * 3:12
  */
 public class ProcessSubstitutionParsing implements ParsingFunction {
@@ -46,10 +41,6 @@ public class ProcessSubstitutionParsing implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (!isValid(builder)) {
-            return false;
-        }
-
         PsiBuilder.Marker marker = builder.mark();
 
         builder.getTokenType();

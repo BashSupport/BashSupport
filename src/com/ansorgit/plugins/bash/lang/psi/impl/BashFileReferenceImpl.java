@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashFileReferenceImpl.java, Class: BashFileReferenceImpl
- * Last modified: 2013-05-02
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -124,7 +121,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
         public PsiElement bindToElement(@NotNull PsiElement targetElement) throws IncorrectOperationException {
             if (targetElement instanceof PsiFile) {
                 //findRelativePath already leaves the injection host file
-                PsiFile currentFile = BashPsiUtils.findFileContext(this.element, false);
+                PsiFile currentFile = BashPsiUtils.findFileContext(this.element);
                 String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) targetElement);
 
                 return handleElementRename(relativeFilePath);
@@ -155,7 +152,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
         @Nullable
         public PsiElement resolveInner() {
-            PsiFile containingFile = BashPsiUtils.findFileContext(getElement(), true);
+            PsiFile containingFile = BashPsiUtils.findFileContext(getElement());
             if (!containingFile.isPhysical()) {
                 return null;
             }

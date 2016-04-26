@@ -6,7 +6,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Test;
 
 /**
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class HistoryExpansionParsingFunctionTest extends MockPsiTest {
     private MockFunction expansionParser = new MockFunction() {

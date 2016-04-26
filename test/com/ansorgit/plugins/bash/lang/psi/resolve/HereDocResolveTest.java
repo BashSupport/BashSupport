@@ -26,9 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 30.06.2010
- * Time: 20:51:09
+ * @author jansorg
  */
 public class HereDocResolveTest extends AbstractResolveTest {
     @Test

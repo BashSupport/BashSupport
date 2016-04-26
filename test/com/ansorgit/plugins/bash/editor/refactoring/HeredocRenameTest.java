@@ -1,6 +1,5 @@
 package com.ansorgit.plugins.bash.editor.refactoring;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.intellij.openapi.util.io.FileUtil;

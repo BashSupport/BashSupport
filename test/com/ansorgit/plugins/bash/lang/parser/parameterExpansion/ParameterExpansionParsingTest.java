@@ -24,9 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: Jan 27, 2010
- * Time: 9:00:48 PM
+ * @author jansorg
  */
 public class ParameterExpansionParsingTest extends MockPsiTest {
     MockFunction expansionParser = new MockFunction() {

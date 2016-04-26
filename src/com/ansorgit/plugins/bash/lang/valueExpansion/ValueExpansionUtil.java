@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: ValueExpansionUtil.java, Class: ValueExpansionUtil
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.valueExpansion;
 
@@ -30,13 +27,14 @@ import java.util.List;
 /**
  * Class to work with expansions.
  * It can expand static expansions into the value which would be printed by a bash shell.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 8:21:06 PM
+ * <br>
+ * <br>
+ * @author jansorg
  */
-public class ValueExpansionUtil {
+public final class ValueExpansionUtil {
+    private ValueExpansionUtil() {
+    }
+
     public static boolean isValid(String spec, boolean enhancedSyntax) {
         if (StringUtils.isEmpty(spec)) {
             return false;
@@ -97,7 +95,7 @@ public class ValueExpansionUtil {
      * Evaluates a pattern like a,b,c or a..c. The string input is expected to be a comma
      * separated list. Each element is either a string or a range. A range cen either be numeric (1..10) or
      * a range between characters (a..z).
-     * <p/>
+     * <br>
      * Valid patterns examples: "a", "a,b", "a..z", "1..999", "abc,def"
      *
      * @param part           The element list to evaluate

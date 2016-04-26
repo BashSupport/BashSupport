@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashElementTypes.java, Class: BashElementTypes
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +47,7 @@ import java.lang.reflect.Constructor;
 /**
  * The available Bash parser element types.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashElementTypes {
     IStubFileElementType FILE = new BashStubFileElementType();
@@ -127,6 +124,7 @@ public interface BashElementTypes {
     IElementType HEREDOC_START_ELEMENT = new BashElementType("heredoc start element");
     IElementType HEREDOC_CONTENT_ELEMENT = new BashElementType("heredoc content element");
     IElementType HEREDOC_END_ELEMENT = new BashElementType("heredoc end element");
+    IElementType HEREDOC_END_IGNORING_TABS_ELEMENT = new BashElementType("heredoc end element (ignoring tabs)");
 
     IElementType EVAL_BLOCK = new BashEvalElementType();
 

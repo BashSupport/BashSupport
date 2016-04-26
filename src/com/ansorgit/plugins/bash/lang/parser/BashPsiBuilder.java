@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashPsiBuilder.java, Class: BashPsiBuilder
- * Last modified: 2013-04-10
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,12 +31,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The PsiBuilder which has been enhanced to be more helpful for Bash parsing.
  * It provides the possiblity to enable whitespace tokens on demand.
- * <p/>
- * <p/>
- * Date: 10.04.2009
- * Time: 00:35:17
- *
- * @author Joachim Ansorg
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
@@ -259,7 +253,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     /**
      * An enhanced marker which takes care of error reporting.
      *
-     * @author Joachim Ansorg, mail@ansorg-it.com
+     * @author jansorg, mail@ansorg-it.com
      */
     private static final class BashPsiMarker implements Marker {
         BashPsiBuilder psiBuilder;

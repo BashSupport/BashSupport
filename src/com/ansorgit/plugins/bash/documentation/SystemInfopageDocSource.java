@@ -1,25 +1,24 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: SystemInfopageDocSource.java, Class: SystemInfopageDocSource
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
-import com.ansorgit.plugins.bash.util.SystemPathUtil;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.diagnostic.Logger;
@@ -34,24 +33,20 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Provides documentation by calling the systems info program and converts the output to html.
- * <p/>
- * User: jansorg
- * Date: 08.05.2010
- * Time: 11:10:51
+ * <br>
+ * @author jansorg
  */
 class SystemInfopageDocSource implements DocumentationSource, CachableDocumentationSource {
-    private String infoExecutable;
-    private String txt2htmlExecutable;
-
-    Logger log = Logger.getInstance("#SystemInfopageDocSource");
-
     @NonNls
-    public static final String CHARSET_NAME = "utf-8";
-    public static final int TIMEOUT_IN_MILLISECONDS = (int) TimeUnit.SECONDS.toMillis(4);
+    private static final String CHARSET_NAME = "utf-8";
+    private static final int TIMEOUT_IN_MILLISECONDS = (int) TimeUnit.SECONDS.toMillis(4);
+    private final String infoExecutable;
+    private final String txt2htmlExecutable;
+    private final Logger log = Logger.getInstance("#SystemInfopageDocSource");
 
     SystemInfopageDocSource() {
-        infoExecutable = SystemPathUtil.findBestExecutable("info");
-        txt2htmlExecutable = SystemPathUtil.findBestExecutable("txt2html");
+        infoExecutable = OSUtil.findBestExecutable("info");
+        txt2htmlExecutable = OSUtil.findBestExecutable("txt2html");
     }
 
     public String documentation(PsiElement element, PsiElement originalElement) {
@@ -59,12 +54,12 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
             return null;
         }
 
-        if (!(element instanceof BashCommand)) {
+        if (!(element instanceof BashCommand) && !(element instanceof BashGenericCommand)) {
             return null;
         }
 
-        BashCommand command = (BashCommand) element;
-        if (!command.isExternalCommand()) {
+        BashCommand command = BashPsiUtils.findParent(element, BashCommand.class);
+        if (command == null || !command.isExternalCommand()) {
             return null;
         }
 
@@ -137,12 +132,9 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     }
 
     private String simpleTextToHtml(String infoPageData) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<html><bead></head><body><pre>");
-        builder.append(infoPageData);
-        builder.append("</pre></body>");
-
-        return builder.toString();
+        return "<html><bead></head><body><pre>" +
+                infoPageData +
+                "</pre></body>";
     }
 
     public String findCacheKey(PsiElement element, PsiElement originalElement) {
@@ -156,7 +148,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     private class MyCapturingProcessHandler extends CapturingProcessHandler {
         private final String stdinData;
 
-        public MyCapturingProcessHandler(Process process, String stdinData) {
+        MyCapturingProcessHandler(Process process, String stdinData) {
             super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME));
             this.stdinData = stdinData;
         }

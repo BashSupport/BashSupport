@@ -7,9 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 23.06.11
- * Time: 16:37
+ * @author jansorg
  */
 public class ConditionalCommandParsingFunctionTest extends MockPsiTest {
     MockFunction conditionalFunction = new MockFunction() {
