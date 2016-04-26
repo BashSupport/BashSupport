@@ -22,7 +22,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
  * @author jansorg
  */
 abstract class AbstractReadCommand extends AbstractVariableDefParsing {
-    public AbstractReadCommand(String command) {
+    AbstractReadCommand(String command) {
         super(true, GENERIC_COMMAND_ELEMENT, command, false, true);
     }
 

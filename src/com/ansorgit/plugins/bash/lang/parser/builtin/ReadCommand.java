@@ -21,7 +21,7 @@ package com.ansorgit.plugins.bash.lang.parser.builtin;
  * @author jansorg
  */
 class ReadCommand extends AbstractReadCommand {
-    public ReadCommand() {
+    ReadCommand() {
         super("read");
     }
 }

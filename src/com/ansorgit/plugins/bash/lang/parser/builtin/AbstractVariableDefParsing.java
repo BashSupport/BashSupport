@@ -31,7 +31,8 @@ import com.intellij.psi.tree.TokenSet;
  * @author jansorg
  */
 abstract class AbstractVariableDefParsing implements ParsingFunction {
-    public static final TokenSet EQ_SET = TokenSet.create(EQ);
+    private static final TokenSet EQ_SET = TokenSet.create(EQ);
+
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
     private final String commandName;

@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author jansorg
  */
 public class ReadCommandTest extends MockPsiTest {
-    MockFunction parserFunction = new MockFunction() {
+    private MockFunction parserFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             ReadCommand d = new ReadCommand();
@@ -44,6 +44,12 @@ public class ReadCommandTest extends MockPsiTest {
 
         //read a v[i]
         mockTest(parserFunction, Lists.newArrayList("read"), WORD, WORD, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
+    }
+
+    @Test
+    public void testIssue125() throws Exception {
+        //read 'test' a[0]
+        mockTest(parserFunction, Lists.newArrayList("read"), WORD, STRING2, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
     }
 
     @Test

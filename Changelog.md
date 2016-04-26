@@ -23,6 +23,9 @@
  - Configured copyright plugin
 
 ####2016-02-23:
+ - \#125: Array element gives "Unexpected token"
+
+####2016-02-23:
  - Release 1.5.5
 
 ####2016-02-22:
