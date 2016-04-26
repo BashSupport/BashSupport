@@ -957,7 +957,7 @@ public class BashLexerTest {
     public void testIssue199() throws Exception {
         testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
         testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
-        //limitation of the Bash lexer: no look-ahead to the end of an expression 
+        //limitation of the Bash lexer: no look-ahead to the end of an expression
         //Bash parses this (probably) as an arithmetic expression with a parenthesis inside
         //BashSupport doesn't
         testTokenization("(((1==1)))", LEFT_PAREN, EXPR_ARITH, ARITH_NUMBER, ARITH_EQ, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
@@ -1061,6 +1061,11 @@ public class BashLexerTest {
     public void testIssue89() throws Exception {
         testTokenization("function a {\n}function", FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, LEFT_CURLY, LINE_FEED, RIGHT_CURLY, FUNCTION_KEYWORD);
 
+    }
+
+    @Test
+    public void testIssue327() throws Exception {
+        testTokenization("<< EOF\n\\$(a)\nEOF", HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
     @Test

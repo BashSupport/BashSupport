@@ -1,3 +1,6 @@
+####2016-04-22:
+ - \#327: Heredoc parser doesn't recognize \$( or \${ construction
+
 ####2016-04-24:
  - \#89: Function expands incorrectly when defined above another function
 

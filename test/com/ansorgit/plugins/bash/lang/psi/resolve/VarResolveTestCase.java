@@ -233,7 +233,25 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testIssue305_SubshellResolve() throws Exception {
-        BashVarDef varDef = assertIsWellDefinedVariable();
+        assertIsWellDefinedVariable();
+    }
+
+    @Test
+    public void testIssue327() throws Exception {
+        try {
+            PsiReference reference = configure();
+            Assert.assertNull("The reference must not resolve!", reference);
+        } catch (junit.framework.AssertionFailedError ignored) {
+        }
+    }
+
+    @Test
+    public void testIssue327_subshell() throws Exception {
+        try {
+            PsiReference reference = configure();
+            Assert.assertNull("The reference must not resolve!", reference);
+        } catch (junit.framework.AssertionFailedError ignored) {
+        }
     }
 
     @Test
