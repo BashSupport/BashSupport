@@ -32,7 +32,7 @@ import java.io.IOException;
 
 /**
  */
-public class BashLineErrorFilterTest extends LightBashCodeInsightFixtureTestCase {
+public abstract class BashLineErrorFilterTest extends LightBashCodeInsightFixtureTestCase {
     @Test
     @Ignore
     public void _testValidation() throws Exception {

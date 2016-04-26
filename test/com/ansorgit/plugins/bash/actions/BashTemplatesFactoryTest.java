@@ -1,6 +1,6 @@
 package com.ansorgit.plugins.bash.actions;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.FileTypes;
 import com.intellij.openapi.util.Computable;
@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFile;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BashTemplatesFactoryTest extends BashCodeInsightFixtureTestCase {
+public class BashTemplatesFactoryTest extends LightBashCodeInsightFixtureTestCase {
     @Test
     public void testSimpleCreate() throws Exception {
         PsiFile newScript = createNewBashFile(findSrcDir(), "new_file.bash", BashTemplatesFactory.DEFAULT_TEMPLATE_FILENAME);

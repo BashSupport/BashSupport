@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.actions;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.intellij.openapi.actionSystem.Presentation;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,5 +33,7 @@ public class AddReplActionTest extends BashCodeInsightFixtureTestCase {
 
         //work around IntelliJ's memory warnings
         action.getConsoleRunner().getConsoleView().dispose();
+        action.getConsoleRunner().getLanguageConsole().dispose();
+        action.getConsoleRunner().getProcessHandler().destroyProcess();
     }
 }
