@@ -26,7 +26,6 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
-import sun.tools.tree.BinaryArithmeticExpression;
 
 /**
  * This inspection detects use of array variables without array element qualifiers.
