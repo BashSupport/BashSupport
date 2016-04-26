@@ -50,11 +50,11 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     protected PluginErrorSubmitDialog(Component inParent) {
         super(inParent, true);
 
-        setTitle(PluginErrorReportSubmitterBundle.message("submission.dialog.title"));
+        setTitle("BashSupport Error Submission");
 
         reportComponent = new PluginErrorReportComponent();
 
-        setOKButtonText(PluginErrorReportSubmitterBundle.message("submission.dialog.button.send"));
+        setOKButtonText("Send Error Report");
 
         /*proxyAction = new AbstractAction(PluginErrorReportSubmitterBundle.message("submission.dialog.button.proxy")) {
             public void actionPerformed(ActionEvent inActionEvent) {
