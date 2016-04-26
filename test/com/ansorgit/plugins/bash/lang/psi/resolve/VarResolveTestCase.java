@@ -34,9 +34,7 @@ import org.junit.Test;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * User: jansorg
- * Date: 15.06.2010
- * Time: 19:14:20
+ * @author jansorg
  */
 public class VarResolveTestCase extends AbstractResolveTest {
     private BashVarDef assertIsWellDefinedVariable() throws Exception {

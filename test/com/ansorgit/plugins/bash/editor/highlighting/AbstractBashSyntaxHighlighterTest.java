@@ -14,6 +14,7 @@ import com.intellij.ui.JBColor;
 import org.junit.Assert;
 
 import java.awt.*;
+import java.io.File;
 
 public abstract class AbstractBashSyntaxHighlighterTest extends LightBashCodeInsightFixtureTestCase {
     @Override
@@ -65,6 +66,6 @@ public abstract class AbstractBashSyntaxHighlighterTest extends LightBashCodeIns
      * @param filename
      */
     protected long doHighlightingTest(String filename) {
-        return myFixture.testHighlighting(true, true, true, getTestDataPath() + "/" + filename);
+        return myFixture.testHighlighting(true, true, true, getTestDataPath() + File.separator + filename);
     }
 }

@@ -7,9 +7,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 09.11.11
- * Time: 21:16
+ * @author jansorg
  */
 public class ConditionalExpressionParsingFunctionTest extends MockPsiTest {
     MockPsiTest.MockFunction conditionalFunction = new MockPsiTest.MockFunction() {

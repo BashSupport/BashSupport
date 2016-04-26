@@ -22,10 +22,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * Date: 11.04.2009
- * Time: 21:28:42
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class HereDocParsingTest extends MockPsiTest {
     MockFunction hereDoc = new MockFunction() {

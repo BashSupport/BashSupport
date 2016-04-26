@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BashPsiCreator.java, Class: BashPsiCreator
- * Last modified: 2013-01-25
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,11 +45,8 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Static factory class which creates PsiElements for the different token / element types.
- * <p/>
- * Date: 11.04.2009
- * Time: 23:12:51
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashPsiCreator implements BashElementTypes {
     private static final Logger log = Logger.getInstance("#BashPsiCreator");

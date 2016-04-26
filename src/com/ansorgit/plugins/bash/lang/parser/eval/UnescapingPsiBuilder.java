@@ -1,10 +1,9 @@
 /*
- * Copyright 2000-2014 JetBrains s.r.o.
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -39,9 +38,9 @@ import java.util.List;
  * The original positions are maintained.
  * The text processing may only remove characters. It must not add any new characters.
  * Removed characters will be output as whitespace to the object using this PsiBuilde
- * <p/>
+ * <br>
  * === This is a copy of {@link com.intellij.embedding.MasqueradingPsiBuilderAdapter}. ===
- * <p/>
+ * <br>
  * A delegate PsiBuilder that hides or substitutes some tokens (namely, the ones provided by {@link MasqueradingLexer})
  * from a parser, however, _still inserting_ them into a production tree in their initial appearance.
  *

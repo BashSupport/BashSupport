@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashTokenTypes.java, Class: BashTokenTypes
- * Last modified: 2013-04-29
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +23,7 @@ import com.intellij.psi.tree.TokenSet;
  * Identifies all of the token types (at least, the ones we'll care about) in Arc.
  * Used by the lexer to break a Bash source file down into tokens.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public interface BashTokenTypes {
     IElementType BAD_CHARACTER = TokenType.BAD_CHARACTER;

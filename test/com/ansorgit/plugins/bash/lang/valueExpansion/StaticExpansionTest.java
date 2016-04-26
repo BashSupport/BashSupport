@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: Nov 11, 2009
- * Time: 9:15:23 PM
+ * @author jansorg
  */
 public class StaticExpansionTest {
     @Test

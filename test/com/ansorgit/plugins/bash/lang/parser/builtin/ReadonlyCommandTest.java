@@ -31,10 +31,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Date: 01.05.2009
- * Time: 21:16:12
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ReadonlyCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {

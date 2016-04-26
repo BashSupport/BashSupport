@@ -7,9 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 06.02.11
- * Time: 12:57
+ * @author jansorg
  */
 public class VarResolveFileIncludeTestCase extends AbstractFileIncludeTest {
     @Override

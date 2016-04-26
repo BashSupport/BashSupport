@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: CommandParsingUtil.java, Class: CommandParsingUtil
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,10 +27,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing function for commands.
- * <p/>
- * User: jansorg
- * Date: Nov 26, 2009
- * Time: 9:16:36 PM
+ * <br>
+ * @author jansorg
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     private final static TokenSet assignmentSeparators = TokenSet.create(LINE_FEED, SEMI, WHITESPACE);
@@ -280,7 +275,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * Parses an assignment list like a=(1 2 3)
      * Grammar (selfmade):
      * assignment_list ::= "(" array_assignment {" " {array_assignment}* ")"
-     * <p/>
+     * <br>
      * array_assignment ::=
      * WORD_EXPR
      * |    STRING

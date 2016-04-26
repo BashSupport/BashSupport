@@ -25,10 +25,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * Date: 15.04.2009
- * Time: 22:55:48
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class TypesetCommandTest extends MockPsiTest {
     MockFunction typeset = new MockFunction() {

@@ -18,19 +18,25 @@
 
 package com.ansorgit.plugins.bash.util;
 
+import com.intellij.openapi.util.SystemInfo;
+import com.intellij.testFramework.TestRunnerUtil;
+import com.intellij.testIntegration.TestIntegrationUtils;
+import org.codehaus.groovy.vmplugin.v5.JUnit4Utils;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 22.07.2010
- * Time: 19:05:25
+ * @author jansorg
  */
 public class BashInterpreterDetectionTest {
     @Test
     public void testFindBestLocation() throws Exception {
         BashInterpreterDetection detection = new BashInterpreterDetection();
 
-        Assert.assertEquals("/bin/bash", detection.findBestLocation());
+        if (SystemInfo.isWindows) {
+            Assert.assertEquals("c:\\cygwin\\bin\\bash.exe", detection.findBestLocation());
+        } else {
+            Assert.assertEquals("/bin/bash", detection.findBestLocation());
+        }
     }
 }

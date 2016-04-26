@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.StringReader;
 import java.util.List;
 
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
@@ -33,10 +34,20 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 /**
  * Tests the bash lexer.
  *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class BashLexerTest {
-    private static final com.intellij.openapi.diagnostic.Logger log = com.intellij.openapi.diagnostic.Logger.getInstance("BashLexerTest");
+    @Test
+    public void testInitialState() throws Exception {
+        _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("abc"));
+        Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
+    }
+
+    @Test
+    public void testAfterStringState() throws Exception {
+        _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("\"abc"));
+        Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
+    }
 
     @Test
     public void testSimpleDefTokenization() {
@@ -340,6 +351,19 @@ public class BashLexerTest {
 
         testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,
                 RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+    }
+
+    @Test
+    public void testSubshellSubstring() throws Exception {
+        testTokenization("\"$( \"echo\" )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( ( \"\" \"\" ) )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( ( \"\" ))\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, RIGHT_PAREN, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$( \"$( echo )\" )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, WORD, WHITESPACE, RIGHT_PAREN, STRING_END, WHITESPACE, RIGHT_PAREN, STRING_END);
+
+        testTokenization("\"$(\"$(\"abcd\")\")\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, DOLLAR, LEFT_PAREN, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, STRING_END, RIGHT_PAREN, STRING_END);
     }
 
     @Test
@@ -1042,6 +1066,7 @@ public class BashLexerTest {
         testTokenization("trap FUNCTION SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization("trap -p SIGINT", TRAP_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD);
     }
+
     @Test
     public void testEvalLexing() {
         testTokenization("$a=$a", VARIABLE, EQ, VARIABLE);

@@ -26,9 +26,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: Jan 28, 2010
- * Time: 7:08:16 PM
+ * @author jansorg
  */
 public class LocalCommandTest extends MockPsiTest {
     private MockFunction localParser = new MockFunction() {

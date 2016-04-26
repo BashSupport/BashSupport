@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 21.04.2010
- * Time: 22:32:32
+ * @author jansorg
  */
 public class LanguageBuiltinsTest {
     @Test

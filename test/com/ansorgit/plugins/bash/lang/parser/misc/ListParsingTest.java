@@ -25,10 +25,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Date: 25.03.2009
- * Time: 13:25:48
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ListParsingTest extends MockPsiTest {
     private MockFunction list1ParsingTest = new MockFunction() {

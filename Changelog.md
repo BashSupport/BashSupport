@@ -1,3 +1,11 @@
+####2016-03-31:
+ - \#310: Workaround for deeply nested structures
+
+####2016-03-12:
+ - Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.
+ - Added more test cases for improved test coverage
+ - Configured copyright plugin
+
 ####2016-02-23:
  - Release 1.5.5
 
@@ -9,25 +17,13 @@
  - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
 ####2016-02-20:
+ - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+
+####2016-02-20:
  - \#312: Newlines are not accepted in parameter expansions
 
 ####2016-02-20:
  - \#297: File includes with directories or / in the path reference are not working as expected
-
-####2016-02-20:
- - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
-
-####2016-02-20:
- - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
-
-####2016-02-20:
- - \#297: File includes with directories or / in the path reference are not working as expected
-
-####2016-02-20:
- - \#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function
-
-####2016-02-01:
- - \#308: Grouping in test commands not properly parsed
 
 ####2016-02-01:
  - \#300: Variables are not recognized in case
@@ -36,7 +32,7 @@
  - \#303: Multiline lists not recognised
 
 ####2016-02-01:
- - \#300: Variables are not recognized in case
+ - \#308: Grouping in test commands not properly parsed
 
 ####2016-01-06:
  - \#299: ClassNotFound exception in PHPStorm

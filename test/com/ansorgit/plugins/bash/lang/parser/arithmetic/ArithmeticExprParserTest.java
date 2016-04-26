@@ -23,9 +23,7 @@ import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 27.05.2010
- * Time: 20:18:34
+ * @author jansorg
  */
 public class ArithmeticExprParserTest extends MockPsiTest {
     MockFunction exprParser = new MockFunction() {

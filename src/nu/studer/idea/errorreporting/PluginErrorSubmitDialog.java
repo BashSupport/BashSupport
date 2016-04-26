@@ -23,7 +23,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMUtil;
-import com.intellij.util.net.HTTPProxySettingsDialog;
+//import com.intellij.util.net.HTTPProxySettingsDialog;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -44,7 +44,7 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     @SuppressWarnings({"AnalyzingVariableNaming"})
     public String USERNAME;// persisted setting
 
-    private AbstractAction proxyAction;
+    //private AbstractAction proxyAction;
     private final PluginErrorReportComponent reportComponent;
 
     protected PluginErrorSubmitDialog(Component inParent) {
@@ -56,12 +56,12 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
 
         setOKButtonText(PluginErrorReportSubmitterBundle.message("submission.dialog.button.send"));
 
-        proxyAction = new AbstractAction(PluginErrorReportSubmitterBundle.message("submission.dialog.button.proxy")) {
+        /*proxyAction = new AbstractAction(PluginErrorReportSubmitterBundle.message("submission.dialog.button.proxy")) {
             public void actionPerformed(ActionEvent inActionEvent) {
                 HTTPProxySettingsDialog settingsDialog = new HTTPProxySettingsDialog();
                 settingsDialog.show();
             }
-        };
+        };*/
 
         init();
     }
@@ -118,7 +118,8 @@ public class PluginErrorSubmitDialog extends DialogWrapper {
     }
 
     protected Action[] createLeftSideActions() {
-        return new Action[]{proxyAction};
+        //return new Action[]{proxyAction};
+        return new Action[0];
     }
 
     public JComponent getPreferredFocusedComponent() {

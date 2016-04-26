@@ -1,7 +1,7 @@
 package com.ansorgit.plugins.bash.codeInsight.completion;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.intellij.codeInsight.completion.CompletionType;
+import com.ansorgit.plugins.bash.util.OSUtil;
 import org.junit.Test;
 
 public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
@@ -35,13 +35,14 @@ public class AbsolutePathCompletionHiddenTest extends AbstractCompletionTest {
     @Test
     public void testSimpleCompletionShowHidden() throws Throwable {
         String prefix = getFullTestDataPath();
+        String cygwinPrefix = OSUtil.toBashCompatible(prefix);
 
-        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s<caret>", prefix));
+        configureByText(BashFileType.BASH_FILE_TYPE, String.format("%s<caret>", cygwinPrefix));
 
         complete(2);
 
-        assertStringItems(prefix + "/.hiddenDir/",
-                prefix + "/.HiddenFile.bash", prefix + "/.HiddenFile2.bash",
-                prefix + "/SimpleCompletion.bash", prefix + "/SimpleCompletion2.bash");
+        assertStringItems(cygwinPrefix + "/.hiddenDir/",
+                cygwinPrefix + "/.HiddenFile.bash", cygwinPrefix + "/.HiddenFile2.bash",
+                cygwinPrefix + "/SimpleCompletion.bash", cygwinPrefix + "/SimpleCompletion2.bash");
     }
 }

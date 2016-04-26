@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashConfigurationType.java, Class: BashConfigurationType
- * Last modified: 2011-05-03 20:02
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.runner;
 
@@ -50,7 +47,7 @@ public class BashConfigurationType extends ConfigurationTypeBase {
     }
 
     private static class BashConfigurationFactory extends ConfigurationFactoryEx {
-        public BashConfigurationFactory(BashConfigurationType configurationType) {
+        BashConfigurationFactory(BashConfigurationType configurationType) {
             super(configurationType);
         }
 
@@ -60,8 +57,9 @@ public class BashConfigurationType extends ConfigurationTypeBase {
             RunManagerEx.getInstanceEx(configuration.getProject()).setBeforeRunTasks(configuration, Collections.<BeforeRunTask>emptyList(), false);
         }
 
+        @NotNull
         @Override
-        public RunConfiguration createTemplateConfiguration(Project project) {
+        public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
             BashRunConfiguration configuration = new BashRunConfiguration(new RunConfigurationModule(project), this, "");
             configuration.setInterpreterPath(BashInterpreterDetection.instance().findBestLocation());
 

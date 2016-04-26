@@ -2,6 +2,6 @@
 
 <idea-plugin version="2">
     <extensions defaultExtensionNs="org.intellij.intelliLang">
-        <languageSupport implementation="com.ansorgit.plugins.bash.intelliLang.BashLanguageInjectionSupport" />
+        <!-- <languageSupport implementation="com.ansorgit.plugins.bash.intelliLang.BashLanguageInjectionSupport" /> -->
     </extensions>
 </idea-plugin>

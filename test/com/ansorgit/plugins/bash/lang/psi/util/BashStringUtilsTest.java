@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: Dec 2, 2009
- * Time: 6:50:52 PM
+ * @author jansorg
  */
 public class BashStringUtilsTest {
     @Test
