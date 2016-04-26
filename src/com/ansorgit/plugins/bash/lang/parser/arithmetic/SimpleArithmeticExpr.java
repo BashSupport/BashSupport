@@ -27,12 +27,6 @@ import com.intellij.psi.tree.IElementType;
  * Parsing of a simple arithmetic expressions.
  * <br>
  * @author jansorg
-/*
- * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
- * http://www.apache.org/licenses/LICENSE-2.0
- */
- * <br>
- * @author jansorg
  */
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {

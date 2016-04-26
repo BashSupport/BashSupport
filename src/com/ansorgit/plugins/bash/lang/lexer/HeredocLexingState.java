@@ -36,7 +36,7 @@ final class HeredocLexingState {
 
     boolean isExpectingEvaluatingHeredoc() {
         if (isEmpty()) {
-            throw new IllegalStateException("isIgnoringTabs called on an empty marker stack");
+            throw new IllegalStateException("isExpectingEvaluatingHeredoc called on an empty marker stack");
         }
 
         return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().evaluating;

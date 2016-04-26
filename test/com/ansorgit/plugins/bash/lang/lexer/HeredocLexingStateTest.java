@@ -23,57 +23,62 @@ public class HeredocLexingStateTest {
     public void testInitialState() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
         Assert.assertTrue(s.isEmpty());
-        Assert.assertFalse(s.isExpectingEvaluatingHeredoc());
 
-        Assert.assertFalse(s.isNextHeredocMarker("x"));
-        Assert.assertFalse(s.isNextHeredocMarker("a"));
+        Assert.assertFalse(s.isNextMarker("x"));
+        Assert.assertFalse(s.isNextMarker("a"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testInitialStateAssertion() throws Exception {
+        HeredocLexingState s = new HeredocLexingState();
+        Assert.assertFalse(s.isExpectingEvaluatingHeredoc());
     }
 
     @Test
     public void testStateChange() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushHeredocMarker("a");
-        Assert.assertTrue(s.isNextHeredocMarker("a"));
-        Assert.assertFalse(s.isNextHeredocMarker("x"));
+        s.pushMarker("a", false);
+        Assert.assertTrue(s.isNextMarker("a"));
+        Assert.assertFalse(s.isNextMarker("x"));
 
-        s.popHeredocMarker("a");
+        s.popMarker("a");
 
-        Assert.assertFalse(s.isNextHeredocMarker("a"));
-        Assert.assertFalse(s.isNextHeredocMarker("x"));
+        Assert.assertFalse(s.isNextMarker("a"));
+        Assert.assertFalse(s.isNextMarker("x"));
     }
 
     @Test
     public void testEvaluatingHeredoc() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushHeredocMarker("\"a\"");
+        s.pushMarker("\"a\"", false);
         Assert.assertFalse(s.isExpectingEvaluatingHeredoc());
-        s.popHeredocMarker("a");
+        s.popMarker("a");
 
-        s.pushHeredocMarker("a");
+        s.pushMarker("a", false);
         Assert.assertTrue(s.isExpectingEvaluatingHeredoc());
-        s.popHeredocMarker("a");
+        s.popMarker("a");
     }
 
     @Test(expected = java.lang.IllegalStateException.class)
     public void testInvalidStateChange() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushHeredocMarker("a");
-        s.pushHeredocMarker("b");
+        s.pushMarker("a", false);
+        s.pushMarker("b", false);
 
-        s.popHeredocMarker("x");
+        s.popMarker("x");
     }
 
     @Test(expected = java.lang.IllegalStateException.class)
     public void testInvalidStateWrongOrder() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushHeredocMarker("a");
-        s.pushHeredocMarker("b");
+        s.pushMarker("a", false);
+        s.pushMarker("b", false);
 
-        s.popHeredocMarker("b");
-        s.popHeredocMarker("a");
+        s.popMarker("b");
+        s.popMarker("a");
     }
 }

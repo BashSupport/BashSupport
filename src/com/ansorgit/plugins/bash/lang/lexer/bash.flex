@@ -163,7 +163,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
-    | [^ \s\t\n\r\f;&|]+ {
+    | [^ \t\n\r\f;&|]+ {
         heredocState().pushMarker(yytext(), yystate() == S_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
 
@@ -180,7 +180,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   return LINE_FEED;
                                 }
 
-    \\ {Variable}?              { return HEREDOC_LINE; }
+    \\ "$" ?                    { return HEREDOC_LINE; }
 
     {Variable}                {
             if (heredocState().isNextMarker(yytext())) {
