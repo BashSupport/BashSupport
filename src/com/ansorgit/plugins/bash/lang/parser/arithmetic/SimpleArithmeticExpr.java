@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: SimpleArithmeticExpr.java, Class: SimpleArithmeticExpr
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 
 package com.ansorgit.plugins.bash.lang.parser.arithmetic;
 
@@ -28,15 +25,13 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing of a simple arithmetic expressions.
- * <p/>
- * User: jansorg
- * Date: Feb 6, 2010
- * Time: 5:52:20 PM
+ * <br>
+ * @author jansorg
  */
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         IElementType tokenType = builder.getTokenType();
-        return tokenType == WORD
+        return tokenType == WORD || tokenType == ASSIGNMENT_WORD
                 || arithLiterals.contains(tokenType)
                 || arithmeticAdditionOps.contains(builder.getTokenType())
                 || Parsing.var.isValid(builder)
@@ -89,11 +84,15 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                     //mark "a" as a variable and not as a regular word token
                     ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
                     ok = true;
+                } else if (tokenType == ASSIGNMENT_WORD) {
+                    //mark "a[...]" as a variable and not as a regular word token
+                    ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
+                    ok = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
                 } else if (arithLiterals.contains(tokenType)) {
                     builder.advanceLexer();
                     ok = true;
                 } else if (Parsing.var.isValid(builder)) {
-                    //fixme whitespace on?
+                    //fixme parse with whitespace on?
                     ok = Parsing.var.parse(builder);
                 } else if (Parsing.word.isComposedString(tokenType)) {
                     ok = Parsing.word.parseComposedString(builder);

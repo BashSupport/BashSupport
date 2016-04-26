@@ -74,7 +74,7 @@ public class BashWordImplTest extends LightBashCodeInsightFixtureTestCase {
     }
 
     @NotNull
-    protected BashWord configureWord(String text) {
+    private BashWord configureWord(String text) {
         PsiFile file = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, text);
 
         BashWord string = PsiTreeUtil.findChildOfType(file, BashWord.class);

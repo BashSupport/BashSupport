@@ -15,10 +15,12 @@
  */
 package com.ansorgit.plugins.bash;
 
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -51,6 +53,10 @@ public abstract class LightBashCodeInsightFixtureTestCase extends LightPlatformC
     @NonNls
     protected String getTestDataPath() {
         String basePath = getBasePath();
+        if (SystemInfo.isWindows) {
+            basePath = StringUtils.replace(basePath, "/", File.separator);
+        }
+
         return BashTestUtils.getBasePath() + (basePath.startsWith(File.separator) ? "" : File.separator) + basePath;
     }
 }

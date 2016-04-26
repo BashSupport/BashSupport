@@ -1,14 +1,23 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All in BashSupport" type="JUnit" factoryName="JUnit">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <extension name="coverage" enabled="false" merge="false" per_test_coverage_enabled="false" sample_coverage="true" runner="jacoco">
+      <pattern>
+        <option name="PATTERN" value="com.ansorgit.plugins.bash.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.lexer._BashLexerBase" />
+        <option name="ENABLED" value="false" />
+      </pattern>
+    </extension>
     <module name="BashSupport" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="PACKAGE_NAME" value="" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PACKAGE_NAME" value="com.ansorgit" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
-    <option name="TEST_OBJECT" value="directory" />
-    <option name="VM_PARAMETERS" value="-ea -Xmx1024m -XX:MaxPermSize=256m" />
+    <option name="TEST_OBJECT" value="package" />
+    <option name="VM_PARAMETERS" value="-ea -XX:MaxPermSize=512m -Xmx2048m" />
     <option name="PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ENV_VARIABLES" />

@@ -22,6 +22,7 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationInfo;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.Logger;
@@ -40,6 +41,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.net.HttpConfigurable;
 import com.intellij.util.net.IOExceptionDialog;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +57,7 @@ import java.util.Properties;
  * This class is notified about errors caused by its owning plugin. It bundles the information to be sent to the error receiving server. Configuration
  * options like the email recipient etc. are first extracted from the plugin descriptor (vendor's email etc.) but can be overwritten through
  * properties specified in the properties file (email.to, email.cc, and server.address).
- * <p/>
+ * <br>
  * An indirection is applied when looking up the error receiving server address. This allows to change the location, i.e. address of the error
  * receiving server without having to reconfigure/recompile the plugin (all that needs to be changed is the server address returned by the lookup
  * server).
@@ -68,9 +70,9 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
     private static final Logger LOGGER = Logger.getInstance(TextStreamLoggingEventSubmitter.class.getName());
 
     @NonNls
-    private static final String SERVER_LOOKUP_URL = "http://www.ansorg-it.com/errorReceiverRedirect.txt";
+    private static final String SERVER_LOOKUP_URL = "https://www.ansorg-it.com/bashsupport/errorReceiverRedirect.txt";
     @NonNls
-    private static final String FALLBACK_SERVER_URL = "http://www.ansorg-it.com/bashsupport/errorReceiver.pl";
+    private static final String FALLBACK_SERVER_URL = "https://www.ansorg-it.com/bashsupport/errorReceiver.pl";
     @NonNls
     private static final String ERROR_SUBMITTER_PROPERTIES_PATH = "errorReporter.properties";
 
@@ -91,11 +93,11 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
     private String serverUrl;
 
     public String getReportActionText() {
-        return PluginErrorReportSubmitterBundle.message("report.error.to.plugin.vendor");
+        return "Report error to plugin vendor";
     }
 
     @Override
-    public SubmittedReportInfo submit(IdeaLoggingEvent[] events, final Component parentComponent) {
+    public boolean submit(@NotNull IdeaLoggingEvent[] events, @Nullable String additionalInfo, @NotNull final Component parentComponent, @NotNull final Consumer<SubmittedReportInfo> consumer) {
         final DataContext dataContext = DataManager.getInstance().getDataContext(parentComponent);
         final Project project = CommonDataKeys.PROJECT.getData(dataContext);
 
@@ -110,14 +112,12 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
 
         StringBuilder versionId = new StringBuilder();
         versionId.append(properties.getProperty(PLUGIN_ID_PROPERTY_KEY)).append(" ").append(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asString());
-        
+        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+
         // show modal error submission dialog
         PluginErrorSubmitDialog dialog = new PluginErrorSubmitDialog(parentComponent);
-        dialog.prepare("", stacktrace.toString(), versionId.toString());
+        dialog.prepare(additionalInfo, stacktrace.toString(), versionId.toString());
         dialog.show();
-
-        final SubmittedReportInfo[] result = {null};
 
         // submit error to server if user pressed SEND
         int code = dialog.getExitCode();
@@ -132,20 +132,28 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                     new Consumer<SubmittedReportInfo>() {
                         @Override
                         public void consume(SubmittedReportInfo submittedReportInfo) {
-                            result[0] = submittedReportInfo;
-                            //Messages.showInfoMessage(parentComponent, PluginErrorReportSubmitterBundle.message("successful.dialog.message"), PluginErrorReportSubmitterBundle.message("successful.dialog.title"));
+                            consumer.consume(submittedReportInfo);
+
+                            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Messages.showInfoMessage(parentComponent, "The error report has been submitted successfully. Thank you for your feedback!", "BashSupport Error Submission");
+                                }
+                            });
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void consume(Throwable throwable) {
                             LOGGER.info("Error submission failed", throwable);
-                            result[0 ] = new SubmittedReportInfo("http://www.ansorg-it.com/en/products_bashsupport.html", "BashSupport", SubmittedReportInfo.SubmissionStatus.FAILED);
+                            consumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED));
                         }
                     }
             );
+
+            return true;
         }
 
-        return result[0];
+        return false;
     }
 
     private void submitToServer(Project project,
@@ -181,28 +189,32 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
             return;
         }
 
-        Runnable task = new Runnable() {
+        Task.Backgroundable task = new Task.Backgroundable(project, "BashSupport Error Submission", false) {
             @Override
-            public void run() {
+            public void run(@NotNull ProgressIndicator indicator) {
+                indicator.setText("Submitting BashSupport error report...");
+                indicator.setIndeterminate(true);
+
                 LoggingEventSubmitter submitter = new TextStreamLoggingEventSubmitter(serverUrl);
                 submitter.setPluginId(properties.getProperty(PLUGIN_ID_PROPERTY_KEY));
                 submitter.setPluginName(properties.getProperty(PLUGIN_NAME_PROPERTY_KEY));
                 submitter.setPluginVersion(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asString());
+                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
                 submitter.setEmailTo(splitByBlanks(properties.getProperty(EMAIL_TO_PROPERTY_KEY)));
                 submitter.setEmailCc(splitByBlanks(properties.getProperty(EMAIL_CC_PROPERTY_KEY)));
 
                 try {
                     submitter.submit(stacktrace, description, user);
 
-                    successConsumer.consume(new SubmittedReportInfo("http://www.ansorg-it.com/en/products_bashsupport.html", "BashSupport", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE));
+                    successConsumer.consume(new SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.NEW_ISSUE));
                 } catch (LoggingEventSubmitter.SubmitException e) {
                     //ignore
                 }
             }
         };
 
-        ProgressManager.getInstance().runProcessWithProgressSynchronously(task, "", false, project);
+        BackgroundableProcessIndicator indicator = new BackgroundableProcessIndicator(task);
+        ProgressManager.getInstance().runProcessWithProgressAsynchronously(task, indicator);
     }
 
     private boolean tryConnectOnly(String serverUrl) {
@@ -213,9 +225,8 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 httpConfigurable.prepareURL(serverUrl);
             } catch (IOException ioe) {
                 LOGGER.info("Connection error", ioe);
-                tryAgain = IOExceptionDialog.showErrorDialog(
-                        PluginErrorReportSubmitterBundle.message("error.dialog.title"),
-                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", serverUrl)
+                tryAgain = IOExceptionDialog.showErrorDialog("Error",
+                        String.format("Unable to connect to \"%s\". Make sure your proxy settings are correct.", serverUrl)
                 );
 
                 // abort if cannot connect to server and user does not want to try again
@@ -288,11 +299,12 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
             // try to query server URL from lookup location --> this indirection allows to change the
             // server URL without having to redistribute a new version of the error report submitter
             @NonNls String serverUrl = readUrlContentWithProxy(SERVER_LOOKUP_URL);
-            if (serverUrl == null) {
+            if (StringUtils.isBlank(serverUrl) || !serverUrl.startsWith("http")) {
                 // as a last resort, fallback to hard-coded server URL
                 serverUrl = FALLBACK_SERVER_URL;
                 LOGGER.warn("Cannot determine server URL, using default server URL " + serverUrl);
             }
+
             this.serverUrl = serverUrl;
             LOGGER.debug("Server URL " + this.serverUrl);
         }
@@ -309,8 +321,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 httpConfigurable.prepareURL(urlString);
             } catch (IOException ioe) {
                 LOGGER.info("Connection error", ioe);
-                tryAgain = IOExceptionDialog.showErrorDialog(PluginErrorReportSubmitterBundle.message("error.dialog.title"),
-                        PluginErrorReportSubmitterBundle.message("error.dialog.connection.0.error", urlString));
+                tryAgain = IOExceptionDialog.showErrorDialog("Error", String.format("Unable to connect to \"%s\". Make sure your proxy settings are correct.", urlString));
 
                 // abort if cannot connect to server and user does not want to try again
                 if (!tryAgain) {

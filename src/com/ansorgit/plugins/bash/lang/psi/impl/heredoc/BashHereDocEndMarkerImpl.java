@@ -1,25 +1,21 @@
-/**
- * ****************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: BashHereDocEndMarkerImpl.java, Class: BashHereDocEndMarkerImpl
- * Last modified: 2010-02-06 10:50
- * <p/>
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ****************************************************************************
  */
 
 package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashComposedCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -60,12 +56,12 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
     }
 
     @Override
-    public String getMarkerText() {
-        return getText().trim();
+    public boolean isIgnoringTabs() {
+        return getNode().getElementType() == BashElementTypes.HEREDOC_END_IGNORING_TABS_ELEMENT;
     }
 
     private static class HeredocEndMarkerReference extends HeredocMarkerReference {
-        public HeredocEndMarkerReference(BashHereDocEndMarker marker) {
+        HeredocEndMarkerReference(BashHereDocEndMarker marker) {
             super(marker);
         }
 
@@ -105,7 +101,14 @@ public class BashHereDocEndMarkerImpl extends AbstractHeredocMarker implements B
 
         @Override
         protected PsiElement createMarkerElement(String name) {
-            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name);
+            String markerText = getElement().getText();
+
+            int leadingTabs = 0;
+            for (int i = 0; i < markerText.length() && markerText.charAt(i) == '\t'; i++) {
+                leadingTabs++;
+            }
+
+            return BashPsiElementFactory.createHeredocEndMarker(marker.getProject(), name, leadingTabs);
         }
     }
 }

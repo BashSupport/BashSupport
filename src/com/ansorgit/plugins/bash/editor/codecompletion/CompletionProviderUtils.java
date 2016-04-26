@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: CompletionProviderUtils.java, Class: CompletionProviderUtils
- * Last modified: 2013-02-03
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
+import com.ansorgit.plugins.bash.util.OSUtil;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -26,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.PrioritizedLookupElement;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.psi.PsiNamedElement;
 
 import javax.swing.*;
@@ -33,9 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User: jansorg
- * Date: 07.02.11
- * Time: 18:38
+ * @author jansorg
  */
 class CompletionProviderUtils {
     private CompletionProviderUtils() {
@@ -67,7 +64,17 @@ class CompletionProviderUtils {
         });
     }
 
-    static Collection<LookupElement> createPathItems(List<String> paths) {
+    static Collection<LookupElement> createPathItems(List<String> osPathes) {
+        //fix the windows file and directory pathes to be cygwin compatible
+        if (SystemInfoRt.isWindows) {
+            osPathes = Lists.transform(osPathes, new Function<String, String>() {
+                @Override
+                public String apply(String path) {
+                   return OSUtil.toBashCompatible(path);
+                }
+            });
+        }
+
         Function<String, LookupElement> transformationFunction = new Function<String, LookupElement>() {
             public LookupElement apply(String path) {
                 return new PathLookupElement(path, !path.endsWith("/"));
@@ -80,10 +87,10 @@ class CompletionProviderUtils {
             }
         };
 
-        Collection<String> relativePaths = Collections2.filter(paths, isRelativePath);
+        Collection<String> relativePaths = Collections2.filter(osPathes, isRelativePath);
         Collection<LookupElement> relativePathItems = Collections2.transform(relativePaths, transformationFunction);
 
-        Collection<String> absolutePaths = Collections2.filter(paths, Predicates.not(isRelativePath));
+        Collection<String> absolutePaths = Collections2.filter(osPathes, Predicates.not(isRelativePath));
         Collection<LookupElement> absolutePathItems = Collections2.transform(absolutePaths, transformationFunction);
 
         Collection<LookupElement> result = Lists.newLinkedList();

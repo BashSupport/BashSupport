@@ -55,7 +55,7 @@ public class BashSyntaxHighlighterPerformanceTest extends AbstractBashSyntaxHigh
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void testHighlightingPerformanceLarge() throws Exception {
         PlatformTestUtil.startPerformanceTest(getTestName(true), 10 * 2000, new ThrowableRunnable() {
             @Override

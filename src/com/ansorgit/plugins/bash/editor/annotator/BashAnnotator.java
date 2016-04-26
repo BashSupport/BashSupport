@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashAnnotator.java, Class: BashAnnotator
- * Last modified: 2013-05-09
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,11 +53,8 @@ import java.util.List;
 /**
  * The annotator for the the Bash language.
  * It takes care of the advanced syntax highlighting options.
- * <p/>
- * Date: 12.04.2009
- * Time: 13:28:15
- *
- * @author Joachim Ansorg
+ * <br>
+ * @author jansorg
  */
 public class BashAnnotator implements Annotator {
     private static TokenSet noWordHighlightErase = TokenSet.orSet(

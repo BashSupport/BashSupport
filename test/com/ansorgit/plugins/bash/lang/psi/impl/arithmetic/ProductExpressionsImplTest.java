@@ -25,9 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: Apr 17, 2010
- * Time: 12:22:58 AM
+ * @author jansorg
  */
 public class ProductExpressionsImplTest {
     @Test

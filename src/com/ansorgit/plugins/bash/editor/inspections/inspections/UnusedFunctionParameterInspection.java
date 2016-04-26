@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: UnusedFunctionParameterInspection.java, Class: UnusedFunctionParameterInspection
- * Last modified: 2013-05-05
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,14 +34,12 @@ import java.util.Set;
 
 /**
  * Inspects function calls and checks whether the given parameters are actually used in the function definition.
- * <p/>
+ * <br>
  * This inspection is not capable to evaluate the control flow, e.g. parameter references in unreachable if
  * statements are still evaluated.
- * <p/>
- * <p/>
- * User: jansorg
- * Date: 28.12.10
- * Time: 12:41
+ * <br>
+ * <br>
+ * @author jansorg
  */
 public class UnusedFunctionParameterInspection extends LocalInspectionTool {
     @NotNull

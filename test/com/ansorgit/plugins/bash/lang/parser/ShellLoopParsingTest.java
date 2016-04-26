@@ -24,10 +24,7 @@ import org.junit.Test;
 import java.util.Collections;
 
 /**
- * Date: 26.03.2009
- * Time: 10:29:45
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ShellLoopParsingTest extends MockPsiTest {
     private MockFunction forLoopTester = new MockFunction() {

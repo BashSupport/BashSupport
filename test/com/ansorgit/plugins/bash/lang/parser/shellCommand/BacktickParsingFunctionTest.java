@@ -6,9 +6,7 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Test;
 
 /**
- * User: jansorg
- * Date: 31.03.11
- * Time: 19:45
+ * @author jansorg
  */
 public class BacktickParsingFunctionTest extends MockPsiTest {
     MockFunction backtickParser = new MockFunction() {

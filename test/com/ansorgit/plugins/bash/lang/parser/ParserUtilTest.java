@@ -26,10 +26,7 @@ import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
 import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
 /**
- * Date: 26.03.2009
- * Time: 12:26:52
- *
- * @author Joachim Ansorg
+ * @author jansorg
  */
 public class ParserUtilTest {
     @Test

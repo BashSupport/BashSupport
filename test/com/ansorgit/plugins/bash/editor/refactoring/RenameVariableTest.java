@@ -35,6 +35,16 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testBasicRenameSubdir() throws Exception {
+        doRename(false, "source.bash", "subdir/subdir_source.bash");
+    }
+
+    @Test
+    public void testBasicRenameSubdirHandler() throws Exception {
+        doRename(true, "source.bash", "subdir/subdir_source.bash");
+    }
+
+    @Test
     public void testBasicRenameInlined() throws Exception {
         doRename(false);
     }
@@ -72,6 +82,11 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     @Test
     public void testEvalRenameEscapedString() throws Exception {
         doRename(false);
+    }
+
+    @Test
+    public void testRenameArrayArithmeticVar() throws Exception {
+        doRename(false, "source.bash");
     }
 
     @Test
@@ -132,7 +147,9 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
         Assert.assertTrue("Renamed reference wasn't found in the canonical text", psiReference.getCanonicalText().contains("a_renamed"));
 
         PsiElement targetVariable = psiReference.resolve();
-        Assert.assertNotNull("target resolve result wasn't found", targetVariable);
-        Assert.assertTrue("target is not a psi function definition", targetVariable instanceof BashVarDef);
+        if (!(psiElement instanceof BashVarDef)) {
+            Assert.assertNotNull("target resolve result wasn't found", targetVariable);
+            Assert.assertTrue("target is not a psi function definition", targetVariable instanceof BashVarDef);
+        }
     }
 }

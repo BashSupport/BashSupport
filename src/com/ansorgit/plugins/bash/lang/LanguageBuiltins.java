@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: LanguageBuiltins.java, Class: LanguageBuiltins
- * Last modified: 2013-05-05
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -95,14 +92,15 @@ public final class LanguageBuiltins {
             "if", "then", "elif", "else", "fi", "while", "do", "done", "until", "case", "in", "esac", "true", "false"
     ));
 
-    //register the shell parameter names
     static {
+        //register the shell parameter names
         bashShellVars.addAll(bashShellParamReferences);
+
+        //add existing definitions to the read-only variable set
+        readonlyShellVars.addAll(bashShellParamReferences);
     }
 
-    //add existing definitions to the read-only variable set
-    static {
-        readonlyShellVars.addAll(bashShellParamReferences);
+    private LanguageBuiltins() {
     }
 
     public static boolean isInternalCommand(String commandName, boolean bash4) {

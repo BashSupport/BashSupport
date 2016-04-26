@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
@@ -12,10 +27,8 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * Parsing of conditional commands like [[ -f x.txt && -d dir1 ]]
- * <p/>
- * User: jansorg
- * Date: 09.11.11
- * Time: 20:06
+ * <br>
+ * @author jansorg
  */
 public class ConditionalCommandParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalCommandParsingFunction");
@@ -29,22 +42,22 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
 
     /**
      * From http://www.gnu.org/software/bash/manual/bashref.html#Conditional-Constructs :
-     * <p/>
-     * <p/>
+     * <br>
+     * <br>
      * <code>( expression )</code>
      * Returns the value of expression. This may be used to override the normal precedence of operators.
-     * <p/>
+     * <br>
      * <code>! expression</code>
      * True if expression is false.
-     * <p/>
+     * <br>
      * <code>expression1 && expression2</code>
      * True if both expression1 and expression2 are true.
-     * <p/>
+     * <br>
      * <code>expression1 || expression2</code>
      * True if either expression1 or expression2 is true.
-     * <p/>
+     * <br>
      * The && and || operators do not evaluate expression2 if the value of expression1 is sufficient to determine the return value of the entire conditional expression.
-     * <p/>
+     * <br>
      * An expression is a normal test expression as used in the conditional expression parsing function.
      *
      * @param builder The provider of the tokens.

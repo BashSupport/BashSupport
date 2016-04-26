@@ -34,9 +34,7 @@ import org.junit.Test;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * User: jansorg
- * Date: 15.06.2010
- * Time: 19:14:20
+ * @author jansorg
  */
 public class VarResolveTestCase extends AbstractResolveTest {
     private BashVarDef assertIsWellDefinedVariable() throws Exception {
@@ -235,7 +233,25 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testIssue305_SubshellResolve() throws Exception {
-        BashVarDef varDef = assertIsWellDefinedVariable();
+        assertIsWellDefinedVariable();
+    }
+
+    @Test
+    public void testIssue327() throws Exception {
+        try {
+            PsiReference reference = configure();
+            Assert.assertNull("The reference must not resolve!", reference);
+        } catch (junit.framework.AssertionFailedError ignored) {
+        }
+    }
+
+    @Test
+    public void testIssue327_subshell() throws Exception {
+        try {
+            PsiReference reference = configure();
+            Assert.assertNull("The reference must not resolve!", reference);
+        } catch (junit.framework.AssertionFailedError ignored) {
+        }
     }
 
     @Test

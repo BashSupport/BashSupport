@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.lang.util;
 
 import com.intellij.openapi.util.Pair;
@@ -6,26 +21,29 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Shared code for the Heredoc handling.
+ *
+ * @author jansorg
  */
 public class HeredocSharedImpl {
-    public static String cleanMarker(String marker) {
+    public static String cleanMarker(String marker, boolean ignoredLeadingTabs) {
         String markerText = trimNewline(marker);
         if (markerText.equals("$")) {
             return markerText;
         }
 
-        int start = startMarkerTextOffset(markerText);
-        int end = endMarkerTextOffset(markerText);
+        Pair<Integer, Integer> offsets = getStartEndOffsets(markerText, ignoredLeadingTabs);
+        int start = offsets.first;
+        int end = offsets.second;
 
         return end <= markerText.length() && start < end ? markerText.substring(start, end) : marker;
     }
 
-    public static int startMarkerTextOffset(String markerText) {
-        return getStartEndOffsets(markerText).first;
+    public static int startMarkerTextOffset(String markerText, boolean ignoredLeadingTabs) {
+        return getStartEndOffsets(markerText, ignoredLeadingTabs).first;
     }
 
     public static int endMarkerTextOffset(String markerText) {
-        return getStartEndOffsets(markerText).second;
+        return getStartEndOffsets(markerText, false).second;
     }
 
     public static boolean isEvaluatingMarker(String marker) {
@@ -39,15 +57,16 @@ public class HeredocSharedImpl {
     }
 
     public static String wrapMarker(String newName, String originalMarker) {
-        int start = startMarkerTextOffset(originalMarker);
-        int end = endMarkerTextOffset(originalMarker);
+        Pair<Integer, Integer> offsets = getStartEndOffsets(originalMarker, true);
+        int start = offsets.first;
+        int end = offsets.second;
 
         return (end <= originalMarker.length() && start < end)
                 ? originalMarker.substring(0, start) + newName + originalMarker.substring(end)
                 : newName;
     }
 
-    public static Pair<Integer, Integer> getStartEndOffsets(@NotNull String markerText) {
+    private static Pair<Integer, Integer> getStartEndOffsets(@NotNull String markerText, boolean ignoredLeadingTabs) {
         if (markerText.isEmpty()) {
             return Pair.create(0, 0);
         }
@@ -64,7 +83,11 @@ public class HeredocSharedImpl {
         int start = 0;
         int end = length - 1;
 
-        if (markerText.charAt(start) == '$' && length > 2 && (markerText.charAt(start + 1) == '"' || markerText.charAt(end) == '\'')) {
+        while (ignoredLeadingTabs && start < length && markerText.charAt(start) == '\t') {
+            start++;
+        }
+
+        if (markerText.charAt(start) == '$' && length > (start + 2) && (markerText.charAt(start + 1) == '"' || markerText.charAt(end) == '\'')) {
             start++;
             length--;
         }

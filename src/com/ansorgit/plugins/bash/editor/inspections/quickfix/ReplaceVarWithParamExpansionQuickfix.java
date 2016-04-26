@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: ReplaceVarWithParamExpansionQuickfix.java, Class: ReplaceVarWithParamExpansionQuickfix
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,10 +32,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This quickfix replaces a simple variable usage with the equivalent parameter expansion form.
- * <p/>
- * User: jansorg
- * Date: 28.12.10
- * Time: 12:19
+ * <br>
+ * @author jansorg
  */
 public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElementQuickfix {
     private final String variableName;
@@ -48,7 +43,7 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
         this.variableName = var.getReference().getReferencedName();
     }
 
-    public static boolean isAvailableAt(@NotNull Project project, @NotNull PsiFile file, @NotNull BashVar var) {
+    public static boolean isAvailableAt(@NotNull BashVar var) {
         if (BashPsiUtils.hasParentOfType(var, BashString.class, 4) || BashPsiUtils.hasParentOfType(var, ArithmeticExpression.class, 4)) {
             return false;
         }
@@ -58,7 +53,7 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
 
     @Override
     public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        return startElement instanceof BashVar && isAvailableAt(project, file, (BashVar) startElement);
+        return startElement instanceof BashVar && isAvailableAt((BashVar) startElement);
     }
 
     @NotNull
