@@ -517,6 +517,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "#"                           { return ARITH_BASE_CHAR; }
 
+  {AssignmentWord} / "["
+                                { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
+
   {ArithWord}                   { return WORD; }
 }
 
@@ -706,9 +709,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     ">"                           { return GREATER_THAN; }
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
-
-    /* Arithmetic expression */
-    //"(("                          { goToState(S_ARITH); return EXPR_ARITH; }
 
     <S_STRINGMODE>{
         {Variable}                 { return VARIABLE; }

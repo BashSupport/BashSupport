@@ -85,6 +85,11 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
+    public void testRenameArrayArithmeticVar() throws Exception {
+        doRename(false, "source.bash");
+    }
+
+    @Test
     @Ignore //broken atm
     public void _testEvalRenameInlined() throws Exception {
         doRename(new Runnable() {
@@ -142,7 +147,9 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
         Assert.assertTrue("Renamed reference wasn't found in the canonical text", psiReference.getCanonicalText().contains("a_renamed"));
 
         PsiElement targetVariable = psiReference.resolve();
-        Assert.assertNotNull("target resolve result wasn't found", targetVariable);
-        Assert.assertTrue("target is not a psi function definition", targetVariable instanceof BashVarDef);
+        if (!(psiElement instanceof BashVarDef)) {
+            Assert.assertNotNull("target resolve result wasn't found", targetVariable);
+            Assert.assertTrue("target is not a psi function definition", targetVariable instanceof BashVarDef);
+        }
     }
 }

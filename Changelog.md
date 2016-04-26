@@ -1,3 +1,6 @@
+####2016-04-22:
+ - \#320: Array use in arithmetic expressions wasn't working as expected
+
 ####2016-04-16:
  - \#321: Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
 

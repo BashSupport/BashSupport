@@ -63,4 +63,16 @@ public class ArithmeticExprParserTest extends MockPsiTest {
         //a variable as value
         mockTest(exprParser, ARITH_NUMBER, ARITH_BASE_CHAR, VARIABLE);
     }
+
+    @Test
+    public void testIssue320() throws Exception {
+        // a[0]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
+
+        // a[0x0]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_HEX_NUMBER, RIGHT_SQUARE);
+
+        // a[a[0]]
+        mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE);
+    }
 }
