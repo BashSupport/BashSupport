@@ -22,7 +22,6 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
     private final StringLexingstate string = new StringLexingstate();
-    private final HeredocLexingState heredocLexingState = new HeredocLexingState();
     //parameter expansion parsing state
     private boolean paramExpansionHash = false;
     private boolean paramExpansionWord = false;
@@ -34,35 +33,17 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     //conditional expressions
     private boolean emptyConditionalCommand = false;
 
+    @Override
+    public HeredocLexingState heredocState() {
+        return heredocState;
+    }
+
+    private final HeredocLexingState heredocState = new HeredocLexingState();
+
     _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
-    }
-
-    @Override
-    public boolean isHeredocEnd(String text) {
-        return heredocLexingState.isNextHeredocMarker(text);
-    }
-
-    @Override
-    public boolean isHeredocEvaluating() {
-        return heredocLexingState.isExpectingEvaluatingHeredoc();
-    }
-
-    @Override
-    public void pushExpectedHeredocMarker(CharSequence expectedHeredocMarker) {
-        this.heredocLexingState.pushHeredocMarker(expectedHeredocMarker.toString());
-    }
-
-    @Override
-    public void popHeredocMarker(CharSequence marker) {
-        heredocLexingState.popHeredocMarker(marker.toString());
-    }
-
-    @Override
-    public boolean isHeredocMarkersEmpty() {
-        return heredocLexingState.isEmpty();
     }
 
     @Override

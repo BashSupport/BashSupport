@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 abstract class HeredocMarkerReference extends CachingReference implements BindablePsiReference {
     protected final BashHereDocMarker marker;
 
-    public HeredocMarkerReference(BashHereDocMarker marker) {
+    HeredocMarkerReference(BashHereDocMarker marker) {
         this.marker = marker;
     }
 
@@ -50,7 +50,7 @@ abstract class HeredocMarkerReference extends CachingReference implements Bindab
     public TextRange getRangeInElement() {
         String markerText = marker.getText();
 
-        return TextRange.create(HeredocSharedImpl.startMarkerTextOffset(markerText), HeredocSharedImpl.endMarkerTextOffset(markerText));
+        return TextRange.create(HeredocSharedImpl.startMarkerTextOffset(markerText, marker.isIgnoringTabs()), HeredocSharedImpl.endMarkerTextOffset(markerText));
     }
 
     @NotNull

@@ -17,13 +17,12 @@ package com.ansorgit.plugins.bash.lang.psi.impl.heredoc;
 
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 abstract class AbstractHeredocMarker extends BashBaseElement implements BashHereDocMarker {
     private HeredocMarkerReference reference;
 
-    public AbstractHeredocMarker(ASTNode astNode, String name) {
+    AbstractHeredocMarker(ASTNode astNode, String name) {
         super(astNode, name);
     }
 
@@ -47,6 +46,11 @@ abstract class AbstractHeredocMarker extends BashBaseElement implements BashHere
     @Override
     public String getName() {
         return getMarkerText();
+    }
+
+    @Override
+    public String getMarkerText() {
+        return HeredocSharedImpl.cleanMarker(getText(), isIgnoringTabs());
     }
 
     @Override

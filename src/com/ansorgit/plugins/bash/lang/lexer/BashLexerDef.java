@@ -64,13 +64,5 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
 
     void setEmptyConditionalCommand(boolean emptyConditionalCommand);
 
-    void pushExpectedHeredocMarker(CharSequence marker);
-
-    void popHeredocMarker(CharSequence marker);
-
-    boolean isHeredocMarkersEmpty();
-
-    boolean isHeredocEnd(String text);
-
-    boolean isHeredocEvaluating();
+    HeredocLexingState heredocState();
 }

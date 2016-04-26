@@ -25,4 +25,9 @@ import com.intellij.psi.PsiNamedElement;
  */
 public interface BashHereDocMarker extends BashPsiElement, PsiNamedElement {
     String getMarkerText();
+
+    /**
+     * @return @{code true} if leading tabs in this marker name should be ignored. Only makes sense for end markers.
+     */
+    boolean isIgnoringTabs();
 }

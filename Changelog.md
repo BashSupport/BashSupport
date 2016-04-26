@@ -1,3 +1,6 @@
+####2016-04-16:
+ - \#321: Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
+
 ####2016-04-19:
  - \#324 Error reporting component is broken
  - Switched the exception error reporting to use https.

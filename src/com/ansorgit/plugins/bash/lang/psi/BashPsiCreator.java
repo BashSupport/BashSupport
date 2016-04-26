@@ -147,7 +147,7 @@ public class BashPsiCreator implements BashElementTypes {
             return new BashHereDocImpl(node);
         }
 
-        if (elementType == HEREDOC_END_ELEMENT) {
+        if (elementType == HEREDOC_END_ELEMENT || elementType == HEREDOC_END_IGNORING_TABS_ELEMENT) {
             return new BashHereDocEndMarkerImpl(node);
         }
 
