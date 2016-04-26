@@ -39,7 +39,7 @@ class BashTemplatesFactory {
     @NotNull
     static PsiFile createFromTemplate(final PsiDirectory directory, String fileName, String templateName) throws IncorrectOperationException {
         Project project = directory.getProject();
-        FileTemplateManager templateManager = FileTemplateManager.getInstance(project);
+        FileTemplateManager templateManager = FileTemplateManager.getInstance();
         FileTemplate template = templateManager.getInternalTemplate(templateName);
 
         Properties properties = new Properties(templateManager.getDefaultProperties());
