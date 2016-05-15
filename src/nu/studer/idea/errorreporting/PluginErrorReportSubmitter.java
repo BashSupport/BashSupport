@@ -112,7 +112,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
 
         StringBuilder versionId = new StringBuilder();
         versionId.append(properties.getProperty(PLUGIN_ID_PROPERTY_KEY)).append(" ").append(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+        versionId.append(", ").append(ApplicationInfo.getInstance().getBuild().asString());
 
         // show modal error submission dialog
         PluginErrorSubmitDialog dialog = new PluginErrorSubmitDialog(parentComponent);
@@ -199,7 +199,7 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
                 submitter.setPluginId(properties.getProperty(PLUGIN_ID_PROPERTY_KEY));
                 submitter.setPluginName(properties.getProperty(PLUGIN_NAME_PROPERTY_KEY));
                 submitter.setPluginVersion(properties.getProperty(PLUGIN_VERSION_PROPERTY_KEY));
-                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asStringWithAllDetails());
+                submitter.setIdeaBuild(ApplicationInfo.getInstance().getBuild().asString());
                 submitter.setEmailTo(splitByBlanks(properties.getProperty(EMAIL_TO_PROPERTY_KEY)));
                 submitter.setEmailCc(splitByBlanks(properties.getProperty(EMAIL_CC_PROPERTY_KEY)));
 
