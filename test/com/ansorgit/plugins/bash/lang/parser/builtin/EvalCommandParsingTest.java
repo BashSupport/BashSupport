@@ -24,33 +24,38 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 public class EvalCommandParsingTest extends MockPsiTest {
-    MockFunction parserFunction = new MockFunction() {
+    private final MockFunction evalParsing = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return new EvalCommandParsing().parse(psi);
         }
     };
 
-
     @Test
     public void testParse() {
         //eval 'a=1'
-        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'"), WORD, STRING2);
+        mockTest(evalParsing, Lists.newArrayList("eval", "'a=1'"), WORD, STRING2);
 
         //eval "a=1"
-        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        mockTest(evalParsing, Lists.newArrayList("eval", "'a=1'"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //eval "echo" "abc" "$1"
-        mockTest(parserFunction, Lists.newArrayList("eval", "'a=1'", "\"abc\"", "\"$1\""), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        mockTest(evalParsing, Lists.newArrayList("eval", "'a=1'", "\"abc\"", "\"$1\""), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         //eval "" ""
-        mockTest(parserFunction, Lists.newArrayList("eval", "\"\"", "\"\""), WORD, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END);
+        mockTest(evalParsing, Lists.newArrayList("eval", "\"\"", "\"\""), WORD, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END);
     }
 
     @Test
     public void testIssue302() throws Exception {
-        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        mockTest(evalParsing, Lists.newArrayList("eval"), WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
 
-        mockTest(parserFunction, Lists.newArrayList("eval"), WORD, DOLLAR, EXPR_ARITH, WORD, _EXPR_ARITH);
+        mockTest(evalParsing, Lists.newArrayList("eval"), WORD, DOLLAR, EXPR_ARITH, WORD, _EXPR_ARITH);
+    }
+
+    @Test
+    public void testIssue330() throws Exception {
+        //eval "$a=()"
+        mockTest(evalParsing, Lists.newArrayList("eval"), WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_CONTENT, STRING_END);
     }
 }

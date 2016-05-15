@@ -118,7 +118,29 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
         Assert.assertNotNull("var must resolve to a var def: " + def, def instanceof BashVarDef);
 
         //make sure that the eval block covers all expected data
-        Assert.assertEquals("Eval must cover all text", "value=\\$myvar${index}", PsiTreeUtil.getParentOfType(def, BashEvalBlock.class).getText());
+        BashEvalBlock evalBlock = PsiTreeUtil.getParentOfType(def, BashEvalBlock.class);
+        Assert.assertNotNull("The eval block must have been parsed", evalBlock);
+        Assert.assertEquals("Eval must cover all text", "value=\\$myvar${index}", evalBlock.getText());
+    }
+
+    @Test
+    public void testIssue330() throws Exception {
+        PsiElement current = configurePsiAtCaret();
+
+        Assert.assertNotNull(current);
+        Assert.assertTrue("element is not a variable: " + current, current instanceof BashVarUse);
+
+        PsiElement def = current.getReference().resolve();
+        Assert.assertNotNull("var must resolve: " + def, def);
+        Assert.assertNotNull("var must resolve to a var def: " + def, def instanceof BashVarDef);
+
+        //make sure that the eval block covers all expected data
+        BashEvalBlock evalBlock = PsiTreeUtil.getParentOfType(current, BashEvalBlock.class);
+        Assert.assertNotNull("The eval block must have been parsed", evalBlock);
+        Assert.assertEquals("Eval must cover all text", "\"$a=(x)\"", evalBlock.getText());
+
+        List<PsiErrorElement> errors = collectPsiErrors();
+        Assert.assertEquals("The list of errors must be empty", 0, errors.size());
     }
 
     @Test
@@ -127,6 +149,12 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
 
         Assert.assertNotNull(current);
 
+        collectPsiErrors();
+
+        //Assert.assertEquals("1 error needs to be found", 1, errors.size());
+    }
+
+    private List<PsiErrorElement> collectPsiErrors() {
         final List<PsiErrorElement> errors = Lists.newLinkedList();
         BashPsiUtils.visitRecursively(myFixture.getFile(), new BashVisitor() {
             @Override
@@ -135,6 +163,6 @@ public class EvalTest extends LightBashCodeInsightFixtureTestCase {
             }
         });
 
-        //Assert.assertEquals("1 error needs to be found", 1, errors.size());
+        return errors;
     }
 }

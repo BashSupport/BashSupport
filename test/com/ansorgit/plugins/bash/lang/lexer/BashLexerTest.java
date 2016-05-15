@@ -1107,6 +1107,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue330() throws Exception {
+        testTokenization("eval \"$a=()\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_CONTENT, STRING_END);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
