@@ -1,3 +1,6 @@
+####2016-05-16:
+ - \#330: Variable declarations in eval code now accepts variables on the left side of an assignment
+
 ####2016-04-22:
  - \#320: Array use in arithmetic expressions wasn't working as expected
 

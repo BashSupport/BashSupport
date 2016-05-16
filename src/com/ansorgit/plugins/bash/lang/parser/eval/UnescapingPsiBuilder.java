@@ -111,7 +111,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
 
         if (delegate.getCurrentOffset() > myShrunkSequence.get(myLexPosition).realStart) {
-            LOG.warn("delegate is ahead of my builder!");
+            LOG.debug("delegate is ahead of my builder!");
             return;
         }
 

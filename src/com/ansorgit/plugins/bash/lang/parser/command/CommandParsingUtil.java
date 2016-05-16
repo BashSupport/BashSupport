@@ -69,6 +69,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
     public static boolean isAssignment(final BashPsiBuilder builder, Mode mode, boolean acceptArrayVars) {
         final IElementType tokenType = builder.getTokenType();
+
         switch (mode) {
             case SimpleMode:
                 return (acceptArrayVars && ParserUtil.hasNextTokens(builder, false, ASSIGNMENT_WORD, LEFT_SQUARE))
@@ -83,7 +84,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         || Parsing.var.isValid(builder);
 
             default:
-                return tokenType == ASSIGNMENT_WORD; //fixme
+                return (tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && Parsing.var.isValid(builder)));
         }
     }
 
@@ -166,6 +167,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 break;
 
             case StrictAssignmentMode: {
+                if (builder.isEvalMode() && Parsing.var.isValid(builder)) {
+                    if (!Parsing.var.parse(builder)) {
+                        ParserUtil.error(assignment, "parser.unexpected.token");
+                        return false;
+                    }
+                    break;
+                }
+
                 final IElementType assignmentWord = ParserUtil.getTokenAndAdvance(builder);
                 if (assignmentWord != ASSIGNMENT_WORD) {
                     ParserUtil.error(assignment, "parser.unexpected.token");
@@ -173,6 +182,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 }
                 break;
             }
+
             default:
                 assignment.drop();
                 throw new IllegalStateException("Invalid parsing mode found");
