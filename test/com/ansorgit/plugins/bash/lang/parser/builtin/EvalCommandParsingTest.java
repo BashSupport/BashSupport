@@ -58,4 +58,10 @@ public class EvalCommandParsingTest extends MockPsiTest {
         //eval "$a=()"
         mockTest(evalParsing, Lists.newArrayList("eval"), WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_CONTENT, STRING_END);
     }
+
+    @Test
+    public void testIssue330Var() throws Exception {
+        //eval "\${$a}"
+        mockTest(evalParsing, Lists.newArrayList("eval"), WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT, STRING_END);
+    }
 }

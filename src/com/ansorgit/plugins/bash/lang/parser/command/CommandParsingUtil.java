@@ -84,7 +84,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         || Parsing.var.isValid(builder);
 
             default:
-                return (tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && Parsing.var.isValid(builder)));
+                return (tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ)));
         }
     }
 
@@ -167,16 +167,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 break;
 
             case StrictAssignmentMode: {
-                if (builder.isEvalMode() && Parsing.var.isValid(builder)) {
-                    if (!Parsing.var.parse(builder)) {
-                        ParserUtil.error(assignment, "parser.unexpected.token");
-                        return false;
-                    }
+                if (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ)) {
+                    //assignment with variable on the left
+                    builder.advanceLexer();
                     break;
                 }
 
-                final IElementType assignmentWord = ParserUtil.getTokenAndAdvance(builder);
-                if (assignmentWord != ASSIGNMENT_WORD) {
+                final IElementType nextToken = ParserUtil.getTokenAndAdvance(builder);
+                if (nextToken != ASSIGNMENT_WORD) {
                     ParserUtil.error(assignment, "parser.unexpected.token");
                     return false;
                 }

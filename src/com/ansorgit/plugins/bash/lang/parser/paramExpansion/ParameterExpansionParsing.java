@@ -29,9 +29,10 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Handles the default parsing of yet unknown / unsupported parameter expansions.
  * <br>
+ *
  * @author jansorg
- * <br>
- * fixme rewrite this parsing function, it doesn't support all cases yet is too complicated to maintain
+ *         <br>
+ *         fixme rewrite this parsing function, it doesn't support all cases yet is too complicated to maintain
  */
 public class ParameterExpansionParsing implements ParsingFunction {
     private static final TokenSet validTokens = TokenSet.orSet(TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN,
@@ -64,7 +65,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
             //fixme handle variable marking, i.e. $- etc.
             if (variableMarkingExpansionOperators.contains(builder.rawLookup(0))) {
                 ParserUtil.markTokenAndAdvance(builder, VAR_ELEMENT);
-            }   else {
+            } else {
                 ParserUtil.getTokenAndAdvance(builder); //the single value token
             }
             ParserUtil.getTokenAndAdvance(builder); //the closing }
@@ -96,18 +97,27 @@ public class ParameterExpansionParsing implements ParsingFunction {
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
         if (!validFirstTokens.contains(firstToken) && !ParserUtil.isWordToken(firstToken)) {
-            builder.error("Expected a valid parameter expansion token.");
-            firstElementMarker.drop();
-            marker.drop();
+            if (!builder.isEvalMode() || !Parsing.var.isValid(builder)) {
+                builder.error("Expected a valid parameter expansion token.");
+                firstElementMarker.drop();
+                marker.drop();
 
-            return false;
+                return false;
+            }
         }
 
         //the first element is a word token, now check if it is a var use or var def token
 
         //eat the first token
-        //fixme
-        builder.advanceLexer();
+        if (builder.isEvalMode() && Parsing.var.isValid(builder)) {
+            boolean ok = Parsing.var.parse(builder);
+            if (!ok) {
+                firstElementMarker.drop();
+                return false;
+            }
+        } else {
+            builder.advanceLexer();
+        }
 
         boolean markedAsVar = false;
         boolean isValid = true;
@@ -211,6 +221,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
                     isValid = readComposedValue(builder);
                 }
             }
+        } else if (builder.isEvalMode() && firstToken == VARIABLE) {
+            firstElementMarker.drop();
         } else {
             firstElementMarker.done(VAR_ELEMENT);
         }

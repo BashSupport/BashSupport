@@ -106,7 +106,7 @@ public class WordParsing implements ParsingTool {
 
         PsiBuilder.Marker marker = builder.mark();
 
-        while (isOk) {
+        while (isOk && !builder.eof()) {
             final IElementType rawCurrentToken = builder.rawLookup(0);
             if (!firstStep && (rawCurrentToken == WHITESPACE || reject.contains(rawCurrentToken))) {
                 break;
