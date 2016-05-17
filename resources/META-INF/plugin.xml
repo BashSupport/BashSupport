@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.6.162-beta1</version>
+    <version>1.5.6.162-beta2</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -49,6 +49,11 @@
                     <li>#321: Handle leading tabs before heredoc end markers in heredocs started with the marker</li>
                     <li>#324: Error reporting component is broken</li>
                     <li>#327: Heredoc parser doesn't recognize \$( or \${ construction</li>
+                    <li>#330: Variable declarations in eval code now accepts variables on the left side of an assignment</li>
+                    <li>#331: NPE in HereDoc parsing</li>
+                    <li>#332: NPE in enter processor</li>
+                    <li>#333: ClassCastExceptions in ManpageDocSourc</li>
+                    <li>#334: Potential fix for the lexing state errors</li>
                     <li>Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.</li>
                     <li>Switched the exception error reporting to use https.</li>
                 </ul>
