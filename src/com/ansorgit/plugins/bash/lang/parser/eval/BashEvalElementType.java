@@ -26,7 +26,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.ILazyParseableElementType;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 public class BashEvalElementType extends ILazyParseableElementType {
@@ -76,6 +75,6 @@ public class BashEvalElementType extends ILazyParseableElementType {
                 prefix + unescapedContent + suffix,
                 textProcessor);
 
-        return def.createParser(project).parse(this, psiBuilder).getFirstChildNode();
+        return  def.createParser(project).parse(this, psiBuilder).getFirstChildNode();
     }
 }

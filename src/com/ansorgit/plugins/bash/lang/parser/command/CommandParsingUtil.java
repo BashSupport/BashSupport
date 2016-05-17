@@ -28,6 +28,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Parsing function for commands.
  * <br>
+ *
  * @author jansorg
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
@@ -69,6 +70,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
     public static boolean isAssignment(final BashPsiBuilder builder, Mode mode, boolean acceptArrayVars) {
         final IElementType tokenType = builder.getTokenType();
+
         switch (mode) {
             case SimpleMode:
                 return (acceptArrayVars && ParserUtil.hasNextTokens(builder, false, ASSIGNMENT_WORD, LEFT_SQUARE))
@@ -83,7 +85,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         || Parsing.var.isValid(builder);
 
             default:
-                return tokenType == ASSIGNMENT_WORD; //fixme
+                return tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ));
         }
     }
 
@@ -166,13 +168,25 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 break;
 
             case StrictAssignmentMode: {
-                final IElementType assignmentWord = ParserUtil.getTokenAndAdvance(builder);
-                if (assignmentWord != ASSIGNMENT_WORD) {
+                if (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ)) {
+                    //assignment with variable on the left
+                    markAsVarDef = false;
+                    if (!Parsing.var.parse(builder)) {
+                        assignment.drop();
+                        return false;
+                    }
+
+                    break;
+                }
+
+                final IElementType nextToken = ParserUtil.getTokenAndAdvance(builder);
+                if (nextToken != ASSIGNMENT_WORD) {
                     ParserUtil.error(assignment, "parser.unexpected.token");
                     return false;
                 }
                 break;
             }
+
             default:
                 assignment.drop();
                 throw new IllegalStateException("Invalid parsing mode found");
@@ -238,21 +252,6 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             assignment.done(VAR_DEF_ELEMENT);
         } else {
             assignment.drop();
-        }
-
-        return true;
-    }
-
-    private static boolean readArrayIndex(BashPsiBuilder builder, PsiBuilder.Marker assignment) {
-        if (builder.getTokenType() == LEFT_SQUARE) {
-            //this is an array assignment, e.g. a[1]=x
-            //parse the arithmetic expression in the array assignment square brackets
-            boolean valid = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-            if (!valid) {
-                ParserUtil.error(builder, "parser.unexpected.token");
-                assignment.drop();
-                return false;
-            }
         }
 
         return true;
@@ -331,6 +330,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         }
 
         marker.done(VAR_ASSIGNMENT_LIST);
+        return true;
+    }
+
+    private static boolean readArrayIndex(BashPsiBuilder builder, PsiBuilder.Marker assignment) {
+        if (builder.getTokenType() == LEFT_SQUARE) {
+            //this is an array assignment, e.g. a[1]=x
+            //parse the arithmetic expression in the array assignment square brackets
+            boolean valid = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+            if (!valid) {
+                ParserUtil.error(builder, "parser.unexpected.token");
+                assignment.drop();
+                return false;
+            }
+        }
+
         return true;
     }
 
