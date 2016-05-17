@@ -56,6 +56,10 @@ class ManpageDocSource extends ClasspathDocSource {
             return BashPsiUtils.findParent(element, BashCommand.class);
         }
 
-        return (BashCommand) element;
+        if (element instanceof BashCommand) {
+            return (BashCommand) element;
+        }
+
+        return null;
     }
 }

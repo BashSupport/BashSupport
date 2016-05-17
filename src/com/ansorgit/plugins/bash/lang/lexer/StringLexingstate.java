@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
+import com.intellij.util.containers.BooleanStack;
 import com.intellij.util.containers.Stack;
 
 /**
@@ -63,21 +64,19 @@ final class StringLexingstate {
     }
 
     private static final class SubshellState {
-        private boolean inString = false;
+        private int inString = 0;
 
         boolean isInString() {
-            return inString;
+            return inString > 0;
         }
 
         void enterString() {
-            assert !inString;
-            inString = true;
+            inString++;
         }
 
         void leaveString() {
-            assert inString;
-            inString = false;
+            assert inString > 0 : "The inString stack should not be empty";
+            inString--;
         }
-
     }
 }
