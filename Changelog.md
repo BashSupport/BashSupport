@@ -2,6 +2,7 @@
  - \#331: NPE in HereDoc parsing
  - \#332: NPE in enter processor
  - \#332: ClassCastExceptions in ManpageDocSourc
+ - \#334: Potential fix for the lexing state errors
 
 
 ####2016-04-22:
