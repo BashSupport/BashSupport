@@ -28,6 +28,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Parsing function for commands.
  * <br>
+ *
  * @author jansorg
  */
 public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
@@ -84,7 +85,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         || Parsing.var.isValid(builder);
 
             default:
-                return (tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ)));
+                return tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ));
         }
     }
 
@@ -169,7 +170,12 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             case StrictAssignmentMode: {
                 if (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ)) {
                     //assignment with variable on the left
-                    builder.advanceLexer();
+                    markAsVarDef = false;
+                    if (!Parsing.var.parse(builder)) {
+                        assignment.drop();
+                        return false;
+                    }
+
                     break;
                 }
 
@@ -251,21 +257,6 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return true;
     }
 
-    private static boolean readArrayIndex(BashPsiBuilder builder, PsiBuilder.Marker assignment) {
-        if (builder.getTokenType() == LEFT_SQUARE) {
-            //this is an array assignment, e.g. a[1]=x
-            //parse the arithmetic expression in the array assignment square brackets
-            boolean valid = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-            if (!valid) {
-                ParserUtil.error(builder, "parser.unexpected.token");
-                assignment.drop();
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Parses an assignment list like a=(1 2 3)
      * Grammar (selfmade):
@@ -339,6 +330,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         }
 
         marker.done(VAR_ASSIGNMENT_LIST);
+        return true;
+    }
+
+    private static boolean readArrayIndex(BashPsiBuilder builder, PsiBuilder.Marker assignment) {
+        if (builder.getTokenType() == LEFT_SQUARE) {
+            //this is an array assignment, e.g. a[1]=x
+            //parse the arithmetic expression in the array assignment square brackets
+            boolean valid = ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
+            if (!valid) {
+                ParserUtil.error(builder, "parser.unexpected.token");
+                assignment.drop();
+                return false;
+            }
+        }
+
         return true;
     }
 
