@@ -1,5 +1,8 @@
 ####2016-05-17:
  - \#331: NPE in HereDoc parsing
+ - \#332: NPE in enter processor
+ - \#332: ClassCastExceptions in ManpageDocSourc
+
 
 ####2016-04-22:
  - \#320: Array use in arithmetic expressions wasn't working as expected
