@@ -1,3 +1,6 @@
+####2016-05-17:
+ - \#331: NPE in HereDoc parsing
+
 ####2016-04-22:
  - \#320: Array use in arithmetic expressions wasn't working as expected
 
