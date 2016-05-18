@@ -20,12 +20,16 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.lang.impl.PsiBuilderAdapter;
+import com.intellij.openapi.actionSystem.DataKey;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.spring.facet.beans.CustomSetting;
 import com.intellij.util.containers.LimitedPool;
 import com.intellij.util.containers.Stack;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -33,10 +37,13 @@ import org.jetbrains.annotations.Nullable;
  * It provides the possiblity to enable whitespace tokens on demand.
  * <br>
  * <br>
+ *
  * @author jansorg
  */
 public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
     static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
+
+    public static Key<Boolean> IN_EVAL_MODE = Key.create("BASH_EVAL_PARSING");
 
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
@@ -45,13 +52,14 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     //reuse markers in the pool, the PsiBuilder allocates a lot of marker. Markers can be cleaned fairly simply so we will reuse them
     //the original PsiBUilderImpl does it in a similair way
     private final LimitedPool<BashPsiMarker> markerPool = new LimitedPool<BashPsiMarker>(750, new LimitedPool.ObjectFactory<BashPsiMarker>() {
+        @NotNull
         @Override
         public BashPsiMarker create() {
             return new BashPsiMarker();
         }
 
         @Override
-        public void cleanup(final BashPsiMarker startMarker) {
+        public void cleanup(@NotNull final BashPsiMarker startMarker) {
             startMarker.clean();
         }
     });
@@ -68,8 +76,12 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         setTokenTypeRemapper(tokenRemapper);
     }
 
+    public boolean isEvalMode() {
+        return IN_EVAL_MODE.get(this, Boolean.FALSE);
+    }
+
     /**
-     * @param enableWhitespace
+     * @param enableWhitespace Whether whitespace token texts should be returned or not
      * @return
      */
     @Nullable
@@ -263,7 +275,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         }
 
         @Override
-        public void doneBefore(IElementType type, Marker beforeCandidate) {
+        public void doneBefore(@NotNull IElementType type, @NotNull Marker beforeCandidate) {
             //IntelliJ's API assumes that before is a StartMarker and not another implementation
             //thus we have to pass the original marker
             Marker before = beforeCandidate instanceof BashPsiMarker ? ((BashPsiMarker) beforeCandidate).original : beforeCandidate;
@@ -294,21 +306,21 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
 
 
         @Override
-        public void done(IElementType type) {
+        public void done(@NotNull IElementType type) {
             original.done(type);
 
             psiBuilder.recycle(this);
         }
 
         @Override
-        public void doneBefore(IElementType type, Marker before, String errorMessage) {
+        public void doneBefore(@NotNull IElementType type, @NotNull Marker before, String errorMessage) {
             original.doneBefore(type, before, errorMessage);
 
             psiBuilder.recycle(this);
         }
 
         @Override
-        public void errorBefore(String message, Marker marker) {
+        public void errorBefore(String message, @NotNull Marker marker) {
             original.errorBefore(message, marker);
 
             psiBuilder.recycle(this);
@@ -326,7 +338,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
             this.psiBuilder = null;
         }
 
-        public void collapse(IElementType iElementType) {
+        public void collapse(@NotNull IElementType iElementType) {
             original.collapse(iElementType);
 
             psiBuilder.recycle(this);

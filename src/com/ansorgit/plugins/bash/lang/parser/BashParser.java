@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.ansorgit.plugins.bash.lang.parser.eval.BashEvalElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
@@ -50,6 +51,7 @@ public class BashParser implements PsiParser {
     @NotNull
     public ASTNode parse(@NotNull final IElementType root, @NotNull final PsiBuilder psiBuilder) {
         final BashPsiBuilder builder = new BashPsiBuilder(project, psiBuilder, version);
+        builder.putUserData(BashPsiBuilder.IN_EVAL_MODE, root instanceof BashEvalElementType);
 
         if (debugMode) {
             log.info("Enabling parser's debug mode...");
