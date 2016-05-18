@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.5.135</version>
+    <version>1.5.6.135</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,22 +38,44 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.5.6 compared to 1.5.5:</b>
+        <ul>
+            <li>Bugs fixed:<br/>
+                <ul>
+                    <li>#89: Function expands incorrectly when defined above another function</li>
+                    <li>#125: Array element gives "Unexpected token"</li>
+                    <li>#310: Workaround for deeply nested structures</li>
+                    <li>#320: Array use in arithmetic expressions wasn't working as expected</li>
+                    <li>#321: Handle leading tabs before heredoc end markers in heredocs started with the marker</li>
+                    <li>#324: Error reporting component is broken</li>
+                    <li>#327: Heredoc parser doesn't recognize \$( or \${ construction</li>
+                    <li>#330: Variable declarations in eval code now accepts variables on the left side of an assignment</li>
+                    <li>#331: NPE in HereDoc parsing</li>
+                    <li>#332: NPE in enter processor</li>
+                    <li>#333: ClassCastExceptions in ManpageDocSourc</li>
+                    <li>#334: Potential fix for the lexing state errors</li>
+                    <li>Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.</li>
+                    <li>Switched the exception error reporting to use https.</li>
+                </ul>
+            </li>
+        </ul>
+
         <b>Changes in version 1.5.5 compared to 1.5.4:</b>
         <ul>
             <li>Bugs fixed:<br/>
                 <ul>
-                    <li>No keyword and live-template autocompletion in command arguments</li>li>
-                    <li>Performance fixes for less latency in the editor</li>li>
-                    <li>Variables and functions can now be resolved in scratch files again</li>li>
-                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>li>
-                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>li>
-                    <li>#300: Variables are not recognized in case</li>li>
-                    <li>#303: Multiline lists not recognised</li>li>
-                    <li>#306: Index access during dumb mode</li>li>
-                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>li>
-                    <li>#308: Grouping in test commands not properly parsed</li>li>
-                    <li>#312: Newlines are not accepted in parameter expansions</li>li>
-                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>li>
+                    <li>No keyword and live-template autocompletion in command arguments</li>
+                    <li>Performance fixes for less latency in the editor</li>
+                    <li>Variables and functions can now be resolved in scratch files again</li>
+                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>
+                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>
+                    <li>#300: Variables are not recognized in case</li>
+                    <li>#303: Multiline lists not recognised</li>
+                    <li>#306: Index access during dumb mode</li>
+                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>
+                    <li>#308: Grouping in test commands not properly parsed</li>
+                    <li>#312: Newlines are not accepted in parameter expansions</li>
+                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>
                 </ul>
             </li>
         </ul>
@@ -231,6 +253,7 @@
         -->
 
         <projectConfigurable instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
+    <version>1.5.6</version>
 
         <!-- Error reporter-->
         <errorHandler implementation="nu.studer.idea.errorreporting.PluginErrorReportSubmitter"/>

@@ -115,7 +115,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
     }
 
-    protected boolean readOptions(BashPsiBuilder builder) {
+    private boolean readOptions(BashPsiBuilder builder) {
         builder.getTokenText();
 
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
@@ -132,7 +132,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
     boolean isAssignment(BashPsiBuilder builder) {
         String text = builder.getTokenText();
-        if (text != null && text.length() > 0 && text.charAt(0) == '-') {
+        if (text != null && !text.isEmpty() && text.charAt(0) == '-') {
             return false;
         }
 
@@ -141,7 +141,9 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         if (builder.getTokenType() == BashTokenTypes.ASSIGNMENT_WORD) {
             start.drop();
             return true;
-        } else if (Parsing.word.isWordToken(builder)) {
+        }
+
+        if (Parsing.word.isWordToken(builder)) {
             if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY)) {
                 start.rollbackTo();
 

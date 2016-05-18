@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Inserts an extra line break if a unclosed brace is closed by enter right before another function definition. The closing
  * brace has to be separated from the next function definition by a newline to be valid syntax.
- *
+ * <p>
  * See issue #89 for details.
  */
 public class BashUnmatchedBraceEnterProcessor implements EnterHandlerDelegate {
@@ -30,9 +30,14 @@ public class BashUnmatchedBraceEnterProcessor implements EnterHandlerDelegate {
             CharSequence chars = document.getCharsSequence();
 
             int offset = caretOffset.get();
-            if (chars.charAt(offset - 1) == '{') {
-                if ("function".contentEquals(chars.subSequence(offset + 1, offset + 1 + "function".length()))) {
-                    document.insertString(offset + 1, "\n");
+            int length = chars.length();
+
+            if (offset < length && chars.charAt(offset - 1) == '{') {
+                int start = offset + 1;
+                int end = offset + 1 + "function".length();
+
+                if (start < length && end < length && "function".contentEquals(chars.subSequence(start, end))) {
+                    document.insertString(start, "\n");
                     PsiDocumentManager.getInstance(project).commitDocument(document);
                 }
             }
