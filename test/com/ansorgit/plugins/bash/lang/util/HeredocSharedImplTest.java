@@ -33,4 +33,11 @@ public class HeredocSharedImplTest {
         Assert.assertEquals("$\"EOF_NEW\"", HeredocSharedImpl.wrapMarker("EOF_NEW", "$\"EOF\""));
         Assert.assertEquals("$\'EOF_NEW\'", HeredocSharedImpl.wrapMarker("EOF_NEW", "$\'EOF\'"));
     }
+
+    @Test
+    public void testIssue331() throws Exception {
+        Assert.assertEquals(0, HeredocSharedImpl.startMarkerTextOffset("\t\t", false));
+
+        Assert.assertEquals(1, HeredocSharedImpl.startMarkerTextOffset("\t\t", true));
+    }
 }

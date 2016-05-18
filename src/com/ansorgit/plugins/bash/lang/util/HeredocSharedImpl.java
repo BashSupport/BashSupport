@@ -83,7 +83,7 @@ public class HeredocSharedImpl {
         int start = 0;
         int end = length - 1;
 
-        while (ignoredLeadingTabs && start < length && markerText.charAt(start) == '\t') {
+        while (ignoredLeadingTabs && start < (length - 1) && markerText.charAt(start) == '\t') {
             start++;
         }
 
