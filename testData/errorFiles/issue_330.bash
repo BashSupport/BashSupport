@@ -13,8 +13,8 @@ array_to_lines() {
 lines_to_array() {
   local varname="$1"
   shift
-  eval "${varname}=()"
-  while IFS= read -r -d $'\n'; do
-    eval "${varname}+=(\"$REPLY\")"
-  done < <("$@")
+  #eval "${varname}=()"
+  #while IFS= read -r -d $'\n'; do
+  #  eval "${varname}+=(\"$REPLY\")"
+  #done < <("$@")
 }
