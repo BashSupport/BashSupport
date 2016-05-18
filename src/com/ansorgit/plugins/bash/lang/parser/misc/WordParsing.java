@@ -108,6 +108,10 @@ public class WordParsing implements ParsingTool {
 
         while (isOk) {
             final IElementType rawCurrentToken = builder.rawLookup(0);
+            if (rawCurrentToken == null) {
+                break;
+            }
+
             if (!firstStep && (rawCurrentToken == WHITESPACE || reject.contains(rawCurrentToken))) {
                 break;
             }
