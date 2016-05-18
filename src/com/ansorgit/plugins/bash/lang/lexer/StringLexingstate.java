@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.lexer;
 
-import com.intellij.util.containers.BooleanStack;
 import com.intellij.util.containers.Stack;
 
 /**
