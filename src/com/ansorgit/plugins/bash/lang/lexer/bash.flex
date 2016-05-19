@@ -195,7 +195,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
 
-            return heredocState().isExpectingEvaluatingHeredoc() && !"$".equals(yytext().toString()) ? VARIABLE : HEREDOC_LINE;
+            return yystate() == S_HEREDOC && heredocState().isExpectingEvaluatingHeredoc() && !"$".equals(yytext().toString())
+                ? VARIABLE
+                : HEREDOC_LINE;
     }
 
     [^$\n\r\\]+  {
@@ -208,7 +210,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                 backToPreviousState();
             }
 
-                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
+            return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
         }
 
         return HEREDOC_LINE;
@@ -224,7 +226,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                  backToPreviousState();
              }
 
-                return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
+            return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
          }
 
          return HEREDOC_LINE;
