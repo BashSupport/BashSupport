@@ -74,6 +74,11 @@ class BashEnhancedTextPreprocessor implements TextPreprocessor {
 
     @Override
     public String patchOriginal(String originalText) {
-        return TextProcessorUtil.patchOriginal(originalText, outSourceOffsets);
+        return patchOriginal(originalText, null);
+    }
+
+    @Override
+    public String patchOriginal(String originalText, String replacement) {
+        return TextProcessorUtil.patchOriginal(originalText, outSourceOffsets, replacement);
     }
 }

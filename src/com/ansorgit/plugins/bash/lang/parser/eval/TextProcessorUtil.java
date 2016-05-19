@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.intellij.openapi.util.Ref;
+import org.jetbrains.annotations.Nullable;
 
 class TextProcessorUtil {
     static boolean hasNext(CharSequence chars, int index, CharSequence expected) {
@@ -32,7 +33,7 @@ class TextProcessorUtil {
         }
     }
 
-    public static String patchOriginal(String originalText, int[] outSourceOffsets) {
+    public static String patchOriginal(String originalText, int[] outSourceOffsets, @Nullable String replacement) {
         StringBuilder result = new StringBuilder(originalText.length());
 
         int added = 0;
@@ -41,8 +42,13 @@ class TextProcessorUtil {
              original = outSourceOffsets[decoded+1], decoded++) {
 
             for (int i = decoded + added; i < original; i++) {
-                result.append(' ');
-                added++;
+                if (replacement == null) {
+                    result.append(' ');
+                    added++;
+                } else {
+                    result.append(replacement);
+                    added += replacement.length();
+                }
             }
 
             result.append(originalText.charAt(original - 1));

@@ -19,7 +19,7 @@ import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
 
 public class BashIdentityTextPreprocessor implements TextPreprocessor {
-    private TextRange contentRange;
+    private final TextRange contentRange;
 
     public BashIdentityTextPreprocessor(TextRange contentRange) {
         ProperTextRange.assertProperRange(contentRange);
@@ -51,4 +51,8 @@ public class BashIdentityTextPreprocessor implements TextPreprocessor {
         return originalText;
     }
 
+    @Override
+    public String patchOriginal(String originalText, String replacement) {
+        return originalText;
+    }
 }
