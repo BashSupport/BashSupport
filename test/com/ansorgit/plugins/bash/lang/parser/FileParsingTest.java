@@ -52,4 +52,17 @@ public class FileParsingTest extends MockPsiTest {
         mockTest(fileTest, WORD, LINE_FEED, WHILE_KEYWORD,
                 WORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD, SEMI);
     }
+
+
+    @Test
+    public void testIssue341() {
+        // "`echo "$0"`"
+        mockTest(fileTest, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END);
+
+        // $(cd "`dirname "$0"`"/..; pwd)
+        mockTest(fileTest, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, WORD, RIGHT_PAREN);
+
+        // "$(cd "`dirname "$0"`"/..; pwd)"
+        mockTest(fileTest, STRING_BEGIN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, WORD, RIGHT_PAREN, STRING_END);
+    }
 }
