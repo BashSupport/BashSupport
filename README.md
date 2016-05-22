@@ -1,3 +1,9 @@
+**2016 project status: The BashSupport project will only receive fixes for critical problems**
+
+*BashSupport is fully developed in my spare time since 2009. This time is very rare. Development shifted from new features to bug fixes, maintenance and updates to work with new new Jetbrains product updates. Even this takes a lot of my available time. I can not ship deliver other updates of BashSupport in 2016.*
+
+*Please let me know if you are interested in helping with the development. I will accept pull requests.*
+
 #About
 BashSupport adds Bash language support to IntelliJ based products.
 It supports IntelliJ Ultimate and Community editions, PHPStorm, WebStorm, RubyMine, PyCharm and others.
