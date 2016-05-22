@@ -1117,6 +1117,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue341() throws Exception {
+        testTokenization("\"`echo \"$0\"`\"", STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END);
+        testTokenization("(cd \"`dirname \"$0\"`\")", LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, RIGHT_PAREN);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);

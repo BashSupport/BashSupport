@@ -32,7 +32,7 @@ public class BashUnmatchedBraceEnterProcessor implements EnterHandlerDelegate {
             int offset = caretOffset.get();
             int length = chars.length();
 
-            if (offset < length && chars.charAt(offset - 1) == '{') {
+            if (offset < length && offset >= 1 && chars.charAt(offset - 1) == '{') {
                 int start = offset + 1;
                 int end = offset + 1 + "function".length();
 
