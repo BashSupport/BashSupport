@@ -19,4 +19,10 @@ public class SubshellParsingFunctionTest extends MockPsiTest {
         //$()
         mockTest(subshellCommand, LEFT_PAREN, RIGHT_PAREN);
     }
+
+    @Test
+    public void testIssue341(){
+        // $(cd "`dirname "$0"`")
+        mockTest(subshellCommand, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, RIGHT_PAREN);
+    }
 }

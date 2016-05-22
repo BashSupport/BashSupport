@@ -58,7 +58,7 @@ abstract class ClasspathDocSource implements DocumentationSource {
      * @param command The command name, e.g. "echo"
      * @return The documentation content or null.
      */
-    private final String readFromClasspath(String path, String command) {
+    private String readFromClasspath(String path, String command) {
         if (StringUtil.isEmpty(path) || StringUtil.isEmpty(command)) {
             return null;
         }
