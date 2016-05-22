@@ -33,4 +33,10 @@ public class BacktickParsingFunctionTest extends MockPsiTest {
         //`$[123]`
         mockTest(backtickParser, BACKQUOTE, DOLLAR, EXPR_ARITH_SQUARE, ARITH_NUMBER, _EXPR_ARITH_SQUARE, BACKQUOTE);
     }
+
+    @Test
+    public void testIssue341(){
+        // `echo "$0"`
+        mockTest(backtickParser, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE);
+    }
 }

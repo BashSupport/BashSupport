@@ -1,3 +1,6 @@
+####2016-05-22:
+ - \#341: Exception "The inString stack should not be empty"
+
 ####2016-05-18:
  - \#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)
  - \#340: isExpectingEvaluatingHeredoc called on an empty marker stack

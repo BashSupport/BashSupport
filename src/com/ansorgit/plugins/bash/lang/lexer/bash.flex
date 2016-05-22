@@ -557,16 +557,25 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /* string literals */
 <S_STRINGMODE> {
-  \"                            { stringParsingState().leaveString();
-                                  if (!stringParsingState().isInSubstring()) {
-                                    backToPreviousState(); return STRING_END;
-                                  } else {
-                                    return STRING_DATA;
+  \"                            { if (!stringParsingState().isInSubstring() && stringParsingState().isSubstringAllowed()) {
+                                    stringParsingState().enterString();
+                                    goToState(S_STRINGMODE);
+                                    return STRING_BEGIN;
                                   }
+
+                                  stringParsingState().leaveString();
+                                  backToPreviousState();
+                                  return STRING_END;
                                 }
 
   /* Backquote expression inside of evaluated strings */
-  `                           { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+  `                           { if (yystate() == S_BACKQUOTE) {
+                                    backToPreviousState();
+                                }
+                                else {
+                                    goToState(S_BACKQUOTE);
+                                }
+                                return BACKQUOTE; }
 
   {EscapedChar}               { return STRING_DATA; }
   [^\"]                       { return STRING_DATA; }
