@@ -1,6 +1,7 @@
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
  - \#342: Exception "Index out of range: -1" at beginning of file
+ - Released 1.5.7
 
 ####2016-05-18:
  - \#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)
