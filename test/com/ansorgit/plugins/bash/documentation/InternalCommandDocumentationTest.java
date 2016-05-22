@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.google.common.collect.Sets;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -74,6 +75,14 @@ public class InternalCommandDocumentationTest extends LightBashCodeInsightFixtur
         for (String command : filterUnavailableCommands(LanguageBuiltins.commands_v4)) {
             DocTestUtils.isResponseContentValid(source.urlForCommand(command));
         }
+    }
+
+    @Test
+    public void testIssue339() throws Exception {
+        InternalCommandDocumentation source = new InternalCommandDocumentation();
+
+        PsiFile file = createLightFile(BashFileType.BASH_FILE_TYPE, "echo hello world");
+        Assert.assertNull(source.documentationUrl(file, file));
     }
 
     private Collection<String> filterUnavailableCommands(Collection<String> commands) {
