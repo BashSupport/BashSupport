@@ -50,7 +50,7 @@ class MergingLexer extends MergingLexerAdapterBase {
     }
 
     private static class LexerMergeFunction implements MergeFunction {
-        private MergeTuple[] mergeTuples;
+        private final MergeTuple[] mergeTuples;
 
         public LexerMergeFunction(MergeTuple[] mergeTuples) {
             this.mergeTuples = mergeTuples;

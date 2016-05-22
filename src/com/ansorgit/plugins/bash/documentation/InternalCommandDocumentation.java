@@ -28,16 +28,20 @@ class InternalCommandDocumentation extends ClasspathDocSource {
         super("/documentation/internal");
     }
 
+    boolean isValid(PsiElement element, PsiElement originalElement) {
+        return element instanceof BashCommand && ((BashCommand) element).isInternalCommand();
+    }
+
     @Override
     String resourceNameForElement(PsiElement element) {
         return ((BashCommand) element).getReferencedCommandName();
     }
 
-    boolean isValid(PsiElement element, PsiElement originalElement) {
-        return element instanceof BashCommand && ((BashCommand) element).isInternalCommand();
-    }
-
     public String documentationUrl(PsiElement element, PsiElement originalElement) {
+        if (!isValid(element, originalElement)) {
+            return null;
+        }
+
         return urlForCommand(resourceNameForElement(element));
     }
 
