@@ -1,3 +1,6 @@
+####2016-05-25:
+ - \#329: "Unexpected Token" Error For Associative Array
+
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
  - \#342: Exception "Index out of range: -1" at beginning of file
