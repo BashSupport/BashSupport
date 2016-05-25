@@ -22,6 +22,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -31,14 +32,24 @@ import java.util.List;
  * @author jansorg
  */
 public class DeepRecursionParsingTest extends LightBashCodeInsightFixtureTestCase {
+    @Test
     public void testIssue310() throws Exception {
-        PsiFile file = myFixture.configureByFile("310-docker-entrypoint.sh");
+        checkFileNesting("310-docker-entrypoint.sh");
+    }
+
+    @Test
+    public void testIssue310Two() throws Exception {
+        checkFileNesting("issue_310_airgeddon.bash");
+    }
+
+    private void checkFileNesting(String filePath) {
+        PsiFile file = myFixture.configureByFile(filePath);
 
         final List<PsiErrorElement> errors = Lists.newArrayList();
         file.acceptChildren(new PsiElementVisitor() {
             @Override
             public void visitErrorElement(PsiErrorElement element) {
-                if (element.getErrorDescription().contains("Internal parser error: Maximum level of nested calls reached")) {
+                if (element.getErrorDescription().startsWith("Internal parser error")) {
                     errors.add(element);
                 }
             }

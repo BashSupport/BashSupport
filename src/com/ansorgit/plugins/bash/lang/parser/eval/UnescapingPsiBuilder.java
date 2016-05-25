@@ -51,7 +51,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     private final PsiBuilderImpl myBuilderDelegate;
     private final Lexer myLexer;
     private final TextPreprocessor textProcessor;
-    private CharSequence processedText;
+    private final CharSequence processedText;
     private List<MyShiftedToken> myShrunkSequence;
     private int myShrunkSequenceSize;
     private CharSequence myShrunkCharSequence;
@@ -258,6 +258,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         return true;
     }
 
+    @NotNull
     @Override
     public Marker mark() {
         // In the case of the topmost node all should be inserted
@@ -365,7 +366,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
 
         public final int shrunkStart;
         public final int shrunkEnd;
-        private String tokenText;
+        private final String tokenText;
 
         public MyShiftedToken(IElementType elementType, int realStart, int realEnd, int shrunkStart, int shrunkEnd, String tokenText) {
             this.elementType = elementType;
@@ -383,7 +384,7 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
     }
 
     private class MyMarker extends DelegateMarker {
-        private int myBuilderPosition;
+        private final int myBuilderPosition;
 
         public MyMarker(Marker delegate, int builderPosition) {
             super(delegate);
@@ -398,17 +399,17 @@ public class UnescapingPsiBuilder extends PsiBuilderAdapter {
         }
 
         @Override
-        public void doneBefore(IElementType type, Marker before) {
+        public void doneBefore(@NotNull IElementType type, @NotNull Marker before) {
             super.doneBefore(type, getDelegateOrThis(before));
         }
 
         @Override
-        public void doneBefore(IElementType type, Marker before, String errorMessage) {
+        public void doneBefore(@NotNull IElementType type, @NotNull Marker before, String errorMessage) {
             super.doneBefore(type, getDelegateOrThis(before), errorMessage);
         }
 
         @Override
-        public void done(IElementType type) {
+        public void done(@NotNull IElementType type) {
             super.done(type);
         }
 

@@ -311,11 +311,11 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             }
 
             //optional newlines after the comma
-            builder.eatOptionalNewlines(-1, true);
+            boolean hadNewlines = builder.eatOptionalNewlines(-1, true);
 
             //whitespace tokens separate the array assignment values
             //if the next token is not whitespace, we break the loop, cause we're at the last element
-            if (builder.getTokenType(true) != WHITESPACE) {
+            if (!hadNewlines && builder.getTokenType(true) != WHITESPACE) {
                 break;
             }
 

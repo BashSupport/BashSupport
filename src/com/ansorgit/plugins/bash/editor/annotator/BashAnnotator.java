@@ -57,7 +57,7 @@ import java.util.List;
  * @author jansorg
  */
 public class BashAnnotator implements Annotator {
-    private static TokenSet noWordHighlightErase = TokenSet.orSet(
+    private static final TokenSet noWordHighlightErase = TokenSet.orSet(
             TokenSet.create(BashTokenTypes.STRING2),
             BashTokenTypes.arithLiterals,
             TokenSet.create(BashElementTypes.VAR_ELEMENT));

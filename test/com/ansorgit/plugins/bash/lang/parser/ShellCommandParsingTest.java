@@ -302,9 +302,9 @@ public class ShellCommandParsingTest extends MockPsiTest {
     }
 
     @Test
-    public void testParseArithmeticCommandError1() {
+    public void testEmptyArithmeticExpression() {
         //$(())
-        mockTestError(arithmeticParsingTester,
+        mockTest(arithmeticParsingTester,
                 EXPR_ARITH, _EXPR_ARITH
         );
     }
