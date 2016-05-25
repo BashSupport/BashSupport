@@ -1939,7 +1939,8 @@ function store_array() {
 
 	local var=$1 base_key=$2 values=("${@:3}")
 	for i in "${!values[@]}"; do
-		eval "$1[\${base_key}|${i}]=\${values[i]}"
+		#eval "$1[\${base_key}|${i}]=\${values[i]}"
+		test
 	done
 }
 
