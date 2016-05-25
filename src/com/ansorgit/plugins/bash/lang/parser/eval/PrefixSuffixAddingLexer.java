@@ -176,7 +176,7 @@ public class PrefixSuffixAddingLexer extends DelegateLexer {
                 : startOffset;
 
         int newEndOffset = (endOffset == buffer.length())
-                ? endOffset - prefix.length()
+                ? endOffset - suffix.length()
                 : endOffset;
 
         CharSequence newBuffer = buffer.subSequence(newStartOffset, newEndOffset);

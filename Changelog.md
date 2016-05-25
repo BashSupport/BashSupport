@@ -1,3 +1,6 @@
+####2016-05-25:
+ - \#333: Marked support for escapes in evaluated code as experimental. A proper fix needs major work on the lexer framework and is currently not fully supported. There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.
+
 ####2016-05-18:
  - \#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)
 

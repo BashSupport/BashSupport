@@ -38,6 +38,7 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox enableFormatterCheckbox;
     private JCheckBox autocompletePathCommands;
     private JCheckBox globalFunctionVarDefs;
+    private JCheckBox enableEvalEscapesCheckbox;
 
     @SuppressWarnings("BoundFieldAssignment")
     public void dispose() {
@@ -49,6 +50,7 @@ public class BashProjectSettingsPane implements Disposable {
         this.enableFormatterCheckbox = null;
         this.autocompletePathCommands = null;
         this.globalFunctionVarDefs = null;
+        this.enableEvalEscapesCheckbox = null;
     }
 
     public void setData(BashProjectSettings settings) {
@@ -59,6 +61,7 @@ public class BashProjectSettingsPane implements Disposable {
         autocompleteInternalVars.setSelected(settings.isAutocompleteBuiltinVars());
         autocompletePathCommands.setSelected(settings.isAutocompletePathCommands());
         enableFormatterCheckbox.setSelected(settings.isFormatterEnabled());
+        enableEvalEscapesCheckbox.setSelected(settings.isEvalEscapesEnabled());
         globalFunctionVarDefs.setSelected(settings.isGlobalFunctionVarDefs());
     }
 
@@ -69,6 +72,7 @@ public class BashProjectSettingsPane implements Disposable {
         settings.setAutocompleteBuiltinCommands(autocompleteInternalCommands.isSelected());
         settings.setAutocompleteBuiltinVars(autocompleteInternalVars.isSelected());
         settings.setFormatterEnabled(enableFormatterCheckbox.isSelected());
+        settings.setEvalEscapesEnabled(enableEvalEscapesCheckbox.isSelected());
         settings.setAutocompletePathCommands(autocompletePathCommands.isSelected());
         settings.setGlobalFunctionVarDefs(globalFunctionVarDefs.isSelected());
     }
@@ -80,6 +84,7 @@ public class BashProjectSettingsPane implements Disposable {
                 autocompleteInternalVars.isSelected() != settings.isAutocompleteBuiltinVars() ||
                 autocompleteInternalCommands.isSelected() != settings.isAutocompleteBuiltinCommands() ||
                 enableFormatterCheckbox.isSelected() != settings.isFormatterEnabled() ||
+                enableEvalEscapesCheckbox.isSelected() != settings.isEvalEscapesEnabled() ||
                 autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands() ||
                 globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs();
     }
@@ -168,14 +173,17 @@ public class BashProjectSettingsPane implements Disposable {
         autocompletePathCommands.setText("Show commands in $PATH");
         panel3.add(autocompletePathCommands, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel4.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
         settingsPane.add(panel4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel4.setBorder(BorderFactory.createTitledBorder("Experimental features - use at your own risk!"));
         enableFormatterCheckbox = new JCheckBox();
         enableFormatterCheckbox.setText("Enable formatter");
         panel4.add(enableFormatterCheckbox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
-        panel4.add(spacer2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel4.add(spacer2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        enableEvalEscapesCheckbox = new JCheckBox();
+        enableEvalEscapesCheckbox.setText("Support escaped values in 'eval'-code");
+        panel4.add(enableEvalEscapesCheckbox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
