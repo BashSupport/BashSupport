@@ -179,6 +179,5 @@ public class HereDocParsingTest extends MockPsiTest {
                 WORD, LINE_FEED,
                 FI_KEYWORD
         );
-
     }
 }

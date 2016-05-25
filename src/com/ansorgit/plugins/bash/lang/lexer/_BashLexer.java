@@ -32,13 +32,12 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean inCaseBody = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
+    private final HeredocLexingState heredocState = new HeredocLexingState();
 
     @Override
     public HeredocLexingState heredocState() {
         return heredocState;
     }
-
-    private final HeredocLexingState heredocState = new HeredocLexingState();
 
     _BashLexer(BashVersion version, java.io.Reader in) {
         super(in);
@@ -92,6 +91,23 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     public void backToPreviousState() {
         // pop() will throw an exception if empty
         yybegin(lastStates.pop());
+    }
+
+    @Override
+    public void popStates(int lastStateToPop) {
+        if (yystate() == lastStateToPop) {
+            backToPreviousState();
+            return;
+        }
+
+        while (isInState(lastStateToPop)) {
+            boolean finished = (yystate() == lastStateToPop);
+            backToPreviousState();
+
+            if (finished) {
+                break;
+            }
+        }
     }
 
     @Override

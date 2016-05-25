@@ -1,3 +1,7 @@
+####2016-05-25:
+ - \#343: Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "
+ - Parsing for arithmetic expression in evaluating heredocs
+
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
  - \#342: Exception "Index out of range: -1" at beginning of file
