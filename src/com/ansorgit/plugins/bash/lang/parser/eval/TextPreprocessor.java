@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.intellij.openapi.util.TextRange;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is a subset of {@link com.intellij.psi.LiteralTextEscaper} to be used by the {@link UnescapingPsiBuilder}.
@@ -61,4 +62,6 @@ public interface TextPreprocessor {
     boolean containsRange(int tokenStart, int tokenEnd);
 
     String patchOriginal(String originalText);
+
+    String patchOriginal(String originalText, @Nullable String replacementChar);
 }

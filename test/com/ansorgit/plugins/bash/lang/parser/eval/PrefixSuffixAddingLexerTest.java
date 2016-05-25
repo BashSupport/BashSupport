@@ -4,6 +4,8 @@ import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.lexer.BashLexer;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.intellij.lexer.EmptyLexer;
+import com.intellij.lexer.Lexer;
+import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,6 +69,28 @@ public class PrefixSuffixAddingLexerTest {
         //after the last position no more changes are accepted
         Assert.assertNull(lexer.getTokenType());
         assertPosition(lexer, "prefix echo hello world suffix".length(), "prefix echo hello world suffix".length(), 0, null, "");
+    }
+
+    @Test
+    public void testIssue333() throws Exception {
+        PrefixSuffixAddingLexer lexer = new PrefixSuffixAddingLexer(new BashLexer(BashVersion.Bash_v4), "\"", TokenType.WHITE_SPACE, "\"", TokenType.WHITE_SPACE);
+        //Lexer lexer = new BashLexer(BashVersion.Bash_v4);
+        lexer.start("\"x$a\"");
+
+        Assert.assertEquals(TokenType.WHITE_SPACE, lexer.getTokenType());
+        Assert.assertEquals("\"", lexer.getTokenText());
+
+        lexer.advance();
+        Assert.assertEquals(BashTokenTypes.WORD, lexer.getTokenType());
+        Assert.assertEquals("x", lexer.getTokenText());
+
+        lexer.advance();
+        Assert.assertEquals(BashTokenTypes.VARIABLE, lexer.getTokenType());
+        Assert.assertEquals("$a", lexer.getTokenText());
+
+        lexer.advance();
+        Assert.assertEquals(BashTokenTypes.WHITESPACE, lexer.getTokenType());
+        Assert.assertEquals("\"", lexer.getTokenText());
     }
 
     private void assertPosition(PrefixSuffixAddingLexer lexer, int startOffset, int endOffset, int state, IElementType token, String tokenText) {
