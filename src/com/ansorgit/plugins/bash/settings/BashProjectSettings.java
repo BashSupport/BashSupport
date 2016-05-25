@@ -38,6 +38,7 @@ public class BashProjectSettings implements Serializable {
     private boolean globalFunctionVarDefs = false;
 
     private boolean formatterEnabled = false;
+    private boolean evalEscapesEnabled = false;
 
     public static BashProjectSettings storedSettings(@NotNull Project project) {
         BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
@@ -106,6 +107,14 @@ public class BashProjectSettings implements Serializable {
 
     public void setFormatterEnabled(boolean formatterEnabled) {
         this.formatterEnabled = formatterEnabled;
+    }
+
+    public boolean isEvalEscapesEnabled() {
+        return evalEscapesEnabled;
+    }
+
+    public void setEvalEscapesEnabled(boolean evalEscapedEnabled) {
+        this.evalEscapesEnabled = evalEscapedEnabled;
     }
 
     public boolean isAutocompletePathCommands() {

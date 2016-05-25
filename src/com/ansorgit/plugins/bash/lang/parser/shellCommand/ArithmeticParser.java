@@ -21,6 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.arithmetic.ArithmeticFactory;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 
@@ -46,6 +47,20 @@ public final class ArithmeticParser implements ParsingFunction {
      * @return Whether the operation has been successful
      */
     public boolean parse(BashPsiBuilder builder) {
+        //special handling for empty expressions
+        if (ParserUtil.hasNextTokens(builder, true, EXPR_ARITH, _EXPR_ARITH)) {
+            builder.advanceLexer();
+            builder.advanceLexer();
+            return true;
+        }
+
+        //special handling for empty expressions
+        if (ParserUtil.hasNextTokens(builder, true, EXPR_ARITH_SQUARE, _EXPR_ARITH_SQUARE)) {
+            builder.advanceLexer();
+            builder.advanceLexer();
+            return true;
+        }
+
         if (builder.getTokenType() == BashTokenTypes.EXPR_ARITH_SQUARE) {
             return parse(builder, BashTokenTypes.EXPR_ARITH_SQUARE, BashTokenTypes._EXPR_ARITH_SQUARE);
         }

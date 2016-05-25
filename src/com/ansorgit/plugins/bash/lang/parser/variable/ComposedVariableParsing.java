@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.lang.parser.variable;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -28,6 +27,7 @@ import com.intellij.psi.tree.TokenSet;
  * Parses a combined variable. A combined variable can be a subshell expression, a
  * parameter expansion or an arithmetic subexpression.
  * <br>
+ *
  * @author jansorg
  */
 public class ComposedVariableParsing implements ParsingFunction {
@@ -53,18 +53,24 @@ public class ComposedVariableParsing implements ParsingFunction {
         }
 
         //check if a subshell of command group is following
+        boolean ok;
         if (Parsing.parameterExpansionParsing.isValid(builder)) {
-            Parsing.parameterExpansionParsing.parse(builder);
+            ok = Parsing.parameterExpansionParsing.parse(builder);
         } else if (Parsing.shellCommand.arithmeticParser.isValid(builder)) {
-            Parsing.shellCommand.arithmeticParser.parse(builder);
+            ok = Parsing.shellCommand.arithmeticParser.parse(builder);
         } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
-            Parsing.shellCommand.subshellParser.parse(builder);
+            ok = Parsing.shellCommand.subshellParser.parse(builder);
         } else {
             ParserUtil.error(varMarker, "parser.unexpected.token");
             return false;
         }
 
-        varMarker.done(VAR_COMPOSED_VAR_ELEMENT);
+        if (ok) {
+            varMarker.done(VAR_COMPOSED_VAR_ELEMENT);
+        } else {
+            varMarker.drop();
+        }
+
         return true;
     }
 }
