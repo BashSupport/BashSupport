@@ -1,5 +1,6 @@
 ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
+ - \#329: "Unexpected Token" Error For Associative Array
 
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
