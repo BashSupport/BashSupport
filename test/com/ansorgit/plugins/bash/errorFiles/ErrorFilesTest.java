@@ -3,6 +3,7 @@ package com.ansorgit.plugins.bash.errorFiles;
 import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightTestCase;
 import com.intellij.openapi.util.io.FileUtil;
@@ -30,21 +31,27 @@ public class ErrorFilesTest extends CodeInsightTestCase {
 
     @Test
     public void testAllFiles() throws Exception {
-        List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
 
-        int count = 0;
-        int errors = 0;
+            List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
 
-        for (File file : files) {
-            LOG.info("Checking file: " + file.getAbsolutePath());
-            configureByFile(file.getName(), null);
-            errors += assertNoParsingErrors();
+            int count = 0;
+            int errors = 0;
 
-            count++;
+            for (File file : files) {
+                LOG.info("Checking file: " + file.getAbsolutePath());
+                configureByFile(file.getName(), null);
+                errors += assertNoParsingErrors();
+
+                count++;
+            }
+
+            Assert.assertTrue("No files parsed.", count > 0);
+            Assert.assertTrue("There are " + errors + " errors", errors == 0);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
         }
-
-        Assert.assertTrue("No files parsed.", count > 0);
-        Assert.assertTrue("There are " + errors + " errors", errors == 0);
     }
 
     private int assertNoParsingErrors() {

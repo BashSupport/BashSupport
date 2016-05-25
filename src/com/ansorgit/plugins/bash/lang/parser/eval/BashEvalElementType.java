@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.eval;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
@@ -36,6 +37,7 @@ public class BashEvalElementType extends ILazyParseableElementType {
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
+        boolean supportEvalEscapes = BashProjectSettings.storedSettings(project).isEvalEscapesEnabled();
 
         String originalText = chameleon.getChars().toString();
         ParserDefinition def = LanguageParserDefinitions.INSTANCE.forLanguage(BashFileType.BASH_LANGUAGE);
@@ -50,14 +52,18 @@ public class BashEvalElementType extends ILazyParseableElementType {
         String suffix = isUnquoted ? "" : originalText.subSequence(originalText.length() - 1, originalText.length()).toString();
 
         TextPreprocessor textProcessor;
-        if (isEscapingSingleQuoted) {
-            textProcessor = new BashEnhancedTextPreprocessor(TextRange.from(2, content.length()));
-        } else if (isSingleQuoted) {
-            //no escape handling for single-quoted strings
-            textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+        if (supportEvalEscapes) {
+            if (isEscapingSingleQuoted) {
+                textProcessor = new BashEnhancedTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+            } else if (isSingleQuoted) {
+                //no escape handling for single-quoted strings
+                textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+            } else {
+                //fallback to simple escape handling
+                textProcessor = new BashSimpleTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+            }
         } else {
-            //fallback to simple escape handling
-            textProcessor = new BashSimpleTextPreprocessor(TextRange.from(prefix.length(), content.length()));
+            textProcessor = new BashIdentityTextPreprocessor(TextRange.from(prefix.length(), content.length()));
         }
 
         StringBuilder unescapedContent = new StringBuilder(content.length());
@@ -75,6 +81,6 @@ public class BashEvalElementType extends ILazyParseableElementType {
                 prefix + unescapedContent + suffix,
                 textProcessor);
 
-        return  def.createParser(project).parse(this, psiBuilder).getFirstChildNode();
+        return def.createParser(project).parse(this, psiBuilder).getFirstChildNode();
     }
 }

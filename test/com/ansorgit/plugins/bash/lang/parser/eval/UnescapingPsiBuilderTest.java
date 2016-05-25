@@ -4,6 +4,7 @@ import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -32,20 +33,27 @@ public class UnescapingPsiBuilderTest extends LightBashCodeInsightFixtureTestCas
 
     @Test
     public void testBasic() throws Exception {
-        PsiFile file = myFixture.configureByFile("basic/basic.bash");
-        Assert.assertNotNull(file);
+        BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
 
-        Collection<BashEvalBlock> evalBlocks = PsiTreeUtil.findChildrenOfType(file, BashEvalBlock.class);
-        Assert.assertNotNull(evalBlocks);
-        Assert.assertEquals(2, evalBlocks.size());
+        //this feature needs the experimental settings
+        try {
+            PsiFile file = myFixture.configureByFile("basic/basic.bash");
+            Assert.assertNotNull(file);
 
-        Iterator<BashEvalBlock> iterator = evalBlocks.iterator();
+            Collection<BashEvalBlock> evalBlocks = PsiTreeUtil.findChildrenOfType(file, BashEvalBlock.class);
+            Assert.assertNotNull(evalBlocks);
+            Assert.assertEquals(2, evalBlocks.size());
 
-        BashEvalBlock first = iterator.next();
-        Assert.assertEquals(1, first.getChildren().length);
+            Iterator<BashEvalBlock> iterator = evalBlocks.iterator();
 
-        BashEvalBlock second = iterator.next();
-        Assert.assertEquals(2, second.getChildren().length);
+            BashEvalBlock first = iterator.next();
+            Assert.assertEquals(1, first.getChildren().length);
+
+            BashEvalBlock second = iterator.next();
+            Assert.assertEquals(2, second.getChildren().length);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }
     }
 
     @Test

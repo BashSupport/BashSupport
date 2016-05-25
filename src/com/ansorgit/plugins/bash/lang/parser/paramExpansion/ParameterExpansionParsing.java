@@ -61,6 +61,13 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
         ParserUtil.getTokenAndAdvance(builder); //opening { bracket
 
+        //special handling for empty expansions
+        if (builder.rawLookup(0) == RIGHT_CURLY) {
+            builder.advanceLexer();
+            ParserUtil.error(marker, "parser.paramExpansion.empty");
+            return false;
+        }
+
         if (singleExpansionOperators.contains(builder.rawLookup(0)) && builder.rawLookup(1) == RIGHT_CURLY) {
             //fixme handle variable marking, i.e. $- etc.
             if (variableMarkingExpansionOperators.contains(builder.rawLookup(0))) {
