@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("Duplicates")
 public class BashSimpleTextPreprocessor implements TextPreprocessor {
     private int[] outSourceOffsets;
-    private TextRange contentRange;
+    private final TextRange contentRange;
 
     public BashSimpleTextPreprocessor(TextRange contentRange) {
         this.contentRange = contentRange;
@@ -74,6 +74,11 @@ public class BashSimpleTextPreprocessor implements TextPreprocessor {
 
     @Override
     public String patchOriginal(String originalText) {
-        return TextProcessorUtil.patchOriginal(originalText, outSourceOffsets);
+        return patchOriginal(originalText, null);
+    }
+
+    @Override
+    public String patchOriginal(String originalText, String replacement) {
+        return TextProcessorUtil.patchOriginal(originalText, outSourceOffsets, replacement);
     }
 }

@@ -20,11 +20,11 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.7</version>
+    <version>1.5.8</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 143.23 or later -->
+    <!-- Requires IDEA 141.713 or later -->
     <idea-version since-build="141.713" until-build="141.99999"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
@@ -38,6 +38,28 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.5.8 compared to 1.5.7:</b>
+        <ul>
+            <li><b>BashSupport development is on hold. I'm unable to continue to ship a high quality plugin with my very limited spare time. Most of the other Top-10 plugins are either made by JetBrains or are commercial offerings. Further development may happen in 2017. Please accept my apologies...</b></li>
+            <li>Features removed:<br/>
+            <ul>
+                <li>#333: Marked support for escapes in evaluated code as experimental.
+                    A proper fix needs major work on the lexer framework and is currently not fully supported.
+                    There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.</li>
+            </ul>
+            </li>
+
+            <li>Bugs fixed:<br/>
+                <ul>
+                    <li>#310: The parsed now accepts more deeply nested command lists</li>
+                    <li>#310: The parsed now accepts more deeply nested command lists</li>
+                    <li>#329: "Unexpected Token" Error For Associative Array</li>
+                    <li>#343: Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "</li>
+                    <li>Parsing for arithmetic expression in evaluating heredocs</li>
+                </ul>
+            </li>
+        </ul>
+
         <b>Changes in version 1.5.7 compared to 1.5.6:</b>
         <ul>
             <li>Bugs fixed:<br/>

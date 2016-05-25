@@ -57,6 +57,15 @@ public class DeclareCommandTest extends MockPsiTest {
     }
 
     @Test
+    public void testIssue329() throws Exception {
+        //declare a=(
+        //['key1']='value1'
+        //['key1']='value1'
+        //)
+        mockTest(declareParsing, Lists.newArrayList("declare"), WORD, WORD, EQ, LEFT_PAREN, LEFT_SQUARE, STRING2, RIGHT_SQUARE, EQ, STRING2, LINE_FEED, LEFT_SQUARE, STRING2, RIGHT_SQUARE, EQ, STRING2, LINE_FEED, RIGHT_PAREN);
+    }
+
+    @Test
     public void testBuiltin() {
         LanguageBuiltins.varDefCommands.contains("declare");
     }

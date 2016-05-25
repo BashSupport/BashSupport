@@ -946,12 +946,47 @@ public class BashLexerTest {
         testTokenization("cat <<- EOF\n\tEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_IGNORING_TABS_END);
         //with tab but without <<-
         testTokenization("cat <<EOF\n\tEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT);
+
+        // subshell expression
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "$(a)\n" +
+                        "EOF2", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, HEREDOC_CONTENT,
+                HEREDOC_MARKER_END
+        );
+
+        //normal arithmetic expression
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "$((a))\n" +
+                        "EOF2", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, EXPR_ARITH, WORD, _EXPR_ARITH, HEREDOC_CONTENT,
+                HEREDOC_MARKER_END
+        );
+
+        //square arithmetic expression
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "$[a]\n" +
+                        "EOF2", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, EXPR_ARITH_SQUARE, WORD, _EXPR_ARITH_SQUARE, HEREDOC_CONTENT,
+                HEREDOC_MARKER_END
+        );
     }
 
     @Test
     public void testMultilineHeredoc() throws Exception {
         //multiple heredocs in one command line
-        testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
+        testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG,
+                HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED);
     }
 
     @Test
@@ -1120,6 +1155,67 @@ public class BashLexerTest {
     public void testIssue341() throws Exception {
         testTokenization("\"`echo \"$0\"`\"", STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END);
         testTokenization("(cd \"`dirname \"$0\"`\")", LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, RIGHT_PAREN);
+    }
+
+    @Test
+    public void testIssue343() throws Exception {
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "${}\n" +
+                        "EOF2\n" +
+                        "}\n" +
+                        "$1", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, LEFT_CURLY, RIGHT_CURLY, HEREDOC_CONTENT,
+                HEREDOC_MARKER_END, LINE_FEED,
+                RIGHT_CURLY, LINE_FEED,
+                VARIABLE
+        );
+
+        //incomplete ${ in a heredoc
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "${\n" +
+                        "EOF2\n" +
+                        "}\n" +
+                        "$1", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, LEFT_CURLY, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                RIGHT_CURLY, LINE_FEED,
+                VARIABLE);
+
+        //incomplete $( in a heredoc
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "$(\n" +
+                        "EOF2\n" +
+                        ")\n" +
+                        "$1", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, LEFT_PAREN, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                RIGHT_PAREN, LINE_FEED,
+                VARIABLE
+        );
+
+        //incomplete $(( in a heredoc
+        testTokenization("{\n" +
+                        "<<EOF <<EOF2\n" +
+                        "EOF\n" +
+                        "$((\n" +
+                        "EOF2\n" +
+                        ")\n" +
+                        "$1", LEFT_CURLY, LINE_FEED, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                DOLLAR, EXPR_ARITH, LINE_FEED,
+                HEREDOC_MARKER_END, LINE_FEED,
+                RIGHT_PAREN, LINE_FEED,
+                VARIABLE
+        );
     }
 
     @Test
