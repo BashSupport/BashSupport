@@ -1,3 +1,6 @@
+####2016-05-26:
+ - \#310: The parsed now accepts more deeply nested command lists
+
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
  - \#342: Exception "Index out of range: -1" at beginning of file

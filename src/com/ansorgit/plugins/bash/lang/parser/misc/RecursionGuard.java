@@ -33,7 +33,7 @@ final class RecursionGuard {
     //the highest level found in the test files was 76 (as of 2015-02-28)
     //https://github.com/jansorg/BashSupport/issues/310 needs more than 150 levels
     public static RecursionGuard initial() {
-        return initial(350);
+        return initial(1000);
     }
 
     public static RecursionGuard initial(int maxNestingLevel) {
@@ -42,7 +42,7 @@ final class RecursionGuard {
 
     public boolean next(BashPsiBuilder builder) {
         if (++level > max) {
-            builder.error("Internal parser error: Maximum level of nested calls reached. Please report this at https://github.com/jansorg/BashSupport/issues");
+            builder.error("Internal parser error: Maximum level '" + max + "' of nested calls reached. Please report this at https://github.com/jansorg/BashSupport/issues");
             return false;
         }
 
