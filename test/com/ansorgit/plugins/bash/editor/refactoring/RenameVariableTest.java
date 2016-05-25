@@ -2,6 +2,7 @@ package com.ansorgit.plugins.bash.editor.refactoring;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.FileUtilRt;
@@ -66,22 +67,45 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
 
     @Test
     public void testEvalRenameEscaped() throws Exception {
-        doRename(false);
-    }
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+
+            doRename(false);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }}
 
     @Test
     public void testEvalRenameEscaped2() throws Exception {
-        doRename(false);
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+
+            doRename(false);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }
     }
 
     @Test
     public void testEvalRenameEscapedSimple() throws Exception {
-        doRename(false);
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+
+            doRename(false);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }
     }
 
     @Test
     public void testEvalRenameEscapedString() throws Exception {
-        doRename(false);
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+
+            doRename(false);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }
     }
 
     @Test

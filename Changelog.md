@@ -1,6 +1,7 @@
 ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array
+ - \#333: Marked support for escapes in evaluated code as experimental. A proper fix needs major work on the lexer framework and is currently not fully supported. There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.
 
 ####2016-05-22:
  - \#341: Exception "The inString stack should not be empty"
