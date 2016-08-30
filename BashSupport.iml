@@ -12,7 +12,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/gradle" />
     </content>
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-162.74.16" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
