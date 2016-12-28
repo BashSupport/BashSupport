@@ -1,5 +1,5 @@
 ####2016-12-28:
- - #388: References for files are now search in the module content scope and not in the module scope
+ - \#388: References for files are now search in the module content scope and not in the module scope
  - Start of 1.6.x version
 
 ####2016-05-26:
