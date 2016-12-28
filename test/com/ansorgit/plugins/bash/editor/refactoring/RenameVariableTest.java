@@ -66,11 +66,6 @@ public class RenameVariableTest extends BashCodeInsightFixtureTestCase {
     }
 
     @Test
-    public void testIncludedVarDefRename() throws Exception {
-        doRename(true, "source.bash", "included.bash");
-    }
-
-    @Test
     public void testEvalRenameEscaped() throws Exception {
         try {
             BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);

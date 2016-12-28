@@ -54,8 +54,7 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
         final TestFixtureBuilder<IdeaProjectTestFixture> projectBuilder = IdeaTestFixtureFactory.getFixtureFactory().createFixtureBuilder(name);
         myFixture = IdeaTestFixtureFactory.getFixtureFactory().createCodeInsightFixture(projectBuilder.getFixture());
 
-        final T moduleFixtureBuilder = projectBuilder.addModule(getModuleBuilderClass());
-        moduleFixtureBuilder.addSourceContentRoot(myFixture.getTempDirPath());
+        T moduleFixtureBuilder = projectBuilder.addModule(getModuleBuilderClass());
         tuneFixture(moduleFixtureBuilder);
 
         myFixture.setUp();
@@ -80,6 +79,7 @@ public abstract class BashCodeInsightFixtureTestCase<T extends ModuleFixtureBuil
     }
 
     protected void tuneFixture(final T moduleBuilder) {
+        moduleBuilder.addSourceContentRoot(myFixture.getTempDirPath());
     }
 
     /**
