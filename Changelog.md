@@ -1,3 +1,6 @@
+####2016-12-28:
+ - Start of 1.6.x version
+
 ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array

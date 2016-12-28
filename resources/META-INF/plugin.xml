@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.8</version>
+    <version>1.6.0</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,123 +38,13 @@
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.5.8 compared to 1.5.7:</b>
+        <b>Changes in version 1.6.0:</b>
         <ul>
-            <li><b>BashSupport development is on hold. I'm unable to continue to ship a high quality plugin with my very limited spare time. Most of the other Top-10 plugins are either made by JetBrains or are commercial offerings. Further development may happen in 2017. Please accept my apologies...</b></li>
-            <li>Features removed:<br/>
-            <ul>
-                <li>#333: Marked support for escapes in evaluated code as experimental.
-                    A proper fix needs major work on the lexer framework and is currently not fully supported.
-                    There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.</li>
-            </ul>
-            </li>
-
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#310: The parsed now accepts more deeply nested command lists</li>
-                    <li>#310: The parsed now accepts more deeply nested command lists</li>
-                    <li>#329: "Unexpected Token" Error For Associative Array</li>
-                    <li>#343: Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "</li>
-                    <li>Parsing for arithmetic expression in evaluating heredocs</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>Changes in version 1.5.7 compared to 1.5.6:</b>
-        <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)</li>
-                    <li>#340: isExpectingEvaluatingHeredoc called on an empty marker stack</li>
-                    <li>#341: Exception "The inString stack should not be empty"</li>
-                    <li>#342: Exception "Index out of range: -1" at beginning of file</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>Changes in version 1.5.6 compared to 1.5.5:</b>
-        <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#89: Function expands incorrectly when defined above another function</li>
-                    <li>#125: Array element gives "Unexpected token"</li>
-                    <li>#310: Workaround for deeply nested structures</li>
-                    <li>#320: Array use in arithmetic expressions wasn't working as expected</li>
-                    <li>#321: Handle leading tabs before heredoc end markers in heredocs started with the marker</li>
-                    <li>#324: Error reporting component is broken</li>
-                    <li>#327: Heredoc parser doesn't recognize \$( or \${ construction</li>
-                    <li>#330: Variable declarations in eval code now accepts variables on the left side of an assignment</li>
-                    <li>#331: NPE in HereDoc parsing</li>
-                    <li>#332: NPE in enter processor</li>
-                    <li>#333: ClassCastExceptions in ManpageDocSourc</li>
-                    <li>#334: Potential fix for the lexing state errors</li>
-                    <li>Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.</li>
-                    <li>Switched the exception error reporting to use https.</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>Changes in version 1.5.5 compared to 1.5.4:</b>
-        <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>No keyword and live-template autocompletion in command arguments</li>
-                    <li>Performance fixes for less latency in the editor</li>
-                    <li>Variables and functions can now be resolved in scratch files again</li>
-                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>
-                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>
-                    <li>#300: Variables are not recognized in case</li>
-                    <li>#303: Multiline lists not recognised</li>
-                    <li>#306: Index access during dumb mode</li>
-                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>
-                    <li>#308: Grouping in test commands not properly parsed</li>
-                    <li>#312: Newlines are not accepted in parameter expansions</li>
-                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>Changes in version 1.5.4 compared to 1.5.3:</b>
-        <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#299: ClassNotFound exception in PHPStorm</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>Changes in version 1.5.3 compared to 1.5.2:</b>
-        <ul>
-            <li>Features:
-                <ul>
-                    <li>Up to 35x faster file highlighting</li>
-                    <li>Improved eval and trap parsing</li>
-                    <li>Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets</li>
-                </ul>
-            </li>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#286: Eval parsing of code not inside a string</li>
-                    <li>#263: Warning for modifications of variables re-defined as readonly</li>
-                </ul>
-            </li>
-        </ul>
-
-        <b>New features in version 1.5.x compared to 1.4.x:</b>
-        <ul>
-            <li>#90: Language injection into unevaluated heredoc content, single and double quoted strings</li>
-            <li>#274: Spellchecker support for double-quoted strings, single-quoted strings and heredoc
-                content
-            </li>
-            <li>Bash code passed to eval in single quotes ('') is now parsed, too</li>
-            <li>Files usages in strings are now processed during a file rename if the option is enabled.</li>
-            <li>Renaming files in non-source directories</li>
-            <li>References to other Bash script files will now be renamed if the filename is changed</li>
-            <li>Bash version 4 support is now enabled by default</li>
+            <li>Compatible with builds >= 163.x, dropped support for builds 135.x to 162.x</li>
         </ul>
 
         <br/>
-        <a href="https://github.com/jansorg/BashSupport/blob/idea-139.x/Changelog.md">Full changelog</a>
+        <a href="https://github.com/jansorg/BashSupport/blob/idea-163.x/Changelog.md">Full changelog</a>
         </html>
         ]]>
     </change-notes>
