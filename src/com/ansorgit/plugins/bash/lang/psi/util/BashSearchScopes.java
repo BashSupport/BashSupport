@@ -40,7 +40,9 @@ public final class BashSearchScopes {
             return GlobalSearchScope.fileScope(file);
         }
 
-        return GlobalSearchScope.moduleScope(module);
+        //the module scope returned by getModuleScope() just contains the files in the configured source and test source directories,
+        //module content scope includes all files in the module directory
+        return module.getModuleContentScope();
     }
 
     public static GlobalSearchScope bashOnly(GlobalSearchScope scope) {
