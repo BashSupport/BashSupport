@@ -1,5 +1,6 @@
 ####2016-12-28:
- - #388: References for files are now searched in the module content scope and not in the module scope.
+ - \#388: References for files are now searched in the module content scope and not in the module scope.
+ - \#389: Files with line continuations were not parsed properly and may break the whole project
  - Start of 1.6.x version
 
 ####2016-05-26:

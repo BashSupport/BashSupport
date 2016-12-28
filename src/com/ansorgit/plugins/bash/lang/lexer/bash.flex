@@ -49,10 +49,10 @@ import com.intellij.psi.tree.IElementType;
 
 /***** Custom user code *****/
 
-LineTerminator = \r\n | \r | \n
 InputCharacter = [^\r\n]
-WhiteSpace=[ \t\f]
+LineTerminator = \r\n | \r | \n
 ContinuedLine = "\\" {LineTerminator}
+WhiteSpace=[ \t\f] {ContinuedLine}?
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
@@ -65,20 +65,19 @@ UnescapedCharacter = [^\']
 
 WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
-    | {EscapedChar} | [\u00C0-\u00FF]
-WordAfter =  {WordFirst} | "#" | "!" | "[" | "]"
+    | {EscapedChar} | [\u00C0-\u00FF] | {ContinuedLine}
+WordAfter = {WordFirst} | "#" | "!" | "[" | "]"
 
-ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
+ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar} | {ContinuedLine}
 // No "[" | "]"
 ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
 
-ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar}
-ParamExpansionWordAfter =  {ParamExpansionWordFirst}
-ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
+ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar} | {ContinuedLine}
+ParamExpansionWord = {ParamExpansionWordFirst}+
 
 AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
     | "-" | "^" | "+" | "-" | "~" | "*" | "," | ";"
-    | {EscapedChar}
+    | {EscapedChar} | {ContinuedLine}
 AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
 AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
 
@@ -384,7 +383,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_TEST, S_TEST_COMMAND> {
   {WhiteSpace}                 { return WHITESPACE; }
-  {ContinuedLine}+             { /* ignored */ }
 
   /*** Test / conditional expressions ***/
 
@@ -667,7 +665,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
      if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
