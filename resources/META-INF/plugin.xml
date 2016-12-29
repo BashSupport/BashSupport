@@ -24,8 +24,8 @@
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 162.x or later -->
-    <idea-version since-build="162.0" until-build="162.*"/>
+    <!-- Requires IDEA 171.x or later -->
+    <idea-version since-build="171.0" until-build="171.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
