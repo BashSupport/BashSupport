@@ -39,7 +39,7 @@
     <change-notes><![CDATA[
         <html>
         <b>Changes in version 1.6.0:</b>
-        <li>
+        <ul>
             <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
             <li>#389: Files with line continuations were not parsed properly and may break the whole project (might have broken your project!)</li>
             <li>#377: NPE in UnregisterGlobalVariableQuickfix</li>
