@@ -365,6 +365,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   " ]]"                         { backToPreviousState(); return _BRACKET_KEYWORD; }
   "&&"                          { return AND_AND; }
   "||"                          { return OR_OR; }
+  "$" / "("                     { goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
   "("                           { return LEFT_PAREN; }
   ")"                           { return RIGHT_PAREN; }
 }

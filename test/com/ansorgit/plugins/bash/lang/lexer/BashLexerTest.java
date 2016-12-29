@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1231,6 +1228,16 @@ public class BashLexerTest {
     @Test
     public void testEvalLexing() {
         testTokenization("$a=$a", VARIABLE, EQ, VARIABLE);
+    }
+
+    @Test
+    public void testIssue367() throws Exception {
+        //invalid command semantic, but lexing needs to work
+        testTokenization("[ (echo a) ]", EXPR_CONDITIONAL, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
+
+        testTokenization("[[ $(< $1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, LESS_THAN, WHITESPACE, VARIABLE, RIGHT_PAREN, _BRACKET_KEYWORD);
+
+        testTokenization("[[ $((1+1)) ]]", BRACKET_KEYWORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, _BRACKET_KEYWORD);
     }
 
     private void testNoErrors(String code) {
