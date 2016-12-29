@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: BashTestUtils.java, Class: BashTestUtils
- * Last modified: 2012-12-19
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +15,10 @@
 
 package com.ansorgit.plugins.bash;
 
+import com.intellij.codeInspection.InspectionProfileEntry;
+import com.intellij.codeInspection.LocalInspectionEP;
+import com.intellij.codeInspection.LocalInspectionTool;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
@@ -29,10 +30,23 @@ import java.net.URL;
 
 public final class BashTestUtils {
 
+    private static volatile String basePath;
+
     private BashTestUtils() {
     }
 
-    private static volatile String basePath;
+    public static InspectionProfileEntry findInspectionProfileEntry(Class<? extends LocalInspectionTool> clazz) {
+        LocalInspectionEP[] extensions = Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION);
+        for (LocalInspectionEP extension : extensions) {
+            if (extension.implementationClass.equals(clazz.getCanonicalName())) {
+                extension.enabledByDefault = true;
+
+                return extension.instantiateTool();
+            }
+        }
+
+        throw new IllegalStateException("Unable to find inspection profile entry for " + clazz);
+    }
 
     public static String getBasePath() {
         if (basePath == null) {
@@ -46,6 +60,17 @@ public final class BashTestUtils {
         VfsRootAccess.allowRootAccess(basePath);
 
         return basePath;
+    }
+
+    public static PsiElement configureFixturePsiAtCaret(String fileNameInTestPath, CodeInsightTestFixture fixture) {
+        fixture.configureByFile(fileNameInTestPath);
+
+        PsiElement element = fixture.getFile().findElementAt(fixture.getCaretOffset());
+        if (element instanceof LeafPsiElement) {
+            return element.getParent();
+        }
+
+        return element;
     }
 
     private static String computeBasePath() {
@@ -74,21 +99,10 @@ public final class BashTestUtils {
             } catch (Exception e) {
                 //ignore, use fallback below
             }
-        }    else {
+        } else {
             throw new IllegalStateException("Could not find log4jx.ml");
         }
 
         return null;
-    }
-
-    public static PsiElement configureFixturePsiAtCaret(String fileNameInTestPath, CodeInsightTestFixture fixture) {
-        fixture.configureByFile(fileNameInTestPath);
-
-        PsiElement element = fixture.getFile().findElementAt(fixture.getCaretOffset());
-        if (element instanceof LeafPsiElement) {
-            return element.getParent();
-        }
-
-        return element;
     }
 }

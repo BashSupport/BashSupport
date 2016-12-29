@@ -36,6 +36,10 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
         if (operator == BashTokenTypes.ARITH_MULT) {
             return currentValue * nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_DIV) {
+            if (nextExpressionValue == 0) {
+                throw new InvalidExpressionValue("Division by zero");
+            }
+
             return currentValue / nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_MOD) {
             return currentValue % nextExpressionValue;

@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: BashLexerTest.java, Class: BashLexerTest
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,6 +74,7 @@ public class BashLexerTest {
         testTokenization("${#echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, RIGHT_CURLY);
         testTokenization("${!echo}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, RIGHT_CURLY);
         testTokenization("a ${a# echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_HASH, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
+        testTokenization("a ${a## echo} a", WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_HASH_HASH, WHITESPACE, WORD, RIGHT_CURLY, WHITESPACE, WORD);
         testTokenization("${echo} ${echo}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         testTokenization("a=1 b=2 echo", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, WORD);
         testTokenization("a=1 b=2", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
@@ -84,7 +82,7 @@ public class BashLexerTest {
         testTokenization("if a; then PIDDIR=a$(a) a; fi", IF_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, THEN_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
 
         //line continuation token is ignored
-        testTokenization("a=a\\\nb", ASSIGNMENT_WORD, EQ, WORD, WORD);
+        testTokenization("a=a\\\nb", ASSIGNMENT_WORD, EQ, WORD);
 
         testTokenization("[ $(uname -a) ]", EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
     }
@@ -468,7 +466,7 @@ public class BashLexerTest {
         testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
         testTokenization("<<", HEREDOC_MARKER_TAG);
-        testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
+        testTokenization("<<<", REDIRECT_HERE_STRING);
         testTokenization("<<-", HEREDOC_MARKER_TAG);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
@@ -1219,6 +1217,18 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue354() throws Exception {
+        testTokenization("${var##abc}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_HASH_HASH, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue389() throws Exception {
+        testTokenization("a\\\nb", WORD);
+        testTokenization("a\\\n", WORD);
+        testTokenization("\\\nb", WORD);
+    }
+
+    @Test
     public void testTrapLexing() {
         testTokenization("trap", TRAP_KEYWORD);
         testTokenization("trap -l", TRAP_KEYWORD, WHITESPACE, WORD);
@@ -1231,6 +1241,63 @@ public class BashLexerTest {
     @Test
     public void testEvalLexing() {
         testTokenization("$a=$a", VARIABLE, EQ, VARIABLE);
+    }
+
+    @Test
+    public void testIssue376() throws Exception {
+        testTokenization("$(echo 2>&1)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN);
+        testTokenization("[[ $(echo 2>&1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN, _BRACKET_KEYWORD);
+    }
+
+    @Test
+    public void testIssue367() throws Exception {
+        //invalid command semantic, but lexing needs to work
+        testTokenization("[ (echo a) ]", EXPR_CONDITIONAL, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
+
+        testTokenization("[[ $(< $1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, LESS_THAN, WHITESPACE, VARIABLE, RIGHT_PAREN, _BRACKET_KEYWORD);
+
+        testTokenization("[[ $((1+1)) ]]", BRACKET_KEYWORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, _BRACKET_KEYWORD);
+    }
+
+    @Test
+    public void testHereString() throws Exception {
+        testTokenization("a <<< a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
+        testTokenization("a <<< a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
+        testTokenization("a <<< a b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WHITESPACE, WORD);
+
+        testTokenization("a <<<a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD);
+        testTokenization("a <<<a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD);
+        testTokenization("a <<<a b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD, WHITESPACE, WORD);
+
+        //string content
+        testTokenization("a <<<'abc'", WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2);
+        testTokenization("a <<< 'abc'", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING2);
+        testTokenization("a <<<\"a\"", WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        testTokenization("a <<< \"a\"", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //backticks
+        testTokenization("a <<<`abc`", WORD, WHITESPACE, REDIRECT_HERE_STRING, BACKQUOTE, WORD, BACKQUOTE);
+        testTokenization("a <<< `abc`", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, BACKQUOTE, WORD, BACKQUOTE);
+
+        //subshell
+        testTokenization("a <<<$(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("a <<< $(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("$(a <<< [abc])",DOLLAR, LEFT_PAREN, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, RIGHT_PAREN);
+
+        //words
+        testTokenization("a <<< {}", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< {a}", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, WORD);
+        testTokenization("a <<< []", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< [a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< [$a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, VARIABLE);
+        testTokenization("a <<< [$a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, VARIABLE, WORD);
+        testTokenization("a <<< [${a}]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WORD);
+        testTokenization("a <<< [$(a)]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WORD);
+        testTokenization("a <<< [$((1))]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH, WORD);
+
+        //invalid syntax
+        testTokenization("a <<< (a)", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("a <<< \" [$a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT);
     }
 
     private void testNoErrors(String code) {

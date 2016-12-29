@@ -1,0 +1,3 @@
+. included.bash
+
+<caret>a

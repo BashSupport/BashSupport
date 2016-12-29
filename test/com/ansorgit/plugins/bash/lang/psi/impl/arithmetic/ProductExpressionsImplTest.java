@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ProductExpressionsImplTest.java, Class: ProductExpressionsImplTest
- * Last modified: 2010-04-17
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,6 +39,11 @@ public class ProductExpressionsImplTest {
         Assert.assertEquals(0L, (long) product.compute(1L, BashTokenTypes.ARITH_DIV, 2L));
         Assert.assertEquals(0L, (long) product.compute(2L, BashTokenTypes.ARITH_DIV, 3L));
         Assert.assertEquals(0L, (long) product.compute(2L, BashTokenTypes.ARITH_DIV, 4L));
+    }
+
+    @Test(expected = InvalidExpressionValue.class)
+    public void testDivByZero() throws Exception {
+        createDummyNode().compute(10, BashTokenTypes.ARITH_DIV, 0L);
     }
 
     private ProductExpressionsImpl createDummyNode() {

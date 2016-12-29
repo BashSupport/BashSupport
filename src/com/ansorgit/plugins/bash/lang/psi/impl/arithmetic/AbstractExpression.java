@@ -93,7 +93,8 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
     protected abstract Long compute(long currentValue, IElementType operator, Long nextExpressionValue);
 
-    public long computeNumericValue() {
+    @Override
+    public long computeNumericValue() throws InvalidExpressionValue {
         List<ArithmeticExpression> childs = subexpressions();
         int childSize = childs.size();
         if (childSize == 0) {

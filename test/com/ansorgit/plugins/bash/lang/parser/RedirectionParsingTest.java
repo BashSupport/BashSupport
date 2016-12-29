@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: RedirectionParsingTest.java, Class: RedirectionParsingTest
- * Last modified: 2010-08-12
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -87,7 +84,7 @@ public class RedirectionParsingTest extends MockPsiTest {
 
         //<<<&1
         mockTestSuccessWithErrors(BashVersion.Bash_v3, redirectionTest, Arrays.asList("<<<", "&1"),
-                REDIRECT_LESS_LESS_LESS, FILEDESCRIPTOR);
+                REDIRECT_HERE_STRING, FILEDESCRIPTOR);
     }
 
     @Test
@@ -110,6 +107,14 @@ public class RedirectionParsingTest extends MockPsiTest {
         mockTestSuccessWithErrors(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
         // > > (true)
         mockTestSuccessWithErrors(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
+    }
+
+    @Test
+    public void testHereStrings() throws Exception {
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, WORD);
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, WORD, WORD);
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING2);
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END);
     }
 
     @Test

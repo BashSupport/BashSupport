@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.settings;
 
+import com.google.common.collect.Sets;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +28,7 @@ import java.util.Set;
  * registered for the current project.
  */
 public class BashProjectSettings implements Serializable {
-    private Set<String> globalVariables = new HashSet<String>();
+    private final Set<String> globalVariables = Sets.newConcurrentHashSet();
     private boolean autcompleteGlobalVars = true;
     private boolean supportBash4 = true;
 

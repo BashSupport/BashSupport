@@ -1,4 +1,19 @@
-####2016-05-26:
+####2016-12-29:
+ - \#351: Added debug message for further diagnosis
+ - Added support for the ## parameter expansion operator
+ - \#367: Fixed parsing of [[ $(< $1) ]] expression
+ - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
+ - \#383: Handle division by zero in arithmetic expressions and show a warning in the code
+ - \#368: Added debugging messages for arithmetic expressions
+
+####2016-12-28:
+ - \#377: NPE in UnregisterGlobalVariableQuickfix
+ - \#379: Undo "Register Global Variable" doesn't work
+ - \#388: References for files are now searched in the module content scope and not in the module scope.
+ - \#389: Files with line continuations were not parsed properly and may break the whole project
+ - Start of 1.6.x version
+
+ ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array
  - \#333: Marked support for escapes in evaluated code as experimental. A proper fix needs major work on the lexer framework and is currently not fully supported. There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.

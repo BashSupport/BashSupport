@@ -26,13 +26,13 @@ import java.util.List;
  * @author jansorg
  */
 public class AssignmentChainImpl extends AbstractExpression implements AssignmentChain {
+    public AssignmentChainImpl(final ASTNode astNode) {
+        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
+    }
+
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("compute is not supported");
-    }
-
-    public AssignmentChainImpl(final ASTNode astNode) {
-        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AssignmentChainImpl extends AbstractExpression implements Assignmen
         //find the child after the assignment sign
         List<ArithmeticExpression> childs = subexpressions();
         if (childs.size() != 2) {
-            throw new IllegalStateException("impossible state");
+            throw new IllegalStateException("Invalid assignment, number of child expressions: " + childs.size() + ". PSI text: " + getText());
         }
 
         return childs.get(1).computeNumericValue();
