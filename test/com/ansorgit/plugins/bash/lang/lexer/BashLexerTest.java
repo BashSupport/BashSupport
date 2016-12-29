@@ -465,7 +465,7 @@ public class BashLexerTest {
         testTokenization(">&2", GREATER_THAN, FILEDESCRIPTOR);
         testTokenization("<&1", LESS_THAN, FILEDESCRIPTOR);
         testTokenization("<<", HEREDOC_MARKER_TAG);
-        testTokenization("<<<", REDIRECT_LESS_LESS_LESS);
+        testTokenization("<<<", REDIRECT_HERE_STRING);
         testTokenization("<<-", HEREDOC_MARKER_TAG);
         testTokenization("<>", REDIRECT_LESS_GREATER);
         testTokenization(">|", REDIRECT_GREATER_BAR);
@@ -1238,6 +1238,47 @@ public class BashLexerTest {
         testTokenization("[[ $(< $1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, LESS_THAN, WHITESPACE, VARIABLE, RIGHT_PAREN, _BRACKET_KEYWORD);
 
         testTokenization("[[ $((1+1)) ]]", BRACKET_KEYWORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, _BRACKET_KEYWORD);
+    }
+
+    @Test
+    public void testHereString() throws Exception {
+        testTokenization("a <<< a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
+        testTokenization("a <<< a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
+        testTokenization("a <<< a b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WHITESPACE, WORD);
+
+        testTokenization("a <<<a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD);
+        testTokenization("a <<<a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD);
+        testTokenization("a <<<a b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WORD, WHITESPACE, WORD);
+
+        //string content
+        testTokenization("a <<<'abc'", WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2);
+        testTokenization("a <<< 'abc'", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING2);
+        testTokenization("a <<<\"a\"", WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        testTokenization("a <<< \"a\"", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //backticks
+        testTokenization("a <<<`abc`", WORD, WHITESPACE, REDIRECT_HERE_STRING, BACKQUOTE, WORD, BACKQUOTE);
+        testTokenization("a <<< `abc`", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, BACKQUOTE, WORD, BACKQUOTE);
+
+        //subshell
+        testTokenization("a <<<$(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("a <<< $(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("$(a <<< [abc])",DOLLAR, LEFT_PAREN, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, RIGHT_PAREN);
+
+        //words
+        testTokenization("a <<< {}", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< {a}", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, WORD);
+        testTokenization("a <<< []", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< [a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
+        testTokenization("a <<< [$a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, VARIABLE);
+        testTokenization("a <<< [$a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, VARIABLE, WORD);
+        testTokenization("a <<< [${a}]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WORD);
+        testTokenization("a <<< [$(a)]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WORD);
+        testTokenization("a <<< [$((1))]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH, WORD);
+
+        //invalid syntax
+        testTokenization("a <<< (a)", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
+        testTokenization("a <<< \" [$a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT);
     }
 
     private void testNoErrors(String code) {
