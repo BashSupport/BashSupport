@@ -49,7 +49,7 @@ public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool 
 
                 List<ArithmeticExpression> subexpressions = expression.subexpressions();
 
-                if (subexpressions.size() == 0 && expression.isStatic()) {
+                if (subexpressions.isEmpty() && expression.isStatic()) {
                     //test the expression for validity, show an error marker if invalid
                     try {
                         expression.computeNumericValue();
@@ -57,17 +57,28 @@ public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool 
                         holder.registerProblem(expression, e.getMessage(), ProblemHighlightType.GENERIC_ERROR, null, LocalQuickFix.EMPTY_ARRAY);
                     }
                 } else if (subexpressions.size() > 1 && (expression.isStatic() || isParenthesisExpr)) {
-                    ArithmeticExpression parent = expression.findParentExpression();
+                    try {
+                        long value = expression.computeNumericValue();
 
-                    //run only if the parent is not a static expression itself
-                    if (parent == null || !parent.isStatic()) {
-                        try {
-                            long numericValue = expression.computeNumericValue();
-                            String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + numericValue + "'";
+                        //run only if the parent is not a static expression itself
+                        ArithmeticExpression parent = expression.findParentExpression();
+                        if (parent == null || !parent.isStatic()) {
+                            String template = "Replace '" + expression.getText() + "' with the evaluated result of '" + value + "'";
                             holder.registerProblem(expression, template, new EvaluateArithExprQuickfix(expression));
-                        } catch (InvalidExpressionValue invalidExpressionValue) {
-                            //holder.registerProblem(expression, "Invalid arithmetic value");
-                            //the problem is already reported by this recursive visitor call in the empty subexpression check above
+                        }
+                    } catch (InvalidExpressionValue e) {
+                        boolean errors = false;
+                        for (int i = 0; i < subexpressions.size() && !errors; i++) {
+                            try {
+                                subexpressions.get(i).computeNumericValue();
+                            } catch (InvalidExpressionValue invalidExpressionValue1) {
+                                errors = true;
+                            }
+                        }
+
+                        //if the subexpressions evaluate without errors but the current expression does not then an error needs to be raised
+                        if (!errors) {
+                            holder.registerProblem(expression, e.getMessage(), ProblemHighlightType.GENERIC_ERROR, null, LocalQuickFix.EMPTY_ARRAY);
                         }
                     }
                 }

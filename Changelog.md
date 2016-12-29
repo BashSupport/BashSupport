@@ -3,6 +3,8 @@
   - Added support for the ## parameter expansion operator
   - \#367: Fixed parsing of [[ $(< $1) ]] expression
   - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
+ - \#383: Handle division by zero in arithmetic expressions and show a warning in the code
+ - \#368: Added debugging messages for arithmetic expressions
 
 ####2016-12-28:
  - \#377: NPE in UnregisterGlobalVariableQuickfix
