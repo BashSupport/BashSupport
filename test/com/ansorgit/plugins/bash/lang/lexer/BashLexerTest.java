@@ -82,7 +82,7 @@ public class BashLexerTest {
         testTokenization("if a; then PIDDIR=a$(a) a; fi", IF_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, THEN_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
 
         //line continuation token is ignored
-        testTokenization("a=a\\\nb", ASSIGNMENT_WORD, EQ, WORD, WORD);
+        testTokenization("a=a\\\nb", ASSIGNMENT_WORD, EQ, WORD);
 
         testTokenization("[ $(uname -a) ]", EXPR_CONDITIONAL, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
     }
@@ -1219,6 +1219,13 @@ public class BashLexerTest {
     @Test
     public void testIssue354() throws Exception {
         testTokenization("${var##abc}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_HASH_HASH, WORD, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue389() throws Exception {
+        testTokenization("a\\\nb", WORD);
+        testTokenization("a\\\n", WORD);
+        testTokenization("\\\nb", WORD);
     }
 
     @Test
