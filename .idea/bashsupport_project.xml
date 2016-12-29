@@ -3,6 +3,7 @@
   <component name="BashSupportProjectSettings">
     <option name="globalVariables">
       <set>
+        <option value="GLOBAL_VAR" />
         <option value="\$a" />
       </set>
     </option>
