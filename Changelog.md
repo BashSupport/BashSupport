@@ -4,6 +4,10 @@
   - \#367: Fixed parsing of [[ $(< $1) ]] expression
   - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
 
+####2016-12-28:
+ - \#377: NPE in UnregisterGlobalVariableQuickfix
+ - \#379: Undo "Register Global Variable" doesn't work
+
  ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array
