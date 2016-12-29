@@ -172,7 +172,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     public boolean isArrayUse() {
         ASTNode prev = getNode().getTreePrev();
-        if (prev != null && isParameterExpansion() && prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH) {
+        if (prev != null && isParameterExpansion() && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
             return true;
         }
 

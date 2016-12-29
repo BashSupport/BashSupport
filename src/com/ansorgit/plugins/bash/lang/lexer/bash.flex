@@ -626,7 +626,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
-  "#"                           { setParamExpansionHash(isParamExpansionWord() && true); return PARAM_EXPANSION_OP_HASH; }
+  "##"                          { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH_HASH; }
+  "#"                           { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
   "%"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_PERCENT; }
