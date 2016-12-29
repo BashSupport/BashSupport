@@ -39,8 +39,18 @@
     <change-notes><![CDATA[
         <html>
         <b>Changes in version 1.6.0:</b>
-        <ul>
-            <li>Compatible with builds >= 163.x, dropped support for builds 135.x to 162.x</li>
+        <li>
+            <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
+            <li>#389: Files with line continuations were not parsed properly and may break the whole project (might have broken your project!)</li>
+            <li>#377: NPE in UnregisterGlobalVariableQuickfix</li>
+            <li>#367: Fixed parsing of redirects in subshells inside of conditional commands, e.g. [[ $(&lt; $1) ]]</li>
+            <li>#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] &lt;&lt;&lt; [abc]"</li>
+            <li>#379: Undo "Register Global Variable" doesn't work</li>
+            <li>#368: Added debugging messages for arithmetic expressions</li>
+            <li>#383: Handle division by zero in arithmetic expressions and show a warning in the code</li>
+            <li>#388: References for files are now searched in the module content scope and not in the module scope.</li>
+            <li>Added support for the ## parameter expansion operator</li>
+            <li>#351: Added debug message for further diagnosis</li>
         </ul>
 
         <br/>
