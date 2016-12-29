@@ -1231,6 +1231,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue376() throws Exception {
+        testTokenization("$(echo 2>&1)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN);
+        testTokenization("[[ $(echo 2>&1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN, _BRACKET_KEYWORD);
+    }
+
+    @Test
     public void testIssue367() throws Exception {
         //invalid command semantic, but lexing needs to work
         testTokenization("[ (echo a) ]", EXPR_CONDITIONAL, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
