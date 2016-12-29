@@ -1,6 +1,8 @@
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
   - Added support for the ## parameter expansion operator
+  - \#367: Fixed parsing of [[ $(< $1) ]] expression
+  - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
 
  ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
