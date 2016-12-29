@@ -1,5 +1,6 @@
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
+  - Added support for the ## parameter expansion operator
 
  ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
