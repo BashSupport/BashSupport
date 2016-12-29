@@ -1,3 +1,7 @@
+####2016-05-29:
+ - \#383: Handle division by zero in arithmetic expressions and show a warning in the code
+ - \#368: Added debugging messages for arithmetic expressions
+
 ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array

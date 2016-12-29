@@ -31,7 +31,7 @@ import java.util.List;
  * @author jansorg
  */
 public class SimpleExpressionsImpl extends AbstractExpression implements SimpleExpression {
-    private static char[] literalChars;
+    private static final char[] literalChars;
 
     static {
         literalChars = new char[64];
@@ -196,7 +196,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
         if (isStatic()) {
             ASTNode[] children = getNode().getChildren(null);
 
-            // a base literatl has several child elements
+            // a base literal has several child elements
             if (literalType() == LiteralType.BaseLiteral) {
                 if (children.length != 3) {
                     throw new IllegalStateException("unexpected number of children for a numeric valid with base");
@@ -255,7 +255,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                 throw new IllegalStateException("Invalue state found (invalid prefix operator); " + getText());
             }
         } else {
-            throw new UnsupportedOperationException("unsupported");
+            throw new UnsupportedOperationException("unsupported expression state: " + getText());
         }
     }
 }
