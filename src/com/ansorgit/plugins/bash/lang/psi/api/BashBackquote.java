@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.openapi.util.TextRange;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author jansorg
@@ -23,5 +24,10 @@ import com.intellij.openapi.util.TextRange;
 public interface BashBackquote extends BashPsiElement {
     String getCommandText();
 
+    /**
+     * Returns the text range inside of the element, i.e. relative to the element's start.
+     * @return The text range of the command text content
+     */
+    @NotNull
     TextRange getCommandTextRange();
 }
