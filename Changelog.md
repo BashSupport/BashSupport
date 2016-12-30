@@ -1,3 +1,6 @@
+####2016-12-30:
+ - \#388: Reformatting heredocs changes content
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
