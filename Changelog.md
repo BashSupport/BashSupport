@@ -1,3 +1,6 @@
+####2016-12-30:
+ - \#392: Formatted changes code in eval strings and redirect tokens
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
