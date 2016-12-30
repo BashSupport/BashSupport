@@ -1,5 +1,6 @@
 ####2016-12-30:
  - \#393: Update JFlex to the latest version
+ - \#349: Support unicode characters in the script, warn about invalid identifiers which included illegal characters
 
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
