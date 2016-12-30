@@ -29,23 +29,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 /**
- * This inspection marks unresolved variables.
+ * This inspection marks unresolved variables which are currently registered as global variables.
  * <br>
  *
  * @author jansorg
  */
-public class UnresolvedVariableInspection extends LocalInspectionTool {
+public class GloballyRegisteredVariableInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return new UnresolvedVariableVisitor(holder);
+        return new GloballyRegisteredVarVisitor(holder);
     }
 
-    private static final class UnresolvedVariableVisitor extends BashVisitor {
+    private static final class GloballyRegisteredVarVisitor extends BashVisitor {
         private final ProblemsHolder holder;
         private final Set<String> globalVariableNames;
 
-        public UnresolvedVariableVisitor(ProblemsHolder holder) {
+        public GloballyRegisteredVarVisitor(ProblemsHolder holder) {
             this.holder = holder;
             globalVariableNames = BashProjectSettings.storedSettings(holder.getProject()).getGlobalVariables();
         }
@@ -56,17 +56,17 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
                 return;
             }
 
-            if (globalVariableNames.contains(bashVar.getReferenceName())) {
+            if (!globalVariableNames.contains(bashVar.getReferenceName())) {
                 return;
             }
 
             BashReference ref = bashVar.getReference();
             if (ref.resolve() == null) {
                 holder.registerProblem(bashVar,
-                        "Unresolved variable",
+                        "This variable is unresolved, but registered as a global variable",
                         ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
                         ref.getRangeInElement(),
-                        new GlobalVariableQuickfix(bashVar, true));
+                        new GlobalVariableQuickfix(bashVar, false));
             }
         }
     }

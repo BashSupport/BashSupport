@@ -274,6 +274,12 @@
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
 
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashGloballyRegisteredVariable"
+                         key="inspection.globallyRegisteredVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GloballyRegisteredVariableInspection"/>
+
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashEvaluateArithmeticExpression"
                          key="inspection.evaluateArithmeticExpression.name"

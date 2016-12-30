@@ -1,3 +1,6 @@
+####2016-12-30:
+ - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
