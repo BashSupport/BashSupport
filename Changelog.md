@@ -1,3 +1,6 @@
+####2016-12-30:
+ - \#361: Added support for the mapfile and readarray Bash builtin comamnds
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator

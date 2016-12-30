@@ -77,10 +77,10 @@ public final class LanguageBuiltins {
             "suspend", "test", "times", "trap", "type", "ulimit", "umask", "unalias", "wait"
     );
     public static final Collection<String> commands_v4 = Sets.newHashSet(
-            "coproc", "mapfile"
+            "coproc", "mapfile", "readarray"
     );
     public static final Collection<String> varDefCommands = Sets.newHashSet(
-            "export", "read", "declare", "readonly", "typeset", "getopts"
+            "export", "read", "declare", "readonly", "typeset", "getopts", "mapfile", "readarray"
     );
     public static final Collection<String> localVarDefCommands = Collections.singleton(
             "local"
