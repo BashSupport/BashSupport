@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.editor.inspections.inspections.GloballyRegisteredVariableInspection;
 import com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -31,7 +32,7 @@ import java.util.List;
 public class UnregisterGlobalVariableQuickfixTest extends BashCodeInsightFixtureTestCase {
 
     public void testUnregisterGlobalVar() throws Exception {
-        myFixture.enableInspections(BashTestUtils.findInspectionProfileEntry(UnresolvedVariableInspection.class));
+        myFixture.enableInspections(BashTestUtils.findInspectionProfileEntry(UnresolvedVariableInspection.class), BashTestUtils.findInspectionProfileEntry(GloballyRegisteredVariableInspection.class));
         configurePsiAtCaret("source.bash");
 
         BashProjectSettings.storedSettings(getProject()).addGlobalVariable("GLOBAL_VAR");
