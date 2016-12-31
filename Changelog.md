@@ -2,6 +2,7 @@
  - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
 
 ####2016-12-30:
+ - \#388: Reformatting heredocs changes content
  - \#361: Added support for the mapfile and readarray Bash builtin comamnds
  - \#357: Added a potential fix for the problem
  - \#350: Redirection in eval statement is flagged as error
