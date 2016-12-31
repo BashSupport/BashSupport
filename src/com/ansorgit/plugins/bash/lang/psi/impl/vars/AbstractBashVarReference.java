@@ -60,8 +60,8 @@ abstract class AbstractBashVarReference extends CachingReference implements Bash
     }
 
     public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
-            throw new IncorrectOperationException("Can't have an empty name");
+        if (!BashIdentifierUtil.isValidNewVariableName(newName)) {
+            throw new IncorrectOperationException("Invalid variable name");
         }
 
         //if this is variable which doesn't have a $ or escaped \$ sign prefix

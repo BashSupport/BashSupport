@@ -1,4 +1,5 @@
 ####2016-12-31:
+ - Release 1.6.1
  - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
 
 ####2016-12-30:

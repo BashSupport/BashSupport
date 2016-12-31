@@ -113,8 +113,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public PsiElement setName(@NotNull @NonNls String newName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
-            throw new IncorrectOperationException("can't have an empty name");
+        if (!BashIdentifierUtil.isValidNewVariableName(newName)) {
+            throw new IncorrectOperationException("Invalid variable name");
         }
 
         PsiElement original = findAssignmentWord();

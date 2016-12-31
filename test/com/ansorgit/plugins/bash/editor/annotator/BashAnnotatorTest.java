@@ -41,6 +41,14 @@ public class BashAnnotatorTest extends LightDaemonAnalyzerTestCase {
     }
 
     @Test
+    public void testValidIdentifiers() {
+        configureByFile("/editor/annotator/validIdentifiers.bash");
+        doHighlighting();
+
+        Assert.assertEquals(0, highlightErrors().size());
+    }
+
+    @Test
     public void testIdentifiers() {
         configureByFile("/editor/annotator/identifiers.bash");
         doHighlighting();

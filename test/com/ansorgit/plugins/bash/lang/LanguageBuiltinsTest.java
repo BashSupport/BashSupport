@@ -28,20 +28,4 @@ public class LanguageBuiltinsTest {
             Assert.assertTrue("Not found: " + name, LanguageBuiltins.bashShellVars.contains(name));
         }
     }
-
-    @Test
-    public void testValidIdentifier() throws Exception {
-        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("a"));
-        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("abc"));
-        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("A"));
-        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("ABC123"));
-
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("1"));
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("123"));
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("1a"));
-
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("α"));
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("α1"));
-        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("разработка"));
-    }
 }

@@ -16,7 +16,6 @@
 package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
@@ -35,6 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -272,13 +272,13 @@ public class BashAnnotator implements Annotator {
     /**
      * Annotates invalid identifiers.
      *
-     * @param var
-     * @param annotationHolder
+     * @param var The variable or variable definition to check
+     * @param annotationHolder Holder of the annotations
      */
     private void annotateIdentifier(BashVar var, AnnotationHolder annotationHolder) {
         String varName = var.getReferenceName();
 
-        if (!LanguageBuiltins.isValidIdentifier(varName)) {
+        if (!BashIdentifierUtil.isValidIdentifier(varName)) {
             annotationHolder.createErrorAnnotation(var.getReference().getRangeInElement().shiftRight(var.getTextOffset()), String.format("'%s': not a valid identifier", varName));
         }
     }

@@ -107,24 +107,4 @@ public final class LanguageBuiltins {
         return bash4 && commands_v4.contains(commandName) || commands.contains(commandName);
     }
 
-    public static boolean isValidIdentifier(CharSequence text) {
-        if (text == null || text.length() == 0) {
-            return false;
-        }
-
-        char first = text.charAt(0);
-        if (first >= '0' && first <= '9') {
-            return false;
-        }
-
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-
-            if (!( (c >= 'a' && c <= 'z') || (c >= 'A' && c<= 'Z') || (c >= '0' && c <= '9') && c != '_' )) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
