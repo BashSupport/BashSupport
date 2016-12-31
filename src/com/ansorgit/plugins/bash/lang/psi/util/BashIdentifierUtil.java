@@ -15,8 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author jansorg
  */
@@ -24,7 +22,30 @@ public final class BashIdentifierUtil {
     private BashIdentifierUtil() {
     }
 
-    public static boolean isValidIdentifier(String name) {
-        return StringUtils.stripToNull(name) != null && !name.contains(" ");
+    public static boolean isValidNewVariableName(String text) {
+        return isValidIdentifier(text); //fixme should be enhanced (no time atm)
+    }
+
+    public static boolean isValidIdentifier(CharSequence text) {
+        if (text == null || text.length() == 0) {
+            return false;
+        }
+
+        char first = text.charAt(0);
+
+        if (first >= '0' && first <= '9') {
+            //builtin $1 to $9 are valid, all other variables which start with a digit are not
+            return text.length() == 1;
+        }
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_' && c != '@' && c != '$' && c != '#' && c != '?' && c != '!' && c != '*' && c != '-') {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

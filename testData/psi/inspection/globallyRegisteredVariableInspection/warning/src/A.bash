@@ -1,0 +1,1 @@
+echo $GLOBAL_VAR

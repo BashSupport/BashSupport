@@ -34,6 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -75,8 +76,10 @@ public class BashAnnotator implements Annotator {
             annotateCommand((BashCommand) element, annotationHolder);
         } else if (element instanceof BashVarDef) {
             annotateVarDef((BashVarDef) element, annotationHolder);
+            annotateIdentifier((BashVarDef) element, annotationHolder);
         } else if (element instanceof BashVar) {
             highlightVariable((BashVar) element, annotationHolder);
+            annotateIdentifier((BashVar) element, annotationHolder);
         } else if (element instanceof BashWord) {
             annotateWord(element, annotationHolder);
         } else if (element instanceof BashString) {
@@ -263,6 +266,20 @@ public class BashAnnotator implements Annotator {
         if (identifier != null) {
             final Annotation annotation = annotationHolder.createInfoAnnotation(identifier, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_DEF);
+        }
+    }
+
+    /**
+     * Annotates invalid identifiers.
+     *
+     * @param var The variable or variable definition to check
+     * @param annotationHolder Holder of the annotations
+     */
+    private void annotateIdentifier(BashVar var, AnnotationHolder annotationHolder) {
+        String varName = var.getReferenceName();
+
+        if (!BashIdentifierUtil.isValidIdentifier(varName)) {
+            annotationHolder.createErrorAnnotation(var.getReference().getRangeInElement().shiftRight(var.getTextOffset()), String.format("'%s': not a valid identifier", varName));
         }
     }
 

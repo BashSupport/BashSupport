@@ -20,6 +20,12 @@ allprojects {
         }
     }
 
+//    test {
+//        testLogging {
+//            showStandardStreams = true
+//        }
+//    }
+
     sourceSets {
         main {
             java.srcDirs 'src'

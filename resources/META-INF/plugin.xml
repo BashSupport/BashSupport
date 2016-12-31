@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,20 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.1:</b>
+        <ul>
+            <li>#361: Added support for the mapfile and readarray Bash builtin comamnds</li>
+            <li>#349: Support unicode characters in scripts, warn about invalid identifiers which include illegal characters</li>
+            <li>#392: Reformatting changes code in eval strings and redirect tokens</li>
+            <li>#388: Reformatting heredocs changes content</li>
+            <li>#350: Redirection in eval statement is flagged as error</li>
+            <li>#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.</li>
+            <li>#391: New inspection to highlighting unresolved, but globally registered variables (to have a separate highlighting level and inspection description)</li>
+            <li>#393: Update JFlex to the latest version</li>
+            <li>#357: Added a potential fix for the problem</li>
+        </ul>
+
+        <br/>
         <b>Changes in version 1.6.0:</b>
         <ul>
             <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
@@ -273,6 +287,12 @@
                          key="inspection.unresolvedVariable.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashGloballyRegisteredVariable"
+                         key="inspection.globallyRegisteredVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GloballyRegisteredVariableInspection"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashEvaluateArithmeticExpression"

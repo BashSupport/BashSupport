@@ -92,6 +92,9 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
         super.checkConfiguration();
 
         Module module = getConfigurationModule().getModule();
+        if (module == null) {
+            throw new RuntimeConfigurationException("Module not defined.");
+        }
 
         ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
 

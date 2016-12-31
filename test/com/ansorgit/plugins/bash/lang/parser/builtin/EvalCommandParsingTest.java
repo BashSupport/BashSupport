@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: LetCommandTest.java, Class: LetCommandTest
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,5 +60,11 @@ public class EvalCommandParsingTest extends MockPsiTest {
     public void testIssue330Var() throws Exception {
         //eval "\${$a}"
         mockTest(evalParsing, Lists.newArrayList("eval"), WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT, STRING_END);
+    }
+
+    @Test
+    public void testIssue350() throws Exception {
+        //eval "executable" 2>/dev/null
+        mockTest(evalParsing, Lists.newArrayList("eval"), WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, INTEGER_LITERAL, GREATER_THAN, WORD);
     }
 }

@@ -1,13 +1,10 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: FormatterTest.java, Class: FormatterTest
- * Last modified: 2010-02-10
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -118,6 +115,16 @@ public class FormatterTest extends BashFormatterTestCase {
 
     @Test
     public void testParamExpansion() throws Throwable {
+        doTest();
+    }
+
+    @Test
+    public void testEvalBlocks() throws Throwable {
+        doTest();
+    }
+
+    @Test
+    public void testFileRedirect() throws Throwable {
         doTest();
     }
 
