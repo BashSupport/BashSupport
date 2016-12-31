@@ -23,7 +23,6 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,35 +43,30 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
 
     private static final class UnresolvedVariableVisitor extends BashVisitor {
         private final ProblemsHolder holder;
+        private final Set<String> globalVariableNames;
 
         public UnresolvedVariableVisitor(ProblemsHolder holder) {
             this.holder = holder;
+            globalVariableNames = BashProjectSettings.storedSettings(holder.getProject()).getGlobalVariables();
         }
 
         @Override
         public void visitVarUse(BashVar bashVar) {
-            if (!bashVar.isBuiltinVar()) {
-                Set<String> globalVariables = BashProjectSettings.storedSettings(holder.getProject()).getGlobalVariables();
+            if (bashVar.isBuiltinVar()) {
+                return;
+            }
 
-                BashReference ref = bashVar.getReference();
+            if (globalVariableNames.contains(bashVar.getReferenceName())) {
+                return;
+            }
 
-                PsiElement resolved = ref.resolve();
-                if (resolved == null) {
-                    String varName = ref.getReferencedName();
-
-                    if (globalVariables.contains(varName)) {
-                        holder.registerProblem(bashVar, "This variable is currently registered as a global variable",
-                                ProblemHighlightType.WEAK_WARNING,
-                                ref.getRangeInElement(),
-                                new GlobalVariableQuickfix(bashVar, false));
-                    } else {
-                        holder.registerProblem(bashVar,
-                                "Unresolved variable",
-                                ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,
-                                ref.getRangeInElement(),
-                                new GlobalVariableQuickfix(bashVar, true));
-                    }
-                }
+            BashReference ref = bashVar.getReference();
+            if (ref.resolve() == null) {
+                holder.registerProblem(bashVar,
+                        "Unresolved variable",
+                        ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                        ref.getRangeInElement(),
+                        new GlobalVariableQuickfix(bashVar, true));
             }
         }
     }

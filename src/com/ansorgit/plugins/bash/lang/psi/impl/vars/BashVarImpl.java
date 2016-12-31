@@ -107,8 +107,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     @Override
     public PsiElement setName(@NonNls @NotNull String newName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
-            throw new IncorrectOperationException("can't have an empty name");
+        if (!BashIdentifierUtil.isValidNewVariableName(newName)) {
+            throw new IncorrectOperationException("Invalid variable name");
         }
 
         PsiElement replacement = BashPsiElementFactory.createVariable(getProject(), newName, isParameterExpansion());

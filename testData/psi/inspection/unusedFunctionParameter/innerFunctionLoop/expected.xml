@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>10</line>
+        <description>Unused parameter</description>
+    </problem>
+</problems>

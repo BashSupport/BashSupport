@@ -24,8 +24,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
 /**
- * let Argument [Argument ...]
- * Each argument is evaluated as an arithmetic expression
+ * eval: eval [arg ...]
  * <br>
  * fixme this implementation is not yet complete, currently it is just eating the tokens to avoid syntax error markers
  * fixme not variable parsing, etc. is done at the moment
@@ -52,7 +51,7 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
             builder.getTokenType();
 
             while (true) {
-                //do nothing, the conidition advances the PSI builder
+                //do nothing, the condition advances the PSI builder
                 if (!(readEvaluatedBeforeCode(builder))) {
                     break;
                 }
@@ -60,6 +59,15 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
 
             //advance to the next non-whitespace token before reading an eval block
             builder.getTokenType();
+
+            if (Parsing.redirection.isRedirect(builder, false)) {
+                //redirects must not be marked as code to be evaluated, so we avoid the marker block below
+                if (!Parsing.redirection.parseSingleRedirect(builder, false)) {
+                    break;
+                }
+
+                continue;
+            }
 
             PsiBuilder.Marker evalMarker = builder.mark();
 

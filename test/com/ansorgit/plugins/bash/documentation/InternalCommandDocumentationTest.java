@@ -66,14 +66,20 @@ public class InternalCommandDocumentationTest extends LightBashCodeInsightFixtur
         Assert.assertFalse(doIsValidUrlContent("curl"));
         Assert.assertFalse(doIsValidUrlContent("wget"));
 
+        Set<String> unavailableCommandDocs = Sets.newHashSet("readarray", "mapfile");
+
         //check all builtin commands
         InternalCommandDocumentation source = new InternalCommandDocumentation();
         for (String command : filterUnavailableCommands(LanguageBuiltins.commands)) {
-            DocTestUtils.isResponseContentValid(source.urlForCommand(command));
+            if (!unavailableCommandDocs.contains(command)) {
+                DocTestUtils.isResponseContentValid(source.urlForCommand(command));
+            }
         }
 
         for (String command : filterUnavailableCommands(LanguageBuiltins.commands_v4)) {
-            DocTestUtils.isResponseContentValid(source.urlForCommand(command));
+            if (!unavailableCommandDocs.contains(command)) {
+                DocTestUtils.isResponseContentValid(source.urlForCommand(command));
+            }
         }
     }
 

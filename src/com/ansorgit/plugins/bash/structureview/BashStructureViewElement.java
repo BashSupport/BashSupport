@@ -21,7 +21,6 @@ import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
-import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiNamedElement;
@@ -105,7 +104,7 @@ class BashStructureViewElement implements StructureViewTreeElement {
         }
 
         public Icon getIcon(boolean open) {
-            return myElement.getIcon(Iconable.ICON_FLAG_OPEN);
+            return null;
         }
     }
 }

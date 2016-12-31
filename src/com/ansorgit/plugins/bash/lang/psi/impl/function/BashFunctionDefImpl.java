@@ -113,11 +113,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     @NotNull
     public List<BashPsiElement> findReferencedParameters() {
         if (referencedParameters == null) {
-            //call the visitor to find all uses of the parameter variables
+            //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
             referencedParameters = Lists.newLinkedList();
 
             for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-                if (var.isParameterReference()) {
+                if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
                     referencedParameters.add(var);
                 }
             }
@@ -159,7 +159,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
             }
 
             public Icon getIcon(boolean open) {
-                return BashFunctionDefImpl.this.getIcon(Iconable.ICON_FLAG_OPEN);
+                return null;
             }
         };
     }

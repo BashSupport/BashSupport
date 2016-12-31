@@ -1,2 +1,2 @@
-JFlex.jar is JFlex 1.4.3 (JetBrains flavour) patched to generate valid code for generic look-aheads. The char_at
-option wasn't used properly in all places.
+The files are available at https://github.com/JetBrains/intellij-community/tree/master/tools/lexer and
+are the optimized versions provided bz JetBrains.

@@ -63,28 +63,24 @@ StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 UnescapedCharacter = [^\']
 
-WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
-    | {EscapedChar} | [\u00C0-\u00FF] | {ContinuedLine}
-WordAfter = {WordFirst} | "#" | "!" | "[" | "]"
+WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:&%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {ContinuedLine}
+WordAfter = {WordFirst} | [#!\[\]]
 
-ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar} | {ContinuedLine}
+ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {ContinuedLine}
 // No "[" | "]"
-ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
+ArithWordAfter =  {ArithWordFirst} | [0-9#!]
 
 ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar} | {ContinuedLine}
 ParamExpansionWord = {ParamExpansionWordFirst}+
 
-AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "~" | "*" | "," | ";"
-    | {EscapedChar} | {ContinuedLine}
-AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
-AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
+AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {ContinuedLine}
+AssignListWordAfter =  {AssignListWordFirst} | [$#!]
+AssignListWord = {AssignListWordFirst}{AssignListWordAfter}*
 
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
-AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
-Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*" | "$-" | "$_"
+AssignmentWord = [[\p{Letter}]||[_]] [[\p{Letter}]||[0-9_]]*
+Variable = "$" {AssignmentWord} | "$"[@$#0-9?!*_-]
 
 ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 

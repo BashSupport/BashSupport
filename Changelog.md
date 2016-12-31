@@ -1,3 +1,17 @@
+####2016-12-31:
+ - Release 1.6.1
+ - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+
+####2016-12-30:
+ - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
+ - \#388: Reformatting heredocs changes content
+ - \#361: Added support for the mapfile and readarray Bash builtin comamnds
+ - \#357: Added a potential fix for the problem
+ - \#350: Redirection in eval statement is flagged as error
+ - \#392: Formatted changes code in eval strings and redirect tokens
+ - \#393: Update JFlex to the latest version
+ - \#349: Support unicode characters in the script, warn about invalid identifiers which included illegal characters
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
