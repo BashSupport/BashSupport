@@ -2,8 +2,8 @@
  - Prevent to pass empty elements to highlighting annotations
  - Fix a division by zero exception
  - Disable inline renaming if the context and the actual definition are in different files.
- - Release 1.6.1
  - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+ - Release 1.6.1
  - Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often
  - Handle line continuations in case pattern lists
  - Increase index version to handle stub index vs. psi exceptions
