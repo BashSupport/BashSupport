@@ -1,3 +1,6 @@
+####2016-12-31:
+ - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
