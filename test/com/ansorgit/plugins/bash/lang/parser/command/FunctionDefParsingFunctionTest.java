@@ -19,7 +19,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class FunctionDefParsingFunctionTest extends MockPsiTest {
@@ -44,5 +43,20 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
         // echo
         // }
         mockTest(f, Lists.newArrayList("function", "разработка"), FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testBodyWithErrors() throws Exception {
+        //function a() {
+        // echo ${=1}
+        //}
+        mockTestSuccessWithErrors(f, FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_CURLY, LINE_FEED,
+                WORD, DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, INTEGER_LITERAL, RIGHT_CURLY, LINE_FEED, RIGHT_CURLY);
+
+        //function a() {
+        // echo ${=1}; echo
+        //}
+        mockTestSuccessWithErrors(f, FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_CURLY, LINE_FEED,
+                WORD, DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, INTEGER_LITERAL, RIGHT_CURLY, SEMI, WHITESPACE, WORD, LINE_FEED, LINE_FEED, RIGHT_CURLY);
     }
 }

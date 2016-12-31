@@ -336,7 +336,7 @@ public class BashLexerTest {
         testTokenization("\\?", WORD);
         testTokenization("\\!", WORD);
         //fixme: line continuation, check with spec
-        //testTokenization("abc\\\nabc", WORD);
+        testTokenization("abc\\\nabc", WORD);
 
         //no escape char here
         //fixme what is right here?
@@ -1282,7 +1282,7 @@ public class BashLexerTest {
         //subshell
         testTokenization("a <<<$(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
         testTokenization("a <<< $(abc)", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
-        testTokenization("$(a <<< [abc])",DOLLAR, LEFT_PAREN, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, RIGHT_PAREN);
+        testTokenization("$(a <<< [abc])", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD, RIGHT_PAREN);
 
         //words
         testTokenization("a <<< {}", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WORD);
@@ -1310,6 +1310,49 @@ public class BashLexerTest {
 
         testTokenization("α=1", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
         testTokenization("export α=1", WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
+    }
+
+    @Test
+    public void testLineContinuation() throws Exception {
+        /* case x in
+                a|\
+                b)
+                return
+                        ;;
+            esac
+        */
+        testTokenization("case x in\n" +
+                        "a|\\\n" +
+                        "b)\n" +
+                        "return\n" +
+                        ";;\n" +
+                        "esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                WORD, PIPE, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
+                WORD, LINE_FEED,
+                CASE_END, LINE_FEED,
+                ESAC_KEYWORD);
+
+        /* case x in
+                \
+                a\
+                |b\
+                  cde)
+                return
+                        ;;
+            esac
+        */
+        testTokenization("case x in\n" +
+                        "\\\na|\\\n" +
+                        " b\\\ncde)\n" +
+                        "return\n" +
+                        ";;\n" +
+                        "esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                WHITESPACE, WORD, PIPE, WHITESPACE, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
+                WORD, LINE_FEED,
+                CASE_END, LINE_FEED,
+                ESAC_KEYWORD);
     }
 
     private void testNoErrors(String code) {

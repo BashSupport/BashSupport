@@ -51,8 +51,8 @@ import com.intellij.psi.tree.IElementType;
 
 InputCharacter = [^\r\n]
 LineTerminator = \r\n | \r | \n
-ContinuedLine = "\\" {LineTerminator}
-WhiteSpace=[ \t\f] {ContinuedLine}?
+LineContinuation = "\\" {LineTerminator}
+WhiteSpace=[ \t\f] {LineContinuation}*
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
@@ -63,17 +63,17 @@ StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 UnescapedCharacter = [^\']
 
-WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:&%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {ContinuedLine}
+WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:&%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {LineContinuation}
 WordAfter = {WordFirst} | [#!\[\]]
 
-ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {ContinuedLine}
+ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {LineContinuation}
 // No "[" | "]"
 ArithWordAfter =  {ArithWordFirst} | [0-9#!]
 
-ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar} | {ContinuedLine}
+ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar} | {LineContinuation}
 ParamExpansionWord = {ParamExpansionWordFirst}+
 
-AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {ContinuedLine}
+AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {LineContinuation}
 AssignListWordAfter =  {AssignListWordFirst} | [$#!]
 AssignListWord = {AssignListWordFirst}{AssignListWordAfter}*
 
@@ -90,7 +90,7 @@ OctalIntegerLiteral = "0" [0-7]+
 
 CaseFirst={EscapedChar} | [^|\"'$)(# \n\r\f\t\f]
 CaseAfter={EscapedChar} | [^|\"'$`)( \n\r\f\t\f;]
-CasePattern = {CaseFirst}{CaseAfter}*
+CasePattern = {CaseFirst} ({LineContinuation}? {CaseAfter})*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
@@ -156,7 +156,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_HEREDOC_MARKER, S_HEREDOC_MARKER_IGNORE_TABS> {
     {WhiteSpace}+                { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }
+    {LineContinuation}+             { /* ignored */ }
     {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
@@ -678,6 +678,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
      if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
+    {LineContinuation}           { return WHITESPACE; }
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {

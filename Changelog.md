@@ -4,6 +4,9 @@
  - Disable inline renaming if the context and the actual definition are in different files.
  - Release 1.6.1
  - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+ - Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often
+ - Handle line continuations in case pattern lists
+ - Increase index version to handle stub index vs. psi exceptions
 
 ####2016-12-30:
  - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.

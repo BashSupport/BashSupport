@@ -43,8 +43,10 @@ class SimpleCommandParsingFunction implements ParsingFunction {
             //read the params and redirects
             boolean paramsAreFine = CommandParsingUtil.readCommandParams(builder);
             if (!paramsAreFine) {
-                cmdMarker.drop();
-                return false;
+                //try to read up to the end of line to minimize the error impact
+                while (!builder.eof() && builder.getTokenType() != LINE_FEED && builder.getTokenType() != SEMI) {
+                    builder.advanceLexer();
+                }
             }
         } else if (!hasAssignmentOrRedirect) {
             ParserUtil.error(builder, "parser.command.expected.command");
