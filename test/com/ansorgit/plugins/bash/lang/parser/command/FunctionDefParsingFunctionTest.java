@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: FunctionDefParsingFunctionTest.java, Class: FunctionDefParsingFunctionTest
- * Last modified: 2010-05-27
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.parser.command;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -33,11 +31,18 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
     };
 
     @Test
-    //@Ignore
     public void testFunctionDefError() throws Exception {
         //function a b {
         //echo
         //}
         mockTestSuccessWithErrors(f, FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue393() throws Exception {
+        // function разработка() {
+        // echo
+        // }
+        mockTest(f, Lists.newArrayList("function", "разработка"), FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
     }
 }

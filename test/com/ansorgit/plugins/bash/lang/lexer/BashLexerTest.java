@@ -1300,6 +1300,18 @@ public class BashLexerTest {
         testTokenization("a <<< \" [$a]", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT);
     }
 
+    @Test
+    public void testUnicode() throws Exception {
+        testTokenization("разработка программного обеспечения", WORD, WHITESPACE, WORD, WHITESPACE, WORD);
+        testTokenization("ανάπτυξη λογισμικού", WORD, WHITESPACE, WORD);
+        testTokenization("פיתוח תוכנה", WORD, WHITESPACE, WORD);
+
+        testTokenization("разработка программного обеспечения 2>&1", WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR);
+
+        testTokenization("α=1", BAD_CHARACTER, EQ, WORD);
+        testTokenization("export α=1", WORD, WHITESPACE, BAD_CHARACTER, EQ, WORD);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.editor.annotator;
 
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
+import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
@@ -75,8 +76,10 @@ public class BashAnnotator implements Annotator {
             annotateCommand((BashCommand) element, annotationHolder);
         } else if (element instanceof BashVarDef) {
             annotateVarDef((BashVarDef) element, annotationHolder);
+            annotateIdentifier((BashVarDef) element, annotationHolder);
         } else if (element instanceof BashVar) {
             highlightVariable((BashVar) element, annotationHolder);
+            annotateIdentifier((BashVar) element, annotationHolder);
         } else if (element instanceof BashWord) {
             annotateWord(element, annotationHolder);
         } else if (element instanceof BashString) {
@@ -263,6 +266,20 @@ public class BashAnnotator implements Annotator {
         if (identifier != null) {
             final Annotation annotation = annotationHolder.createInfoAnnotation(identifier, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.VAR_DEF);
+        }
+    }
+
+    /**
+     * Annotates invalid identifiers.
+     *
+     * @param var
+     * @param annotationHolder
+     */
+    private void annotateIdentifier(BashVar var, AnnotationHolder annotationHolder) {
+        String varName = var.getReferenceName();
+
+        if (!LanguageBuiltins.isValidIdentifier(varName)) {
+            annotationHolder.createErrorAnnotation(var.getReference().getRangeInElement().shiftRight(var.getTextOffset()), String.format("'%s': not a valid identifier", varName));
         }
     }
 

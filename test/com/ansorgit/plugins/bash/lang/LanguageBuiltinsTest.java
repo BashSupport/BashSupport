@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: LanguageBuiltinsTest.java, Class: LanguageBuiltinsTest
- * Last modified: 2010-04-21
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,5 +27,21 @@ public class LanguageBuiltinsTest {
         for (String name : LanguageBuiltins.readonlyShellVars) {
             Assert.assertTrue("Not found: " + name, LanguageBuiltins.bashShellVars.contains(name));
         }
+    }
+
+    @Test
+    public void testValidIdentifier() throws Exception {
+        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("a"));
+        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("abc"));
+        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("A"));
+        Assert.assertTrue(LanguageBuiltins.isValidIdentifier("ABC123"));
+
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("1"));
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("123"));
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("1a"));
+
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("α"));
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("α1"));
+        Assert.assertFalse(LanguageBuiltins.isValidIdentifier("разработка"));
     }
 }

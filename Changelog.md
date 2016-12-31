@@ -8,6 +8,8 @@
  - \#357: Added a potential fix for the problem
  - \#350: Redirection in eval statement is flagged as error
  - \#392: Formatted changes code in eval strings and redirect tokens
+ - \#393: Update JFlex to the latest version
+ - \#349: Support unicode characters in the script, warn about invalid identifiers which included illegal characters
 
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
