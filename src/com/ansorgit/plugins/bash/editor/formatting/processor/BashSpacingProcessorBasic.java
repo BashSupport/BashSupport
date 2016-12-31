@@ -21,6 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
@@ -28,6 +29,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.shell.BashCase;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashIf;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.intellij.formatting.Spacing;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
@@ -72,6 +74,11 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         //for composed strings
         if (isNodeInString(leftNode) && isNodeInString(rightNode)) {
             return NO_SPACING;
+        }
+
+        //for the synthetic whitespace of eval strings '...'
+        if ((leftType == WHITESPACE || rightType == WHITESPACE) && leftPsi.getParent() instanceof BashEvalBlock  && rightPsi.getParent() instanceof BashEvalBlock) {
+            return Spacing.getReadOnlySpacing();
         }
 
         //for heredocs
@@ -242,6 +249,11 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         //shebang line
         if (leftType == SHEBANG_ELEMENT) {
             return COMMON_SPACING_WITH_NL;
+        }
+
+        //redirect elements
+        if (leftPsi.getParent() instanceof BashRedirectExpr && rightPsi.getParent() instanceof BashRedirectExpr) {
+            return NO_SPACING;
         }
 
         //consecutive commands

@@ -7,6 +7,7 @@
  - \#361: Added support for the mapfile and readarray Bash builtin comamnds
  - \#357: Added a potential fix for the problem
  - \#350: Redirection in eval statement is flagged as error
+ - \#392: Formatted changes code in eval strings and redirect tokens
 
 ####2016-12-29:
  - \#351: Added debug message for further diagnosis
