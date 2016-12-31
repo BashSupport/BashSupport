@@ -1,4 +1,5 @@
 ####2016-12-31:
+ - Prevent to pass empty elements to highlighting annotations
  - Fix a division by zero exception
  - Disable inline renaming if the context and the actual definition are in different files.
  - Release 1.6.1
