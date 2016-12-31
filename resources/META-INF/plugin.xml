@@ -44,6 +44,7 @@
             <li>Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often</li>
             <li>Handle line continuations in case pattern lists</li>
         </ul>
+        <br/>
 
         <b>Changes in version 1.6.1:</b>
         <ul>
