@@ -2,6 +2,7 @@
  - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
 
 ####2016-12-30:
+ - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
  - \#388: Reformatting heredocs changes content
  - \#361: Added support for the mapfile and readarray Bash builtin comamnds
  - \#357: Added a potential fix for the problem
