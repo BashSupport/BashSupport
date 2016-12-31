@@ -59,7 +59,7 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
             long leftValue = subs.get(0).computeNumericValue();
             long rightValue = subs.get(1).computeNumericValue();
 
-            return leftValue != ((leftValue / rightValue) * rightValue);
+            return rightValue != 0 && leftValue != ((leftValue / rightValue) * rightValue);
         }
 
         return false;
