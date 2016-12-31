@@ -120,6 +120,11 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         checkFunctionReference();
     }
 
+    @Test
+    public void testFunctionDefinitionWithErrors() throws Exception {
+        checkFunctionReference();
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/resolve/function/";
     }

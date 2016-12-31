@@ -33,6 +33,9 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
 
     @Test
     public void testParse() throws Exception {
+        //{}
+        mockTestSuccessWithErrors(expansionParser, LEFT_CURLY, RIGHT_CURLY);
+
         //{A}
         mockTest(expansionParser, LEFT_CURLY, WORD, RIGHT_CURLY);
 

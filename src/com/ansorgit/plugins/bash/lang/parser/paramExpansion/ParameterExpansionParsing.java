@@ -65,7 +65,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         if (builder.rawLookup(0) == RIGHT_CURLY) {
             builder.advanceLexer();
             ParserUtil.error(marker, "parser.paramExpansion.empty");
-            return false;
+            return true;
         }
 
         if (singleExpansionOperators.contains(builder.rawLookup(0)) && builder.rawLookup(1) == RIGHT_CURLY) {
@@ -107,9 +107,9 @@ public class ParameterExpansionParsing implements ParsingFunction {
             if (!builder.isEvalMode() || !Parsing.var.isValid(builder)) {
                 builder.error("Expected a valid parameter expansion token.");
                 firstElementMarker.drop();
-                marker.drop();
 
-                return false;
+                //try to minimize the error impact
+                return readRemainingExpansionTokens(builder, marker);
             }
         }
 
@@ -196,10 +196,11 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 }
             } else {
                 if (!paramExpansionOperators.contains(operator)) {
+                    builder.error("Unknown parameter expansion operator");
                     firstElementMarker.drop();
 
-                    marker.drop();
-                    return false;
+                    //try to minimize the error impact
+                    return readRemainingExpansionTokens(builder, marker);
                 }
 
                 if (paramExpansionAssignmentOps.contains(operator)) {
@@ -271,5 +272,26 @@ public class ParameterExpansionParsing implements ParsingFunction {
         }
 
         return count > 0;
+    }
+
+    private boolean readRemainingExpansionTokens(BashPsiBuilder builder, PsiBuilder.Marker marker) {
+        PsiBuilder.Marker start = builder.mark();
+
+        int max = 10;
+        while (!builder.eof() && builder.getTokenType() != RIGHT_CURLY && max > 0) {
+            builder.advanceLexer();
+            max--;
+        }
+
+        if (max <= 0) {
+            start.rollbackTo();
+            marker.drop();
+            return false;
+        }
+
+        builder.advanceLexer();//eat the last } token
+        start.drop();
+        marker.done(PARAM_EXPANSION_ELEMENT);
+        return true;
     }
 }
