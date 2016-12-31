@@ -52,7 +52,7 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
 
         @Override
         public void visitVarUse(BashVar bashVar) {
-            if (bashVar.isBuiltinVar()) {
+            if (bashVar.isBuiltinVar() || bashVar.getTextLength() == 0) {
                 return;
             }
 
