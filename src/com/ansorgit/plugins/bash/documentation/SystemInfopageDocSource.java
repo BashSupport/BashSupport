@@ -116,7 +116,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
 
         ProcessBuilder processBuilder = new ProcessBuilder(txt2htmlExecutable, "--infile", "-");
 
-        CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData);
+        CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData, txt2htmlExecutable + " --inifile -");
 
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
         if (output.getExitCode() != 0) {
@@ -148,8 +148,8 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     private class MyCapturingProcessHandler extends CapturingProcessHandler {
         private final String stdinData;
 
-        MyCapturingProcessHandler(Process process, String stdinData) {
-            super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME));
+        MyCapturingProcessHandler(Process process, String stdinData, String commandLine) {
+            super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME), commandLine);
             this.stdinData = stdinData;
         }
 

@@ -325,10 +325,10 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public boolean isBuiltinVar() {
         boolean isBash_v4 = BashProjectSettings.storedSettings(getProject()).isSupportBash4();
 
-        String name = getReferenceName();
-        boolean v3_var = bashShellVars.contains(name) || bourneShellVars.contains(name);
+        String varName = getReferenceName();
+        boolean v3_var = bashShellVars.contains(varName) || bourneShellVars.contains(varName);
 
-        return isBash_v4 ? (v3_var || bashShellVars_v4.contains(name)) : v3_var;
+        return isBash_v4 ? (v3_var || bashShellVars_v4.contains(varName)) : v3_var;
     }
 
     public boolean isParameterExpansion() {
