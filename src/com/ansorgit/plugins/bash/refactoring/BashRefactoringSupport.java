@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,10 @@ import org.jetbrains.annotations.NotNull;
 public class BashRefactoringSupport extends RefactoringSupportProvider {
     @Override
     public boolean isInplaceRenameAvailable(@NotNull PsiElement element, PsiElement context) {
+        if (!BashPsiUtils.findFileContext(element).isEquivalentTo(BashPsiUtils.findFileContext(context))) {
+            return false;
+        }
+
         return (element instanceof BashVarDef) ||
                 (element instanceof BashFunctionDef) ||
                 (element instanceof BashVar) ||
