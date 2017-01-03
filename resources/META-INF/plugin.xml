@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,13 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.3:</b>
+        <ul>
+            <li>#395: Hotfix to make BashSupport work again with scripts containing errors</li>
+            <li>#396: Check for working directory only if the module is valid</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.2:</b>
         <ul>
             <li>Increase stub index version to handle index vs. psi exceptions</li>
