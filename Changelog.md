@@ -1,5 +1,5 @@
 ####2017-01-03:
- - #395: Hotfix to make BashSupport work again with scripts containing errors
+ - \#395: Hotfix to make BashSupport work again with scripts containing errors
 
 ####2016-12-31:
  - Prevent to pass empty elements to highlighting annotations
