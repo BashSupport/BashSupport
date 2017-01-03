@@ -1,5 +1,6 @@
 ####2017-01-03:
  - \#395: Hotfix to make BashSupport work again with scripts containing errors
+ - \#396: Check for working directory only if the module is valid
 
 ####2016-12-31:
  - Prevent to pass empty elements to highlighting annotations
