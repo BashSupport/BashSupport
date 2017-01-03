@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.3</version>
+    <version>1.6.4</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,14 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.4:</b>
+        <ul>
+            <li>Sorry for the many releases!</li>
+            <li>#397: Tokens after a here string start were not always detected properly</li>
+            <li>Index version increased to avoid PSI index exceptions</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.3:</b>
         <ul>
             <li>#395: Hotfix to make BashSupport work again with scripts containing errors</li>

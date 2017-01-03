@@ -145,7 +145,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 %xstate S_HEREDOC
 
 /* To match here-strings */
-%state S_HERE_STRING
+%xstate S_HERE_STRING
 
 %%
 /***************************** INITIAL STAATE ************************************/
@@ -683,14 +683,18 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
     <S_HERE_STRING> {
-        {StringStart}                 { stringParsingState().enterString(); goToState(S_STRINGMODE); return STRING_BEGIN; }
+        {StringStart}                 { stringParsingState().enterString(); if (yystate() == S_HERE_STRING && !isInHereStringContent()) enterHereStringContent();
+goToState(S_STRINGMODE); return STRING_BEGIN; }
 
         "$"\'{SingleCharacter}*\'     |
         \'{UnescapedCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
         {LineTerminator}             {
-                                            if ((yystate() == S_HERE_STRING || yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(S_HEREDOC)) {
+                                            if (yystate() == S_HERE_STRING) {
+                                                backToPreviousState();
+                                                return LINE_FEED;
+                                            } else if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(S_HEREDOC)) {
                                                 backToPreviousState();
                                                 return LINE_FEED;
                                             }
@@ -766,4 +770,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 /** END */
+<YYINITIAL, S_HERE_STRING>     {
   .                            { return BAD_CHARACTER; }
+}
