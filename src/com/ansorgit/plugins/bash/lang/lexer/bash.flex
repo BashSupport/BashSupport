@@ -770,6 +770,9 @@ goToState(S_STRINGMODE); return STRING_BEGIN; }
 }
 
 /** END */
-<YYINITIAL, S_HERE_STRING>     {
-  .                            { return BAD_CHARACTER; }
+<S_HERE_STRING> {
+.                              {return BAD_CHARACTER; }
 }
+
+.                              { return BAD_CHARACTER; }
+

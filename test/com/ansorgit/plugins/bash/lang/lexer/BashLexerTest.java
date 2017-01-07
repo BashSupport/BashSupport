@@ -33,6 +33,7 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
  *
  * @author jansorg
  */
+@SuppressWarnings("OverlyComplexClass")
 public class BashLexerTest {
     @Test
     public void testInitialState() throws Exception {
@@ -1361,6 +1362,12 @@ public class BashLexerTest {
                 WORD, LINE_FEED,
                 CASE_END, LINE_FEED,
                 ESAC_KEYWORD);
+    }
+
+    @Test
+    public void testIssue398() throws Exception {
+        //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
+        testTokenization("$(${)" , DOLLAR, LEFT_PAREN, DOLLAR, LEFT_CURLY, BAD_CHARACTER);
     }
 
     private void testNoErrors(String code) {
