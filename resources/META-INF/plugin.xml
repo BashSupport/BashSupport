@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.4</version>
+    <version>1.6.5</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,13 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.5:</b>
+        <ul>
+            <li>#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.</li>
+            <li>#399: Potential fix for java.lang.NoClassDefFoundError: BashIcons</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.4:</b>
         <ul>
             <li>Sorry for the many releases!</li>

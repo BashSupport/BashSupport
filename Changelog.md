@@ -1,3 +1,8 @@
+####2017-01-07:
+ - \#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.
+ - \#399: Potential fix for java.lang.NoClassDefFoundError: com/ansorgit/plugins/bash/util/BashIcons
+ - Release 1.6.5
+
 ####2017-01-03:
  - \#395: Hotfix to make BashSupport work again with scripts containing errors
  - \#396: Check for working directory only if the module is valid
