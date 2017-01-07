@@ -174,7 +174,7 @@ public class PipelineParsing implements ParsingTool {
         boolean result = true;
         while (result && pipeTokens.contains(builder.getTokenType())) {
             builder.advanceLexer(); //eat the pipe token
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
 
             result = Parsing.command.parse(builder);
         }

@@ -62,24 +62,24 @@ public final class ListParsing implements ParsingTool {
     }
 
     /*
+   list0:  	list1 '\n' newline_list
+       |	list1 '&' newline_list
+       |	list1 ';' newline_list
+        ;
+
    list:		newline_list list0 ;
 
    compound_list:
            list
        |   newline_list list1
        ;
-
-   list0:  	list1 '\n' newline_list
-       |	list1 '&' newline_list
-       |	list1 ';' newline_list
-        ;
     */
 
     public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean markAsFoldable) {
         PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : NullMarker.get();
 
-        builder.eatOptionalNewlines(1);
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines(1);
+        builder.readOptionalNewlines();
 
         //this is the list0 parsing here
         if (!parseList1(builder, false, true, RecursionGuard.initial())) {
@@ -96,7 +96,7 @@ public final class ListParsing implements ParsingTool {
             optionalMarker.done(LOGICAL_BLOCK_ELEMENT);
 
             builder.advanceLexer();
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
 
             return true;
         }
@@ -118,95 +118,80 @@ public final class ListParsing implements ParsingTool {
         |	list1 '\n' newline_list list1
         |	pipeline_command
         ;
-
      */
-    //fixme refactor this to include markers, take care of recursive calls
-
     boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand, RecursionGuard recursionGuard) {
-        if (!recursionGuard.next(builder)) {
-            return false;
-        }
-
-        if (!Parsing.pipeline.isPipelineCommand(builder)) {
-            builder.error("Expected a command");
-            return false;
-        }
-
         //used only to mark composed commands which combine several commands, not for single commands or a command list
-        PsiBuilder.Marker composedMarker = markComposedCommand ? builder.mark() : NullMarker.get();
+        PsiBuilder.Marker startMarker = markComposedCommand ? builder.mark() : NullMarker.get();
 
-        if (!Parsing.pipeline.parsePipelineCommand(builder)) {
-            composedMarker.drop();
+        boolean success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, true);
+        boolean markCommand = success;
+
+        while (success) {
+            IElementType next = builder.getTokenType();
+
+            if (next == AND_AND || next == OR_OR) {
+                builder.advanceLexer();
+                builder.readOptionalNewlines();
+
+                success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, true);
+                markCommand = success;
+            } else if (next == SEMI || next == LINE_FEED || next == AMP) {
+                boolean hasHeredoc = parseOptionalHeredocContent(builder);
+
+                //the next token after the heredoc, not the variable "next" !
+                if (builder.getTokenType() == LINE_FEED && simpleMode) {
+                    markCommand = hasHeredoc;
+                    success = true;
+                    break;
+                } else {
+                    PsiBuilder.Marker start = builder.mark();
+
+                    builder.advanceLexer();
+                    builder.readOptionalNewlines();
+
+                    success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, false);
+                    if (success) {
+                        start.drop();
+                    } else {
+                        start.rollbackTo();
+                        success = true;
+                        markCommand = hasHeredoc;
+                        break;
+                    }
+                }
+            } else {
+                markCommand = false;
+
+                //this can happen if we have a valid command start, e.g. ">1" of the (invalid) sequence ">1 ((1))".
+                //">1" is valid and was successfully parsed, now the current token is (( now
+                //in this case we have to fail because the token is not expected here
+                if (next != null && simpleMode) {
+                    ParserUtil.errorToken(builder, "parser.unexpected.token");
+                    success = false;
+                }
+                break;
+            }
+        }
+
+        if (markCommand) {
+            startMarker.done(COMPOSED_COMMAND);
+        } else {
+            startMarker.drop();
+        }
+
+        return success;
+    }
+
+    private boolean parseList1Element(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand, RecursionGuard recursionGuard, boolean errorOnMissingCommand) {
+        if (!Parsing.pipeline.isPipelineCommand(builder)) {
+            if (errorOnMissingCommand) {
+                builder.error("Expected a command");
+            }
+
             return false;
         }
 
-        if (builder.eof()) {
-            composedMarker.drop();
-            return true;
-        }
-
-        boolean result = true;
-
-        final IElementType token = builder.getTokenType();
-        if (token == AND_AND || token == OR_OR) {
-            builder.advanceLexer();
-            builder.eatOptionalNewlines();
-            result = parseList1(builder, simpleMode, false, recursionGuard); //with errors
-
-            composedMarker.done(COMPOSED_COMMAND);
-        } else if (token == AMP || token == LINE_FEED || token == SEMI) {
-            boolean hasHeredoc = parseOptionalHeredoc(builder);
-
-            if (builder.getTokenType() == LINE_FEED && simpleMode) {
-                if (hasHeredoc) {
-                    composedMarker.done(COMPOSED_COMMAND);
-                } else {
-                    composedMarker.drop();
-                }
-
-                return true;
-            }
-
-            final PsiBuilder.Marker start = builder.mark();
-            builder.advanceLexer();
-            builder.eatOptionalNewlines();
-
-            if (!Parsing.pipeline.isPipelineCommand(builder)) {
-                //not followed by a command, return true
-                //the AMP is taken by parseCompoundList
-                start.rollbackTo();
-
-                if (hasHeredoc) {
-                    composedMarker.done(COMPOSED_COMMAND);
-                } else {
-                    composedMarker.drop();
-                }
-
-                return true;
-            }
-
-            start.drop();
-
-            if (hasHeredoc) {
-                composedMarker.done(COMPOSED_COMMAND);
-            } else {
-                composedMarker.drop();
-            }
-
-            result = parseList1(builder, simpleMode, false, recursionGuard);
-        } else {
-            composedMarker.drop();
-
-            //this can happen if we have a valid command start, e.g. ">1" of the (invalid) sequence ">1 ((1))".
-            //">1" is valid and was successfully parsed, now the current token is (( now
-            //in this case we have to fail because the token is not expected here
-            if (token != null && simpleMode) {
-                ParserUtil.errorToken(builder, "parser.unexpected.token");
-                return false;
-            }
-        }
-
-        return result;
+        return Parsing.pipeline.parsePipelineCommand(builder);
     }
 
     /**
@@ -218,7 +203,7 @@ public final class ListParsing implements ParsingTool {
      * @param builder Bash psi builder
      * @return True if a heredoc was parsed, false if no heredoc was found
      */
-    private boolean parseOptionalHeredoc(BashPsiBuilder builder) {
+    private boolean parseOptionalHeredocContent(BashPsiBuilder builder) {
         if (builder.getTokenType() == LINE_FEED && builder.getParsingState().expectsHeredocMarker()) {
             int startOffset = builder.getCurrentOffset();
 

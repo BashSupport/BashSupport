@@ -123,8 +123,8 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      *
      * @return True if at least one newline has been read.
      */
-    public boolean eatOptionalNewlines() {
-        return eatOptionalNewlines(-1);
+    public boolean readOptionalNewlines() {
+        return readOptionalNewlines(-1);
     }
 
     /**
@@ -135,11 +135,11 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      *                    A value of -1 means there's no limit in read line feed tokens.
      * @return True if at least one newline has been read.
      */
-    public boolean eatOptionalNewlines(int maxNewlines) {
-        return eatOptionalNewlines(maxNewlines, false);
+    public boolean readOptionalNewlines(int maxNewlines) {
+        return readOptionalNewlines(maxNewlines, false);
     }
 
-    public boolean eatOptionalNewlines(int maxNewlines, boolean withWhitespace) {
+    public boolean readOptionalNewlines(int maxNewlines, boolean withWhitespace) {
         if (maxNewlines < 0) {
             maxNewlines = Integer.MAX_VALUE;
         }

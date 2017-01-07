@@ -53,7 +53,7 @@ public class SelectParsingFunction implements ParsingFunction {
             return false;
         }
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         if (builder.getTokenType() == IN_KEYWORD) {
             builder.advanceLexer();//after the IN
@@ -70,7 +70,7 @@ public class SelectParsingFunction implements ParsingFunction {
             }
         }
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         //now parse the body
         if (!LoopParserUtil.parseLoopBody(builder, false, false)) {

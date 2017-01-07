@@ -19,6 +19,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -155,4 +156,24 @@ public class ListParsingTest extends MockPsiTest {
                 FUNCTION_KEYWORD, WORD, LEFT_CURLY, LINE_FEED, WORD, LINE_FEED, RIGHT_CURLY);
     }
 
+    @Test
+    @Ignore
+    public void testIssue351() throws Exception {
+        // b & << EOF
+        //  content
+        // EOF
+        mockTest(compoundListParsingTest, WORD, WHITESPACE, AMP, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
+    public void testHeredocTwice() throws Exception {
+        // b << EOF
+        //  content
+        // EOF
+        // b << EOF
+        //  content
+        // EOF
+        mockTest(compoundListParsingTest, WORD, WHITESPACE, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED,
+                WORD, WHITESPACE, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
 }

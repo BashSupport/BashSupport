@@ -79,13 +79,13 @@ public class ForLoopParsingFunction implements ParsingFunction {
             return false;
         }
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         //now either do, a block {} or IN
         final IElementType afterLoopValue = builder.getTokenType();
         if (afterLoopValue == SEMI) {
             builder.advanceLexer();
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
             builder.advanceLexer(); //in keyword
 
@@ -97,7 +97,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
                 return false;
             }
 
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         }
 
         if (!LoopParserUtil.parseLoopBody(builder, true, false)) {
@@ -158,7 +158,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
 
         if (Parsing.list.isListTerminator(builder.getTokenType())) {
             builder.advanceLexer();
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         }
 
         if (!LoopParserUtil.parseLoopBody(builder, true, false)) {

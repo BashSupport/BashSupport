@@ -1,3 +1,6 @@
+####2017-01-07:
+ - \#358: Remove the maximum nesting level while parsing comamnds.
+
 ####2017-01-03:
  - \#395: Hotfix to make BashSupport work again with scripts containing errors
  - \#396: Check for working directory only if the module is valid
