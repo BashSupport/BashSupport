@@ -42,7 +42,7 @@ public final class ListParsing implements ParsingTool {
      */
 
     public boolean isListTerminator(IElementType token) {
-        return token == LINE_FEED || token == SEMI || token == null; //fixme null right for eof?
+        return token == LINE_FEED || token == SEMI || token == null;
     }
 
     public boolean isSimpleListTerminator(IElementType token) {
@@ -78,11 +78,11 @@ public final class ListParsing implements ParsingTool {
     public boolean parseCompoundList(BashPsiBuilder builder, boolean optionalTerminator, boolean markAsFoldable) {
         PsiBuilder.Marker optionalMarker = markAsFoldable ? builder.mark() : NullMarker.get();
 
-        builder.readOptionalNewlines(1);
+        //builder.readOptionalNewlines(1);
         builder.readOptionalNewlines();
 
         //this is the list0 parsing here
-        if (!parseList1(builder, false, true, RecursionGuard.initial())) {
+        if (!parseList1(builder, false, true)) {
             optionalMarker.drop();
 
             return false;
@@ -119,11 +119,11 @@ public final class ListParsing implements ParsingTool {
         |	pipeline_command
         ;
      */
-    boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand, RecursionGuard recursionGuard) {
+    boolean parseList1(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand) {
         //used only to mark composed commands which combine several commands, not for single commands or a command list
         PsiBuilder.Marker startMarker = markComposedCommand ? builder.mark() : NullMarker.get();
 
-        boolean success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, true);
+        boolean success = parseList1Element(builder, true);
         boolean markCommand = success;
 
         while (success) {
@@ -133,7 +133,7 @@ public final class ListParsing implements ParsingTool {
                 builder.advanceLexer();
                 builder.readOptionalNewlines();
 
-                success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, true);
+                success = parseList1Element(builder, true);
                 markCommand = success;
             } else if (next == SEMI || next == LINE_FEED || next == AMP) {
                 boolean hasHeredoc = parseOptionalHeredocContent(builder);
@@ -149,7 +149,7 @@ public final class ListParsing implements ParsingTool {
                     builder.advanceLexer();
                     builder.readOptionalNewlines();
 
-                    success = parseList1Element(builder, simpleMode, markComposedCommand, recursionGuard, false);
+                    success = parseList1Element(builder, false);
                     if (success) {
                         start.drop();
                     } else {
@@ -182,7 +182,7 @@ public final class ListParsing implements ParsingTool {
         return success;
     }
 
-    private boolean parseList1Element(BashPsiBuilder builder, boolean simpleMode, boolean markComposedCommand, RecursionGuard recursionGuard, boolean errorOnMissingCommand) {
+    private boolean parseList1Element(BashPsiBuilder builder, boolean errorOnMissingCommand) {
         if (!Parsing.pipeline.isPipelineCommand(builder)) {
             if (errorOnMissingCommand) {
                 builder.error("Expected a command");
@@ -247,7 +247,6 @@ public final class ListParsing implements ParsingTool {
                 }
             } while (builder.getParsingState().expectsHeredocMarker());
 
-            // return true;
             return builder.getCurrentOffset() - startOffset > 0;
         }
 
@@ -278,8 +277,9 @@ public final class ListParsing implements ParsingTool {
         |   pipeline_command
         ;
         */
+
         // this is the simpleList1 parsing
-        if (!parseList1(builder, true, true, RecursionGuard.initial())) {
+        if (!parseList1(builder, true, true)) {
             return false;
         }
 

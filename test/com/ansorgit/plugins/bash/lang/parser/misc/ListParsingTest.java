@@ -29,7 +29,7 @@ public class ListParsingTest extends MockPsiTest {
     private MockFunction list1ParsingTest = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.list.parseList1(builder, false, false, RecursionGuard.initial());
+            return Parsing.list.parseList1(builder, false, false);
         }
     };
 

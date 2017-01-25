@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: MockPsiTest.java, Class: MockPsiTest
- * Last modified: 2010-10-05
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -158,6 +155,21 @@ public abstract class MockPsiTest implements BashTokenTypes {
     }
 
     public static abstract class MockFunction {
+        public static MockFunction of(ParsingFunction parsingFunction) {
+            return new MockFunction() {
+                @Override
+                public boolean apply(BashPsiBuilder psi) {
+                    if (parsingFunction.isValid(psi)) {
+                        return parsingFunction.parse(psi);
+                    }
+
+                    psi.error("parsingFunction did not accept the psi");
+                    return false;
+                }
+            };
+        }
+
+
         public abstract boolean apply(BashPsiBuilder psi);
 
         public boolean preCheck(BashPsiBuilder psi) {
