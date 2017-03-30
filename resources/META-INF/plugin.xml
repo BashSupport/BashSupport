@@ -32,12 +32,18 @@
     <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
-    Bash language support for the IntelliJ plattform.<br/>
+    Bash language support for the IntelliJ platform.<br/>
     Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.6:</b>
+        <ul>
+            <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.5:</b>
         <ul>
             <li>#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.</li>
