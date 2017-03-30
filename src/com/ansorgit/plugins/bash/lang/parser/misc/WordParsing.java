@@ -66,7 +66,7 @@ public class WordParsing implements ParsingTool {
         }
 
         //accept single Bang tokens as word
-        return tokenType == BANG_TOKEN && ParserUtil.isWhitespace(builder.rawLookup(1));
+        return tokenType == BANG_TOKEN && ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1));
 
     }
 
@@ -150,7 +150,7 @@ public class WordParsing implements ParsingTool {
             } else if (nextToken == DOLLAR || nextToken == EQ) {
                 builder.advanceLexer();
                 processedTokens++;
-            } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespace(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
+            } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
                 //either a single ! token with following whitespace or at the end of the file
                 builder.advanceLexer();
                 processedTokens++;

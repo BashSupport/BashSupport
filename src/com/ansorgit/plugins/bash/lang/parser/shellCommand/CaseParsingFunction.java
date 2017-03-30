@@ -90,7 +90,7 @@ public class CaseParsingFunction implements ParsingFunction {
         }
 
         //after the word token
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         final IElementType inToken = ParserUtil.getTokenAndAdvance(builder);
         if (inToken != IN_KEYWORD) {
@@ -99,7 +99,7 @@ public class CaseParsingFunction implements ParsingFunction {
             return false;
         }
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
         if (builder.getTokenType() == ESAC_KEYWORD) {
             builder.advanceLexer();
             caseCommand.done(CASE_COMMAND);
@@ -120,7 +120,7 @@ public class CaseParsingFunction implements ParsingFunction {
         while (hasPattern != CaseParseResult.Faulty) {
             //another pattern may follow
             if (hasPattern == CaseParseResult.ElementWithEndMarker) {
-                builder.eatOptionalNewlines();
+                builder.readOptionalNewlines();
                 if (builder.getTokenType() == ESAC_KEYWORD) {
                     break;
                 }
@@ -160,7 +160,7 @@ public class CaseParsingFunction implements ParsingFunction {
            ;
          */
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         final PsiBuilder.Marker casePattern = builder.mark();
 
@@ -184,7 +184,7 @@ public class CaseParsingFunction implements ParsingFunction {
         }
 
         //parse compoundlist or newline list
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         //hack to check if we have some commands in the pattern
         if (builder.getTokenType() != CASE_END && builder.getTokenType() != ESAC_KEYWORD) {

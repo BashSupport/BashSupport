@@ -71,7 +71,8 @@ public class RedirectionParsing implements ParsingTool {
             i++;
         }
 
-        if ((builder.rawLookup(i) == LESS_THAN || builder.rawLookup(i) == GREATER_THAN) && builder.rawLookup(i+1)  == LEFT_PAREN){
+        IElementType lookAhead = builder.rawLookup(i);
+        if ((lookAhead == LESS_THAN || lookAhead == GREATER_THAN) && builder.rawLookup(i+1) == LEFT_PAREN){
             return false;
         }
 

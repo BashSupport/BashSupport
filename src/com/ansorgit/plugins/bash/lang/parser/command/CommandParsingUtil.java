@@ -281,7 +281,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
         while (!builder.eof() && (builder.getTokenType(true) != RIGHT_PAREN)) {
             //optional newlines at the beginning
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
 
             if (builder.getTokenType() == LEFT_SQUARE) {
                 //array value assignment to specific position
@@ -311,7 +311,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             }
 
             //optional newlines after the comma
-            boolean hadNewlines = builder.eatOptionalNewlines(-1, true);
+            boolean hadNewlines = builder.readOptionalNewlines(-1, true);
 
             //whitespace tokens separate the array assignment values
             //if the next token is not whitespace, we break the loop, cause we're at the last element

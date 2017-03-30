@@ -26,6 +26,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
+import java.util.function.Predicate;
+
 /**
  * Handles the default parsing of yet unknown / unsupported parameter expansions.
  * <br>
@@ -139,11 +141,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 boolean isSpecialReference = ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
-                boolean isValidReference = ParserUtil.checkAndRollback(builder, new Function<BashPsiBuilder, Boolean>() {
-                    public Boolean apply(BashPsiBuilder builder) {
-                        return ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-                    }
-                });
+                boolean isValidReference = ParserUtil.checkAndRollback(builder, psiBuilder -> ShellCommandParsing.arithmeticParser.parse(psiBuilder, LEFT_SQUARE, RIGHT_SQUARE));
 
                 if (isSpecialReference || isValidReference) {
                     firstElementMarker.done(VAR_ELEMENT);

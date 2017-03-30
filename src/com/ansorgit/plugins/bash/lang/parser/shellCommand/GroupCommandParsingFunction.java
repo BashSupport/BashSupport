@@ -31,34 +31,21 @@ import com.intellij.psi.tree.IElementType;
  */
 public class GroupCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
-        PsiBuilder.Marker marker = builder.mark();
-
-        boolean result = ParserUtil.conditionalRead(builder, LEFT_CURLY) && ParserUtil.isWhitespace(builder.getTokenType(true));
-
-        marker.rollbackTo();
-        return result;
+        return builder.rawLookup(0) == LEFT_CURLY && ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1));
     }
 
     public boolean parse(BashPsiBuilder builder) {
         final PsiBuilder.Marker group = builder.mark();
-        builder.advanceLexer();//after the { token
-
-        //has to be a whitespace
-        if (!ParserUtil.isWhitespace(builder.getTokenType(true))) {
-            ParserUtil.error(group, "parser.unexpected.token");
-            return false;
+        builder.advanceLexer(); //the { token
+        if (builder.rawLookup(0) == LINE_FEED) { // whitespace doesn't have to be read here
+            builder.advanceLexer();
         }
 
-        if (!Parsing.list.parseCompoundList(builder, true, false)) {
-            //ParserUtil.error(group, "parser.unexpected.token");
-            //group.drop();
-            //return false;
-        }
+        Parsing.list.parseCompoundList(builder, true, false);
 
         //check the closing curly bracket
         final IElementType lastToken = ParserUtil.getTokenAndAdvance(builder);
         if (lastToken != BashTokenTypes.RIGHT_CURLY) {
-            //ParserUtil.error(group, "parser.unexpected.token");
             group.drop();
             return false;
         }

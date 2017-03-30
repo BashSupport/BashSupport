@@ -25,40 +25,11 @@ import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
  * @author jansorg
  */
 public class ShellCommandParsingTest extends MockPsiTest {
-    private final MockFunction arithmeticParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return ShellCommandParsing.arithmeticParser.parse(builder);
-        }
-    };
-
-    private final MockFunction subshellParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.subshellParser.parse(builder);
-        }
-    };
-
-    private final MockFunction ifCommandParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.ifParser.parse(builder);
-        }
-    };
-
-    private final MockFunction backquoteCommandParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.backtickParser.parse(builder);
-        }
-    };
-
-    private final MockFunction commandGroupParsingTest = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.groupCommandParser.parse(builder);
-        }
-    };
+    private final MockFunction arithmeticParsingTester = MockFunction.of(ShellCommandParsing.arithmeticParser);
+    private final MockFunction subshellParsingTester = MockFunction.of(Parsing.shellCommand.subshellParser);
+    private final MockFunction ifCommandParsingTester = MockFunction.of(Parsing.shellCommand.ifParser);
+    private final MockFunction backquoteCommandParsingTester = MockFunction.of(Parsing.shellCommand.backtickParser);
+    private final MockFunction commandGroupParsingTest = MockFunction.of(Parsing.shellCommand.groupCommandParser);
 
     @Test
     public void testIfCommand1() {

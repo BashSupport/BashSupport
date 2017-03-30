@@ -1,3 +1,7 @@
+####2017-03-30:
+ - \#358: Remove the maximum nesting level while parsing comamnds.
+ - Release 1.6.6 (eap)
+
 ####2017-01-07:
  - \#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.
  - \#399: Potential fix for java.lang.NoClassDefFoundError: com/ansorgit/plugins/bash/util/BashIcons
