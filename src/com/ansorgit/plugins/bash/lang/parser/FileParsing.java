@@ -24,7 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
  */
 public class FileParsing implements ParsingTool {
     public boolean parseFile(BashPsiBuilder builder) {
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
         if (builder.getTokenType() == SHEBANG) {
             ParserUtil.markTokenAndAdvance(builder, SHEBANG_ELEMENT);
         }
@@ -33,10 +33,10 @@ public class FileParsing implements ParsingTool {
 
         boolean success = true;
         while (!builder.eof()) {
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
             //fixme calling twice to work around a yet undiscovered bug
             //for some reason the newlines are not eaten at the beginning after the shebang line
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
             if (builder.eof()) {
                 break;
             }

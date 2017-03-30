@@ -141,12 +141,12 @@ public class PipelineParsing implements ParsingTool {
                 return false;
             default:
                 pipelineCommandMarker.drop();
-                throw new IllegalStateException("Invalid switch/case value: " + parseState);
+                throw new IllegalStateException("Unexpected ParseState value" + parseState);
         }
     }
 
     private TimespecState parseOptionalTimespec(BashPsiBuilder builder) {
-        boolean hasTimespec = isTimespec(builder);
+        boolean hasTimespec = builder.getTokenType() == TIME_KEYWORD;
         if (hasTimespec && !parseTimespecPart(builder)) {
             return TimespecState.Error;
         }
@@ -174,7 +174,7 @@ public class PipelineParsing implements ParsingTool {
         boolean result = true;
         while (result && pipeTokens.contains(builder.getTokenType())) {
             builder.advanceLexer(); //eat the pipe token
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
 
             result = Parsing.command.parse(builder);
         }
@@ -184,10 +184,6 @@ public class PipelineParsing implements ParsingTool {
         }
 
         return ParseState.OK_PIPELINE;
-    }
-
-    boolean isTimespec(BashPsiBuilder builder) {
-        return builder.getTokenType() == TIME_KEYWORD;
     }
 
     boolean parseTimespecPart(BashPsiBuilder builder) {
