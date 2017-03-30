@@ -86,7 +86,7 @@ public class SimpleVarUsageInspectionTest extends AbstractInspectionTestCase {
      */
     @Test
     @Ignore("unknown how this should throw exceptions")
-    public void testIssue333BrokenWithSettings() throws Exception {
+    public void _testIssue333BrokenWithSettings() throws Exception {
         BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
 
         try {
