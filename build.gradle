@@ -45,7 +45,7 @@ allprojects {
     publishPlugin {
         username 'wallaby'
         password System.properties['intellij.publish.password']
-        channels "eap"
+        channel "eap"
     }
 
     apply plugin: 'jacoco'
