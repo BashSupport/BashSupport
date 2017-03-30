@@ -39,16 +39,16 @@ import org.jetbrains.annotations.Nullable;
  * @author jansorg
  */
 public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilder {
-    static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
+    public static final Key<Boolean> IN_EVAL_MODE = Key.create("BASH_EVAL_PARSING");
 
-    public static Key<Boolean> IN_EVAL_MODE = Key.create("BASH_EVAL_PARSING");
+    private static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
 
     private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
 
     //reuse markers in the pool, the PsiBuilder allocates a lot of marker. Markers can be cleaned fairly simply so we will reuse them
-    //the original PsiBUilderImpl does it in a similair way
+    //the original PsiBUilderImpl does it in a similar way
     private final LimitedPool<BashPsiMarker> markerPool = new LimitedPool<BashPsiMarker>(750, new LimitedPool.ObjectFactory<BashPsiMarker>() {
         @NotNull
         @Override
@@ -123,8 +123,8 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      *
      * @return True if at least one newline has been read.
      */
-    public boolean eatOptionalNewlines() {
-        return eatOptionalNewlines(-1);
+    public boolean readOptionalNewlines() {
+        return readOptionalNewlines(-1);
     }
 
     /**
@@ -135,37 +135,28 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      *                    A value of -1 means there's no limit in read line feed tokens.
      * @return True if at least one newline has been read.
      */
-    public boolean eatOptionalNewlines(int maxNewlines) {
-        return eatOptionalNewlines(maxNewlines, false);
+    public boolean readOptionalNewlines(int maxNewlines) {
+        return readOptionalNewlines(maxNewlines, false);
     }
 
-    public boolean eatOptionalNewlines(int maxNewlines, boolean withWhitespace) {
+    /**
+     * Reads a list of line feed tokens.
+     * @param maxNewlines
+     * @param allowSurroundingWhitespace If {@code true}, then whitespace tokens will be visible, i.e. in that case line feeds surrounded by whitespace won't be accepted
+     * @return
+     */
+    public boolean readOptionalNewlines(int maxNewlines, boolean allowSurroundingWhitespace) {
         if (maxNewlines < 0) {
             maxNewlines = Integer.MAX_VALUE;
         }
 
-        boolean hasNewline;
-        int readNewlines;
-
-        if (withWhitespace) {
-            //read whitespace tokens
-            hasNewline = rawLookup(0) == BashTokenTypes.LINE_FEED;
-            readNewlines = 0;
-            while (rawLookup(0) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
-                advanceLexer();
-                readNewlines++;
-            }
-        } else {
-            //do not read whitespace tokens, step over it
-            hasNewline = getTokenType() == BashTokenTypes.LINE_FEED;
-            readNewlines = 0;
-            while (getTokenType() == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
-                advanceLexer();
-                readNewlines++;
-            }
+        int readNewlines = 0;
+        while (getTokenType(allowSurroundingWhitespace) == BashTokenTypes.LINE_FEED && readNewlines < maxNewlines) {
+            advanceLexer();
+            readNewlines++;
         }
 
-        return hasNewline;
+        return readNewlines > 0;
     }
 
     public boolean isBash4() {
@@ -196,11 +187,11 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      * valid.
      * Each call to this method has to be followed by a call to leaveLastErrorLevel() .
      *
-     * @param status True if error reporting shoudl be switched on.
+     * @param enableErrors True if error reporting shoudl be switched on.
      *               False if no errors should be added to the resulting tree.
      */
-    public void enterNewErrorLevel(boolean status) {
-        errorsStatusStack.push(status);
+    public void enterNewErrorLevel(boolean enableErrors) {
+        errorsStatusStack.push(enableErrors);
     }
 
     /**
@@ -237,6 +228,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      *
      * @return The new marker.
      */
+    @NotNull
     @Override
     public Marker mark() {
         BashPsiMarker marker = markerPool.alloc();
@@ -254,7 +246,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     boolean isErrorReportingEnabled() {
         return errorsStatusStack.isEmpty() || errorsStatusStack.peek();
     }
-
 
     private void recycle(BashPsiMarker marker) {
         markerPool.recycle(marker);

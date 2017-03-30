@@ -100,7 +100,7 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         }
 
         //optional newlines before the body
-        final boolean newlinesAtBegin = builder.eatOptionalNewlines();
+        final boolean newlinesAtBegin = builder.readOptionalNewlines();
 
         //if we don't have one or more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);

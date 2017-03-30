@@ -36,18 +36,18 @@ public class ComposedVariableParsing implements ParsingFunction {
     );
 
     public boolean isValid(BashPsiBuilder builder) {
-        IElementType first = builder.rawLookup(0);
-        IElementType second = builder.rawLookup(1);
+        if (builder.rawLookup(0) != DOLLAR) {
+            return false;
+        }
 
-        return first == DOLLAR && acceptedStarts.contains(second);
+        return acceptedStarts.contains(builder.rawLookup(1));
     }
 
     public boolean parse(BashPsiBuilder builder) {
         final PsiBuilder.Marker varMarker = builder.mark();
         builder.advanceLexer(); //DOLLAR token
 
-        final IElementType nextToken = builder.getTokenType(true);
-        if (nextToken == WHITESPACE) {
+        if (builder.getTokenType(true) == WHITESPACE) {
             varMarker.drop();
             return false;
         }

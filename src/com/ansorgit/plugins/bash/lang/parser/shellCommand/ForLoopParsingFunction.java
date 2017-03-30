@@ -32,13 +32,14 @@ import com.intellij.psi.tree.IElementType;
  */
 public class ForLoopParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ForLoopParsingFunction");
+    private static final IElementType[] ARITH_FOR_LOOP_START = {FOR_KEYWORD, EXPR_ARITH};
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == FOR_KEYWORD || isArithmeticForLoop(builder);
+        return builder.getTokenType() == FOR_KEYWORD ;
     }
 
     private boolean isArithmeticForLoop(PsiBuilder builder) {
-        return ParserUtil.hasNextTokens(builder, false, FOR_KEYWORD, EXPR_ARITH);
+        return ParserUtil.hasNextTokens(builder, false, ARITH_FOR_LOOP_START);
     }
 
     public boolean parse(BashPsiBuilder builder) {
@@ -55,14 +56,9 @@ public class ForLoopParsingFunction implements ParsingFunction {
              |    FOR WORD newline_list IN list_terminator newline_list '{' compound_list '}'
         */
 
-
-        log.assertTrue(builder.getTokenType() == ShellCommandParsing.FOR_KEYWORD);
-
-        if (isArithmeticForLoop(builder)) {
-            return parseArithmeticForLoop(builder);
-        }
-
-        return parseForLoop(builder);
+        return isArithmeticForLoop(builder)
+                ? parseArithmeticForLoop(builder)
+                : parseForLoop(builder);
     }
 
     private boolean parseForLoop(BashPsiBuilder builder) {
@@ -79,13 +75,13 @@ public class ForLoopParsingFunction implements ParsingFunction {
             return false;
         }
 
-        builder.eatOptionalNewlines();
+        builder.readOptionalNewlines();
 
         //now either do, a block {} or IN
         final IElementType afterLoopValue = builder.getTokenType();
         if (afterLoopValue == SEMI) {
             builder.advanceLexer();
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
             builder.advanceLexer(); //in keyword
 
@@ -97,7 +93,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
                 return false;
             }
 
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         }
 
         if (!LoopParserUtil.parseLoopBody(builder, true, false)) {
@@ -124,10 +120,6 @@ public class ForLoopParsingFunction implements ParsingFunction {
             |		FOR ARITH_FOR_EXPRS '{' compound_list '}'
             ;
          */
-
-        if (log.isDebugEnabled()) {
-            log.assertTrue(builder.getTokenType() == FOR_KEYWORD);
-        }
 
         PsiBuilder.Marker marker = builder.mark();
         builder.advanceLexer();//after the "for" keyword
@@ -158,7 +150,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
 
         if (Parsing.list.isListTerminator(builder.getTokenType())) {
             builder.advanceLexer();
-            builder.eatOptionalNewlines();
+            builder.readOptionalNewlines();
         }
 
         if (!LoopParserUtil.parseLoopBody(builder, true, false)) {

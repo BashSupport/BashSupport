@@ -1365,6 +1365,14 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue358() throws Exception {
+        //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
+        testTokenization("b & << EOF\n" +
+                "d\n" +
+                "EOF" , WORD, WHITESPACE, AMP, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
     public void testIssue398() throws Exception {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("$(${)" , DOLLAR, LEFT_PAREN, DOLLAR, LEFT_CURLY, BAD_CHARACTER);

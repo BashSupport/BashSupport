@@ -25,6 +25,8 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
 
+import java.util.function.Predicate;
+
 /**
  * Useful helper methods for the language parsing.
  * <br>
@@ -112,11 +114,11 @@ public class ParserUtil {
      * @param function
      * @return
      */
-    public static boolean checkAndRollback(BashPsiBuilder builder, Function<BashPsiBuilder, Boolean> function) {
+    public static boolean checkAndRollback(BashPsiBuilder builder, Predicate<BashPsiBuilder> function) {
         final PsiBuilder.Marker start = builder.mark();
         builder.enterNewErrorLevel(false);
 
-        Boolean result = function.apply(builder);
+        boolean result = function.test(builder);
 
         builder.leaveLastErrorLevel();
         start.rollbackTo();
@@ -204,7 +206,7 @@ public class ParserUtil {
      * @param token The token to check.
      * @return True if token is a space or newline.
      */
-    public static boolean isWhitespace(IElementType token) {
+    public static boolean isWhitespaceOrLineFeed(IElementType token) {
         return (token == BashTokenTypes.WHITESPACE) || (token == BashTokenTypes.LINE_FEED);
     }
 
