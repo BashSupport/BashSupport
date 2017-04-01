@@ -226,7 +226,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                             return Long.valueOf(asString, 8);
 
                         default:
-                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + literalType());
+                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + literalType() + ", " + getText());
                     }
                 } catch (NumberFormatException e) {
                     //fixme
