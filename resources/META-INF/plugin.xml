@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.6</version>
+    <version>1.6.7</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -37,6 +37,14 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.7:</b>
+        <ul>
+            <li>#413: Fix variable and function resolving in files which are outside of a module content root</li>
+            <li>#409: Jump to function def does not work in language injected string literals</li>
+            <li>#408: All variables in injected language chunks are flagged as unresolved</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.6:</b>
         <ul>
             <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
