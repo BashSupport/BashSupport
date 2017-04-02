@@ -29,6 +29,8 @@
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
+    <!-- This is necessary to force IntelliJ to load the IntelliLang plugin to let the injection tests pass-->
+    <depends>org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
@@ -125,6 +127,13 @@
     </module-components>
 
     <actions>
+        <action id="BashErrorReporter.TriggerException"
+                class="nu.studer.idea.errortesting.TriggerExceptionAction"
+                text="Trigger Exception"
+                description="Triggers an exception">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
