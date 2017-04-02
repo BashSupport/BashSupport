@@ -1,3 +1,6 @@
+####2017-04-02:
+ - \#413: Fix variable and function resolving in files which are outside of a module content root
+
 ####2017-03-30:
  - \#358: Remove the maximum nesting level while parsing comamnds.
  - Release 1.6.6 (eap)
