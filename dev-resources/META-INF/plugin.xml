@@ -24,11 +24,13 @@
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 163.x or later -->
-    <idea-version since-build="163.0" until-build="163.*"/>
+    <!-- Requires IDEA 162.x or later -->
+    <idea-version since-build="162.0" until-build="162.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
+    <!-- This is necessary to force IntelliJ to load the IntelliLang plugin to let the injection tests pass-->
+    <depends>org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
@@ -37,14 +39,6 @@
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.6.7:</b>
-        <ul>
-            <li>#413: Fix variable and function resolving in files which are outside of a module content root</li>
-            <li>#409: Jump to function def does not work in language injected string literals</li>
-            <li>#408: All variables in injected language chunks are flagged as unresolved</li>
-        </ul>
-        <br/>
-
         <b>Changes in version 1.6.6:</b>
         <ul>
             <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
@@ -133,6 +127,13 @@
     </module-components>
 
     <actions>
+        <action id="BashErrorReporter.TriggerException"
+                class="nu.studer.idea.errortesting.TriggerExceptionAction"
+                text="Trigger Exception"
+                description="Triggers an exception">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
