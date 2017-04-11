@@ -1,3 +1,6 @@
+####2017-04-11:
+ - \#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
+
 ####2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root
  - \#409: Jump to function def does not work in language injected string literals
