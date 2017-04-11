@@ -248,7 +248,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 // Parenthesis lexing
-<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_HERE_STRING> {
+<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_HERE_STRING, S_ASSIGNMENT_LIST> {
     "$" / "("               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
     "$" / "["               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }

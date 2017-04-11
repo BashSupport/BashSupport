@@ -1,3 +1,6 @@
+####2017-04-11:
+ - \#420: Parsing error with double-pipe in subshell contained in list parenthesis
+
 ####2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root
  - \#409: Jump to function def does not work in language injected string literals
