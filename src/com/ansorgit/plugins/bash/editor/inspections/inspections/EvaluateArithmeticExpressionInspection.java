@@ -45,8 +45,6 @@ public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool 
                     return;
                 }
 
-                boolean isParenthesisExpr = expression instanceof ParenthesesExpression;
-
                 List<ArithmeticExpression> subexpressions = expression.subexpressions();
 
                 if (subexpressions.isEmpty() && expression.isStatic()) {
@@ -56,7 +54,7 @@ public class EvaluateArithmeticExpressionInspection extends LocalInspectionTool 
                     } catch (InvalidExpressionValue e) {
                         holder.registerProblem(expression, e.getMessage(), ProblemHighlightType.GENERIC_ERROR, null, LocalQuickFix.EMPTY_ARRAY);
                     }
-                } else if (subexpressions.size() > 1 && (expression.isStatic() || isParenthesisExpr)) {
+                } else if (subexpressions.size() > 1 && expression.isStatic()) {
                     try {
                         long value = expression.computeNumericValue();
 

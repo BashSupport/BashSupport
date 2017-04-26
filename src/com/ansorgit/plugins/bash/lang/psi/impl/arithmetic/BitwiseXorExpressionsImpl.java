@@ -19,6 +19,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.BitwiseXor;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -28,6 +30,7 @@ public class BitwiseXorExpressionsImpl extends AbstractExpression implements Bit
         super(astNode, "BitwiseXorExpr", Type.TwoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.ARITH_BITWISE_XOR) {
@@ -36,5 +39,4 @@ public class BitwiseXorExpressionsImpl extends AbstractExpression implements Bit
 
         return null;
     }
-
 }
