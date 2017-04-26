@@ -18,6 +18,8 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.PostIncrementExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -27,6 +29,7 @@ public class PostIncrementExpressionsImpl extends AbstractExpression implements 
         super(astNode, "ArithPostIncrement", Type.PostfixOperand);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("unsupported");

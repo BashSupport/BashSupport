@@ -19,6 +19,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ShiftExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -28,6 +30,7 @@ public class ShiftExpressionsImpl extends AbstractExpression implements ShiftExp
         super(astNode, "AritShiftExpr", Type.TwoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.SHIFT_RIGHT) {

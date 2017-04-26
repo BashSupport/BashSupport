@@ -19,6 +19,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class ParenthesesExpressionsImpl extends AbstractExpression implements Pa
         super(astNode, "ArithParenExpr", Type.NoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("unsupported");
