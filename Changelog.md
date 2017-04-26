@@ -2,6 +2,7 @@
  - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
  - \#426: (Very) basic support to parse patterns in arithmetic expressions
  - \#424: Error displaying the folding elements in the HERE-document when there are variables in the text
+ - \#431: The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
 
 #### 2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root

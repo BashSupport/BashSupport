@@ -1415,6 +1415,14 @@ public class BashLexerTest {
         testTokenization("${var1^^}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UPPERCASE_ALL, RIGHT_CURLY);
     }
 
+    @Test
+    public void testIssue431() throws Exception {
+        //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
+        testTokenization("$((x|=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x&=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x^=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

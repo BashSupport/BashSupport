@@ -499,6 +499,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-="                          { return ARITH_ASS_MINUS; }
   ">>="                         { return ARITH_ASS_SHIFT_RIGHT; }
   "<<="                         { return ARITH_ASS_SHIFT_LEFT; }
+  "&="                          { return ARITH_ASS_BIT_AND; }
+  "|="                          { return ARITH_ASS_BIT_OR; }
+  "^="                          { return ARITH_ASS_BIT_XOR; }
 
   "+"                           { return ARITH_PLUS; }
   "++"                          { return ARITH_PLUS_PLUS; }
