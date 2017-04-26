@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.7</version>
+    <version>1.6.8</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -37,6 +37,17 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.8:</b>
+        <ul>
+            <li>#431: The arithmetic bitwise assignments are now correctly parsed.</li>
+            <li>#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"</li>
+            <li>#426: (Very) basic support to parse patterns in arithmetic expressions</li>
+            <li>#424: Error displaying the folding elements in the HERE-document when there are variables in the text</li>
+            <li>#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,=3)), for example)</li>
+            <li>#419: Parsing error with double-pipe in subshell contained in list parenthesis</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.7:</b>
         <ul>
             <li>#413: Fix variable and function resolving in files which are outside of a module content root</li>

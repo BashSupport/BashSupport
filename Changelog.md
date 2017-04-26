@@ -3,6 +3,7 @@
  - \#426: (Very) basic support to parse patterns in arithmetic expressions
  - \#424: Error displaying the folding elements in the HERE-document when there are variables in the text
  - \#431: The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
+ - Released 1.6.8
 
 ####2017-04-11:
  - \#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
