@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin version="2" url="https://github.com/jansorg/BashSupport">
+<idea-plugin url="https://github.com/jansorg/BashSupport">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
@@ -29,6 +29,7 @@
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
+    <depends optional="true">org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
