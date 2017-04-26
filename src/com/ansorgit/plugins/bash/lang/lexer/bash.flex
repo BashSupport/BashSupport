@@ -70,7 +70,7 @@ ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {LineContinuation}
 // No "[" | "]"
 ArithWordAfter =  {ArithWordFirst} | [0-9#!]
 
-ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar} | {LineContinuation}
+ParamExpansionWordFirst = [a-zA-Z0-9_] | {EscapedChar} | {LineContinuation}
 ParamExpansionWord = {ParamExpansionWordFirst}+
 
 AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {LineContinuation}
@@ -135,6 +135,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 /*  To match tokens in pattern expansion mode ${...} . Needs special parsing of # */
 %state S_PARAM_EXPANSION
+
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_PATTERN
+
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_DELIMITER
+
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_REPLACEMENT
 
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
@@ -248,7 +257,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 // Parenthesis lexing
-<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_HERE_STRING> {
+<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_HERE_STRING, S_ASSIGNMENT_LIST> {
     "$" / "("               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
     "$" / "["               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
 }
@@ -490,6 +499,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-="                          { return ARITH_ASS_MINUS; }
   ">>="                         { return ARITH_ASS_SHIFT_RIGHT; }
   "<<="                         { return ARITH_ASS_SHIFT_LEFT; }
+  "&="                          { return ARITH_ASS_BIT_AND; }
+  "|="                          { return ARITH_ASS_BIT_OR; }
+  "^="                          { return ARITH_ASS_BIT_XOR; }
 
   "+"                           { return ARITH_PLUS; }
   "++"                          { return ARITH_PLUS_PLUS; }
@@ -636,6 +648,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
+  "//"                          { goToState(S_PARAM_EXPANSION_PATTERN); return PARAM_EXPANSION_OP_SLASH_SLASH; }
+  "/"                           { goToState(S_PARAM_EXPANSION_PATTERN); return PARAM_EXPANSION_OP_SLASH;  }
+
   "##"                          { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH_HASH; }
   "#"                           { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
@@ -643,8 +658,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "%"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_PERCENT; }
   "?"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_QMARK; }
   "."                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_DOT; }
-  "/"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_SLASH; }
-  "^"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UNKNOWN; }
+  "^"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UPPERCASE_FIRST; }
+  "^^"                          { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UPPERCASE_ALL; }
+  ","                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_LOWERCASE_FIRST; }
+  ",,"                          { setParamExpansionOther(true); return PARAM_EXPANSION_OP_LOWERCASE_ALL; }
 
   "[" / [@*]                    { return LEFT_SQUARE; }
   "["                           { if (!isParamExpansionOther() && (!isParamExpansionWord() || !isParamExpansionHash())) {
@@ -668,8 +685,34 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {EscapedChar}                 { setParamExpansionWord(true); return WORD; }
   {IntegerLiteral}              { setParamExpansionWord(true); return WORD; }
   {ParamExpansionWord}          { setParamExpansionWord(true); return WORD; }
- }
+}
 
+<S_PARAM_EXPANSION_PATTERN> {
+  // pattern followed by the delimiter
+  ({EscapedChar} | {LineTerminator} | [^/}])+ / "/" { backToPreviousState(); goToState(S_PARAM_EXPANSION_DELIMITER); return PARAM_EXPANSION_PATTERN; }
+
+  //no delimiter and no replacement
+  ({EscapedChar} | {LineTerminator} | [^/}])+     { backToPreviousState(); return PARAM_EXPANSION_PATTERN; }
+
+  //empty pattern
+  .                           { yypushback(1); backToPreviousState(); }
+}
+
+// matches just the delimiter and then changes into the replacement state
+<S_PARAM_EXPANSION_DELIMITER> {
+    //with replacement
+    "/"                         { backToPreviousState(); goToState(S_PARAM_EXPANSION_REPLACEMENT); return PARAM_EXPANSION_OP_SLASH; }
+    
+    //no replacement
+    "}"                         { yypushback(1); backToPreviousState(); }
+}
+
+<S_PARAM_EXPANSION_REPLACEMENT> {
+    [^}]+                       { backToPreviousState(); return WORD; }
+
+    //probably an empty replacement
+    .                           { yypushback(1); backToPreviousState(); }
+}
 
 /** Match in all except of string */
 <YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {

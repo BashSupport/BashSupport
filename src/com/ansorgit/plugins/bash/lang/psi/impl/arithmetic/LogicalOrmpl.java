@@ -19,6 +19,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.LogicalOr;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -28,6 +30,7 @@ public class LogicalOrmpl extends AbstractExpression implements LogicalOr {
         super(astNode, "LogicalOrExpr", Type.TwoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.OR_OR && nextExpressionValue != null) {

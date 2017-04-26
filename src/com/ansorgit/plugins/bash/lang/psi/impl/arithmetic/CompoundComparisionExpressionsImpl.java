@@ -19,6 +19,8 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.CompoundComparision;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -28,15 +30,22 @@ public class CompoundComparisionExpressionsImpl extends AbstractExpression imple
         super(astNode, "Compound comparision", Type.TwoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.ARITH_LT) {
             return currentValue < nextExpressionValue ? 1L : 0L;
-        } else if (operator == BashTokenTypes.ARITH_LE) {
+        }
+
+        if (operator == BashTokenTypes.ARITH_LE) {
             return currentValue <= nextExpressionValue ? 1L : 0L;
-        } else if (operator == BashTokenTypes.ARITH_GT) {
+        }
+
+        if (operator == BashTokenTypes.ARITH_GT) {
             return currentValue > nextExpressionValue ? 1L : 0L;
-        } else if (operator == BashTokenTypes.ARITH_GE) {
+        }
+
+        if (operator == BashTokenTypes.ARITH_GE) {
             return currentValue >= nextExpressionValue ? 1L : 0L;
         }
 

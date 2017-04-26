@@ -182,11 +182,14 @@ public interface BashTokenTypes {
     IElementType ARITH_ASS_MINUS = new BashElementType("-= arithmetic");// /=
     IElementType ARITH_ASS_SHIFT_RIGHT = new BashElementType(">>= arithmetic");// /=
     IElementType ARITH_ASS_SHIFT_LEFT = new BashElementType("<<= arithmetic");// /=
-    //    IElementType ARITH_ASS_SHIFT_AND = new BashElementType("/=");// /=
-    //fixme missing: &= |= ^=, = ","
+    IElementType ARITH_ASS_BIT_AND = new BashElementType("&= arithmetic");// /=
+    IElementType ARITH_ASS_BIT_OR = new BashElementType("|= arithmetic");// /=
+    IElementType ARITH_ASS_BIT_XOR = new BashElementType("^= arithmetic");// /=
+    //fixme missing: = ","
 
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
-            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
+            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT,
+            ARITH_ASS_BIT_AND, ARITH_ASS_BIT_OR, ARITH_ASS_BIT_XOR);
 
     //arithmetic literals
     IElementType ARITH_HEX_NUMBER = new BashElementType("0x hex literal");
@@ -222,10 +225,20 @@ public interface BashTokenTypes {
     IElementType PARAM_EXPANSION_OP_DOT = new BashElementType("Parameter expansion operator '.'");
     IElementType PARAM_EXPANSION_OP_PERCENT = new BashElementType("Parameter expansion operator '%'");
     IElementType PARAM_EXPANSION_OP_SLASH = new BashElementType("Parameter expansion operator '/'");
+    IElementType PARAM_EXPANSION_OP_SLASH_SLASH = new BashElementType("Parameter expansion operator '//'");
+    IElementType PARAM_EXPANSION_OP_LOWERCASE_FIRST = new BashElementType("Parameter expansion operator ','");
+    IElementType PARAM_EXPANSION_OP_LOWERCASE_ALL = new BashElementType("Parameter expansion operator ',,'");
+    IElementType PARAM_EXPANSION_OP_UPPERCASE_FIRST = new BashElementType("Parameter expansion operator '^'");
+    IElementType PARAM_EXPANSION_OP_UPPERCASE_ALL = new BashElementType("Parameter expansion operator '^^'");
+    IElementType PARAM_EXPANSION_PATTERN = new BashElementType("Parameter expansion regex pattern");
     TokenSet paramExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_UNKNOWN, PARAM_EXPANSION_OP_EXCL,
             PARAM_EXPANSION_OP_COLON_EQ, PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON, PARAM_EXPANSION_OP_COLON_MINUS,
             PARAM_EXPANSION_OP_MINUS, PARAM_EXPANSION_OP_PLUS, PARAM_EXPANSION_OP_COLON_PLUS, PARAM_EXPANSION_OP_HASH, PARAM_EXPANSION_OP_HASH_HASH,
-            PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_STAR, PARAM_EXPANSION_OP_PERCENT, PARAM_EXPANSION_OP_QMARK, PARAM_EXPANSION_OP_DOT, PARAM_EXPANSION_OP_SLASH);
+            PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_STAR, PARAM_EXPANSION_OP_PERCENT, PARAM_EXPANSION_OP_QMARK, PARAM_EXPANSION_OP_DOT,
+            PARAM_EXPANSION_OP_SLASH,PARAM_EXPANSION_OP_SLASH_SLASH,
+            PARAM_EXPANSION_OP_LOWERCASE_ALL, PARAM_EXPANSION_OP_LOWERCASE_FIRST,
+            PARAM_EXPANSION_OP_UPPERCASE_ALL, PARAM_EXPANSION_OP_UPPERCASE_FIRST,
+            PARAM_EXPANSION_PATTERN);
     TokenSet paramExpansionAssignmentOps = TokenSet.create(PARAM_EXPANSION_OP_EQ, PARAM_EXPANSION_OP_COLON_EQ);
 
 

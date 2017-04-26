@@ -24,6 +24,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiUtilCore;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -64,52 +65,6 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
 
     public SimpleExpressionsImpl(final ASTNode astNode) {
         super(astNode, "ArithSimpleExpr", Type.NoOperands);
-    }
-
-    static long baseLiteralValue(long base, String value) throws InvalidExpressionValue {
-        long result = 0;
-
-        int index = value.length() - 1;
-        for (char c : value.toCharArray()) {
-            long digitValue = baseLiteralValue(base, c);
-            if (digitValue == -1) {
-                throw new InvalidExpressionValue("Digit " + c + " is invalid with base " + base);
-            }
-
-            result += Math.pow(base, index) * digitValue;
-            index--;
-        }
-
-        return result;
-    }
-
-    static long baseLiteralValue(long base, char value) {
-        // Constants with a leading 0 are interpreted as octal numbers.
-        // A leading ‘0x’ or ‘0X’ denotes hexadecimal. Otherwise, numbers take the form [base#]n,
-        // where base is a decimal number between 2 and 64 representing the arithmetic base,
-        // and n is a number in that base. If base#  is omitted, then base 10 is used.
-        // The digits greater than 9 are represented by the lowercase letters,
-        // the uppercase letters, ‘@’, and ‘_’, in that order.
-        // If base is less than or equal to 36, lowercase and uppercase letters may be used
-        // interchangeably to represent numbers between 10 and 35.
-
-        long result = -1;
-
-        for (int i = 0; i < literalChars.length; i++) {
-            char c = literalChars[i];
-
-            if (c == value) {
-                if (base <= 36 && i >= 36 && i <= 61) {
-                    result = i - 36 + 10;
-                } else if (i <= base) {
-                    result = i;
-                }
-
-                break;
-            }
-        }
-
-        return result < base ? result : -1;
     }
 
     public LiteralType literalType() {
@@ -186,6 +141,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
         literalType = null;
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new IllegalStateException("SimpleExpressionImpl: Unsupported for " + getText());
@@ -248,14 +204,62 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                 IElementType nodeType = first.getElementType();
                 if (nodeType == BashTokenTypes.ARITH_MINUS) {
                     return -1 * second.computeNumericValue();
-                } else if (nodeType == BashTokenTypes.ARITH_PLUS) {
+                }
+
+                if (nodeType == BashTokenTypes.ARITH_PLUS) {
                     return second.computeNumericValue();
                 }
 
-                throw new IllegalStateException("Invalue state found (invalid prefix operator); " + getText());
+                throw new IllegalStateException("Invalid state found (invalid prefix operator); " + getText());
             }
-        } else {
-            throw new UnsupportedOperationException("unsupported expression state: " + getText());
         }
+
+        throw new InvalidExpressionValue("unsupported expression state: " + getText());
+    }
+
+    static long baseLiteralValue(long base, String value) throws InvalidExpressionValue {
+        long result = 0;
+
+        int index = value.length() - 1;
+        for (char c : value.toCharArray()) {
+            long digitValue = baseLiteralValue(base, c);
+            if (digitValue == -1) {
+                throw new InvalidExpressionValue("Digit " + c + " is invalid with base " + base);
+            }
+
+            result += Math.pow(base, index) * digitValue;
+            index--;
+        }
+
+        return result;
+    }
+
+    static long baseLiteralValue(long base, char value) {
+        // Constants with a leading 0 are interpreted as octal numbers.
+        // A leading ‘0x’ or ‘0X’ denotes hexadecimal. Otherwise, numbers take the form [base#]n,
+        // where base is a decimal number between 2 and 64 representing the arithmetic base,
+        // and n is a number in that base. If base#  is omitted, then base 10 is used.
+        // The digits greater than 9 are represented by the lowercase letters,
+        // the uppercase letters, ‘@’, and ‘_’, in that order.
+        // If base is less than or equal to 36, lowercase and uppercase letters may be used
+        // interchangeably to represent numbers between 10 and 35.
+
+        long result = -1;
+
+        for (int i = 0; i < literalChars.length; i++) {
+            char c = literalChars[i];
+
+            if (c == value) {
+                if (base <= 36 && i >= 36 && i <= 61) {
+                    result = i - 36 + 10;
+                } else if (i <= base) {
+                    result = i;
+                }
+
+                break;
+            }
+        }
+
+        return result < base ? result : -1;
     }
 }

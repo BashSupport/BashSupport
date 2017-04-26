@@ -154,8 +154,8 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionWord(boolean paremeterExpansionWord) {
-        this.paramExpansionWord = paremeterExpansionWord;
+    public void setParamExpansionWord(boolean paramExpansionWord) {
+        this.paramExpansionWord = paramExpansionWord;
     }
 
     @Override
@@ -164,8 +164,8 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionOther(boolean paremeterExpansionOther) {
-        this.paramExpansionOther = paremeterExpansionOther;
+    public void setParamExpansionOther(boolean paramExpansionOther) {
+        this.paramExpansionOther = paramExpansionOther;
     }
 
     @Override
@@ -174,7 +174,7 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionHash(boolean paremeterExpansionHash) {
-        this.paramExpansionHash = paremeterExpansionHash;
+    public void setParamExpansionHash(boolean paramExpansionHash) {
+        this.paramExpansionHash = paramExpansionHash;
     }
 }

@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.VariableOperator;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.Nullable;
 
 public class VariableOperatorImpl extends AbstractExpression implements VariableOperator {
     public VariableOperatorImpl(final ASTNode astNode) {
@@ -29,8 +30,9 @@ public class VariableOperatorImpl extends AbstractExpression implements Variable
         return false;
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        return null;
+        throw new UnsupportedOperationException("compute is not supported");
     }
 }
