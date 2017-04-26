@@ -6,6 +6,7 @@
 
 ####2017-04-11:
  - \#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
+ - \#419: Parsing error with double-pipe in subshell contained in list parenthesis
 
 #### 2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root
