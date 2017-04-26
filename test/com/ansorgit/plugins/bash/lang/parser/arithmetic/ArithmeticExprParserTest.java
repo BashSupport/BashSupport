@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ArithmeticExprParserTest.java, Class: ArithmeticExprParserTest
- * Last modified: 2010-05-27
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,5 +71,17 @@ public class ArithmeticExprParserTest extends MockPsiTest {
 
         // a[a[0]]
         mockTest(exprParser, ASSIGNMENT_WORD, LEFT_SQUARE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_SQUARE);
+    }
+
+    @Test
+    public void testIssue431() throws Exception {
+        //x |= 123
+        mockTest(exprParser, DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
+
+        //x $= 123
+        mockTest(exprParser, DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
+
+        //x ^= 123
+        mockTest(exprParser, DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
     }
 }

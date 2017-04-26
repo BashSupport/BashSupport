@@ -182,11 +182,14 @@ public interface BashTokenTypes {
     IElementType ARITH_ASS_MINUS = new BashElementType("-= arithmetic");// /=
     IElementType ARITH_ASS_SHIFT_RIGHT = new BashElementType(">>= arithmetic");// /=
     IElementType ARITH_ASS_SHIFT_LEFT = new BashElementType("<<= arithmetic");// /=
-    //    IElementType ARITH_ASS_SHIFT_AND = new BashElementType("/=");// /=
-    //fixme missing: &= |= ^=, = ","
+    IElementType ARITH_ASS_BIT_AND = new BashElementType("&= arithmetic");// /=
+    IElementType ARITH_ASS_BIT_OR = new BashElementType("|= arithmetic");// /=
+    IElementType ARITH_ASS_BIT_XOR = new BashElementType("^= arithmetic");// /=
+    //fixme missing: = ","
 
     TokenSet arithmeticAssign = TokenSet.create(ARITH_ASS_MUL, ARITH_ASS_DIV, ARITH_ASS_MOD, ARITH_ASS_PLUS,
-            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT);
+            ARITH_ASS_MINUS, ARITH_ASS_SHIFT_LEFT, ARITH_ASS_SHIFT_RIGHT,
+            ARITH_ASS_BIT_AND, ARITH_ASS_BIT_OR, ARITH_ASS_BIT_XOR);
 
     //arithmetic literals
     IElementType ARITH_HEX_NUMBER = new BashElementType("0x hex literal");

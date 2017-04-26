@@ -1,3 +1,6 @@
+#### 2017-04-26:
+ - \#431: The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
+
 #### 2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root
  - \#409: Jump to function def does not work in language injected string literals
