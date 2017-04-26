@@ -194,7 +194,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 }
             } else {
                 if (!paramExpansionOperators.contains(operator)) {
-                    builder.error("Unknown parameter expansion operator");
+                    builder.error("Unknown parameter expansion operator " + operator);
                     firstElementMarker.drop();
 
                     //try to minimize the error impact

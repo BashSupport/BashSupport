@@ -46,15 +46,15 @@ public interface BashLexerDef extends BashTokenTypes, FlexLexer {
 
     boolean isParamExpansionHash();
 
-    void setParamExpansionHash(boolean paremeterExpansionHash);
+    void setParamExpansionHash(boolean paramExpansionHash);
 
     boolean isParamExpansionWord();
 
-    void setParamExpansionWord(boolean paremeterExpansionWord);
+    void setParamExpansionWord(boolean paramExpansionWord);
 
     boolean isParamExpansionOther();
 
-    void setParamExpansionOther(boolean paremeterExpansionOther);
+    void setParamExpansionOther(boolean paramExpansionOther);
 
     boolean isInCaseBody();
 

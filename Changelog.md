@@ -1,4 +1,6 @@
 #### 2017-04-26:
+ - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
+ - \#426: (Very) basic support to parse patterns in arithmetic expressions
  - \#424: Error displaying the folding elements in the HERE-document when there are variables in the text
 
 #### 2017-04-02:
