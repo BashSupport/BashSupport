@@ -1,3 +1,7 @@
+#### 2017-04-26:
+ - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
+ - \#426: (Very) basic support to parse patterns in arithmetic expressions
+
 #### 2017-04-02:
  - \#413: Fix variable and function resolving in files which are outside of a module content root
  - \#409: Jump to function def does not work in language injected string literals
