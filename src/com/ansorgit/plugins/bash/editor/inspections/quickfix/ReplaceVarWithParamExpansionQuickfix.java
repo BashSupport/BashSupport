@@ -18,14 +18,11 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.ReadOnlyFragmentModificationException;
-import com.intellij.openapi.editor.ReadOnlyModificationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This quickfix replaces a simple variable usage with the equivalent parameter expansion form.
  * <br>
+ *
  * @author jansorg
  */
 public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElementQuickfix {
@@ -67,19 +65,11 @@ public class ReplaceVarWithParamExpansionQuickfix extends AbstractBashPsiElement
 
     @Override
     public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        TextRange textRange = startElement.getTextRange();
-
-        try {
-            // Replace this position with the same value, we have to trigger a reparse somehow
-            Document document = file.getViewProvider().getDocument();
-            if (document != null && document.isWritable()) {
-                document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), "${" + variableName + "}");
-                PsiDocumentManager.getInstance(project).commitDocument(document);
-            }
-        } catch (ReadOnlyModificationException e) {
-            //ignore
-        } catch (ReadOnlyFragmentModificationException e) {
-            //ignore
+        // Replace this position with the same value, we have to trigger a reparse somehow
+        Document document = file.getViewProvider().getDocument();
+        if (document != null && document.isWritable()) {
+            PsiElement replacement = BashPsiElementFactory.createComposedVar(project, variableName);
+            startElement.replace(replacement);
         }
     }
 }
