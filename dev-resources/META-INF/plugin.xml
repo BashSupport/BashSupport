@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.7</version>
+    <version>1.6.8</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
@@ -36,79 +36,6 @@
     Bash language support for the IntelliJ platform.<br/>
     Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
-
-    <change-notes><![CDATA[
-        <html>
-        <b>Changes in version 1.6.6:</b>
-        <ul>
-            <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.5:</b>
-        <ul>
-            <li>#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.</li>
-            <li>#399: Potential fix for java.lang.NoClassDefFoundError: BashIcons</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.4:</b>
-        <ul>
-            <li>Sorry for the many releases!</li>
-            <li>#397: Tokens after a here string start were not always detected properly</li>
-            <li>Index version increased to avoid PSI index exceptions</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.3:</b>
-        <ul>
-            <li>#395: Hotfix to make BashSupport work again with scripts containing errors</li>
-            <li>#396: Check for working directory only if the module is valid</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.2:</b>
-        <ul>
-            <li>Increase stub index version to handle index vs. psi exceptions</li>
-            <li>Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often</li>
-            <li>Handle line continuations in case pattern lists</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.1:</b>
-        <ul>
-            <li>#361: Added support for the mapfile and readarray Bash builtin comamnds</li>
-            <li>#349: Support unicode characters in scripts, warn about invalid identifiers which include illegal characters</li>
-            <li>#392: Reformatting changes code in eval strings and redirect tokens</li>
-            <li>#388: Reformatting heredocs changes content</li>
-            <li>#350: Redirection in eval statement is flagged as error</li>
-            <li>#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.</li>
-            <li>#391: New inspection to highlighting unresolved, but globally registered variables (to have a separate highlighting level and inspection description)</li>
-            <li>#393: Update JFlex to the latest version</li>
-            <li>#357: Added a potential fix for the problem</li>
-        </ul>
-
-        <br/>
-        <b>Changes in version 1.6.0:</b>
-        <ul>
-            <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
-            <li>#389: Files with line continuations were not parsed properly and may break the whole project (might have broken your project!)</li>
-            <li>#377: NPE in UnregisterGlobalVariableQuickfix</li>
-            <li>#367: Fixed parsing of redirects in subshells inside of conditional commands, e.g. [[ $(&lt; $1) ]]</li>
-            <li>#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] &lt;&lt;&lt; [abc]"</li>
-            <li>#379: Undo "Register Global Variable" doesn't work</li>
-            <li>#368: Added debugging messages for arithmetic expressions</li>
-            <li>#383: Handle division by zero in arithmetic expressions and show a warning in the code</li>
-            <li>#388: References for files are now searched in the module content scope and not in the module scope.</li>
-            <li>Added support for the ## parameter expansion operator</li>
-            <li>#351: Added debug message for further diagnosis</li>
-        </ul>
-
-        <br/>
-        <a href="https://github.com/jansorg/BashSupport/blob/idea-162.x/Changelog.md">Full changelog</a>
-        </html>
-        ]]>
-    </change-notes>
 
     <application-components>
         <component>

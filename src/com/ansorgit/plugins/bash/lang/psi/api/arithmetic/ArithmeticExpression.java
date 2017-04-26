@@ -27,8 +27,6 @@ import java.util.List;
  * @author jansorg
  */
 public interface ArithmeticExpression extends BashPsiElement {
-
-
     enum Type {
         NoOperands,
         TwoOperands,
@@ -36,6 +34,7 @@ public interface ArithmeticExpression extends BashPsiElement {
         PostfixOperand,
         Unsupported;
     }
+
     boolean isStatic();
 
     /**

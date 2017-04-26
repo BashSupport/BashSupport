@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.vcs.impl.LocalChangesUnderRoots;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -459,6 +460,7 @@ public class BashLexerTest {
         testTokenization("${a%b}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, WORD, RIGHT_CURLY);
         testTokenization("${#a}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, RIGHT_CURLY);
         testTokenization("${a1}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+        //bad substitution, but the lexer must match
         testTokenization("${/}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
     }
 
@@ -536,9 +538,34 @@ public class BashLexerTest {
 
         testTokenization("${@}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_AT, RIGHT_CURLY);
 
-        testTokenization("${x/a//}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+        //either an empty replacement or a single // token, the 2nd is easier for our lexer
+        //bash seems to parse this in the same way
+        testTokenization("${x//}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH_SLASH, RIGHT_CURLY);
 
-        testTokenization("${x/,//}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+        // // followed by an empty repalcement
+        testTokenization("${x///}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH_SLASH, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+
+        testTokenization("${x/a/}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+
+        testTokenization("${x/a//}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, WORD, RIGHT_CURLY);
+
+        testTokenization("${x/,//}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, WORD, RIGHT_CURLY);
+
+        testTokenization("${x/a}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, RIGHT_CURLY);
+
+        //replace newline with space
+        testTokenization("${x/\n/ }", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, WORD, RIGHT_CURLY);
+        
+        testTokenization("${input//[[:digit:].]/}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+
+        testTokenization("${1/} X", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, WHITESPACE, WORD);
+        testTokenization("function x\n" +
+                "${1/}\n" +
+                "${1/}\n" +
+                "}",
+                FUNCTION_KEYWORD, WHITESPACE, WORD, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, LINE_FEED,
+                DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, LINE_FEED,
+                RIGHT_CURLY);
     }
 
     @Test
@@ -1369,13 +1396,41 @@ public class BashLexerTest {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("b & << EOF\n" +
                 "d\n" +
-                "EOF" , WORD, WHITESPACE, AMP, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+                "EOF", WORD, WHITESPACE, AMP, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
     @Test
     public void testIssue398() throws Exception {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
-        testTokenization("$(${)" , DOLLAR, LEFT_PAREN, DOLLAR, LEFT_CURLY, BAD_CHARACTER);
+        testTokenization("$(${)", DOLLAR, LEFT_PAREN, DOLLAR, LEFT_CURLY, BAD_CHARACTER);
+    }
+
+    @Test
+    public void testIssue426() throws Exception {
+        // ,, is the lowercase operator for all characters
+        testTokenization("${var1,}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_LOWERCASE_FIRST, RIGHT_CURLY);
+        testTokenization("${var1,,}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_LOWERCASE_ALL, RIGHT_CURLY);
+
+        testTokenization("${var1^}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UPPERCASE_FIRST, RIGHT_CURLY);
+        testTokenization("${var1^^}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_UPPERCASE_ALL, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue431() throws Exception {
+        //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
+        testTokenization("$((x|=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x&=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x^=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
+    }
+
+    @Test
+    public void testIssue419() throws Exception {
+        testTokenization("$(x || x)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN);
+
+        testTokenization("issues=($(x || x))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN, RIGHT_PAREN);
+        testTokenization("issues=($(x && x))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN, RIGHT_PAREN);
+
+        testTokenization("issues=($((1+1)))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
     }
 
     private void testNoErrors(String code) {

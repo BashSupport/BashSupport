@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
@@ -51,6 +52,10 @@ public class BashVisitor extends PsiElementVisitor {
 
     public void visitVarUse(BashVar var) {
         visitElement(var);
+    }
+
+    public void visitComposedVariable(BashComposedVar composedVar) {
+        visitElement(composedVar);
     }
 
     public void visitShebang(BashShebang shebang) {
