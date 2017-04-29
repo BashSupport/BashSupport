@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.loops;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.lang.psi.api.loops.BashSelect;
 import com.intellij.psi.PsiElement;
@@ -33,7 +32,7 @@ public class BashSelectImplTest extends LightBashCodeInsightFixtureTestCase {
     }
 
     @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/loops/";
+    protected String getBasePath() {
+        return "psi/loops/";
     }
 }

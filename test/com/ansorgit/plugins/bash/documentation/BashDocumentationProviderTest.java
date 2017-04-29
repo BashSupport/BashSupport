@@ -88,7 +88,7 @@ public class BashDocumentationProviderTest extends LightBashCodeInsightFixtureTe
     }
 
     @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/editor/documentation/documentationProvider";
+    protected String getBasePath() {
+        return "editor/documentation/documentationProvider";
     }
 }

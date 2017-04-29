@@ -112,8 +112,8 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
 
     @NotNull
     @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/editor/usages";
+    protected String getBasePath() {
+        return "editor/usages";
     }
 
 }

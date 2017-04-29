@@ -2,7 +2,7 @@
   <configuration default="false" name="All in BashSupport" type="JUnit" factoryName="JUnit">
     <extension name="coverage" enabled="false" merge="false" per_test_coverage_enabled="false" sample_coverage="true" runner="jacoco">
       <pattern>
-        <option name="PATTERN" value="com.ansorgit.plugins.bash.*" />
+        <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.*" />
         <option name="ENABLED" value="true" />
       </pattern>
       <pattern>
