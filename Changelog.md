@@ -1,3 +1,6 @@
+#### 2017-04-29:
+ - \#418: Fix to parsed structure of variable assignment lists
+
 #### 2017-04-26:
  - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
  - \#426: (Very) basic support to parse patterns in arithmetic expressions

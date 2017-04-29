@@ -19,13 +19,20 @@ import com.intellij.codeInspection.InspectionProfileEntry;
 import com.intellij.codeInspection.LocalInspectionEP;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.DebugUtil;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.testFramework.TestDataFile;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 public final class BashTestUtils {
@@ -71,6 +78,18 @@ public final class BashTestUtils {
         }
 
         return element;
+    }
+
+    @NotNull
+    public static String loadTestCaseFile(BashTestCase testCase, @TestDataFile String path) throws IOException {
+        return FileUtil.loadFile(new File(testCase.getTestDataPath(), path.replace('/', File.separatorChar)), "UTF-8");
+    }
+
+    public static void assertPsiTreeByFile(BashTestCase testCase, PsiFile psiFile, String filePath) throws IOException {
+        String actualPsi = DebugUtil.psiToString(psiFile, false).trim();
+        String expectedPsi = loadTestCaseFile(testCase, filePath).trim();
+
+        Assert.assertEquals(expectedPsi, actualPsi);
     }
 
     private static String computeBasePath() {
