@@ -1,3 +1,70 @@
+#### 2017-04-26:
+ - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
+ - \#426: (Very) basic support to parse patterns in arithmetic expressions
+ - \#424: Error displaying the folding elements in the HERE-document when there are variables in the text
+ - \#431: The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
+ - Released 1.6.8
+
+####2017-04-11:
+ - \#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
+ - \#419: Parsing error with double-pipe in subshell contained in list parenthesis
+
+#### 2017-04-02:
+ - \#413: Fix variable and function resolving in files which are outside of a module content root
+ - \#409: Jump to function def does not work in language injected string literals
+ - \#408: All variables in injected language chunks are flagged as unresolved
+
+####2017-03-30:
+ - \#358: Remove the maximum nesting level while parsing comamnds.
+ - Release 1.6.6 (eap)
+
+####2017-01-07:
+ - \#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.
+ - \#399: Potential fix for java.lang.NoClassDefFoundError: com/ansorgit/plugins/bash/util/BashIcons
+ - Release 1.6.5
+
+####2017-01-03:
+ - \#395: Hotfix to make BashSupport work again with scripts containing errors
+ - \#396: Check for working directory only if the module is valid
+ - \#397: Tokens after a here string <<< start were not always detected properly
+
+####2016-12-31:
+ - Prevent to pass empty elements to highlighting annotations
+ - Fix a division by zero exception
+ - Disable inline renaming if the context and the actual definition are in different files.
+ - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+ - Release 1.6.1
+ - Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often
+ - Handle line continuations in case pattern lists
+ - Increase index version to handle stub index vs. psi exceptions
+ - Release 1.6.2
+
+####2016-12-30:
+ - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
+ - \#388: Reformatting heredocs changes content
+ - \#361: Added support for the mapfile and readarray Bash builtin comamnds
+ - \#357: Added a potential fix for the problem
+ - \#350: Redirection in eval statement is flagged as error
+ - \#392: Formatted changes code in eval strings and redirect tokens
+ - \#393: Update JFlex to the latest version
+ - \#349: Support unicode characters in the script, warn about invalid identifiers which included illegal characters
+
+####2016-12-29:
+ - \#351: Added debug message for further diagnosis
+ - Added support for the ## parameter expansion operator
+ - \#367: Fixed parsing of [[ $(< $1) ]] expression
+ - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
+ - \#383: Handle division by zero in arithmetic expressions and show a warning in the code
+ - \#368: Added debugging messages for arithmetic expressions
+ - Release 1.6.0
+
+####2016-12-28:
+ - \#377: NPE in UnregisterGlobalVariableQuickfix
+ - \#379: Undo "Register Global Variable" doesn't work
+ - \#388: References for files are now searched in the module content scope and not in the module scope.
+ - \#389: Files with line continuations were not parsed properly and may break the whole project
+ - Start of 1.6.x version
+
 ####2016-05-26:
  - \#310: The parsed now accepts more deeply nested command lists
  - \#329: "Unexpected Token" Error For Associative Array

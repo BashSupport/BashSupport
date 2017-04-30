@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ParameterExpansionParsingTest.java, Class: ParameterExpansionParsingTest
- * Last modified: 2010-07-01
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,6 +33,9 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
 
     @Test
     public void testParse() throws Exception {
+        //{}
+        mockTestSuccessWithErrors(expansionParser, LEFT_CURLY, RIGHT_CURLY);
+
         //{A}
         mockTest(expansionParser, LEFT_CURLY, WORD, RIGHT_CURLY);
 
@@ -171,6 +171,8 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
     public void testIssue265() throws Exception {
         //{#}
         mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
+        //{#}
+        mockTest(expansionParser, LEFT_CURLY, PARAM_EXPANSION_OP_HASH_HASH, RIGHT_CURLY);
     }
 
     @Test

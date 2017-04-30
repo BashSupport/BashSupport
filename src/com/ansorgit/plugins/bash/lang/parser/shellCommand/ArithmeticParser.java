@@ -48,14 +48,7 @@ public final class ArithmeticParser implements ParsingFunction {
      */
     public boolean parse(BashPsiBuilder builder) {
         //special handling for empty expressions
-        if (ParserUtil.hasNextTokens(builder, true, EXPR_ARITH, _EXPR_ARITH)) {
-            builder.advanceLexer();
-            builder.advanceLexer();
-            return true;
-        }
-
-        //special handling for empty expressions
-        if (ParserUtil.hasNextTokens(builder, true, EXPR_ARITH_SQUARE, _EXPR_ARITH_SQUARE)) {
+        if (ParserUtil.hasNextTokens(builder, true, EXPR_ARITH, _EXPR_ARITH) || ParserUtil.hasNextTokens(builder, true, EXPR_ARITH_SQUARE, _EXPR_ARITH_SQUARE)) {
             builder.advanceLexer();
             builder.advanceLexer();
             return true;

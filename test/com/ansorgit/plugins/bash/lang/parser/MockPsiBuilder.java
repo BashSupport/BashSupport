@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: MockPsiBuilder.java, Class: MockPsiBuilder
- * Last modified: 2013-04-29
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,13 +36,13 @@ import java.util.*;
  */
 public class MockPsiBuilder implements PsiBuilder {
     private static final Logger log = Logger.getInstance("#bash.MockPsiBuilder");
-    private List<IElementType> elements;
-    private List<String> textTokens;
-    private List<String> errors = new ArrayList<String>();
-    private Stack<MockMarker> markers = new Stack<MockMarker>();
-    private Map<Key<?>, Object> userData = new HashMap<Key<?>, Object>();
+    private final List<IElementType> elements;
+    private final List<String> textTokens;
+    private final List<String> errors = new ArrayList<>();
+    private final Stack<MockMarker> markers = new Stack<>();
+    private final Map<Key<?>, Object> userData = new HashMap<>();
 
-    private List<Pair<MockMarker, IElementType>> doneMarkers = Lists.newLinkedList();
+    private final List<Pair<MockMarker, IElementType>> doneMarkers = Lists.newLinkedList();
 
     private static final TokenSet ignoredTokens = TokenSet.orSet(BashTokenTypes.whitespaceTokens);
     private TokenSet enforcedCommentTokens = BashTokenTypes.commentTokens;
@@ -54,21 +51,21 @@ public class MockPsiBuilder implements PsiBuilder {
     private ITokenTypeRemapper tokenRemapper = null;
 
     public MockPsiBuilder(IElementType... data) {
-        this.elements = new ArrayList<IElementType>();
+        this.elements = new ArrayList<>();
         this.elements.addAll(Arrays.asList(data));
 
         this.textTokens = Lists.newLinkedList();
     }
 
     public MockPsiBuilder(List<String> textTokens, IElementType... data) {
-        this.elements = new ArrayList<IElementType>();
+        this.elements = new ArrayList<>();
         this.elements.addAll(Arrays.asList(data));
 
         this.textTokens = Lists.newLinkedList(textTokens);
     }
 
     public boolean hasErrors() {
-        return errors.size() > 0;
+        return !errors.isEmpty();
     }
 
     public List<String> getErrors() {
@@ -183,6 +180,7 @@ public class MockPsiBuilder implements PsiBuilder {
         return elementPosition;
     }
 
+    @NotNull
     public Marker mark() {
         //store the stacktrace for better debugging
         StringBuilder details = new StringBuilder("Marker opened at:\n");
@@ -209,20 +207,24 @@ public class MockPsiBuilder implements PsiBuilder {
         return elementPosition >= elements.size();
     }
 
+    @NotNull
     public ASTNode getTreeBuilt() {
         //fixme
+        //noinspection ConstantConditions
         return null;
     }
 
+    @NotNull
     public FlyweightCapableTreeStructure<LighterASTNode> getLightTree() {
         //fixme
+        //noinspection ConstantConditions
         return null;
     }
 
     public void setDebugMode(boolean b) {
     }
 
-    public void enforceCommentTokens(TokenSet tokenSet) {
+    public void enforceCommentTokens(@NotNull TokenSet tokenSet) {
         enforcedCommentTokens = tokenSet;
     }
 
@@ -230,11 +232,11 @@ public class MockPsiBuilder implements PsiBuilder {
         return null;
     }
 
-    public <T> T getUserData(Key<T> tKey) {
+    public <T> T getUserData(@NotNull Key<T> tKey) {
         return (T) userData.get(tKey);
     }
 
-    public <T> void putUserData(Key<T> tKey, T t) {
+    public <T> void putUserData(@NotNull Key<T> tKey, T t) {
         userData.put(tKey, t);
     }
 
@@ -260,6 +262,7 @@ public class MockPsiBuilder implements PsiBuilder {
             this.details = details;
         }
 
+        @NotNull
         public Marker precede() {
             MockMarker preceedingMarker = new MockMarker(this.position, "preceded marker " + this);
             //fixme fix the stack of markers in the psi builder
@@ -311,22 +314,22 @@ public class MockPsiBuilder implements PsiBuilder {
             finishMarker();
         }
 
-        public void done(IElementType elementType) {
+        public void done(@NotNull IElementType elementType) {
             finishMarker();
 
             doneMarkers.add(Pair.create(this, elementType));
         }
 
-        public void collapse(IElementType iElementType) {
+        public void collapse(@NotNull IElementType iElementType) {
             done(iElementType);
         }
 
-        public void doneBefore(IElementType elementType, Marker marker) {
+        public void doneBefore(@NotNull IElementType elementType, @NotNull Marker marker) {
             finishMarker();
             doneMarkers.add(Pair.create(this, elementType));
         }
 
-        public void doneBefore(IElementType elementType, Marker marker, String s) {
+        public void doneBefore(@NotNull IElementType elementType, @NotNull Marker marker, String s) {
             finishMarker();
             doneMarkers.add(Pair.create(this, elementType));
         }
@@ -336,7 +339,7 @@ public class MockPsiBuilder implements PsiBuilder {
             finishMarker();
         }
 
-        public void errorBefore(String s, Marker marker) {
+        public void errorBefore(String s, @NotNull Marker marker) {
             //fixme
             error(s);
         }

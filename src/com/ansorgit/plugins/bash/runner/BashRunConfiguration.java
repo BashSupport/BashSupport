@@ -91,8 +91,10 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
         super.checkConfiguration();
 
         Module module = getConfigurationModule().getModule();
-
-        ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
+        if (module != null) {
+            //a missing module will cause a NPE in the check method
+            ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
+        }
 
         if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
             throw new RuntimeConfigurationException("No interpreter path given.");

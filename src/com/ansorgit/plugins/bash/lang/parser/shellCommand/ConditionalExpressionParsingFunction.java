@@ -45,8 +45,6 @@ public class ConditionalExpressionParsingFunction implements ParsingFunction {
      * @return Success or failure of the parsing.
      */
     public boolean parse(final BashPsiBuilder builder) {
-        log.assertTrue(builder.getTokenType() == EXPR_CONDITIONAL);
-
         final PsiBuilder.Marker command = builder.mark();
 
         boolean result = parseConditionalExpression(builder);

@@ -34,7 +34,7 @@ public class SimpleVarUsageInspection extends LocalInspectionTool {
         return new BashVisitor() {
             @Override
             public void visitVarUse(BashVar var) {
-                if (ReplaceVarWithParamExpansionQuickfix.isAvailableAt(var)) {
+                if (var.getTextLength() != 0 && ReplaceVarWithParamExpansionQuickfix.isAvailableAt(var)) {
                     holder.registerProblem(var, "Simple variable usage", new ReplaceVarWithParamExpansionQuickfix(var));
                 }
             }

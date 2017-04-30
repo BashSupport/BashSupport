@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: FunctionResolveTestCase.java, Class: FunctionResolveTestCase
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -111,6 +108,21 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         PsiReference element = configure();
         PsiElement def = element.resolve();
         Assert.assertTrue(def.getTextOffset() < element.getElement().getTextOffset());
+    }
+
+    @Test
+    public void testFunctionUnicodeNameRussian() throws Exception {
+        checkFunctionReference();
+    }
+
+    @Test
+    public void testFunctionUnicodeNameGreek() throws Exception {
+        checkFunctionReference();
+    }
+
+    @Test
+    public void testFunctionDefinitionWithErrors() throws Exception {
+        checkFunctionReference();
     }
 
     protected String getTestDataPath() {

@@ -107,8 +107,8 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     @Override
     public PsiElement setName(@NonNls @NotNull String newName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newName)) {
-            throw new IncorrectOperationException("can't have an empty name");
+        if (!BashIdentifierUtil.isValidNewVariableName(newName)) {
+            throw new IncorrectOperationException("Invalid variable name");
         }
 
         PsiElement replacement = BashPsiElementFactory.createVariable(getProject(), newName, isParameterExpansion());
@@ -172,7 +172,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     public boolean isArrayUse() {
         ASTNode prev = getNode().getTreePrev();
-        if (prev != null && isParameterExpansion() && prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH) {
+        if (prev != null && isParameterExpansion() && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
             return true;
         }
 

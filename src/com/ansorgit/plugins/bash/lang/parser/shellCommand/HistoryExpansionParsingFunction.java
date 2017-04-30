@@ -29,7 +29,7 @@ public class HistoryExpansionParsingFunction implements ParsingFunction {
     @Override
     public boolean isValid(BashPsiBuilder builder) {
         IElementType token = builder.rawLookup(1);
-        return token != null && builder.getTokenType() == BANG_TOKEN && !ParserUtil.isWhitespace(token);
+        return token != null && builder.getTokenType() == BANG_TOKEN && !ParserUtil.isWhitespaceOrLineFeed(token);
     }
 
     private final TokenSet accepted = TokenSet.create(WORD, WORD, ARITH_NUMBER, BANG_TOKEN, DOLLAR);
@@ -53,7 +53,7 @@ public class HistoryExpansionParsingFunction implements ParsingFunction {
         } else {
             int count = 0;
             //fallback is here to eat up all token up to the first whitespace
-            while (!builder.eof() && !ParserUtil.isWhitespace(builder.getTokenType(true))) {
+            while (!builder.eof() && !ParserUtil.isWhitespaceOrLineFeed(builder.getTokenType(true))) {
                 builder.advanceLexer();
                 count++;
             }

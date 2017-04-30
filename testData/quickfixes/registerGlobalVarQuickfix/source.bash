@@ -1,0 +1,1 @@
+$<caret>GLOBAL_VAR

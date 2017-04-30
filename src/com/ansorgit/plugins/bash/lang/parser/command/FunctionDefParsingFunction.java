@@ -100,7 +100,7 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         }
 
         //optional newlines before the body
-        final boolean newlinesAtBegin = builder.eatOptionalNewlines();
+        final boolean newlinesAtBegin = builder.readOptionalNewlines();
 
         //if we don't have one or more newlines we need a command group, i.e. {...}
         boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
@@ -114,21 +114,10 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         }
 
         //parse function body
-        final PsiBuilder.Marker body = builder.mark();
         boolean parsed = Parsing.shellCommand.parse(builder);
-        if (!parsed) {
-            function.doneBefore(FUNCTION_DEF_COMMAND, body);
-            body.drop();
-
-            return true;
-        }
-
-        if (!isGroup && builder.getTokenType() == BashTokenTypes.SEMI) {
+        if (parsed && !isGroup && builder.getTokenType() == BashTokenTypes.SEMI) {
             builder.advanceLexer();
         }
-
-        //body.done(BashElementTypes.BLOCK_ELEMENT);
-        body.drop();
 
         function.done(BashElementTypes.FUNCTION_DEF_COMMAND);
 

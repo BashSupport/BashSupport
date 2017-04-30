@@ -34,9 +34,10 @@ public class BashBackquoteImpl extends BashCompositeElement implements BashBackq
         return getCommandTextRange().substring(getText());
     }
 
+    @NotNull
     @Override
     public TextRange getCommandTextRange() {
-        return TextRange.from(getStartOffset() + 1, getTextLength() - 2);
+        return TextRange.from(1, getTextLength() - 2);
     }
 
     @Override

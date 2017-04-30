@@ -20,6 +20,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -29,6 +31,7 @@ public class AssignmentExpressionsImpl extends AbstractExpression implements Ass
         super(astNode, "ArithmeticAssignmentChain", Type.Unsupported);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("compute is not unsupported");

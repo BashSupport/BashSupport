@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.TernaryExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -84,6 +85,7 @@ public class TernaryExpressionsImpl extends AbstractExpression implements Ternar
         return findMainBranch().computeNumericValue();
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("compute is unsupported in a ternary expression");

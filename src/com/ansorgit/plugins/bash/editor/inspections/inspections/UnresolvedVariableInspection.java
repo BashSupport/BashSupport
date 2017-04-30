@@ -15,8 +15,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.RegisterGlobalVariableQuickfix;
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.UnregisterGlobalVariableQuickfix;
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.GlobalVariableQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -24,7 +23,6 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +31,7 @@ import java.util.Set;
 /**
  * This inspection marks unresolved variables.
  * <br>
+ *
  * @author jansorg
  */
 public class UnresolvedVariableInspection extends LocalInspectionTool {
@@ -44,36 +43,30 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
 
     private static final class UnresolvedVariableVisitor extends BashVisitor {
         private final ProblemsHolder holder;
-        private Set<String> globalVariables;
+        private final Set<String> globalVariableNames;
 
         public UnresolvedVariableVisitor(ProblemsHolder holder) {
             this.holder = holder;
-            this.globalVariables = BashProjectSettings.storedSettings(holder.getProject()).getGlobalVariables();
+            globalVariableNames = BashProjectSettings.storedSettings(holder.getProject()).getGlobalVariables();
         }
 
         @Override
         public void visitVarUse(BashVar bashVar) {
-            if (!bashVar.isBuiltinVar()) {
-                BashReference ref = bashVar.getReference();
+            if (bashVar.isBuiltinVar() || bashVar.getTextLength() == 0) {
+                return;
+            }
 
-                PsiElement resolved = ref.resolve();
-                if (resolved == null) {
-                    String varName = ref.getReferencedName();
+            if (globalVariableNames.contains(bashVar.getReferenceName())) {
+                return;
+            }
 
-                    boolean isRegisteredAsGlobal = globalVariables.contains(varName);
-                    if (isRegisteredAsGlobal) {
-                        holder.registerProblem(bashVar, "This variable is currently registered as a global variable",
-                                ProblemHighlightType.INFORMATION,
-                                ref.getRangeInElement(),
-                                new UnregisterGlobalVariableQuickfix(bashVar));
-                    } else {
-                        holder.registerProblem(bashVar,
-                                "Unresolved variable",
-                                ProblemHighlightType.LIKE_UNKNOWN_SYMBOL,
-                                ref.getRangeInElement(),
-                                new RegisterGlobalVariableQuickfix(bashVar));
-                    }
-                }
+            BashReference ref = bashVar.getReference();
+            if (ref.resolve() == null) {
+                holder.registerProblem(bashVar,
+                        "Unresolved variable",
+                        ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                        ref.getRangeInElement(),
+                        new GlobalVariableQuickfix(bashVar, true));
             }
         }
     }

@@ -22,6 +22,7 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
     //Help data to parse (nested) strings.
     private final StringLexingstate string = new StringLexingstate();
+    private final HeredocLexingState heredocState = new HeredocLexingState();
     //parameter expansion parsing state
     private boolean paramExpansionHash = false;
     private boolean paramExpansionWord = false;
@@ -32,17 +33,34 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private boolean inCaseBody = false;
     //conditional expressions
     private boolean emptyConditionalCommand = false;
-    private final HeredocLexingState heredocState = new HeredocLexingState();
+    private boolean inHereString = false;
+
+    _BashLexer(BashVersion version, java.io.Reader in) {
+        super(in);
+
+        this.isBash4 = BashVersion.Bash_v4.equals(version);
+    }
 
     @Override
     public HeredocLexingState heredocState() {
         return heredocState;
     }
 
-    _BashLexer(BashVersion version, java.io.Reader in) {
-        super(in);
+    @Override
+    public boolean isInHereStringContent() {
+        return inHereString;
+    }
 
-        this.isBash4 = BashVersion.Bash_v4.equals(version);
+    @Override
+    public void enterHereStringContent() {
+        assert !inHereString : "inHereString must be false when entering a here string";
+
+        inHereString = true;
+    }
+
+    @Override
+    public void leaveHereStringContent() {
+        inHereString = false;
     }
 
     @Override
@@ -136,8 +154,8 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionWord(boolean paremeterExpansionWord) {
-        this.paramExpansionWord = paremeterExpansionWord;
+    public void setParamExpansionWord(boolean paramExpansionWord) {
+        this.paramExpansionWord = paramExpansionWord;
     }
 
     @Override
@@ -146,8 +164,8 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionOther(boolean paremeterExpansionOther) {
-        this.paramExpansionOther = paremeterExpansionOther;
+    public void setParamExpansionOther(boolean paramExpansionOther) {
+        this.paramExpansionOther = paramExpansionOther;
     }
 
     @Override
@@ -156,7 +174,7 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     }
 
     @Override
-    public void setParamExpansionHash(boolean paremeterExpansionHash) {
-        this.paramExpansionHash = paremeterExpansionHash;
+    public void setParamExpansionHash(boolean paramExpansionHash) {
+        this.paramExpansionHash = paramExpansionHash;
     }
 }

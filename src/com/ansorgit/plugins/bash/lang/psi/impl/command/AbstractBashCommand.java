@@ -35,6 +35,7 @@ import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
@@ -95,7 +96,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     public boolean isFunctionCall() {
-        if (DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile())) {
+        if (isSlowResolveRequired()) {
             return isGenericCommand() && dumbFunctionReference.resolve() != null;
         }
 
@@ -138,7 +139,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean isBashScriptCall() {
-        if (DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile())) {
+        if (isSlowResolveRequired()) {
             return dumbBashFileReference.resolve() != null;
         }
 
@@ -203,7 +204,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public PsiReference getReference() {
-        boolean slowFallback = DumbService.isDumb(getProject()) || BashResolveUtil.isScratchFile(getContainingFile());
+        boolean slowFallback = isSlowResolveRequired();
 
         if (isFunctionCall()) {
             return slowFallback ? dumbFunctionReference : functionReference;
@@ -280,4 +281,13 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         return false;
     }
 
+    /**
+     * @return returns whether the file containing this command is indexed or whether a slow fallback is required to resolve the references contained in the file.
+     */
+    private boolean isSlowResolveRequired() {
+        Project project = getProject();
+        PsiFile file = getContainingFile();
+
+        return DumbService.isDumb(project) || BashResolveUtil.isScratchFile(file) || !BashResolveUtil.isIndexedFile(project, file.getVirtualFile());
+    }
 }

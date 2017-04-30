@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: AbstractArithExprTest.java, Class: AbstractArithExprTest
- * Last modified: 2010-07-17
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +21,7 @@ import com.intellij.codeInsight.CodeInsightTestCase;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.junit.Assert;
 
 /**
@@ -39,8 +37,8 @@ public abstract class AbstractArithExprTest extends CodeInsightTestCase {
         PsiElement element = psi.findElementAt(getEditor().getCaretModel().getOffset());
         Assert.assertNotNull(element);
 
-        element = element.getParent();
-        Assert.assertTrue("element is of invalid type " + element, element instanceof ArithmeticExpression);
+        element = PsiTreeUtil.getParentOfType(element, ArithmeticExpression.class);
+        Assert.assertNotNull("No arithmetic expression found at the caret position", element);
 
         //find the top expression
         ArithmeticExpression start = (ArithmeticExpression) element;

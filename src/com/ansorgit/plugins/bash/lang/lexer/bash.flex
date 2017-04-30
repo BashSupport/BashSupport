@@ -49,10 +49,10 @@ import com.intellij.psi.tree.IElementType;
 
 /***** Custom user code *****/
 
-LineTerminator = \r\n | \r | \n
 InputCharacter = [^\r\n]
-WhiteSpace=[ \t\f]
-ContinuedLine = "\\" {LineTerminator}
+LineTerminator = \r\n | \r | \n
+LineContinuation = "\\" {LineTerminator}
+WhiteSpace=[ \t\f] {LineContinuation}*
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
@@ -63,29 +63,24 @@ StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 UnescapedCharacter = [^\']
 
-WordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "," | "~" | "*" | "_"
-    | {EscapedChar} | [\u00C0-\u00FF]
-WordAfter =  {WordFirst} | "#" | "!" | "[" | "]"
+WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:&%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {LineContinuation}
+WordAfter = {WordFirst} | [#!\[\]]
 
-ArithWordFirst = [a-zA-Z] | "_" | "@" | "?" | "." | ":" | {EscapedChar}
+ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {LineContinuation}
 // No "[" | "]"
-ArithWordAfter =  {ArithWordFirst} | "#" | "!" | [0-9]
+ArithWordAfter =  {ArithWordFirst} | [0-9#!]
 
-ParamExpansionWordFirst = [a-zA-Z0-9_,] | {EscapedChar}
-ParamExpansionWordAfter =  {ParamExpansionWordFirst}
-ParamExpansionWord = {ParamExpansionWordFirst}{ParamExpansionWordAfter}*
+ParamExpansionWordFirst = [a-zA-Z0-9_] | {EscapedChar} | {LineContinuation}
+ParamExpansionWord = {ParamExpansionWordFirst}+
 
-AssignListWordFirst = [a-zA-Z0-9] | "_" | "/" | "@" | "?" | "." | "*" | ":" | "&" | "%"
-    | "-" | "^" | "+" | "-" | "~" | "*" | "," | ";"
-    | {EscapedChar}
-AssignListWordAfter =  {AssignListWordFirst} | "$" | "#" | "!"
-AssignListWord={AssignListWordFirst}{AssignListWordAfter}*
+AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {LineContinuation}
+AssignListWordAfter =  {AssignListWordFirst} | [$#!]
+AssignListWord = {AssignListWordFirst}{AssignListWordAfter}*
 
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
-AssignmentWord = [a-zA-Z_][a-zA-Z0-9_]*
-Variable = "$" {AssignmentWord} | "$@" | "$$" | "$#" | "$"[0-9] | "$?" | "$!" | "$*" | "$-" | "$_"
+AssignmentWord = [[\p{Letter}]||[_]] [[\p{Letter}]||[0-9_]]*
+Variable = "$" {AssignmentWord} | "$"[@$#0-9?!*_-]
 
 ArithExpr = ({ArithWord} | [0-9a-z+*-] | {Variable} )+
 
@@ -95,7 +90,7 @@ OctalIntegerLiteral = "0" [0-7]+
 
 CaseFirst={EscapedChar} | [^|\"'$)(# \n\r\f\t\f]
 CaseAfter={EscapedChar} | [^|\"'$`)( \n\r\f\t\f;]
-CasePattern = {CaseFirst}{CaseAfter}*
+CasePattern = {CaseFirst} ({LineContinuation}? {CaseAfter})*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
@@ -141,6 +136,15 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /*  To match tokens in pattern expansion mode ${...} . Needs special parsing of # */
 %state S_PARAM_EXPANSION
 
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_PATTERN
+
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_DELIMITER
+
+/*  To match patterns included in parameter expansions */
+%state S_PARAM_EXPANSION_REPLACEMENT
+
 /* To match tokens which are in between backquotes. Necessary for nested lexing, e.g. inside of conditional expressions */
 %state S_BACKQUOTE
 
@@ -148,6 +152,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 %xstate S_HEREDOC_MARKER
 %xstate S_HEREDOC_MARKER_IGNORE_TABS
 %xstate S_HEREDOC
+
+/* To match here-strings */
+%xstate S_HERE_STRING
 
 %%
 /***************************** INITIAL STAATE ************************************/
@@ -158,7 +165,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_HEREDOC_MARKER, S_HEREDOC_MARKER_IGNORE_TABS> {
     {WhiteSpace}+                { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }
+    {LineContinuation}+             { /* ignored */ }
     {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
@@ -250,9 +257,21 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 // Parenthesis lexing
-<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE> {
+<S_STRINGMODE, S_HEREDOC, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_HERE_STRING, S_ASSIGNMENT_LIST> {
     "$" / "("               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
     "$" / "["               { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
+}
+
+<S_HERE_STRING> {
+    {Variable}              { return VARIABLE; }
+
+    "("                     { return LEFT_PAREN; }
+    ")"                     { yypushback(1); backToPreviousState(); }
+
+    "[" | "]" | "{" | "}" |
+    {Word}                  { if (!isInHereStringContent()) enterHereStringContent(); return WORD; }
+
+    {WhiteSpace}            { if (isInHereStringContent()) { leaveHereStringContent(); backToPreviousState(); } return WHITESPACE; }
 }
 
 <YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_CASE> {
@@ -365,6 +384,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   " ]]"                         { backToPreviousState(); return _BRACKET_KEYWORD; }
   "&&"                          { return AND_AND; }
   "||"                          { return OR_OR; }
+  "$" / "("                     { goToState(S_DOLLAR_PREFIXED); return DOLLAR; }
   "("                           { return LEFT_PAREN; }
   ")"                           { return RIGHT_PAREN; }
 }
@@ -384,7 +404,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <S_TEST, S_TEST_COMMAND> {
   {WhiteSpace}                 { return WHITESPACE; }
-  {ContinuedLine}+             { /* ignored */ }
 
   /*** Test / conditional expressions ***/
 
@@ -480,6 +499,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   "-="                          { return ARITH_ASS_MINUS; }
   ">>="                         { return ARITH_ASS_SHIFT_RIGHT; }
   "<<="                         { return ARITH_ASS_SHIFT_LEFT; }
+  "&="                          { return ARITH_ASS_BIT_AND; }
+  "|="                          { return ARITH_ASS_BIT_OR; }
+  "^="                          { return ARITH_ASS_BIT_XOR; }
 
   "+"                           { return ARITH_PLUS; }
   "++"                          { return ARITH_PLUS_PLUS; }
@@ -598,7 +620,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                   }
 
   /* Bash v3 */
-  "<<<"                         { return REDIRECT_LESS_LESS_LESS; }
+  "<<<"                         { goToState(S_HERE_STRING); return REDIRECT_HERE_STRING; }
   "<>"                          { return REDIRECT_LESS_GREATER; }
 
   "<&" / {ArithWord}            { return REDIRECT_LESS_AMP; }
@@ -626,14 +648,20 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   ":"                           { return PARAM_EXPANSION_OP_COLON; }
 
-  "#"                           { setParamExpansionHash(isParamExpansionWord() && true); return PARAM_EXPANSION_OP_HASH; }
+  "//"                          { goToState(S_PARAM_EXPANSION_PATTERN); return PARAM_EXPANSION_OP_SLASH_SLASH; }
+  "/"                           { goToState(S_PARAM_EXPANSION_PATTERN); return PARAM_EXPANSION_OP_SLASH;  }
+
+  "##"                          { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH_HASH; }
+  "#"                           { setParamExpansionHash(isParamExpansionWord()); return PARAM_EXPANSION_OP_HASH; }
   "@"                           { return PARAM_EXPANSION_OP_AT; }
   "*"                           { return PARAM_EXPANSION_OP_STAR; }
   "%"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_PERCENT; }
   "?"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_QMARK; }
   "."                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_DOT; }
-  "/"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_SLASH; }
-  "^"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UNKNOWN; }
+  "^"                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UPPERCASE_FIRST; }
+  "^^"                          { setParamExpansionOther(true); return PARAM_EXPANSION_OP_UPPERCASE_ALL; }
+  ","                           { setParamExpansionOther(true); return PARAM_EXPANSION_OP_LOWERCASE_FIRST; }
+  ",,"                          { setParamExpansionOther(true); return PARAM_EXPANSION_OP_LOWERCASE_ALL; }
 
   "[" / [@*]                    { return LEFT_SQUARE; }
   "["                           { if (!isParamExpansionOther() && (!isParamExpansionWord() || !isParamExpansionHash())) {
@@ -657,8 +685,34 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {EscapedChar}                 { setParamExpansionWord(true); return WORD; }
   {IntegerLiteral}              { setParamExpansionWord(true); return WORD; }
   {ParamExpansionWord}          { setParamExpansionWord(true); return WORD; }
- }
+}
 
+<S_PARAM_EXPANSION_PATTERN> {
+  // pattern followed by the delimiter
+  ({EscapedChar} | {LineTerminator} | [^/}])+ / "/" { backToPreviousState(); goToState(S_PARAM_EXPANSION_DELIMITER); return PARAM_EXPANSION_PATTERN; }
+
+  //no delimiter and no replacement
+  ({EscapedChar} | {LineTerminator} | [^/}])+     { backToPreviousState(); return PARAM_EXPANSION_PATTERN; }
+
+  //empty pattern
+  .                           { yypushback(1); backToPreviousState(); }
+}
+
+// matches just the delimiter and then changes into the replacement state
+<S_PARAM_EXPANSION_DELIMITER> {
+    //with replacement
+    "/"                         { backToPreviousState(); goToState(S_PARAM_EXPANSION_REPLACEMENT); return PARAM_EXPANSION_OP_SLASH; }
+    
+    //no replacement
+    "}"                         { yypushback(1); backToPreviousState(); }
+}
+
+<S_PARAM_EXPANSION_REPLACEMENT> {
+    [^}]+                       { backToPreviousState(); return WORD; }
+
+    //probably an empty replacement
+    .                           { yypushback(1); backToPreviousState(); }
+}
 
 /** Match in all except of string */
 <YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, S_STRINGMODE> {
@@ -667,33 +721,39 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
      if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
-    {ContinuedLine}+             { /* ignored */ }
+    {LineContinuation}           { return WHITESPACE; }
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
-    {StringStart}                 { stringParsingState().enterString(); goToState(S_STRINGMODE); return STRING_BEGIN; }
+    <S_HERE_STRING> {
+        {StringStart}                 { stringParsingState().enterString(); if (yystate() == S_HERE_STRING && !isInHereStringContent()) enterHereStringContent();
+goToState(S_STRINGMODE); return STRING_BEGIN; }
 
-    "$"\'{SingleCharacter}*\'     |
-    \'{UnescapedCharacter}*\'        { return STRING2; }
+        "$"\'{SingleCharacter}*\'     |
+        \'{UnescapedCharacter}*\'        { return STRING2; }
 
     /* Single line feeds are required to properly parse heredocs*/
-    {LineTerminator}             {
-                                        if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(S_HEREDOC)) {
-                                            backToPreviousState();
-                                            return LINE_FEED;
-                                        }
+        {LineTerminator}             {
+                                            if (yystate() == S_HERE_STRING) {
+                                                backToPreviousState();
+                                                return LINE_FEED;
+                                            } else if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(S_HEREDOC)) {
+                                                backToPreviousState();
+                                                return LINE_FEED;
+                                            }
 
-                                        if (!heredocState().isEmpty()) {
-                                            // first linebreak after the start marker
-                                            goToState(S_HEREDOC);
-                                            return LINE_FEED;
-                                        }
+                                            if (!heredocState().isEmpty()) {
+                                                // first linebreak after the start marker
+                                                goToState(S_HEREDOC);
+                                                return LINE_FEED;
+                                            }
 
-                                       return LINE_FEED;
-                                 }
+                                           return LINE_FEED;
+                                     }
 
-    /* Backquote expression */
-    `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+        /* Backquote expression */
+        `                             { if (yystate() == S_BACKQUOTE) backToPreviousState(); else goToState(S_BACKQUOTE); return BACKQUOTE; }
+    }
 
 
   /* Bash reserved keywords */
@@ -725,8 +785,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "<"                           { return LESS_THAN; }
     ">>"                          { return SHIFT_RIGHT; }
 
-    <S_STRINGMODE>{
-        {Variable}                 { return VARIABLE; }
+    <S_STRINGMODE> {
+        {Variable}                { return VARIABLE; }
     }
 
     "$["                          { yypushback(1); goToState(S_ARITH_SQUARE_MODE); return DOLLAR; }
@@ -734,7 +794,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE> {
+<YYINITIAL, S_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, S_STRINGMODE, S_HERE_STRING> {
     "${"                        { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                         { if (yystate() == S_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
@@ -753,4 +813,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 /** END */
-  .                            { return BAD_CHARACTER; }
+<S_HERE_STRING> {
+.                              {return BAD_CHARACTER; }
+}
+
+.                              { return BAD_CHARACTER; }
+

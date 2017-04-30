@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ShellCommandParsingTest.java, Class: ShellCommandParsingTest
- * Last modified: 2010-10-05
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
@@ -28,40 +25,11 @@ import static com.ansorgit.plugins.bash.lang.BashVersion.Bash_v3;
  * @author jansorg
  */
 public class ShellCommandParsingTest extends MockPsiTest {
-    private final MockFunction arithmeticParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return ShellCommandParsing.arithmeticParser.parse(builder);
-        }
-    };
-
-    private final MockFunction subshellParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.subshellParser.parse(builder);
-        }
-    };
-
-    private final MockFunction ifCommandParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.ifParser.parse(builder);
-        }
-    };
-
-    private final MockFunction backquoteCommandParsingTester = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.backtickParser.parse(builder);
-        }
-    };
-
-    private final MockFunction commandGroupParsingTest = new MockFunction() {
-        @Override
-        public boolean apply(BashPsiBuilder builder) {
-            return Parsing.shellCommand.groupCommandParser.parse(builder);
-        }
-    };
+    private final MockFunction arithmeticParsingTester = MockFunction.of(ShellCommandParsing.arithmeticParser);
+    private final MockFunction subshellParsingTester = MockFunction.of(Parsing.shellCommand.subshellParser);
+    private final MockFunction ifCommandParsingTester = MockFunction.of(Parsing.shellCommand.ifParser);
+    private final MockFunction backquoteCommandParsingTester = MockFunction.of(Parsing.shellCommand.backtickParser);
+    private final MockFunction commandGroupParsingTest = MockFunction.of(Parsing.shellCommand.groupCommandParser);
 
     @Test
     public void testIfCommand1() {

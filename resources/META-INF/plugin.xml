@@ -15,146 +15,115 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin version="2" url="https://github.com/jansorg/BashSupport">
+<idea-plugin url="https://github.com/jansorg/BashSupport">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.5.8</version>
+    <version>1.6.8</version>
 
     <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 145.x or later -->
-    <idea-version since-build="145.0" until-build="145.99999"/>
+    <idea-version since-build="145.0" until-build="145.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
-    <depends optional="true" config-file="intelliLang-bashsupport.xml">org.intellij.intelliLang</depends>
+    <depends optional="true">org.intellij.intelliLang</depends>
 
     <description><![CDATA[<html>
-    Bash language support for IntelliJ.<br/>
+    Bash language support for the IntelliJ platform.<br/>
     Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.5.8 compared to 1.5.7:</b>
+        <b>Changes in version 1.6.8:</b>
         <ul>
-            <li><b>BashSupport development is on hold. I'm unable to continue to ship a high quality plugin with my very limited spare time. Most of the other Top-10 plugins are either made by JetBrains or are commercial offerings. Further development may happen in 2017. Please accept my apologies...</b></li>
-            <li>Features removed:<br/>
-            <ul>
-                <li>#333: Marked support for escapes in evaluated code as experimental.
-                    A proper fix needs major work on the lexer framework and is currently not fully supported.
-                    There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.</li>
-            </ul>
-            </li>
-
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#310: The parsed now accepts more deeply nested command lists</li>
-                    <li>#310: The parsed now accepts more deeply nested command lists</li>
-                    <li>#329: "Unexpected Token" Error For Associative Array</li>
-                    <li>#343: Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "</li>
-                    <li>Parsing for arithmetic expression in evaluating heredocs</li>
-                </ul>
-            </li>
+            <li>#431: The arithmetic bitwise assignments are now correctly parsed.</li>
+            <li>#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"</li>
+            <li>#426: (Very) basic support to parse patterns in arithmetic expressions</li>
+            <li>#424: Error displaying the folding elements in the HERE-document when there are variables in the text</li>
+            <li>#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,=3)), for example)</li>
+            <li>#419: Parsing error with double-pipe in subshell contained in list parenthesis</li>
         </ul>
+        <br/>
 
-        <b>Changes in version 1.5.7 compared to 1.5.6:</b>
+        <b>Changes in version 1.6.7:</b>
         <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)</li>
-                    <li>#340: isExpectingEvaluatingHeredoc called on an empty marker stack</li>
-                    <li>#341: Exception "The inString stack should not be empty"</li>
-                    <li>#342: Exception "Index out of range: -1" at beginning of file</li>
-                </ul>
-            </li>
+            <li>#413: Fix variable and function resolving in files which are outside of a module content root</li>
+            <li>#409: Jump to function def does not work in language injected string literals</li>
+            <li>#408: All variables in injected language chunks are flagged as unresolved</li>
         </ul>
+        <br/>
 
-        <b>Changes in version 1.5.6 compared to 1.5.5:</b>
+        <b>Changes in version 1.6.6:</b>
         <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#89: Function expands incorrectly when defined above another function</li>
-                    <li>#125: Array element gives "Unexpected token"</li>
-                    <li>#310: Workaround for deeply nested structures</li>
-                    <li>#320: Array use in arithmetic expressions wasn't working as expected</li>
-                    <li>#321: Handle leading tabs before heredoc end markers in heredocs started with the marker</li>
-                    <li>#324: Error reporting component is broken</li>
-                    <li>#327: Heredoc parser doesn't recognize \$( or \${ construction</li>
-                    <li>#330: Variable declarations in eval code now accepts variables on the left side of an assignment</li>
-                    <li>#331: NPE in HereDoc parsing</li>
-                    <li>#332: NPE in enter processor</li>
-                    <li>#333: ClassCastExceptions in ManpageDocSourc</li>
-                    <li>#334: Potential fix for the lexing state errors</li>
-                    <li>Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.</li>
-                    <li>Switched the exception error reporting to use https.</li>
-                </ul>
-            </li>
+            <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
         </ul>
+        <br/>
 
-        <b>Changes in version 1.5.5 compared to 1.5.4:</b>
+        <b>Changes in version 1.6.5:</b>
         <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>No keyword and live-template autocompletion in command arguments</li>
-                    <li>Performance fixes for less latency in the editor</li>
-                    <li>Variables and functions can now be resolved in scratch files again</li>
-                    <li>#297: File includes with directories or / in the path reference are not working as expected</li>
-                    <li>#298: Global variable, when used locally, mistakenly marks readonly error if set readonly within function</li>
-                    <li>#300: Variables are not recognized in case</li>
-                    <li>#303: Multiline lists not recognised</li>
-                    <li>#306: Index access during dumb mode</li>
-                    <li>#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle</li>
-                    <li>#308: Grouping in test commands not properly parsed</li>
-                    <li>#312: Newlines are not accepted in parameter expansions</li>
-                    <li>#313: More gentle parsing for empty command lists for: for, while, until, if, select.</li>
-                </ul>
-            </li>
+            <li>#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.</li>
+            <li>#399: Potential fix for java.lang.NoClassDefFoundError: BashIcons</li>
         </ul>
+        <br/>
 
-        <b>Changes in version 1.5.4 compared to 1.5.3:</b>
+        <b>Changes in version 1.6.4:</b>
         <ul>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#299: ClassNotFound exception in PHPStorm</li>
-                </ul>
-            </li>
+            <li>Sorry for the many releases!</li>
+            <li>#397: Tokens after a here string start were not always detected properly</li>
+            <li>Index version increased to avoid PSI index exceptions</li>
         </ul>
+        <br/>
 
-        <b>Changes in version 1.5.3 compared to 1.5.2:</b>
+        <b>Changes in version 1.6.3:</b>
         <ul>
-            <li>Features:
-                <ul>
-                    <li>Up to 35x faster file highlighting</li>
-                    <li>Improved eval and trap parsing</li>
-                    <li>Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets</li>
-                </ul>
-            </li>
-            <li>Bugs fixed:<br/>
-                <ul>
-                    <li>#286: Eval parsing of code not inside a string</li>
-                    <li>#263: Warning for modifications of variables re-defined as readonly</li>
-                </ul>
-            </li>
+            <li>#395: Hotfix to make BashSupport work again with scripts containing errors</li>
+            <li>#396: Check for working directory only if the module is valid</li>
         </ul>
+        <br/>
 
-        <b>New features in version 1.5.x compared to 1.4.x:</b>
+        <b>Changes in version 1.6.2:</b>
         <ul>
-            <li>#90: Language injection into unevaluated heredoc content, single and double quoted strings</li>
-            <li>#274: Spellchecker support for double-quoted strings, single-quoted strings and heredoc
-                content
-            </li>
-            <li>Bash code passed to eval in single quotes ('') is now parsed, too</li>
-            <li>Files usages in strings are now processed during a file rename if the option is enabled.</li>
-            <li>Renaming files in non-source directories</li>
-            <li>References to other Bash script files will now be renamed if the filename is changed</li>
-            <li>Bash version 4 support is now enabled by default</li>
+            <li>Increase stub index version to handle index vs. psi exceptions</li>
+            <li>Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often</li>
+            <li>Handle line continuations in case pattern lists</li>
+        </ul>
+        <br/>
+
+        <b>Changes in version 1.6.1:</b>
+        <ul>
+            <li>#361: Added support for the mapfile and readarray Bash builtin comamnds</li>
+            <li>#349: Support unicode characters in scripts, warn about invalid identifiers which include illegal characters</li>
+            <li>#392: Reformatting changes code in eval strings and redirect tokens</li>
+            <li>#388: Reformatting heredocs changes content</li>
+            <li>#350: Redirection in eval statement is flagged as error</li>
+            <li>#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.</li>
+            <li>#391: New inspection to highlighting unresolved, but globally registered variables (to have a separate highlighting level and inspection description)</li>
+            <li>#393: Update JFlex to the latest version</li>
+            <li>#357: Added a potential fix for the problem</li>
         </ul>
 
         <br/>
-        <a href="https://github.com/jansorg/BashSupport/blob/idea-139.x/Changelog.md">Full changelog</a>
+        <b>Changes in version 1.6.0:</b>
+        <ul>
+            <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
+            <li>#389: Files with line continuations were not parsed properly and may break the whole project (might have broken your project!)</li>
+            <li>#377: NPE in UnregisterGlobalVariableQuickfix</li>
+            <li>#367: Fixed parsing of redirects in subshells inside of conditional commands, e.g. [[ $(&lt; $1) ]]</li>
+            <li>#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] &lt;&lt;&lt; [abc]"</li>
+            <li>#379: Undo "Register Global Variable" doesn't work</li>
+            <li>#368: Added debugging messages for arithmetic expressions</li>
+            <li>#383: Handle division by zero in arithmetic expressions and show a warning in the code</li>
+            <li>#388: References for files are now searched in the module content scope and not in the module scope.</li>
+            <li>Added support for the ## parameter expansion operator</li>
+            <li>#351: Added debug message for further diagnosis</li>
+        </ul>
+
+        <br/>
+        <a href="https://github.com/jansorg/BashSupport/blob/idea-162.x/Changelog.md">Full changelog</a>
         </html>
         ]]>
     </change-notes>
@@ -176,14 +145,6 @@
     </module-components>
 
     <actions>
-        <!--
-                <action id="BashErrorReporter.TriggerException"
-                        class="nu.studer.idea.errortesting.TriggerExceptionAction"
-                        text="Trigger Exception"
-                        description="Triggers an exception">
-                    <add-to-group group-id="ToolsMenu" anchor="last"/>
-                </action>
--->
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
@@ -281,11 +242,6 @@
         <enterHandlerDelegate implementation="com.ansorgit.plugins.bash.editor.BashUnmatchedBraceEnterProcessor" order="FIRST" id="BashUnmatchedBrace" />
 
         <!-- Repl-->
-        <!--
-        <projectService serviceInterface="com.ansorgit.plugins.bash.repl.ReplManager"
-                        serviceImplementation="com.ansorgit.plugins.bash.repl.ReplManager"/>
-        -->
-
         <projectConfigurable groupId="language" instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
 
         <!-- Error reporter-->
@@ -373,6 +329,12 @@
                          key="inspection.unresolvedVariable.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UnresolvedVariableInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashGloballyRegisteredVariable"
+                         key="inspection.globallyRegisteredVariable.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.GloballyRegisteredVariableInspection"/>
 
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashEvaluateArithmeticExpression"

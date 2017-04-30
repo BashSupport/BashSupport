@@ -29,6 +29,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -131,7 +132,7 @@ public final class BashResolveUtil {
         GlobalSearchScope fileScope = GlobalSearchScope.fileScope(psiFile);
 
         Collection<BashVarDef> varDefs;
-        if (dumbMode || isScratchFile(virtualFile)) {
+        if (dumbMode || isScratchFile(virtualFile) || !isIndexedFile(project, virtualFile)) {
             varDefs = PsiTreeUtil.collectElementsOfType(psiFile, BashVarDef.class);
         } else {
             varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, project, fileScope, BashVarDef.class);
@@ -160,6 +161,10 @@ public final class BashResolveUtil {
         processor.prepareResults();
 
         return processor.getBestResult(false, bashVar);
+    }
+
+    public static boolean isIndexedFile(Project project, @Nullable VirtualFile virtualFile) {
+        return virtualFile != null && FileIndexFacade.getInstance(project).isInContent(virtualFile);
     }
 
     public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {

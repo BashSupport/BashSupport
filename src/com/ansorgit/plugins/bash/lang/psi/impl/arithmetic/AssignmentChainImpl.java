@@ -15,34 +15,35 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.arithmetic;
 
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.AssignmentChain;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
-
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
  */
 public class AssignmentChainImpl extends AbstractExpression implements AssignmentChain {
+    public AssignmentChainImpl(final ASTNode astNode) {
+        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
+    }
+
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         throw new UnsupportedOperationException("compute is not supported");
     }
 
-    public AssignmentChainImpl(final ASTNode astNode) {
-        super(astNode, "ArithAssignmentExpr", Type.Unsupported);
+    @Override
+    public boolean isStatic() {
+        //although a chain of assignments returns the value of the last one we must not replace the chain with
+        //a single static value because the variable definitions would be lost
+        return false;
     }
 
     @Override
     public long computeNumericValue() {
-        //find the child after the assignment sign
-        List<ArithmeticExpression> childs = subexpressions();
-        if (childs.size() != 2) {
-            throw new IllegalStateException("impossible state");
-        }
-
-        return childs.get(1).computeNumericValue();
+        throw new UnsupportedOperationException("computeNumvericValue is not supported for assignment chains");
     }
 }

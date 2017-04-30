@@ -47,7 +47,7 @@ class BashCommandLineState extends CommandLineState {
         cmd.getParametersList().addParametersString(runConfig.getProgramParameters());
 
         cmd.withWorkDirectory(workingDir);
-        cmd.setPassParentEnvironment(runConfig.isPassParentEnvs());
+        cmd.withParentEnvironmentType(runConfig.isPassParentEnvs() ? GeneralCommandLine.ParentEnvironmentType.CONSOLE : GeneralCommandLine.ParentEnvironmentType.NONE);
         cmd.withEnvironment(runConfig.getEnvs());
 
         OSProcessHandler processHandler = new KillableColoredProcessHandler(cmd);

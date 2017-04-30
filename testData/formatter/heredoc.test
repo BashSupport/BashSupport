@@ -1,15 +1,19 @@
 COMMAND       <<      END
-Dear Mr. Nobody,
-    how are you doing these days?
+Dear Mr. Nobody $SUFFIX,
+    how are $YOU doing these $(echo days)?
     I hope you are doing well.
 Sincerely yours,
 Mr. X
 END
+
+$VAR
 -----
 COMMAND << END
-Dear Mr. Nobody,
-    how are you doing these days?
+Dear Mr. Nobody $SUFFIX,
+    how are $YOU doing these $(echo days)?
     I hope you are doing well.
 Sincerely yours,
 Mr. X
 END
+
+$VAR

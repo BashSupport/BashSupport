@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <problem_class severity="INFORMATION" attribute_key="WARNING_ATTRIBUTES">Globally registered variable</problem_class>
+        <description>This variable is unresolved, but registered as a global variable</description>
+    </problem>
+</problems>

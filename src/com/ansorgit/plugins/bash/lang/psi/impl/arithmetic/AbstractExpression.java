@@ -26,9 +26,11 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -56,19 +58,14 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
     public boolean isStatic() {
         if (isStatic == null) {
-            //fixme smarten up this implementation
-            List<ArithmeticExpression> arithmeticExpressionList = subexpressions();
+            Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
 
-            for (ArithmeticExpression e : arithmeticExpressionList) {
-                if (!e.isStatic()) {
-                    isStatic = false;
-                    break;
-                }
+            boolean allStatic = iterator.hasNext();
+            while (allStatic && iterator.hasNext()) {
+                allStatic = iterator.next().isStatic();
             }
 
-            if (isStatic == null) {
-                isStatic = arithmeticExpressionList.size() >= 1;
-            }
+            isStatic = allStatic;
         }
 
         return isStatic;
@@ -91,40 +88,53 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
         return Arrays.asList(findChildrenByClass(ArithmeticExpression.class));
     }
 
+    @Nullable
     protected abstract Long compute(long currentValue, IElementType operator, Long nextExpressionValue);
 
-    public long computeNumericValue() {
-        List<ArithmeticExpression> childs = subexpressions();
-        int childSize = childs.size();
+    @Override
+    public long computeNumericValue() throws InvalidExpressionValue {
+        List<ArithmeticExpression> childExpressions = subexpressions();
+
+        int childSize = childExpressions.size();
         if (childSize == 0) {
             throw new UnsupportedOperationException("unsupported, zero children are not supported");
         }
 
-        ArithmeticExpression firstChild = childs.get(0);
+        ArithmeticExpression firstChild = childExpressions.get(0);
         long result = firstChild.computeNumericValue();
 
         if (type == Type.PostfixOperand || type == Type.PrefixOperand) {
-            return compute(result, findOperator(), null);
-        } else if (type == Type.TwoOperands) {
+            Long computed = compute(result, findOperator(), null);
+            if (computed == null) {
+                throw new UnsupportedOperationException("Can't calculate value for " + getText());
+            }
+            return computed;
+        }
+
+        if (type == Type.TwoOperands) {
             int i = 1;
             while (i < childSize) {
-                ArithmeticExpression c = childs.get(i);
+                ArithmeticExpression c = childExpressions.get(i);
                 long nextValue = c.computeNumericValue();
 
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(c, BashTokenTypes.WHITESPACE);
                 if (opElement != null) {
                     IElementType operator = PsiUtilCore.getElementType(opElement);
 
-                    result = compute(result, operator, nextValue);
+                    Long computed = compute(result, operator, nextValue);
+                    if (computed == null) {
+                        throw new UnsupportedOperationException("Can't calculate value for " + getText());
+                    }
+                    result = computed;
                 }
 
                 i++;
             }
 
             return result;
-        } else {
-            throw new UnsupportedOperationException("unsupported");
         }
+
+        throw new UnsupportedOperationException("unsupported computation for expression " + getText());
     }
 
     public ArithmeticExpression findParentExpression() {
@@ -157,9 +167,13 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
         if (type == Type.PostfixOperand) {
             return BashPsiUtils.findNextSibling(firstChild, BashTokenTypes.WHITESPACE);
-        } else if (type == Type.PrefixOperand) {
+        }
+
+        if (type == Type.PrefixOperand) {
             return BashPsiUtils.findPreviousSibling(firstChild, BashTokenTypes.WHITESPACE);
-        } else if (type == Type.TwoOperands) {
+        }
+
+        if (type == Type.TwoOperands) {
             int i = 1;
             while (i < childSize) {
                 PsiElement opElement = BashPsiUtils.findPreviousSibling(childs.get(i), BashTokenTypes.WHITESPACE);
@@ -174,6 +188,4 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
         return null;
     }
-
-
 }

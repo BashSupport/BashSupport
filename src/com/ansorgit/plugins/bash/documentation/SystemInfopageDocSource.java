@@ -89,7 +89,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
         //info -w locates an info file, exit status == 1 means that there is no info file 
         ProcessBuilder processBuilder = new ProcessBuilder(infoExecutable, "-w", commandName);
 
-        CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME));
+        CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME), infoExecutable + " -w " + commandName);
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
 
         return output.getExitCode() == 0;
@@ -98,7 +98,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     String loadPlainTextInfoPage(String commandName) throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder(infoExecutable, "-o", "-", commandName);
 
-        CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME));
+        CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME), infoExecutable + " -o - " + commandName);
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
 
         if (output.getExitCode() != 0) {
@@ -116,7 +116,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
 
         ProcessBuilder processBuilder = new ProcessBuilder(txt2htmlExecutable, "--infile", "-");
 
-        CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData);
+        CapturingProcessHandler processHandler = new MyCapturingProcessHandler(processBuilder.start(), infoPageData, txt2htmlExecutable + " --inifile -");
 
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
         if (output.getExitCode() != 0) {
@@ -148,8 +148,8 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
     private class MyCapturingProcessHandler extends CapturingProcessHandler {
         private final String stdinData;
 
-        MyCapturingProcessHandler(Process process, String stdinData) {
-            super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME));
+        MyCapturingProcessHandler(Process process, String stdinData, String commandLine) {
+            super(process, Charset.forName(SystemInfopageDocSource.CHARSET_NAME), commandLine);
             this.stdinData = stdinData;
         }
 

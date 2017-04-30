@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: IntegrationTest.java, Class: IntegrationTest
- * Last modified: 2010-08-12
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -168,7 +165,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, VARIABLE, LESS_THAN, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         //${#a}
-        mockTest(fileParsingTest, DOLLAR, LEFT_CURLY, WORD, WORD, RIGHT_CURLY);
+        mockTest(fileParsingTest, DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, RIGHT_CURLY);
 
         //$ {#a}
         // this is a valid syntax in bash

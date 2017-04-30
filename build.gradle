@@ -1,12 +1,14 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.0.43"
+    id "org.jetbrains.intellij" version "0.2.7"
 }
 
 repositories {
+    maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+
     mavenCentral()
 }
 
-version = "${version}"
+version = "${new File('pluginVersion.txt').getText('UTF-8')}.${ideaBranch}"
 
 allprojects {
     apply plugin: 'java'
@@ -34,14 +36,16 @@ allprojects {
     apply plugin: 'org.jetbrains.intellij'
     intellij {
         version ideaVersion
+        type "IC"
         pluginName 'BashSupport'
         plugins 'IntelliLang'
         downloadSources Boolean.valueOf(sources)
-        publish {
-            pluginId '4230'
-            username 'wallaby'
-            password System.properties['intellij.publish.password']
-        }
+    }
+
+    publishPlugin {
+        username 'wallaby'
+        password System.properties['intellij.publish.password']
+        channels "eap"
     }
 
     apply plugin: 'jacoco'

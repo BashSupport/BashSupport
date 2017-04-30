@@ -17,6 +17,8 @@ package com.ansorgit.plugins.bash.editor.codefolding;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilder;
 import com.intellij.lang.folding.FoldingDescriptor;
@@ -25,27 +27,48 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Code folding builder for the Bash language.
  *
- * @author jansorg, mail@joachim-ansorg.de
+ * @author jansorg
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
+    public BashFoldingBuilder() {
+    }
+
     @NotNull
     public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode node, @NotNull Document document) {
-        List<FoldingDescriptor> descriptors = new ArrayList<FoldingDescriptor>();
+        List<FoldingDescriptor> descriptors = Lists.newArrayList();
+
         appendDescriptors(node, document, descriptors);
 
         return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
     }
 
-    private static ASTNode appendDescriptors(final ASTNode node, final Document document, final List<FoldingDescriptor> descriptors) {
+    public String getPlaceholderText(@NotNull ASTNode node) {
         final IElementType type = node.getElementType();
 
-        if (isFoldable(type)) {
+        if (!isFoldable(node)) {
+            return null;
+        }
+
+        if (type == HEREDOC_CONTENT_ELEMENT) {
+            return "...";
+        }
+
+        return "{...}";
+    }
+
+    public boolean isCollapsedByDefault(@NotNull ASTNode node) {
+        return false;
+    }
+
+    private static ASTNode appendDescriptors(final ASTNode node, final Document document, final List<FoldingDescriptor> descriptors) {
+        if (isFoldable(node)) {
+            final IElementType type = node.getElementType();
+
             int startLine = document.getLineNumber(node.getStartOffset());
 
             TextRange adjustedFoldingRange = adjustFoldingRange(node);
@@ -56,7 +79,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             }
         }
 
-        if (mayContainFoldBlocks(type)) {
+        if (mayContainFoldBlocks(node)) {
             //work on all child elements
             ASTNode child = node.getFirstChildNode();
             while (child != null) {
@@ -68,43 +91,44 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
     }
 
     private static TextRange adjustFoldingRange(ASTNode node) {
-        if (node.getElementType() == BashTokenTypes.HEREDOC_CONTENT) {
-            TextRange textRange = node.getTextRange();
-            return TextRange.from(textRange.getStartOffset(), textRange.getLength() - 1);
+        if (node.getElementType() == HEREDOC_CONTENT_ELEMENT) {
+            int startOffset = node.getStartOffset();
+
+            //walk to the last content element before the close marker
+            for (ASTNode next = node.getTreeNext(); next != null; next = next.getTreeNext()) {
+                IElementType elementType = next.getElementType();
+                if (elementType == BashElementTypes.HEREDOC_END_ELEMENT || elementType == BashElementTypes.HEREDOC_END_IGNORING_TABS_ELEMENT) {
+                    return TextRange.create(startOffset, next.getStartOffset() - 1);
+                }
+            }
         }
 
         return node.getTextRange();
     }
 
-    private static boolean mayContainFoldBlocks(IElementType type) {
-        return type != BashTokenTypes.HEREDOC_CONTENT;
+    private static boolean mayContainFoldBlocks(ASTNode node) {
+        IElementType type = node.getElementType();
+
+        return type != HEREDOC_CONTENT_ELEMENT;
     }
 
-    private static boolean isFoldable(IElementType type) {
-        return type == GROUP_COMMAND
-                || type == CASE_PATTERN_LIST_ELEMENT
-                || type == BashTokenTypes.HEREDOC_CONTENT;
+    private static boolean isFoldable(ASTNode node) {
+        IElementType type = node.getElementType();
+
+        if (type == HEREDOC_CONTENT_ELEMENT) {
+            // only the first heredoc element of a single heredoc is foldable,
+            // the range expansion expands it until the last content element
+            ASTNode prev = node.getTreePrev();
+            if (prev != null && prev.getElementType() == BashTokenTypes.LINE_FEED) {
+                //first heredoc content element, better PSI would be an improvement here
+                return true;
+            }
+        }
+
+        return type == GROUP_COMMAND || type == CASE_PATTERN_LIST_ELEMENT;
     }
 
     private static int minumumLineOffset(IElementType type) {
         return 2;
-    }
-
-
-    public String getPlaceholderText(@NotNull ASTNode node) {
-        final IElementType type = node.getElementType();
-        if (!isFoldable(type)) {
-            return null;
-        }
-
-        if (type == BashTokenTypes.HEREDOC_CONTENT) {
-            return "...";
-        }
-
-        return "{...}";
-    }
-
-    public boolean isCollapsedByDefault(@NotNull ASTNode node) {
-        return false;
     }
 }

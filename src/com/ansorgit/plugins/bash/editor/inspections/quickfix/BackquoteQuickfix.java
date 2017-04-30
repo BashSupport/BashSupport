@@ -48,6 +48,7 @@ public class BackquoteQuickfix extends AbstractBashPsiElementQuickfix {
             int endOffset = startElement.getTextRange().getEndOffset();
             String command = backquote.getCommandText();
 
+            //fixme replace this with a PSI element created by the Bash psi factory
             document.replaceString(startElement.getTextOffset(), endOffset, "$(" + command + ")");
 
             PsiDocumentManager.getInstance(project).commitDocument(document);

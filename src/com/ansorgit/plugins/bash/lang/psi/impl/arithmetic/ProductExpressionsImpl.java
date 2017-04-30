@@ -20,6 +20,8 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ProductExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -31,11 +33,16 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
         super(astNode, "ArithProductExpr", Type.TwoOperands);
     }
 
+    @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
         if (operator == BashTokenTypes.ARITH_MULT) {
             return currentValue * nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_DIV) {
+            if (nextExpressionValue == 0) {
+                throw new InvalidExpressionValue("Division by zero");
+            }
+
             return currentValue / nextExpressionValue;
         } else if (operator == BashTokenTypes.ARITH_MOD) {
             return currentValue % nextExpressionValue;
@@ -55,7 +62,7 @@ public class ProductExpressionsImpl extends AbstractExpression implements Produc
             long leftValue = subs.get(0).computeNumericValue();
             long rightValue = subs.get(1).computeNumericValue();
 
-            return leftValue != ((leftValue / rightValue) * rightValue);
+            return rightValue != 0 && leftValue != ((leftValue / rightValue) * rightValue);
         }
 
         return false;

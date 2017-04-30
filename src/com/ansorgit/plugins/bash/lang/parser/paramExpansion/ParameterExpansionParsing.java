@@ -26,6 +26,8 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
+import java.util.function.Predicate;
+
 /**
  * Handles the default parsing of yet unknown / unsupported parameter expansions.
  * <br>
@@ -42,7 +44,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
     private static final TokenSet singleExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_QMARK, DOLLAR, PARAM_EXPANSION_OP_EXCL, PARAM_EXPANSION_OP_MINUS,
-            PARAM_EXPANSION_OP_STAR, ARITH_NUMBER, PARAM_EXPANSION_OP_HASH);
+            PARAM_EXPANSION_OP_STAR, ARITH_NUMBER, PARAM_EXPANSION_OP_HASH, PARAM_EXPANSION_OP_HASH_HASH);
 
     private static final TokenSet variableMarkingExpansionOperators = TokenSet.create(PARAM_EXPANSION_OP_AT,
             PARAM_EXPANSION_OP_STAR);
@@ -65,7 +67,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         if (builder.rawLookup(0) == RIGHT_CURLY) {
             builder.advanceLexer();
             ParserUtil.error(marker, "parser.paramExpansion.empty");
-            return false;
+            return true;
         }
 
         if (singleExpansionOperators.contains(builder.rawLookup(0)) && builder.rawLookup(1) == RIGHT_CURLY) {
@@ -107,9 +109,9 @@ public class ParameterExpansionParsing implements ParsingFunction {
             if (!builder.isEvalMode() || !Parsing.var.isValid(builder)) {
                 builder.error("Expected a valid parameter expansion token.");
                 firstElementMarker.drop();
-                marker.drop();
 
-                return false;
+                //try to minimize the error impact
+                return readRemainingExpansionTokens(builder, marker);
             }
         }
 
@@ -139,11 +141,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 boolean isSpecialReference = ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
-                boolean isValidReference = ParserUtil.checkAndRollback(builder, new Function<BashPsiBuilder, Boolean>() {
-                    public Boolean apply(BashPsiBuilder builder) {
-                        return ShellCommandParsing.arithmeticParser.parse(builder, LEFT_SQUARE, RIGHT_SQUARE);
-                    }
-                });
+                boolean isValidReference = ParserUtil.checkAndRollback(builder, psiBuilder -> ShellCommandParsing.arithmeticParser.parse(psiBuilder, LEFT_SQUARE, RIGHT_SQUARE));
 
                 if (isSpecialReference || isValidReference) {
                     firstElementMarker.done(VAR_ELEMENT);
@@ -196,10 +194,11 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 }
             } else {
                 if (!paramExpansionOperators.contains(operator)) {
+                    builder.error("Unknown parameter expansion operator " + operator);
                     firstElementMarker.drop();
 
-                    marker.drop();
-                    return false;
+                    //try to minimize the error impact
+                    return readRemainingExpansionTokens(builder, marker);
                 }
 
                 if (paramExpansionAssignmentOps.contains(operator)) {
@@ -271,5 +270,26 @@ public class ParameterExpansionParsing implements ParsingFunction {
         }
 
         return count > 0;
+    }
+
+    private boolean readRemainingExpansionTokens(BashPsiBuilder builder, PsiBuilder.Marker marker) {
+        PsiBuilder.Marker start = builder.mark();
+
+        int max = 10;
+        while (!builder.eof() && builder.getTokenType() != RIGHT_CURLY && max > 0) {
+            builder.advanceLexer();
+            max--;
+        }
+
+        if (max <= 0) {
+            start.rollbackTo();
+            marker.drop();
+            return false;
+        }
+
+        builder.advanceLexer();//eat the last } token
+        start.drop();
+        marker.done(PARAM_EXPANSION_ELEMENT);
+        return true;
     }
 }
