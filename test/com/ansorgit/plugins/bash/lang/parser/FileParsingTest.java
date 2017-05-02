@@ -1,13 +1,10 @@
 /*
- * Copyright 2009 Joachim Ansorg, mail@ansorg-it.com
- * File: FileParsingTest.java, Class: FileParsingTest
- * Last modified: 2009-12-04
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,5 +66,39 @@ public class FileParsingTest extends MockPsiTest {
     public void testIssue389() {
         // \\n is a line continuation
         mockTestSuccessWithErrors(fileTest, WHITESPACE);
+    }
+
+    @Test
+    public void testIssue432() throws Exception {
+        //mysql <<< "CREATE DATABASE dev" || echo hi
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, OR_OR, WORD);
+
+        //mysql <<<"CREATE DATABASE dev"||echo hi
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END, OR_OR, WORD);
+
+        //mysql <<< 'CREATE DATABASE dev' || echo hi
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, STRING2, WHITESPACE, OR_OR, WORD, WORD);
+
+        //mysql <<<"CREATE DATABASE dev"||echo hi
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, OR_OR, WORD, WHITESPACE, WORD);
+
+        //mysql <<< "CREATE DATABASE dev" && echo hi
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, WHITESPACE, AND_AND, WHITESPACE, WORD, WORD);
+
+        //cmd <<< 'hi'; echo hi2
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, SEMI, WHITESPACE, WORD);
+
+        //cmd <<< 'hi';echo hi2
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, SEMI, WORD);
+
+        //cmd <<< 'hi';echo && echo
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, SEMI, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
+
+        //cmd <<< 'hi' & echo && echo
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, WHITESPACE, AMP, WHITESPACE, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
+        //cmd <<< 'hi'& echo && echo
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, AMP, WHITESPACE, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
+        //cmd <<< 'hi'&echo && echo
+        mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, AMP, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
     }
 }

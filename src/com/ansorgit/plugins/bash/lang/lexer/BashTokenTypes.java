@@ -288,8 +288,5 @@ public interface BashTokenTypes {
             HEREDOC_MARKER_TAG);
 
     //sets
-    //fixme add internal commands?
-    TokenSet identifierTokenSet = TokenSet.orSet(keywords, bracketSet);
-
     TokenSet EQ_SET = TokenSet.create(EQ);
 }

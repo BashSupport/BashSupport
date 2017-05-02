@@ -1,3 +1,6 @@
+#### 2017-05-02:
+ - \#432: Unexpected token on correct line with here-string
+
 #### 2017-04-26:
  - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
  - \#426: (Very) basic support to parse patterns in arithmetic expressions
