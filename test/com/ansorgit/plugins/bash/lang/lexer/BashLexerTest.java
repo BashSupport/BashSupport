@@ -1288,6 +1288,11 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue418() throws Exception {
+        testTokenization("foo=(${foo[@]%% (*})", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, PARAM_EXPANSION_OP_PERCENT, PARAM_EXPANSION_OP_PERCENT, WHITESPACE, LEFT_PAREN, WORD, RIGHT_CURLY, RIGHT_PAREN);
+    }
+
+    @Test
     public void testHereString() throws Exception {
         testTokenization("a <<< a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
         testTokenization("a <<< a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);

@@ -33,7 +33,7 @@ public class BashUntilImplTest extends LightBashCodeInsightFixtureTestCase {
     }
 
     @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/loops/";
+    protected String getBasePath() {
+        return "psi/loops/";
     }
 }

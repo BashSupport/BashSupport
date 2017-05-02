@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.errorFiles;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElementVisitor;
@@ -58,7 +57,7 @@ public class DeepRecursionParsingTest extends LightBashCodeInsightFixtureTestCas
         Assert.assertEquals("Deep nesting must not trigger the recursion guard", 0, errors.size());
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/errorFiles/";
+    protected String getBasePath() {
+        return "errorFiles/";
     }
 }

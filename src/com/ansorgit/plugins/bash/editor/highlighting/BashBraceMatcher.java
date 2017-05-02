@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BashBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN, false),
+            new BracePair(BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN, true),
             new BracePair(BashTokenTypes.LEFT_SQUARE, BashTokenTypes.RIGHT_SQUARE, false),
             new BracePair(BashTokenTypes.EXPR_ARITH, BashTokenTypes._EXPR_ARITH, true),
             new BracePair(BashTokenTypes.EXPR_CONDITIONAL, BashTokenTypes._EXPR_CONDITIONAL, false),
