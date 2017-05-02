@@ -1,3 +1,6 @@
+#### 2017-05-02:
+ - \#427: Wrong autoformatting for wrapped heredoc
+
 #### 2017-04-26:
  - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
  - \#426: (Very) basic support to parse patterns in arithmetic expressions

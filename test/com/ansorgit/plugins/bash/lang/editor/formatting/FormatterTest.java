@@ -114,6 +114,16 @@ public class FormatterTest extends BashFormatterTestCase {
     }
 
     @Test
+    public void testHeredoc2() throws Throwable {
+        doTest();
+    }
+
+    @Test
+    public void testHeredoc3() throws Throwable {
+        doTest();
+    }
+
+    @Test
     public void testParamExpansion() throws Throwable {
         doTest();
     }
