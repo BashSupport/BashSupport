@@ -15,14 +15,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin url="https://github.com/jansorg/BashSupport">
+<idea-plugin url="https://www.ansorg-it.com/project/bashsupport/">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.8</version>
+    <version>1.6.9</version>
 
-    <vendor url="http://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
+    <vendor url="https://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 171.x or later -->
     <idea-version since-build="171.0" until-build="171.*"/>
@@ -38,6 +38,14 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.9:</b>
+        <ul>
+            <li>#432: Unexpected token on correct line with here-string</li>
+            <li>#427: Wrong autoformatting for wrapped heredoc</li>
+            <li>#418: Fix to parsed structure of variable assignment lists</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.8:</b>
         <ul>
             <li>#431: The arithmetic bitwise assignments are now correctly parsed.</li>

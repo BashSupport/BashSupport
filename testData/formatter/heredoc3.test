@@ -1,0 +1,9 @@
+echo "$(cat << EOF
+hello
+EOF
+)"
+-----
+echo "$(cat << EOF
+hello
+EOF
+)"

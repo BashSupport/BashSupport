@@ -115,6 +115,19 @@ public class RedirectionParsingTest extends MockPsiTest {
         mockTest(redirectionTest, REDIRECT_HERE_STRING, WORD, WORD);
         mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING2);
         mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //mysql <<< "CREATE DATABASE dev" || echo hi
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END);
+        //mysql <<<"CREATE DATABASE dev"||echo hi
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING_BEGIN, STRING_CONTENT, STRING_END);
+
+        //mysql <<< 'CREATE DATABASE dev' || echo hi
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, WHITESPACE, STRING2);
+        //mysql <<<"CREATE DATABASE dev"||echo hi
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING2);
+
+        //mysql <<< "CREATE DATABASE dev" && echo hi
+        mockTest(redirectionTest, REDIRECT_HERE_STRING, STRING2);
     }
 
     @Test

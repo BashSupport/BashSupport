@@ -13,26 +13,27 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.impl.loops;
+package com.ansorgit.plugins.bash.lang;
 
+import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
-import com.ansorgit.plugins.bash.lang.psi.api.loops.BashWhile;
-import com.intellij.psi.PsiElement;
-import org.junit.Assert;
-import org.junit.Test;
+import com.ansorgit.plugins.bash.file.BashFileType;
+import com.intellij.psi.PsiFile;
+import com.intellij.testFramework.TestDataFile;
+import org.jetbrains.annotations.NotNull;
 
-public class BashWhileImplTest extends LightBashCodeInsightFixtureTestCase {
-    @Test
-    public void testSimpleWhile() throws Exception {
-        PsiElement element = configurePsiAtCaret();
+import java.io.IOException;
 
-        Assert.assertTrue(element instanceof BashWhile);
-        Assert.assertEquals("Expected the select keyword", "while", ((BashWhile) element).keywordElement().getText());
-        Assert.assertFalse("Expected no command group", ((BashWhile) element).isCommandGroup());
+/**
+ */
+public abstract class AbstractBashPsiTreeTest extends LightBashCodeInsightFixtureTestCase {
+    protected void assertPsiTree(@NotNull String content, @NotNull @TestDataFile String filePath) throws IOException {
+        PsiFile psiFile = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, content);
+        BashTestUtils.assertPsiTreeByFile(this, psiFile, filePath);
     }
 
     @Override
     protected String getBasePath() {
-        return "psi/loops/";
+        return "psiTree";
     }
 }
