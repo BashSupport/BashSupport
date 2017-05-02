@@ -21,7 +21,7 @@ import org.junit.Test;
 
 /**
  */
-public class BashHighlightingLexerTest extends LightBashCodeInsightFixtureTestCase{
+public class BashHighlightingLexerTest extends LightBashCodeInsightFixtureTestCase {
     @Test
     public void testLexerHighlighting() throws Exception {
         //test #398, which had a broken lexer which broke the file highlighting with errors after new text was entered

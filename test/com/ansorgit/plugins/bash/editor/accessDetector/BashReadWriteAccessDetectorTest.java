@@ -52,7 +52,7 @@ public class BashReadWriteAccessDetectorTest extends LightBashCodeInsightFixture
 
     @NotNull
     @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/editor/accessDetector";
+    protected String getBasePath() {
+        return "editor/accessDetector";
     }
 }

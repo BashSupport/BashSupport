@@ -1,0 +1,22 @@
+FILE
+  [PSI] Simple command
+    [PSI] Bash var def
+      PsiElement([Bash] assignment_word)('foo')
+      PsiElement([Bash] =)('=')
+      [PSI] assignment list
+        PsiElement([Bash] ()('(')
+        [PSI] bash combined word
+          [PSI] BashComposedVar
+            PsiElement([Bash] $)('$')
+            [PSI] Parameter expansion
+              PsiElement([Bash] {)('{')
+              [PSI] Bash-var
+                PsiElement([Bash] word)('foo')
+              PsiElement([Bash] [ (left square))('[')
+              PsiElement([Bash] Parameter expansion operator '@')('@')
+              PsiElement([Bash] ] (right square))(']')
+              PsiElement([Bash] word)('%%')
+              PsiWhiteSpace(' ')
+              PsiElement([Bash] word)('(*')
+              PsiElement([Bash] })('}')
+        PsiElement([Bash] ))(')')
