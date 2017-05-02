@@ -1,6 +1,7 @@
 #### 2017-05-02:
  - \#432: Unexpected token on correct line with here-string
  - \#427: Wrong autoformatting for wrapped heredoc
+ - Released 1.6.9
 
 #### 2017-04-29:
  - \#418: Fix to parsed structure of variable assignment lists
