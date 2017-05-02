@@ -13,17 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.stubs.index;
+package com.ansorgit.plugins.bash.lang.psiTree;
 
-/**
- * Configures the versions of the available Bash indexes.
- */
-public final class BashIndexVersion {
-    private static final int BASE = 31;
-    public static final int CACHES_VERSION = BASE + 9;
-    public static final int STUB_INDEX_VERSION = BASE + 31;
-    public static final int ID_INDEX_VERSION = BASE + 19;
+import com.ansorgit.plugins.bash.lang.AbstractBashPsiTreeTest;
+import org.junit.Test;
 
-    private BashIndexVersion() {
+public class VarDefTest extends AbstractBashPsiTreeTest {
+    @Test
+    public void testVarDef() throws Exception {
+        assertPsiTree("foo=bar", "varDef/varDef.txt");
+    }
+
+    @Test
+    public void testParseAssignmentList() throws Exception {
+        assertPsiTree("foo=(${foo[@]%% (*})", "varDef/assignmentList.txt");
     }
 }

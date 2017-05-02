@@ -71,11 +71,6 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         //    return NO_SPACING;
         //}
 
-        //for composed strings
-        if (isNodeInString(leftNode) && isNodeInString(rightNode)) {
-            return NO_SPACING;
-        }
-
         //for the synthetic whitespace of eval strings '...'
         if ((leftType == WHITESPACE || rightType == WHITESPACE) && leftPsi.getParent() instanceof BashEvalBlock  && rightPsi.getParent() instanceof BashEvalBlock) {
             return Spacing.getReadOnlySpacing();
@@ -103,6 +98,11 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         }
 
         if (leftType == LINE_FEED && rightType instanceof BashHereDocEndMarker) {
+            return Spacing.getReadOnlySpacing();
+        }
+
+        //heredocs in a subshell command, keep the spacing between a heredoc end marker and the next token
+        if (leftNode != null && leftNode.getLastChildNode() != null && leftNode.getLastChildNode().getElementType() == HEREDOC_END_ELEMENT) {
             return Spacing.getReadOnlySpacing();
         }
 
@@ -263,6 +263,11 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         } */
         if (leftType == SEMI && leftNode.getTreePrev().getPsi() instanceof BashCommand && rightPsi instanceof BashCommand) {
             return COMMON_SPACING_WITH_NL;
+        }
+
+        //string content is currently not formatted to make sure that we don't break sub-expressions
+        if (isNodeInString(leftNode) && isNodeInString(rightNode)) {
+            return Spacing.getReadOnlySpacing();
         }
 
         return COMMON_SPACING;

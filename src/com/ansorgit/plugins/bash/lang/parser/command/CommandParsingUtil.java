@@ -272,12 +272,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * @return
      */
     public static boolean parseAssignmentList(BashPsiBuilder builder) {
-        final IElementType first = ParserUtil.getTokenAndAdvance(builder);
+        IElementType first = builder.getTokenType();
         if (first != LEFT_PAREN) {
+            builder.advanceLexer(); //make sure that at lease the first token is read   
             return false;
         }
 
         PsiBuilder.Marker marker = builder.mark();
+        builder.advanceLexer(); //the left paren token
 
         while (!builder.eof() && (builder.getTokenType(true) != RIGHT_PAREN)) {
             //optional newlines at the beginning

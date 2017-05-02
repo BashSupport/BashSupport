@@ -45,6 +45,16 @@ import com.intellij.psi.tree.IElementType;
 
 %{
     long yychar = 0;
+
+    // close a here_string content token if the lexer is currently reading a here string
+    void closeHereStringIfAvailable() {
+        if (yystate() == S_HERE_STRING) {
+            if (isInHereStringContent()) {
+                leaveHereStringContent();
+            }
+            backToPreviousState();
+        }
+    }
 %}
 
 /***** Custom user code *****/
@@ -63,7 +73,7 @@ StringStart = "$\"" | "\""
 SingleCharacter = [^\'] | {EscapedChar}
 UnescapedCharacter = [^\']
 
-WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:&%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {LineContinuation}
+WordFirst = [\p{Letter}||\p{Digit}||[_/@?.*:%\^+,~-]] | {EscapedChar} | [\u00C0-\u00FF] | {LineContinuation}
 WordAfter = {WordFirst} | [#!\[\]]
 
 ArithWordFirst = [a-zA-Z_@?.:] | {EscapedChar} | {LineContinuation}
@@ -240,10 +250,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "time"                        { return TIME_KEYWORD; }
 
-   <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE> {
-       "&&"                         { return AND_AND; }
+   <S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_HERE_STRING> {
+       "&&"                         { closeHereStringIfAvailable(); return AND_AND; }
 
-       "||"                         { return OR_OR; }
+       "||"                         { closeHereStringIfAvailable(); return OR_OR; }
    }
 }
 
@@ -263,7 +273,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_HERE_STRING> {
-    {Variable}              { return VARIABLE; }
+    {Variable}              { if (!isInHereStringContent()) enterHereStringContent(); return VARIABLE; }
 
     "("                     { return LEFT_PAREN; }
     ")"                     { yypushback(1); backToPreviousState(); }
@@ -730,12 +740,12 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 goToState(S_STRINGMODE); return STRING_BEGIN; }
 
         "$"\'{SingleCharacter}*\'     |
-        \'{UnescapedCharacter}*\'        { return STRING2; }
+        \'{UnescapedCharacter}*\'        { if (yystate() == S_HERE_STRING && !isInHereStringContent()) enterHereStringContent(); return STRING2; }
 
-    /* Single line feeds are required to properly parse heredocs*/
+    /* Single line feeds are required to properly parse heredocs */
         {LineTerminator}             {
                                             if (yystate() == S_HERE_STRING) {
-                                                backToPreviousState();
+                                                closeHereStringIfAvailable();
                                                 return LINE_FEED;
                                             } else if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(S_HEREDOC)) {
                                                 backToPreviousState();
@@ -769,10 +779,12 @@ goToState(S_STRINGMODE); return STRING_BEGIN; }
     "|"                           { return PIPE; }
 
   /** Misc expressions */
-    "&"                           { return AMP; }
     "@"                           { return AT; }
     "$"                           { return DOLLAR; }
-    ";"                           { return SEMI; }
+    <S_HERE_STRING> {
+        "&"                           { closeHereStringIfAvailable(); return AMP; }
+        ";"                           { closeHereStringIfAvailable(); return SEMI; }
+    }
     "<<-" {
         goToState(S_HEREDOC_MARKER_IGNORE_TABS);
         return HEREDOC_MARKER_TAG;

@@ -28,6 +28,10 @@ final class DocTestUtils {
     }
 
     static boolean isResponseContentValid(String url) {
+        if ("true".equals(System.getProperty("bash.skipUrls", "false"))) {
+            return true;
+        }
+
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
             CloseableHttpResponse response = httpClient.execute(new HttpGet(url));

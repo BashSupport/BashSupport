@@ -1,0 +1,7 @@
+FILE
+  [PSI] Simple command
+    [PSI] Bash var def
+      PsiElement([Bash] assignment_word)('foo')
+      PsiElement([Bash] =)('=')
+      [PSI] bash combined word
+        PsiElement([Bash] word)('bar')
