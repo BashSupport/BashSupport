@@ -1,3 +1,6 @@
+#### 2017-06-17:
+ - Removed "Build" step from default Bash run configuration
+
 #### 2017-05-02:
  - \#432: Unexpected token on correct line with here-string
  - \#427: Wrong autoformatting for wrapped heredoc
