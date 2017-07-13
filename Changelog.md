@@ -1,4 +1,5 @@
 #### 2017-07-13:
+ - \#451: Fix stub exceptions triggered by BashSupport while looking for include files
   - \#450 If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.
  - \#449: Don't warn on variable identifiers declared in an eval block
 

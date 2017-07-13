@@ -78,7 +78,7 @@ public class FileInclusionManager {
 
             String filePath = virtualFile.getPath();
 
-            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, BashSearchScopes.moduleScope(file), BashIncludeCommand.class);
+            Collection<BashIncludeCommand> commands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, BashSearchScopes.bashOnly(BashSearchScopes.moduleScope(file)), BashIncludeCommand.class);
             if (commands.isEmpty()) {
                 continue;
             }
@@ -132,8 +132,8 @@ public class FileInclusionManager {
             return Collections.emptySet();
         }
 
-        Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, filename, project, searchScope, BashIncludeCommand.class);
-        if (includeCommands == null) {
+        Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludedFilenamesIndex.KEY, filename, project, BashSearchScopes.bashOnly(searchScope), BashIncludeCommand.class);
+        if (includeCommands == null || includeCommands.isEmpty()) {
             return Collections.emptySet();
         }
 
