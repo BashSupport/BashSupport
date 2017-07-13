@@ -1,3 +1,6 @@
+#### 2017-07-13:
+ - \#449: Don't warn on variable identifiers declared in an eval block
+
 #### 2017-06-17:
  - Removed "Build" step from default Bash run configuration
 

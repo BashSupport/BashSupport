@@ -27,6 +27,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -643,5 +644,9 @@ public final class BashPsiUtils {
         PsiElement childPsi = child.getPsi();
 
         return childPsi != null && childType.isInstance(childPsi);
+    }
+
+    public static boolean isInEvalBlock(PsiElement element) {
+        return findParent(element, BashEvalBlock.class) != null;
     }
 }
