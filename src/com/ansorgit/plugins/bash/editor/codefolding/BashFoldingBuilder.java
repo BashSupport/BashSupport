@@ -17,7 +17,6 @@ package com.ansorgit.plugins.bash.editor.codefolding;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilder;

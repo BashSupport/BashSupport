@@ -21,7 +21,6 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashStringUtils;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.ElementManipulator;
-import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
