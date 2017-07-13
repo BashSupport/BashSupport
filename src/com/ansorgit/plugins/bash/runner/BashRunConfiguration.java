@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.intellij.execution.ExecutionException;
+import com.intellij.execution.ExecutionTarget;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.AbstractRunConfiguration;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
@@ -58,7 +59,12 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
 
     @Override
     public Collection<Module> getValidModules() {
-        return Arrays.asList(ModuleManager.getInstance(getProject()).getModules());
+        return getAllModules();
+    }
+
+    @Override
+    public boolean isCompileBeforeLaunchAddedByDefault() {
+        return false;
     }
 
     @Override
