@@ -1,3 +1,6 @@
+#### 2017-07-13:
+ - \#449: Don't warn on variable identifiers declared in an eval block
+
 #### 2017-05-02:
  - \#432: Unexpected token on correct line with here-string
  - \#427: Wrong autoformatting for wrapped heredoc
