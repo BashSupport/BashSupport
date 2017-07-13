@@ -56,4 +56,12 @@ public class BashAnnotatorTest extends LightDaemonAnalyzerTestCase {
         List<HighlightInfo> errors = highlightErrors();
         Assert.assertEquals(5, errors.size());
     }
+
+    public void testEvalVarDef() throws Exception {
+        configureByFile("/editor/annotator/449-eval-vardef.bash");
+        doHighlighting();
+
+        List<HighlightInfo> errors = highlightErrors();
+        Assert.assertEquals(0, errors.size());
+    }
 }

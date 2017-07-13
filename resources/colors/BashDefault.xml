@@ -34,4 +34,9 @@
             <option name="FONT_TYPE" value="1"/>
         </value>
     </option>
+    <option name="BASH.BINARY_DATA">
+        <value>
+            <option name="BACKGROUND" value="cfe7ff"/>
+        </value>
+    </option>
 </list>

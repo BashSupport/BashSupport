@@ -15,14 +15,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin url="https://www.ansorg-it.com/project/bashsupport/">
+<idea-plugin url="https://www.plugin-dev.com/project/bashsupport/">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.9</version>
+    <version>1.6.10</version>
 
-    <vendor url="https://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
+    <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 162.x or later -->
     <idea-version since-build="162.0" until-build="162.*"/>
@@ -38,6 +38,15 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.10:</b>
+        <ul>
+            <li>#451: Fix stub exceptions triggered by BashSupport while looking for include files (Thanks to <a href="https://github.com/kshchepanovskyi">@kshchepanovskyi</a>). If you include non-bash files, then this might break. Let me know in that case..</li>
+            <li>#450: If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.</li>
+            <li>#449: Don't warn on variable identifiers declared in an eval block</li>
+            <li>Removed "Build" step from default Bash run configuration</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.9:</b>
         <ul>
             <li>#432: Unexpected token on correct line with here-string</li>

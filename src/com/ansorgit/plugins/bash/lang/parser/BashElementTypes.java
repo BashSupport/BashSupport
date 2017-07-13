@@ -128,6 +128,8 @@ public interface BashElementTypes {
 
     IElementType EVAL_BLOCK = new BashEvalElementType();
 
+    IElementType BINARY_DATA = new BashElementType("binary data");
+
     class BashCompositeElementType extends IBashElementType implements ICompositeElementType {
         private final Constructor<? extends ASTNode> myConstructor;
 
