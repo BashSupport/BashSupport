@@ -45,6 +45,8 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] ATTRS =
             new AttributesDescriptor[]{
+                    new AttributesDescriptor("Binary data", BashSyntaxHighlighter.BINARY_DATA),
+
                     new AttributesDescriptor("Line comment", BashSyntaxHighlighter.LINE_COMMENT),
                     new AttributesDescriptor("Shebang (#!) comment", BashSyntaxHighlighter.SHEBANG_COMMENT),
 
@@ -114,6 +116,9 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
 
     static {
         tags.put("keyword", BashSyntaxHighlighter.KEYWORD);
+
+        tags.put("binary", BashSyntaxHighlighter.BINARY_DATA);
+
         tags.put("shebang", BashSyntaxHighlighter.SHEBANG_COMMENT);
         tags.put("lineComment", BashSyntaxHighlighter.LINE_COMMENT);
         tags.put("number", BashSyntaxHighlighter.NUMBER);

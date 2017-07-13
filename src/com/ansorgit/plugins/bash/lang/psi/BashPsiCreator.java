@@ -18,10 +18,7 @@ package com.ansorgit.plugins.bash.lang.psi;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashFileReferenceImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashFunctionDefNameImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashProcessSubstitutionImpl;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashShebangImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.expression.BashFiledescriptorImpl;
@@ -237,6 +234,10 @@ public class BashPsiCreator implements BashElementTypes {
 
         if (elementType == EVAL_BLOCK) {
             return new BashEvalBlock(node);
+        }
+
+        if (elementType == BINARY_DATA) {
+            return new BashBinaryDataElement(node);
         }
 
         log.warn("MISSING PSI for" + node);

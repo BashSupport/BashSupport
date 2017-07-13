@@ -17,10 +17,13 @@ package com.ansorgit.plugins.bash.editor.highlighting;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashLexer;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.google.common.collect.Maps;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
+import com.intellij.openapi.editor.SyntaxHighlighterColors;
+import com.intellij.openapi.editor.colors.EditorColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
@@ -54,6 +57,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey STRING2 = TextAttributesKey.createTextAttributesKey("BASH.STRING2", DefaultLanguageHighlighterColors.STRING);
 
     //psi highlighting
+    public static final TextAttributesKey BINARY_DATA = TextAttributesKey.createTextAttributesKey("BASH.BINARY_DATA");
+
     public static final TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey("BASH.STRING", DefaultLanguageHighlighterColors.STRING);
 
     public static final TextAttributesKey HERE_DOC = TextAttributesKey.createTextAttributesKey("BASH.HERE_DOC", DefaultLanguageHighlighterColors.STRING);
@@ -96,6 +101,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     static {
         fillMap(attributes1, BashTokenTypes.keywords, KEYWORD);
         fillMap(attributes1, BashTokenTypes.internalCommands, INTERNAL_COMMAND);
+
+        fillMap(attributes1, BINARY_DATA, BashElementTypes.BINARY_DATA);
 
         fillMap(attributes1, backquoteSet, BACKQUOTE);
 
