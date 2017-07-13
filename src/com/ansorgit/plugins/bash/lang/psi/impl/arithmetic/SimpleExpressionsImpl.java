@@ -170,7 +170,9 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                 String asString = getText();
 
                 try {
-                    switch (literalType()) {
+                    LiteralType currentLiteralType = literalType();
+
+                    switch (currentLiteralType) {
                         case DecimalLiteral:
                             return Long.valueOf(asString);
 
@@ -182,7 +184,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                             return Long.valueOf(asString, 8);
 
                         default:
-                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + literalType() + ", " + getText());
+                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + currentLiteralType + ", " + asString);
                     }
                 } catch (NumberFormatException e) {
                     //fixme
