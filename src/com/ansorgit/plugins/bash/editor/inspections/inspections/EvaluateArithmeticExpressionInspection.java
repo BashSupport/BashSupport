@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.editor.inspections.inspections;
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.EvaluateArithExprQuickfix;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
-import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ParenthesesExpression;
 import com.ansorgit.plugins.bash.lang.psi.impl.arithmetic.InvalidExpressionValue;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
