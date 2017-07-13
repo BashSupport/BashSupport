@@ -19,11 +19,9 @@ import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
-import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

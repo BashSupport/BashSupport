@@ -1,20 +1,17 @@
-/*******************************************************************************
- * Copyright 2011 Joachim Ansorg, mail@ansorg-it.com
- * File: PluginErrorSubmitDialog.java, Class: PluginErrorSubmitDialog
- * Last modified: 2011-04-30 16:33
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 package nu.studer.idea.errorreporting;
 
 import com.intellij.openapi.application.PathManager;
@@ -23,14 +20,14 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMUtil;
-//import com.intellij.util.net.HTTPProxySettingsDialog;
 import org.jdom.Document;
 import org.jdom.Element;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
+
+//import com.intellij.util.net.HTTPProxySettingsDialog;
 
 /**
  * This class defines the error submission dialog which allows the user to enter error details. It looks very similar to the built-in IDEA error

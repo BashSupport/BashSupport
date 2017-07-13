@@ -17,9 +17,7 @@ package com.ansorgit.plugins.bash.lang.psi.impl.vars;
 
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;
-import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.stubs.StubElement;
 
 /**
  * A Bash parameter expansion container may contain one or more variables.
