@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.9</version>
+    <version>1.6.10</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,15 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.10:</b>
+        <ul>
+            <li>#451: Fix stub exceptions triggered by BashSupport while looking for include files (Thanks to <a href="https://github.com/kshchepanovskyi">@kshchepanovskyi</a>). If you include non-bash files, then this might break. Let me know in that case..</li>
+            <li>#450: If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.</li>
+            <li>#449: Don't warn on variable identifiers declared in an eval block</li>
+            <li>Removed "Build" step from default Bash run configuration</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.9:</b>
         <ul>
             <li>#432: Unexpected token on correct line with here-string</li>
