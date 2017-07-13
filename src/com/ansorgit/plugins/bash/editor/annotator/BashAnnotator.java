@@ -34,6 +34,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashBinaryDataElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.annotation.Annotation;
@@ -92,7 +93,17 @@ public class BashAnnotator implements Annotator {
             annotateFunctionDef((BashFunctionDefName) element, annotationHolder);
         } else if (element instanceof BashRedirectExpr) {
             annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
+        } else if (element instanceof BashBinaryDataElement) {
+            annotateBinaryData((BashBinaryDataElement) element, annotationHolder);
         }
+    }
+
+    private void annotateBinaryData(BashBinaryDataElement element, AnnotationHolder annotationHolder) {
+        Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
+        annotation.setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
+
+        annotation = annotationHolder.createInfoAnnotation(element, null);
+        annotation.setTextAttributes(BashSyntaxHighlighter.BINARY_DATA);
     }
 
     protected void highlightVariable(@NotNull BashVar element, @NotNull AnnotationHolder annotationHolder) {

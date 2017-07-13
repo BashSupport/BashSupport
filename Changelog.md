@@ -1,3 +1,6 @@
+#### 2017-07-13:
+  - \#450 If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.
+
 #### 2017-05-02:
  - \#432: Unexpected token on correct line with here-string
  - \#427: Wrong autoformatting for wrapped heredoc
