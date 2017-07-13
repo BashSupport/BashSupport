@@ -92,7 +92,7 @@ class SystemInfopageDocSource implements DocumentationSource, CachableDocumentat
         CapturingProcessHandler processHandler = new CapturingProcessHandler(processBuilder.start(), Charset.forName(CHARSET_NAME), infoExecutable + " -w " + commandName);
         ProcessOutput output = processHandler.runProcess(TIMEOUT_IN_MILLISECONDS);
 
-        return output.getExitCode() == 0;
+        return output.getExitCode() == 0 && !output.getStdout().isEmpty();
     }
 
     String loadPlainTextInfoPage(String commandName) throws IOException {
