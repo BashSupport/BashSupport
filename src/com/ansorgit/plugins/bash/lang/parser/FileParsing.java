@@ -15,11 +15,16 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.lang.parser.command.CommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
+import com.jetbrains.commandInterface.command.SimpleCommand;
 
 /**
  * Parsing of Bash files. This is the entry to parse full bash scripts.
  * <br>
+ *
  * @author jansorg
  */
 public class FileParsing implements ParsingTool {
@@ -41,10 +46,24 @@ public class FileParsing implements ParsingTool {
                 break;
             }
 
-            final boolean ok = Parsing.list.parseSimpleList(builder);
+            boolean toplevelExitCommand = isToplevelExit(builder);
+
+            boolean ok = Parsing.list.parseSimpleList(builder);
+            toplevelExitCommand &= ok;
 
             if (!builder.eof() && Parsing.list.isSimpleListTerminator(builder.getTokenType())) {
                 builder.advanceLexer();
+            }
+
+            //if the command was exit and is on top-level context then all further tokens are read as binary data
+            if (toplevelExitCommand) {
+                PsiBuilder.Marker binaryMarker = builder.mark();
+
+                while (!builder.eof()) {
+                    builder.advanceLexer();
+                }
+
+                binaryMarker.done(BashElementTypes.BINARY_DATA);
             }
 
             if (!ok && !builder.eof()) {
@@ -54,5 +73,19 @@ public class FileParsing implements ParsingTool {
         }
 
         return success;
+    }
+
+    private boolean isToplevelExit(BashPsiBuilder builder) {
+        if (builder.getTokenType() != WORD || !"exit".equals(builder.getTokenText())) {
+            return false;
+        }
+
+        //exit followed by whitespace
+        IElementType type = builder.lookAhead(1);
+        if (type != null && type != WORD && type != STRING2 && type != INTEGER_LITERAL) {
+            return false;
+        }
+
+        return true;
     }
 }

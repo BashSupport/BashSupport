@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.errorFiles;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
@@ -31,27 +46,12 @@ public class ErrorFilesTest extends CodeInsightTestCase {
 
     @Test
     public void testAllFiles() throws Exception {
-        try {
-            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+        assertNoErrors(".+\\.bash");
+    }
 
-            List<File> files = FileUtil.findFilesByMask(Pattern.compile(".+\\.bash"), new File(getTestDataPath()));
-
-            int count = 0;
-            int errors = 0;
-
-            for (File file : files) {
-                LOG.info("Checking file: " + file.getAbsolutePath());
-                configureByFile(file.getName(), null);
-                errors += assertNoParsingErrors();
-
-                count++;
-            }
-
-            Assert.assertTrue("No files parsed.", count > 0);
-            Assert.assertTrue("There are " + errors + " errors", errors == 0);
-        } finally {
-            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
-        }
+    @Test
+    public void testBinaryFileIssue420() throws Exception {
+        assertNoErrors("420-binaryData\\.bash");
     }
 
     private int assertNoParsingErrors() {
@@ -72,6 +72,30 @@ public class ErrorFilesTest extends CodeInsightTestCase {
             System.err.println(description(errors));
         }
         return count;
+    }
+
+    private void assertNoErrors(String filenameRegex) throws Exception {
+        try {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(true);
+
+            List<File> files = FileUtil.findFilesByMask(Pattern.compile(filenameRegex), new File(getTestDataPath()));
+
+            int count = 0;
+            int errors = 0;
+
+            for (File file : files) {
+                LOG.info("Checking file: " + file.getAbsolutePath());
+                configureByFile(file.getName(), null);
+                errors += assertNoParsingErrors();
+
+                count++;
+            }
+
+            Assert.assertTrue("No files parsed.", count > 0);
+            Assert.assertTrue("There are " + errors + " errors", errors == 0);
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setEvalEscapesEnabled(false);
+        }
     }
 
     private String description(List<PsiErrorElement> errors) {

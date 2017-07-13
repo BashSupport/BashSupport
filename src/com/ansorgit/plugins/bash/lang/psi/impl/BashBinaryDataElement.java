@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.stubs.index;
+package com.ansorgit.plugins.bash.lang.psi.impl;
+
+import com.intellij.lang.ASTNode;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Configures the versions of the available Bash indexes.
+ * @author jansorg
  */
-public final class BashIndexVersion {
-    private static final int BASE = 35;
-    public static final int CACHES_VERSION = BASE + 9;
-    public static final int STUB_INDEX_VERSION = BASE + 31;
-    public static final int ID_INDEX_VERSION = BASE + 19;
-
-    private BashIndexVersion() {
+public class BashBinaryDataElement extends BashBaseElement {
+    public BashBinaryDataElement(@NotNull ASTNode node) {
+        super(node, "Bash binary data");
     }
 }
