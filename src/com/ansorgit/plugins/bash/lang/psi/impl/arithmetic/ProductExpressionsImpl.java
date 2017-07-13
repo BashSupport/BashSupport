@@ -20,7 +20,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ProductExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

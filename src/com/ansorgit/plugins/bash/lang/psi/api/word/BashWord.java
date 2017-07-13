@@ -17,7 +17,6 @@ package com.ansorgit.plugins.bash.lang.psi.api.word;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
-import com.intellij.psi.PsiLanguageInjectionHost;
 
 /**
  * @author jansorg

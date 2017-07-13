@@ -15,11 +15,9 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import com.ansorgit.plugins.bash.lang.parser.command.CommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import com.jetbrains.commandInterface.command.SimpleCommand;
 
 /**
  * Parsing of Bash files. This is the entry to parse full bash scripts.
