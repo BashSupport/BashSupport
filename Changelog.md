@@ -1,3 +1,6 @@
+#### 2017-07-13:
+ - \#451: Fix stub exceptions triggered by BashSupport while looking for include files
+
 #### 2017-05-02:
  - \#432: Unexpected token on correct line with here-string
  - \#427: Wrong autoformatting for wrapped heredoc
