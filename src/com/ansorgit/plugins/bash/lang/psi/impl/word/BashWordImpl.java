@@ -15,10 +15,10 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.word;
 
-import com.ansorgit.plugins.bash.lang.parser.eval.BashEnhancedLiteralTextEscaper;
-import com.ansorgit.plugins.bash.lang.parser.eval.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.parser.eval.BashEnhancedLiteralTextEscaper;
+import com.ansorgit.plugins.bash.lang.parser.eval.BashIdentityStringLiteralEscaper;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseElement;

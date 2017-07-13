@@ -21,7 +21,6 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDefContainer;
 import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;

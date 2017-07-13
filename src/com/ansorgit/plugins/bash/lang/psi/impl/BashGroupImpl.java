@@ -17,8 +17,6 @@ package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
-import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.jetbrains.PsiScopesUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;

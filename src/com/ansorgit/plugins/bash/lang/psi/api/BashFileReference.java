@@ -16,8 +16,6 @@
 package com.ansorgit.plugins.bash.lang.psi.api;
 
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceOwner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

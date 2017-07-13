@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.command;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.psi.PsiElement;
