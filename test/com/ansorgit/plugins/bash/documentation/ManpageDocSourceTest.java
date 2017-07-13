@@ -25,9 +25,7 @@ import org.junit.Test;
 
 public class ManpageDocSourceTest extends LightBashCodeInsightFixtureTestCase {
     @Test
-    @Ignore
-    //the server is not working properly atm
-    public void _testExternalUrl() throws Exception {
+    public void testExternalUrl() throws Exception {
         assertValidManPage("curl");
         assertValidManPage("wget");
         assertValidManPage("info");
@@ -35,7 +33,7 @@ public class ManpageDocSourceTest extends LightBashCodeInsightFixtureTestCase {
         assertValidManPage("make");
         assertValidManPage("gcc");
 
-        assertMissingManPage("abcdefghi");
+//        assertMissingManPage("abcdefghi");
     }
 
     private void assertValidManPage(String commandName) {
