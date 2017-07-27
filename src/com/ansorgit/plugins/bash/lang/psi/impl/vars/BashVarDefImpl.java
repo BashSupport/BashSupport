@@ -127,6 +127,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using an array assignment a=(one two)
         // - using declare -a
         // - using typeset -a
+        // - using mapfile
 
         PsiElement assignmentValue = findAssignmentValue();
 
@@ -140,7 +141,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (parentElement instanceof BashCommand) {
             BashCommand command = (BashCommand) parentElement;
 
-            return isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
+            return "mapfile".equals(command.getReferencedCommandName())
+                    || isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
         }
 
         return false;
@@ -375,9 +377,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private boolean isCommandWithParameter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
-        PsiElement commandElement = command.commandElement();
+        String commandName = command.getReferencedCommandName();
 
-        if (commandElement != null && validCommands.contains(commandElement.getText())) {
+        if (commandName != null && validCommands.contains(commandName)) {
             List<BashPsiElement> parameters = command.parameters();
 
             for (BashPsiElement param : parameters) {
