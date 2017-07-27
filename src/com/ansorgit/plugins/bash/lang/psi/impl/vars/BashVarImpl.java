@@ -50,9 +50,9 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     private final BashReference varReference = new SmartBashVarReference(this);
     private final BashReference dumbVarReference = new DumbBashVarReference(this);
 
-    private int prefixLength = -1;
-    private String referencedName;
-    private TextRange nameTextRange;
+    private volatile int prefixLength = -1;
+    private volatile String referencedName;
+    private volatile TextRange nameTextRange;
 
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
@@ -122,7 +122,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (referencedName == null) {
-            referencedName = getNameTextRange().substring(getText());
+            synchronized (this) {
+                if (referencedName == null) {
+                    referencedName = getNameTextRange().substring(getText());
+                }
+            }
         }
 
         return referencedName;
@@ -141,8 +145,12 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (prefixLength == -1) {
-            String text = getText();
-            prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
+            synchronized (this) {
+                if (prefixLength == -1) {
+                    String text = getText();
+                    prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
+                }
+            }
         }
 
         return prefixLength;
@@ -187,7 +195,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     protected TextRange getNameTextRange() {
         if (nameTextRange == null) {
-            nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
+            synchronized (this) {
+                if (nameTextRange == null) {
+                    nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
+                }
+            }
         }
 
         return nameTextRange;
