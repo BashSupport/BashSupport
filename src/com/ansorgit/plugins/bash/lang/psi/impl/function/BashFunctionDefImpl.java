@@ -47,9 +47,9 @@ import java.util.List;
  * @author jansorg
  */
 public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
-    private BashBlock body;
-    private boolean computedBody = false;
-    private List<BashPsiElement> referencedParameters;
+    private volatile BashBlock body;
+    private volatile boolean computedBody = false;
+    private volatile List<BashPsiElement> referencedParameters;
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");
@@ -93,8 +93,12 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     public BashBlock functionBody() {
         if (!computedBody) {
-            computedBody = true;
-            body = findChildByClass(BashBlock.class);
+            synchronized (this) {
+                if (!computedBody) {
+                    computedBody = true;
+                    body = findChildByClass(BashBlock.class);
+                }
+            }
         }
 
         return body;
@@ -112,12 +116,16 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     @NotNull
     public List<BashPsiElement> findReferencedParameters() {
         if (referencedParameters == null) {
-            //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
-            referencedParameters = Lists.newLinkedList();
+            synchronized (this) {
+                if (referencedParameters == null) {
+                    //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
+                    referencedParameters = Lists.newLinkedList();
 
-            for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-                if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
-                    referencedParameters.add(var);
+                    for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
+                        if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
+                            referencedParameters.add(var);
+                        }
+                    }
                 }
             }
         }

@@ -40,7 +40,7 @@ import java.util.List;
  */
 public abstract class AbstractExpression extends BashBaseElement implements ArithmeticExpression {
     private final Type type;
-    private Boolean isStatic = null;
+    private volatile Boolean isStatic = null;
 
     public AbstractExpression(final ASTNode astNode, final String name, Type type) {
         super(astNode, name);
@@ -58,14 +58,18 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
     public boolean isStatic() {
         if (isStatic == null) {
-            Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
+            synchronized (this) {
+                if (isStatic == null) {
+                    Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
 
-            boolean allStatic = iterator.hasNext();
-            while (allStatic && iterator.hasNext()) {
-                allStatic = iterator.next().isStatic();
+                    boolean allStatic = iterator.hasNext();
+                    while (allStatic && iterator.hasNext()) {
+                        allStatic = iterator.next().isStatic();
+                    }
+
+                    isStatic = allStatic;
+                }
             }
-
-            isStatic = allStatic;
         }
 
         return isStatic;
