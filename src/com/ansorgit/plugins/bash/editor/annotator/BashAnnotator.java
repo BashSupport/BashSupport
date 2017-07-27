@@ -104,6 +104,7 @@ public class BashAnnotator implements Annotator {
 
         annotation = annotationHolder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.BINARY_DATA);
+        annotation.setNeedsUpdateOnTyping(false);
     }
 
     protected void highlightVariable(@NotNull BashVar element, @NotNull AnnotationHolder annotationHolder) {

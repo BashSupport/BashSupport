@@ -56,9 +56,12 @@ public final class OSUtil {
 
     @Nullable
     public static String findBestExecutable(@NotNull String commandName) {
-        List<String> paths = Arrays.asList(StringUtils.split(System.getenv("PATH"), File.pathSeparatorChar));
+        String[] pathElements = StringUtils.split(System.getenv("PATH"), File.pathSeparatorChar);
+        if (pathElements == null) {
+            return null;
+        }
 
-        return findBestExecutable(commandName, paths);
+        return findBestExecutable(commandName, Arrays.asList(pathElements));
     }
 
     @Nullable

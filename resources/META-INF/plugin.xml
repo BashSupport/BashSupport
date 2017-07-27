@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.10</version>
+    <version>1.6.11</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,22 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.11:</b>
+        <ul>
+            <li>#394: Renaming a variable shows 'Renaming unknown type $1' in the dialog</li>
+            <li>#401: Parameter expansion parsing error</li>
+            <li>#404: Using array variable without quotes generates a warning "Simple use of array variable"</li>
+            <li>#411: NPE in OSUtil.findBestExecutable</li>
+            <li>#412: Syntax Errors on valid code involving regular expression</li>
+            <li>#433: BashCommandManipulator: Cannot modify a read-only file</li>
+            <li>#444: Formatter removes space after empty string variable assignment</li>
+            <li>#452: Concurrent modification in BashVarDefImpl</li>
+            <li>#453: A weird light blue background is seen over my code area</li>
+            <li>#454: Using "mapfile" results in "Array use of non-array variables"</li>
+            <li>#456: NPE in BashVarDefImpl</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.10:</b>
         <ul>
             <li>#451: Fix stub exceptions triggered by BashSupport while looking for include files (Thanks to <a href="https://github.com/kshchepanovskyi">@kshchepanovskyi</a>). If you include non-bash files, then this might break. Let me know in that case..</li>

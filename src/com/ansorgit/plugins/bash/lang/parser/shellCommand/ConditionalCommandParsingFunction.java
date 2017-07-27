@@ -28,12 +28,13 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Parsing of conditional commands like [[ -f x.txt && -d dir1 ]]
  * <br>
+ *
  * @author jansorg
  */
 public class ConditionalCommandParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.ConditionalCommandParsingFunction");
 
-    private TokenSet endTokens = TokenSet.create(_BRACKET_KEYWORD, AND_AND, OR_OR, RIGHT_PAREN);
+    private static final TokenSet endTokens = TokenSet.create(_BRACKET_KEYWORD, AND_AND, OR_OR);
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
@@ -92,6 +93,10 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
     }
 
     private boolean parseExpression(BashPsiBuilder builder) {
+        return parseExpression(builder, TokenSet.EMPTY);
+    }
+
+    private boolean parseExpression(BashPsiBuilder builder, TokenSet additionalEndTokens) {
         boolean ok = true;
 
         int counter = 0;
@@ -102,19 +107,19 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
             //bracket subexpression, e.g. (-f x.txt)
             if (token == LEFT_PAREN) {
                 builder.advanceLexer();
-                ok = parseExpression(builder);
+                ok = parseExpression(builder, TokenSet.create(RIGHT_PAREN));
                 ok &= ParserUtil.conditionalRead(builder, RIGHT_PAREN);
             } else if (token == COND_OP_NOT) {
                 builder.advanceLexer();
-                ok = parseExpression(builder);
+                ok = parseExpression(builder, additionalEndTokens);
             } else if (counter >= 1 && token == OR_OR) {
                 builder.advanceLexer();
-                ok = parseExpression(builder);
+                ok = parseExpression(builder, additionalEndTokens);
             } else if (counter >= 1 && token == AND_AND) {
                 builder.advanceLexer();
-                ok = parseExpression(builder);
+                ok = parseExpression(builder, additionalEndTokens);
             } else {
-                ok = ConditionalParsingUtil.readTestExpression(builder, endTokens);
+                ok = ConditionalParsingUtil.readTestExpression(builder, TokenSet.orSet(endTokens, additionalEndTokens));
             }
 
             if (ok) {
