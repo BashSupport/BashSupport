@@ -94,4 +94,9 @@ public class ConditionalCommandParsingFunctionTest extends MockPsiTest {
         //[[ $(< $1) ]]
         mockTest(conditionalFunction, BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, LESS_THAN, WHITESPACE, VARIABLE, RIGHT_PAREN, _BRACKET_KEYWORD);
     }
+
+    @Test
+    public void testIssue412() throws Exception {
+        mockTest(conditionalFunction, BRACKET_KEYWORD, LEFT_PAREN, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, _BRACKET_KEYWORD);
+    }
 }

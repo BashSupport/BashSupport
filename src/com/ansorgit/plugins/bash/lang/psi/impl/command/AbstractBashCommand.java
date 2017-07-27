@@ -53,12 +53,12 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     private final PsiReference bashFileReference = new SmartBashFileReference(this);
     private final PsiReference dumbBashFileReference = new DumbBashFileReference(this);
 
-    private String referencedCommandName;
-    private boolean hasReferencedCommandName = false;
-    private Boolean isInternalCommandBash3;
-    private Boolean isInternalCommandBash4;
-    private List<BashPsiElement> parameters;
-    private ASTNode genericCommandElement;
+    private volatile String referencedCommandName;
+    private volatile boolean hasReferencedCommandName = false;
+    private volatile Boolean isInternalCommandBash3;
+    private volatile Boolean isInternalCommandBash4;
+    private volatile List<BashPsiElement> parameters;
+    private volatile ASTNode genericCommandElement;
 
     public AbstractBashCommand(ASTNode astNode, String name) {
         super(astNode, name);
@@ -71,7 +71,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     @NotNull
     @Override
     public BashFile getContainingFile() {
-        return (BashFile)super.getContainingFile();
+        return (BashFile) super.getContainingFile();
     }
 
     @Override
@@ -111,13 +111,17 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-            isInternalCommandBash3 = false;
-            isInternalCommandBash4 = false;
+            synchronized (this) {
+                if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
+                    isInternalCommandBash3 = false;
+                    isInternalCommandBash4 = false;
 
-            if (isGenericCommand()) {
-                String commandText = getReferencedCommandName();
-                isInternalCommandBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
-                isInternalCommandBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
+                    if (isGenericCommand()) {
+                        String commandText = getReferencedCommandName();
+                        isInternalCommandBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
+                        isInternalCommandBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
+                    }
+                }
             }
         }
 
@@ -170,7 +174,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     @Nullable
     private ASTNode commandElementNode() {
         if (genericCommandElement == null) {
-            genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+            synchronized (this) {
+                if (genericCommandElement == null) {
+                    genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+                }
+            }
         }
 
         return genericCommandElement;
@@ -178,19 +186,23 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     public List<BashPsiElement> parameters() {
         if (parameters == null) {
-            PsiElement cmd = commandElement();
-            if (cmd == null) {
-                parameters = Collections.emptyList();
-            } else {
-                parameters = Lists.newLinkedList();
+            synchronized (this) {
+                if (parameters == null) {
+                    PsiElement cmd = commandElement();
+                    if (cmd == null) {
+                        parameters = Collections.emptyList();
+                    } else {
+                        parameters = Lists.newLinkedList();
 
-                PsiElement nextSibling = cmd.getNextSibling();
-                while (nextSibling != null) {
-                    if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
-                        parameters.add((BashPsiElement) nextSibling);
+                        PsiElement nextSibling = cmd.getNextSibling();
+                        while (nextSibling != null) {
+                            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
+                                parameters.add((BashPsiElement) nextSibling);
+                            }
+
+                            nextSibling = nextSibling.getNextSibling();
+                        }
                     }
-
-                    nextSibling = nextSibling.getNextSibling();
                 }
             }
         }
@@ -226,9 +238,13 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (!hasReferencedCommandName) {
-            ASTNode command = commandElementNode();
-            referencedCommandName = command != null ? command.getText() : null;
-            hasReferencedCommandName = true;
+            synchronized (this) {
+                if (!hasReferencedCommandName) {
+                    ASTNode command = commandElementNode();
+                    referencedCommandName = command != null ? command.getText() : null;
+                    hasReferencedCommandName = true;
+                }
+            }
         }
 
         return referencedCommandName;

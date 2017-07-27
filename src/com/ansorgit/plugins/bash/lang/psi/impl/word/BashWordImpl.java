@@ -33,10 +33,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
-    private Boolean isWrapped;
+    private volatile Boolean isWrapped;
 
     private boolean singleChildParent;
-    private boolean singleChildParentComputed = false;
+    private volatile boolean singleChildParentComputed = false;
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
@@ -76,8 +76,12 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     private boolean isSingleChildParent() {
         if (!singleChildParentComputed) {
-            singleChildParent = BashPsiUtils.isSingleChildParent(this);
-            singleChildParentComputed = true;
+            synchronized (this) {
+                if (!singleChildParentComputed) {
+                    singleChildParent = BashPsiUtils.isSingleChildParent(this);
+                    singleChildParentComputed = true;
+                }
+            }
         }
 
         return singleChildParent;
@@ -86,13 +90,17 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            isWrapped = false;
-            if (getTextLength() >= 2) {
-                ASTNode firstChildNode = getNode().getFirstChildNode();
-                if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
-                    String text = firstChildNode.getText();
+            synchronized (this) {
+                if (isWrapped == null) {
+                    isWrapped = false;
+                    if (getTextLength() >= 2) {
+                        ASTNode firstChildNode = getNode().getFirstChildNode();
+                        if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
+                            String text = firstChildNode.getText();
 
-                    isWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
+                            isWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
+                        }
+                    }
                 }
             }
         }

@@ -1,3 +1,16 @@
+#### 2017-07-27:
+ - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
+ - \#401: Parameter expansion parsing error
+ - \#404: Using array variable without quotes generates a warning "Simple use of array variable"
+ - \#411: NPE in OSUtil.findBestExecutable
+ - \#412: Syntax Errors on valid code involving regular expression
+ - \#433: BashCommandManipulator: Cannot modify a read-only file
+ - \#444: Formatter removes space after empty string variable assignment
+ - \#452: Concurrent modification in BashVarDefImpl
+ - \#453: A weird light blue background is seen over my code area
+ - \#454: Using "mapfile" results in "Array use of non-array variables"
+ - \#456: NPE in BashVarDefImpl
+
 #### 2017-07-13:
  - \#451: Fix stub exceptions triggered by BashSupport while looking for include files
   - \#450 If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.
