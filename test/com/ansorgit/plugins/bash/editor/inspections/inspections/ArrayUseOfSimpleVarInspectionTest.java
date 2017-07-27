@@ -50,4 +50,9 @@ public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCas
     public void testMapfileArray() throws Exception {
         doTest("arrayUseOfSimpleVarInspection/mapfileArray", new SimpleArrayUseInspection());
     }
+
+    @Test
+    public void testArrayParam() throws Exception {
+        doTest("arrayUseOfSimpleVarInspection/arrayParam", new SimpleArrayUseInspection());
+    }
 }
