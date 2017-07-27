@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.SimpleExpression;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.DebugUtil;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.Nullable;
@@ -184,7 +185,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                             return Long.valueOf(asString, 8);
 
                         default:
-                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + currentLiteralType + ", " + asString);
+                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + currentLiteralType + ", " + asString +", " + DebugUtil.psiToString(getParent(), false, true));
                     }
                 } catch (NumberFormatException e) {
                     //fixme
