@@ -33,11 +33,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A string spanning start and end markers and content elements.
  * <br>
+ *
  * @author jansorg
  */
 public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost {
-    private TextRange contentRange;
-    private Boolean isWrapped;
+    private volatile TextRange contentRange;
+    private volatile Boolean isWrapped;
 
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
@@ -54,14 +55,18 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            isWrapped = false;
+            synchronized (this) {
+                if (isWrapped == null) {
+                    isWrapped = false;
 
-            if (getTextLength() >= 2) {
-                ASTNode node = getNode();
-                IElementType firstType = node.getFirstChildNode().getElementType();
-                IElementType lastType = node.getLastChildNode().getElementType();
+                    if (getTextLength() >= 2) {
+                        ASTNode node = getNode();
+                        IElementType firstType = node.getFirstChildNode().getElementType();
+                        IElementType lastType = node.getLastChildNode().getElementType();
 
-                isWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
+                        isWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
+                    }
+                }
             }
         }
 
@@ -89,13 +94,17 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @NotNull
     public TextRange getTextContentRange() {
         if (contentRange == null) {
-            ASTNode node = getNode();
-            ASTNode firstChild = node.getFirstChildNode();
+            synchronized (this) {
+                if (contentRange == null) {
+                    ASTNode node = getNode();
+                    ASTNode firstChild = node.getFirstChildNode();
 
-            if (firstChild != null && firstChild.getText().equals("$\"")) {
-                contentRange = TextRange.from(2, getTextLength() - 3);
-            } else {
-                contentRange = TextRange.from(1, getTextLength() - 2);
+                    if (firstChild != null && firstChild.getText().equals("$\"")) {
+                        contentRange = TextRange.from(2, getTextLength() - 3);
+                    } else {
+                        contentRange = TextRange.from(1, getTextLength() - 2);
+                    }
+                }
             }
         }
 

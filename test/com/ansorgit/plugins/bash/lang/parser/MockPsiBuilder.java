@@ -148,7 +148,8 @@ public class MockPsiBuilder implements PsiBuilder {
     }
 
     public IElementType rawLookup(int lookAhead) {
-        return elementPosition + lookAhead < elements.size() ? elements.get(elementPosition + lookAhead) : null;
+        int pos = elementPosition + lookAhead;
+        return pos >= 0 && pos < elements.size() ? elements.get(pos) : null;
     }
 
     public int rawTokenTypeStart(int lookAhead) {
