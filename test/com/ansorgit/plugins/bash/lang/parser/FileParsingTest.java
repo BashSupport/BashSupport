@@ -107,4 +107,9 @@ public class FileParsingTest extends MockPsiTest {
     public void testBinary() throws Exception {
         mockTest(fileTest, Lists.newArrayList("exit"), WORD, LINE_FEED, WORD);
     }
+
+    @Test
+    public void testIssue401() throws Exception {
+        mockTest(fileTest, STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
+    }
 }
