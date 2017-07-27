@@ -18,14 +18,15 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author jansorg
  */
-public class ConditionalParsingUtil {
-    private static TokenSet operators = TokenSet.create(BashTokenTypes.COND_OP, BashTokenTypes.COND_OP_EQ_EQ, BashTokenTypes.COND_OP_REGEX);
-    private static TokenSet regExpEndTokens = TokenSet.create(BashTokenTypes.WHITESPACE, BashTokenTypes._BRACKET_KEYWORD);
+public final class ConditionalParsingUtil {
+    private static final TokenSet operators = TokenSet.create(BashTokenTypes.COND_OP, BashTokenTypes.COND_OP_EQ_EQ, BashTokenTypes.COND_OP_REGEX);
+    private static final TokenSet regExpEndTokens = TokenSet.create(BashTokenTypes.WHITESPACE, BashTokenTypes._BRACKET_KEYWORD);
 
     private ConditionalParsingUtil() {
     }
@@ -45,12 +46,12 @@ public class ConditionalParsingUtil {
                 builder.advanceLexer();
 
                 //eat optional whitespace in front
-                if (builder.getTokenType(true) == BashTokenTypes.WHITESPACE) {
-                    //builder.advanceLexer();
+                if (builder.rawLookup(0) == BashTokenTypes.WHITESPACE) {
+                    builder.advanceLexer();
                 }
 
                 //parse the regex
-                ok = parseRegularExpression(builder);
+                ok = parseRegularExpression(builder, endTokens);
             } else if (operators.contains(builder.getTokenType())) {
                 builder.advanceLexer();
             } else {
@@ -62,12 +63,26 @@ public class ConditionalParsingUtil {
         return ok;
     }
 
-    public static boolean parseRegularExpression(BashPsiBuilder builder) {
+    public static boolean parseRegularExpression(BashPsiBuilder builder, TokenSet endMarkerTokens) {
         int count = 0;
 
         //simple solution: read to the next whitespace, unless we are in [] brackets
-        while (!builder.eof() && !regExpEndTokens.contains(builder.rawLookup(0))) {
-            builder.advanceLexer();
+        while (!builder.eof()) {
+            IElementType current = builder.rawLookup(0);
+            if (endMarkerTokens.contains(current)) {
+                break;
+            }
+
+            if (Parsing.word.isComposedString(current)) {
+                if (!Parsing.word.parseComposedString(builder)) {
+                    break;
+                    }
+            } else if (!regExpEndTokens.contains(current)) {
+                builder.advanceLexer();
+            } else {
+                break;
+            }
+
             count++;
         }
 
