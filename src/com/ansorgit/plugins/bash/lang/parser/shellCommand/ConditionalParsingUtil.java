@@ -45,11 +45,6 @@ public final class ConditionalParsingUtil {
             } else if (builder.getTokenType() == BashTokenTypes.COND_OP_REGEX) {
                 builder.advanceLexer();
 
-                //eat optional whitespace in front
-                if (builder.rawLookup(0) == BashTokenTypes.WHITESPACE) {
-                    builder.advanceLexer();
-                }
-
                 //parse the regex
                 ok = parseRegularExpression(builder, endTokens);
             } else if (operators.contains(builder.getTokenType())) {
@@ -68,7 +63,12 @@ public final class ConditionalParsingUtil {
 
         //simple solution: read to the next whitespace, unless we are in [] brackets
         while (!builder.eof()) {
-            IElementType current = builder.rawLookup(0);
+            IElementType current = builder.getTokenType(true);
+            if (count == 0 && current == BashTokenTypes.WHITESPACE) {
+                builder.advanceLexer();
+                continue;
+            }
+
             if (endMarkerTokens.contains(current)) {
                 break;
             }
@@ -76,7 +76,7 @@ public final class ConditionalParsingUtil {
             if (Parsing.word.isComposedString(current)) {
                 if (!Parsing.word.parseComposedString(builder)) {
                     break;
-                    }
+                }
             } else if (!regExpEndTokens.contains(current)) {
                 builder.advanceLexer();
             } else {
