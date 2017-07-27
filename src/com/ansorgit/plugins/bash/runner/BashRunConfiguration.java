@@ -205,7 +205,6 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
     }
 
     @Nullable
-    @Override
     public GlobalSearchScope getSearchScope() {
         return GlobalSearchScope.allScope(getProject());
     }

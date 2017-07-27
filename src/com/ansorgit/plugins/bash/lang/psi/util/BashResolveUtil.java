@@ -28,6 +28,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
+import com.intellij.injected.editor.VirtualFileWindow;
+import com.intellij.injected.editor.VirtualFileWindowImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -164,7 +166,7 @@ public final class BashResolveUtil {
     }
 
     public static boolean isIndexedFile(Project project, @Nullable VirtualFile virtualFile) {
-        return virtualFile != null && FileIndexFacade.getInstance(project).isInContent(virtualFile);
+        return virtualFile != null && !(virtualFile instanceof VirtualFileWindow) && FileIndexFacade.getInstance(project).isInContent(virtualFile);
     }
 
     public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
