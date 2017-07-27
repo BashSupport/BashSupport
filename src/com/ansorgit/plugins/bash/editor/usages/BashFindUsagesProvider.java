@@ -64,34 +64,34 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
     @NotNull
     public String getType(@NotNull PsiElement element) {
         if (element instanceof BashFunctionDef || element instanceof BashFunctionDefName) {
-            return "Function";
+            return "function";
         }
 
         if (element instanceof BashCommand) {
             if (((BashCommand) element).isFunctionCall()) {
-                return "Function";
+                return "function";
             }
 
             if (((BashCommand) element).isBashScriptCall()) {
-                return "Bash script call";
+                return "bash script call";
             }
 
-            return "Command";
+            return "command";
         }
 
-        if (element instanceof BashVarDef) {
-            return "Variable";
+        if (element instanceof BashVarDef || element instanceof BashVar) {
+            return "variable";
         }
 
         if (element instanceof BashHereDocMarker) {
-            return "Heredoc";
+            return "heredoc";
         }
 
         if (element instanceof BashFile) {
             return "Bash file";
         }
 
-        return "Unknown type";
+        return "unknown type";
     }
 
     @NotNull

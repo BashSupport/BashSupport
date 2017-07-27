@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.editor.usages;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.lang.findUsages.LanguageFindUsages;
@@ -32,10 +31,11 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
     public void testVarUsage() throws Exception {
         PsiElement element = configurePsiAtCaret();
 
-        Collection<UsageInfo> usages = myFixture.findUsages(element);
+        PsiElement varDef = element.getReference().resolve();
+        Collection<UsageInfo> usages = myFixture.findUsages(varDef);
         Assert.assertEquals(7, usages.size());
 
-        Assert.assertEquals("Variable", typeNameFor(element));
+        Assert.assertEquals("variable", typeNameFor(element));
         Assert.assertEquals("a", descriptiveNameFor(element));
     }
 
@@ -46,7 +46,7 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
         Collection<UsageInfo> usages = myFixture.findUsages(element);
         Assert.assertEquals(3, usages.size());
 
-        Assert.assertEquals("Variable", typeNameFor(element));
+        Assert.assertEquals("variable", typeNameFor(element));
         Assert.assertEquals("a", descriptiveNameFor(element));
     }
 
@@ -57,7 +57,7 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
         Collection<UsageInfo> usages = myFixture.findUsages(element);
         Assert.assertEquals(1, usages.size());
 
-        Assert.assertEquals("Heredoc", typeNameFor(element));
+        Assert.assertEquals("heredoc", typeNameFor(element));
         Assert.assertEquals("EOF", descriptiveNameFor(element));
     }
 
@@ -82,7 +82,7 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
         Collection<UsageInfo> usages = myFixture.findUsages(element);
         Assert.assertEquals(2, usages.size());
 
-        Assert.assertEquals("Function", typeNameFor(element));
+        Assert.assertEquals("function", typeNameFor(element));
         Assert.assertEquals("x", descriptiveNameFor(element));
     }
 
@@ -96,7 +96,7 @@ public class BashFindUsagesProviderTest extends LightBashCodeInsightFixtureTestC
         Collection<UsageInfo> usages = myFixture.findUsages(element);
         Assert.assertEquals(2, usages.size());
 
-        Assert.assertEquals("Function", typeNameFor(element));
+        Assert.assertEquals("function", typeNameFor(element));
         Assert.assertEquals("x", descriptiveNameFor(element));
     }
 
