@@ -101,4 +101,9 @@ public class FileParsingTest extends MockPsiTest {
         //cmd <<< 'hi'&echo && echo
         mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, AMP, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
     }
+
+    @Test
+    public void testIssue401() throws Exception {
+        mockTest(fileTest, STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
+    }
 }

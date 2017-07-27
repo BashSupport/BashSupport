@@ -1452,6 +1452,12 @@ public class BashLexerTest {
         testTokenization("issues=($((1+1)))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
     }
 
+    @Test
+    public void testIssue401() throws Exception {
+        //less-than should be replaced with a better token in the lexer
+        testTokenization("\"${A%<}\"", STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

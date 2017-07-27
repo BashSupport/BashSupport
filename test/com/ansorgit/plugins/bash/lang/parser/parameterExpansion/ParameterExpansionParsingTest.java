@@ -192,4 +192,9 @@ public class ParameterExpansionParsingTest extends MockPsiTest {
         //${A//\n/x}
         mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_OP_SLASH, LINE_FEED, PARAM_EXPANSION_OP_SLASH, WHITESPACE, RIGHT_CURLY);
     }
+
+    @Test
+    public void testIssue401() throws Exception {
+        mockTest(expansionParser, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY);
+    }
 }
