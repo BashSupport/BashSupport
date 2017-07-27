@@ -177,9 +177,17 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         ASTNode next = getNode().getTreeNext();
-        if (next != null && isParameterExpansion() && next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
-            ASTNode firstChild = next.getFirstChildNode();
-            return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
+        if (next != null && isParameterExpansion()) {
+            //${ a[1] }
+            if (next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
+                ASTNode firstChild = next.getFirstChildNode();
+                return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
+            }
+
+            //${ a[*] }
+            if (next.getElementType() == BashTokenTypes.LEFT_SQUARE && next.getTreeNext() != null && next.getTreeNext().getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_STAR) {
+                return true;
+            }
         }
 
         return false;
