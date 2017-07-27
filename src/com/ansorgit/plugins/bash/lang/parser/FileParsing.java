@@ -79,7 +79,7 @@ public class FileParsing implements ParsingTool {
         }
 
         IElementType prev = builder.rawLookup(-1);
-        if (prev != null && prev != LINE_FEED) {
+        if (prev != null && prev != LINE_FEED && prev != SHEBANG) {
             return false;
         }
 
