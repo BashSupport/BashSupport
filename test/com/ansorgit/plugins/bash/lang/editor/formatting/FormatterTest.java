@@ -138,6 +138,11 @@ public class FormatterTest extends BashFormatterTestCase {
         doTest();
     }
 
+    @Test
+    public void testWhileLoop() throws Throwable {
+        doTest();
+    }
+
     protected void doTest() throws Throwable {
         final List<String> data = TestUtils.readInput(getBasePath() + getTestName(true) + ".test");
         checkFormatting(data.get(0), data.get(1));

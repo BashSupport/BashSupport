@@ -78,9 +78,17 @@ abstract class AbstractBashFileReference extends CachingReference implements Bas
 
     @Override
     public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+        if (!element.isWritable()) {
+            throw new IncorrectOperationException("bindToElement not possible for read-only element: " + element);
+        }
+
         if (element instanceof PsiFile) {
             //findRelativeFilePath already leaves the injection host file
             PsiFile currentFile = cmd.getContainingFile();
+            if (!currentFile.isWritable()) {
+                throw new IncorrectOperationException("bindToElement not possible for read-only file: " + currentFile.getName());
+            }
+
             String relativeFilePath = BashPsiFileUtils.findRelativeFilePath(currentFile, (PsiFile) element);
 
             return handleElementRename(relativeFilePath);

@@ -71,10 +71,10 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private final BashReference reference = new SmartVarDefReference(this);
     private final BashReference dumbReference = new DumbVarDefReference(this);
 
-    private Boolean cachedFunctionScopeLocal;
-    private String name;
-    private PsiElement assignmentWord;
-    private TextRange nameTextRange;
+    private volatile Boolean cachedFunctionScopeLocal;
+    private volatile String name;
+    private volatile PsiElement assignmentWord;
+    private volatile TextRange nameTextRange;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
@@ -101,11 +101,15 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         }
 
         if (name == null) {
-            PsiElement element = findAssignmentWord();
-            if (element instanceof BashCharSequence) {
-                name = ((BashCharSequence) element).getUnwrappedCharSequence();
-            } else {
-                name = element.getText();
+            synchronized (this) {
+                if (name == null) {
+                    PsiElement element = findAssignmentWord();
+                    if (element instanceof BashCharSequence) {
+                        name = ((BashCharSequence) element).getUnwrappedCharSequence();
+                    } else {
+                        name = element.getText();
+                    }
+                }
             }
         }
 
@@ -127,6 +131,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using an array assignment a=(one two)
         // - using declare -a
         // - using typeset -a
+        // - using mapfile
 
         PsiElement assignmentValue = findAssignmentValue();
 
@@ -140,7 +145,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (parentElement instanceof BashCommand) {
             BashCommand command = (BashCommand) parentElement;
 
-            return isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
+            return "mapfile".equals(command.getReferencedCommandName())
+                    || isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
         }
 
         return false;
@@ -154,17 +160,21 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @NotNull
     public PsiElement findAssignmentWord() {
         if (assignmentWord == null) {
-            PsiElement element = findChildByType(accepted);
-            if (element != null) {
-                assignmentWord = element;
-            } else {
-                //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
-                //a parsed var
-                PsiElement firstChild = getFirstChild();
-                ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
+            synchronized (this) {
+                if (assignmentWord == null) {
+                    PsiElement element = findChildByType(accepted);
+                    if (element != null) {
+                        assignmentWord = element;
+                    } else {
+                        //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
+                        //a parsed var
+                        PsiElement firstChild = getFirstChild();
+                        ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
-                ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-                assignmentWord = (node != null) ? node.getPsi() : firstChild;
+                        ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
+                        assignmentWord = (node != null) ? node.getPsi() : firstChild;
+                    }
+                }
             }
         }
 
@@ -180,7 +190,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public boolean isFunctionScopeLocal() {
         //fixme probably not ok because we look at parent elements
         if (cachedFunctionScopeLocal == null) {
-            cachedFunctionScopeLocal = doIsFunctionScopeLocal();
+            synchronized (this) {
+                if (cachedFunctionScopeLocal == null) {
+                    cachedFunctionScopeLocal = doIsFunctionScopeLocal();
+                }
+            }
         }
 
         return cachedFunctionScopeLocal;
@@ -345,11 +359,15 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
     public TextRange getAssignmentNameTextRange() {
         if (nameTextRange == null) {
-            PsiElement assignmentWord = findAssignmentWord();
-            if (assignmentWord instanceof BashString) {
-                nameTextRange = ((BashString) assignmentWord).getTextContentRange();
-            } else {
-                nameTextRange = TextRange.from(0, assignmentWord.getTextLength());
+            synchronized (this) {
+                if (nameTextRange == null) {
+                    PsiElement assignmentWord = findAssignmentWord();
+                    if (assignmentWord instanceof BashString) {
+                        nameTextRange = ((BashString) assignmentWord).getTextContentRange();
+                    } else {
+                        nameTextRange = TextRange.from(0, assignmentWord.getTextLength());
+                    }
+                }
             }
         }
 
@@ -375,9 +393,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     private boolean isCommandWithParameter(BashCommand command, Set<String> validCommands, Set<String> validParams) {
-        PsiElement commandElement = command.commandElement();
+        String commandName = command.getReferencedCommandName();
 
-        if (commandElement != null && validCommands.contains(commandElement.getText())) {
+        if (commandName != null && validCommands.contains(commandName)) {
             List<BashPsiElement> parameters = command.parameters();
 
             for (BashPsiElement param : parameters) {

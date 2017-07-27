@@ -21,6 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectExpr;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
@@ -205,6 +206,10 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         }
 
         if (leftType == EQ && leftNode.getTreePrev() != null && leftNode.getTreePrev().getElementType() == ASSIGNMENT_WORD) {
+            //only if the assignment is not in "A= cmd"
+            if (rightPsi instanceof BashGenericCommand) {
+                return COMMON_SPACING;
+            }
             return NO_SPACING;
         }
 

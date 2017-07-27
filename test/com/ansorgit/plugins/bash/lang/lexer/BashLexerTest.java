@@ -555,14 +555,14 @@ public class BashLexerTest {
 
         //replace newline with space
         testTokenization("${x/\n/ }", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, WORD, RIGHT_CURLY);
-        
+
         testTokenization("${input//[[:digit:].]/}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH_SLASH, PARAM_EXPANSION_PATTERN, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
 
         testTokenization("${1/} X", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, WHITESPACE, WORD);
         testTokenization("function x\n" +
-                "${1/}\n" +
-                "${1/}\n" +
-                "}",
+                        "${1/}\n" +
+                        "${1/}\n" +
+                        "}",
                 FUNCTION_KEYWORD, WHITESPACE, WORD, LINE_FEED, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, LINE_FEED,
                 DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY, LINE_FEED,
                 RIGHT_CURLY);
@@ -1437,9 +1437,9 @@ public class BashLexerTest {
     @Test
     public void testIssue431() throws Exception {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
-        testTokenization("$((x|=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
-        testTokenization("$((x&=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
-        testTokenization("$((x^=5))", DOLLAR, EXPR_ARITH,WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x|=5))", DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x&=5))", DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
+        testTokenization("$((x^=5))", DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
     }
 
     @Test
@@ -1450,6 +1450,17 @@ public class BashLexerTest {
         testTokenization("issues=($(x && x))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN, RIGHT_PAREN);
 
         testTokenization("issues=($((1+1)))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_PLUS, ARITH_NUMBER, _EXPR_ARITH, RIGHT_PAREN);
+    }
+
+    @Test
+    public void testIssue412() throws Exception {
+        testTokenization("[[ (a =~ \"b\") ]]", BRACKET_KEYWORD, LEFT_PAREN, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, _BRACKET_KEYWORD);
+    }
+
+    @Test
+    public void testIssue401() throws Exception {
+        //less-than should be replaced with a better token in the lexer
+        testTokenization("\"${A%<}\"", STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
     }
 
     private void testNoErrors(String code) {

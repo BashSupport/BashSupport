@@ -1,7 +1,7 @@
-export <caret>a=1
+export a=1
 
 # usages
-$a
+$<caret>a
 ${a}
 echo $a
 echo "$a"

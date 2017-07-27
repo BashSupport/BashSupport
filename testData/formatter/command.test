@@ -1,13 +1,13 @@
 a
     b
     c
-        d
+ A=B    B= C=       d
 echo hey;
         echo hu;
 -----
 a
 b
 c
-d
+A=B B= C= d
 echo hey;
 echo hu;
