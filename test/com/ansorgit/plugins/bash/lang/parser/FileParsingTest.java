@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -100,5 +101,10 @@ public class FileParsingTest extends MockPsiTest {
         mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, AMP, WHITESPACE, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
         //cmd <<< 'hi'&echo && echo
         mockTest(fileTest, WORD, WHITESPACE, REDIRECT_HERE_STRING, STRING2, AMP, WORD, WHITESPACE, AND_AND, WHITESPACE, WORD);
+    }
+
+    @Test
+    public void testBinary() throws Exception {
+        mockTest(fileTest, Lists.newArrayList("exit"), WORD, LINE_FEED, WORD);
     }
 }

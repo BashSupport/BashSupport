@@ -78,9 +78,14 @@ public class FileParsing implements ParsingTool {
             return false;
         }
 
+        IElementType prev = builder.rawLookup(-1);
+        if (prev != null && prev != LINE_FEED) {
+            return false;
+        }
+
         //exit followed by whitespace
         IElementType type = builder.lookAhead(1);
-        if (type != null && type != WORD && type != STRING2 && type != INTEGER_LITERAL) {
+        if (type != null && type != WORD && type != STRING2 && type != INTEGER_LITERAL && type != LINE_FEED) {
             return false;
         }
 
