@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jansorg/BashSupport.svg?branch=master)](https://travis-ci.org/jansorg/BashSupport)
+
 **2017 project status: The BashSupport project will only receive fixes for major problems**
 
 *BashSupport is fully developed in my spare time since 2009. I'm unable to provide full support for BashSupport and will concentrate on fixes for major problems.*
