@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jansorg/BashSupport.svg?branch=master)](https://travis-ci.org/jansorg/BashSupport)
+[![Build Status](https://travis-ci.org/jansorg/BashSupport.svg?branch=idea-162.x)](https://travis-ci.org/jansorg/BashSupport)
 
 **2017 project status: The BashSupport project will only receive fixes for major problems**
 
