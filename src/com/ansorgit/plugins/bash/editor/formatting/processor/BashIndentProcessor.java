@@ -22,7 +22,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.intellij.formatting.Indent;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,16 +46,25 @@ public abstract class BashIndentProcessor implements BashElementTypes, BashToken
      */
     @NotNull
     public static Indent getChildIndent(@NotNull final BashBlock parent, @Nullable final ASTNode prevChildNode, @NotNull final ASTNode child) {
-        ASTNode astNode = parent.getNode();
-        final PsiElement psiParent = astNode.getPsi();
+        ASTNode node = parent.getNode();
+        IElementType nodeType = node.getElementType();
+        PsiElement psiElement = node.getPsi();
 
         // For Bash file
-        if (psiParent instanceof BashFile) {
+        if (psiElement instanceof BashFile) {
             return Indent.getNoneIndent();
         }
 
-        if (BLOCKS.contains(astNode.getElementType())) {
-            return indentForBlock(psiParent, child);
+        if (BLOCKS.contains(nodeType)) {
+            return indentForBlock(psiElement, child);
+        }
+
+        //subshell as function body
+        ASTNode parentNode = node.getTreeParent();
+        if (parentNode != null && parentNode.getElementType() == SUBSHELL_COMMAND) {
+            if (parentNode.getTreeParent() != null && parentNode.getTreeParent().getElementType() == FUNCTION_DEF_COMMAND) {
+                return Indent.getNormalIndent();
+            }
         }
 
         return Indent.getNoneIndent();

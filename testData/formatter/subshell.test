@@ -1,0 +1,25 @@
+function foo() (
+:
+    )
+
+function foo() (:)
+
+function foo2() {
+    :
+}
+
+$(:)
+-----
+function foo() (
+  :
+)
+
+function foo() (
+  :
+)
+
+function foo2() {
+  :
+}
+
+$(:)

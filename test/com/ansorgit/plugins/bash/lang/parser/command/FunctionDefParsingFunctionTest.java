@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 public class FunctionDefParsingFunctionTest extends MockPsiTest {
-    private MockFunction f = new MockFunction() {
+    private final MockFunction f = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return Parsing.command.parse(psi);
@@ -58,5 +58,37 @@ public class FunctionDefParsingFunctionTest extends MockPsiTest {
         //}
         mockTestSuccessWithErrors(f, FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_CURLY, LINE_FEED,
                 WORD, DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_UNKNOWN, INTEGER_LITERAL, RIGHT_CURLY, SEMI, WHITESPACE, WORD, LINE_FEED, LINE_FEED, RIGHT_CURLY);
+    }
+
+    @Test
+    public void testIssue465() throws Exception {
+        //function foo() (
+        //    :
+        //)
+        mockTest(f, FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_PAREN, LINE_FEED, WORD, LINE_FEED, RIGHT_PAREN);
+
+        //function foo()
+        //
+        // (
+        //    :
+        //)
+        mockTest(f, FUNCTION_KEYWORD, WHITESPACE, WORD, LEFT_PAREN, RIGHT_PAREN, LINE_FEED, LINE_FEED, LEFT_PAREN, LINE_FEED, WORD, LINE_FEED, RIGHT_PAREN);
+
+        //foo() (
+        //    :
+        //)
+        mockTest(f, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_PAREN, LINE_FEED, WORD, LINE_FEED, RIGHT_PAREN);
+
+        //foo()
+        //
+        // (
+        //    :
+        //)
+        mockTest(f, WORD, LEFT_PAREN, RIGHT_PAREN, LINE_FEED, LINE_FEED, LEFT_PAREN, LINE_FEED, WORD, LINE_FEED, RIGHT_PAREN);
+
+        // foo() if true; then
+        // :
+        // fi
+        mockTest(f, WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, LINE_FEED, WORD, LINE_FEED, FI_KEYWORD);
     }
 }
