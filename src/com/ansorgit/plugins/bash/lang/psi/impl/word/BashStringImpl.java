@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
  * @author jansorg
  */
 public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost {
+    private final Object stateLock = new Object();
     private volatile TextRange contentRange;
     private volatile Boolean isWrapped;
 
@@ -48,25 +49,27 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.contentRange = null;
-        this.isWrapped = null;
+        synchronized (stateLock) {
+            this.contentRange = null;
+            this.isWrapped = null;
+        }
     }
 
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            synchronized (this) {
-                if (isWrapped == null) {
-                    isWrapped = false;
+            boolean newIsWrapped = false;
 
-                    if (getTextLength() >= 2) {
-                        ASTNode node = getNode();
-                        IElementType firstType = node.getFirstChildNode().getElementType();
-                        IElementType lastType = node.getLastChildNode().getElementType();
+            if (getTextLength() >= 2) {
+                ASTNode node = getNode();
+                IElementType firstType = node.getFirstChildNode().getElementType();
+                IElementType lastType = node.getLastChildNode().getElementType();
 
-                        isWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
-                    }
-                }
+                newIsWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
+            }
+
+            synchronized (stateLock) {
+                isWrapped = newIsWrapped;
             }
         }
 
@@ -94,17 +97,18 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @NotNull
     public TextRange getTextContentRange() {
         if (contentRange == null) {
-            synchronized (this) {
-                if (contentRange == null) {
-                    ASTNode node = getNode();
-                    ASTNode firstChild = node.getFirstChildNode();
+            ASTNode node = getNode();
+            ASTNode firstChild = node.getFirstChildNode();
 
-                    if (firstChild != null && firstChild.getText().equals("$\"")) {
-                        contentRange = TextRange.from(2, getTextLength() - 3);
-                    } else {
-                        contentRange = TextRange.from(1, getTextLength() - 2);
-                    }
-                }
+            TextRange newContentRange;
+            if (firstChild != null && firstChild.getText().equals("$\"")) {
+                newContentRange = TextRange.from(2, getTextLength() - 3);
+            } else {
+                newContentRange = TextRange.from(1, getTextLength() - 2);
+            }
+
+            synchronized (stateLock) {
+                contentRange = newContentRange;
             }
         }
 

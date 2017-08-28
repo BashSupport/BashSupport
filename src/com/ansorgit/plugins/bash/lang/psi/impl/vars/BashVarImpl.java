@@ -50,6 +50,7 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     private final BashReference varReference = new SmartBashVarReference(this);
     private final BashReference dumbVarReference = new DumbBashVarReference(this);
 
+    private final Object stateLock = new Object();
     private volatile int prefixLength = -1;
     private volatile String referencedName;
     private volatile TextRange nameTextRange;
@@ -66,9 +67,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.prefixLength = -1;
-        this.referencedName = null;
-        this.nameTextRange = null;
+        synchronized (stateLock) {
+            this.prefixLength = -1;
+            this.referencedName = null;
+            this.nameTextRange = null;
+        }
     }
 
     @Override
@@ -122,10 +125,10 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (referencedName == null) {
-            synchronized (this) {
-                if (referencedName == null) {
-                    referencedName = getNameTextRange().substring(getText());
-                }
+            String newReferencedName = getNameTextRange().substring(getText());
+
+            synchronized (stateLock) {
+                referencedName = newReferencedName;
             }
         }
 
@@ -145,11 +148,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (prefixLength == -1) {
-            synchronized (this) {
-                if (prefixLength == -1) {
-                    String text = getText();
-                    prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
-                }
+            String text = getText();
+            int newPrefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
+
+            synchronized (stateLock) {
+                prefixLength = newPrefixLength;
             }
         }
 
@@ -203,10 +206,10 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     protected TextRange getNameTextRange() {
         if (nameTextRange == null) {
-            synchronized (this) {
-                if (nameTextRange == null) {
-                    nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
-                }
+            TextRange newNameTextRange = TextRange.create(getPrefixLength(), getTextLength());
+
+            synchronized (stateLock) {
+                nameTextRange = newNameTextRange;
             }
         }
 

@@ -33,8 +33,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
-    private volatile Boolean isWrapped;
 
+    private final Object stateLock = new Object();
+    private volatile Boolean isWrapped;
     private boolean singleChildParent;
     private volatile boolean singleChildParentComputed = false;
 
@@ -46,8 +47,10 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.isWrapped = null;
-        this.singleChildParentComputed = false;
+        synchronized (stateLock) {
+            this.isWrapped = null;
+            this.singleChildParentComputed = false;
+        }
     }
 
     @Override
@@ -76,11 +79,12 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     private boolean isSingleChildParent() {
         if (!singleChildParentComputed) {
-            synchronized (this) {
-                if (!singleChildParentComputed) {
-                    singleChildParent = BashPsiUtils.isSingleChildParent(this);
-                    singleChildParentComputed = true;
-                }
+            boolean newSingleChildParent = BashPsiUtils.isSingleChildParent(this);
+
+            synchronized (stateLock) {
+                singleChildParentComputed = true;
+
+                singleChildParent = newSingleChildParent;
             }
         }
 
@@ -90,18 +94,18 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            synchronized (this) {
-                if (isWrapped == null) {
-                    isWrapped = false;
-                    if (getTextLength() >= 2) {
-                        ASTNode firstChildNode = getNode().getFirstChildNode();
-                        if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
-                            String text = firstChildNode.getText();
+            boolean newIsWrapped = false;
+            if (getTextLength() >= 2) {
+                ASTNode firstChildNode = getNode().getFirstChildNode();
+                if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
+                    String text = firstChildNode.getText();
 
-                            isWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
-                        }
-                    }
+                    newIsWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
                 }
+            }
+
+            synchronized (stateLock) {
+                isWrapped = newIsWrapped;
             }
         }
 

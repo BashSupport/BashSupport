@@ -53,8 +53,9 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     private final PsiReference bashFileReference = new SmartBashFileReference(this);
     private final PsiReference dumbBashFileReference = new DumbBashFileReference(this);
 
-    private volatile String referencedCommandName;
+    private final Object stateLock = new Object();
     private volatile boolean hasReferencedCommandName = false;
+    private volatile String referencedCommandName;
     private volatile Boolean isInternalCommandBash3;
     private volatile Boolean isInternalCommandBash4;
     private volatile List<BashPsiElement> parameters;
@@ -69,6 +70,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     @NotNull
+
     @Override
     public BashFile getContainingFile() {
         return (BashFile) super.getContainingFile();
@@ -78,12 +80,14 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.genericCommandElement = null;
-        this.hasReferencedCommandName = false;
-        this.referencedCommandName = null;
-        this.isInternalCommandBash3 = null;
-        this.isInternalCommandBash4 = null;
-        this.parameters = null;
+        synchronized (stateLock) {
+            this.genericCommandElement = null;
+            this.hasReferencedCommandName = false;
+            this.referencedCommandName = null;
+            this.isInternalCommandBash3 = null;
+            this.isInternalCommandBash4 = null;
+            this.parameters = null;
+        }
     }
 
     public boolean isGenericCommand() {
@@ -111,17 +115,18 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-            synchronized (this) {
-                if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-                    isInternalCommandBash3 = false;
-                    isInternalCommandBash4 = false;
+            boolean isBash3 = false;
+            boolean isBash4 = false;
 
-                    if (isGenericCommand()) {
-                        String commandText = getReferencedCommandName();
-                        isInternalCommandBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
-                        isInternalCommandBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
-                    }
-                }
+            if (isGenericCommand()) {
+                String commandText = getReferencedCommandName();
+                isBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
+                isBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
+            }
+
+            synchronized (stateLock) {
+                isInternalCommandBash3 = isBash3;
+                isInternalCommandBash4 = isBash4;
             }
         }
 
@@ -174,10 +179,10 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     @Nullable
     private ASTNode commandElementNode() {
         if (genericCommandElement == null) {
-            synchronized (this) {
-                if (genericCommandElement == null) {
-                    genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                }
+            ASTNode newElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+
+            synchronized (stateLock) {
+                genericCommandElement = newElement;
             }
         }
 
@@ -186,24 +191,25 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     public List<BashPsiElement> parameters() {
         if (parameters == null) {
-            synchronized (this) {
-                if (parameters == null) {
-                    PsiElement cmd = commandElement();
-                    if (cmd == null) {
-                        parameters = Collections.emptyList();
-                    } else {
-                        parameters = Lists.newLinkedList();
+            List<BashPsiElement> newParameters = null;
+            PsiElement cmd = commandElement();
+            if (cmd == null) {
+                newParameters = Collections.emptyList();
+            } else {
+                newParameters = Lists.newLinkedList();
 
-                        PsiElement nextSibling = cmd.getNextSibling();
-                        while (nextSibling != null) {
-                            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
-                                parameters.add((BashPsiElement) nextSibling);
-                            }
-
-                            nextSibling = nextSibling.getNextSibling();
-                        }
+                PsiElement nextSibling = cmd.getNextSibling();
+                while (nextSibling != null) {
+                    if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
+                        newParameters.add((BashPsiElement) nextSibling);
                     }
+
+                    nextSibling = nextSibling.getNextSibling();
                 }
+            }
+
+            synchronized (stateLock) {
+                parameters = newParameters;
             }
         }
 
@@ -238,12 +244,12 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (!hasReferencedCommandName) {
-            synchronized (this) {
-                if (!hasReferencedCommandName) {
-                    ASTNode command = commandElementNode();
-                    referencedCommandName = command != null ? command.getText() : null;
-                    hasReferencedCommandName = true;
-                }
+            ASTNode command = commandElementNode();
+            String newCommandName = command != null ? command.getText() : null;
+
+            synchronized (stateLock) {
+                hasReferencedCommandName = true;
+                referencedCommandName = newCommandName;
             }
         }
 

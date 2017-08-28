@@ -41,12 +41,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * @author jansorg
  */
 public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
+    private final Object stateLock = new Object();
     private volatile BashBlock body;
     private volatile boolean computedBody = false;
     private volatile List<BashPsiElement> referencedParameters;
@@ -63,9 +65,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.body = null;
-        this.computedBody = false;
-        this.referencedParameters = null;
+        synchronized (stateLock) {
+            this.computedBody = false;
+            this.body = null;
+            this.referencedParameters = null;
+        }
     }
 
     public PsiElement setName(@NotNull @NonNls String name) throws IncorrectOperationException {
@@ -93,11 +97,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     public BashBlock functionBody() {
         if (!computedBody) {
-            synchronized (this) {
-                if (!computedBody) {
-                    computedBody = true;
-                    body = findChildByClass(BashBlock.class);
-                }
+            BashBlock newBodyElement = findChildByClass(BashBlock.class);
+
+            synchronized (stateLock) {
+                computedBody = true;
+                body = newBodyElement;
             }
         }
 
@@ -116,17 +120,17 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     @NotNull
     public List<BashPsiElement> findReferencedParameters() {
         if (referencedParameters == null) {
-            synchronized (this) {
-                if (referencedParameters == null) {
-                    //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
-                    referencedParameters = Lists.newLinkedList();
+            //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
+            List<BashPsiElement> newReferencedParameters = Lists.newLinkedList();
 
-                    for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-                        if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
-                            referencedParameters.add(var);
-                        }
-                    }
+            for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
+                if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
+                    newReferencedParameters.add(var);
                 }
+            }
+
+            synchronized (stateLock) {
+                referencedParameters = newReferencedParameters;
             }
         }
 

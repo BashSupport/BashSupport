@@ -36,10 +36,13 @@ import java.util.List;
 /**
  * Base class for arithmetic expressions.
  * <br>
+ *
  * @author jansorg
  */
 public abstract class AbstractExpression extends BashBaseElement implements ArithmeticExpression {
     private final Type type;
+
+    private final Object stateLock = new Object();
     private volatile Boolean isStatic = null;
 
     public AbstractExpression(final ASTNode astNode, final String name, Type type) {
@@ -58,17 +61,15 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
     public boolean isStatic() {
         if (isStatic == null) {
-            synchronized (this) {
-                if (isStatic == null) {
-                    Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
+            Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
 
-                    boolean allStatic = iterator.hasNext();
-                    while (allStatic && iterator.hasNext()) {
-                        allStatic = iterator.next().isStatic();
-                    }
+            boolean allStatic = iterator.hasNext();
+            while (allStatic && iterator.hasNext()) {
+                allStatic = iterator.next().isStatic();
+            }
 
-                    isStatic = allStatic;
-                }
+            synchronized (stateLock) {
+                isStatic = allStatic;
             }
         }
 
@@ -79,7 +80,9 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.isStatic = null;
+        synchronized (stateLock) {
+            this.isStatic = null;
+        }
     }
 
     //fixme cache this?
