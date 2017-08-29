@@ -259,7 +259,7 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             }
 
             //keep current spacing
-            return LAZY_SPACING;
+            return NO_SPACING;
         }
 
         if (leftType == LESS_THAN && rightType == LEFT_PAREN && leftParentElement == BashElementTypes.PROCESS_SUBSTITUTION_ELEMENT) {
