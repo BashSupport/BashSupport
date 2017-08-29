@@ -39,19 +39,15 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BashSpacingProcessorBasic implements BashElementTypes, BashTokenTypes {
     private static final Logger log = Logger.getInstance("SpacingProcessorBasic");
-    private static TokenSet commandSet = TokenSet.create(GENERIC_COMMAND_ELEMENT, SIMPLE_COMMAND_ELEMENT);
-    private static TokenSet subshellSet = TokenSet.create(SUBSHELL_COMMAND, ARITHMETIC_COMMAND, PARAM_EXPANSION_ELEMENT, VAR_COMPOSED_VAR_ELEMENT);
-
-    private static final Spacing NO_SPACING_WITH_NEWLINE = Spacing.createSpacing(0, 0, 0, true, 1);
     private static final Spacing NO_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
     private static final Spacing COMMON_SPACING = Spacing.createSpacing(1, 1, 0, true, 100);
     private static final Spacing COMMON_SPACING_WITH_NL = Spacing.createSpacing(1, 1, 1, true, 100);
-    private static final Spacing IMPORT_BETWEEN_SPACING = Spacing.createSpacing(0, 0, 1, true, 100);
-    private static final Spacing IMPORT_OTHER_SPACING = Spacing.createSpacing(0, 0, 2, true, 100);
     private static final Spacing LAZY_SPACING = Spacing.createSpacing(0, 239, 0, true, 100);
+    private static TokenSet subshellSet = TokenSet.create(SUBSHELL_COMMAND, ARITHMETIC_COMMAND, PARAM_EXPANSION_ELEMENT, VAR_COMPOSED_VAR_ELEMENT);
 
     public static Spacing getSpacing(BashBlock child1, BashBlock child2, CodeStyleSettings settings) {
         ASTNode leftNode = child1.getNode();
@@ -73,7 +69,7 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         //}
 
         //for the synthetic whitespace of eval strings '...'
-        if ((leftType == WHITESPACE || rightType == WHITESPACE) && leftPsi.getParent() instanceof BashEvalBlock  && rightPsi.getParent() instanceof BashEvalBlock) {
+        if ((leftType == WHITESPACE || rightType == WHITESPACE) && leftPsi.getParent() instanceof BashEvalBlock && rightPsi.getParent() instanceof BashEvalBlock) {
             return Spacing.getReadOnlySpacing();
         }
 
@@ -258,6 +254,15 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
 
         //redirect elements
         if (leftPsi.getParent() instanceof BashRedirectExpr && rightPsi.getParent() instanceof BashRedirectExpr) {
+            if (rightType == BashElementTypes.PARSED_WORD_ELEMENT) {
+                return COMMON_SPACING;
+            }
+
+            //keep current spacing
+            return LAZY_SPACING;
+        }
+
+        if (leftType == LESS_THAN && rightType == LEFT_PAREN && leftParentElement == BashElementTypes.PROCESS_SUBSTITUTION_ELEMENT) {
             return NO_SPACING;
         }
 
@@ -276,10 +281,6 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         }
 
         return COMMON_SPACING;
-    }
-
-    private static boolean isInCasePattern(ASTNode node) {
-        return node.getTreeParent() != null && node.getTreeParent().getElementType() == CASE_PATTERN_ELEMENT;
     }
 
     /**
@@ -339,16 +340,15 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
      * @param node
      * @return True if the on of the nodes is embedded in a string
      */
-    private static boolean hasParentNodeType(@NotNull ASTNode node, @NotNull IElementType parentNodeType) {
-        while (node != null) {
-            IElementType currentType = node.getElementType();
-            if (currentType == parentNodeType) {
-                return true;
-            }
-
-            node = node.getTreeParent();
+    private static boolean hasAncestorNodeType(@Nullable ASTNode node, int levelsUp, @NotNull IElementType parentNodeType) {
+        if (node == null) {
+            return false;
         }
 
-        return false;
+        if (levelsUp <= 0) {
+            return node.getElementType() == parentNodeType;
+        }
+
+        return hasAncestorNodeType(node.getTreeParent(), levelsUp - 1, parentNodeType);
     }
 }
