@@ -61,15 +61,18 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
 
     public boolean isStatic() {
         if (isStatic == null) {
-            Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
-
-            boolean allStatic = iterator.hasNext();
-            while (allStatic && iterator.hasNext()) {
-                allStatic = iterator.next().isStatic();
-            }
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                isStatic = allStatic;
+                if (isStatic == null) {
+                    Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
+
+                    boolean allStatic = iterator.hasNext();
+                    while (allStatic && iterator.hasNext()) {
+                        allStatic = iterator.next().isStatic();
+                    }
+
+                    isStatic = allStatic;
+                }
             }
         }
 

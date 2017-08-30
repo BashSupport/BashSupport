@@ -115,18 +115,21 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-            boolean isBash3 = false;
-            boolean isBash4 = false;
-
-            if (isGenericCommand()) {
-                String commandText = getReferencedCommandName();
-                isBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
-                isBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
-            }
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                isInternalCommandBash3 = isBash3;
-                isInternalCommandBash4 = isBash4;
+                if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
+                    boolean isBash3 = false;
+                    boolean isBash4 = false;
+
+                    if (isGenericCommand()) {
+                        String commandText = getReferencedCommandName();
+                        isBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
+                        isBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
+                    }
+
+                    isInternalCommandBash3 = isBash3;
+                    isInternalCommandBash4 = isBash4;
+                }
             }
         }
 
@@ -179,10 +182,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     @Nullable
     private ASTNode commandElementNode() {
         if (genericCommandElement == null) {
-            ASTNode newElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                genericCommandElement = newElement;
+                if (genericCommandElement == null) {
+                    genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
+                }
             }
         }
 
@@ -191,25 +195,29 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     public List<BashPsiElement> parameters() {
         if (parameters == null) {
-            List<BashPsiElement> newParameters = null;
-            PsiElement cmd = commandElement();
-            if (cmd == null) {
-                newParameters = Collections.emptyList();
-            } else {
-                newParameters = Lists.newLinkedList();
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
+            synchronized (stateLock) {
+                if (parameters == null) {
+                    PsiElement cmd = commandElement();
 
-                PsiElement nextSibling = cmd.getNextSibling();
-                while (nextSibling != null) {
-                    if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
-                        newParameters.add((BashPsiElement) nextSibling);
+                    List<BashPsiElement> newParameters;
+                    if (cmd == null) {
+                        newParameters = Collections.emptyList();
+                    } else {
+                        newParameters = Lists.newLinkedList();
+
+                        PsiElement nextSibling = cmd.getNextSibling();
+                        while (nextSibling != null) {
+                            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
+                                newParameters.add((BashPsiElement) nextSibling);
+                            }
+
+                            nextSibling = nextSibling.getNextSibling();
+                        }
                     }
 
-                    nextSibling = nextSibling.getNextSibling();
+                    parameters = newParameters;
                 }
-            }
-
-            synchronized (stateLock) {
-                parameters = newParameters;
             }
         }
 
@@ -244,12 +252,15 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         }
 
         if (!hasReferencedCommandName) {
-            ASTNode command = commandElementNode();
-            String newCommandName = command != null ? command.getText() : null;
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                hasReferencedCommandName = true;
-                referencedCommandName = newCommandName;
+                if (!hasReferencedCommandName) {
+                    ASTNode command = commandElementNode();
+                    String newCommandName = command != null ? command.getText() : null;
+
+                    hasReferencedCommandName = true;
+                    referencedCommandName = newCommandName;
+                }
             }
         }
 
@@ -295,7 +306,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState
+            state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 

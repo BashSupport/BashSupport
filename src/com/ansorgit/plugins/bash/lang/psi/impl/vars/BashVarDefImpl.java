@@ -104,17 +104,20 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         }
 
         if (name == null) {
-            PsiElement element = findAssignmentWord();
-
-            String newName;
-            if (element instanceof BashCharSequence) {
-                newName = ((BashCharSequence) element).getUnwrappedCharSequence();
-            } else {
-                newName = element.getText();
-            }
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                name = newName;
+                if (name == null) {
+                    PsiElement element = findAssignmentWord();
+
+                    String newName;
+                    if (element instanceof BashCharSequence) {
+                        newName = ((BashCharSequence) element).getUnwrappedCharSequence();
+                    } else {
+                        newName = element.getText();
+                    }
+
+                    name = newName;
+                }
             }
         }
 
@@ -165,23 +168,26 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @NotNull
     public PsiElement findAssignmentWord() {
         if (assignmentWord == null) {
-            PsiElement element = findChildByType(accepted);
-
-            PsiElement newAssignmentWord;
-            if (element != null) {
-                newAssignmentWord = element;
-            } else {
-                //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
-                //a parsed var
-                PsiElement firstChild = getFirstChild();
-                ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
-
-                ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-                newAssignmentWord = (node != null) ? node.getPsi() : firstChild;
-            }
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                assignmentWord = newAssignmentWord;
+                if (assignmentWord == null) {
+                    PsiElement element = findChildByType(accepted);
+
+                    PsiElement newAssignmentWord;
+                    if (element != null) {
+                        newAssignmentWord = element;
+                    } else {
+                        //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
+                        //a parsed var
+                        PsiElement firstChild = getFirstChild();
+                        ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
+
+                        ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
+                        newAssignmentWord = (node != null) ? node.getPsi() : firstChild;
+                    }
+
+                    assignmentWord = newAssignmentWord;
+                }
             }
         }
 
@@ -195,7 +201,6 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isFunctionScopeLocal() {
-        //fixme probably not ok because we look at parent elements
         if (cachedFunctionScopeLocal == null) {
             boolean newCachedFunctionScopeLocal = doIsFunctionScopeLocal();
 
@@ -366,17 +371,19 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
     public TextRange getAssignmentNameTextRange() {
         if (nameTextRange == null) {
-            PsiElement wordElement = findAssignmentWord();
-
-            TextRange newNameTextRange;
-            if (wordElement instanceof BashString) {
-                newNameTextRange = ((BashString) wordElement).getTextContentRange();
-            } else {
-                newNameTextRange = TextRange.from(0, wordElement.getTextLength());
-            }
-
             synchronized (stateLock) {
-                nameTextRange = newNameTextRange;
+                if (nameTextRange == null) {
+                    PsiElement wordElement = findAssignmentWord();
+
+                    TextRange newNameTextRange;
+                    if (wordElement instanceof BashString) {
+                        newNameTextRange = ((BashString) wordElement).getTextContentRange();
+                    } else {
+                        newNameTextRange = TextRange.from(0, wordElement.getTextLength());
+                    }
+
+                    nameTextRange = newNameTextRange;
+                }
             }
         }
 

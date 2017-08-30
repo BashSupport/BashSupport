@@ -36,8 +36,8 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     private final Object stateLock = new Object();
     private volatile Boolean isWrapped;
-    private boolean singleChildParent;
     private volatile boolean singleChildParentComputed = false;
+    private volatile boolean singleChildParent;
 
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
@@ -79,12 +79,11 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
 
     private boolean isSingleChildParent() {
         if (!singleChildParentComputed) {
-            boolean newSingleChildParent = BashPsiUtils.isSingleChildParent(this);
-
             synchronized (stateLock) {
-                singleChildParentComputed = true;
-
-                singleChildParent = newSingleChildParent;
+                if (!singleChildParentComputed) {
+                    singleChildParent = BashPsiUtils.isSingleChildParent(this);
+                    singleChildParentComputed = true;
+                }
             }
         }
 
@@ -94,18 +93,20 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            boolean newIsWrapped = false;
-            if (getTextLength() >= 2) {
-                ASTNode firstChildNode = getNode().getFirstChildNode();
-                if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
-                    String text = firstChildNode.getText();
-
-                    newIsWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
-                }
-            }
-
             synchronized (stateLock) {
-                isWrapped = newIsWrapped;
+                if (isWrapped == null) {
+                    boolean newIsWrapped = false;
+                    if (getTextLength() >= 2) {
+                        ASTNode firstChildNode = getNode().getFirstChildNode();
+                        if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
+                            String text = firstChildNode.getText();
+
+                            newIsWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
+                        }
+                    }
+
+                    isWrapped = newIsWrapped;
+                }
             }
         }
 

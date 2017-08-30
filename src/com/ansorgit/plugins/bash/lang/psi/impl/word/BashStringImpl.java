@@ -58,18 +58,20 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @Override
     public boolean isWrapped() {
         if (isWrapped == null) {
-            boolean newIsWrapped = false;
-
-            if (getTextLength() >= 2) {
-                ASTNode node = getNode();
-                IElementType firstType = node.getFirstChildNode().getElementType();
-                IElementType lastType = node.getLastChildNode().getElementType();
-
-                newIsWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
-            }
-
             synchronized (stateLock) {
-                isWrapped = newIsWrapped;
+                if (isWrapped == null) {
+                    boolean newIsWrapped = false;
+
+                    if (getTextLength() >= 2) {
+                        ASTNode node = getNode();
+                        IElementType firstType = node.getFirstChildNode().getElementType();
+                        IElementType lastType = node.getLastChildNode().getElementType();
+
+                        newIsWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
+                    }
+
+                    isWrapped = newIsWrapped;
+                }
             }
         }
 
@@ -97,18 +99,21 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     @NotNull
     public TextRange getTextContentRange() {
         if (contentRange == null) {
-            ASTNode node = getNode();
-            ASTNode firstChild = node.getFirstChildNode();
-
-            TextRange newContentRange;
-            if (firstChild != null && firstChild.getText().equals("$\"")) {
-                newContentRange = TextRange.from(2, getTextLength() - 3);
-            } else {
-                newContentRange = TextRange.from(1, getTextLength() - 2);
-            }
-
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
             synchronized (stateLock) {
-                contentRange = newContentRange;
+                if (contentRange == null) {
+                    ASTNode node = getNode();
+                    ASTNode firstChild = node.getFirstChildNode();
+
+                    TextRange newContentRange;
+                    if (firstChild != null && firstChild.getText().equals("$\"")) {
+                        newContentRange = TextRange.from(2, getTextLength() - 3);
+                    } else {
+                        newContentRange = TextRange.from(1, getTextLength() - 2);
+                    }
+
+                    contentRange = newContentRange;
+                }
             }
         }
 

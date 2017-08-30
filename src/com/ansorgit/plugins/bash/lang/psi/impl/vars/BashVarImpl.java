@@ -125,10 +125,10 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (referencedName == null) {
-            String newReferencedName = getNameTextRange().substring(getText());
-
             synchronized (stateLock) {
-                referencedName = newReferencedName;
+                if (referencedName == null) {
+                    referencedName = getNameTextRange().substring(getText());
+                }
             }
         }
 
@@ -148,11 +148,11 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         }
 
         if (prefixLength == -1) {
-            String text = getText();
-            int newPrefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
-
             synchronized (stateLock) {
-                prefixLength = newPrefixLength;
+                if (prefixLength == -1) {
+                    String text = getText();
+                    prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
+                }
             }
         }
 
@@ -206,10 +206,10 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
     protected TextRange getNameTextRange() {
         if (nameTextRange == null) {
-            TextRange newNameTextRange = TextRange.create(getPrefixLength(), getTextLength());
-
             synchronized (stateLock) {
-                nameTextRange = newNameTextRange;
+                if (nameTextRange == null) {
+                    nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
+                }
             }
         }
 

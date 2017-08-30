@@ -97,11 +97,11 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     public BashBlock functionBody() {
         if (!computedBody) {
-            BashBlock newBodyElement = findChildByClass(BashBlock.class);
-
             synchronized (stateLock) {
-                computedBody = true;
-                body = newBodyElement;
+                if (!computedBody) {
+                    body = findChildByClass(BashBlock.class);
+                    computedBody = true;
+                }
             }
         }
 
@@ -120,17 +120,19 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     @NotNull
     public List<BashPsiElement> findReferencedParameters() {
         if (referencedParameters == null) {
-            //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
-            List<BashPsiElement> newReferencedParameters = Lists.newLinkedList();
-
-            for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-                if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
-                    newReferencedParameters.add(var);
-                }
-            }
-
             synchronized (stateLock) {
-                referencedParameters = newReferencedParameters;
+                if (referencedParameters == null) {
+                    //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
+                    List<BashPsiElement> newReferencedParameters = Lists.newLinkedList();
+
+                    for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
+                        if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
+                            newReferencedParameters.add(var);
+                        }
+                    }
+
+                    referencedParameters = newReferencedParameters;
+                }
             }
         }
 
