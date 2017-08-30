@@ -226,25 +226,14 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         //then iterate and break if there is one def which is local and which occurs before this element
 
         //fixme handle injected code in functions
-        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
-        if (functionLocalScope == null) {
-            return false;
-        }
 
-        final TextRange validScope = BashPsiUtils.getTextRangeInFile(functionLocalScope);
-
-        PsiFile currentFile = getContainingFile();
-        Collection<BashVarDef> allDefs = DumbService.isDumb(getProject())
-                ? PsiTreeUtil.collectElementsOfType(functionLocalScope, BashVarDef.class)
-                : StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
-
-        for (BashVarDef def : allDefs) {
-            if (def.isLocalVarDef() && validScope.contains(BashPsiUtils.getFileTextOffset(def))) {
-                PsiElement functionScope = def.findFunctionScope();
-                if (functionScope != null && functionScope.isEquivalentTo(functionLocalScope)) {
-                    return true;
-                }
+        BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(this);
+        while (scope != null) {
+            if (scope.findLocalScopeVariables().contains(getReferenceName())) {
+                return true;
             }
+
+            scope = BashPsiUtils.findNextVarDefFunctionDefScope(PsiTreeUtil.getStubOrPsiParent(scope));
         }
 
         return false;

@@ -21,12 +21,14 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.text.StringUtil;
@@ -41,8 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author jansorg
@@ -52,6 +53,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     private volatile BashBlock body;
     private volatile boolean computedBody = false;
     private volatile List<BashPsiElement> referencedParameters;
+    private volatile Set<String> localScopeVariables;
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");
@@ -69,6 +71,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
             this.computedBody = false;
             this.body = null;
             this.referencedParameters = null;
+            this.localScopeVariables = null;
         }
     }
 
@@ -137,6 +140,27 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         }
 
         return referencedParameters;
+    }
+
+    @NotNull
+    @Override
+    public Set<String> findLocalScopeVariables() {
+        if (localScopeVariables == null) {
+            synchronized (stateLock) {
+                if (localScopeVariables == null) {
+                    localScopeVariables = Sets.newLinkedHashSetWithExpectedSize(10);
+
+                    Collection<BashVarDef> varDefs = PsiTreeUtil.findChildrenOfType(this, BashVarDef.class);
+                    for (BashVarDef varDef : varDefs) {
+                        if (varDef.isLocalVarDef() && this.isEquivalentTo(BashPsiUtils.findNextVarDefFunctionDefScope(varDef))) {
+                            localScopeVariables.add(varDef.getReferenceName());
+                        }
+                    }
+                }
+            }
+        }
+
+        return localScopeVariables;
     }
 
     public String getDefinedName() {
