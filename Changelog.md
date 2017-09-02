@@ -1,3 +1,6 @@
+#### 2017-09-09:
+ - \#460 Parse commands separated by |&
+
 #### 2017-07-27:
  - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
  - \#401: Parameter expansion parsing error

@@ -282,9 +282,10 @@ public interface BashTokenTypes {
     IElementType REDIRECT_AMP_GREATER_GREATER = new BashElementType("&>>");
     IElementType REDIRECT_AMP_GREATER = new BashElementType("&>");
 
+    //this must NOT include PIPE_AMP because it's a command separator and not a real redirect token
     TokenSet redirectionSet = TokenSet.create(GREATER_THAN, LESS_THAN, SHIFT_RIGHT,
             REDIRECT_HERE_STRING, REDIRECT_LESS_GREATER,
-            REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER, PIPE_AMP,
+            REDIRECT_GREATER_BAR, REDIRECT_GREATER_AMP, REDIRECT_AMP_GREATER, REDIRECT_LESS_AMP, REDIRECT_AMP_GREATER_GREATER,
             HEREDOC_MARKER_TAG);
 
     //sets
