@@ -1,8 +1,14 @@
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
- - \#460 Parse commands separated by |&
+ - \#460: Parse commands separated by |&
+ - \#462: Unexpected Token w/ declare and some other constructs
+ - \#465: BashShebang NPE
+ - \#467: Deadlock in BashSupport
+ - \#468: Functions assumed to have curly brace body
+ - \#469: Support variables defined by `printf -v`
  - \#473: Support heredocs where the end marker is followed by a backtick
  - \#474: Support semicolon after command which starts a heredoc
+ - Release 1.6.12
 
 #### 2017-08-29:
  - \#459: Fixed formatting of redirects with process substitutions
@@ -19,6 +25,7 @@
  - \#453: A weird light blue background is seen over my code area
  - \#454: Using "mapfile" results in "Array use of non-array variables"
  - \#456: NPE in BashVarDefImpl
+ - Release 1.6.12
 
 #### 2017-07-13:
  - \#451: Fix stub exceptions triggered by BashSupport while looking for include files
