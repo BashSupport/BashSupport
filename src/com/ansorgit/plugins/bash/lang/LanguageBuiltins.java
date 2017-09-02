@@ -80,7 +80,7 @@ public final class LanguageBuiltins {
             "coproc", "mapfile", "readarray"
     );
     public static final Collection<String> varDefCommands = Sets.newHashSet(
-            "export", "read", "declare", "readonly", "typeset", "getopts", "mapfile", "readarray"
+            "export", "read", "declare", "readonly", "typeset", "getopts", "mapfile", "readarray", "printf"
     );
     public static final Collection<String> localVarDefCommands = Collections.singleton(
             "local"

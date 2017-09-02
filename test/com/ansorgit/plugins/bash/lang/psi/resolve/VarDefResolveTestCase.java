@@ -192,6 +192,26 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsValidVarDef();
     }
 
+    @Test
+    public void testPrintfDef() throws Exception {
+        assertIsValidVarDef();
+    }
+
+    @Test
+    public void testPrintfDefQuoted() throws Exception {
+        assertIsValidVarDef();
+    }
+
+    @Test
+    public void testPrintfNoVar() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
+    @Test
+    public void testPrintfNoArg() throws Exception {
+        assertIsInvalidVarDef();
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/resolve/varDef/";
     }
