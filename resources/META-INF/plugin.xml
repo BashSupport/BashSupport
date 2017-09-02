@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.11</version>
+    <version>1.6.12</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,21 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.12:</b>
+        <ul>
+            <li>#457: Unresolved Variable Warning on Linebreak</li>
+            <li>#459: Fixed formatting of redirects with process substitutions</li>
+            <li>#460: Parse commands separated by |&</li>
+            <li>#462: Unexpected Token w/ declare and some other constructs</li>
+            <li>#465: BashShebang NPE</li>
+            <li>#467: Deadlock in BashSupport</li>
+            <li>#468: Functions assumed to have curly brace body</li>
+            <li>#469: Support variables defined by `printf -v`
+            <li>#473: Support heredocs where the end marker is followed by a backtick</li>
+            <li>#474: Support semicolon after command which starts a heredoc</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.11:</b>
         <ul>
             <li>#394: Renaming a variable shows 'Renaming unknown type $1' in the dialog</li>

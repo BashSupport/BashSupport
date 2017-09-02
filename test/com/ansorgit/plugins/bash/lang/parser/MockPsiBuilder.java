@@ -321,17 +321,40 @@ public class MockPsiBuilder implements PsiBuilder {
             doneMarkers.add(Pair.create(this, elementType));
         }
 
-        public void collapse(@NotNull IElementType iElementType) {
-            done(iElementType);
+        public void collapse(@NotNull IElementType elementType) {
+            done(elementType);
         }
 
         public void doneBefore(@NotNull IElementType elementType, @NotNull Marker marker) {
-            finishMarker();
-            doneMarkers.add(Pair.create(this, elementType));
+            doneBefore(elementType, marker, "");
         }
 
-        public void doneBefore(@NotNull IElementType elementType, @NotNull Marker marker, String s) {
-            finishMarker();
+        public void doneBefore(@NotNull IElementType elementType, @NotNull Marker marker, String message) {
+            if (closed) {
+                throw new IllegalStateException("This marker is already closed (either dropped or done)");
+            }
+
+            if (!(marker instanceof MockMarker)) {
+                throw new IllegalStateException("The stopMarker must be a MockMarker");
+            }
+
+            closed = true;
+
+            int index = MockPsiBuilder.this.markers.indexOf(this);
+            int indexStopMarker = MockPsiBuilder.this.markers.indexOf(marker);
+
+            if (indexStopMarker == -1) {
+                throw new IllegalStateException("stopMarker wasn't found");
+            }
+            if (index == -1) {
+                throw new IllegalStateException("marker wasn't found");
+            }
+            if (index > indexStopMarker) {
+                throw new IllegalStateException(String.format("The stopMarker must have been created after the current marker: index %d, stop marker index %s", index, indexStopMarker));
+            }
+
+            MockPsiBuilder.this.markers.remove(index);
+
             doneMarkers.add(Pair.create(this, elementType));
         }
 

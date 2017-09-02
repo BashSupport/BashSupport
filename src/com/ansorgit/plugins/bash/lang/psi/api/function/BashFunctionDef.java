@@ -19,6 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.DocumentationAwareElement;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDefContainer;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiNameIdentifierOwner;
@@ -26,7 +27,9 @@ import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jansorg
@@ -51,4 +54,10 @@ public interface BashFunctionDef extends BashPsiElement, PsiNamedElement, Naviga
      */
     @NotNull
     List<BashPsiElement> findReferencedParameters();
+
+    /**
+     * @return Returns all variable definitions which are of local scope, i.e. which are declared as local in this function definition. Variable declarations inside of nested functions are not contained in the result.
+     */
+    @NotNull
+    Set<String> findLocalScopeVariables();
 }

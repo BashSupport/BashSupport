@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.base.BashFormatterTestCase;
 import com.ansorgit.plugins.bash.lang.base.TestUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -143,8 +144,20 @@ public class FormatterTest extends BashFormatterTestCase {
         doTest();
     }
 
+    @Test
+    public void testProcessSubstitution() throws Throwable {
+        //issue 459
+        doTest();
+    }
+
+    @Test
+    public void testSubshell() throws Throwable {
+        doTest();
+    }
+
     protected void doTest() throws Throwable {
-        final List<String> data = TestUtils.readInput(getBasePath() + getTestName(true) + ".test");
+        List<String> data = TestUtils.readInput(getBasePath() + getTestName(true) + ".test");
+        Assert.assertTrue("Expected two data sets", data.size() == 2);
         checkFormatting(data.get(0), data.get(1));
     }
 }

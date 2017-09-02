@@ -100,22 +100,27 @@ public class FunctionDefParsingFunction implements ParsingFunction {
         }
 
         //optional newlines before the body
-        final boolean newlinesAtBegin = builder.readOptionalNewlines();
+        builder.readOptionalNewlines();
 
-        //if we don't have one or more newlines we need a command group, i.e. {...}
-        boolean isGroup = Parsing.shellCommand.groupCommandParser.isValid(builder);
-        if (!newlinesAtBegin && !isGroup) {
-            //function.drop();
+        //parse function body
+        PsiBuilder.Marker bodyMarker = builder.mark();
+
+        boolean parsed = Parsing.shellCommand.parse(builder);
+        if (!parsed) {
             //mark the definition header (i.e. the function name) as function definition, so resolving works as expected
-            function.done(BashElementTypes.FUNCTION_DEF_COMMAND);
+            function.doneBefore(BashElementTypes.FUNCTION_DEF_COMMAND, bodyMarker);
+            bodyMarker.drop();
 
             ParserUtil.errorToken(builder, "parser.unexpected.token");
+
             return true;
         }
 
-        //parse function body
-        boolean parsed = Parsing.shellCommand.parse(builder);
-        if (parsed && !isGroup && builder.getTokenType() == BashTokenTypes.SEMI) {
+        //needed only to mark the function name with parsing errors
+        bodyMarker.drop();
+
+        //optional semicolon, not sure if this is compatible with the spec
+        if (builder.getTokenType() == BashTokenTypes.SEMI) {
             builder.advanceLexer();
         }
 
