@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.intellij.openapi.vcs.impl.LocalChangesUnderRoots;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -1461,6 +1460,20 @@ public class BashLexerTest {
     public void testIssue401() throws Exception {
         //less-than should be replaced with a better token in the lexer
         testTokenization("\"${A%<}\"", STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
+    }
+
+    @Test
+    public void testIssue473() throws Exception {
+        // `cat <<EOF
+        // X
+        // EOF`
+        testTokenization("`cat <<EOF\nX\nEOF`", BACKQUOTE, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, BACKQUOTE);
+
+        // $(cat <<EOF
+        // X
+        // EOF
+        // )
+        testTokenization("$(cat <<EOF\nX\nEOF\n)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_PAREN);
     }
 
     private void testNoErrors(String code) {

@@ -1,3 +1,6 @@
+#### 2017-09-02:
+ - \#473: Support heredocs where the end marker is followed by a backtick
+
 #### 2017-07-27:
  - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
  - \#401: Parameter expansion parsing error

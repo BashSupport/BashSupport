@@ -144,6 +144,13 @@ public final class ListParsing implements ParsingTool {
                     success = true;
                     break;
                 } else {
+                    if (hasHeredoc && builder.getTokenType() != LINE_FEED && !builder.eof()) {
+                        //the heredoc end marker might be followed by a backtick, for example
+                        //we must return to the outer parsing function without taking those tokens
+                        markCommand = true;
+                        break;
+                    }
+
                     PsiBuilder.Marker start = builder.mark();
 
                     builder.advanceLexer();

@@ -216,11 +216,23 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     }
 
     [^$\n\r\\]+  {
-            if (heredocState().isNextMarker(yytext())) {
+            //support end marker followed by a backtick if nested in a backtick command
+            CharSequence markerText = yytext();
+            boolean dropLastChar = false;
+            if (isInState(S_BACKQUOTE) && yylength() >= 2 && yycharat(yylength()-1) == '`') {
+                markerText = markerText.subSequence(0, yylength()-1);
+                dropLastChar = true;
+            }
+
+            if (heredocState().isNextMarker(markerText)) {
                 boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-                heredocState().popMarker(yytext());
+                heredocState().popMarker(markerText);
                 popStates(S_HEREDOC);
+
+                if (dropLastChar) {
+                    yypushback(1);
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
