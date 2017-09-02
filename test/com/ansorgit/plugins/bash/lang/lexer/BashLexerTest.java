@@ -1480,6 +1480,12 @@ public class BashLexerTest {
         testTokenization("a=\"a\"\\\n\"b_\"\n$a", ASSIGNMENT_WORD, EQ, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_CONTINUATION, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_FEED, VARIABLE);
     }
 
+    @Test
+    public void testIssue469() throws Exception {
+        testTokenization(BashVersion.Bash_v3, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE, AMP, WHITESPACE, WORD, WHITESPACE, WORD);
+        testTokenization(BashVersion.Bash_v4, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE_AMP, WHITESPACE, WORD, WHITESPACE, WORD);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

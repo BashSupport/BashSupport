@@ -1,4 +1,5 @@
 #### 2017-09-02:
+ - \#460 Parse commands separated by |&
  - \#457: Unresolved Variable Warning on Linebreak
 
 #### 2017-08-29:
