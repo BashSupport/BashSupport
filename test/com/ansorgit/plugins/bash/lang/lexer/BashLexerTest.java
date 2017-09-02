@@ -1500,6 +1500,12 @@ public class BashLexerTest {
         testTokenization("$(cat <<EOF\nX\nEOF\n)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_PAREN);
     }
 
+    @Test
+    public void testIssue474() throws Exception {
+        //less-than should be replaced with a better token in the lexer
+        testTokenization("cat <<EOF;\nX\nEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, SEMI, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

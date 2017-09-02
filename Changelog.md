@@ -2,6 +2,7 @@
  - \#457: Unresolved Variable Warning on Linebreak
  - \#460 Parse commands separated by |&
  - \#473: Support heredocs where the end marker is followed by a backtick
+ - \#474: Support semicolon after command which starts a heredoc
 
 #### 2017-08-29:
  - \#459: Fixed formatting of redirects with process substitutions

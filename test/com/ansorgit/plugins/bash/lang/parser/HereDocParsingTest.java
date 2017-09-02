@@ -189,4 +189,14 @@ public class HereDocParsingTest extends MockPsiTest {
                 BACKQUOTE, WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, BACKQUOTE, LINE_FEED, WORD
         );
     }
+
+    @Test
+    public void testTrailingSemicolon() throws Exception {
+        //issue 474
+        mockTest(hereDoc, Lists.newArrayList("cat", "<<", "EOF", ";", "\n", "X", "EOF"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, SEMI, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+
+        mockTest(hereDoc, Lists.newArrayList("cat", "<<", "EOF", "&", "\n", "X", "EOF"),
+                WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, AMP, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
 }
