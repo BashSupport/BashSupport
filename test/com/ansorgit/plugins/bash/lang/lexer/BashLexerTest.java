@@ -233,7 +233,7 @@ public class BashLexerTest {
 
         testTokenization("\f", WHITESPACE);
 
-        testTokenization(" \\\n ", WHITESPACE, WHITESPACE);
+        testTokenization(" \\\n ", WHITESPACE, LINE_CONTINUATION, WHITESPACE);
     }
 
     @Test
@@ -1383,7 +1383,7 @@ public class BashLexerTest {
                         ";;\n" +
                         "esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
-                WORD, PIPE, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
+                WORD, PIPE, LINE_CONTINUATION, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LINE_FEED,
                 CASE_END, LINE_FEED,
                 ESAC_KEYWORD);
@@ -1404,7 +1404,7 @@ public class BashLexerTest {
                         ";;\n" +
                         "esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
-                WHITESPACE, WORD, PIPE, WHITESPACE, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
+                LINE_CONTINUATION, WORD, PIPE, LINE_CONTINUATION, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LINE_FEED,
                 CASE_END, LINE_FEED,
                 ESAC_KEYWORD);
@@ -1461,6 +1461,23 @@ public class BashLexerTest {
     public void testIssue401() throws Exception {
         //less-than should be replaced with a better token in the lexer
         testTokenization("\"${A%<}\"", STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
+    }
+
+    @Test
+    public void testIssue457() throws Exception {
+        /*
+        a="a\
+        b"
+        $a
+        */
+        testTokenization("a=\"a\\b_\"\n$a", ASSIGNMENT_WORD, EQ, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_FEED, VARIABLE);
+
+        /*
+        a="a"\
+        "b_"
+        $a
+        */
+        testTokenization("a=\"a\"\\\n\"b_\"\n$a", ASSIGNMENT_WORD, EQ, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_CONTINUATION, STRING_BEGIN, STRING_CONTENT, STRING_END, LINE_FEED, VARIABLE);
     }
 
     private void testNoErrors(String code) {

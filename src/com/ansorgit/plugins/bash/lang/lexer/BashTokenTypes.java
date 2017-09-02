@@ -30,7 +30,8 @@ public interface BashTokenTypes {
 
     // common types
     IElementType WHITESPACE = TokenType.WHITE_SPACE;
-    TokenSet whitespaceTokens = TokenSet.create(WHITESPACE);
+    IElementType LINE_CONTINUATION = new BashElementType("line continuation \\");
+    TokenSet whitespaceTokens = TokenSet.create(WHITESPACE, LINE_CONTINUATION);
 
     IElementType ARITH_NUMBER = new BashElementType("number");
     IElementType WORD = new BashElementType("word");
@@ -123,7 +124,7 @@ public interface BashTokenTypes {
     IElementType AND_AND = new BashElementType("&&");//!=
     IElementType OR_OR = new BashElementType("||");//!=
 
-    IElementType LINE_FEED = new BashElementType("linefeed");// }
+    IElementType LINE_FEED = new BashElementType("linefeed");
 
     TokenSet pipeTokens = TokenSet.create(PIPE, PIPE_AMP);
 

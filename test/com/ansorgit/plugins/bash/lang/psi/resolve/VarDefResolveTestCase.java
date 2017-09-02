@@ -1,13 +1,10 @@
 /*
- * Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
- * File: VarDefResolveTestCase.java, Class: VarDefResolveTestCase
- * Last modified: 2013-04-30
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -188,6 +185,11 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
     public void testIssue262TypesetNoGlobalResolve() throws Exception {
         //declare used in a function defines a local variable
         assertIsInvalidVarDef();
+    }
+
+    @Test
+    public void testIssue457LineContinuation() throws Exception {
+        assertIsValidVarDef();
     }
 
     protected String getTestDataPath() {
