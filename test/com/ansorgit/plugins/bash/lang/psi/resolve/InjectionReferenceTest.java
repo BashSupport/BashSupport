@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.lang.psi.resolve;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.command.AbstractBashCommand;
 import com.intellij.lang.injection.InjectedLanguageManager;
@@ -39,7 +38,7 @@ public class InjectionReferenceTest extends LightBashCodeInsightFixtureTestCase 
         PsiElement varReference = findInjectedBashReference("VarInjection.java", "$X");
 
         PsiElement target = varReference.getReference().resolve();
-        Assert.assertTrue(target instanceof BashVarDef);
+        Assert.assertTrue("Target is not a bash var def: " + target, target instanceof BashVarDef);
         Assert.assertEquals("X", ((BashVarDef) target).getName());
     }
 
@@ -50,7 +49,7 @@ public class InjectionReferenceTest extends LightBashCodeInsightFixtureTestCase 
         Assert.assertTrue(functionReference instanceof AbstractBashCommand);
 
         PsiElement target = functionReference.getReference().resolve();
-        Assert.assertTrue(target instanceof BashFunctionDef);
+        Assert.assertTrue("Target is not a bash function def: " + target, target instanceof BashFunctionDef);
         Assert.assertEquals("myFunc", ((BashFunctionDef) target).getName());
     }
 
