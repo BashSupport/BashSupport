@@ -1486,6 +1486,20 @@ public class BashLexerTest {
         testTokenization(BashVersion.Bash_v4, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE_AMP, WHITESPACE, WORD, WHITESPACE, WORD);
     }
 
+    @Test
+    public void testIssue473() throws Exception {
+        // `cat <<EOF
+        // X
+        // EOF`
+        testTokenization("`cat <<EOF\nX\nEOF`", BACKQUOTE, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, BACKQUOTE);
+
+        // $(cat <<EOF
+        // X
+        // EOF
+        // )
+        testTokenization("$(cat <<EOF\nX\nEOF\n)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED, RIGHT_PAREN);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

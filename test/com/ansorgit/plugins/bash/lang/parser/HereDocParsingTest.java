@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: HereDocParsingTest.java, Class: HereDocParsingTest
- * Last modified: 2010-06-06
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -178,6 +175,18 @@ public class HereDocParsingTest extends MockPsiTest {
                 HEREDOC_MARKER_END, LINE_FEED,
                 WORD, LINE_FEED,
                 FI_KEYWORD
+        );
+    }
+
+    @Test
+    public void testBackquteHeredoc() throws Exception {
+        //`cat <<EOF
+        // X
+        // EOF`
+        // X
+        mockTest(hereDoc,
+                Lists.newArrayList("`", "cat", "<<", "EOF", "\n", "X", "EOF", "`", "\n", "X"),
+                BACKQUOTE, WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, BACKQUOTE, LINE_FEED, WORD
         );
     }
 }
