@@ -35,6 +35,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.DumbService;
@@ -396,7 +397,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         String commandName = command.getReferencedCommandName();
 
         if (commandName != null && validCommands.contains(commandName)) {
-            List<BashPsiElement> parameters = command.parameters();
+            List<BashPsiElement> parameters = Lists.newArrayList(command.parameters());
 
             for (BashPsiElement param : parameters) {
                 if (validParams.contains(param.getText())) {
