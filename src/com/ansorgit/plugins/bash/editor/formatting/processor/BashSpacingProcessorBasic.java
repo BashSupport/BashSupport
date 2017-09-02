@@ -43,6 +43,8 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BashSpacingProcessorBasic implements BashElementTypes, BashTokenTypes {
     private static final Logger log = Logger.getInstance("SpacingProcessorBasic");
+    private static final TokenSet commandSet = TokenSet.create(GENERIC_COMMAND_ELEMENT, SIMPLE_COMMAND_ELEMENT);
+    private static final Spacing NO_SPACING_WITH_NEWLINE = Spacing.createSpacing(0, 0, 0, true, 1);
     private static final Spacing NO_SPACING = Spacing.createSpacing(0, 0, 0, false, 0);
     private static final Spacing COMMON_SPACING = Spacing.createSpacing(1, 1, 0, true, 100);
     private static final Spacing COMMON_SPACING_WITH_NL = Spacing.createSpacing(1, 1, 1, true, 100);
@@ -61,6 +63,13 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
 
         final IElementType leftParentElement = leftPsi != null && leftPsi.getParent() != null ? leftPsi.getParent().getNode().getElementType() : null;
         final IElementType rightParentElement = rightPsi != null && rightPsi.getParent() != null ? rightPsi.getParent().getNode().getElementType() : null;
+
+        final IElementType leftGrandParentElement = leftPsi != null && leftPsi.getParent() != null && leftPsi.getParent().getParent() != null && leftPsi.getParent().getParent().getNode() != null
+                ? leftPsi.getParent().getParent().getNode().getElementType()
+                : null;
+        final IElementType rightGrandParentElement = rightPsi != null && rightPsi.getParent() != null && rightPsi.getParent().getParent() != null && rightPsi.getParent().getParent().getNode() != null
+                ? rightPsi.getParent().getParent().getNode().getElementType()
+                : null;
 
         //Braces Placement
         // For multi-line strings
@@ -125,6 +134,17 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             return NO_SPACING;
         }
 
+        //subshell as function body
+        if (leftType == LEFT_PAREN && leftParentElement == SUBSHELL_COMMAND && leftGrandParentElement == FUNCTION_DEF_COMMAND) {
+            return COMMON_SPACING_WITH_NL;
+        }
+
+        //subshell as function body
+        if (rightType == RIGHT_PAREN && rightParentElement == SUBSHELL_COMMAND && rightGrandParentElement == FUNCTION_DEF_COMMAND) {
+            return COMMON_SPACING_WITH_NL;
+        }
+
+        //normal subshell
         if ((leftType == LEFT_PAREN || leftType == EXPR_ARITH) && subshellSet.contains(rightParentElement)) {
             return NO_SPACING;
         }

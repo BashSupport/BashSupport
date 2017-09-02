@@ -150,6 +150,11 @@ public class FormatterTest extends BashFormatterTestCase {
         doTest();
     }
 
+    @Test
+    public void testSubshell() throws Throwable {
+        doTest();
+    }
+
     protected void doTest() throws Throwable {
         List<String> data = TestUtils.readInput(getBasePath() + getTestName(true) + ".test");
         Assert.assertTrue("Expected two data sets", data.size() == 2);
