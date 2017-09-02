@@ -1,6 +1,9 @@
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
 
+#### 2017-08-29:
+ - \#459: Fixed formatting of redirects with process substitutions
+
 #### 2017-07-27:
  - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
  - \#401: Parameter expansion parsing error
