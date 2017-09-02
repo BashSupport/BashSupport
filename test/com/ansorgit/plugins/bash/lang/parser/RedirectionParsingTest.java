@@ -131,11 +131,6 @@ public class RedirectionParsingTest extends MockPsiTest {
     }
 
     @Test
-    public void testBash4Errors() {
-        mockTestSuccessWithErrors(BashVersion.Bash_v4, redirectionTest, Collections.<String>emptyList(), PIPE_AMP);
-    }
-
-    @Test
     public void testSimpleListParsingWithErrors() {
         //>> >> a
         mockTestSuccessWithErrors(redirectionTest, SHIFT_RIGHT, SHIFT_RIGHT, WORD);

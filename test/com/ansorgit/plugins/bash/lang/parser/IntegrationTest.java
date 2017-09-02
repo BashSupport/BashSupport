@@ -205,9 +205,8 @@ public class IntegrationTest extends MockPsiTest {
 
     @Test
     public void testIntegration12() {
-        //Invalid code:
-        //function a for f in 1; do echo; done;
-        mockTestError(fileParsingTest,
+        //valid (in bash 4, at least): function a for f in 1; do echo; done;
+        mockTest(fileParsingTest,
                 FUNCTION_KEYWORD, WORD, FOR_KEYWORD, WORD, IN_KEYWORD, WORD,
                 SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD, SEMI);
 

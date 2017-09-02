@@ -24,6 +24,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -104,7 +105,12 @@ public class BashShebangImpl extends BashBaseElement implements BashShebang {
     public void updateCommand(String command, @Nullable TextRange replacementRange) {
         log.debug("Updating command to " + command);
 
-        Document document = getContainingFile().getViewProvider().getDocument();
+        PsiFile file = getContainingFile();
+        if (file == null) {
+            return;
+        }
+
+        Document document = file.getViewProvider().getDocument();
         if (document != null) {
             TextRange textRange = replacementRange != null ? replacementRange : commandRange();
             document.replaceString(textRange.getStartOffset(), textRange.getEndOffset(), command);

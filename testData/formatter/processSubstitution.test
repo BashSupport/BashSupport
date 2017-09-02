@@ -1,0 +1,11 @@
+cat < <(cmd)
+
+while read something; do
+    do_something
+done < <(cat ${csv_file} | sed '1d' | grep ';')
+-----
+cat < <( cmd )
+
+while read something; do
+  do_something
+done < <( cat ${csv_file} | sed '1d' | grep ';' )

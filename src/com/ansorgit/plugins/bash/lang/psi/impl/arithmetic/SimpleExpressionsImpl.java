@@ -61,6 +61,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
         literalChars[index] = '_';
     }
 
+    private final Object stateLock = new Object();
     private volatile LiteralType literalType;
     private volatile Boolean isStatic = null;
 
@@ -70,9 +71,10 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
 
     public LiteralType literalType() {
         if (literalType == null) {
-            synchronized (this) {
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
+            synchronized (stateLock) {
                 if (literalType == null) {
-                    literalType = LiteralType.Other;
+                    LiteralType newType = LiteralType.Other;
 
                     PsiElement child = getFirstChild();
                     if (child != null && BashTokenTypes.arithmeticAdditionOps.contains(PsiUtilCore.getElementType(child))) {
@@ -87,17 +89,19 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                         IElementType typeSecond = second != null ? PsiUtilCore.getElementType(second) : null;
 
                         if (elementType == BashTokenTypes.ARITH_HEX_NUMBER) {
-                            literalType = LiteralType.HexLiteral;
+                            newType = LiteralType.HexLiteral;
                         } else if (elementType == BashTokenTypes.ARITH_OCTAL_NUMBER) {
-                            literalType = LiteralType.OctalLiteral;
+                            newType = LiteralType.OctalLiteral;
                         } else if (elementType == BashTokenTypes.ARITH_NUMBER) {
                             if (typeSecond == BashTokenTypes.ARITH_BASE_CHAR) {
-                                literalType = LiteralType.BaseLiteral;
+                                newType = LiteralType.BaseLiteral;
                             } else {
-                                literalType = LiteralType.DecimalLiteral;
+                                newType = LiteralType.DecimalLiteral;
                             }
                         }
                     }
+
+                    literalType = newType;
                 }
             }
         }
@@ -108,34 +112,36 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
     @Override
     public boolean isStatic() {
         if (isStatic == null) {
-            synchronized (this) {
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
+            synchronized (stateLock) {
                 if (isStatic == null) {
-
                     //it can have one operator in front followed by a simple expression
                     //or just contain a number
 
                     ASTNode[] children = getNode().getChildren(null);
-                    isStatic = false;
+                    boolean newIsStatic = false;
 
                     if (children.length > 0) {
                         IElementType first = BashPsiUtils.getDeepestEquivalent(children[0]).getElementType();
 
                         if (LiteralType.BaseLiteral.equals(literalType())) {
-                            isStatic = children.length == 3;
-                            if (isStatic) {
+                            newIsStatic = children.length == 3;
+                            if (newIsStatic) {
                                 IElementType secondType = BashPsiUtils.getDeepestEquivalent(children[2]).getElementType();
 
-                                isStatic = secondType == BashTokenTypes.WORD
+                                newIsStatic = secondType == BashTokenTypes.WORD
                                         || secondType == BashElementTypes.PARSED_WORD_ELEMENT
                                         || BashTokenTypes.arithLiterals.contains(secondType);
                             }
                         } else if (children.length == 2 && BashTokenTypes.arithmeticAdditionOps.contains(first)) {
                             List<ArithmeticExpression> subexpressions = subexpressions();
-                            isStatic = (subexpressions.size() == 1) && subexpressions.get(0).isStatic();
+                            newIsStatic = (subexpressions.size() == 1) && subexpressions.get(0).isStatic();
                         } else if (children.length == 1) {
-                            isStatic = BashTokenTypes.arithLiterals.contains(first);
+                            newIsStatic = BashTokenTypes.arithLiterals.contains(first);
                         }
                     }
+
+                    isStatic = newIsStatic;
                 }
             }
         }
@@ -147,8 +153,10 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        isStatic = null;
-        literalType = null;
+        synchronized (stateLock) {
+            isStatic = null;
+            literalType = null;
+        }
     }
 
     @Nullable
@@ -194,7 +202,7 @@ public class SimpleExpressionsImpl extends AbstractExpression implements SimpleE
                             return Long.valueOf(asString, 8);
 
                         default:
-                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + currentLiteralType + ", " + asString +", " + DebugUtil.psiToString(getParent(), false, true));
+                            throw new IllegalStateException("Illegal state, neither decimal, hex nor base literal: " + currentLiteralType + ", " + asString + ", " + DebugUtil.psiToString(getParent(), false, true));
                     }
                 } catch (NumberFormatException e) {
                     //fixme
