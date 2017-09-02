@@ -1,3 +1,6 @@
+#### 2017-09-02:
+ - \#474: Support semicolon after command which starts a heredoc
+
 #### 2017-07-27:
  - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
  - \#401: Parameter expansion parsing error

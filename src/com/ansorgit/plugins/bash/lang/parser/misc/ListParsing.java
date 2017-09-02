@@ -136,6 +136,10 @@ public final class ListParsing implements ParsingTool {
                 success = parseList1Element(builder, true);
                 markCommand = success;
             } else if (next == SEMI || next == LINE_FEED || next == AMP) {
+                if (builder.getParsingState().expectsHeredocMarker() && next != LINE_FEED) {
+                    builder.advanceLexer();
+                }
+
                 boolean hasHeredoc = parseOptionalHeredocContent(builder);
 
                 //the next token after the heredoc, not the variable "next" !
