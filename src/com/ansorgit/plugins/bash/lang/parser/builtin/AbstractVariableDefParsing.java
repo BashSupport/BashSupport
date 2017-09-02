@@ -120,7 +120,6 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY);
-            //builder.getTokenText();
 
             if (!ok) {
                 return false;

@@ -136,6 +136,10 @@ public final class ListParsing implements ParsingTool {
                 success = parseList1Element(builder, true);
                 markCommand = success;
             } else if (next == SEMI || next == LINE_FEED || next == AMP) {
+                if (builder.getParsingState().expectsHeredocMarker() && next != LINE_FEED) {
+                    builder.advanceLexer();
+                }
+
                 boolean hasHeredoc = parseOptionalHeredocContent(builder);
 
                 //the next token after the heredoc, not the variable "next" !
@@ -144,6 +148,13 @@ public final class ListParsing implements ParsingTool {
                     success = true;
                     break;
                 } else {
+                    if (hasHeredoc && builder.getTokenType() != LINE_FEED && !builder.eof()) {
+                        //the heredoc end marker might be followed by a backtick, for example
+                        //we must return to the outer parsing function without taking those tokens
+                        markCommand = true;
+                        break;
+                    }
+
                     PsiBuilder.Marker start = builder.mark();
 
                     builder.advanceLexer();
