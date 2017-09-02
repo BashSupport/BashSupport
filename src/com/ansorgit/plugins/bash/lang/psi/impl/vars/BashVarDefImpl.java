@@ -35,6 +35,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.DumbService;
@@ -71,6 +72,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private final BashReference reference = new SmartVarDefReference(this);
     private final BashReference dumbReference = new DumbVarDefReference(this);
 
+    private final Object stateLock = new Object();
     private volatile Boolean cachedFunctionScopeLocal;
     private volatile String name;
     private volatile PsiElement assignmentWord;
@@ -88,10 +90,12 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public void subtreeChanged() {
         super.subtreeChanged();
 
-        this.cachedFunctionScopeLocal = null;
-        this.name = null;
-        this.assignmentWord = null;
-        this.nameTextRange = null;
+        synchronized (stateLock) {
+            this.cachedFunctionScopeLocal = null;
+            this.name = null;
+            this.assignmentWord = null;
+            this.nameTextRange = null;
+        }
     }
 
     public String getName() {
@@ -101,14 +105,19 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         }
 
         if (name == null) {
-            synchronized (this) {
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
+            synchronized (stateLock) {
                 if (name == null) {
                     PsiElement element = findAssignmentWord();
+
+                    String newName;
                     if (element instanceof BashCharSequence) {
-                        name = ((BashCharSequence) element).getUnwrappedCharSequence();
+                        newName = ((BashCharSequence) element).getUnwrappedCharSequence();
                     } else {
-                        name = element.getText();
+                        newName = element.getText();
                     }
+
+                    name = newName;
                 }
             }
         }
@@ -160,11 +169,14 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @NotNull
     public PsiElement findAssignmentWord() {
         if (assignmentWord == null) {
-            synchronized (this) {
+            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
+            synchronized (stateLock) {
                 if (assignmentWord == null) {
                     PsiElement element = findChildByType(accepted);
+
+                    PsiElement newAssignmentWord;
                     if (element != null) {
-                        assignmentWord = element;
+                        newAssignmentWord = element;
                     } else {
                         //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
                         //a parsed var
@@ -172,8 +184,10 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                         ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
                         ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-                        assignmentWord = (node != null) ? node.getPsi() : firstChild;
+                        newAssignmentWord = (node != null) ? node.getPsi() : firstChild;
                     }
+
+                    assignmentWord = newAssignmentWord;
                 }
             }
         }
@@ -188,12 +202,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isFunctionScopeLocal() {
-        //fixme probably not ok because we look at parent elements
         if (cachedFunctionScopeLocal == null) {
-            synchronized (this) {
-                if (cachedFunctionScopeLocal == null) {
-                    cachedFunctionScopeLocal = doIsFunctionScopeLocal();
-                }
+            boolean newCachedFunctionScopeLocal = doIsFunctionScopeLocal();
+
+            synchronized (stateLock) {
+                cachedFunctionScopeLocal = newCachedFunctionScopeLocal;
             }
         }
 
@@ -214,25 +227,14 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         //then iterate and break if there is one def which is local and which occurs before this element
 
         //fixme handle injected code in functions
-        BashFunctionDef functionLocalScope = BashPsiUtils.findBroadestFunctionScope(this);
-        if (functionLocalScope == null) {
-            return false;
-        }
 
-        final TextRange validScope = BashPsiUtils.getTextRangeInFile(functionLocalScope);
-
-        PsiFile currentFile = getContainingFile();
-        Collection<BashVarDef> allDefs = DumbService.isDumb(getProject())
-                ? PsiTreeUtil.collectElementsOfType(functionLocalScope, BashVarDef.class)
-                : StubIndex.getElements(BashVarDefIndex.KEY, getReferenceName(), getProject(), GlobalSearchScope.fileScope(currentFile), BashVarDef.class);
-
-        for (BashVarDef def : allDefs) {
-            if (def.isLocalVarDef() && validScope.contains(BashPsiUtils.getFileTextOffset(def))) {
-                PsiElement functionScope = def.findFunctionScope();
-                if (functionScope != null && functionScope.isEquivalentTo(functionLocalScope)) {
-                    return true;
-                }
+        BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(this);
+        while (scope != null) {
+            if (scope.findLocalScopeVariables().contains(getReferenceName())) {
+                return true;
             }
+
+            scope = BashPsiUtils.findNextVarDefFunctionDefScope(PsiTreeUtil.getStubOrPsiParent(scope));
         }
 
         return false;
@@ -359,14 +361,18 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
 
     public TextRange getAssignmentNameTextRange() {
         if (nameTextRange == null) {
-            synchronized (this) {
+            synchronized (stateLock) {
                 if (nameTextRange == null) {
-                    PsiElement assignmentWord = findAssignmentWord();
-                    if (assignmentWord instanceof BashString) {
-                        nameTextRange = ((BashString) assignmentWord).getTextContentRange();
+                    PsiElement wordElement = findAssignmentWord();
+
+                    TextRange newNameTextRange;
+                    if (wordElement instanceof BashString) {
+                        newNameTextRange = ((BashString) wordElement).getTextContentRange();
                     } else {
-                        nameTextRange = TextRange.from(0, assignmentWord.getTextLength());
+                        newNameTextRange = TextRange.from(0, wordElement.getTextLength());
                     }
+
+                    nameTextRange = newNameTextRange;
                 }
             }
         }
@@ -396,7 +402,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         String commandName = command.getReferencedCommandName();
 
         if (commandName != null && validCommands.contains(commandName)) {
-            List<BashPsiElement> parameters = command.parameters();
+            List<BashPsiElement> parameters = Lists.newArrayList(command.parameters());
 
             for (BashPsiElement param : parameters) {
                 if (validParams.contains(param.getText())) {

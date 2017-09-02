@@ -62,7 +62,8 @@ import com.intellij.psi.tree.IElementType;
 InputCharacter = [^\r\n]
 LineTerminator = \r\n | \r | \n
 LineContinuation = "\\" {LineTerminator}
-WhiteSpace=[ \t\f] {LineContinuation}*
+WhiteSpace=[ \t\f]
+WhiteSpaceLineCont=[ \t\f] {LineContinuation}*
 
 Shebang = "#!" {InputCharacter}* {LineTerminator}?
 Comment = "#"  {InputCharacter}*
@@ -174,8 +175,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_HEREDOC_MARKER, S_HEREDOC_MARKER_IGNORE_TABS> {
-    {WhiteSpace}+                { return WHITESPACE; }
-    {LineContinuation}+             { /* ignored */ }
+    {WhiteSpaceLineCont}+        { return WHITESPACE; }
+    {LineContinuation}+          { return WHITESPACE; }
     {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
@@ -216,11 +217,23 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     }
 
     [^$\n\r\\]+  {
-            if (heredocState().isNextMarker(yytext())) {
+            //support end marker followed by a backtick if nested in a backtick command
+            CharSequence markerText = yytext();
+            boolean dropLastChar = false;
+            if (isInState(S_BACKQUOTE) && yylength() >= 2 && yycharat(yylength()-1) == '`') {
+                markerText = markerText.subSequence(0, yylength()-1);
+                dropLastChar = true;
+            }
+
+            if (heredocState().isNextMarker(markerText)) {
                 boolean ignoreTabs = heredocState().isIgnoringTabs();
 
-                heredocState().popMarker(yytext());
+                heredocState().popMarker(markerText);
                 popStates(S_HEREDOC);
+
+                if (dropLastChar) {
+                    yypushback(1);
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
@@ -413,7 +426,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 <S_TEST, S_TEST_COMMAND> {
-  {WhiteSpace}                 { return WHITESPACE; }
+  {WhiteSpaceLineCont}         { return WHITESPACE; }
 
   /*** Test / conditional expressions ***/
 
@@ -635,8 +648,8 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
   "<&" / {ArithWord}            { return REDIRECT_LESS_AMP; }
   ">&" / {ArithWord}            { return REDIRECT_GREATER_AMP; }
-  "<&" / {WhiteSpace}           { return REDIRECT_LESS_AMP; }
-  ">&" / {WhiteSpace}           { return REDIRECT_GREATER_AMP; }
+  "<&" / {WhiteSpaceLineCont}   { return REDIRECT_LESS_AMP; }
+  ">&" / {WhiteSpaceLineCont}   { return REDIRECT_GREATER_AMP; }
 
   ">|"                          { return REDIRECT_GREATER_BAR; }
 
@@ -731,7 +744,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
      if we match repeated whtiespace!
     */
     {WhiteSpace}                 { return WHITESPACE; }
-    {LineContinuation}           { return WHITESPACE; }
+    {LineContinuation}+          { return LINE_CONTINUATION; }
 }
 
 <YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
