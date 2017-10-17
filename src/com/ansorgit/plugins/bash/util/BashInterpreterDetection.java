@@ -35,12 +35,19 @@ public class BashInterpreterDetection {
             "/usr/local/bin/bash",
             "/opt/local/bin/bash",
             "/opt/bin/bash",
+            "/sbin/zsh",
+            "/bin/zsh",
+            "/usr/bin/zsh",
+            "/usr/local/bin/zsh",
+            "/opt/local/bin/zsh",
+            "/opt/bin/zsh",
             "/sbin/sh",
             "/bin/sh",
             "/usr/bin/sh",
             "/opt/local/bin/sh",
             "/opt/bin/sh",
             "/usr/bin/env bash",
+            "/usr/bin/env zsh",
             "/usr/bin/env sh"
     ));
 
@@ -51,6 +58,12 @@ public class BashInterpreterDetection {
             "/usr/local/bin/bash",
             "/opt/local/bin/bash",
             "/opt/bin/bash",
+            "/sbin/zsh",
+            "/bin/zsh",
+            "/usr/bin/zsh",
+            "/usr/local/bin/zsh",
+            "/opt/local/bin/zsh",
+            "/opt/bin/zsh",
             "/sbin/sh",
             "/bin/sh",
             "/usr/bin/sh",
@@ -60,7 +73,7 @@ public class BashInterpreterDetection {
     ));
 
     private static final List<String> POSSIBLE_EXE_LOCATIONS_WINDOWS = Collections.unmodifiableList(Lists.newArrayList(
-            "c:\\cygwin\\bin\\bash.exe", "d:\\cygwin\\bin\\bash.exe"
+            "c:\\cygwin\\bin\\bash.exe","c:\\cygwin\\bin\\zsh.exe", "d:\\cygwin\\bin\\bash.exe", "d:\\cygwin\\bin\\zsh.exe"
     ));
 
     public static final BashInterpreterDetection INSTANCE = new BashInterpreterDetection();

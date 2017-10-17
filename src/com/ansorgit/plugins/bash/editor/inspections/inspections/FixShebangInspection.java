@@ -45,8 +45,8 @@ import java.util.List;
  * @author jansorg
  */
 public class FixShebangInspection extends LocalInspectionTool {
-    private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/sh");
-    private static final List<String> VALID_ENV_SHELLS = Lists.newArrayList("bash", "sh");
+    private static final List<String> DEFAULT_COMMANDS = Lists.newArrayList("/bin/bash", "/bin/zsh", "/bin/sh");
+    private static final List<String> VALID_ENV_SHELLS = Lists.newArrayList("bash", "zsh", "sh");
     private static final String ELEMENT_NAME_SHEBANG = "shebang";
 
     private List<String> validShebangCommands = DEFAULT_COMMANDS;
