@@ -41,6 +41,8 @@ public class BashIdentifierUtilTest {
         Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("-"));
         Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("_"));
 
+        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier(""));
+
         Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("0"));
         Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("1"));
         Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("2"));
@@ -54,9 +56,25 @@ public class BashIdentifierUtilTest {
 
         Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("123"));
         Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("1a"));
+        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("a$a"));
+        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("a-a"));
+        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("@a"));
 
         Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("α"));
         Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("α1"));
         Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("разработка"));
     }
+
+    @Test
+    public void testValidNewVariableName() throws Exception {
+        Assert.assertTrue(BashIdentifierUtil.isValidNewVariableName("abcde_xyz0123456789"));
+
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName(""));
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName("0"));
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName("0a"));
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName("$"));
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName("a$a"));
+        Assert.assertFalse(BashIdentifierUtil.isValidNewVariableName("разработка"));
+    }
+
 }
