@@ -1,3 +1,6 @@
+#### 2018-02-02:
+ - \#508: Argument values of the mapfile/readarray built-in were parsed as variable names
+
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
  - \#460: Parse commands separated by |&
