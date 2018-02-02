@@ -54,7 +54,7 @@ public class BashAnnotatorTest extends LightDaemonAnalyzerTestCase {
         doHighlighting();
 
         List<HighlightInfo> errors = highlightErrors();
-        Assert.assertEquals(5, errors.size());
+        Assert.assertEquals("Errors: " + errors, 5, errors.size());
     }
 
     public void testEvalVarDef() throws Exception {
