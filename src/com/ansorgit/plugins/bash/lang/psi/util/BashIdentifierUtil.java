@@ -21,9 +21,10 @@ import java.util.regex.Pattern;
  * @author jansorg
  */
 public final class BashIdentifierUtil {
-
     private static final Pattern newVariablePattern = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
-    private static final Pattern anyIdentifier = Pattern.compile("|@|$|#|?|!|*|-|[0-9]|[a-zA-Z_][a-zA-Z0-9_]");
+    private static final Pattern singleIdentifier = Pattern.compile("[@$?!*#-]");
+    private static final Pattern anyIdentifier = Pattern.compile("[0-9]+|([a-zA-Z_][a-zA-Z0-9_]*)");
+    private static final Pattern heredocMarker = Pattern.compile("[^ ]+");
 
     private BashIdentifierUtil() {
     }
@@ -33,6 +34,10 @@ public final class BashIdentifierUtil {
     }
 
     public static boolean isValidIdentifier(CharSequence text) {
-        return text != null && anyIdentifier.matcher(text).matches();
+        return text != null && (singleIdentifier.matcher(text).matches() || anyIdentifier.matcher(text).matches());
+    }
+
+    public static boolean isValidHeredocIdentifier(CharSequence text) {
+        return text != null && heredocMarker.matcher(text).matches();
     }
 }
