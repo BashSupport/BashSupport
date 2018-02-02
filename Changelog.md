@@ -1,3 +1,7 @@
+#### 2018-02-02:
+ - \#511: Pull request by contributor vn971.
+ - \#512: Arguments ${10} and up flagged as errors when using curly brackets
+
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
  - \#460: Parse commands separated by |&
