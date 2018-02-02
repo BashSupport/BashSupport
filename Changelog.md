@@ -1,5 +1,6 @@
 #### 2018-02-02:
  - \#505: Fixed "Lexer could not match input" error for redirect after here string
+ - \#508: Argument values of the mapfile/readarray built-in were parsed as variable names
 
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
