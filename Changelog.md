@@ -1,3 +1,7 @@
+#### 2018-03-06:
+ - \#328: Using ${#var} produces incorrect warning "Array use of non-array variable"
+ - \#517: Incorrect warning "Array use of non-array variable"
+
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
  - \#460: Parse commands separated by |&
