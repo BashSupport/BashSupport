@@ -38,6 +38,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NonNls;
@@ -182,22 +183,29 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public boolean isArrayUse() {
-        ASTNode prev = getNode().getTreePrev();
-        if (prev != null && isParameterExpansion() && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
-            return true;
+        if (!isParameterExpansion()) {
+            return false;
         }
 
-        ASTNode next = getNode().getTreeNext();
-        if (next != null && isParameterExpansion()) {
+        ASTNode node = getNode();
+        ASTNode next = node.getTreeNext();
+
+        if (next != null) {
+            ASTNode prev = node.getTreePrev();
+            if (prev != null && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
+                return next.getElementType() == BashTokenTypes.LEFT_SQUARE;
+            }
+
             //${ a[1] }
             if (next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
                 ASTNode firstChild = next.getFirstChildNode();
                 return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
             }
 
-            //${ a[*] }
-            if (next.getElementType() == BashTokenTypes.LEFT_SQUARE && next.getTreeNext() != null && next.getTreeNext().getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_STAR) {
-                return true;
+            //${ a[*] } and ${ a[@] }
+            if (next.getElementType() == BashTokenTypes.LEFT_SQUARE && next.getTreeNext() != null) {
+                IElementType next2 = next.getTreeNext().getElementType();
+                return next2 == BashTokenTypes.PARAM_EXPANSION_OP_STAR || next2 == BashTokenTypes.PARAM_EXPANSION_OP_AT;
             }
         }
 
