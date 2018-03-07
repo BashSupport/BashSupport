@@ -41,7 +41,7 @@ public class MapfileCommandTest extends MockPsiTest {
         mockTest(BashVersion.Bash_v4, parsingFunction, 2, Lists.newArrayList("mapfile"), WORD, WORD);
 
         //mapfile -d x -s 10 a
-        mockTest(BashVersion.Bash_v4, parsingFunction, 6, Lists.newArrayList("mapfile", "-d", "x", "-s", "10", "a"), WORD, WORD, WORD, WORD, WORD, WORD);
+        mockTest(BashVersion.Bash_v4, parsingFunction, 10, Lists.newArrayList("mapfile", "-d", " ", "x", " ", "-s", " ", "10", " ", "a"), WORD, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD);
     }
 
     @Test
