@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.arithmetic.ArithmeticExpression;
@@ -24,7 +25,9 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -43,7 +46,11 @@ public class SimpleArrayUseInspection extends LocalInspectionTool {
                     boolean arrayUse = var.isArrayUse();
 
                     if (arrayUse && !defIsArray) {
-                        holder.registerProblem(var, "Array use of non-array variable", ProblemHighlightType.WEAK_WARNING);
+                        //there's the special case that ${#arrayVar} and ${#nonArrayVar} are both valid (length of array and length of string)
+                        //this can't be detected with arrayUse and defIsArray
+                        if (!isStringLengthExpr(var)) {
+                            holder.registerProblem(var, "Array use of non-array variable", ProblemHighlightType.WEAK_WARNING);
+                        }
                     } else if (!arrayUse
                             && defIsArray
                             && !BashPsiUtils.hasParentOfType(var, BashString.class, 5)
@@ -54,5 +61,15 @@ public class SimpleArrayUseInspection extends LocalInspectionTool {
                 }
             }
         };
+    }
+
+    private static boolean isStringLengthExpr(BashVar var) {
+        PsiElement prevLeaf = PsiTreeUtil.prevLeaf(var);
+        if (prevLeaf != null && prevLeaf.getNode().getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH) {
+            PsiElement nextLeaf = PsiTreeUtil.nextLeaf(var);
+            return nextLeaf == null || nextLeaf.getNode().getElementType() != BashTokenTypes.LEFT_SQUARE;
+        }
+
+        return false;
     }
 }

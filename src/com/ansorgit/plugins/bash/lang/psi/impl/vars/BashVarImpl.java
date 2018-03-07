@@ -188,8 +188,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
             return false;
         }
 
-        ASTNode prev = getNode().getTreePrev();
-
         PsiElement nextLeafNode = PsiTreeUtil.nextLeaf(this);
         if (nextLeafNode == null) {
             return false;
@@ -199,8 +197,10 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
         ASTNode nextNode = getNextSibling().getNode();
         boolean nextLeafIsSquare = nextLeaf.getElementType() == BashTokenTypes.LEFT_SQUARE;
 
+        ASTNode prev = getNode().getTreePrev();
+
         if (prev != null && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
-            return nextLeafIsSquare;
+            return true;
         }
 
         //${ a[1], etc. }
