@@ -21,6 +21,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
+import com.ansorgit.plugins.bash.util.NullMarker;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -140,7 +141,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
      * @return True if the assignment has been read successfully.
      */
     public static boolean readAssignment(BashPsiBuilder builder, Mode mode, boolean markAsVarDef, boolean acceptArrayVars) {
-        final PsiBuilder.Marker assignment = builder.mark();
+        PsiBuilder.Marker assignment = builder.mark();
 
         switch (mode) {
             case SimpleMode:
@@ -157,10 +158,14 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 if (builder.getTokenType() == ASSIGNMENT_WORD) {
                     builder.advanceLexer();
                 } else if (Parsing.var.isValid(builder)) {
+                    assignment.drop();
+
                     if (!Parsing.var.parse(builder)) {
-                        assignment.drop();
                         return false;
                     }
+
+                    //dummy marker because we must not mark a dynamic variable name (as in 'export $a=42)'
+                    assignment = new NullMarker();
                 } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY)) {
                     assignment.drop();
                     return false;

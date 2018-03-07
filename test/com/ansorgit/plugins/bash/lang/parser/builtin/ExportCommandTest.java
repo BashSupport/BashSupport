@@ -99,14 +99,14 @@ public class ExportCommandTest extends MockPsiTest {
     @Test
     public void testDynamicSubshellVar() throws Exception {
         //export $a
-        mockTest(parserFunction, Lists.newArrayList("export"), VARIABLE);
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, VARIABLE);
         //export ${a}
-        mockTest(parserFunction, Lists.newArrayList("export"), DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
 
         //export $(a)
-        mockTest(parserFunction, Lists.newArrayList("export"), DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
 
         //export $a=$b
-        mockTest(parserFunction, Lists.newArrayList("export"), VARIABLE, EQ, VARIABLE);
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, VARIABLE, EQ, VARIABLE);
     }
 }
