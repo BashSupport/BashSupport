@@ -41,7 +41,7 @@ class MapfileCommand extends AbstractVariableDefParsing implements ParsingTool {
     }
 
     @Override
-    boolean argumentHasValue(String name) {
+    boolean argumentValueExpected(String name) {
         return name.chars().anyMatch(value -> Arrays.stream(VALUE_ARGS).anyMatch(c -> value == c));
     }
 }

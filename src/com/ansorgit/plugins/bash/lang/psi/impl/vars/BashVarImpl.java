@@ -39,6 +39,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NonNls;
@@ -187,26 +188,31 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
             return false;
         }
 
-        ASTNode node = getNode();
-        ASTNode next = node.getTreeNext();
+        ASTNode prev = getNode().getTreePrev();
 
-        if (next != null) {
-            ASTNode prev = node.getTreePrev();
-            if (prev != null && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
-                return next.getElementType() == BashTokenTypes.LEFT_SQUARE;
-            }
+        PsiElement nextLeafNode = PsiTreeUtil.nextLeaf(this);
+        if (nextLeafNode == null) {
+            return false;
+        }
 
-            //${ a[1] }
-            if (next.getElementType() == BashElementTypes.ARITHMETIC_COMMAND) {
-                ASTNode firstChild = next.getFirstChildNode();
-                return firstChild != null && firstChild.getElementType() == BashTokenTypes.LEFT_SQUARE;
-            }
+        ASTNode nextLeaf = nextLeafNode.getNode();
+        ASTNode nextNode = getNextSibling().getNode();
+        boolean nextLeafIsSquare = nextLeaf.getElementType() == BashTokenTypes.LEFT_SQUARE;
 
-            //${ a[*] } and ${ a[@] }
-            if (next.getElementType() == BashTokenTypes.LEFT_SQUARE && next.getTreeNext() != null) {
-                IElementType next2 = next.getTreeNext().getElementType();
-                return next2 == BashTokenTypes.PARAM_EXPANSION_OP_STAR || next2 == BashTokenTypes.PARAM_EXPANSION_OP_AT;
-            }
+        if (prev != null && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
+            return nextLeafIsSquare;
+        }
+
+        //${ a[1], etc. }
+        if (nextNode.getElementType() == BashElementTypes.ARITHMETIC_COMMAND && nextLeafIsSquare) {
+            return true;
+        }
+
+        //${ a[*] } and ${ a[@] }
+        PsiElement nextLeaf2nd = PsiTreeUtil.nextLeaf(nextLeafNode);
+        if (nextLeafIsSquare && nextLeaf2nd != null) {
+            IElementType next2 = nextLeaf2nd.getNode().getElementType();
+            return next2 == BashTokenTypes.PARAM_EXPANSION_OP_STAR || next2 == BashTokenTypes.PARAM_EXPANSION_OP_AT;
         }
 
         return false;

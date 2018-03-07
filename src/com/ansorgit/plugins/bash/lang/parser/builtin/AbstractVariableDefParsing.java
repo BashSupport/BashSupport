@@ -124,7 +124,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
                 return false;
             }
 
-            if (argumentHasValue(argName)) {
+            if (argumentValueExpected(argName)) {
                 ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY);
                 if (!ok) {
                     return false;
@@ -135,7 +135,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         return true;
     }
 
-    boolean argumentHasValue(String name) {
+    boolean argumentValueExpected(String name) {
         return false;
     }
 
