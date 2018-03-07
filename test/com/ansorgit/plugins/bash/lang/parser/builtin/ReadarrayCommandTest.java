@@ -39,6 +39,8 @@ public class ReadarrayCommandTest extends MockPsiTest {
     public void testParse() {
         //readarray a
         mockTest(BashVersion.Bash_v4, parsingFunction, 2, Lists.newArrayList("readarray"), WORD, WORD);
+        //readarray -td '' a
+        mockTest(BashVersion.Bash_v4, parsingFunction, 5, Lists.newArrayList("readarray", "-td", " ", "''", "a"), WORD, WORD, WHITESPACE, WORD, WORD);
     }
 
     @Test

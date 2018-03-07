@@ -18,45 +18,64 @@ package com.ansorgit.plugins.bash.lang.psi.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil.*;
+
 /**
  */
 public class BashIdentifierUtilTest {
     @Test
-    public void testValidIdentifier() throws Exception {
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("a"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("abc"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("A"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("ABC123"));
+    public void testValidIdentifier() {
+        Assert.assertTrue(isValidIdentifier("a"));
+        Assert.assertTrue(isValidIdentifier("abc"));
+        Assert.assertTrue(isValidIdentifier("A"));
+        Assert.assertTrue(isValidIdentifier("ABC123"));
 
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("a_a"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("a_123"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("_123"));
+        Assert.assertTrue(isValidIdentifier("a_a"));
+        Assert.assertTrue(isValidIdentifier("a_123"));
+        Assert.assertTrue(isValidIdentifier("_123"));
 
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("@"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("$"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("#"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("?"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("!"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("*"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("-"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("_"));
+        Assert.assertTrue(isValidIdentifier("@"));
+        Assert.assertTrue(isValidIdentifier("$"));
+        Assert.assertTrue(isValidIdentifier("#"));
+        Assert.assertTrue(isValidIdentifier("?"));
+        Assert.assertTrue(isValidIdentifier("!"));
+        Assert.assertTrue(isValidIdentifier("*"));
+        Assert.assertTrue(isValidIdentifier("-"));
+        Assert.assertTrue(isValidIdentifier("_"));
 
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("0"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("1"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("2"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("3"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("4"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("5"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("6"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("7"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("8"));
-        Assert.assertTrue(BashIdentifierUtil.isValidIdentifier("9"));
+        Assert.assertTrue(isValidIdentifier("0"));
+        Assert.assertTrue(isValidIdentifier("1"));
+        Assert.assertTrue(isValidIdentifier("2"));
+        Assert.assertTrue(isValidIdentifier("3"));
+        Assert.assertTrue(isValidIdentifier("4"));
+        Assert.assertTrue(isValidIdentifier("5"));
+        Assert.assertTrue(isValidIdentifier("6"));
+        Assert.assertTrue(isValidIdentifier("7"));
+        Assert.assertTrue(isValidIdentifier("8"));
+        Assert.assertTrue(isValidIdentifier("9"));
+        Assert.assertTrue(isValidIdentifier("11"));
+        Assert.assertTrue(isValidIdentifier("100"));
+        Assert.assertTrue(isValidIdentifier("110"));
 
-        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("123"));
-        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("1a"));
+        Assert.assertFalse(isValidIdentifier("1a"));
+        Assert.assertFalse(isValidIdentifier("a$a"));
+        Assert.assertFalse(isValidIdentifier("a-a"));
+        Assert.assertFalse(isValidIdentifier("@a"));
 
-        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("α"));
-        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("α1"));
-        Assert.assertFalse(BashIdentifierUtil.isValidIdentifier("разработка"));
+        Assert.assertFalse(isValidIdentifier("α"));
+        Assert.assertFalse(isValidIdentifier("α1"));
+        Assert.assertFalse(isValidIdentifier("разработка"));
+    }
+
+    @Test
+    public void testValidNewVariableName() {
+        Assert.assertTrue(isValidNewVariableName("abcde_xyz0123456789"));
+
+        Assert.assertFalse(isValidNewVariableName(""));
+        Assert.assertFalse(isValidNewVariableName("0"));
+        Assert.assertFalse(isValidNewVariableName("0a"));
+        Assert.assertFalse(isValidNewVariableName("$"));
+        Assert.assertFalse(isValidNewVariableName("a$a"));
+        Assert.assertFalse(isValidNewVariableName("разработка"));
     }
 }

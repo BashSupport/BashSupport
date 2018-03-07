@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>13</line>
+        <module>testStringLength</module>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Simple use of array variable</problem_class>
+        <description>Array use of non-array variable</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>14</line>
+        <module>testStringLength</module>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Simple use of array variable</problem_class>
+        <description>Array use of non-array variable</description>
+    </problem>
+    <problem>
+        <file>A.bash</file>
+        <line>15</line>
+        <module>testStringLength</module>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Simple use of array variable</problem_class>
+        <description>Array use of non-array variable</description>
+    </problem>
+</problems>
