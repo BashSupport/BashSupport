@@ -1,3 +1,6 @@
+#### 2018-03-07:
+ - \#515: Not a valid identifier in shell script (dynamic variable names with export command)
+
 #### 2018-03-06:
  - \#328: Using ${#var} produces incorrect warning "Array use of non-array variable"
  - \#517: Incorrect warning "Array use of non-array variable"
