@@ -1,3 +1,17 @@
+#### 2018-03-07:
+ - \#515: Not a valid identifier in shell script (dynamic variable names with export command)
+ - Release 1.6.13
+
+#### 2018-03-06:
+ - \#328: Using ${#var} produces incorrect warning "Array use of non-array variable"
+ - \#517: Incorrect warning "Array use of non-array variable"
+
+#### 2018-02-02:
+ - \#505: Fixed "Lexer could not match input" error for redirect after here string
+ - \#508: Argument values of the mapfile/readarray built-in were parsed as variable names
+ - \#511: Pull request by contributor vn971.
+ - \#512: Arguments ${10} and up flagged as errors when using curly brackets
+
 #### 2017-09-02:
  - \#457: Unresolved Variable Warning on Linebreak
  - \#460: Parse commands separated by |&

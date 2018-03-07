@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.intellij.openapi.vcs.impl.LocalChangesUnderRoots;
 import com.intellij.psi.tree.IElementType;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -37,13 +36,13 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 @SuppressWarnings("OverlyComplexClass")
 public class BashLexerTest {
     @Test
-    public void testInitialState() throws Exception {
+    public void testInitialState() {
         _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("abc"));
         Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
     }
 
     @Test
-    public void testAfterStringState() throws Exception {
+    public void testAfterStringState() {
         _BashLexer lexer = new _BashLexer(BashVersion.Bash_v3, new StringReader("\"abc"));
         Assert.assertTrue(lexer.isInState(_BashLexer.YYINITIAL));
     }
@@ -90,7 +89,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testArrayVariables() throws Exception {
+    public void testArrayVariables() {
         testTokenization("${PIPESTATUS[0]}", DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, RIGHT_CURLY);
 
         testTokenization("${#myVar[*]}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE, RIGHT_CURLY);
@@ -111,7 +110,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testArrayWithString() throws Exception {
+    public void testArrayWithString() {
         // ARR=(['foo']='someval' ['bar']='otherval')
 
         testTokenization("a=(['x']=1)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, LEFT_SQUARE, STRING2, RIGHT_SQUARE, EQ, WORD, RIGHT_PAREN);
@@ -206,7 +205,7 @@ public class BashLexerTest {
 
     @Ignore
     @Test
-    public void testLetExpressions() throws Exception {
+    public void testLetExpressions() {
         //fixme unsure how the let expression should be tokenized. A solution might be to parse it as an lazy expression
         testTokenization("let a+=1", LET_KEYWORD, WHITESPACE, ASSIGNMENT_WORD, ARITH_ASS_PLUS, ARITH_NUMBER);
         testTokenization("let", LET_KEYWORD);
@@ -346,7 +345,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testSubshellString() throws Exception {
+    public void testSubshellString() {
         testTokenization("\"$( )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
 
         testTokenization("\"$( () )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN,
@@ -354,7 +353,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testSubshellSubstring() throws Exception {
+    public void testSubshellSubstring() {
         testTokenization("\"$( \"echo\" )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, RIGHT_PAREN, STRING_END);
 
         testTokenization("\"$( ( \"\" \"\" ) )\"", STRING_BEGIN, DOLLAR, LEFT_PAREN, WHITESPACE, LEFT_PAREN, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, STRING_BEGIN, STRING_END, WHITESPACE, RIGHT_PAREN, WHITESPACE, RIGHT_PAREN, STRING_END);
@@ -617,7 +616,7 @@ public class BashLexerTest {
 
     @Ignore
     @Test
-    public void testUnsupported() throws Exception {
+    public void testUnsupported() {
 
         //keyword as for loop variable
         //fixme currently unsupported, the case lexing is not context sensitive (hard to fix)
@@ -627,7 +626,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testCaseWhitespacePattern() throws Exception {
+    public void testCaseWhitespacePattern() {
         testTokenization("case x in\n" +
                 "a\\ b)\n" +
                 ";;\n" +
@@ -636,7 +635,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testNestedCase() throws Exception {
+    public void testNestedCase() {
         testTokenization("case x in x) ;; esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
 
@@ -845,7 +844,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testArithmeticLiterals() throws Exception {
+    public void testArithmeticLiterals() {
         testTokenization("$((123))", DOLLAR, EXPR_ARITH, ARITH_NUMBER, _EXPR_ARITH);
 
         testTokenization("$((0x123))", DOLLAR, EXPR_ARITH, ARITH_HEX_NUMBER, _EXPR_ARITH);
@@ -874,12 +873,12 @@ public class BashLexerTest {
 
 
     @Test
-    public void testReadCommand() throws Exception {
+    public void testReadCommand() {
         testTokenization("read \"var:\" v[i]", WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, WORD, RIGHT_SQUARE);
     }
 
     @Test
-    public void testUmlaut() throws Exception {
+    public void testUmlaut() {
         testTokenization("echo ä", WORD, WHITESPACE, WORD);
     }
 
@@ -889,7 +888,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue201() throws Exception {
+    public void testIssue201() {
         testTokenization("((!foo))", EXPR_ARITH, ARITH_NEGATE, WORD, _EXPR_ARITH);
     }
 
@@ -1008,7 +1007,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testMultilineHeredoc() throws Exception {
+    public void testMultilineHeredoc() {
         //multiple heredocs in one command line
         testTokenization("cat <<END <<END2\nABC\nEND\nABC\nEND2\n", WORD, WHITESPACE, HEREDOC_MARKER_TAG,
                 HEREDOC_MARKER_START, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED,
@@ -1017,7 +1016,7 @@ public class BashLexerTest {
 
     @Test
     @Ignore //ignored for now because there is a match-all rule for the heredoc start marker
-    public void _testHeredocErrors() throws Exception {
+    public void _testHeredocErrors() {
         testTokenization("cat <<\"END\"", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START);
 
         //the closing string marker is missing in the heredoc
@@ -1025,12 +1024,12 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue125() throws Exception {
+    public void testIssue125() {
         testTokenization("read 'test' a[0]", WORD, WHITESPACE, STRING2, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE);
     }
 
     @Test
-    public void testIssue199() throws Exception {
+    public void testIssue199() {
         testTokenization("$( ((count != 1)) && echo)", DOLLAR, LEFT_PAREN, WHITESPACE, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
         testTokenization("$(((count != 1)) && echo)", DOLLAR, LEFT_PAREN, EXPR_ARITH, WORD, WHITESPACE, ARITH_NE, WHITESPACE, ARITH_NUMBER, _EXPR_ARITH, WHITESPACE, AND_AND, WHITESPACE, WORD, RIGHT_PAREN);
         //limitation of the Bash lexer: no look-ahead to the end of an expression
@@ -1048,17 +1047,17 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue242() throws Exception {
+    public void testIssue242() {
         testTokenization("eval \"$1=\\$(printf 'a' \\\"$1\\\")\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_CONTENT, VARIABLE, STRING_CONTENT, STRING_END);
     }
 
     @Test
-    public void testIssue243() throws Exception {
+    public void testIssue243() {
         testNoErrors("foo() { foo=\"$1\"; shift; while [ $# -gt 0 ]; do case \"$1\" in ($foo) ;; (*) return 1;; esac; shift; done; }");
     }
 
     @Test
-    public void testIssue246() throws Exception {
+    public void testIssue246() {
         testTokenization("echo '\\';", WORD, WHITESPACE, STRING2, SEMI);
         testTokenization("echo '\\'; echo", WORD, WHITESPACE, STRING2, SEMI, WHITESPACE, WORD);
         testTokenization("echo '\\' && echo \\'", WORD, WHITESPACE, STRING2, WHITESPACE, AND_AND, WHITESPACE, WORD, WHITESPACE, WORD);
@@ -1067,12 +1066,12 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue266() throws Exception {
+    public void testIssue266() {
         testTokenization("${#}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, RIGHT_CURLY);
     }
 
     @Test
-    public void testIssue270() throws Exception {
+    public void testIssue270() {
         //heredoc without evaluation
         testTokenization("cat <<'EOF'\n" +
                 "    echo ${counter}\n" +
@@ -1096,18 +1095,18 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue272() throws Exception {
+    public void testIssue272() {
         testTokenization("${#array_var[@]}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_HASH, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, RIGHT_CURLY);
     }
 
     @Test
-    public void testIssue300() throws Exception {
+    public void testIssue300() {
         testTokenization("case x in\nabc${a}) ;; esac",
                 CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
     }
 
     @Test
-    public void testIssue303() throws Exception {
+    public void testIssue303() {
         testTokenization("a=(123)", ASSIGNMENT_WORD, EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
         testTokenization("a+=(123)", ASSIGNMENT_WORD, ADD_EQ, LEFT_PAREN, WORD, RIGHT_PAREN);
 
@@ -1125,7 +1124,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue308() throws Exception {
+    public void testIssue308() {
         testTokenization("[[ $# == \"x\" ]]", BRACKET_KEYWORD, VARIABLE, WHITESPACE, COND_OP_EQ_EQ, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, _BRACKET_KEYWORD);
 
         testTokenization("[[ ( $# == \"x\" ) ]]", BRACKET_KEYWORD, LEFT_PAREN, WHITESPACE, VARIABLE, WHITESPACE, COND_OP_EQ_EQ, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, WHITESPACE, RIGHT_PAREN, _BRACKET_KEYWORD);
@@ -1134,13 +1133,13 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue89() throws Exception {
+    public void testIssue89() {
         testTokenization("function a {\n}function", FUNCTION_KEYWORD, WHITESPACE, WORD, WHITESPACE, LEFT_CURLY, LINE_FEED, RIGHT_CURLY, FUNCTION_KEYWORD);
 
     }
 
     @Test
-    public void testIssue320() throws Exception {
+    public void testIssue320() {
         testTokenization("(( a[0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
         testTokenization("(( A[0] ))", EXPR_ARITH, WHITESPACE, ASSIGNMENT_WORD, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, WHITESPACE, _EXPR_ARITH);
 
@@ -1154,7 +1153,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue325() throws Exception {
+    public void testIssue325() {
         testTokenization("cat << USE\nUSE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
         testTokenization("cat << THEUSAGE\nTHEUSAGE", WORD, WHITESPACE, HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_MARKER_END);
         //theUsage triggers a JFlex bug (apparently) if the marker regex includes [\s]
@@ -1163,28 +1162,28 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue327() throws Exception {
+    public void testIssue327() {
         testTokenization("<< EOF\n\\$(a)\nEOF", HEREDOC_MARKER_TAG, WHITESPACE, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
 
     @Test
-    public void testIssue330() throws Exception {
+    public void testIssue330() {
         testTokenization("eval \"$a=()\"", WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_CONTENT, STRING_END);
     }
 
     @Test
-    public void testIssue330Var() throws Exception {
+    public void testIssue330Var() {
         testTokenization("eval \"\\${$a}\"", WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, VARIABLE, STRING_CONTENT, STRING_END);
     }
 
     @Test
-    public void testIssue341() throws Exception {
+    public void testIssue341() {
         testTokenization("\"`echo \"$0\"`\"", STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END);
         testTokenization("(cd \"`dirname \"$0\"`\")", LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, BACKQUOTE, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, BACKQUOTE, STRING_END, RIGHT_PAREN);
     }
 
     @Test
-    public void testIssue343() throws Exception {
+    public void testIssue343() {
         testTokenization("{\n" +
                         "<<EOF <<EOF2\n" +
                         "EOF\n" +
@@ -1245,12 +1244,12 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue354() throws Exception {
+    public void testIssue354() {
         testTokenization("${var##abc}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_HASH_HASH, WORD, RIGHT_CURLY);
     }
 
     @Test
-    public void testIssue389() throws Exception {
+    public void testIssue389() {
         testTokenization("a\\\nb", WORD);
         testTokenization("a\\\n", WORD);
         testTokenization("\\\nb", WORD);
@@ -1272,13 +1271,13 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue376() throws Exception {
+    public void testIssue376() {
         testTokenization("$(echo 2>&1)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN);
         testTokenization("[[ $(echo 2>&1) ]]", BRACKET_KEYWORD, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, INTEGER_LITERAL, GREATER_THAN, FILEDESCRIPTOR, RIGHT_PAREN, _BRACKET_KEYWORD);
     }
 
     @Test
-    public void testIssue367() throws Exception {
+    public void testIssue367() {
         //invalid command semantic, but lexing needs to work
         testTokenization("[ (echo a) ]", EXPR_CONDITIONAL, LEFT_PAREN, WORD, WHITESPACE, WORD, RIGHT_PAREN, _EXPR_CONDITIONAL);
 
@@ -1288,12 +1287,12 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue418() throws Exception {
+    public void testIssue418() {
         testTokenization("foo=(${foo[@]%% (*})", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_CURLY, WORD, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE, PARAM_EXPANSION_OP_PERCENT, PARAM_EXPANSION_OP_PERCENT, WHITESPACE, LEFT_PAREN, WORD, RIGHT_CURLY, RIGHT_PAREN);
     }
 
     @Test
-    public void testHereString() throws Exception {
+    public void testHereString() {
         testTokenization("a <<< a", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
         testTokenization("a <<< a_b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD);
         testTokenization("a <<< a b", WORD, WHITESPACE, REDIRECT_HERE_STRING, WHITESPACE, WORD, WHITESPACE, WORD);
@@ -1356,7 +1355,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testUnicode() throws Exception {
+    public void testUnicode() {
         testTokenization("разработка программного обеспечения", WORD, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization("ανάπτυξη λογισμικού", WORD, WHITESPACE, WORD);
         testTokenization("פיתוח תוכנה", WORD, WHITESPACE, WORD);
@@ -1368,7 +1367,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testLineContinuation() throws Exception {
+    public void testLineContinuation() {
         /* case x in
                 a|\
                 b)
@@ -1411,7 +1410,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue358() throws Exception {
+    public void testIssue358() {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("b & << EOF\n" +
                 "d\n" +
@@ -1419,13 +1418,13 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue398() throws Exception {
+    public void testIssue398() {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("$(${)", DOLLAR, LEFT_PAREN, DOLLAR, LEFT_CURLY, BAD_CHARACTER);
     }
 
     @Test
-    public void testIssue426() throws Exception {
+    public void testIssue426() {
         // ,, is the lowercase operator for all characters
         testTokenization("${var1,}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_LOWERCASE_FIRST, RIGHT_CURLY);
         testTokenization("${var1,,}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_LOWERCASE_ALL, RIGHT_CURLY);
@@ -1435,7 +1434,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue431() throws Exception {
+    public void testIssue431() {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("$((x|=5))", DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_OR, ARITH_NUMBER, _EXPR_ARITH);
         testTokenization("$((x&=5))", DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_AND, ARITH_NUMBER, _EXPR_ARITH);
@@ -1443,7 +1442,7 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue419() throws Exception {
+    public void testIssue419() {
         testTokenization("$(x || x)", DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN);
 
         testTokenization("issues=($(x || x))", ASSIGNMENT_WORD, EQ, LEFT_PAREN, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, OR_OR, WHITESPACE, WORD, RIGHT_PAREN, RIGHT_PAREN);
@@ -1453,18 +1452,18 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue412() throws Exception {
+    public void testIssue412() {
         testTokenization("[[ (a =~ \"b\") ]]", BRACKET_KEYWORD, LEFT_PAREN, WORD, WHITESPACE, COND_OP_REGEX, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN, _BRACKET_KEYWORD);
     }
 
     @Test
-    public void testIssue401() throws Exception {
+    public void testIssue401() {
         //less-than should be replaced with a better token in the lexer
         testTokenization("\"${A%<}\"", STRING_BEGIN, DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, LESS_THAN, RIGHT_CURLY, STRING_END);
     }
 
     @Test
-    public void testIssue457() throws Exception {
+    public void testIssue457() {
         /*
         a="a\
         b"
@@ -1481,13 +1480,13 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue469() throws Exception {
+    public void testIssue469() {
         testTokenization(BashVersion.Bash_v3, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE, AMP, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization(BashVersion.Bash_v4, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE_AMP, WHITESPACE, WORD, WHITESPACE, WORD);
     }
 
     @Test
-    public void testIssue473() throws Exception {
+    public void testIssue473() {
         // `cat <<EOF
         // X
         // EOF`
@@ -1501,9 +1500,22 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue474() throws Exception {
+    public void testIssue474() {
         //less-than should be replaced with a better token in the lexer
         testTokenization("cat <<EOF;\nX\nEOF", WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, SEMI, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+    }
+
+    @Test
+    public void testIssue505() {
+        testTokenization("x<<<${2}", WORD, REDIRECT_HERE_STRING, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+        testTokenization("x<<<${2}>/dev/null", WORD, REDIRECT_HERE_STRING, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, GREATER_THAN, WORD);
+
+        testTokenization("foo() {\nif ! grep $1 <<< ${2} > /dev/null; then echo Boom; fi\n}",
+                WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_CURLY,
+                LINE_FEED, IF_KEYWORD, WHITESPACE, BANG_TOKEN, WHITESPACE, WORD, WHITESPACE, VARIABLE, WHITESPACE,
+                REDIRECT_HERE_STRING, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE,
+                GREATER_THAN, WHITESPACE, WORD, SEMI, WHITESPACE,
+                THEN_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD, LINE_FEED, RIGHT_CURLY);
     }
 
     private void testNoErrors(String code) {

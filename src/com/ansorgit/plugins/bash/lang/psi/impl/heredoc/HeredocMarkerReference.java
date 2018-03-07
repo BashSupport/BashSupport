@@ -61,8 +61,8 @@ abstract class HeredocMarkerReference extends CachingReference implements Bindab
 
     @Override
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-        if (!BashIdentifierUtil.isValidIdentifier(newElementName)) {//fixme check the allowed character set for heredoc markers
-            throw new IncorrectOperationException("Invalid name");
+        if (!BashIdentifierUtil.isValidHeredocIdentifier(newElementName)) {//fixme check the allowed character set for heredoc markers
+            throw new IncorrectOperationException("Invalid name " + newElementName);
         }
 
         return BashPsiUtils.replaceElement(marker, createMarkerElement(newElementName));

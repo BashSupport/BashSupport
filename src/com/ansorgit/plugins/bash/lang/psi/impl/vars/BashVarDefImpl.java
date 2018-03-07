@@ -30,7 +30,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarDefStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
+import com.ansorgit.plugins.bash.lang.psi.util.BashCommandUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -42,9 +42,7 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -52,7 +50,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +61,7 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  */
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
-    private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset");
+    private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset", "read");
     private static final Set<String> localVarDefCommands = typeCommands; // Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Collections.singleton("-a");
     private static final Set<String> typeReadOnlyParams = Collections.singleton("-r");
@@ -141,6 +138,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using declare -a
         // - using typeset -a
         // - using mapfile
+        // - using read -a
 
         PsiElement assignmentValue = findAssignmentValue();
 
@@ -404,9 +402,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         if (commandName != null && validCommands.contains(commandName)) {
             List<BashPsiElement> parameters = Lists.newArrayList(command.parameters());
 
-            for (BashPsiElement param : parameters) {
-                if (validParams.contains(param.getText())) {
-                    return true;
+            for (BashPsiElement argValue : parameters) {
+                for (String paramName : validParams) {
+                    if (BashCommandUtil.isParameterDefined(paramName, argValue.getText())) {
+                        return true;
+                    }
                 }
             }
         }
