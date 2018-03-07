@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: ExportCommandTest.java, Class: ExportCommandTest
- * Last modified: 2010-04-20
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -96,5 +93,20 @@ public class ExportCommandTest extends MockPsiTest {
 
         //export a=(1 [10]=2 3)
         mockTest(parserFunction, Lists.newArrayList("export"), WORD, WORD, EQ, LEFT_PAREN, WORD, WHITESPACE, LEFT_SQUARE, ARITH_NUMBER, RIGHT_SQUARE, EQ, WORD, WHITESPACE, WORD, RIGHT_PAREN);
+    }
+
+    //issue 515
+    @Test
+    public void testDynamicSubshellVar() throws Exception {
+        //export $a
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, VARIABLE);
+        //export ${a}
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+
+        //export $(a)
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN);
+
+        //export $a=$b
+        mockTest(parserFunction, Lists.newArrayList("export"), WORD, VARIABLE, EQ, VARIABLE);
     }
 }
