@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.12</version>
+    <version>1.6.13</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -38,6 +38,18 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.6.13:</b>
+        <ul>
+            <li>#515: Not a valid identifier in shell script (dynamic variable names with export command)</li>
+            <li>#328: Using ${#var} produces incorrect warning "Array use of non-array variable"</li>
+            <li>#517: Incorrect warning "Array use of non-array variable"</li>
+            <li>#505: Fixed "Lexer could not match input" error for redirect after here string</li>
+            <li>#508: Argument values of the mapfile/readarray built-in were parsed as variable names</li>
+            <li>#511: Pull request by contributor vn971.</li>
+            <li>#512: Arguments ${10} and up flagged as errors when using curly brackets</li>
+        </ul>
+        <br/>
+
         <b>Changes in version 1.6.12:</b>
         <ul>
             <li>#457: Unresolved Variable Warning on Linebreak</li>
