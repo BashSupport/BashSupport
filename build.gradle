@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.2.14"
+    id "org.jetbrains.intellij" version "0.2.18"
 }
 
 repositories {
@@ -86,5 +86,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+    gradleVersion = '4.6'
 }

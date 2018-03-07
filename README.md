@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/jansorg/BashSupport.svg?branch=idea-162.x)](https://travis-ci.org/jansorg/BashSupport)
 
-**2017 project status: The BashSupport project will only receive fixes for major problems**
+**2018 project status: The BashSupport project will only receive fixes for major problems**
 
 *BashSupport is fully developed in my spare time since 2009. I'm unable to provide full support for BashSupport and will concentrate on fixes for major problems.*
 
@@ -81,7 +81,7 @@ Parsing Bash mostly is whitespace insensitive in most parts, but at some places 
 
 Also, in Bash keywords are context-sensitive. The word if is a keyword if it's the first token on a line. If passed as parameter it's a normal word token. BashTokenRemapper remaps keywords to normal word tokens, depending on the context.
 
-String parsing is quite adventureous in Bash. Strings can contain subshells which can contain strings (with even more nesting). So "$(echo "$a")" is a string nested inside of another string. The class "StringParsingState" is used by the lexer to track the state of string nesting.
+String parsing is quite adventureous in Bash. Strings can contain subshells which can contain strings (with even more nesting). So `"$(echo "$a")"` is a string nested inside of another string. The class "StringParsingState" is used by the lexer to track the state of string nesting.
 
 ## Bash PSI
 The Bash PSI definition is in com.ansorgit.plugins.bash.lang.psi . The entry point is the class BashPsiCreator, which is used to map a AST node to a newly created PSI node.
