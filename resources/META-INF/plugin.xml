@@ -24,8 +24,8 @@
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 181.x or later -->
-    <idea-version since-build="181.0" until-build="181.*"/>
+    <!-- Requires IDEA 182.x or later -->
+    <idea-version since-build="182.0" until-build="182.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>

@@ -15,21 +15,16 @@
 
 package com.ansorgit.plugins.bash.settings;
 
-import com.intellij.openapi.components.*;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author jansorg
  */
-@State(
-        name = "BashSupportProjectSettings",
-        storages = {
-                @Storage(id = "default",
-                        file = StoragePathMacros.PROJECT_FILE),
-                @Storage(id = "dir",
-                        file = StoragePathMacros.PROJECT_CONFIG_DIR + "/bashsupport_project.xml",
-                        scheme = StorageScheme.DIRECTORY_BASED)}
-)
+@State(name = "BashSupportProjectSettings", storages = {@Storage("bashsupport_project.xml")})
 public class BashProjectSettingsComponent implements PersistentStateComponent<BashProjectSettings>, ProjectComponent {
     private BashProjectSettings settings = new BashProjectSettings();
 
@@ -37,7 +32,7 @@ public class BashProjectSettingsComponent implements PersistentStateComponent<Ba
         return settings;
     }
 
-    public void loadState(BashProjectSettings state) {
+    public void loadState(@NotNull BashProjectSettings state) {
         this.settings = state;
     }
 
