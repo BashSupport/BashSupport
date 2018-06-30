@@ -35,7 +35,7 @@ public class SupressAddShebangInspectionQuickfix implements SuppressQuickFix {
         this.inspectionId = inspectionId;
     }
 
-    @Override
+    // @Override // no override to be compatible with earlier versions
     public boolean isSuppressAll() {
         return false;
     }

@@ -46,6 +46,6 @@ class InternalCommandDocumentation extends ClasspathDocSource {
     }
 
     String urlForCommand(String commandName) {
-        return String.format("http://ss64.com/bash/%s.html", commandName);
+        return String.format("https://ss64.com/bash/%s.html", commandName);
     }
 }

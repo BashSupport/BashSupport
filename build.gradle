@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.2.18"
+    id "org.jetbrains.intellij" version "0.3.4"
 }
 
 repositories {
@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-version = "${new File('pluginVersion.txt').getText('UTF-8')}.${ideaBranch}"
+version = "${new File('pluginVersion.txt').getText('UTF-8')}"
 
 allprojects {
     apply plugin: 'java'
@@ -86,5 +86,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
+    gradleVersion = '4.8'
 }
