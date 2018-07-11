@@ -24,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 @State(
         name = "BashSupportProjectSettings",
         storages = {
-                @Storage(id = "default",
+                @Storage(
                         file = StoragePathMacros.PROJECT_FILE),
-                @Storage(id = "dir",
+                @Storage(
                         file = StoragePathMacros.PROJECT_CONFIG_DIR + "/bashsupport_project.xml",
                         scheme = StorageScheme.DIRECTORY_BASED)}
 )
