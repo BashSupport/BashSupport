@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BashConditionalCommandImpl extends BashCompositeElement implements BashConditionalCommand {
 
+    private static final int NUMBER_OF_CHARACTERS = 1;
+
     public BashConditionalCommandImpl() {
         super(BashElementTypes.CONDITIONAL_COMMAND);
     }
@@ -39,7 +41,7 @@ public class BashConditionalCommandImpl extends BashCompositeElement implements 
 
     public String getCommandText() {
         String text = getText();
-        return text.substring(1, text.length() - 1);
+        return text.substring(NUMBER_OF_CHARACTERS, text.length() - NUMBER_OF_CHARACTERS);
     }
 
 }
