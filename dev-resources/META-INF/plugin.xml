@@ -294,6 +294,12 @@
                          enabledByDefault="false"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertBackquoteInspection"/>
 
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="BashReplaceWithDoubleBrackets"
+                         key="inspection.convertSimpleBrackets.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UseExtendedTestCommandInspection"/>
+
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashUnusedFunction"
                          key="inspection.unusedFunctionDef.name"
