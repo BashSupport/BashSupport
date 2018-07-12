@@ -1,0 +1,1 @@
+<caret>[ -z "$var" -a -n "$var2" ]

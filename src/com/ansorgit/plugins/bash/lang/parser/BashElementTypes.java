@@ -84,6 +84,7 @@ public interface BashElementTypes {
     IElementType SELECT_COMMAND = new BashCompositeElementType("select command", BashSelectImpl.class);
     IElementType IF_COMMAND = new BashCompositeElementType("if shellcommand", BashIfImpl.class);
     IElementType CONDITIONAL_COMMAND = new BashCompositeElementType("conditional shellcommand", BashConditionalCommandImpl.class);
+    IElementType EXTENDED_CONDITIONAL_COMMAND = new BashCompositeElementType("extended conditional shellcommand", BashExtendedConditionalCommandImpl.class);
     IElementType SUBSHELL_COMMAND = new BashCompositeElementType("subshell shellcommand", BashSubshellCommandImpl.class);
     IElementType BACKQUOTE_COMMAND = new BashCompositeElementType("backquote shellcommand", BashBackquoteImpl.class);
     IElementType TRAP_COMMAND = new BashCompositeElementType("trap command", BashTrapCommandImpl.class);

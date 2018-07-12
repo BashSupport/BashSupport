@@ -13,13 +13,16 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.api.shell;
+package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashExtendedConditionalCommand;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashCompositeElement;
 
-/**
- * @author jansorg
- */
-public interface BashConditionalCommand extends BashPsiElement {
-    String getCommandText();
+public class BashExtendedConditionalCommandImpl extends BashCompositeElement implements BashExtendedConditionalCommand {
+
+    public BashExtendedConditionalCommandImpl() {
+        super(BashElementTypes.EXTENDED_CONDITIONAL_COMMAND);
+    }
+
 }
