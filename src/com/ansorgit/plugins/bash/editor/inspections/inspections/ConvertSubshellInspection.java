@@ -34,7 +34,7 @@ public class ConvertSubshellInspection extends LocalInspectionTool {
             @Override
             public void visitSubshell(BashSubshellCommand subshellCommand) {
                 if (isOnTheFly) {
-                    holder.registerProblem(subshellCommand, "Replace with double brackets", new SubshellQuickfix(subshellCommand));
+                    holder.registerProblem(subshellCommand, "Replace with backquote", new SubshellQuickfix(subshellCommand));
                 }
             }
         };

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>1</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Convert simple brackets to double brackets</problem_class>
+        <description>Replace with double brackets</description>
+    </problem>
+</problems>
+

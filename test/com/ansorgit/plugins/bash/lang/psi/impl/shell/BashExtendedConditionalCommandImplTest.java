@@ -15,22 +15,16 @@
 
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
-import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashExtendedConditionalCommand;
 import com.intellij.psi.PsiElement;
-import org.junit.Assert;
 
-import static org.junit.Assert.*;
+public class BashExtendedConditionalCommandImplTest extends AbstractShellCommandTest {
 
-public class BashConditionalCommandImplTest extends AbstractShellCommandTest {
-
-    public void testConditionalCommand() throws Exception {
+    public void testExtendedConditionalCommand() throws Exception {
 
         PsiElement command = configureCommand();
-        BashConditionalCommand conditionalCommand = (BashConditionalCommandImpl) command.getParent();
 
-        String commandText = conditionalCommand.getCommandText();
-
-        assertEquals(" -z \"$var\" -a -n \"$var2\" ", commandText);
+        assertTrue(command.getParent() instanceof BashExtendedConditionalCommand);
 
     }
 
