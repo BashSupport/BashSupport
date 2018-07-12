@@ -84,7 +84,7 @@ public class ConditionalCommandParsingFunction implements ParsingFunction {
 
         if (ok) {
             builder.advanceLexer();
-            startMarker.done(BashElementTypes.CONDITIONAL_COMMAND);
+            startMarker.done(BashElementTypes.EXTENDED_CONDITIONAL_COMMAND);
             return true;
         }
 

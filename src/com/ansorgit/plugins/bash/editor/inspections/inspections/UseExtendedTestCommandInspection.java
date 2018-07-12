@@ -15,9 +15,6 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
-import com.ansorgit.plugins.bash.editor.inspections.quickfix.SubshellQuickfix;
-import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
-import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -26,17 +23,11 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This inspection can convert the backquote commands into subshell commands.
  */
-public class ConvertSubshellInspection extends LocalInspectionTool {
+public class UseExtendedTestCommandInspection extends LocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
-        return new BashVisitor() {
-            @Override
-            public void visitSubshell(BashSubshellCommand subshellCommand) {
-                if (isOnTheFly) {
-                    holder.registerProblem(subshellCommand, "Replace with double brackets", new SubshellQuickfix(subshellCommand));
-                }
-            }
-        };
+        return new ExtendedTestCommandVisitor(isOnTheFly, holder);
     }
+
 }
