@@ -27,10 +27,34 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Pattern;
+
 /**
  * Replaces a test command [ ... ] with the extended test command [[ ... ]].
  */
 public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
+
+    private enum Replacement {
+        AND("-a", "&&"),
+        OR("-o", "||"),
+        LESS_THAN("\\\\<", "<"),
+        MORE_THAN("\\\\>", ">"),
+        LEFT_PARANTHESIS("\\\\\\(", "("),
+        RIGHT_PARANTHESIS("\\\\\\)", ")");
+
+        private final Pattern regex;
+        private final String replacement;
+
+        Replacement(String regex, String replacement) {
+            this.regex = Pattern.compile(regex);
+            this.replacement = replacement;
+        }
+
+        public String apply(CharSequence input) {
+            return regex.matcher(input).replaceAll(replacement);
+        }
+    }
+
     public DoubleBracketsQuickfix(BashConditionalCommand conditionalCommand) {
         super(conditionalCommand);
     }
@@ -47,14 +71,18 @@ public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsi
     }
 
     @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+    public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
         if (document != null) {
             BashConditionalCommand subshellCommand = (BashConditionalCommand) startElement;
 
             int startOffset = subshellCommand.getTextOffset(); //to include the $
             int endOffset = subshellCommand.getTextRange().getEndOffset();
             String command = subshellCommand.getCommandText();
+
+            for (Replacement replacement : Replacement.values()) {
+                command = replacement.apply(command);
+            }
 
             document.replaceString(startOffset, endOffset, "[[" + command + "]]");
 

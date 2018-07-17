@@ -1,8 +1,6 @@
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.BashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection;
 import com.ansorgit.plugins.bash.editor.inspections.inspections.UseExtendedTestCommandInspection;
 import com.intellij.codeInsight.daemon.quickFix.LightQuickFixParameterizedTestCase;
 import com.intellij.codeInspection.InspectionEP;
