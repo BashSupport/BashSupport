@@ -15,6 +15,9 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
+import com.ansorgit.plugins.bash.editor.inspections.quickfix.DoubleBracketsQuickfix;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
@@ -24,10 +27,31 @@ import org.jetbrains.annotations.NotNull;
  * Detects single brackets and recommends to use double brackets
  */
 public class UseExtendedTestCommandInspection extends LocalInspectionTool {
+
+    static class ExtendedTestCommandVisitor extends BashVisitor {
+
+        private static final String DESCRIPTION = "Replace with double brackets";
+
+        private final boolean onTheFly;
+        private final ProblemsHolder holder;
+
+        ExtendedTestCommandVisitor(boolean onTheFly, ProblemsHolder holder) {
+            this.onTheFly = onTheFly;
+            this.holder = holder;
+        }
+
+        @Override
+        public void visitConditional(BashConditionalCommand conditionalCommand) {
+            if (onTheFly) {
+                DoubleBracketsQuickfix quickfix = new DoubleBracketsQuickfix(conditionalCommand);
+                holder.registerProblem(conditionalCommand, DESCRIPTION, quickfix);
+            }
+        }
+    }
+
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
         return new ExtendedTestCommandVisitor(isOnTheFly, holder);
     }
-
 }
