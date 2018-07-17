@@ -18,11 +18,11 @@ package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
 import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -71,22 +71,25 @@ public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsi
     }
 
     @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile psiFile, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-        Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
-        if (document != null) {
-            BashConditionalCommand subshellCommand = (BashConditionalCommand) startElement;
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
 
-            int startOffset = subshellCommand.getTextOffset(); //to include the $
-            int endOffset = subshellCommand.getTextRange().getEndOffset();
-            String command = subshellCommand.getCommandText();
-
-            for (Replacement replacement : Replacement.values()) {
-                command = replacement.apply(command);
-            }
-
-            document.replaceString(startOffset, endOffset, "[[" + command + "]]");
-
-            PsiDocumentManager.getInstance(project).commitDocument(document);
+        Document document = file.getViewProvider().getDocument();
+        if (document != null && document.isWritable()) {
+            BashConditionalCommand conditionalCommand = (BashConditionalCommand) startElement;
+            String command = conditionalCommand.getCommandText();
+            PsiElement replacement = useDoubleBrackets(project, command);
+            startElement.replace(replacement);
         }
+
     }
+
+    private static PsiElement useDoubleBrackets(Project project, String command) {
+        String newCommand = "[[" + command + "]]";
+        for (Replacement replacement : Replacement.values()) {
+            newCommand = replacement.apply(newCommand);
+        }
+        PsiFile dummyBashFile = BashPsiElementFactory.createDummyBashFile(project, newCommand);
+        return dummyBashFile.getFirstChild();
+    }
+
 }
