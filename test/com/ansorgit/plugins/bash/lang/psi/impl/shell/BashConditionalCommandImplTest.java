@@ -17,21 +17,28 @@ package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
 import com.intellij.psi.PsiElement;
-import org.junit.Assert;
-
-import static org.junit.Assert.*;
 
 public class BashConditionalCommandImplTest extends AbstractShellCommandTest {
 
-    public void testConditionalCommand() throws Exception {
+    public void testConditionalCommandLeft() throws Exception {
 
+        assertCommand();
+
+    }
+
+    public void testConditionalCommandRight() throws Exception {
+
+        assertCommand();
+
+    }
+
+    private void assertCommand() throws Exception {
         PsiElement command = configureCommand();
         BashConditionalCommand conditionalCommand = (BashConditionalCommandImpl) command.getParent();
 
         String commandText = conditionalCommand.getCommandText();
 
         assertEquals(" -z \"$var\" -a -n \"$var2\" ", commandText);
-
     }
 
 }
