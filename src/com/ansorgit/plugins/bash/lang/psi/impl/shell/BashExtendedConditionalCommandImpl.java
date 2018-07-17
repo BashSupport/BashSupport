@@ -16,8 +16,11 @@
 package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashExtendedConditionalCommand;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashCompositeElement;
+import com.intellij.psi.PsiElementVisitor;
+import org.jetbrains.annotations.NotNull;
 
 public class BashExtendedConditionalCommandImpl extends BashCompositeElement implements BashExtendedConditionalCommand {
 
@@ -25,4 +28,12 @@ public class BashExtendedConditionalCommandImpl extends BashCompositeElement imp
         super(BashElementTypes.EXTENDED_CONDITIONAL_COMMAND);
     }
 
+    @Override
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof BashVisitor) {
+            ((BashVisitor) visitor).visitExtendedConditional(this);
+        } else {
+            visitor.visitElement(this);
+        }
+    }
 }
