@@ -21,7 +21,7 @@ import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This inspection can convert the backquote commands into subshell commands.
+ * Detects single brackets and recommends to use double brackets
  */
 public class UseExtendedTestCommandInspection extends LocalInspectionTool {
     @NotNull
