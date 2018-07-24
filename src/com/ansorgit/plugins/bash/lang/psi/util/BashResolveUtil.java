@@ -164,7 +164,18 @@ public final class BashResolveUtil {
     }
 
     public static boolean isIndexedFile(Project project, @Nullable VirtualFile virtualFile) {
-        return virtualFile != null && FileIndexFacade.getInstance(project).isInContent(virtualFile);
+        boolean isVirtualFileWindow;
+        try {
+            Class<?> fileWindow = BashResolveUtil.class.getClassLoader().loadClass("com.intellij.injected.editor.VirtualFileWindow");
+            isVirtualFileWindow = fileWindow.isInstance(virtualFile);
+        } catch (ClassNotFoundException ignored) {
+            //probably a version where that class is not yet present (145.x - 162.x)
+            isVirtualFileWindow = false;
+        }
+
+        return virtualFile != null
+                && !isVirtualFileWindow
+                && FileIndexFacade.getInstance(project).isInContent(virtualFile);
     }
 
     public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {

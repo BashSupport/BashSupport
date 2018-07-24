@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.documentation;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -34,17 +35,12 @@ final class DocTestUtils {
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         try {
-            CloseableHttpResponse response = httpClient.execute(new HttpGet(url));
+            CloseableHttpResponse response = httpClient.execute(new HttpOptions(url));
 
-            Assert.assertEquals("Expected response content for " + url, 200, response.getStatusLine().getStatusCode());
+            Assert.assertTrue("Expected response content for " + url, 404 != response.getStatusLine().getStatusCode());
 
             String content = EntityUtils.toString(response.getEntity());
-            if (content.contains("No matches for")) {
-                // Response must not be a no result search on man.he.net
-                return false;
-            }
-
-            return true;
+            return !content.contains("No matches for");
         } catch (Exception e) {
             return false;
         } finally {

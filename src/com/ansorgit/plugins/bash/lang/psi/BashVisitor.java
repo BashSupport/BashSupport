@@ -27,11 +27,13 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashExpansion;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.lang.psi.impl.shell.BashExtendedConditionalCommandImpl;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -72,6 +74,14 @@ public class BashVisitor extends PsiElementVisitor {
 
     public void visitSubshell(BashSubshellCommand subshellCommand) {
         visitElement(subshellCommand);
+    }
+
+    public void visitConditional(BashConditionalCommand conditionalCommand) {
+        visitElement(conditionalCommand);
+    }
+
+    public void visitExtendedConditional(BashExtendedConditionalCommandImpl extendedConditionalCommand) {
+        visitElement(extendedConditionalCommand);
     }
 
     public void visitInternalCommand(BashCommand bashCommand) {

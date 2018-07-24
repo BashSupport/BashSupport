@@ -20,12 +20,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.6.12</version>
+    <version>1.7.0</version>
 
     <vendor url="https://www.ansorg-it.com/" email="mail@ansorg-it.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 162.x or later -->
-    <idea-version since-build="162.0" until-build="162.*"/>
+    <!-- Requires IDEA 181.x or later -->
+    <idea-version since-build="145.0" until-build="182.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -294,6 +294,12 @@
                          enabledByDefault="false"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.ConvertBackquoteInspection"/>
 
+        <localInspection language="Bash" level="INFO" groupKey="inspection.groupName"
+                         shortName="BashReplaceWithDoubleBrackets"
+                         key="inspection.convertSimpleBrackets.name"
+                         enabledByDefault="true"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.UseExtendedTestCommandInspection"/>
+
         <localInspection language="Bash" level="WARNING" groupKey="inspection.groupName"
                          shortName="BashUnusedFunction"
                          key="inspection.unusedFunctionDef.name"
@@ -311,5 +317,11 @@
                          key="inspection.internalCommandOverride.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalCommandFunctionOverrideInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashFunctionNamesShouldBeLowerSnakeCase"
+                         key="inspection.functionNamesShouldBeLowerSnakeCase.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FunctionNamesShouldBeLowerSnakeCaseInspection"/>
     </extensions>
 </idea-plugin>

@@ -118,7 +118,7 @@ public class InternalCommandDocumentationTest extends LightBashCodeInsightFixtur
         }
 
         String url = source.documentationUrl(element, element);
-        Assert.assertEquals("Expected a valid external url", String.format("http://ss64.com/bash/%s.html", element.getReferencedCommandName()), url);
+        Assert.assertEquals("Expected a valid external url", String.format("https://ss64.com/bash/%s.html", element.getReferencedCommandName()), url);
 
         return DocTestUtils.isResponseContentValid(url);
     }

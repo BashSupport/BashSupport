@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.editor;
 
+import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.codeHighlighting.Pass;
@@ -37,8 +38,8 @@ public class BashLineMarkerProvider implements com.intellij.codeInsight.daemon.L
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
-        if (element instanceof BashFunctionDefName && element.getParent() instanceof BashFunctionDef) {
-            return new LineMarkerInfo<BashFunctionDefName>((BashFunctionDefName) element, element.getTextRange(), PlatformIcons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
+        if (element.getNode().getElementType() == BashTokenTypes.WORD && element.getParent() instanceof BashFunctionDefName && element.getParent().getParent() instanceof BashFunctionDef) {
+            return new LineMarkerInfo<>(element, element.getTextRange(), PlatformIcons.METHOD_ICON, Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.LEFT);
         }
 
         return null;
@@ -46,6 +47,5 @@ public class BashLineMarkerProvider implements com.intellij.codeInsight.daemon.L
 
     @Override
     public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
-
     }
 }

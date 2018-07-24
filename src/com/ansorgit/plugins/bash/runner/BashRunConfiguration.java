@@ -30,6 +30,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.search.GlobalSearchScope;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -201,5 +202,10 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
 
     public void setScriptName(String scriptName) {
         this.scriptName = scriptName;
+    }
+
+    @Nullable
+    public GlobalSearchScope getSearchScope() {
+        return GlobalSearchScope.allScope(getProject());
     }
 }

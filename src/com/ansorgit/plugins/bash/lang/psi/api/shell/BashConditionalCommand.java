@@ -21,4 +21,5 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
  * @author jansorg
  */
 public interface BashConditionalCommand extends BashPsiElement {
+    String getCommandText();
 }

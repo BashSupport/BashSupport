@@ -28,10 +28,9 @@ public class FunctionRenameTest extends LightBashCodeInsightFixtureTestCase {
     /**
      * Tests the basic rename feature for references pointing to files.
      *
-     * @throws Exception
      */
     @Test
-    public void testBasicRename() throws Exception {
+    public void testBasicRename() {
         doRename(false);
     }
 
