@@ -461,5 +461,12 @@
                          key="inspection.internalCommandOverride.name"
                          enabledByDefault="true"
                          implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.InternalCommandFunctionOverrideInspection"/>
+
+        <localInspection language="Bash" level="WEAK WARNING" groupKey="inspection.groupName"
+                         shortName="BashFunctionNamesShouldBeLowerSnakeCase"
+                         key="inspection.functionNamesShouldBeLowerSnakeCase.name"
+                         enabledByDefault="false"
+                         implementationClass="com.ansorgit.plugins.bash.editor.inspections.inspections.FunctionNamesShouldBeLowerSnakeCaseInspection"/>
+
     </extensions>
 </idea-plugin>
