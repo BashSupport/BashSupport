@@ -13,13 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.api.shell;
+package com.ansorgit.plugins.bash.lang.psi.impl.shell;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashExtendedConditionalCommand;
+import com.intellij.psi.PsiElement;
 
-/**
- * @author jansorg
- */
-public interface BashConditionalCommand extends BashPsiElement {
-    String getCommandText();
+public class BashExtendedConditionalCommandImplTest extends AbstractShellCommandTest {
+
+    public void testExtendedConditionalCommand() throws Exception {
+
+        PsiElement command = configureCommand();
+
+        assertTrue(command.getParent() instanceof BashExtendedConditionalCommand);
+
+    }
+
 }
