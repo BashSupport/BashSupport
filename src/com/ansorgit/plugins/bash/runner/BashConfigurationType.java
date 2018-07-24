@@ -24,6 +24,7 @@ import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunConfigurationModule;
+import com.intellij.openapi.project.PossiblyDumbAware;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +35,7 @@ import java.util.Collections;
  *
  * @author jansorg
  */
-public class BashConfigurationType extends ConfigurationTypeBase {
+public class BashConfigurationType extends ConfigurationTypeBase implements PossiblyDumbAware {
     public BashConfigurationType() {
         super("BashConfigurationType", "Bash", "Bash run configuration", BashIcons.BASH_FILE_ICON);
 
@@ -44,6 +45,11 @@ public class BashConfigurationType extends ConfigurationTypeBase {
     @NotNull
     public static BashConfigurationType getInstance() {
         return ConfigurationTypeUtil.findConfigurationType(BashConfigurationType.class);
+    }
+
+    @Override
+    public boolean isDumbAware() {
+        return true;
     }
 
     private static class BashConfigurationFactory extends ConfigurationFactoryEx {
