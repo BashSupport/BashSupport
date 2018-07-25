@@ -37,7 +37,7 @@ public class BashLocalTerminalRunner extends LocalTerminalDirectRunner {
         return "BashSupport " + scriptName;
     }
 
-    @Override
+    // @Override 182.x doesn't implement this anymore
     public String[] getCommand() {
         String exePath = cmd.getExePath();
         return cmd.getCommandLineList(exePath).toArray(new String[0]);
