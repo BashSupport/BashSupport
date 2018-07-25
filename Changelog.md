@@ -1,5 +1,6 @@
 #### 2018-07-25:
  - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
+ - \#551: Add default value TERM=xterm-256color when running a Bash script if there's not value defined in the run configuration
  - \#545: Don't parse "in" in "read in" as keyword, but as variable name
 
 #### 2018-07-24:

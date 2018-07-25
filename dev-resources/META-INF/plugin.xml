@@ -32,6 +32,12 @@
     <!-- This is necessary to force IntelliJ to load the IntelliLang plugin to let the injection tests pass-->
     <depends>org.intellij.intelliLang</depends>
 
+    <!-- Dependency on the Terminal plugin, this is an optional dependency in the production plugin.xml file -->
+    <depends>org.jetbrains.plugins.terminal</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService id="Bash.RunTerminal" serviceImplementation="com.ansorgit.plugins.bash.runner.terminal.BashTerminalRunConfigurationService"/>
+    </extensions>
+
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
     Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.

@@ -24,13 +24,13 @@ import com.intellij.openapi.project.Project;
  * Bash reports the errors in this format:
  *      /home/user/test.sh: line 13: notHere: command not found
  */
-class BashLineErrorFilter extends ExtendedRegexFilter implements Filter {
+public class BashLineErrorFilter extends ExtendedRegexFilter implements Filter {
     //e.g. /home/user/test.sh: line 13: notHere: command not found
     private static final String FILTER_REGEXP = ExtendedRegexFilter.FILE_PATH_MACROS
             + ": [a-zA-Z]+ "
             + ExtendedRegexFilter.LINE_MACROS + ": .+";
 
-    BashLineErrorFilter(Project project) {
+    public BashLineErrorFilter(Project project) {
         //: line (\d+):
         super(project, FILTER_REGEXP);
     }

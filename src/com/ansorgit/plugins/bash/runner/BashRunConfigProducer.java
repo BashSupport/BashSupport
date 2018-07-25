@@ -107,7 +107,6 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
         //fixme file checks needs to check the properties
 
         VirtualFile file = location.getVirtualFile();
-
         return file != null && FileUtil.pathsEqual(file.getPath(), configuration.getScriptName());
     }
 }

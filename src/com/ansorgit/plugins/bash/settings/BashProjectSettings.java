@@ -40,6 +40,8 @@ public class BashProjectSettings implements Serializable {
     private boolean formatterEnabled = false;
     private boolean evalEscapesEnabled = false;
 
+    private boolean useTerminalPlugin = false;
+
     public static BashProjectSettings storedSettings(@NotNull Project project) {
         BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
         if (component == null) {
@@ -132,4 +134,13 @@ public class BashProjectSettings implements Serializable {
     public void setGlobalFunctionVarDefs(boolean globalFunctionVarDefs) {
         this.globalFunctionVarDefs = globalFunctionVarDefs;
     }
+
+    public boolean isUseTerminalPlugin() {
+        return useTerminalPlugin;
+    }
+
+    public void setUseTerminalPlugin(boolean useTerminalPlugin) {
+        this.useTerminalPlugin = useTerminalPlugin;
+    }
 }
+
