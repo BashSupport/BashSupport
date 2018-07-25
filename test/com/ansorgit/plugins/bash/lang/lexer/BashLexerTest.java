@@ -425,7 +425,7 @@ public class BashLexerTest {
         testTokenization("$(($(echo \"$1\")))",
                 DOLLAR, EXPR_ARITH, DOLLAR, LEFT_PAREN, WORD, WHITESPACE, STRING_BEGIN, VARIABLE, STRING_END, RIGHT_PAREN, _EXPR_ARITH);
         testTokenization("`for d in`",
-                BACKQUOTE, FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, BACKQUOTE);
+                BACKQUOTE, FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, BACKQUOTE);
         testTokenization("[ \"`dd`\" ]",
                 EXPR_CONDITIONAL, STRING_BEGIN, BACKQUOTE, WORD, BACKQUOTE, STRING_END, _EXPR_CONDITIONAL);
     }
@@ -622,7 +622,7 @@ public class BashLexerTest {
         //fixme currently unsupported, the case lexing is not context sensitive (hard to fix)
         testTokenization("for case in a; do\n" +
                 "echo\n" +
-                "done;", FOR_KEYWORD, WHITESPACE, CASE_KEYWORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
+                "done;", FOR_KEYWORD, WHITESPACE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, SEMI, WHITESPACE, DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD, SEMI);
     }
 
     @Test
@@ -630,37 +630,37 @@ public class BashLexerTest {
         testTokenization("case x in\n" +
                 "a\\ b)\n" +
                 ";;\n" +
-                "esac", CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED, CASE_END, LINE_FEED, ESAC_KEYWORD);
+                "esac", CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED, CASE_END, LINE_FEED, ESAC_KEYWORD);
 
     }
 
     @Test
     public void testNestedCase() {
         testTokenization("case x in x) ;; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("$(case x in x) ;; esac)",
-                DOLLAR, LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
+                DOLLAR, LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
         testTokenization("(case x in x) ;; esac)",
-                LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
+                LEFT_PAREN, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, RIGHT_PAREN);
 
         testTokenization("`case x in x) ;; esac `",
-                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, WHITESPACE, BACKQUOTE);
+                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD, WHITESPACE, BACKQUOTE);
 
         testTokenization("case x in esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, ESAC_KEYWORD);
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("`case x in esac`;",
-                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, SEMI);
+                BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, SEMI);
 
         testTokenization("case x in\n" +
                         "a\\ b)\n" +
                         "x=`case x in x) echo;; esac`\n" +
                         ";;\n" +
                         "esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
-                ASSIGNMENT_WORD, EQ, BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, LINE_FEED,
+                ASSIGNMENT_WORD, EQ, BACKQUOTE, CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD, BACKQUOTE, LINE_FEED,
                 CASE_END, LINE_FEED, ESAC_KEYWORD);
 
     }
@@ -676,44 +676,44 @@ public class BashLexerTest {
     @Test
     public void testCasePattern() {
         testTokenization("case a in a=a);; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN,
                 CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in a/ui);; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN,
                 CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in a#);; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN,
                 CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in\n  a#);; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 LINE_FEED, WHITESPACE, WHITESPACE,
                 WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in \"a b\") echo a;; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END, RIGHT_PAREN,
                 WHITESPACE, WORD, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
 
         //v3 vs. v4 changes in end marker
         testTokenization(BashVersion.Bash_v4, "case a in a);;& esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 WHITESPACE, WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
         testTokenization(BashVersion.Bash_v3, "case a in a);;& esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 WHITESPACE, WORD, RIGHT_PAREN, CASE_END, AMP, WHITESPACE, ESAC_KEYWORD);
 
         //v3 vs. v4 changes in new end marker
         testTokenization(BashVersion.Bash_v4, "case a in a);& esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 WHITESPACE, WORD, RIGHT_PAREN, CASE_END, WHITESPACE, ESAC_KEYWORD);
         testTokenization(BashVersion.Bash_v3, "case a in a);& esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 WHITESPACE, WORD, RIGHT_PAREN, SEMI, AMP, WHITESPACE, ESAC_KEYWORD);
 
         testTokenization("case a in a=a) echo a;; esac;",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, RIGHT_PAREN,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, RIGHT_PAREN,
                 WHITESPACE, WORD, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD, SEMI);
 
     }
@@ -734,26 +734,26 @@ public class BashLexerTest {
                 WORD, WHITESPACE, STRING_BEGIN, STRING_CONTENT, STRING_END);
 
         testTokenization("for f in a; do eval [ \"a\" ]; done",
-                FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD, SEMI,
+                FOR_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, SEMI,
                 WHITESPACE, DO_KEYWORD, WHITESPACE,
                 WORD, WHITESPACE, EXPR_CONDITIONAL, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL,
                 SEMI, WHITESPACE, DONE_KEYWORD);
 
         testTokenization("case a in a) echo [ \"a\" ];; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 RIGHT_PAREN, WHITESPACE, WORD, WHITESPACE, EXPR_CONDITIONAL, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, CASE_END, WHITESPACE, ESAC_KEYWORD);
     }
 
     @Test
     public void testNestedStatements() {
         testTokenization("case a in a) for do done ;; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD,
                 RIGHT_PAREN, WHITESPACE, FOR_KEYWORD, WHITESPACE, DO_KEYWORD, WHITESPACE, DONE_KEYWORD, WHITESPACE, CASE_END, WHITESPACE,
                 ESAC_KEYWORD);
 
         testTokenization("case a in a) in ;; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, WHITESPACE, WORD,
-                RIGHT_PAREN, WHITESPACE, IN_KEYWORD, WHITESPACE, CASE_END, WHITESPACE,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD,
+                RIGHT_PAREN, WHITESPACE, WORD, WHITESPACE, CASE_END, WHITESPACE,
                 ESAC_KEYWORD);
 
         testTokenization("if; a; then\nb #123\nfi",
@@ -1102,7 +1102,7 @@ public class BashLexerTest {
     @Test
     public void testIssue300() {
         testTokenization("case x in\nabc${a}) ;; esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED, WORD, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, RIGHT_PAREN, WHITESPACE, CASE_END, WHITESPACE, ESAC_KEYWORD);
     }
 
     @Test
@@ -1381,7 +1381,7 @@ public class BashLexerTest {
                         "return\n" +
                         ";;\n" +
                         "esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
                 WORD, PIPE, LINE_CONTINUATION, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LINE_FEED,
                 CASE_END, LINE_FEED,
@@ -1402,7 +1402,7 @@ public class BashLexerTest {
                         "return\n" +
                         ";;\n" +
                         "esac",
-                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, IN_KEYWORD, LINE_FEED,
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
                 LINE_CONTINUATION, WORD, PIPE, LINE_CONTINUATION, WHITESPACE, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LINE_FEED,
                 CASE_END, LINE_FEED,

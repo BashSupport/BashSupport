@@ -28,6 +28,7 @@ import com.intellij.psi.tree.IElementType;
 /**
  * Parsing function for for loops statements.
  * <br>
+ *
  * @author jansorg
  */
 public class ForLoopParsingFunction implements ParsingFunction {
@@ -35,7 +36,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
     private static final IElementType[] ARITH_FOR_LOOP_START = {FOR_KEYWORD, EXPR_ARITH};
 
     public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == FOR_KEYWORD ;
+        return builder.getTokenType() == FOR_KEYWORD;
     }
 
     private boolean isArithmeticForLoop(PsiBuilder builder) {
@@ -82,7 +83,8 @@ public class ForLoopParsingFunction implements ParsingFunction {
         if (afterLoopValue == SEMI) {
             builder.advanceLexer();
             builder.readOptionalNewlines();
-        } else if (afterLoopValue == ShellCommandParsing.IN_KEYWORD) {
+        } else if ((afterLoopValue == WORD || afterLoopValue == IN_KEYWORD_REMAPPED) && "in".equals(builder.getTokenText())) {
+            builder.remapCurrentToken(IN_KEYWORD_REMAPPED);
             builder.advanceLexer(); //in keyword
 
             //parse the optional word list

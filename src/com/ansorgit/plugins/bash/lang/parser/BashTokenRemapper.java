@@ -35,7 +35,6 @@ final class BashTokenRemapper implements ITokenTypeRemapper, BashTokenTypes {
             IF_KEYWORD, THEN_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, FI_KEYWORD,
             WHILE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
             FOR_KEYWORD,
-            IN_KEYWORD,
             FUNCTION_KEYWORD,
             CASE_KEYWORD, ESAC_KEYWORD,
             SELECT_KEYWORD,

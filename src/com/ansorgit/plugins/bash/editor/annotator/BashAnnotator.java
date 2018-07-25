@@ -56,6 +56,7 @@ import java.util.List;
  * The annotator for the the Bash language.
  * It takes care of the advanced syntax highlighting options.
  * <br>
+ *
  * @author jansorg
  */
 public class BashAnnotator implements Annotator {
@@ -95,6 +96,15 @@ public class BashAnnotator implements Annotator {
             annotateRedirectExpression((BashRedirectExpr) element, annotationHolder);
         } else if (element instanceof BashBinaryDataElement) {
             annotateBinaryData((BashBinaryDataElement) element, annotationHolder);
+        }
+
+        hightlightRemappedTokens(element, annotationHolder);
+    }
+
+    private void hightlightRemappedTokens(PsiElement element, AnnotationHolder annotationHolder) {
+        if (element.getNode().getElementType() == BashTokenTypes.IN_KEYWORD_REMAPPED) {
+            Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
+            annotation.setTextAttributes(BashSyntaxHighlighter.KEYWORD);
         }
     }
 
@@ -145,7 +155,7 @@ public class BashAnnotator implements Annotator {
     }
 
     private void annotateWord(PsiElement bashWord, AnnotationHolder annotationHolder) {
-        //we have to mark the remaped tokens (which are words now) to have the default word formatting.
+        //we have to mark the remapped tokens (which are words now) to have the default word formatting.
         PsiElement child = bashWord.getFirstChild();
 
         while (child != null && false) {
@@ -284,7 +294,7 @@ public class BashAnnotator implements Annotator {
     /**
      * Annotates invalid identifiers.
      *
-     * @param var The variable or variable definition to check
+     * @param var              The variable or variable definition to check
      * @param annotationHolder Holder of the annotations
      */
     private void annotateIdentifier(BashVar var, AnnotationHolder annotationHolder) {

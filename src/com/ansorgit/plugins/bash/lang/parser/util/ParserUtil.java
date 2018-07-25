@@ -85,6 +85,22 @@ public class ParserUtil {
         return tokenType;
     }
 
+    public static boolean smartRemapAndAdvance(PsiBuilder builder, String expectedTokenText, IElementType expectedTokenType, IElementType newTokenType) {
+        IElementType current = builder.getTokenType();
+        if (current == newTokenType) {
+            // already remapped, probably due to reverting an earlier parse result
+            builder.advanceLexer();
+        } else if (expectedTokenText.equals(builder.getTokenText()) && current == expectedTokenType) {
+            builder.remapCurrentToken(newTokenType);
+            builder.advanceLexer();
+        } else {
+            builder.error("unexpected token");
+            return false;
+        }
+
+        return true;
+    }
+
     public static void remapMarkAdvance(PsiBuilder builder, IElementType newTokenType, IElementType markAs) {
         builder.remapCurrentToken(newTokenType);
 

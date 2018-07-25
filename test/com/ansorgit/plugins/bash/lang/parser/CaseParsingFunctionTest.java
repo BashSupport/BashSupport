@@ -18,6 +18,8 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -39,8 +41,8 @@ public class CaseParsingFunctionTest extends MockPsiTest {
     @Test
     public void testCaseSimple1() {
         //case a in a) echo a; esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in", "a)"),
+                CASE_KEYWORD, WORD, WORD, WORD, RIGHT_PAREN,
                 WORD, WORD, SEMI, ESAC_KEYWORD
         );
     }
@@ -48,8 +50,8 @@ public class CaseParsingFunctionTest extends MockPsiTest {
     @Test
     public void testCaseSimple2() {
         //case a in (a) echo a; esac 
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, LEFT_PAREN, WORD, RIGHT_PAREN,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, LEFT_PAREN, WORD, RIGHT_PAREN,
                 WORD, WORD, SEMI, ESAC_KEYWORD
         );
     }
@@ -62,8 +64,8 @@ public class CaseParsingFunctionTest extends MockPsiTest {
         // b) echo b
         //
         // esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD,
                 LEFT_PAREN, WORD, RIGHT_PAREN, WORD, WORD, LINE_FEED,
                 CASE_END, LINE_FEED,
                 WORD, RIGHT_PAREN, WORD, WORD, LINE_FEED,
@@ -77,8 +79,8 @@ public class CaseParsingFunctionTest extends MockPsiTest {
         // (a)
         // ;;
         // esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, LINE_FEED,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, LINE_FEED,
                 LEFT_PAREN, WORD, RIGHT_PAREN, LINE_FEED,
                 CASE_END, LINE_FEED,
                 ESAC_KEYWORD
@@ -88,45 +90,46 @@ public class CaseParsingFunctionTest extends MockPsiTest {
     @Test
     public void testCaseSimple5() {
         //case a in esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, ESAC_KEYWORD);
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, ESAC_KEYWORD);
     }
 
     @Test
     public void testCaseSimple6() {
         //case a in a) esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, ESAC_KEYWORD);
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, WORD, RIGHT_PAREN, ESAC_KEYWORD);
     }
 
     @Test
     public void testCaseSimple7() {
         //case a in a) echo a;; esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
                 ESAC_KEYWORD);
     }
 
     @Test
     public void testCaseSimple8() {
         //case a in a) echo a;; esac
-        mockTest(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, WORD, RIGHT_PAREN, WORD, WORD, CASE_END,
                 ESAC_KEYWORD);
     }
 
     @Test
     public void testMultiwordPattern() throws Exception {
         //case a in "a b") echo a;; esac
-        mockTest(caseTest, CASE_KEYWORD, WORD, IN_KEYWORD, STRING_BEGIN, STRING_CONTENT, WHITESPACE, STRING_CONTENT, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD);
+        mockTest(caseTest, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, STRING_BEGIN, STRING_CONTENT, WHITESPACE, STRING_CONTENT, STRING_END, RIGHT_PAREN, WORD, WORD, CASE_END, ESAC_KEYWORD);
 
     }
 
     @Test
     public void testCaseError1() {
         //case a in ;; esac
-        mockTestError(caseTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, CASE_END, ESAC_KEYWORD);
+        mockTestError(BashVersion.Bash_v4, caseTest, true, false, Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, CASE_END, ESAC_KEYWORD);
     }
 
     @Test

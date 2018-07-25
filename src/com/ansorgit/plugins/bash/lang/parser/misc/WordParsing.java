@@ -23,6 +23,9 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
 
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
@@ -79,7 +82,7 @@ public class WordParsing implements ParsingTool {
     }
 
     public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping) {
-        return parseWord(builder, enableRemapping, TokenSet.EMPTY, TokenSet.EMPTY);
+        return parseWord(builder, enableRemapping, TokenSet.EMPTY, TokenSet.EMPTY, null);
     }
 
     /**
@@ -94,9 +97,10 @@ public class WordParsing implements ParsingTool {
      * @param enableRemapping If the read tokens should be remapped.
      * @param reject          The tokens to reject. The tokens compared to this set are not yet remapped.
      * @param accept          Additional tokens which are accepted
+     * @param rejectTexts
      * @return True if a valid word could be read.
      */
-    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept) {
+    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable  Set<String> rejectTexts) {
         int processedTokens = 0;
         int parsedStringParts = 0;
         boolean firstStep = true;
@@ -113,6 +117,10 @@ public class WordParsing implements ParsingTool {
             }
 
             if (!firstStep && (rawCurrentToken == WHITESPACE || reject.contains(rawCurrentToken))) {
+                break;
+            }
+
+            if (rejectTexts != null && rejectTexts.contains(builder.getTokenText(true))) {
                 break;
             }
 
