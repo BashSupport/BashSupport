@@ -22,10 +22,13 @@ import com.intellij.ide.actions.CreateElementActionBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtilRt;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 import static com.ansorgit.plugins.bash.file.BashFileType.SH_EXTENSION;
 
@@ -75,6 +78,11 @@ public class NewBashFileAction extends CreateElementActionBase {
     @NotNull
     protected PsiElement[] create(String newName, PsiDirectory directory) throws Exception {
         PsiFile file = BashTemplatesFactory.createFromTemplate(directory, computeFilename(newName), BashTemplatesFactory.DEFAULT_TEMPLATE_FILENAME);
+
+        File ioFile = VfsUtil.virtualToIoFile(file.getVirtualFile());
+        if (ioFile.exists()) {
+            ioFile.setExecutable(true, true);
+        }
 
         PsiElement child = file.getLastChild();
         return child != null ? new PsiElement[]{file, child} : new PsiElement[]{file};
