@@ -30,6 +30,7 @@
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">org.intellij.intelliLang</depends>
+    <depends optional="true" config-file="bashsupport-terminal.xml">org.jetbrains.plugins.terminal</depends>
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
@@ -38,149 +39,11 @@
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.6.13:</b>
+        <b>Changes in version 1.7.0:</b>
         <ul>
-            <li>#515: Not a valid identifier in shell script (dynamic variable names with export command)</li>
-            <li>#328: Using ${#var} produces incorrect warning "Array use of non-array variable"</li>
-            <li>#517: Incorrect warning "Array use of non-array variable"</li>
-            <li>#505: Fixed "Lexer could not match input" error for redirect after here string</li>
-            <li>#508: Argument values of the mapfile/readarray built-in were parsed as variable names</li>
-            <li>#511: Pull request by contributor vn971.</li>
-            <li>#512: Arguments ${10} and up flagged as errors when using curly brackets</li>
+            <li></li>
         </ul>
         <br/>
-
-        <b>Changes in version 1.6.12:</b>
-        <ul>
-            <li>#457: Unresolved Variable Warning on Linebreak</li>
-            <li>#459: Fixed formatting of redirects with process substitutions</li>
-            <li>#460: Parse commands separated by |&</li>
-            <li>#462: Unexpected Token w/ declare and some other constructs</li>
-            <li>#465: BashShebang NPE</li>
-            <li>#467: Deadlock in BashSupport</li>
-            <li>#468: Functions assumed to have curly brace body</li>
-            <li>#469: Support variables defined by `printf -v`
-            <li>#473: Support heredocs where the end marker is followed by a backtick</li>
-            <li>#474: Support semicolon after command which starts a heredoc</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.11:</b>
-        <ul>
-            <li>#394: Renaming a variable shows 'Renaming unknown type $1' in the dialog</li>
-            <li>#401: Parameter expansion parsing error</li>
-            <li>#404: Using array variable without quotes generates a warning "Simple use of array variable"</li>
-            <li>#411: NPE in OSUtil.findBestExecutable</li>
-            <li>#412: Syntax Errors on valid code involving regular expression</li>
-            <li>#433: BashCommandManipulator: Cannot modify a read-only file</li>
-            <li>#444: Formatter removes space after empty string variable assignment</li>
-            <li>#452: Concurrent modification in BashVarDefImpl</li>
-            <li>#453: A weird light blue background is seen over my code area</li>
-            <li>#454: Using "mapfile" results in "Array use of non-array variables"</li>
-            <li>#456: NPE in BashVarDefImpl</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.10:</b>
-        <ul>
-            <li>#451: Fix stub exceptions triggered by BashSupport while looking for include files (Thanks to <a href="https://github.com/kshchepanovskyi">@kshchepanovskyi</a>). If you include non-bash files, then this might break. Let me know in that case..</li>
-            <li>#450: If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.</li>
-            <li>#449: Don't warn on variable identifiers declared in an eval block</li>
-            <li>Removed "Build" step from default Bash run configuration</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.9:</b>
-        <ul>
-            <li>#432: Unexpected token on correct line with here-string</li>
-            <li>#427: Wrong autoformatting for wrapped heredoc</li>
-            <li>#418: Fix to parsed structure of variable assignment lists</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.8:</b>
-        <ul>
-            <li>#431: The arithmetic bitwise assignments are now correctly parsed.</li>
-            <li>#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"</li>
-            <li>#426: (Very) basic support to parse patterns in arithmetic expressions</li>
-            <li>#424: Error displaying the folding elements in the HERE-document when there are variables in the text</li>
-            <li>#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,=3)), for example)</li>
-            <li>#419: Parsing error with double-pipe in subshell contained in list parenthesis</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.7:</b>
-        <ul>
-            <li>#413: Fix variable and function resolving in files which are outside of a module content root</li>
-            <li>#409: Jump to function def does not work in language injected string literals</li>
-            <li>#408: All variables in injected language chunks are flagged as unresolved</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.6:</b>
-        <ul>
-            <li>#391/#358: Removed maximum levels of chained comamnds in the parser</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.5:</b>
-        <ul>
-            <li>#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.</li>
-            <li>#399: Potential fix for java.lang.NoClassDefFoundError: BashIcons</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.4:</b>
-        <ul>
-            <li>Sorry for the many releases!</li>
-            <li>#397: Tokens after a here string start were not always detected properly</li>
-            <li>Index version increased to avoid PSI index exceptions</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.3:</b>
-        <ul>
-            <li>#395: Hotfix to make BashSupport work again with scripts containing errors</li>
-            <li>#396: Check for working directory only if the module is valid</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.2:</b>
-        <ul>
-            <li>Increase stub index version to handle index vs. psi exceptions</li>
-            <li>Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often</li>
-            <li>Handle line continuations in case pattern lists</li>
-        </ul>
-        <br/>
-
-        <b>Changes in version 1.6.1:</b>
-        <ul>
-            <li>#361: Added support for the mapfile and readarray Bash builtin comamnds</li>
-            <li>#349: Support unicode characters in scripts, warn about invalid identifiers which include illegal characters</li>
-            <li>#392: Reformatting changes code in eval strings and redirect tokens</li>
-            <li>#388: Reformatting heredocs changes content</li>
-            <li>#350: Redirection in eval statement is flagged as error</li>
-            <li>#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.</li>
-            <li>#391: New inspection to highlighting unresolved, but globally registered variables (to have a separate highlighting level and inspection description)</li>
-            <li>#393: Update JFlex to the latest version</li>
-            <li>#357: Added a potential fix for the problem</li>
-        </ul>
-
-        <br/>
-        <b>Changes in version 1.6.0:</b>
-        <ul>
-            <li>Compatible with builds >= 162.x, dropped support for builds 135.x to 161.x (Sorry! I'm unable to maintain 5 more branches.)</li>
-            <li>#389: Files with line continuations were not parsed properly and may break the whole project (might have broken your project!)</li>
-            <li>#377: NPE in UnregisterGlobalVariableQuickfix</li>
-            <li>#367: Fixed parsing of redirects in subshells inside of conditional commands, e.g. [[ $(&lt; $1) ]]</li>
-            <li>#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] &lt;&lt;&lt; [abc]"</li>
-            <li>#379: Undo "Register Global Variable" doesn't work</li>
-            <li>#368: Added debugging messages for arithmetic expressions</li>
-            <li>#383: Handle division by zero in arithmetic expressions and show a warning in the code</li>
-            <li>#388: References for files are now searched in the module content scope and not in the module scope.</li>
-            <li>Added support for the ## parameter expansion operator</li>
-            <li>#351: Added debug message for further diagnosis</li>
-        </ul>
 
         <br/>
         <a href="https://github.com/jansorg/BashSupport/blob/idea-162.x/Changelog.md">Full changelog</a>

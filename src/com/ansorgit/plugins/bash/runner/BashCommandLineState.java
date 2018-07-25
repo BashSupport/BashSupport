@@ -23,7 +23,6 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.util.ProgramParametersUtil;
 import org.jetbrains.annotations.NotNull;
 
 class BashCommandLineState extends CommandLineState {
@@ -37,24 +36,16 @@ class BashCommandLineState extends CommandLineState {
     @NotNull
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
-        String workingDir = ProgramParametersUtil.getWorkingDir(runConfig, getEnvironment().getProject(), runConfig.getConfigurationModule().getModule());
-
-        GeneralCommandLine cmd = new GeneralCommandLine();
-        cmd.setExePath(runConfig.getInterpreterPath());
-        cmd.getParametersList().addParametersString(runConfig.getInterpreterOptions());
-
-        cmd.addParameter(runConfig.getScriptName());
-        cmd.getParametersList().addParametersString(runConfig.getProgramParameters());
-
-        cmd.withWorkDirectory(workingDir);
-        cmd.withParentEnvironmentType(runConfig.isPassParentEnvs() ? GeneralCommandLine.ParentEnvironmentType.CONSOLE : GeneralCommandLine.ParentEnvironmentType.NONE);
-        cmd.withEnvironment(runConfig.getEnvs());
+        String workingDir = BashRunConfigUtil.findWorkingDir(runConfig);
+        GeneralCommandLine cmd = BashRunConfigUtil.createCommandLine(workingDir, runConfig);
+        if (!cmd.getEnvironment().containsKey("TERM")) {
+            cmd.getEnvironment().put("TERM", "xterm-256color");
+        }
 
         OSProcessHandler processHandler = new KillableColoredProcessHandler(cmd);
         ProcessTerminatedListener.attach(processHandler, getEnvironment().getProject());
 
         //fixme handle path macros
-
         return processHandler;
     }
 }

@@ -15,6 +15,8 @@
 
 package com.ansorgit.plugins.bash.runner;
 
+import com.ansorgit.plugins.bash.runner.terminal.BashTerminalRunConfigurationService;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configuration.AbstractRunConfiguration;
@@ -23,6 +25,7 @@ import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.util.ProgramParametersUtil;
 import com.intellij.openapi.components.PathMacroManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
@@ -43,7 +46,7 @@ import java.util.Collection;
  *
  * @author wibotwi, jansorg
  */
-class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams, RunConfigurationWithSuppressedDefaultDebugAction {
+public class BashRunConfiguration extends AbstractRunConfiguration implements BashRunConfigurationParams, RunConfigurationWithSuppressedDefaultDebugAction {
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
@@ -76,9 +79,14 @@ class BashRunConfiguration extends AbstractRunConfiguration implements BashRunCo
 
     @Nullable
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
+        BashTerminalRunConfigurationService service = ServiceManager.getService(BashTerminalRunConfigurationService.class);
+        if (service != null && BashProjectSettings.storedSettings(getProject()).isUseTerminalPlugin()) {
+            // the plugin is enabled, the experimental feature is enabled, too
+            return service.getState(this, executor, env);
+        }
+
         BashCommandLineState state = new BashCommandLineState(this, env);
         state.getConsoleBuilder().addFilter(new BashLineErrorFilter(getProject()));
-
         return state;
     }
 
