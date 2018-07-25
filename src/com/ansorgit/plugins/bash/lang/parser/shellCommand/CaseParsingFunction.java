@@ -22,18 +22,18 @@ import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
+
+import java.util.Collections;
 
 /**
  * Parsing function for case statements.
  * <br>
+ *
  * @author jansorg
  */
 public class CaseParsingFunction implements ParsingFunction {
     private static final Logger log = Logger.getInstance("#bash.CaseCommandParsingFunction");
-
-    private enum CaseParseResult {
-        Faulty, SingleElement, ElementWithEndMarker
-    }
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == CASE_KEYWORD;
@@ -83,7 +83,7 @@ public class CaseParsingFunction implements ParsingFunction {
 
         builder.advanceLexer(); //after the "case"
 
-        if (!Parsing.word.parseWord(builder)) {
+        if (!Parsing.word.parseWord(builder, false, TokenSet.EMPTY, TokenSet.EMPTY, Collections.singleton("in"))) {
             caseCommand.drop();
             ParserUtil.error(builder, "parser.unexpected.token");
             return false;
@@ -92,8 +92,8 @@ public class CaseParsingFunction implements ParsingFunction {
         //after the word token
         builder.readOptionalNewlines();
 
-        final IElementType inToken = ParserUtil.getTokenAndAdvance(builder);
-        if (inToken != IN_KEYWORD) {
+        boolean ok = ParserUtil.smartRemapAndAdvance(builder, "in", WORD, IN_KEYWORD_REMAPPED);
+        if (!ok) {
             caseCommand.drop();
             ParserUtil.error(builder, "parser.unexpected.token");
             return false;
@@ -239,5 +239,9 @@ public class CaseParsingFunction implements ParsingFunction {
 
         pattern.done(CASE_PATTERN_ELEMENT);
         return true;
+    }
+
+    private enum CaseParseResult {
+        Faulty, SingleElement, ElementWithEndMarker
     }
 }

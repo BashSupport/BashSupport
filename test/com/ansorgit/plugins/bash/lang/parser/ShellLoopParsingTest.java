@@ -19,6 +19,7 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -75,8 +76,8 @@ public class ShellLoopParsingTest extends MockPsiTest {
     @Test
     public void testForCommand() {
         //for a in a b c; do echo a; done
-        mockTest(forLoopTester,
-                FOR_KEYWORD, WORD, IN_KEYWORD, WORD, WORD, WORD, SEMI,
+        mockTest(forLoopTester, Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, WORD, WORD, WORD, SEMI,
                 DO_KEYWORD, WORD, WORD, SEMI, DONE_KEYWORD
         );
     }
@@ -104,8 +105,8 @@ public class ShellLoopParsingTest extends MockPsiTest {
     @Test
     public void testForCommand4() {
         //for a in $(a); do echo a; done;
-        mockTest(forLoopTester,
-                FOR_KEYWORD, WORD, IN_KEYWORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, SEMI, DO_KEYWORD,
+        mockTest(forLoopTester, Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, SEMI, DO_KEYWORD,
                 WORD, WORD, SEMI, DONE_KEYWORD
         );
     }
@@ -141,8 +142,8 @@ public class ShellLoopParsingTest extends MockPsiTest {
     @Test
     public void testSelectCommand1() {
         //select a in b; do echo a; done
-        mockTest(selectCommandTester,
-                SELECT_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI,
+        mockTest(selectCommandTester, Lists.newArrayList("select", "a", "in"),
+                SELECT_KEYWORD, WORD, WORD, WORD, SEMI,
                 DO_KEYWORD, WORD, WORD, SEMI, DONE_KEYWORD
         );
     }
@@ -161,6 +162,8 @@ public class ShellLoopParsingTest extends MockPsiTest {
     @Test
     public void testIssue243() throws Exception {
         //while false; do case "x" in (x);; esac; done;
-        mockTest(whileLoopTester, WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, CASE_KEYWORD, STRING2, IN_KEYWORD, LEFT_PAREN, WORD, RIGHT_PAREN, CASE_END, ESAC_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTest(whileLoopTester,
+                Lists.newArrayList("while", "false", ";", "do", "case", "x", "in"),
+                WHILE_KEYWORD, WORD, SEMI, DO_KEYWORD, CASE_KEYWORD, STRING2, WORD, LEFT_PAREN, WORD, RIGHT_PAREN, CASE_END, ESAC_KEYWORD, SEMI, DONE_KEYWORD);
     }
 }

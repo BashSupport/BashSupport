@@ -376,10 +376,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   ","                             { return COMMA; }
 }
 
-<YYINITIAL, S_SUBSHELL, S_BACKQUOTE> {
-  "in"                          { return IN_KEYWORD; }
-}
-
 <YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
 /* keywords and expressions */
   "case"                        { setInCaseBody(false); goToState(S_CASE); return CASE_KEYWORD; }
@@ -589,7 +585,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
                                }
 
   ";;"                         { goToState(S_CASE_PATTERN); return CASE_END; }
-  "in"                         { if (!isInCaseBody()) { setInCaseBody(true); goToState(S_CASE_PATTERN); }; return IN_KEYWORD; }
+  "in"                         { if (!isInCaseBody()) { setInCaseBody(true); goToState(S_CASE_PATTERN); }; return WORD; }
 }
 
 <S_CASE_PATTERN> {

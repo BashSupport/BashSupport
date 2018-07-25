@@ -1,0 +1,1 @@
+while read in; do echo $in; done

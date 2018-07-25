@@ -166,7 +166,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
 
                     //dummy marker because we must not mark a dynamic variable name (as in 'export $a=42)'
                     assignment = new NullMarker();
-                } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY)) {
+                } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY, null)) {
                     assignment.drop();
                     return false;
                 }
@@ -244,7 +244,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 final IElementType token = builder.getTokenType(true);
                 final boolean isEndToken = assignmentSeparators.contains(token);
                 if (token != null && !isEndToken) {
-                    if (!Parsing.word.parseWord(builder, true, TokenSet.EMPTY, validWordTokens)) {
+                    if (!Parsing.word.parseWord(builder, true, TokenSet.EMPTY, validWordTokens, null)) {
                         ParserUtil.error(builder, "parser.unexpected.token");
                         assignment.drop();
                         return false;

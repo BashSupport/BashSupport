@@ -253,7 +253,7 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
         }
 
         //in keyword
-        if (leftType == IN_KEYWORD && leftPsi.getParent() instanceof BashCase) {
+        if (leftType == IN_KEYWORD_REMAPPED && leftPsi.getParent() instanceof BashCase) {
             return COMMON_SPACING_WITH_NL;
         }
 

@@ -82,7 +82,8 @@ public class IntegrationTest extends MockPsiTest {
          */
 
         mockTest(fileParsingTest,
-                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, IN_KEYWORD, LINE_FEED,
+                Lists.newArrayList("case", "\"", "script", "\"", "in"),
+                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
                 CASE_END, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
@@ -107,7 +108,8 @@ public class IntegrationTest extends MockPsiTest {
          */
 
         mockTest(fileParsingTest,
-                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, IN_KEYWORD, LINE_FEED,
+                Lists.newArrayList("case", "\"", "concurrency", "\"", "in"),
+                CASE_KEYWORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, LINE_FEED,
                 WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
                 EXPR_CONDITIONAL, INTEGER_LITERAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, LINE_FEED,
@@ -130,7 +132,8 @@ public class IntegrationTest extends MockPsiTest {
          */
 
         mockTest(fileParsingTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED,
+                Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, LINE_FEED, WORD, RIGHT_PAREN, LINE_FEED,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
                 EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, AND_AND, WORD, SEMI, LINE_FEED,
                 RIGHT_CURLY, CASE_END, LINE_FEED,
@@ -207,12 +210,14 @@ public class IntegrationTest extends MockPsiTest {
     public void testIntegration12() {
         //valid (in bash 4, at least): function a for f in 1; do echo; done;
         mockTest(fileParsingTest,
-                FUNCTION_KEYWORD, WORD, FOR_KEYWORD, WORD, IN_KEYWORD, WORD,
+                Lists.newArrayList("function", "a", "for", "f", "in"),
+                FUNCTION_KEYWORD, WORD, FOR_KEYWORD, WORD, WORD, WORD,
                 SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD, SEMI);
 
         //function a { for f in 1; do echo; done; }
         mockTest(fileParsingTest,
-                FUNCTION_KEYWORD, WORD, LEFT_CURLY, WHITESPACE, FOR_KEYWORD, WORD, IN_KEYWORD, WORD,
+                Lists.newArrayList("function", "a", "{", " ", "for", "f", "in"),
+                FUNCTION_KEYWORD, WORD, LEFT_CURLY, WHITESPACE, FOR_KEYWORD, WORD, WORD, WORD,
                 SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD, SEMI, RIGHT_CURLY);
 
         //f() { export a=1 b=2; }
@@ -260,7 +265,8 @@ public class IntegrationTest extends MockPsiTest {
         done
          */
         mockTest(fileParsingTest,
-                FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, INTEGER_LITERAL, LINE_FEED,
+                Lists.newArrayList("for", "index", "in"),
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, INTEGER_LITERAL, LINE_FEED,
                 DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD
         );
 
@@ -271,7 +277,8 @@ public class IntegrationTest extends MockPsiTest {
         done
          */
         mockTest(fileParsingTest,
-                FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, INTEGER_LITERAL, SEMI, LINE_FEED,
+                Lists.newArrayList("for", "index", "in"),
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, INTEGER_LITERAL, SEMI, LINE_FEED,
                 DO_KEYWORD, LINE_FEED, WORD, LINE_FEED, DONE_KEYWORD
         );
     }
@@ -280,7 +287,8 @@ public class IntegrationTest extends MockPsiTest {
     public void testIntegration16() {
         //"case a in a) echo [ \"a\" ];; esac"
         mockTest(fileParsingTest,
-                CASE_KEYWORD, WORD, IN_KEYWORD, WORD,
+                Lists.newArrayList("case", "a", "in"),
+                CASE_KEYWORD, WORD, WORD, WORD,
                 RIGHT_PAREN, WORD, EXPR_CONDITIONAL, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL, CASE_END,
                 ESAC_KEYWORD);
     }
@@ -292,7 +300,8 @@ public class IntegrationTest extends MockPsiTest {
 
         //for f in a; do echo && [ -z "hi" ]; done
         mockTest(fileParsingTest,
-                FOR_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI, DO_KEYWORD,
+                Lists.newArrayList("for", "f", "in"),
+                FOR_KEYWORD, WORD, WORD, WORD, SEMI, DO_KEYWORD,
                 WORD, AND_AND, EXPR_CONDITIONAL, COND_OP, STRING_BEGIN, STRING_CONTENT, STRING_END, _EXPR_CONDITIONAL,
                 SEMI, DONE_KEYWORD);
     }
@@ -360,7 +369,8 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest, IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, ASSIGNMENT_WORD, EQ, WORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, WORD, SEMI, FI_KEYWORD);
         //case $(a) in a) ;; esac
         mockTest(fileParsingTest,
-                CASE_KEYWORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, IN_KEYWORD,
+                Lists.newArrayList("case", "$", "(", "a", ")", " ", "in"),
+                CASE_KEYWORD, DOLLAR, LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, WORD,
                 WORD, RIGHT_PAREN, CASE_END, ESAC_KEYWORD);
         //if a; then
         //   b #end
@@ -504,7 +514,7 @@ public class IntegrationTest extends MockPsiTest {
         mockTest(fileParsingTest,
                 Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF",
                         "\n", "heredoccontent(\n", "EOF", "\n", "done"),
-                FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI,
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, SEMI,
                 DO_KEYWORD, WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END, LINE_FEED,
                 DONE_KEYWORD);
 
@@ -520,7 +530,7 @@ public class IntegrationTest extends MockPsiTest {
         //fixme fail or error?
         mockTestError(BashVersion.Bash_v3, fileParsingTest, false,
                 false, Lists.newArrayList("for", "f", "in", "1", ";", "do", "echo", "<<", "EOF", "\n", "heredoccontent", "(", "\n", "   ", "EOF", "\n", "done"),
-                FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI,
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, SEMI,
                 DO_KEYWORD, WORD, HEREDOC_MARKER_TAG, WORD, LINE_FEED, WORD, LEFT_PAREN, LINE_FEED, WHITESPACE, WORD, LINE_FEED,
                 DONE_KEYWORD);
     }
@@ -548,7 +558,7 @@ public class IntegrationTest extends MockPsiTest {
         //    echo in
         //}
         mockTest(fileParsingTest, Lists.newArrayList("a", "(", ")", "{", "\n", "echo", "in"),
-                WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED, WORD, IN_KEYWORD, LINE_FEED,
+                WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED, WORD, WORD, LINE_FEED,
                 RIGHT_CURLY);
     }
 

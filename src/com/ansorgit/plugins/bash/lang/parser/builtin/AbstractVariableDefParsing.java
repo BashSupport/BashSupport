@@ -119,13 +119,13 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             String argName = builder.getTokenText();
 
-            boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY);
+            boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
             if (!ok) {
                 return false;
             }
 
             if (argumentValueExpected(argName)) {
-                ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY);
+                ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
                 if (!ok) {
                     return false;
                 }
@@ -153,7 +153,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
 
         if (Parsing.word.isWordToken(builder)) {
-            if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY)) {
+            if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null)) {
                 start.rollbackTo();
 
                 return false;
