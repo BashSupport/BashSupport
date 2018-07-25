@@ -1,3 +1,6 @@
+#### 2018-07-25:
+ - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
+
 #### 2018-03-07:
  - \#515: Not a valid identifier in shell script (dynamic variable names with export command)
  - Release 1.6.13
