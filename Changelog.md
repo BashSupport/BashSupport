@@ -1,3 +1,7 @@
+#### 2018-07-24:
+ - Feature: Add inspection to check, whether function name is in lower camel case (contribued by dheid)
+ - Feature: Add inspection and quickfix to detect double brackets (contribued by dheid)
+
 #### 2018-03-07:
  - \#515: Not a valid identifier in shell script (dynamic variable names with export command)
  - Release 1.6.13
