@@ -1,6 +1,7 @@
 #### 2018-07-25:
  - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
  - \#545: Don't parse "in" in "read in" as keyword, but as variable name
+ - \#482: Make new Bash files executable for the current user by default
 
 #### 2018-07-24:
  - Feature: Add inspection to check, whether function name is in lower camel case (contribued by dheid)

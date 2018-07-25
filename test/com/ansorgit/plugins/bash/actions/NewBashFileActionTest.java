@@ -21,12 +21,17 @@ import com.ansorgit.plugins.bash.util.BashStrings;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.io.FileUtilRt;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("Duplicates")
@@ -57,6 +62,10 @@ public class NewBashFileActionTest extends BashCodeInsightFixtureTestCase {
 
         assertNotNull("Expected a newly created bash file", result);
         assertTrue("Expected a newly created bash file", result instanceof BashFile);
+
+        VirtualFile vFile = ((BashFile) result).getVirtualFile();
+        File ioFile = VfsUtilCore.virtualToIoFile(vFile);
+        assertTrue("Expected that the new file is executable", ioFile.canExecute());
 
         Assert.assertEquals("Expected default bash file template content", "#!/usr/bin/env bash", result.getText());
     }
