@@ -1,3 +1,6 @@
+#### 2018-07-25:
+ - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
+
 #### 2018-07-24:
  - Feature: Add inspection to check, whether function name is in lower camel case (contribued by dheid)
  - Feature: Add inspection and quickfix to detect double brackets (contribued by dheid)
