@@ -22,6 +22,7 @@ import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -40,26 +41,34 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
     @Test
     public void testForLoopCompoundBlock() {
         //for a in; do echo; done
-        mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD);
+        mockTest(forLoop,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, SEMI, DO_KEYWORD, WORD, SEMI, DONE_KEYWORD);
 
         //for f in 1; do {
         //echo 1
         //} done
-        mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
+        mockTest(forLoop,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
                 WORD, WHITESPACE, WORD, LINE_FEED, RIGHT_CURLY, WHITESPACE, DONE_KEYWORD);
 
         //for f in 1; do {
         //echo 1
         //}
         // done
-        mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
+        mockTest(forLoop,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
                 WORD, WHITESPACE, WORD, LINE_FEED, RIGHT_CURLY, WHITESPACE, LINE_FEED, DONE_KEYWORD);
 
         //for f in 1; do {
         //echo 1
         //};
         // done
-        mockTest(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
+        mockTest(forLoop,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, INTEGER_LITERAL, SEMI, DO_KEYWORD, LEFT_CURLY, LINE_FEED,
                 WORD, WHITESPACE, WORD, LINE_FEED, RIGHT_CURLY, SEMI, LINE_FEED, DONE_KEYWORD);
 
         //for A do echo $A; done
@@ -69,7 +78,9 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
     @Test
     public void testErrors() throws Exception {
         //for a in; do echo done
-        mockTestError(forLoop, FOR_KEYWORD, WORD, IN_KEYWORD, SEMI, DO_KEYWORD, WORD, DONE_KEYWORD);
+        mockTestError(BashVersion.Bash_v3, forLoop,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, SEMI, DO_KEYWORD, WORD, DONE_KEYWORD);
 
     }
 
@@ -78,6 +89,8 @@ public class ForLoopParsingFunctionTest extends MockPsiTest {
         //error markers must be present, but the incomplete if should be parsed without remaining elements
 
         // for f in a; do; done
-        mockTestError(BashVersion.Bash_v3, forLoop, false, true, Collections.<String>emptyList(), FOR_KEYWORD, WORD, IN_KEYWORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
+        mockTestError(BashVersion.Bash_v3, forLoop, false, true,
+                Lists.newArrayList("for", "a", "in"),
+                FOR_KEYWORD, WORD, WORD, WORD, SEMI, DO_KEYWORD, SEMI, DONE_KEYWORD);
     }
 }

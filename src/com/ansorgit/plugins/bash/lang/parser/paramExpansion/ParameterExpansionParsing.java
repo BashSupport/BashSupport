@@ -180,7 +180,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 while (builder.getTokenType() != RIGHT_CURLY && wordIsOk && !builder.eof()) {
                     if (Parsing.word.isWordToken(builder)) {
                         //we have to accept variables, substitutions, etc. as well as substitution value
-                        wordIsOk = Parsing.word.parseWord(builder, false, TokenSet.create(RIGHT_CURLY), TokenSet.EMPTY);
+                        wordIsOk = Parsing.word.parseWord(builder, false, TokenSet.create(RIGHT_CURLY), TokenSet.EMPTY, null);
                     } else {
                         builder.advanceLexer();
                     }

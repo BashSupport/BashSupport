@@ -24,6 +24,7 @@ import com.intellij.lang.PsiBuilder;
 /**
  * Parsing function for select statements.
  * <br>
+ *
  * @author jansorg
  */
 public class SelectParsingFunction implements ParsingFunction {
@@ -55,7 +56,8 @@ public class SelectParsingFunction implements ParsingFunction {
 
         builder.readOptionalNewlines();
 
-        if (builder.getTokenType() == IN_KEYWORD) {
+        if ((builder.getTokenType() == WORD || builder.getTokenType() == IN_KEYWORD_REMAPPED) && "in".equals(builder.getTokenText())) {
+            builder.remapCurrentToken(IN_KEYWORD_REMAPPED);
             builder.advanceLexer();//after the IN
 
             if (ParserUtil.isEmptyListFollowedBy(builder, DO_KEYWORD)) {

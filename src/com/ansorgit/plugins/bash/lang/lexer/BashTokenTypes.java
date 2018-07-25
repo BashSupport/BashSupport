@@ -66,7 +66,7 @@ public interface BashTokenTypes {
     IElementType FOR_KEYWORD = new BashElementType("for");//for
     IElementType FUNCTION_KEYWORD = new BashElementType("function");//function
     IElementType IF_KEYWORD = new BashElementType("if");//if
-    IElementType IN_KEYWORD = new BashElementType("in");//in
+    IElementType IN_KEYWORD_REMAPPED = new BashElementType("in");//in
     IElementType SELECT_KEYWORD = new BashElementType("select");//select
     IElementType THEN_KEYWORD = new BashElementType("then");//then
     IElementType UNTIL_KEYWORD = new BashElementType("until");//until
@@ -92,7 +92,7 @@ public interface BashTokenTypes {
 
     TokenSet keywords = TokenSet.create(BANG_TOKEN, CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
             ELIF_KEYWORD, ELSE_KEYWORD, ESAC_KEYWORD, FI_KEYWORD, FOR_KEYWORD, FUNCTION_KEYWORD,
-            IF_KEYWORD, IN_KEYWORD, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD,
+            IF_KEYWORD, IN_KEYWORD_REMAPPED, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD,
             TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
             CASE_END, DOLLAR,
             EXPR_ARITH, _EXPR_ARITH, EXPR_CONDITIONAL, _EXPR_CONDITIONAL);
@@ -103,7 +103,7 @@ public interface BashTokenTypes {
     //these tokens will be remapped to word tokens if they occur at a position where a word token would be accepted
     TokenSet identifierKeywords = TokenSet.create(
             CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD, ELIF_KEYWORD, ELSE_KEYWORD, ESAC_KEYWORD, FI_KEYWORD, FOR_KEYWORD, FUNCTION_KEYWORD,
-            IF_KEYWORD, IN_KEYWORD, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD, TIME_KEYWORD
+            IF_KEYWORD, IN_KEYWORD_REMAPPED, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD, TIME_KEYWORD
     );
 
     // single characters

@@ -69,7 +69,7 @@ public class ConditionalExpressionParsingFunction implements ParsingFunction {
             if (ParserUtil.isWordToken(tokenType)) {
                 builder.advanceLexer();
             } else if (Parsing.word.isWordToken(builder, true)) {
-                success = Parsing.word.parseWord(builder, true, conditionalRejects, TokenSet.EMPTY);
+                success = Parsing.word.parseWord(builder, true, conditionalRejects, TokenSet.EMPTY, null);
             } else {
                 success = ConditionalParsingUtil.readTestExpression(builder, conditionalRejects);
             }
