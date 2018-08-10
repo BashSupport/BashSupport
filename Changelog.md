@@ -1,3 +1,6 @@
+#### 2018-08-09:
+ - Add kotlin language for development plugin (contributed by nosovae-dev)
+
 #### 2018-07-25:
  - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
  - \#551: Add default value TERM=xterm-256color when running a Bash script if there's not value defined in the run configuration
