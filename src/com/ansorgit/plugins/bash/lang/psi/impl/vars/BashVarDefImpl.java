@@ -194,7 +194,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     @Nullable
-    protected PsiElement findAssignmentValue() {
+    public PsiElement findAssignmentValue() {
         PsiElement last = getLastChild();
         return last != this ? last : null;
     }
