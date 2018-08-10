@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
 plugins {
     id "org.jetbrains.intellij" version "0.3.5"
 }
@@ -12,6 +18,8 @@ version = "${new File('pluginVersion.txt').getText('UTF-8')}"
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'kotlin'
+    
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
@@ -82,6 +90,10 @@ allprojects {
                 org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
             ]
         }
+    }
+    
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     }
 }
 
