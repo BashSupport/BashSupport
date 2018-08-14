@@ -31,7 +31,7 @@ import com.intellij.util.containers.ContainerUtil.newArrayList
  */
 class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
-    private val DEFAULT_DEPTH_OF_FOLDING = 5
+    private val DEFAULT_DEPTH_OF_FOLDING = 0
 
     override fun getPlaceholderText(node: ASTNode) = getPlaceholderText(node, DEFAULT_DEPTH_OF_FOLDING)
 

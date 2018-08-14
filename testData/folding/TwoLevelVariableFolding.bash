@@ -2,9 +2,9 @@
 
 A="A variable"
 
-B="B variable include <fold text='A variable'>$A</fold>"
+B="B variable includes <fold text='A variable'>$A</fold>"
 
-C="C variable include <fold text='B variable include A variable'>$B</fold>"
+C="C variable includes <fold text='B variable includes $A'>$B</fold>"
 
 
 
