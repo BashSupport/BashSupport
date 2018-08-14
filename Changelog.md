@@ -1,3 +1,6 @@
+#### 2018-08-14:
+ - new icons for plugin (contributed by nosovae-dev)
+ 
 #### 2018-08-09:
  - Add kotlin language for development plugin (contributed by nosovae-dev)
 
