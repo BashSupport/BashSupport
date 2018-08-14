@@ -25,4 +25,6 @@ public class BashFoldingTest extends LightPlatformCodeInsightFixtureTestCase {
     doTest();
   }
   
+  public void testTwoLevelVariableFolding() { doTest(); }
+  
 }
