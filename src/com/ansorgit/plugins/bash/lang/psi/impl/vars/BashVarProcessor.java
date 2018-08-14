@@ -53,7 +53,11 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     }
 
     public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts) {
-        super(false);
+        this(startElement, variableName, checkLocalness, leaveInjectionHosts, false);
+    }
+
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts, boolean preferNeighbourhood) {
+        super(preferNeighbourhood);
 
         this.startElement = startElement;
         this.checkLocalness = checkLocalness;

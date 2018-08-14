@@ -1,4 +1,7 @@
 #### 2018-08-09:
+ - Feature: Add folding for variables (contributed by nosovae-dev)
+ 
+#### 2018-08-09:
  - Add kotlin language for development plugin (contributed by nosovae-dev)
 
 #### 2018-07-25:

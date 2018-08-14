@@ -161,6 +161,59 @@ public final class BashResolveUtil {
         processor.prepareResults();
 
         return processor.getBestResult(false, bashVar);
+    }    
+    
+    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode, boolean preferNeighbourhood) {
+        if (bashVar == null || !bashVar.isPhysical()) {
+            return null;
+        }
+
+        final String varName = bashVar.getReferenceName();
+        if (varName == null) {
+            return null;
+        }
+
+        PsiFile psiFile = BashPsiUtils.findFileContext(bashVar);
+        VirtualFile virtualFile = psiFile.getVirtualFile();
+
+        String filePath = virtualFile != null ? virtualFile.getPath() : null;
+        Project project = bashVar.getProject();
+
+        ResolveState resolveState = ResolveState.initial();
+        ResolveProcessor processor = new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts, preferNeighbourhood);
+
+        GlobalSearchScope fileScope = GlobalSearchScope.fileScope(psiFile);
+
+        Collection<BashVarDef> varDefs;
+        if (dumbMode || isScratchFile(virtualFile) || !isIndexedFile(project, virtualFile)) {
+            varDefs = PsiTreeUtil.collectElementsOfType(psiFile, BashVarDef.class);
+        } else {
+            varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, project, fileScope, BashVarDef.class);
+        }
+
+        for (BashVarDef varDef : varDefs) {
+            processor.execute(varDef, resolveState);
+        }
+
+        if (!dumbMode && filePath != null) {
+            Collection<BashIncludeCommand> includeCommands = StubIndex.getElements(BashIncludeCommandIndex.KEY, filePath, project, fileScope, BashIncludeCommand.class);
+            if (!includeCommands.isEmpty()) {
+                boolean varIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar) != null;
+
+                for (BashIncludeCommand command : includeCommands) {
+                    boolean includeIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(command) != null;
+
+                    //either one of var or include command is in a function or the var is used after the include command
+                    if (varIsInFunction || includeIsInFunction || (BashPsiUtils.getFileTextOffset(bashVar) > BashPsiUtils.getFileTextEndOffset(command))) {
+                        command.processDeclarations(processor, resolveState, command, bashVar);
+                    }
+                }
+            }
+        }
+
+        processor.prepareResults();
+
+        return processor.getBestResult(false, bashVar);
     }
 
     public static boolean isIndexedFile(Project project, @Nullable VirtualFile virtualFile) {
