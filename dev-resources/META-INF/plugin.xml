@@ -109,6 +109,7 @@
         <lang.parserDefinition language="Bash" implementationClass="com.ansorgit.plugins.bash.lang.parser.BashParserDefinition"/>
 
         <lang.foldingBuilder language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codefolding.BashFoldingBuilder"/>
+        <lang.foldingBuilder language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codefolding.BashVariableFoldingBuilder"/>
 
         <lang.psiStructureViewFactory language="Bash" implementationClass="com.ansorgit.plugins.bash.structureview.BashStructureViewFactory"/>
 
