@@ -25,7 +25,7 @@ import javax.swing.*;
  * @author jansorg, mail@ansorg-it.com.
  */
 public interface BashIcons {
-    Icon BASH_FILE_ICON = IconLoader.findIcon("/icons/bash.png", BashIcons.class, false, false);
+    Icon BASH_FILE_ICON = IconLoader.findIcon("/icons/fileTypes/BashFileIcon.png", BashIcons.class, false, false);
 
     Icon GLOBAL_VAR_ICON = IconLoader.findIcon("/icons/global-var-16.png", BashIcons.class, false, false);
 
