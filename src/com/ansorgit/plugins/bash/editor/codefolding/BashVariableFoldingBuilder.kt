@@ -1,10 +1,11 @@
 package com.ansorgit.plugins.bash.editor.codefolding
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarDefImpl
-import com.ansorgit.plugins.bash.lang.psi.impl.vars.ConfigurableSmartVarReference
+import com.ansorgit.plugins.bash.lang.psi.impl.vars.FoldingSmartVarReference
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarElementType
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
@@ -31,14 +32,14 @@ import com.intellij.util.containers.ContainerUtil.newArrayList
  */
 class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
-    private val DEFAULT_DEPTH_OF_FOLDING = 0
+    private val DEFAULT_DEPTH_OF_FOLDING = 1
 
     override fun getPlaceholderText(node: ASTNode) = getPlaceholderText(node, DEFAULT_DEPTH_OF_FOLDING)
 
     private fun getPlaceholderText(node: ASTNode, depth: Int): String {
         val bashVar = node.psi as BashVar
 
-        val reference = ConfigurableSmartVarReference(bashVar.reference, true).resolve()
+        val reference = FoldingSmartVarReference(bashVar.reference, true).resolve()
         if (reference != null && reference is BashVarDefImpl) {
             val value = reference.findAssignmentValue()
             if (value != null) {
@@ -73,7 +74,7 @@ class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
         ))
 
         foldingBlocks.forEach { psiElement ->
-            if (psiElement.reference?.resolve() != null) {
+            if (FoldingSmartVarReference(psiElement.reference as BashReference?, true).resolve() != null) {
                 descriptors.add(FoldingDescriptor(psiElement, psiElement.textRange))
             }
         }
@@ -81,5 +82,5 @@ class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
         return descriptors.toTypedArray()
     }
 
-    override fun isCollapsedByDefault(node: ASTNode) = true
+    override fun isCollapsedByDefault(node: ASTNode) = false
 }

@@ -103,7 +103,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         return true;
     }
 
-    private boolean isValidDefinition(BashVarDef varDef, ResolveState resolveState) {
+    protected boolean isValidDefinition(BashVarDef varDef, ResolveState resolveState) {
         if (varDef.isCommandLocal()) {
             return false;
         }
@@ -208,7 +208,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
      * @param resolveState
      * @return True if varDef is a valid local definition for startElement
      */
-    private boolean isValidLocalDefinition(BashVarDef varDef, ResolveState resolveState) {
+    protected boolean isValidLocalDefinition(BashVarDef varDef, ResolveState resolveState) {
         boolean validScope = PsiTreeUtil.isAncestor(BashPsiUtils.findEnclosingBlock(varDef), startElement, false);
 
         //fixme: this is not entirely true, think of a function with a var redefinition of a local variable of the inner functions
@@ -228,5 +228,9 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
 
     public <T> T getHint(@NotNull Key<T> key) {
         return null;
+    }
+
+    protected Set<PsiElement> getGlobalVariables() {
+        return globalVariables;
     }
 }
