@@ -1,20 +1,19 @@
 package com.ansorgit.plugins.bash.editor.codefolding
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference
+import com.ansorgit.plugins.bash.lang.psi.BashVisitor
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarDefImpl
-import com.ansorgit.plugins.bash.lang.psi.impl.vars.FoldingSmartVarReference
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarElementType
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
 import com.intellij.psi.PsiElement
-import com.intellij.psi.search.PsiElementProcessor
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.tree.TokenSet
 import com.intellij.util.containers.ContainerUtil.newArrayList
 
 /**
@@ -31,53 +30,49 @@ import com.intellij.util.containers.ContainerUtil.newArrayList
  * @author Nosov Aleksandr <nosovae.dev@gmail.com>
  */
 class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
-
-    private val DEFAULT_DEPTH_OF_FOLDING = 1
-
-    override fun getPlaceholderText(node: ASTNode) = getPlaceholderText(node, DEFAULT_DEPTH_OF_FOLDING)
-
-    private fun getPlaceholderText(node: ASTNode, depth: Int): String {
-        val bashVar = node.psi as BashVar
-
-        val reference = FoldingSmartVarReference(bashVar.reference, true).resolve()
-        if (reference != null && reference is BashVarDefImpl) {
-            val value = reference.findAssignmentValue()
-            if (value != null) {
-                return computePlaceholderText(value.node, depth)
-            }
-        }
-        return node.text
+    companion object {
+        private val skippedTextTokens = TokenSet.create(BashTokenTypes.STRING_BEGIN, BashTokenTypes.STRING_END)
+        private val DEFAULT_DEPTH_OF_FOLDING = 1
     }
 
-    private fun computePlaceholderText(valueNode: ASTNode, currentDepth: Int): String {
+    override fun getPlaceholderText(node: ASTNode) = computePlaceholderText(node, DEFAULT_DEPTH_OF_FOLDING)
+
+    private fun computePlaceholderText(node: ASTNode, depth: Int): String {
+        val bashVar = node.psi as? BashVar
+
+        var replacement = node.text
+        if (depth > 0 && bashVar != null && BashResolveUtil.hasStaticVarDefPath(bashVar)) {
+            val varDefValue = (bashVar.neighborhoodReference?.resolve() as? BashVarDefImpl)?.findAssignmentValue()
+            if (varDefValue != null) {
+                replacement = nodePlaceholderText(varDefValue.node, depth)
+            }
+        }
+
+        return replacement
+    }
+
+    private fun nodePlaceholderText(valueNode: ASTNode, currentDepth: Int): String {
         return valueNode.getChildren(null)
-                .filter { it.elementType !== BashTokenTypes.STRING_BEGIN }
-                .filter { it.elementType !== BashTokenTypes.STRING_END }
+                .filterNot { skippedTextTokens.contains(it.elementType) }
                 .map {
-                    if (it.elementType is BashVarElementType) {
-                        if (currentDepth <= 0) {
-                            return@map it.text
-                        }
-                        return@map getPlaceholderText(it, currentDepth - 1)
+                    if (it.elementType is BashVarElementType && currentDepth > 0) {
+                        computePlaceholderText(it, currentDepth - 1)
+                    } else {
+                        it.text
                     }
-                    it.text
                 }.joinToString(separator = "")
     }
 
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
         val descriptors = newArrayList<FoldingDescriptor>()
-
-        val foldingBlocks = newArrayList<PsiElement>()
-        PsiTreeUtil.processElements(root, PsiElementProcessor.CollectFilteredElements(
-                { psiElement -> psiElement is BashVar && psiElement !is BashVarDef }, foldingBlocks
-        ))
-
-        foldingBlocks.forEach { psiElement ->
-            if (FoldingSmartVarReference(psiElement.reference as BashReference?, true).resolve() != null) {
-                descriptors.add(FoldingDescriptor(psiElement, psiElement.textRange))
+        BashPsiUtils.visitRecursively(root, object : BashVisitor() {
+            override fun visitVarUse(bashVar: BashVar) {
+                if (BashResolveUtil.hasStaticVarDefPath(bashVar)) {
+                    descriptors.add(FoldingDescriptor(bashVar, bashVar.textRange))
+                }
             }
-        }
+        })
 
         return descriptors.toTypedArray()
     }
