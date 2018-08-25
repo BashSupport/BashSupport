@@ -16,87 +16,73 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.OSUtil;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.completion.PrioritizedLookupElement;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.SystemInfoRt;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.util.PlatformIcons;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author jansorg
  */
-class CompletionProviderUtils {
+final class CompletionProviderUtils {
+    private static final Icon fileIcon = IconLoader.getIcon("/fileTypes/text.png");
+    private static final Icon dirIcon = PlatformIcons.DIRECTORY_CLOSED_ICON;
+
     private CompletionProviderUtils() {
     }
 
-    static Collection<LookupElement> createPsiItems(Collection<? extends PsiNamedElement> elements) {
-        return Collections2.transform(elements, new Function<PsiNamedElement, LookupElement>() {
-            public LookupElement apply(PsiNamedElement from) {
-                return LookupElementBuilder.create(from).withCaseSensitivity(true);
+    static Collection<LookupElement> createFromPsiItems(Collection<? extends PsiNamedElement> elements, @Nullable Icon icon, @Nullable Integer groupId) {
+        return elements.stream().map(psi -> {
+            LookupElementBuilder element = LookupElementBuilder.create(psi).withCaseSensitivity(true);
+            if (icon != null) {
+                element = element.withIcon(icon);
             }
-        });
+            if (groupId != null) {
+                return PrioritizedLookupElement.withGrouping(element, groupId);
+            }
+            return element;
+        }).collect(Collectors.toList());
     }
 
-    static Collection<LookupElement> createItems(Iterable<String> items, final Icon icon) {
-        return Lists.transform(Lists.newArrayList(items), new Function<String, LookupElement>() {
-            public LookupElement apply(String from) {
-                //create a lookup string which doesn't contain typical separator characters
-                String lookup = from.replaceAll("[_]", "");
-                return LookupElementBuilder.create(from).withCaseSensitivity(true).withLookupString(lookup).withIcon(icon);
-            }
-        });
-    }
+    static Collection<LookupElement> createItems(Collection<String> items, final Icon icon, Integer groupId) {
+        return items
+                .stream()
+                .map(item -> {
+                    LookupElementBuilder elementBuilder = LookupElementBuilder.create(item).withCaseSensitivity(true);
+                    if (icon != null) {
+                        elementBuilder = elementBuilder.withIcon(icon);
+                    }
 
-    static Collection<LookupElement> wrapInGroup(final int groupId, Collection<LookupElement> elements) {
-        return Collections2.transform(elements, new Function<LookupElement, LookupElement>() {
-            public LookupElement apply(LookupElement lookupElement) {
-                return PrioritizedLookupElement.withGrouping(lookupElement, groupId);
-            }
-        });
+                    if (groupId != null) {
+                        return PrioritizedLookupElement.withGrouping(elementBuilder, groupId);
+                    }
+                    return elementBuilder;
+                })
+                .collect(Collectors.toList());
     }
 
     static Collection<LookupElement> createPathItems(List<String> osPathes) {
-        //fix the windows file and directory pathes to be cygwin compatible
-        if (SystemInfoRt.isWindows) {
-            osPathes = Lists.transform(osPathes, new Function<String, String>() {
-                @Override
-                public String apply(String path) {
-                   return OSUtil.toBashCompatible(path);
-                }
-            });
-        }
+        return osPathes.stream()
+                .map(path ->
+                        //fix the windows file and directory pathes to be cygwin compatible
+                        SystemInfoRt.isWindows ? OSUtil.toBashCompatible(path) : path
+                )
+                .map(path -> {
+                    int groupId = path.startsWith("/") ? CompletionGrouping.AbsoluteFilePath.ordinal() : CompletionGrouping.RelativeFilePath.ordinal();
+                    return PrioritizedLookupElement.withGrouping(createPathLookupElement(path, !path.endsWith("/")), groupId);
+                }).collect(Collectors.toList());
+    }
 
-        Function<String, LookupElement> transformationFunction = new Function<String, LookupElement>() {
-            public LookupElement apply(String path) {
-                return new PathLookupElement(path, !path.endsWith("/"));
-            }
-        };
-
-        Predicate<String> isRelativePath = new Predicate<String>() {
-            public boolean apply(String path) {
-                return !path.startsWith("/");
-            }
-        };
-
-        Collection<String> relativePaths = Collections2.filter(osPathes, isRelativePath);
-        Collection<LookupElement> relativePathItems = Collections2.transform(relativePaths, transformationFunction);
-
-        Collection<String> absolutePaths = Collections2.filter(osPathes, Predicates.not(isRelativePath));
-        Collection<LookupElement> absolutePathItems = Collections2.transform(absolutePaths, transformationFunction);
-
-        Collection<LookupElement> result = Lists.newLinkedList();
-        result.addAll(wrapInGroup(CompletionGrouping.RelativeFilePath.ordinal(), relativePathItems));
-        result.addAll(wrapInGroup(CompletionGrouping.AbsoluteFilePath.ordinal(), absolutePathItems));
-
-        return result;
+    static LookupElement createPathLookupElement(String path, boolean isFile) {
+        return LookupElementBuilder.create(path).withIcon(isFile ? fileIcon : dirIcon);
     }
 }

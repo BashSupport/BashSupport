@@ -15,8 +15,6 @@
 
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -24,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Abstract base class for completion providers in Bash files.
@@ -35,7 +34,7 @@ abstract class AbstractBashCompletionProvider extends CompletionProvider<Complet
     abstract void addTo(CompletionContributor contributor);
 
     protected Predicate<File> createFileFilter() {
-        return Predicates.alwaysTrue();
+        return file -> true;
     }
 
     @Override

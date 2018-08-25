@@ -1,5 +1,7 @@
 #### 2018-08-25:
  - fix to improve handling of local variables in functions
+ - \#566: Fix slow startup of the IDE when BashSupport is installed
+ - Enhancement: show path next to path command completion items
 
 #### 2018-08-14:
  - new icons for plugin (contributed by nosovae-dev)

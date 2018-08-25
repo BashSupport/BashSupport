@@ -22,9 +22,8 @@ import org.junit.Test;
  */
 public class BashPathCommandCompletionTest {
     @Test
-    public void testFindUpperLimit() throws Exception {
-        BashPathCommandCompletion completion = new BashPathCommandCompletion();
-        completion.initComponent();
+    public void testFindUpperLimit() {
+        BashPathCompletionService completion = new BashPathCompletionService();
 
         Assert.assertEquals("abd", completion.findUpperLimit("abc"));
         Assert.assertEquals("abz", completion.findUpperLimit("aby"));

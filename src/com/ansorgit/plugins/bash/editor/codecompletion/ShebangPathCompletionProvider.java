@@ -16,17 +16,18 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
-import com.google.common.base.Predicate;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.psi.PsiElement;
 
 import java.io.File;
+import java.util.function.Predicate;
 
 /**
  * This completion provider provides code completion for file / directory paths in the file.
  */
+@SuppressWarnings("ClassTooDeepInInheritanceTree")
 class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
     public ShebangPathCompletionProvider() {
     }
@@ -38,11 +39,7 @@ class ShebangPathCompletionProvider extends AbsolutePathCompletionProvider {
 
     @Override
     protected Predicate<File> createFileFilter() {
-        return new Predicate<File>() {
-            public boolean apply(File file) {
-                return file.canExecute() && file.canRead();
-            }
-        };
+        return file -> file.canExecute() && file.canRead();
     }
 
     @Override
