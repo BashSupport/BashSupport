@@ -16,10 +16,11 @@
 package com.ansorgit.plugins.bash.lang.psi.api.shell;
 
 import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.api.BashConditionalBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 
 /**
  * @author jansorg
  */
-public interface BashIf extends BashKeyword, BashBlock {
+public interface BashIf extends BashKeyword, BashConditionalBlock {
 }

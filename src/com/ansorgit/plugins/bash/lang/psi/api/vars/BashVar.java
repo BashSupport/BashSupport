@@ -19,6 +19,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jansorg
@@ -59,6 +60,12 @@ public interface BashVar extends BashPsiElement, PsiNamedElement {
      */
     @NotNull
     BashReference getReference();
+
+    /**
+     * @return A reference which points to the nearest variable definition (on the same nesting level)
+     */
+    @Nullable
+    BashReference getNeighborhoodReference();
 
     String getReferenceName();
 

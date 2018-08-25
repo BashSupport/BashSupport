@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.shell;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashConditionalBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.intellij.psi.PsiElement;
 
@@ -23,7 +24,7 @@ import java.util.Collection;
 /**
  * @author jansorg
  */
-public interface BashCase extends BashPsiElement {
+public interface BashCase extends BashPsiElement, BashConditionalBlock {
     /**
      * Returns the elements which are part of the case's pattern list.
      *
