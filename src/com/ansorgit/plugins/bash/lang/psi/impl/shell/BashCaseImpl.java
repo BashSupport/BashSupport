@@ -41,4 +41,9 @@ public class BashCaseImpl extends BashKeywordDefaultImpl implements BashCase {
     public Collection<? extends PsiElement> patternList() {
         return PsiTreeUtil.findChildrenOfType(this, BashCasePatternListElementImpl.class);
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }

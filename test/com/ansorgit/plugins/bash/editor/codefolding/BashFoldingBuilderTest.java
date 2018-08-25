@@ -30,6 +30,18 @@ import org.junit.Test;
  */
 public class BashFoldingBuilderTest extends LightBashCodeInsightFixtureTestCase {
     @Test
+    public void testVariablesFolding() {
+        String fileContent = "TMP_DIR=tmpDir\nDECOMPILED_SRC_DIR=\"$TMP_DIR/../../data/decompiled_src\"";
+        PsiFile psiFile = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, fileContent);
+
+        BashVariableFoldingBuilder builder = new BashVariableFoldingBuilder();
+        FoldingDescriptor[] regions = builder.buildFoldRegions(psiFile.getNode(), myFixture.getDocument(psiFile));
+
+        Assert.assertEquals(1, regions.length);
+        Assert.assertEquals("(35,43)", regions[0].getRange().toString());
+    }
+
+    @Test
     public void testHeredocFolding() throws Exception {
         FoldingDescriptor[] regions = buildRegions("cat - << EOF\nline 1\nline 2\nline 3\nEOF", BashHereDoc.class);
 

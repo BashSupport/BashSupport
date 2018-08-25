@@ -15,11 +15,11 @@
 
 package com.ansorgit.plugins.bash.lang.psi.api.loops;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashBlock;
+import com.ansorgit.plugins.bash.lang.psi.api.BashConditionalBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashKeyword;
 
 /**
  * @author jansorg
  */
-public interface BashSelect extends BashKeyword, BashBlock {
+public interface BashSelect extends BashKeyword, BashConditionalBlock {
 }

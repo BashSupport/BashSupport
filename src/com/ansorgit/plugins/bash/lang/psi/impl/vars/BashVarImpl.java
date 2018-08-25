@@ -20,15 +20,17 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashComposedVar;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashParameterExpansion;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
-import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarUse;
+import com.ansorgit.plugins.bash.lang.psi.api.loops.BashLoop;
+import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.vars.*;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
+import com.ansorgit.plugins.bash.lang.psi.impl.BashElementSharedImpl;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashVarStub;
+import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
@@ -37,7 +39,9 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -45,12 +49,17 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+
 /**
  * @author jansorg
  */
 public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, BashVarUse, StubBasedPsiElement<BashVarStub> {
     private final BashReference varReference = new SmartBashVarReference(this);
     private final BashReference dumbVarReference = new DumbBashVarReference(this);
+
+    private final BashReference varNeighborhoodReference = new SmartBashVarReference(this, true);
+    private final BashReference dumbVarNeighborhoodReference = new DumbBashVarReference(this, true);
 
     private final Object stateLock = new Object();
     private volatile int prefixLength = -1;
@@ -94,6 +103,12 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     @Override
     public BashReference getReference() {
         return DumbService.isDumb(getProject()) ? dumbVarReference : varReference;
+    }
+
+    @NotNull
+    @Override
+    public BashReference getNeighborhoodReference() {
+        return DumbService.isDumb(getProject()) ? dumbVarNeighborhoodReference : varNeighborhoodReference;
     }
 
     @Override
