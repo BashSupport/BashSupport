@@ -53,13 +53,17 @@ final class CompletionProviderUtils {
         }).collect(Collectors.toList());
     }
 
-    static Collection<LookupElement> createItems(Collection<String> items, final Icon icon, Integer groupId) {
-        return items
+    static Collection<LookupElement> createItems(Collection<String> lookupStrings, final Icon icon, boolean trimLookupString, Integer groupId) {
+        return lookupStrings
                 .stream()
                 .map(item -> {
                     LookupElementBuilder elementBuilder = LookupElementBuilder.create(item).withCaseSensitivity(true);
                     if (icon != null) {
                         elementBuilder = elementBuilder.withIcon(icon);
+                    }
+
+                    if (trimLookupString) {
+                        elementBuilder = elementBuilder.withLookupString(item.replace("_", ""));
                     }
 
                     if (groupId != null) {

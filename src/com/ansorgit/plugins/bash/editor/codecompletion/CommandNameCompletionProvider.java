@@ -36,7 +36,6 @@ import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -100,13 +99,13 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
 
         BashProjectSettings settings = BashProjectSettings.storedSettings(element.getProject());
         if (settings.isAutocompleteBuiltinCommands() && (invocationCount > 1 || addedItems == 0)) {
-            Collection<LookupElement> commands = CompletionProviderUtils.createItems(LanguageBuiltins.commands, BashIcons.GLOBAL_VAR_ICON, CompletionGrouping.GlobalCommand.ordinal());
+            Collection<LookupElement> commands = CompletionProviderUtils.createItems(LanguageBuiltins.commands, BashIcons.GLOBAL_VAR_ICON, true, CompletionGrouping.GlobalCommand.ordinal());
             addedItems += commands.size();
 
             prefixedCommand.addAllElements(commands);
 
             if (settings.isSupportBash4()) {
-                commands = CompletionProviderUtils.createItems(LanguageBuiltins.commands_v4, BashIcons.GLOBAL_VAR_ICON, CompletionGrouping.GlobalCommand.ordinal());
+                commands = CompletionProviderUtils.createItems(LanguageBuiltins.commands_v4, BashIcons.GLOBAL_VAR_ICON, true, CompletionGrouping.GlobalCommand.ordinal());
                 addedItems += commands.size();
 
                 prefixedCommand.addAllElements(commands);
