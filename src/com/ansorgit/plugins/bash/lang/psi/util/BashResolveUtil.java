@@ -15,18 +15,19 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import com.ansorgit.plugins.bash.lang.psi.api.BashConditionalBlock;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
+import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
-import com.ansorgit.plugins.bash.lang.psi.api.shell.BashIf;
+import com.ansorgit.plugins.bash.lang.psi.api.loops.BashLoop;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarProcessor;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
@@ -45,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -114,6 +114,10 @@ public final class BashResolveUtil {
 
 
     public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode) {
+        return resolve(bashVar, leaveInjectionHosts, dumbMode, false);
+    }
+
+    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode, boolean preferNeighborhood) {
         if (bashVar == null || !bashVar.isPhysical()) {
             return null;
         }
@@ -123,9 +127,9 @@ public final class BashResolveUtil {
             return null;
         }
 
-        return resolve(bashVar, dumbMode, new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts));
-    }    
-    
+        return resolve(bashVar, dumbMode, new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts, preferNeighborhood));
+    }
+
     public static PsiElement resolve(BashVar bashVar, boolean dumbMode, ResolveProcessor processor) {
         if (bashVar == null || !bashVar.isPhysical()) {
             return null;
@@ -238,5 +242,56 @@ public final class BashResolveUtil {
 
     public static boolean isScratchFile(@Nullable VirtualFile file) {
         return file != null && ScratchFileService.getInstance().getRootType(file) != null;
+    }
+
+    /**
+     * @return true if the definition of this variable is not child of a conditional command or loop.
+     */
+    public static boolean hasStaticVarDefPath(BashVar bashVar) {
+        BashReference reference = bashVar.getNeighborhoodReference();
+        if (reference == null) {
+            return false;
+        }
+
+        PsiElement closestDef = reference.resolve();
+        if (closestDef == null) {
+            return false;
+        }
+
+        // if the closest def is in a different def scope, then we can't handle that
+        // (e.g. var is top-level, def is in a function or var is in a function and def in another function, etc.)
+        BashFunctionDef varScope = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar);
+        BashFunctionDef defScope = BashPsiUtils.findNextVarDefFunctionDefScope(closestDef);
+        if (varScope == null && defScope != null) {
+            return false;
+        }
+
+        // we can't handle different functions as scope
+        if (varScope != null && !varScope.isEquivalentTo(defScope)) {
+            return false;
+        }
+
+        // atm we can't handle different files
+        PsiFile psiFile = bashVar.getContainingFile();
+        if (varScope == null && !psiFile.isEquivalentTo(closestDef.getContainingFile())) {
+            return false;
+        }
+
+        Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, bashVar.getReferenceName(), bashVar.getProject(), GlobalSearchScope.fileScope(psiFile), BashVarDef.class);
+        for (BashVarDef candidateDef : allDefs) {
+            // skip var defs which are not in our own def scope
+            BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(candidateDef);
+            if (varScope != null && !varScope.isEquivalentTo(scope)) {
+                continue;
+            }
+
+            // it's not a static path if the var def is in a conditional block or loop and if our var is not
+            PsiElement parent = PsiTreeUtil.findFirstParent(candidateDef, psi -> psi instanceof BashConditionalBlock || psi instanceof BashLoop);
+            if (parent != null && !PsiTreeUtil.isAncestor(parent, bashVar, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -73,6 +73,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private volatile Boolean cachedFunctionScopeLocal;
     private volatile String name;
     private volatile PsiElement assignmentWord;
+
     private volatile TextRange nameTextRange;
 
     public BashVarDefImpl(ASTNode astNode) {
@@ -301,6 +302,12 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @Override
     public BashReference getReference() {
         return DumbService.isDumb(getProject()) ? dumbReference : reference;
+    }
+
+    @Nullable
+    @Override
+    public BashReference getNeighborhoodReference() {
+        return null;
     }
 
     @Override

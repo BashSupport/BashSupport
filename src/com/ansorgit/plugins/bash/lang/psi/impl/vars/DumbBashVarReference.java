@@ -25,13 +25,20 @@ import org.jetbrains.annotations.Nullable;
  * @author jansorg
  */
 class DumbBashVarReference extends AbstractBashVarReference {
+    private final boolean preferNeighborhood;
+
     public DumbBashVarReference(BashVarImpl bashVar) {
+        this(bashVar, false);
+    }
+
+    public DumbBashVarReference(BashVarImpl bashVar, boolean preferNeighborhood) {
         super(bashVar);
+        this.preferNeighborhood = preferNeighborhood;
     }
 
     @Nullable
     @Override
     public PsiElement resolveInner() {
-        return BashResolveUtil.resolve(bashVar, true, true);
+        return BashResolveUtil.resolve(bashVar, true, true, preferNeighborhood);
     }
 }
