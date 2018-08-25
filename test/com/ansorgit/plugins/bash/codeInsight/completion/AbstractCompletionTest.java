@@ -68,7 +68,7 @@ abstract class AbstractCompletionTest extends CompletionTestCase {
             files.addAll(Arrays.asList(additionalFiles));
         }
 
-        configureByFiles(null, files.toArray(new String[files.size()]));
+        configureByFiles(null, files.toArray(new String[0]));
     }
 
     protected void checkItemsCustomCompletion(int completions, String... values) throws Exception {

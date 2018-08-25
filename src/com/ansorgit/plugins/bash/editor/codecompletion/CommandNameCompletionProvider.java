@@ -98,9 +98,8 @@ class CommandNameCompletionProvider extends AbstractBashCompletionProvider {
         String lookupPrefix = findCurrentText(parameters, element);
         CompletionResultSet prefixedCommand = result.withPrefixMatcher(lookupPrefix);
 
-
         BashProjectSettings settings = BashProjectSettings.storedSettings(element.getProject());
-        if (settings.isAutocompleteBuiltinCommands()) {
+        if (settings.isAutocompleteBuiltinCommands() && (invocationCount > 1 || addedItems == 0)) {
             Collection<LookupElement> commands = CompletionProviderUtils.createItems(LanguageBuiltins.commands, BashIcons.GLOBAL_VAR_ICON, CompletionGrouping.GlobalCommand.ordinal());
             addedItems += commands.size();
 
