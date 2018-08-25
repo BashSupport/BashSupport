@@ -12,3 +12,9 @@ function b() {
         test <fold text='def value'>$Y</fold>
     fi
 }
+
+function reportDebug {
+    typeset msg
+    msg="Debug: ${FUNCNAME[1]}(): $*"
+    reportSession "<fold text='Debug: ${FUNCNAME[1]}(): $*'>$msg</fold>"
+}

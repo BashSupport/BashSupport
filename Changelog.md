@@ -1,6 +1,10 @@
+#### 2018-08-25:
+ - folding for variables (contributed by nosovae-dev)
+ - fix to imprive handling of local variables in functions
+
 #### 2018-08-14:
  - new icons for plugin (contributed by nosovae-dev)
- 
+
 #### 2018-08-09:
  - Feature: Add folding for variables (contributed by nosovae-dev)
  

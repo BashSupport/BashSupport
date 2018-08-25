@@ -92,7 +92,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             if (isValid) {
                 storeResult(varDef, BashPsiUtils.blockNestingLevel(varDef));
 
-                if (!varDef.isLocalVarDef()) {
+                if (!localVarDef) {
                     globalVariables.add(varDef);
                 }
 
