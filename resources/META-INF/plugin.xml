@@ -52,9 +52,6 @@
     </change-notes>
 
     <application-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
-        </component>
     </application-components>
 
     <project-components>
