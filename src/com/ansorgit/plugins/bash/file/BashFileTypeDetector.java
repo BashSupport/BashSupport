@@ -44,6 +44,11 @@ public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
     @Nullable
     @Override
     public FileType detect(@NotNull VirtualFile file, @NotNull ByteSequence firstBytes, @Nullable CharSequence textContent) {
+        return detect(file, textContent);
+    }
+
+    @Nullable
+    public static FileType detect(@NotNull VirtualFile file, @Nullable CharSequence textContent) {
         if (textContent == null || file.getExtension() != null) {
             return null;
         }
