@@ -18,12 +18,11 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
     @Test
     public void testGlobalCompletionInvocationOne() throws Exception {
+        configureByTestName();
+
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
-
-            configureByTestName();
-
             checkItemsCustomCompletion(1, "PWD_MINE");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
@@ -32,12 +31,11 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
     @Test
     public void testGlobalCompletionInvocationOneNoLocals() throws Exception {
+        configureByTestName();
+
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
-
-            configureByTestName();
-
             checkItemsCustomCompletion(1, "PWD", "COMP_WORDBREAKS", "COMP_WORDS", "OLDPWD");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);
@@ -46,12 +44,11 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
 
     @Test
     public void testGlobalCompletionInvocationTwo() throws Exception {
+        configureByTestName();
+
         boolean old = BashProjectSettings.storedSettings(myProject).isAutocompleteBuiltinVars();
         try {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(true);
-
-            configureByTestName();
-
             checkItemsCustomCompletion(2, "PWD_MINE", "PWD", "COMP_WORDBREAKS", "COMP_WORDS", "OLDPWD");
         } finally {
             BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinVars(old);

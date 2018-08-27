@@ -44,9 +44,6 @@
     </html>]]></description>
 
     <application-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
-        </component>
     </application-components>
 
     <project-components>
@@ -140,6 +137,8 @@
 
         <readWriteAccessDetector implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
 
+        <preloadingActivity implementation="com.ansorgit.plugins.bash.editor.codecompletion.PreloadPathCompletionActivity"/>
+        <applicationService serviceImplementation="com.ansorgit.plugins.bash.editor.codecompletion.BashPathCompletionService" />
         <completion.contributor language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />

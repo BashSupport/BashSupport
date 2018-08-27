@@ -16,8 +16,6 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.util.CompletionUtil;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;
@@ -26,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * This completion provider provides code completion for file / directory paths in the file.
@@ -51,20 +50,18 @@ class AbsolutePathCompletionProvider extends AbstractBashCompletionProvider {
             return;
         }
 
+        int invocationCount = parameters.getInvocationCount();
+
         CompletionResultSet result = resultWithoutPrefix.withPrefixMatcher(new PathPrefixMatcher(currentText));
 
-        final int invocationCount = parameters.getInvocationCount();
-
-        Predicate<File> incovationCountPredicate = new Predicate<File>() {
-            public boolean apply(File file) {
-                //accept hidden file with more than one invocation
-                //return file.isHidden() ? invocationCount >= 2 : true;
-                boolean isHidden = file.isHidden() || file.getName().startsWith(".");
-                return (isHidden && (invocationCount >= 2)) || ((invocationCount >= 1) && !isHidden);
-            }
+        Predicate<File> incovationCountPredicate = file -> {
+            //accept hidden file with more than one invocation
+            //return file.isHidden() ? invocationCount >= 2 : true;
+            boolean isHidden = file.isHidden() || file.getName().startsWith(".");
+            return (isHidden && (invocationCount >= 2)) || ((invocationCount >= 1) && !isHidden);
         };
 
-        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, Predicates.<File>and(createFileFilter(), incovationCountPredicate));
+        List<String> completions = CompletionUtil.completeAbsolutePath(currentText, createFileFilter().and(incovationCountPredicate));
         result.addAllElements(CompletionProviderUtils.createPathItems(completions));
 
         int validResultCount = computeResultCount(completions, result);
