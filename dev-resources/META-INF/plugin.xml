@@ -64,6 +64,8 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
 
+        <action class="com.ansorgit.plugins.bash.actions.ReportFileTypeAction" id="bash.reportType" />
+
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
