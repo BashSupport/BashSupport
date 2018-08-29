@@ -45,6 +45,7 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
 
     @Test
     public void testAutocompleteBuiltInDisabled() throws Exception {
+        BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(false);
         configureByTestName();
 
         checkItems("echo123");
@@ -53,7 +54,6 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     @Test
     public void testAutocompleteBuiltInEnabledCountOne() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
-
         configureByTestName();
 
         checkItems("echo123");
@@ -62,7 +62,6 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     @Test
     public void testAutocompleteBuiltInEnabledCountOneNoLocals() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
-
         configureByTestName();
 
         checkItems("echo");
@@ -71,7 +70,6 @@ public class FunctionNameCompletionTest extends AbstractCompletionTest {
     @Test
     public void testAutocompleteBuiltInEnabledCountTwo() throws Exception {
         BashProjectSettings.storedSettings(myProject).setAutocompleteBuiltinCommands(true);
-
         configureByTestName();
 
         //completes bash built-in command and the local function definition

@@ -44,9 +44,6 @@
     </html>]]></description>
 
     <application-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
-        </component>
     </application-components>
 
     <project-components>
@@ -66,6 +63,8 @@
                 description="Triggers an exception">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
+
+        <action class="com.ansorgit.plugins.bash.actions.ReportFileTypeAction" id="bash.reportType" />
 
         <action id="Bash.NewBashScript" class="com.ansorgit.plugins.bash.actions.NewBashFileAction"
                 text="Bash Script" description="Create new Bash script file">
@@ -140,6 +139,8 @@
 
         <readWriteAccessDetector implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
 
+        <preloadingActivity implementation="com.ansorgit.plugins.bash.editor.codecompletion.PreloadPathCompletionActivity"/>
+        <applicationService serviceImplementation="com.ansorgit.plugins.bash.editor.codecompletion.BashPathCompletionService" />
         <completion.contributor language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />

@@ -27,9 +27,18 @@ import javax.swing.*;
 public interface BashIcons {
     Icon BASH_FILE_ICON = IconLoader.findIcon("/icons/fileTypes/BashFileIcon.png", BashIcons.class, false, false);
 
+    // icon used to render regular script functions
+    Icon FUNCTION_ICON = IconLoader.findIcon("/icons/fileTypes/BashFileIcon.png", BashIcons.class, false, false);
+
+    // icon used to render regular script variables in code completion
+    Icon VAR_ICON = IconLoader.findIcon("/icons/fileTypes/BashFileIcon.png", BashIcons.class, false, false);
+
+    // icon used to render BashSupport's global variables stored in settings
     Icon GLOBAL_VAR_ICON = IconLoader.findIcon("/icons/global-var-16.png", BashIcons.class, false, false);
 
+    // icon used to render Bash's built-in variables
     Icon BASH_VAR_ICON = IconLoader.findIcon("/icons/bash-var-16.png", BashIcons.class, false, false);
 
+    // icon used to render Bash's built-in variables of version 4 or later
     Icon BOURNE_VAR_ICON = IconLoader.findIcon("/icons/bash-var-16.png", BashIcons.class, false, false);
 }

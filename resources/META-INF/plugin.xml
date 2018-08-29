@@ -24,7 +24,7 @@
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 182.x or later -->
+    <!-- Requires IDEA 145.x to IDEA 182.x -->
     <idea-version since-build="145.0" until-build="182.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
@@ -39,22 +39,31 @@
 
     <change-notes><![CDATA[
         <html>
-        <b>Changes in version 1.7.0:</b>
+        <b>Changes in version 1.7.0 (eap release):</b>
         <ul>
-            <li></li>
+            <li>Add action to create a report on the currently detected file type</li>
+            <li>fix to improve handling of local variables in functions</li>
+            <li>#566: Fix slow startup of the IDE when BashSupport is installed</li>
+            <li>Enhancement: show path next to path command completion items</li>
+            <li>new icons for plugin (contributed by nosovae-dev)</li>
+            <li>Feature: Add folding for variables (contributed by nosovae-dev)</li>
+            <li>Add kotlin language for development plugin (contributed by nosovae-dev)</li>
+            <li>#558: Enable execute button of Bash run configuration even when IntelliJ is indexing</li>
+            <li>#551: Add default value TERM=xterm-256color when running a Bash script if there's not value defined in the run configuration</li>
+            <li>#545: Don't parse "in" in "read in" as keyword, but as variable name</li>
+            <li>#482: Make new Bash files executable for the current user by default</li>
+            <li>Feature: Add inspection to check, whether function name is in lower camel case (contribued by dheid)</li>
+            <li>Feature: Add inspection and quickfix to detect double brackets (contribued by dheid)</li>
         </ul>
         <br/>
 
         <br/>
-        <a href="https://github.com/jansorg/BashSupport/blob/idea-162.x/Changelog.md">Full changelog</a>
+        <a href="https://github.com/jansorg/BashSupport/blob/master/Changelog.md">Full changelog</a>
         </html>
         ]]>
     </change-notes>
 
     <application-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.editor.codecompletion.BashPathCommandCompletion</implementation-class>
-        </component>
     </application-components>
 
     <project-components>
@@ -73,6 +82,7 @@
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="after"/>
         </action>
 
+        <action class="com.ansorgit.plugins.bash.actions.ReportFileTypeAction" id="bash.reportType" />
 
         <!-- A subset of the REPL actions that should be displayed in the panel toolbar. -->
         <group id="Bash.REPL.Group"
@@ -92,7 +102,7 @@
         <!-- The factory registers the known file extensions-->
         <fileTypeFactory implementation="com.ansorgit.plugins.bash.file.BashFileTypeLoader"/>
         <!-- The detector looks at the content of a file and tries to guess if it is a bash file-->
-        <fileTypeDetector implementation="com.ansorgit.plugins.bash.file.BashFileTypeDetector"/>
+        <fileTypeDetector implementation="com.ansorgit.plugins.bash.file.BashFileTypeDetector" />
 
         <!-- Syntax highlighting -->
         <syntaxHighlighter key="Bash" implementationClass="com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter"/>
@@ -142,6 +152,8 @@
 
         <readWriteAccessDetector implementation="com.ansorgit.plugins.bash.editor.accessDetector.BashReadWriteAccessDetector"/>
 
+        <preloadingActivity implementation="com.ansorgit.plugins.bash.editor.codecompletion.PreloadPathCompletionActivity"/>
+        <applicationService serviceImplementation="com.ansorgit.plugins.bash.editor.codecompletion.BashPathCompletionService" />
         <completion.contributor language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />

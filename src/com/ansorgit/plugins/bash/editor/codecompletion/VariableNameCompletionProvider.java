@@ -77,7 +77,7 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
 
         if (currentText != null && (dollarPrefix || insideExpansion) && (invocationCount >= 2 || resultLength == 0)) {
             Project project = element.getProject();
-            addBuildInVariables(result, project);
+            addBuiltInVariables(result, project);
             addGlobalVariables(result, project);
         } else {
             result.addLookupAdvertisement("Press twice for global variables");
@@ -87,26 +87,26 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
     private int addCollectedVariables(PsiElement element, CompletionResultSet result, BashVarCollectorProcessor processor) {
         PsiTreeUtil.treeWalkUp(processor, element, BashPsiUtils.findFileContext(element), ResolveState.initial());
 
-        Collection<LookupElement> items = CompletionProviderUtils.createPsiItems(processor.getVariables());
-        result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.NormalVar.ordinal(), items));
+        Collection<LookupElement> items = CompletionProviderUtils.createFromPsiItems(processor.getVariables(), BashIcons.VAR_ICON, CompletionGrouping.NormalVar.ordinal());
+        result.addAllElements(items);
 
         return items.size();
     }
 
     private void addGlobalVariables(CompletionResultSet result, Project project) {
         if (BashProjectSettings.storedSettings(project).isAutcompleteGlobalVars()) {
-            Collection<LookupElement> globalVars = CompletionProviderUtils.createItems(BashProjectSettings.storedSettings(project).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON);
-            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.GlobalVar.ordinal(), globalVars));
+            Collection<LookupElement> globalVars = CompletionProviderUtils.createItems(BashProjectSettings.storedSettings(project).getGlobalVariables(), BashIcons.GLOBAL_VAR_ICON, true, CompletionGrouping.GlobalVar.ordinal());
+            result.addAllElements(globalVars);
         }
     }
 
-    private void addBuildInVariables(CompletionResultSet result, Project project) {
+    private void addBuiltInVariables(CompletionResultSet result, Project project) {
         if (BashProjectSettings.storedSettings(project).isAutocompleteBuiltinVars()) {
-            Collection<LookupElement> shellBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bashShellVars, BashIcons.BASH_VAR_ICON);
-            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.BuiltInVar.ordinal(), shellBuiltIns));
+            Collection<LookupElement> shellBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bashShellVars, BashIcons.BASH_VAR_ICON, true, CompletionGrouping.BuiltInVar.ordinal());
+            result.addAllElements(shellBuiltIns);
 
-            Collection<LookupElement> bashBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bourneShellVars, BashIcons.BOURNE_VAR_ICON);
-            result.addAllElements(CompletionProviderUtils.wrapInGroup(CompletionGrouping.BuiltInVar.ordinal(), bashBuiltIns));
+            Collection<LookupElement> bashBuiltIns = CompletionProviderUtils.createItems(LanguageBuiltins.bourneShellVars, BashIcons.BOURNE_VAR_ICON, true, CompletionGrouping.BuiltInVar.ordinal());
+            result.addAllElements(bashBuiltIns);
         }
     }
 }

@@ -67,10 +67,8 @@ class BashKeywordCompletionProvider extends AbstractBashCompletionProvider {
 
         @Override
         public boolean accepts(@Nullable Object o, ProcessingContext context) {
-            if (o instanceof LeafPsiElement) {
-                if (rejectedTokens.contains(((LeafPsiElement) o).getElementType())) {
-                    return false;
-                }
+            if (o instanceof LeafPsiElement && rejectedTokens.contains(((LeafPsiElement) o).getElementType())) {
+                return false;
             }
 
             if (o instanceof PsiElement) {
