@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public final class BashIdentifierUtil {
     private static final Pattern newVariablePattern = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
     private static final Pattern singleIdentifier = Pattern.compile("[@$?!*#-]");
-    private static final Pattern anyIdentifier = Pattern.compile("[0-9]+|([a-zA-Z_][a-zA-Z0-9_]*)");
+    private static final Pattern anyIdentifier = Pattern.compile("[0-9]+|([a-zA-Z_][a-zA-Z0-9_-]*)");
     private static final Pattern heredocMarker = Pattern.compile("[^ ]+");
 
     private BashIdentifierUtil() {
