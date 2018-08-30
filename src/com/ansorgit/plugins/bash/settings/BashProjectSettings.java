@@ -40,6 +40,9 @@ public class BashProjectSettings implements Serializable {
     private boolean formatterEnabled = false;
     private boolean evalEscapesEnabled = false;
 
+    // true if validation logic should match against the current machine's environment
+    private boolean validateWithCurrentEnv = true;
+
     private boolean useTerminalPlugin = false;
 
     public static BashProjectSettings storedSettings(@NotNull Project project) {
@@ -141,6 +144,14 @@ public class BashProjectSettings implements Serializable {
 
     public void setUseTerminalPlugin(boolean useTerminalPlugin) {
         this.useTerminalPlugin = useTerminalPlugin;
+    }
+
+    public boolean isValidateWithCurrentEnv() {
+        return validateWithCurrentEnv;
+    }
+
+    public void setValidateWithCurrentEnv(boolean validateWithCurrentEnv) {
+        this.validateWithCurrentEnv = validateWithCurrentEnv;
     }
 }
 

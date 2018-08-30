@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+    <problem>
+        <file>A.bash</file>
+        <line>10</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Missing include file</problem_class>
+        <description>The file does not exist.</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>11</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Missing include file</problem_class>
+        <description>The file does not exist.</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>12</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Missing include file</problem_class>
+        <description>The file does not exist.</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>13</line>
+        <problem_class severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Missing include file</problem_class>
+        <description>The file does not exist.</description>
+    </problem>
+</problems>
+
