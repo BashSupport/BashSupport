@@ -42,6 +42,11 @@ public class BashFileType extends LanguageFileType {
         super(new BashLanguage());
     }
 
+    @Override
+    public String toString() {
+        return "BashFileType";
+    }
+
     @NotNull
     public String getName() {
         return "Bash";

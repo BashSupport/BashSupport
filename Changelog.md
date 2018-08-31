@@ -1,6 +1,9 @@
 #### 2018-08-30:
  - \#540: Tilde (~) not resolved correctly in file paths
 
+#### 2018-08-27:
+ - Add action to create a report on the currently detected file type
+
 #### 2018-08-25:
  - fix to improve handling of local variables in functions
  - \#566: Fix slow startup of the IDE when BashSupport is installed

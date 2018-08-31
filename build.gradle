@@ -48,6 +48,11 @@ allprojects {
         pluginName 'BashSupport'
         plugins 'IntelliLang', 'terminal'
         downloadSources Boolean.valueOf(sources)
+
+        patchPluginXml {
+            sinceBuild '145.0'
+            untilBuild '182.*'
+        }
     }
 
     publishPlugin {
