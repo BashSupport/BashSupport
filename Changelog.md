@@ -1,3 +1,6 @@
+#### 2018-08-30:
+ - \#540: Tilde (~) not resolved correctly in file paths
+
 #### 2018-08-27:
  - Add action to create a report on the currently detected file type
 
