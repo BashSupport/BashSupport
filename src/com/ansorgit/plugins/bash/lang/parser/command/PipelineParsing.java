@@ -127,7 +127,7 @@ public class PipelineParsing implements ParsingTool {
             }
         }
 
-        ParseState parseState = parsePipleline(builder);
+        ParseState parseState = parsePipeline(builder);
         switch (parseState) {
             case OK_PIPELINE:
                 pipelineCommandMarker.done(PIPELINE_COMMAND);
@@ -161,7 +161,7 @@ public class PipelineParsing implements ParsingTool {
      * @param builder The builder to use
      * @return True if no errors occured
      */
-    ParseState parsePipleline(BashPsiBuilder builder) {
+    private ParseState parsePipeline(BashPsiBuilder builder) {
         if (!Parsing.command.parse(builder)) {
             return ParseState.ERROR;
         }

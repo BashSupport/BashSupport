@@ -30,9 +30,6 @@ import com.intellij.lang.PsiBuilder;
  * @author jansorg
  */
 class PrintfCommand implements ParsingFunction, ParsingTool {
-    public PrintfCommand() {
-    }
-
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
@@ -61,12 +58,16 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         if ("-v".equals(builder.getTokenText())) {
             builder.advanceLexer();
 
-            //check for the var name text token
+            // check for the var name text token
             if (Parsing.word.isWordToken(builder)) {
-                //variable name follows
-                PsiBuilder.Marker varMarker = builder.mark();
-                Parsing.word.parseWord(builder);
-                varMarker.done(VAR_DEF_ELEMENT);
+                if (builder.lookAhead(0) == STRING_BEGIN) {
+                    Parsing.word.parseWord(builder);
+                } else {
+                    // variable name follows
+                    PsiBuilder.Marker varMarker = builder.mark();
+                    Parsing.word.parseWord(builder);
+                    varMarker.done(VAR_DEF_ELEMENT);
+                }
             } else {
                 cmdMarker.drop();
                 builder.error("Expected variable name");
