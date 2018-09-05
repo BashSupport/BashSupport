@@ -61,7 +61,7 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
             // check for the var name text token
             if (Parsing.word.isWordToken(builder)) {
                 if (builder.lookAhead(0) == STRING_BEGIN) {
-                    Parsing.word.parseWord(builder);
+                    parseStringVariable(builder);
                 } else {
                     // variable name follows
                     PsiBuilder.Marker varMarker = builder.mark();
@@ -82,5 +82,13 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
 
         cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
         return true;
+    }
+
+    private void parseStringVariable(BashPsiBuilder builder) {
+        if ( builder.lookAhead(1) == DOLLAR) {
+            Parsing.word.parseWord(builder);
+        } else {
+            Parsing.word.parseWordWithMarkStringAsVarDef(builder);
+        }
     }
 }
