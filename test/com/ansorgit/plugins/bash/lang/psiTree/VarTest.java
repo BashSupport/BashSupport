@@ -23,4 +23,19 @@ public class VarTest extends AbstractBashPsiTreeTest {
     public void testVar() throws Exception {
         assertPsiTree("$foo", "var/var.txt");
     }
+
+    @Test
+    public void testPrintfVar() throws Exception {
+        assertPsiTree("printf -v foo 'test'", "var/printfVar.txt");
+    }
+
+    @Test
+    public void testPrintfStringVar() throws Exception {
+        assertPsiTree("printf -v \"${foo}\" 'test'", "var/printfStringVar.txt");
+    }
+
+    @Test
+    public void testPrintfString2Var() throws Exception {
+        assertPsiTree("printf -v \'foo\' 'test'", "var/printfString2Var.txt");
+    }
 }

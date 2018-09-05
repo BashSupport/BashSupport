@@ -1,3 +1,6 @@
+#### 2018-09-04:
+ - \#518 printf -v "${var}" flagged as Error
+
 #### 2018-08-30:
  - \#540: Tilde (~) not resolved correctly in file paths
 
