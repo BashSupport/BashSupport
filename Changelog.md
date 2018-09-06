@@ -1,5 +1,6 @@
 #### 2018-09-05:
  - \#519: local -a arrays not recognized (contributed by nosovae-dev)
+ - variables declared by local -r are now treated as read-only (contributed by nosovae-dev)
 
 #### 2018-08-30:
  - \#540: Tilde (~) not resolved correctly in file paths

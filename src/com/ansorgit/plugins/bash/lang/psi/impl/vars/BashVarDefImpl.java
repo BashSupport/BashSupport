@@ -140,6 +140,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using typeset -a
         // - using mapfile
         // - using read -a
+        // - using local -a
 
         PsiElement assignmentValue = findAssignmentValue();
 
