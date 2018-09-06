@@ -1,3 +1,6 @@
+#### 2018-09-05:
+ - \#519: local -a arrays not recognized
+
 #### 2018-08-30:
  - \#540: Tilde (~) not resolved correctly in file paths
 
