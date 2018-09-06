@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-function a() {
+function a() <fold text='{...}'>{
     X="def value"
-}
+}</fold>
 
-function b() {
+function b() <fold text='{...}'>{
     "$X"
-}
+}</fold>
