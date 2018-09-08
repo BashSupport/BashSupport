@@ -325,6 +325,24 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testNoResolvePrintfVariableMixedString() throws Exception {
+        PsiReference psiReference = configure();
+
+        // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found.", varDef);
+    }
+
+    @Test
+    public void testNoResolvePrintfVariableMixedString2() throws Exception {
+        PsiReference psiReference = configure();
+
+        // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found.", varDef);
+    }
+
+    @Test
     public void testBasicResolveUnknownGlobalVariable() throws Exception {
         final PsiReference psiReference = configure();
 
