@@ -1,6 +1,7 @@
 #### 2018-09-08:
  - \#568 variable incorrectly flagged as read-only
-
+ - \#477 Support for .bashrc (or custom file extensions)
+ 
 #### 2018-09-05:
  - \#318 Codefolding support (contributed by nosovae-dev)
  - \#546: Color schemes: "Inherit values from" has no effect when checked (contributed by nosovae-dev)

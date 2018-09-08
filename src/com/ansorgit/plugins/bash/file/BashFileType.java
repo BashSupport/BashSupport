@@ -37,6 +37,12 @@ public class BashFileType extends LanguageFileType {
      */
     public static final String SH_EXTENSION = "sh";
     static final String BASH_EXTENSION = "bash";
+    
+    static final String BASHRC_FILENAME = ".bashrc";
+    static final String PROFILE_FILENAME = ".profile";
+    static final String BASH_PROFILE_FILENAME = ".bash_profile";
+    static final String BASH_LOGOUT_FILENAME = ".bash_logout";
+    static final String BASH_ALIASES_FILENAME = ".bash_aliases";
 
     protected BashFileType() {
         super(new BashLanguage());

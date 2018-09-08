@@ -54,6 +54,26 @@ public class BashFileTypeDetectorTest extends CodeInsightTestCase {
     }
 
     @Test
+    public void testBashrc() throws Exception {
+        assertIsBash(".bashrc");
+    }
+
+    @Test
+    public void testProfile() throws Exception {
+        assertIsBash(".profile");
+    }
+
+    @Test
+    public void testBashProfile() throws Exception {
+        assertIsBash(".bash_profile");
+    }
+
+    @Test
+    public void testBashLogout() throws Exception {
+        assertIsBash(".bash_logout");
+    }
+
+    @Test
     public void testUsrBinShShebang() throws Exception {
         assertIsBash("UsrBinSh");
     }
