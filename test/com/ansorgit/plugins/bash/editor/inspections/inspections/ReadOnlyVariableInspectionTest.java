@@ -50,4 +50,9 @@ public class ReadOnlyVariableInspectionTest extends AbstractInspectionTestCase {
     public void testIssue298() throws Exception {
         doTest("readOnlyVarInspection/issue298", new ReadonlyVariableInspection());
     }
+
+    @Test
+    public void testIssue586() throws Exception {
+        doTest("readOnlyVarInspection/issue586", new ReadonlyVariableInspection());
+    }
 }
