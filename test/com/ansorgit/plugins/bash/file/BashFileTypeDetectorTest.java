@@ -69,6 +69,11 @@ public class BashFileTypeDetectorTest extends CodeInsightTestCase {
     }
 
     @Test
+    public void testBashAliases() throws Exception {
+        assertIsBash(".bash_aliases");
+    }
+
+    @Test
     public void testBashLogout() throws Exception {
         assertIsBash(".bash_logout");
     }
