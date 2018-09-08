@@ -77,7 +77,7 @@ public abstract class BashSyntaxHighlighterPerformanceTest extends AbstractBashS
             public void run() throws Throwable {
                 doPerformanceTest("functions_issue96.bash", 10, 2000.0);
             }
-        }).cpuBound().usesAllCPUCores().assertTiming();
+        }).usesAllCPUCores().assertTiming();
 
         // With tuning:
         //      Finished highlighting 10/10, avg: 20538,100000 ms, min: 18969 ms, max: 22855 ms
@@ -91,7 +91,7 @@ public abstract class BashSyntaxHighlighterPerformanceTest extends AbstractBashS
                 //Average: 550.4 ms
                 doPerformanceTest("AlsaUtils.bash", 35, 500.0);
             }
-        }).cpuBound().usesAllCPUCores().assertTiming();
+        }).usesAllCPUCores().assertTiming();
     }
 
     protected void doPerformanceTest(String filename, int highlightingPasses, double maxTimeMillis) throws IOException, InterruptedException {
