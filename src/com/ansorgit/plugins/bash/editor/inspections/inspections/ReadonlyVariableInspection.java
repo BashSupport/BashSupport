@@ -49,21 +49,19 @@ public class ReadonlyVariableInspection extends LocalInspectionTool {
                     return;
                 }
 
-                BashResolveUtil.walkVariableDefinitions(visitedVarDef, new Function<BashVarDef, Boolean>() {
-                    @Override
-                    public Boolean apply(BashVarDef varDef) {
-                        //check if the found read-only definition is a definition for the visited definition
-                        if (varDef != visitedVarDef
-                                && !visitedVarDef.isEquivalentTo(varDef)
-                                && varDef.isReadonly()
-                                && BashPsiUtils.isValidReferenceScope(visitedVarDef, varDef)) {
+                BashResolveUtil.walkVariableDefinitions(visitedVarDef, varDef -> {
+                    //check if the found read-only definition is a definition for the visited definition
+                    if (varDef != visitedVarDef
+                            && !visitedVarDef.isEquivalentTo(varDef)
+                            && varDef != null
+                            && varDef.isReadonly()
+                            && BashPsiUtils.isValidReferenceScope(visitedVarDef, varDef)) {
 
-                            registerWarning(visitedVarDef, holder);
-                            return false;
-                        }
-
-                        return true;
+                        registerWarning(visitedVarDef, holder);
+                        return false;
                     }
+
+                    return true;
                 });
             }
         };
