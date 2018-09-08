@@ -315,6 +315,16 @@ public class VarResolveTestCase extends AbstractResolveTest {
     }
 
     @Test
+    public void testNoResolvePrintfVariableConcatenated() throws Exception {
+        PsiReference psiReference = configure();
+
+        // must not resolve because we don't support "my""Var" as a single variable name "myVar" for now
+        // we could but that mess with refactorings, we couldn't preserve the concatenated string when renamed
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found.", varDef);
+    }
+
+    @Test
     public void testBasicResolveUnknownGlobalVariable() throws Exception {
         final PsiReference psiReference = configure();
 

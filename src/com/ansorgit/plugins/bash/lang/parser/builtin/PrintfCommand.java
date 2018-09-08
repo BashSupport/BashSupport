@@ -60,7 +60,7 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
 
             // check for the var name text token
             if (Parsing.word.isWordToken(builder)) {
-                if (builder.lookAhead(0) == STRING_BEGIN) {
+                if (Parsing.word.isComposedString(builder.getTokenType())) {
                     parseStringVariable(builder);
                 } else {
                     // variable name follows
@@ -85,7 +85,7 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
     }
 
     private void parseStringVariable(BashPsiBuilder builder) {
-        if ( builder.lookAhead(1) == DOLLAR) {
+        if (builder.lookAhead(1) == DOLLAR) {
             Parsing.word.parseWord(builder);
         } else {
             Parsing.word.parseWordWithMarkStringAsVarDef(builder);
