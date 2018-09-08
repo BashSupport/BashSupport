@@ -63,7 +63,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey HERE_DOC_START = TextAttributesKey.createTextAttributesKey("BASH.HERE_DOC_START", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey HERE_DOC_END = TextAttributesKey.createTextAttributesKey("BASH.HERE_DOC_END", DefaultLanguageHighlighterColors.KEYWORD);
 
-    public static final TextAttributesKey EXTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.EXTERNAL_COMMAND");
+    public static final TextAttributesKey EXTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.EXTERNAL_COMMAND", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey INTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.INTERNAL_COMMAND", EXTERNAL_COMMAND);
     public static final TextAttributesKey SUBSHELL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.SUBSHELL_COMMAND", EXTERNAL_COMMAND);
     //also used in the lexer highlighting

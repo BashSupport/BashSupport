@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
-function a() {
+function a() <fold text='{...}'>{
     X="def value"
 
     test <fold text='def value'>$X</fold>
-}
+}</fold>
 
-function b() {
+function b() <fold text='{...}'>{
     if test; then
         Y="def value"
         test <fold text='def value'>$Y</fold>
     fi
-}
+}</fold>
 
-function reportDebug {
+function reportDebug <fold text='{...}'>{
     typeset msg
     msg="Debug: ${FUNCNAME[1]}(): $*"
     reportSession "<fold text='Debug: ${FUNCNAME[1]}(): $*'>$msg</fold>"
-}
+}</fold>

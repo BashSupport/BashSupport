@@ -24,6 +24,7 @@ import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -34,9 +35,9 @@ import java.util.List;
  * @author jansorg
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
-    public BashFoldingBuilder() {
-    }
 
+    private static final TokenSet foldableTokens = TokenSet.create(GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT, GROUP_ELEMENT);
+    
     @NotNull
     public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode node, @NotNull Document document) {
         List<FoldingDescriptor> descriptors = Lists.newArrayList();
@@ -124,7 +125,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             }
         }
 
-        return type == GROUP_COMMAND || type == CASE_PATTERN_LIST_ELEMENT;
+        return foldableTokens.contains(type);
     }
 
     private static int minumumLineOffset(IElementType type) {
