@@ -157,7 +157,7 @@ public class ListParsingTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void testIssue351() throws Exception {
         // b & << EOF
         //  content

@@ -15,16 +15,21 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * Data container to track the advanced parsing state.
  * It can track whether the parser currently is in a heredoc or a simple command.
  * <br>
+ *
  * @author jansorg
  */
 public final class ParsingStateData {
     //do we have to use the volatile? Currently it's not clear whether a PsiBuilder is called concurrently or not
     private int inSimpleCommand = 0;
     private int heredocMarkers = 0;
+    private final Set<Integer> heredocMarkersIndexSet = new LinkedHashSet<>();
 
     public void enterSimpleCommand() {
         inSimpleCommand += 1;
@@ -38,8 +43,9 @@ public final class ParsingStateData {
         return inSimpleCommand > 0;
     }
 
-    public void pushHeredocMarker() {
+    public void pushHeredocMarker(int id) {
         heredocMarkers++;
+        heredocMarkersIndexSet.add(id);
     }
 
     public boolean expectsHeredocMarker() {
@@ -47,6 +53,13 @@ public final class ParsingStateData {
     }
 
     public void popHeredocMarker() {
-        heredocMarkers--;
+        heredocMarkers = heredocMarkers - 1;
+        if (heredocMarkers <= 0) {
+            heredocMarkersIndexSet.clear();
+        }
+    }
+
+    public Set<Integer> getHeredocMarkersIndexSet() {
+        return heredocMarkersIndexSet;
     }
 }

@@ -1,3 +1,6 @@
+#### 2018-09-10:
+ - \#400 Heredoc after command & is not parsed #400
+ 
 #### 2018-09-08:
  - \#568 variable incorrectly flagged as read-only
 
