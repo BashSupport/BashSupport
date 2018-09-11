@@ -142,11 +142,9 @@ public class RedirectionParsing implements ParsingTool {
             marker.drop();
 
             ParserUtil.markTokenAndAdvance(builder, HEREDOC_START_ELEMENT);
-
-            if (!builder.getParsingState().getHeredocMarkersIndexSet().contains(builder.rawTokenIndex())) {
-                builder.getParsingState().pushHeredocMarker(builder.rawTokenIndex());
-            }
-
+            
+            builder.getParsingState().pushHeredocMarker(builder.rawTokenIndex());
+            
             return true;
         }
 
