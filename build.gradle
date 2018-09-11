@@ -102,6 +102,14 @@ allprojects {
     }
 }
 
+
+task copyPsiViewer(type: Copy) {
+    from "$projectDir/PsiViewer-182.2371.2.jar"
+    into "$buildDir/idea-sandbox/plugins/"
+}
+
+prepareSandbox.finalizedBy copyPsiViewer
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8'
 }
