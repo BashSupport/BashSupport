@@ -1,8 +1,8 @@
 #### 2018-09-10:
- - \#400 Heredoc after command & is not parsed #400
+ - \#400 Heredoc after command & is not parsed (contributed by nosovae-dev)
  
 #### 2018-09-08:
- - \#568 variable incorrectly flagged as read-only
+ - \#568 variable incorrectly flagged as read-only (contributed by nosovae-dev)
 
 #### 2018-09-05:
  - \#318 Codefolding support (contributed by nosovae-dev)
