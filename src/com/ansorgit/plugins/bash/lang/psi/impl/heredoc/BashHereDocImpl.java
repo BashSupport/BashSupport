@@ -71,7 +71,7 @@ public class BashHereDocImpl extends BashBaseElement implements BashHereDoc, Psi
         }
 
         PsiElement start = end.getReference().resolve();
-        if (start != null && start instanceof BashHereDocStartMarker) {
+        if (start instanceof BashHereDocStartMarker) {
             return (BashHereDocStartMarker) start;
         }
 
