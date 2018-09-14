@@ -29,6 +29,8 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.ansorgit.plugins.bash.lang.psi.util.BashPsiFileUtils.isSpecialBashFile;
+
 /**
  * This inspection detects a missing shebang line and offers a file-level quickfix to add one.
  *
@@ -42,7 +44,8 @@ public class AddShebangInspection extends LocalInspectionTool implements CustomS
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
         PsiFile checkedFile = BashPsiUtils.findFileContext(file);
 
-        if (checkedFile instanceof BashFile && !BashPsiUtils.isInjectedElement(file)) {
+        if (checkedFile instanceof BashFile && !BashPsiUtils.isInjectedElement(file)
+                && !isSpecialBashFile(checkedFile.getName())) {
             BashFile bashFile = (BashFile) checkedFile;
             Boolean isLanguageConsole = checkedFile.getUserData(BashFile.LANGUAGE_CONSOLE_MARKER);
 

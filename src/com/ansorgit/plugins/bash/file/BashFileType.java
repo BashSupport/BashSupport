@@ -44,6 +44,9 @@ public class BashFileType extends LanguageFileType {
     static final String BASH_LOGOUT_FILENAME = ".bash_logout";
     static final String BASH_ALIASES_FILENAME = ".bash_aliases";
 
+    public static final String[] BASH_SPECIAL_FILES = new String[]{
+            BASHRC_FILENAME, PROFILE_FILENAME, BASH_PROFILE_FILENAME, BASH_LOGOUT_FILENAME, BASH_ALIASES_FILENAME};
+
     protected BashFileType() {
         super(new BashLanguage());
     }
