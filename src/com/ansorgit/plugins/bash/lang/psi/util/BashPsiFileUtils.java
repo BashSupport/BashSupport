@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
+import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.util.text.StringUtilRt;
@@ -87,7 +88,7 @@ public class BashPsiFileUtils {
 
         VirtualFile baseParent = baseVirtualFile.getParent();
         VirtualFile targetParent = targetVirtualFile.getParent();
-        if (baseParent == null || targetParent == null){
+        if (baseParent == null || targetParent == null) {
             throw new IllegalStateException("parent directories not found");
         }
 
@@ -108,6 +109,17 @@ public class BashPsiFileUtils {
 
         return ensureEnds(targetRelativePath, separator) + targetVirtualFile.getName();
     }
+
+
+    public static boolean isSpecialBashFile(String name) {
+        for (String bashSpecialFileName : BashFileType.BASH_SPECIAL_FILES) {
+            if (bashSpecialFileName.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private static String ensureEnds(@NotNull String s, final char endsWith) {
         return StringUtilRt.endsWithChar(s, endsWith) ? s : s + endsWith;

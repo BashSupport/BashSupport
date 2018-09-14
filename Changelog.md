@@ -2,6 +2,7 @@
  - \#400 Heredoc after command & is not parsed (contributed by nosovae-dev)
  
 #### 2018-09-08:
+ - \#477 Support for .bashrc (or custom file extensions)
  - \#568 variable incorrectly flagged as read-only (contributed by nosovae-dev)
 
 #### 2018-09-05:
