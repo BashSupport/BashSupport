@@ -19,7 +19,6 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -157,7 +156,6 @@ public class ListParsingTest extends MockPsiTest {
     }
 
     @Test
-    @Ignore
     public void testIssue351() throws Exception {
         // b & << EOF
         //  content
