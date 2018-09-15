@@ -102,6 +102,16 @@ allprojects {
     }
 }
 
+task addPsiViewer {
+    def slurper = new groovy.json.JsonSlurper()
+    def psiVersions = slurper.parseText(psiViewerVersions)
+    def psiVersion = psiVersions[ideaBranch]
+    if (psiVersion != null) {
+        intellij.plugins += "PsiViewer:$psiVersion"
+    }
+}
+prepareSandbox.finalizedBy addPsiViewer
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8'
 }
