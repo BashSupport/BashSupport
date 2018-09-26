@@ -21,6 +21,8 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Syntax: printf: printf [-v var] Format [Argumente]
@@ -30,9 +32,6 @@ import com.intellij.lang.PsiBuilder;
  * @author jansorg
  */
 class PrintfCommand implements ParsingFunction, ParsingTool {
-    public PrintfCommand() {
-    }
-
 
     @Override
     public boolean isValid(BashPsiBuilder builder) {
@@ -61,12 +60,12 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         if ("-v".equals(builder.getTokenText())) {
             builder.advanceLexer();
 
-            //check for the var name text token
+            // check for the var name text token
             if (Parsing.word.isWordToken(builder)) {
-                //variable name follows
-                PsiBuilder.Marker varMarker = builder.mark();
-                Parsing.word.parseWord(builder);
-                varMarker.done(VAR_DEF_ELEMENT);
+                if (!parseVariableName(builder)) {
+                    cmdMarker.drop();
+                    return false;
+                }
             } else {
                 cmdMarker.drop();
                 builder.error("Expected variable name");
@@ -81,5 +80,29 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
 
         cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
         return true;
+    }
+
+    private boolean parseVariableName(BashPsiBuilder builder) {
+        IElementType token = builder.getTokenType();
+        if (token == WORD || token == STRING2 || Parsing.word.isSimpleComposedString(builder, false)) {
+            return parseSimpleWord(builder);
+        }
+
+        if (Parsing.word.isWordToken(builder)) {
+            return Parsing.word.parseWord(builder);
+        }
+
+        return false;
+    }
+
+    private boolean parseSimpleWord(BashPsiBuilder builder) {
+        PsiBuilder.Marker marker = builder.mark();
+        if (Parsing.word.parseWord(builder)) {
+            marker.done(VAR_DEF_ELEMENT);
+            return true;
+        }
+
+        marker.drop();
+        return false;
     }
 }

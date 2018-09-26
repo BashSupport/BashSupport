@@ -77,6 +77,36 @@ public class WordParsing implements ParsingTool {
         return tokenType == STRING_BEGIN;
     }
 
+    /**
+     * Looks ahead if the current token is the start of a static double-quoted string value.
+     *
+     * @param builder         the current bulder
+     * @param allowWhitespace if whitespace content is allowed
+     * @return true if this is a quoted string which only consists of quotes and static string content
+     */
+    public boolean isSimpleComposedString(BashPsiBuilder builder, boolean allowWhitespace) {
+        if (builder.getTokenType() != STRING_BEGIN) {
+            return false;
+        }
+
+        TokenSet accepted = TokenSet.create(STRING_CONTENT);
+        if (allowWhitespace) {
+            accepted = TokenSet.orSet(accepted, TokenSet.create(WHITESPACE));
+        }
+
+        int lookahead = 1;
+        while (accepted.contains(builder.rawLookup(lookahead))) {
+            lookahead++;
+        }
+
+        if (builder.rawLookup(lookahead) != STRING_END) {
+            return false;
+        }
+
+        IElementType end = builder.rawLookup(lookahead + 1);
+        return end == null || end == WHITESPACE || end == LINE_FEED;
+    }
+
     public boolean parseWord(BashPsiBuilder builder) {
         return parseWord(builder, false);
     }
@@ -86,12 +116,12 @@ public class WordParsing implements ParsingTool {
     }
 
     /**
-     * Parses a word token. Several word tokens not seperated by whitespace are read
+     * Parses a word token. Several word tokens not separated by whitespace are read
      * as a single word token.
      * <br>
      * It accepts whitespace tokens in the beginning of the stream.
      * <br>
-     * A word can be a combination of several tokens, words are seperated by whitespace.
+     * A word can be a combination of several tokens, words are separated by whitespace.
      *
      * @param builder         The builder
      * @param enableRemapping If the read tokens should be remapped.
@@ -100,7 +130,7 @@ public class WordParsing implements ParsingTool {
      * @param rejectTexts
      * @return True if a valid word could be read.
      */
-    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable  Set<String> rejectTexts) {
+    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable Set<String> rejectTexts) {
         int processedTokens = 0;
         int parsedStringParts = 0;
         boolean firstStep = true;

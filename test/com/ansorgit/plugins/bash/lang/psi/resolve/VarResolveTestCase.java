@@ -23,6 +23,7 @@ import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
+import junit.framework.AssertionFailedError;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -34,6 +35,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author jansorg
  */
 public class VarResolveTestCase extends AbstractResolveTest {
+    private void assertNoRef() {
+        try {
+            configure();
+            Assert.fail("Expected no reference or variable definition at <ref>");
+        } catch (AssertionFailedError | Exception e) {
+            // ok
+        }
+    }
+
     private BashVarDef assertIsWellDefinedVariable() throws Exception {
         PsiElement varDefSmart = doAssertIsWellDefined(false);
         PsiElement varDefDumb = doAssertIsWellDefined(true);
@@ -145,33 +155,33 @@ public class VarResolveTestCase extends AbstractResolveTest {
     public void testOverrideFunctionVarOnGlobal() throws Exception {
         PsiElement varDef = assertIsWellDefinedVariable();
         //the found var def has to be on global level
-        Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) == null);
+        Assert.assertNull(BashPsiUtils.findNextVarDefFunctionDefScope(varDef));
     }
 
     @Test
     public void testResolveFunctionVarToGlobalDef() throws Exception {
         PsiElement varDef = assertIsWellDefinedVariable();
         //the found var def has to be on global level
-        Assert.assertTrue(BashPsiUtils.findNextVarDefFunctionDefScope(varDef) == null);
+        Assert.assertNull(BashPsiUtils.findNextVarDefFunctionDefScope(varDef));
     }
 
     @Test
     public void testResolveFunctionVarToFirstOnSameLevel() throws Exception {
         BashVar varDef = (BashVar) assertIsWellDefinedVariable();
-        Assert.assertTrue(varDef.getReference().resolve() == null);
+        Assert.assertNull(varDef.getReference().resolve());
     }
 
     @Test
     public void testResolveFunctionVarToFirstOnSameLevelNonLocal() throws Exception {
         BashVar varDef = (BashVar) assertIsWellDefinedVariable();
-        Assert.assertTrue(varDef.getReference().resolve() == null);
+        Assert.assertNull(varDef.getReference().resolve());
     }
 
     @Test
     public void testResolveFunctionVarToLocalDef() throws Exception {
-        BashVar varDef = (BashVar) assertIsWellDefinedVariable();
-        Assert.assertTrue(BashPsiUtils.findBroadestFunctionScope(varDef) != null);
-        Assert.assertTrue(varDef.getReference().resolve() == null);
+        BashVar varDef = assertIsWellDefinedVariable();
+        Assert.assertNotNull(BashPsiUtils.findBroadestFunctionScope(varDef));
+        Assert.assertNull(varDef.getReference().resolve());
     }
 
     @Test
@@ -267,6 +277,21 @@ public class VarResolveTestCase extends AbstractResolveTest {
         assertIsWellDefinedVariable();
     }
 
+    @Test
+    public void testResolvePrintfVariable() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    @Test
+    public void testResolvePrintfVariableQuoted() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
+    @Test
+    public void testResolvePrintfVariableReplaced() throws Exception {
+        assertIsWellDefinedVariable();
+    }
+
     //invalid resolves
 
     @Test
@@ -288,6 +313,34 @@ public class VarResolveTestCase extends AbstractResolveTest {
         //must not resolve because the definition is local due to the previous definition
         PsiElement varDef = psiReference.resolve();
         Assert.assertNull("The vardef should not be found, because it is local.", varDef);
+    }
+
+    @Test
+    public void testNoResolvePrintfVariableSingleQuoted() throws Exception {
+        PsiReference psiReference = configure();
+
+        //must not resolve because the definition is local due to the previous definition
+        PsiElement varDef = psiReference.resolve();
+        Assert.assertNull("The vardef should not be found.", varDef);
+    }
+
+    @Test
+    public void testNoResolvePrintfVariableConcatenated() throws Exception {
+        // must not resolve because we don't support "my""Var" as a single variable name "myVar" for now
+        // we could but that mess with refactorings, we couldn't preserve the concatenated string when renamed
+        assertNoRef();
+    }
+
+    @Test
+    public void testNoResolvePrintfVariableMixedString() throws Exception {
+        // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
+        assertNoRef();
+    }
+
+    @Test
+    public void testNoResolvePrintfVariableMixedString2() throws Exception {
+        // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
+        assertNoRef();
     }
 
     @Test

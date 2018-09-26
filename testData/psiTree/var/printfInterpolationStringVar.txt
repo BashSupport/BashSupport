@@ -1,0 +1,20 @@
+FILE
+  [PSI] Simple command
+    [PSI] BashGenericCommand
+      PsiElement([Bash] word)('printf')
+    PsiWhiteSpace(' ')
+    PsiElement([Bash] word)('-v')
+    PsiWhiteSpace(' ')
+    [PSI] Bash string
+      PsiElement([Bash] string begin)('"')
+      [PSI] BashComposedVar
+        PsiElement([Bash] $)('$')
+        [PSI] Parameter expansion
+          PsiElement([Bash] {)('{')
+          [PSI] Bash-var
+            PsiElement([Bash] word)('foo')
+          PsiElement([Bash] })('}')
+      PsiElement([Bash] string end)('"')
+    PsiWhiteSpace(' ')
+    [PSI] bash combined word
+      PsiElement([Bash] unevaluated string (STRING2))(''test'')
