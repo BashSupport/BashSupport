@@ -373,8 +373,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                     PsiElement wordElement = findAssignmentWord();
 
                     TextRange newNameTextRange;
-                    if (wordElement instanceof BashString) {
-                        newNameTextRange = ((BashString) wordElement).getTextContentRange();
+                    if (wordElement instanceof BashCharSequence) {
+                        newNameTextRange = ((BashCharSequence) wordElement).getTextContentRange();
                     } else {
                         newNameTextRange = TextRange.from(0, wordElement.getTextLength());
                     }

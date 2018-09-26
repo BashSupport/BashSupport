@@ -21,6 +21,8 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * Syntax: printf: printf [-v var] Format [Argumente]
@@ -60,13 +62,9 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
 
             // check for the var name text token
             if (Parsing.word.isWordToken(builder)) {
-                if (Parsing.word.isComposedString(builder.getTokenType())) {
-                    parseStringVariable(builder);
-                } else {
-                    // variable name follows
-                    PsiBuilder.Marker varMarker = builder.mark();
-                    Parsing.word.parseWord(builder);
-                    varMarker.done(VAR_DEF_ELEMENT);
+                if (!parseVariableName(builder)) {
+                    cmdMarker.drop();
+                    return false;
                 }
             } else {
                 cmdMarker.drop();
@@ -84,11 +82,27 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         return true;
     }
 
-    private void parseStringVariable(BashPsiBuilder builder) {
-        if (builder.lookAhead(1) == DOLLAR) {
-            Parsing.word.parseWord(builder);
-        } else {
-            Parsing.word.parseWordWithMarkStringAsVarDef(builder);
+    private boolean parseVariableName(BashPsiBuilder builder) {
+        IElementType token = builder.getTokenType();
+        if (token == WORD || token == STRING2 || Parsing.word.isSimpleComposedString(builder, false)) {
+            return parseSimpleWord(builder);
         }
+
+        if (Parsing.word.isWordToken(builder)) {
+            return Parsing.word.parseWord(builder);
+        }
+
+        return false;
+    }
+
+    private boolean parseSimpleWord(BashPsiBuilder builder) {
+        PsiBuilder.Marker marker = builder.mark();
+        if (Parsing.word.parseWord(builder)) {
+            marker.done(VAR_DEF_ELEMENT);
+            return true;
+        }
+
+        marker.drop();
+        return false;
     }
 }

@@ -23,6 +23,7 @@ import com.intellij.openapi.project.DumbServiceImpl;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
 import com.intellij.psi.PsiReference;
+import junit.framework.AssertionFailedError;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -34,6 +35,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author jansorg
  */
 public class VarResolveTestCase extends AbstractResolveTest {
+    private void assertNoRef() {
+        try {
+            configure();
+            Assert.fail("Expected no reference or variable definition at <ref>");
+        } catch (AssertionFailedError | Exception e) {
+            // ok
+        }
+    }
+
     private BashVarDef assertIsWellDefinedVariable() throws Exception {
         PsiElement varDefSmart = doAssertIsWellDefined(false);
         PsiElement varDefDumb = doAssertIsWellDefined(true);
@@ -169,7 +179,7 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testResolveFunctionVarToLocalDef() throws Exception {
-        BashVar varDef = (BashVar) assertIsWellDefinedVariable();
+        BashVar varDef = assertIsWellDefinedVariable();
         Assert.assertNotNull(BashPsiUtils.findBroadestFunctionScope(varDef));
         Assert.assertNull(varDef.getReference().resolve());
     }
@@ -316,30 +326,21 @@ public class VarResolveTestCase extends AbstractResolveTest {
 
     @Test
     public void testNoResolvePrintfVariableConcatenated() throws Exception {
-        PsiReference psiReference = configure();
-
         // must not resolve because we don't support "my""Var" as a single variable name "myVar" for now
         // we could but that mess with refactorings, we couldn't preserve the concatenated string when renamed
-        PsiElement varDef = psiReference.resolve();
-        Assert.assertNull("The vardef should not be found.", varDef);
+        assertNoRef();
     }
 
     @Test
     public void testNoResolvePrintfVariableMixedString() throws Exception {
-        PsiReference psiReference = configure();
-
         // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
-        PsiElement varDef = psiReference.resolve();
-        Assert.assertNull("The vardef should not be found.", varDef);
+        assertNoRef();
     }
 
     @Test
     public void testNoResolvePrintfVariableMixedString2() throws Exception {
-        PsiReference psiReference = configure();
-
         // we can't support printf -v "abc$var" or printf -v "abc${var}abc"
-        PsiElement varDef = psiReference.resolve();
-        Assert.assertNull("The vardef should not be found.", varDef);
+        assertNoRef();
     }
 
     @Test

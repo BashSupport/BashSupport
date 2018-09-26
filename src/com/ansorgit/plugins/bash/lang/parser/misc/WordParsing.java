@@ -77,6 +77,36 @@ public class WordParsing implements ParsingTool {
         return tokenType == STRING_BEGIN;
     }
 
+    /**
+     * Looks ahead if the current token is the start of a static double-quoted string value.
+     *
+     * @param builder         the current bulder
+     * @param allowWhitespace if whitespace content is allowed
+     * @return true if this is a quoted string which only consists of quotes and static string content
+     */
+    public boolean isSimpleComposedString(BashPsiBuilder builder, boolean allowWhitespace) {
+        if (builder.getTokenType() != STRING_BEGIN) {
+            return false;
+        }
+
+        TokenSet accepted = TokenSet.create(STRING_CONTENT);
+        if (allowWhitespace) {
+            accepted = TokenSet.orSet(accepted, TokenSet.create(WHITESPACE));
+        }
+
+        int lookahead = 1;
+        while (accepted.contains(builder.rawLookup(lookahead))) {
+            lookahead++;
+        }
+
+        if (builder.rawLookup(lookahead) != STRING_END) {
+            return false;
+        }
+
+        IElementType end = builder.rawLookup(lookahead + 1);
+        return end == null || end == WHITESPACE || end == LINE_FEED;
+    }
+
     public boolean parseWord(BashPsiBuilder builder) {
         return parseWord(builder, false);
     }
@@ -100,7 +130,7 @@ public class WordParsing implements ParsingTool {
      * @param rejectTexts
      * @return True if a valid word could be read.
      */
-    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable  Set<String> rejectTexts) {
+    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable Set<String> rejectTexts) {
         int processedTokens = 0;
         int parsedStringParts = 0;
         boolean firstStep = true;
@@ -184,75 +214,6 @@ public class WordParsing implements ParsingTool {
 
         return true;
     }
-    
-    /**
-     * Parses a word token. Several word tokens not separated by whitespace are read
-     * as a single word token.
-     * <br>
-     * It accepts whitespace tokens in the beginning of the stream.
-     * <br>
-     * A word can be a combination of several tokens, words are separated by whitespace.
-     * <br>
-     * Also it mark content of string value as VarDef (special case for printf command)
-     *
-     * @param builder         The builder
-     * @return True if a valid word could be read.
-     */
-    public boolean parseWordWithMarkStringAsVarDef(BashPsiBuilder builder) {
-        int processedTokens = 0;
-        int parsedStringParts = 0;
-        boolean firstStep = true;
-
-        //if no token has been parsed yet we do accept whitespace in the beginning
-        boolean isOk = true;
-
-        PsiBuilder.Marker marker = builder.mark();
-
-        while (isOk) {
-            final IElementType rawCurrentToken = builder.rawLookup(0);
-            if (rawCurrentToken == null) {
-                break;
-            }
-
-            if (!firstStep && (rawCurrentToken == WHITESPACE)) {
-                break;
-            }
-
-            final IElementType nextToken = builder.getTokenType();
-
-            if (nextToken == STRING_BEGIN) {
-                isOk = parseComposedStringWithMarkVarDef(builder);
-                parsedStringParts++;
-            } else if (Parsing.var.isValid(builder)) {
-                isOk = Parsing.var.parse(builder);
-                processedTokens++;
-            } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
-                //either a single ! token with following whitespace or at the end of the file
-                builder.advanceLexer();
-                processedTokens++;
-            } else { //either whitespace or unknown token
-                break;
-            }
-
-            firstStep = false;
-        }
-
-        //either parsing failed or nothing has been found to parse
-        if (!isOk || (processedTokens == 0 && parsedStringParts == 0)) {
-            marker.drop();
-            return false;
-        }
-
-        //a single string should not be parsed as a combined word element
-        if (parsedStringParts >= 1 && processedTokens == 0) {
-            marker.drop();
-        } else {
-            marker.done(PARSED_WORD_ELEMENT);
-        }
-
-        return true;
-    }
-
 
     public boolean parseComposedString(BashPsiBuilder builder) {
         PsiBuilder.Marker stringStart = builder.mark();
@@ -288,41 +249,6 @@ public class WordParsing implements ParsingTool {
         return true;
     }
 
-    private boolean parseComposedStringWithMarkVarDef(BashPsiBuilder builder) {
-        PsiBuilder.Marker stringStart = builder.mark();
-
-        //eat STRING_START
-        builder.advanceLexer();
-
-        PsiBuilder.Marker varMarker = builder.mark();
-        while (builder.getTokenType() != STRING_END) {
-            boolean ok = false;
-
-            if (builder.getTokenType() == STRING_CONTENT) {
-                builder.advanceLexer();
-                ok = true;
-            } else if (Parsing.var.isValid(builder)) {
-                ok = Parsing.var.parse(builder);
-            } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
-                ok = Parsing.shellCommand.backtickParser.parse(builder);
-            }
-
-            if (!ok) {
-                stringStart.drop();
-                return false;
-            }
-        }
-        varMarker.done(VAR_DEF_ELEMENT);
-        IElementType end = ParserUtil.getTokenAndAdvance(builder);
-        if (end != STRING_END) {
-            stringStart.error("String end marker not found");
-            return false;
-        }
-
-        stringStart.done(STRING_ELEMENT);
-        return true;
-    }
-    
     public boolean parseWordList(BashPsiBuilder builder, boolean readListTerminator, boolean enableRemapping) {
         if (!isWordToken(builder, enableRemapping)) {
             //ParserUtil.error(builder, "parser.unexpected.token");

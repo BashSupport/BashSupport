@@ -7,8 +7,7 @@ FILE
     PsiWhiteSpace(' ')
     [PSI] Bash string
       PsiElement([Bash] string begin)('"')
-      [PSI] Bash var def
-        PsiElement([Bash] string content)('foo')
+      PsiElement([Bash] string content)('foo')
       PsiElement([Bash] string end)('"')
     [PSI] Bash string
       PsiElement([Bash] string begin)('"')
