@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All in BashSupport" type="JUnit" factoryName="JUnit">
-    <extension name="coverage" enabled="false" merge="false" per_test_coverage_enabled="false" sample_coverage="true" runner="jacoco">
+    <module name="BashSupport" />
+    <extension name="coverage" per_test_coverage_enabled="false" runner="jacoco">
       <pattern>
         <option name="PATTERN" value="com.ansorgit.plugins.bash.lang.*" />
         <option name="ENABLED" value="true" />
@@ -10,27 +11,17 @@
         <option name="ENABLED" value="false" />
       </pattern>
     </extension>
-    <module name="BashSupport" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PACKAGE_NAME" value="com.ansorgit" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
     <option name="VM_PARAMETERS" value="-ea -XX:MaxPermSize=512m -Xms1024m -Xmx1512m -Dbash.skipUrls=true" />
     <option name="PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-    <option name="ENV_VARIABLES" />
-    <option name="PASS_PARENT_ENVS" value="true" />
-    <option name="TEST_SEARCH_SCOPE">
-      <value defaultName="singleModule" />
-    </option>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <envs>
       <env name="NO_FS_ROOTS_ACCESS_CHECK" value="true" />
-      <env name="" value="" />
     </envs>
     <dir value="$PROJECT_DIR$/test" />
-    <patterns />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="" />
       <option name="TRANSPORT" value="0" />
@@ -45,6 +36,8 @@
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>
