@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.3.5"
+    id "org.jetbrains.intellij" version "0.3.9"
 }
 
 repositories {
@@ -51,7 +51,7 @@ allprojects {
 
         patchPluginXml {
             sinceBuild '145.0'
-            untilBuild '182.*'
+            untilBuild '183.*'
         }
     }
 
@@ -101,6 +101,16 @@ allprojects {
         compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     }
 }
+
+task addPsiViewer {
+    def slurper = new groovy.json.JsonSlurper()
+    def psiVersions = slurper.parseText(psiViewerVersions)
+    def psiVersion = psiVersions[ideaBranch]
+    if (psiVersion != null) {
+        intellij.plugins += "PsiViewer:$psiVersion"
+    }
+}
+prepareSandbox.finalizedBy addPsiViewer
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8'

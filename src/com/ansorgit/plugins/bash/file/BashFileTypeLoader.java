@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.file;
 
+import com.intellij.openapi.fileTypes.ExactFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
@@ -28,5 +29,12 @@ public class BashFileTypeLoader extends FileTypeFactory {
     public void createFileTypes(@NotNull FileTypeConsumer consumer) {
         consumer.consume(BashFileType.BASH_FILE_TYPE, BashFileType.SH_EXTENSION);
         consumer.consume(BashFileType.BASH_FILE_TYPE, BashFileType.BASH_EXTENSION);
+
+        consumer.consume(BashFileType.BASH_FILE_TYPE,
+                new ExactFileNameMatcher(BashFileType.BASHRC_FILENAME),
+                new ExactFileNameMatcher(BashFileType.PROFILE_FILENAME),
+                new ExactFileNameMatcher(BashFileType.BASH_LOGOUT_FILENAME),
+                new ExactFileNameMatcher(BashFileType.BASH_PROFILE_FILENAME),
+                new ExactFileNameMatcher(BashFileType.BASH_ALIASES_FILENAME));
     }
 }
