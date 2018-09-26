@@ -6,7 +6,7 @@
 - Heredoc: Subshell or parameter expansions which span more than one line inside of a heredoc are currently unsupported 
 - Line continuations are only supported in words and string content, they are unsupported in keywords, e.g. fo\<linebreak>r
 - Concatenated strings to build variable names are not supported, e.g. as in `printf -v "my""Var" foo` to set `$myVar`
-- concatenated string values passed to `printf -v ` are not supported, e.g. `printf -v "a""b"`. Only `printf -v a` , `printf -v "a"` and `printf -v 'a'` are supported variable definitions.
+- Concatenated string values passed to `printf -v ` are not supported, e.g. `printf -v "a""b"`. Only `printf -v a` , `printf -v "a"` and `printf -v 'a'` are supported variable definitions.
 
 ## Refactorings
 - "Rename variable" doesn't work for variables in single-quoted strings, e.g. "eval '$a'"
