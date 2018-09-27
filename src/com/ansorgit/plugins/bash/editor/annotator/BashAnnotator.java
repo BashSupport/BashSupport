@@ -300,7 +300,7 @@ public class BashAnnotator implements Annotator {
     private void annotateIdentifier(BashVar var, AnnotationHolder annotationHolder) {
         String varName = var.getReferenceName();
 
-        if (!BashIdentifierUtil.isValidIdentifier(varName) && !BashPsiUtils.isInEvalBlock(var)) {
+        if (!BashIdentifierUtil.isValidVariableName(varName) && !BashPsiUtils.isInEvalBlock(var)) {
             annotationHolder.createErrorAnnotation(var.getReference().getRangeInElement().shiftRight(var.getTextOffset()), String.format("'%s': not a valid identifier", varName));
         }
     }

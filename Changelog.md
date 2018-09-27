@@ -1,4 +1,7 @@
 #### 2018-09-27:
+ - \#599: Values passed to "export -f" were not resolved to the function definition
+
+#### 2018-09-27:
  - \#526: Documentation wasn't shown when the caret was positioned at the end of a command
 
 #### 2018-09-10:
