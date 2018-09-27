@@ -24,7 +24,7 @@
  - \#540: Tilde (~) not resolved correctly in file paths
 
 #### 2018-08-29:
- - \#522 Not a valid identifier in shell script with Bash functions with dash
+ - \#522 Not a valid identifier in shell script with Bash functions with dash (contributed by nosovae-dev)
 
 #### 2018-08-27:
  - Add action to create a report on the currently detected file type
