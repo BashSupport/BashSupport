@@ -56,10 +56,10 @@ public class BashIdentifierUtilTest {
         Assert.assertTrue(isValidIdentifier("11"));
         Assert.assertTrue(isValidIdentifier("100"));
         Assert.assertTrue(isValidIdentifier("110"));
+        Assert.assertTrue(isValidIdentifier("a-a"));
 
         Assert.assertFalse(isValidIdentifier("1a"));
         Assert.assertFalse(isValidIdentifier("a$a"));
-//        Assert.assertFalse(isValidIdentifier("a-a"));
         Assert.assertFalse(isValidIdentifier("@a"));
 
         Assert.assertFalse(isValidIdentifier("α"));
