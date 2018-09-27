@@ -1,3 +1,25 @@
+#### 2018-09-27:
+ - \#526: Documentation wasn't shown when the caret was positioned at the end of a command
+
+#### 2018-09-10:
+ - \#400 Heredoc after command & is not parsed (contributed by nosovae-dev)
+
+#### 2018-09-08:
+ - \#477 Support for .bashrc (or custom file extensions)
+ - \#568 variable incorrectly flagged as read-only (contributed by nosovae-dev)
+
+#### 2018-09-05:
+ - \#318: Codefolding support (contributed by nosovae-dev)
+ - \#546: Color schemes: "Inherit values from" has no effect when checked (contributed by nosovae-dev)
+ - \#519: local -a arrays not recognized (contributed by nosovae-dev)
+ - variables declared by local -r are now treated as read-only (contributed by nosovae-dev)
+
+#### 2018-09-04:
+ - \#518: printf -v "${var}" flagged as Error
+
+#### 2018-08-30:
+ - \#540: Tilde (~) not resolved correctly in file paths
+
 #### 2018-08-29:
  - \#522 Not a valid identifier in shell script with Bash functions with dash
 

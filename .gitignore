@@ -1,2 +1,5 @@
 /.gradle/
 /build/
+/out/
+/.idea/markdown-navigator/
+/.idea/workspace.xml

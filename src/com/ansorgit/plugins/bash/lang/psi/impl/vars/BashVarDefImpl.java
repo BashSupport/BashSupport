@@ -61,8 +61,9 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
  */
 public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
-    private static final Set<String> typeCommands = Sets.newHashSet("declare", "typeset", "read");
-    private static final Set<String> localVarDefCommands = typeCommands; // Sets.newHashSet("declare", "typeset");
+    private static final Set<String> commandsWithReadonlyOption = Sets.newHashSet("declare", "typeset", "local");
+    private static final Set<String> commandsWithArrayOption = Sets.newHashSet("declare", "typeset", "read", "local");
+    private static final Set<String> localVarDefCommands = commandsWithArrayOption; // Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Collections.singleton("-a");
     private static final Set<String> typeReadOnlyParams = Collections.singleton("-r");
 
@@ -140,6 +141,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using typeset -a
         // - using mapfile
         // - using read -a
+        // - using local -a
 
         PsiElement assignmentValue = findAssignmentValue();
 
@@ -154,7 +156,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             BashCommand command = (BashCommand) parentElement;
 
             return "mapfile".equals(command.getReferencedCommandName())
-                    || isCommandWithParameter(command, typeCommands, typeArrayDeclarationParams);
+                    || isCommandWithParameter(command, commandsWithArrayOption, typeArrayDeclarationParams);
         }
 
         return false;
@@ -371,8 +373,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                     PsiElement wordElement = findAssignmentWord();
 
                     TextRange newNameTextRange;
-                    if (wordElement instanceof BashString) {
-                        newNameTextRange = ((BashString) wordElement).getTextContentRange();
+                    if (wordElement instanceof BashCharSequence) {
+                        newNameTextRange = ((BashCharSequence) wordElement).getTextContentRange();
                     } else {
                         newNameTextRange = TextRange.from(0, wordElement.getTextLength());
                     }
@@ -395,7 +397,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             }
 
             //check for declare -r or typeset -r
-            if (isCommandWithParameter(command, typeCommands, typeReadOnlyParams)) {
+            if (isCommandWithParameter(command, commandsWithReadonlyOption, typeReadOnlyParams)) {
                 return true;
             }
         }

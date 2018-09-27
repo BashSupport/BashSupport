@@ -32,4 +32,11 @@ public interface BashFileReference extends BashPsiElement {
      * @return True if it is static.
      */
     boolean isStatic();
+
+    /**
+     * @return {@code true} if the value contains dynamic values, e.g. variables.
+     */
+    default boolean isDynamic(){
+        return !isStatic();
+    }
 }

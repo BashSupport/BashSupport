@@ -83,7 +83,6 @@ public class TrapCommandParsingFunction implements ParsingFunction {
                 commandMarker.done(SIMPLE_COMMAND_ELEMENT);
             } else if (builder.getTokenType() == STRING2 || Parsing.word.isComposedString(builder.getTokenType())) {
                 //eval parsing
-                int startOffset = builder.getCurrentOffset();
                 PsiBuilder.Marker evalMarker = builder.mark();
 
                 boolean emptyBlock;

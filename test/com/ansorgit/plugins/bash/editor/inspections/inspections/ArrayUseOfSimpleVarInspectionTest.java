@@ -47,6 +47,11 @@ public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCas
     }
 
     @Test
+    public void testArrayAccessLocal() throws Exception {
+        doTest("arrayUseOfSimpleVarInspection/arrayVarLocal", new SimpleArrayUseInspection());
+    }
+
+    @Test
     public void testMapfileArray() throws Exception {
         doTest("arrayUseOfSimpleVarInspection/mapfileArray", new SimpleArrayUseInspection());
     }

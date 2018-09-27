@@ -16,13 +16,13 @@
 package com.ansorgit.plugins.bash.editor.codecompletion;
 
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
+import com.ansorgit.plugins.bash.util.BashFiles;
 import com.ansorgit.plugins.bash.util.CompletionUtil;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
@@ -35,6 +35,7 @@ import java.util.Set;
  * Completion provider which provides completion even if the current path contains dynamic
  * parts like $HOME or ~ .
  * <br>
+ *
  * @author jansorg
  */
 class DynamicPathCompletionProvider extends AbstractBashCompletionProvider {
@@ -82,7 +83,7 @@ class DynamicPathCompletionProvider extends AbstractBashCompletionProvider {
     @Nullable
     private String findBaseDir(CompletionParameters parameters, String usedPrefix) {
         if (homePrefixes.contains(usedPrefix)) {
-            return SystemInfo.isWindows ? System.getenv("USERPROFILE") : System.getenv("HOME");
+            return BashFiles.userHomeDir();
         }
 
         PsiDirectory file = parameters.getOriginalFile().getParent();

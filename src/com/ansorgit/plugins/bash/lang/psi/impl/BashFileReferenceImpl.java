@@ -70,7 +70,7 @@ public class BashFileReferenceImpl extends BashBaseElement implements BashFileRe
 
     @Override
     public boolean canNavigate() {
-        return fileReference != null && fileReference.resolve() != null;
+        return fileReference.resolve() != null;
     }
 
     @Override
