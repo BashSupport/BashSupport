@@ -16,6 +16,8 @@
 package com.ansorgit.plugins.bash.documentation;
 
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
+import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
+import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -29,12 +31,20 @@ class InternalCommandDocumentation extends ClasspathDocSource {
     }
 
     boolean isValid(PsiElement element, PsiElement originalElement) {
+        if (element instanceof BashGenericCommand) {
+            element = BashPsiUtils.findParent(element, BashCommand.class);
+        }
+
         return element instanceof BashCommand && ((BashCommand) element).isInternalCommand();
     }
 
     @Override
     String resourceNameForElement(PsiElement element) {
-        return ((BashCommand) element).getReferencedCommandName();
+        if (element instanceof BashGenericCommand) {
+            element = BashPsiUtils.findParent(element, BashCommand.class);
+        }
+
+        return (element instanceof BashCommand) ? ((BashCommand) element).getReferencedCommandName() : null;
     }
 
     public String documentationUrl(PsiElement element, PsiElement originalElement) {

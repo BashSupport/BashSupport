@@ -1,3 +1,6 @@
+#### 2018-09-27:
+ - \#526: Documentation wasn't shown when the caret was positioned at the end of a command
+
 #### 2018-09-10:
  - \#400 Heredoc after command & is not parsed (contributed by nosovae-dev)
  
