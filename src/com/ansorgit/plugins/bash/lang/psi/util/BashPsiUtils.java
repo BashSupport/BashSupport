@@ -149,10 +149,6 @@ public final class BashPsiUtils {
         return null;
     }
 
-    private static boolean isValidContainer(PsiElement element) {
-        return element instanceof BashBlock || element instanceof BashFunctionDef || element instanceof BashFile;
-    }
-
     public static int getElementLineNumber(PsiElement element) {
         FileViewProvider fileViewProvider = element.getContainingFile().getViewProvider();
         if (fileViewProvider.getDocument() != null) {
@@ -411,41 +407,6 @@ public final class BashPsiUtils {
         return true;
     }
 
-    /**
-     * Checks whether the given definition is a valid definition for the referenceElement.
-     * If both have the same definition context, then the text offsets are compared.
-     * If the definition contexts are different functions then the definition is valid.
-     * A global reference to a definition in a function is checked by text offset.
-     * A reference in a function to a global definition is also checked by reference.
-     *
-     * @param referenceElement The element checked
-     * @param definition The definition checked
-     * @return True if definition may be a valid definition for the reference
-     */
-    private static boolean isValidGlobalOffset(PsiElement referenceElement, PsiElement definition) {
-        BashFunctionDef refScope = findNextVarDefFunctionDefScope(referenceElement);
-        BashFunctionDef defScope = findNextVarDefFunctionDefScope(definition);
-
-        int refOffset = referenceElement.getTextOffset();
-        int defOffset = definition.getTextOffset();
-
-        //both global or both in the same function
-        if (refScope == defScope || (refScope != null && refScope.isEquivalentTo(defScope))) {
-            //both may be null or a function scope
-            return refOffset > defOffset;
-        }
-
-        //ref and def are in different functions
-        if (refScope != null && defScope != null) {
-            return true;
-        }
-
-        //def global: ref function must be after the definition context
-        //ref global: ref must be after the definition context
-
-        return refOffset > defOffset;
-    }
-
     public static List<PsiComment> findDocumentationElementComments(PsiElement element) {
         PsiElement command = findStubParent(element, BashCommand.class);
         if (command == null) {
@@ -557,10 +518,6 @@ public final class BashPsiUtils {
         return languageManager.isInjectedFragment(element.getContainingFile()) || hasInjectionHostParent(element);
     }
 
-    private static boolean hasInjectionHostParent(PsiElement element) {
-        return hasParentOfType(element, PsiLanguageInjectionHost.class, 10);
-    }
-
     /**
      * Returns the start text offset of the element in the toplevel file, i.e the PsiFile which containing the real document. If an element
      * is injected then the outer file is returned.
@@ -611,6 +568,33 @@ public final class BashPsiUtils {
     }
 
     @Nullable
+    public static ASTNode findEquivalentParent(@NotNull ASTNode node, @Nullable IElementType stopAt) {
+        TextRange sourceRange = node.getTextRange();
+
+        ASTNode current = node;
+        while (true) {
+            ASTNode parent = current.getTreeParent();
+            if (parent == null || !parent.getTextRange().equals(sourceRange)) {
+                return stopAt != null && current.getElementType() != stopAt ? null : current;
+            }
+
+            current = parent;
+            if (stopAt == null || stopAt.equals(current.getElementType())) {
+                return current;
+            }
+        }
+    }
+
+    @Nullable
+    public static PsiElement findEquivalentParent(@NotNull PsiElement node, @Nullable IElementType stopAt) {
+        ASTNode parent = findEquivalentParent(node.getNode(), stopAt);
+        if (parent != null) {
+            return parent.getPsi();
+        }
+        return null;
+    }
+
+    @Nullable
     public static PsiReference selfReference(PsiElement element) {
         ElementManipulator<PsiElement> manipulator = ElementManipulators.getManipulator(element);
         if (manipulator == null) {
@@ -651,5 +635,48 @@ public final class BashPsiUtils {
 
     public static boolean isInEvalBlock(PsiElement element) {
         return findParent(element, BashEvalBlock.class) != null;
+    }
+
+    private static boolean isValidContainer(PsiElement element) {
+        return element instanceof BashBlock || element instanceof BashFunctionDef || element instanceof BashFile;
+    }
+
+    /**
+     * Checks whether the given definition is a valid definition for the referenceElement.
+     * If both have the same definition context, then the text offsets are compared.
+     * If the definition contexts are different functions then the definition is valid.
+     * A global reference to a definition in a function is checked by text offset.
+     * A reference in a function to a global definition is also checked by reference.
+     *
+     * @param referenceElement The element checked
+     * @param definition       The definition checked
+     * @return True if definition may be a valid definition for the reference
+     */
+    private static boolean isValidGlobalOffset(PsiElement referenceElement, PsiElement definition) {
+        BashFunctionDef refScope = findNextVarDefFunctionDefScope(referenceElement);
+        BashFunctionDef defScope = findNextVarDefFunctionDefScope(definition);
+
+        int refOffset = referenceElement.getTextOffset();
+        int defOffset = definition.getTextOffset();
+
+        //both global or both in the same function
+        if (refScope == defScope || (refScope != null && refScope.isEquivalentTo(defScope))) {
+            //both may be null or a function scope
+            return refOffset > defOffset;
+        }
+
+        //ref and def are in different functions
+        if (refScope != null && defScope != null) {
+            return true;
+        }
+
+        //def global: ref function must be after the definition context
+        //ref global: ref must be after the definition context
+
+        return refOffset > defOffset;
+    }
+
+    private static boolean hasInjectionHostParent(PsiElement element) {
+        return hasParentOfType(element, PsiLanguageInjectionHost.class, 10);
     }
 }

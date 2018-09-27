@@ -80,12 +80,17 @@ class BashDocumentationProviderTest : LightBashCodeInsightFixtureTestCase() {
         assertValidDocumentation("$(curl<caret>)")
         assertValidDocumentation("\"$(curl<caret>)\"")
 
+        assertValidDocumentation("<caret>echo")
+        assertValidDocumentation("echo<caret>")
+
         assertNoValidDocumentation("curl a<caret>")
+        assertNoValidDocumentation("$(curl a<caret>)")
+        assertNoValidDocumentation("\"$(curl a<caret>)\"")
     }
 
     private fun assertValidDocumentation(content: String) {
         val doc = findDocumentationForContent(content)
-        Assert.assertNotNull(doc)
+        Assert.assertNotNull("Expected documentation", doc)
     }
 
     private fun assertNoValidDocumentation(content: String) {

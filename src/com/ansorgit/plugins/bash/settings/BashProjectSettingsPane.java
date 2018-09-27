@@ -208,7 +208,7 @@ public class BashProjectSettingsPane implements Disposable {
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel5.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
-        settingsPane.add(panel5, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        settingsPane.add(panel5, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel5.setBorder(BorderFactory.createTitledBorder("Validation"));
         validateWithCurrentEnv = new JCheckBox();
         validateWithCurrentEnv.setText("Validate scripts with your current environment");
@@ -223,4 +223,5 @@ public class BashProjectSettingsPane implements Disposable {
     public JComponent $$$getRootComponent$$$() {
         return settingsPane;
     }
+
 }

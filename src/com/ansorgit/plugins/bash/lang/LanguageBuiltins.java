@@ -106,5 +106,4 @@ public final class LanguageBuiltins {
     public static boolean isInternalCommand(String commandName, boolean bash4) {
         return bash4 && commands_v4.contains(commandName) || commands.contains(commandName);
     }
-
 }

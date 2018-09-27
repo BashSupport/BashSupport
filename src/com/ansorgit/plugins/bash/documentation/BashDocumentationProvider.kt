@@ -15,9 +15,7 @@
 
 package com.ansorgit.plugins.bash.documentation
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand
-import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils
 import com.intellij.lang.documentation.AbstractDocumentationProvider
@@ -26,7 +24,6 @@ import com.intellij.openapi.util.SystemInfoRt
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
-import com.intellij.psi.TokenType
 import org.apache.commons.lang.StringUtils
 
 /**
@@ -51,25 +48,19 @@ class BashDocumentationProvider : AbstractDocumentationProvider() {
             return null
         }
 
-        var psi = contextElement
-        if (psi == null) {
-            // probably invoked for element at end of file
-            val offset = editor.caretModel.offset - 1
-            if (offset >= 0) {
-                psi = file.findElementAt(offset)
+        // pick leaf node
+        val offset = editor.caretModel.offset
+        for (o in listOf(offset, offset - 1)) {
+            val psi = file.findElementAt(o)
+            if (psi != null) {
+                val parent = BashPsiUtils.findEquivalentParent(psi, BashElementTypes.GENERIC_COMMAND_ELEMENT)
+                if (parent != null) {
+                    return parent
+                }
             }
         }
 
-        val elementType = psi?.node?.elementType
-        if (psi != null && (elementType === BashTokenTypes.LINE_FEED || elementType === TokenType.WHITE_SPACE)) {
-            psi = psi.prevSibling
-        }
-
-        if (psi is BashCommand) {
-            psi = psi.commandElement()
-        }
-
-        return BashPsiUtils.findParent(psi, BashGenericCommand::class.java)
+        return null
     }
 
     override fun getQuickNavigateInfo(element: PsiElement?, originalElement: PsiElement?): String? = null
