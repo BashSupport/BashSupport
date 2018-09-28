@@ -28,6 +28,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * Parsing of variable definitions.
  * <br>
+ *
  * @author jansorg
  */
 abstract class AbstractVariableDefParsing implements ParsingFunction {
@@ -41,6 +42,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
 
     /**
      * Construct a new variable def commmand.
+     *
      * @param acceptFrontVarDef    If true then local variable definitions are accepted in front of the command. e.g. "a=1 export b=1" is a valid bash command, but only b is visible afterwards.
      * @param commandElementType
      * @param commandText
@@ -125,7 +127,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
             }
 
             if (argumentValueExpected(argName)) {
-                ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
+                ok = parseArgumentValue(argName, builder);
                 if (!ok) {
                     return false;
                 }
@@ -133,6 +135,10 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
 
         return true;
+    }
+
+    protected boolean parseArgumentValue(String argName, BashPsiBuilder builder) {
+        return Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
     }
 
     boolean argumentValueExpected(String name) {

@@ -24,47 +24,62 @@ import static com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil.*;
  */
 public class BashIdentifierUtilTest {
     @Test
-    public void testValidIdentifier() {
-        Assert.assertTrue(isValidIdentifier("a"));
-        Assert.assertTrue(isValidIdentifier("abc"));
-        Assert.assertTrue(isValidIdentifier("A"));
-        Assert.assertTrue(isValidIdentifier("ABC123"));
+    public void testValidVariableName() {
+        Assert.assertTrue(isValidVariableName("a"));
+        Assert.assertTrue(isValidVariableName("abc"));
+        Assert.assertTrue(isValidVariableName("A"));
+        Assert.assertTrue(isValidVariableName("ABC123"));
 
-        Assert.assertTrue(isValidIdentifier("a_a"));
-        Assert.assertTrue(isValidIdentifier("a_123"));
-        Assert.assertTrue(isValidIdentifier("_123"));
+        Assert.assertTrue(isValidVariableName("a_a"));
+        Assert.assertTrue(isValidVariableName("a_123"));
+        Assert.assertTrue(isValidVariableName("_123"));
 
-        Assert.assertTrue(isValidIdentifier("@"));
-        Assert.assertTrue(isValidIdentifier("$"));
-        Assert.assertTrue(isValidIdentifier("#"));
-        Assert.assertTrue(isValidIdentifier("?"));
-        Assert.assertTrue(isValidIdentifier("!"));
-        Assert.assertTrue(isValidIdentifier("*"));
-        Assert.assertTrue(isValidIdentifier("-"));
-        Assert.assertTrue(isValidIdentifier("_"));
+        Assert.assertTrue(isValidVariableName("@"));
+        Assert.assertTrue(isValidVariableName("$"));
+        Assert.assertTrue(isValidVariableName("#"));
+        Assert.assertTrue(isValidVariableName("?"));
+        Assert.assertTrue(isValidVariableName("!"));
+        Assert.assertTrue(isValidVariableName("*"));
+        Assert.assertTrue(isValidVariableName("-"));
+        Assert.assertTrue(isValidVariableName("_"));
 
-        Assert.assertTrue(isValidIdentifier("0"));
-        Assert.assertTrue(isValidIdentifier("1"));
-        Assert.assertTrue(isValidIdentifier("2"));
-        Assert.assertTrue(isValidIdentifier("3"));
-        Assert.assertTrue(isValidIdentifier("4"));
-        Assert.assertTrue(isValidIdentifier("5"));
-        Assert.assertTrue(isValidIdentifier("6"));
-        Assert.assertTrue(isValidIdentifier("7"));
-        Assert.assertTrue(isValidIdentifier("8"));
-        Assert.assertTrue(isValidIdentifier("9"));
-        Assert.assertTrue(isValidIdentifier("11"));
-        Assert.assertTrue(isValidIdentifier("100"));
-        Assert.assertTrue(isValidIdentifier("110"));
+        Assert.assertTrue(isValidVariableName("0"));
+        Assert.assertTrue(isValidVariableName("1"));
+        Assert.assertTrue(isValidVariableName("2"));
+        Assert.assertTrue(isValidVariableName("3"));
+        Assert.assertTrue(isValidVariableName("4"));
+        Assert.assertTrue(isValidVariableName("5"));
+        Assert.assertTrue(isValidVariableName("6"));
+        Assert.assertTrue(isValidVariableName("7"));
+        Assert.assertTrue(isValidVariableName("8"));
+        Assert.assertTrue(isValidVariableName("9"));
+        Assert.assertTrue(isValidVariableName("11"));
+        Assert.assertTrue(isValidVariableName("100"));
+        Assert.assertTrue(isValidVariableName("110"));
 
-        Assert.assertFalse(isValidIdentifier("1a"));
-        Assert.assertFalse(isValidIdentifier("a$a"));
-        Assert.assertFalse(isValidIdentifier("a-a"));
-        Assert.assertFalse(isValidIdentifier("@a"));
+        Assert.assertFalse(isValidVariableName("1a"));
+        Assert.assertFalse(isValidVariableName("a$a"));
+        Assert.assertFalse(isValidVariableName("@a"));
+        Assert.assertFalse(isValidVariableName("a-a"));
 
-        Assert.assertFalse(isValidIdentifier("α"));
-        Assert.assertFalse(isValidIdentifier("α1"));
-        Assert.assertFalse(isValidIdentifier("разработка"));
+        Assert.assertFalse(isValidVariableName("α"));
+        Assert.assertFalse(isValidVariableName("α1"));
+        Assert.assertFalse(isValidVariableName("разработка"));
+    }
+
+    @Test
+    public void testValidFunctionName() {
+        Assert.assertTrue(isValidFunctionName("_"));
+        Assert.assertTrue(isValidFunctionName("_a"));
+        Assert.assertTrue(isValidFunctionName("-"));
+        Assert.assertTrue(isValidFunctionName("-a"));
+        Assert.assertTrue(isValidFunctionName("a-a"));
+        Assert.assertTrue(isValidFunctionName("a-a-c_def"));
+        Assert.assertTrue(isValidFunctionName("1-a"));
+        Assert.assertTrue(isValidFunctionName("1_a"));
+
+        Assert.assertFalse(isValidFunctionName("1"));
+        Assert.assertFalse(isValidFunctionName("123"));
     }
 
     @Test
