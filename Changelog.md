@@ -1,4 +1,7 @@
 #### 2018-09-27:
+ - \#572: False-positive unresolved variables using names matching prefix parameter expansion (contributed by nosovae-dev)
+
+#### 2018-09-27:
  - \#599: Values passed to "export -f" were not resolved to the function definition
 
 #### 2018-09-27:
