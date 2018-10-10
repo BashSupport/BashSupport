@@ -204,6 +204,8 @@ public class ParameterExpansionParsing implements ParsingFunction {
                     firstElementMarker.done(VAR_DEF_ELEMENT);
                     builder.advanceLexer();
                     markedAsVar = true;
+                } else if (variableMarkingExpansionOperators.contains(operator)) {
+                    builder.advanceLexer();
                 } else if (paramExpansionOperators.contains(operator)) {
                     //unknown operator
                     firstElementMarker.done(VAR_ELEMENT);

@@ -16,7 +16,6 @@
 package com.ansorgit.plugins.bash.editor.inspections.inspections;
 
 import com.ansorgit.plugins.bash.editor.inspections.quickfix.GlobalVariableQuickfix;
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
@@ -24,10 +23,7 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
-import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -39,10 +35,6 @@ import java.util.Set;
  * @author jansorg
  */
 public class UnresolvedVariableInspection extends LocalInspectionTool {
-
-    private static final TokenSet expansionSymbolsSet = TokenSet.create(BashTokenTypes.PARAM_EXPANSION_OP_STAR,
-            BashTokenTypes.PARAM_EXPANSION_OP_AT);
-
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -68,10 +60,6 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
                 return;
             }
 
-            if (isParamExpansion(bashVar.getNextSibling())) {
-                return;
-            }
-
             BashReference ref = bashVar.getReference();
             if (ref.resolve() == null) {
                 holder.registerProblem(bashVar,
@@ -80,11 +68,6 @@ public class UnresolvedVariableInspection extends LocalInspectionTool {
                         ref.getRangeInElement(),
                         new GlobalVariableQuickfix(bashVar, true));
             }
-        }
-
-        private boolean isParamExpansion(PsiElement element) {
-            return element instanceof LeafPsiElement &&
-                    expansionSymbolsSet.contains(((LeafPsiElement) element).getElementType());
         }
     }
 }
