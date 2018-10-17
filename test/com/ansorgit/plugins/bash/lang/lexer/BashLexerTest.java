@@ -461,6 +461,8 @@ public class BashLexerTest {
         testTokenization("${a1}", DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
         //bad substitution, but the lexer must match
         testTokenization("${/}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_SLASH, RIGHT_CURLY);
+
+        testTokenization("${!imageformat_*}", DOLLAR, LEFT_CURLY, PARAM_EXPANSION_OP_EXCL, WORD, PARAM_EXPANSION_OP_STAR, RIGHT_CURLY);
     }
 
     @Test
