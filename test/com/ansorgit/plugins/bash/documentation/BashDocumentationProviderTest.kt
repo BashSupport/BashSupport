@@ -123,7 +123,7 @@ class BashDocumentationProviderTest : LightBashCodeInsightFixtureTestCase() {
         }
 
         val provider = DocumentationManager.getProviderFromElement(targetElement, originalElement)
-        val doc = provider.generateDoc(targetElement ?: originalElement, originalElement)
+        val doc = provider.generateDoc(targetElement, originalElement)
         return if ("No documentation found." == doc) null else doc
     }
 
