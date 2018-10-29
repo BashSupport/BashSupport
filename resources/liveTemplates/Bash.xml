@@ -89,21 +89,24 @@
             <option name="OTHER" value="false"/>
         </context>
     </template>
-	<template name="for-each-in" value="for $LOOPVAR$ in $LOOPITEMS$ ; do&#10;    $END$$SELECTION$&#10;done&#10;" description="&quot;For each in set&quot; loop" toReformat="true" toShortenFQNames="false">
-		<variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPITEMS" expression="" defaultValue="&quot;item1 item2 item3&quot;" alwaysStopAt="true"/>
-		<context>
-			<option name="Bash" value="true"/>
+    <template name="for-each-in" value="for $LOOPVAR$ in $LOOPITEMS$ ; do&#10;    $END$$SELECTION$&#10;done&#10;"
+              description="&quot;For each in set&quot; loop" toReformat="true" toShortenFQNames="false">
+        <variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPITEMS" expression="" defaultValue="&quot;item1 item2 item3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
-		</context>
-	</template>
-	<template name="for-index" value="for (( $LOOPVAR$ = $LOOPSTART$; $LOOPVAR$ &lt; $LOOPLIMIT$; ++$LOOPVAR$ )); do&#10;    $END$$SELECTION$&#10;done&#10;" description="C-style &quot;for&quot; loop" toReformat="true" toShortenFQNames="false">
-		<variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPSTART" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPLIMIT" expression="" defaultValue="&quot;${LOOP_LIMIT}&quot;" alwaysStopAt="true"/>
-		<context>
-			<option name="Bash" value="true"/>
+        </context>
+    </template>
+    <template name="for-index"
+              value="for (( $LOOPVAR$ = $LOOPSTART$; $LOOPVAR$ &lt; $LOOPLIMIT$; ++$LOOPVAR$ )); do&#10;    $END$$SELECTION$&#10;done&#10;"
+              description="C-style &quot;for&quot; loop" toReformat="true" toShortenFQNames="false">
+        <variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPSTART" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPLIMIT" expression="" defaultValue="&quot;${LOOP_LIMIT}&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
-		</context>
-	</template>
+        </context>
+    </template>
 </templateSet>
