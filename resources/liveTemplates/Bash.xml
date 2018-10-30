@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templateSet group="Bash">
-    <template name="she" value="#!$ENV$ $BASH$&#10;$END$" description="shebang line" toReformat="false" toShortenFQNames="false">
-        <variable name="ENV" expression="" defaultValue="&quot;/usr/bin/env&quot;" alwaysStopAt="false"/>
-        <variable name="BASH" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
     <template name="cas" value="case $value$ in&#10;$pattern$)&#10;  $END$ ;;&#10;esac" description="Case statement"
               toReformat="false" toShortenFQNames="false">
         <variable name="value" expression="" defaultValue="&quot;$x&quot;" alwaysStopAt="true"/>
@@ -38,6 +30,14 @@
               toReformat="false" toShortenFQNames="false">
         <variable name="a" expression="" defaultValue="&quot;$a&quot;" alwaysStopAt="true"/>
         <variable name="b" expression="" defaultValue="&quot;$b&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="func" value="function $FUNCNAME$() {&#10;    $END$$SELECTION$&#10;}" description="Function template"
+              toReformat="true" toShortenFQNames="false">
+        <variable name="FUNCNAME" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
@@ -87,6 +87,21 @@
         <variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
         <variable name="LOOPSTART" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true"/>
         <variable name="LOOPLIMIT" expression="" defaultValue="&quot;${LOOP_LIMIT}&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="she" value="#!$ENV$ $BASH$&#10;$END$" description="shebang line" toReformat="false" toShortenFQNames="false">
+        <variable name="ENV" expression="" defaultValue="&quot;/usr/bin/env&quot;" alwaysStopAt="false"/>
+        <variable name="BASH" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="shebin" value="#!/bin/$SHELL$&#10;$END$" description="shebang line /bin" toReformat="false" toShortenFQNames="false">
+        <variable name="SHELL" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
