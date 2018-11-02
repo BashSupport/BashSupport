@@ -34,7 +34,9 @@
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
-    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
+    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
+    Do you like it? Give it a star at [GitHub](https://github.com/BashSupport/BashSupport). Rate it at [plugin.jetbrains.com](https://plugins.jetbrains.com/plugin/4230-bashsupport).
+    There's no future for BashSupport without strong support from the community!
     </html>]]></description>
 
     <change-notes><![CDATA[
