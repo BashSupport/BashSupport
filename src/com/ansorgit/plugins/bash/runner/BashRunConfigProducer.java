@@ -24,11 +24,9 @@ import com.intellij.execution.actions.RunConfigurationProducer;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Bash run config producer which looks at the current context to create a new run configuation.
@@ -51,7 +49,7 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
         }
 
         PsiFile psiFile = psiElement.getContainingFile();
-        if (psiFile == null || !(psiFile instanceof BashFile)) {
+        if (!(psiFile instanceof BashFile)) {
             return false;
         }
 
@@ -86,12 +84,6 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
 
                 configuration.setInterpreterOptions(shebang.shellCommandParams());
             }
-        }
-
-        //fallback location if none was found
-        if (StringUtil.isEmptyOrSpaces(configuration.getInterpreterPath())) {
-            String bashPath = BashInterpreterDetection.instance().findBestLocation();
-            configuration.setInterpreterPath(StringUtils.trimToEmpty(bashPath));
         }
 
         return true;

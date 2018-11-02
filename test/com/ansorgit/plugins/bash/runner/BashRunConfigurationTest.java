@@ -32,13 +32,13 @@ public class BashRunConfigurationTest extends LightBashCodeInsightFixtureTestCas
     @Test
     public void testBuildOption() throws Exception {
         //dummy setup
-        BashRunConfiguration config = new BashRunConfiguration(new RunConfigurationModule(getProject()), new ConfigurationFactory(BashConfigurationType.getInstance()) {
+        BashRunConfiguration config = new BashRunConfiguration("Bash", new RunConfigurationModule(getProject()), new ConfigurationFactory(BashConfigurationType.getInstance()) {
             @NotNull
             @Override
             public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
                 return new UnknownRunConfiguration(this, project);
             }
-        }, "Bash");
+        });
 
         Assert.assertFalse("The make step must not be enabled by default", config.isCompileBeforeLaunchAddedByDefault());
     }

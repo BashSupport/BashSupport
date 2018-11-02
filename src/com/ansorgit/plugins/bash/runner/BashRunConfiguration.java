@@ -28,17 +28,19 @@ import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.SettingsEditor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.DefaultJDOMExternalizer;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.search.GlobalSearchScope;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 /**
@@ -50,11 +52,12 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
+    private boolean useProjectInterpreter = true;
     private String scriptName;
     private String programsParameters;
 
-    BashRunConfiguration(RunConfigurationModule runConfigurationModule, ConfigurationFactory configurationFactory, String name) {
-        super(name, runConfigurationModule, configurationFactory);
+    BashRunConfiguration(String name, RunConfigurationModule module, ConfigurationFactory configurationFactory) {
+        super(name, module, configurationFactory);
     }
 
     @Override
@@ -99,22 +102,47 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     }
 
     @Override
+    public boolean isUseProjectInterpreter() {
+        return useProjectInterpreter;
+    }
+
+    @Override
+    public void setUseProjectInterpreter(boolean useProjectInterpreter) {
+        this.useProjectInterpreter = useProjectInterpreter;
+    }
+
+    @Override
     public void checkConfiguration() throws RuntimeConfigurationException {
         super.checkConfiguration();
+
+        Project project = getProject();
 
         Module module = getConfigurationModule().getModule();
         if (module != null) {
             //a missing module will cause a NPE in the check method
-            ProgramParametersUtil.checkWorkingDirectoryExist(this, getProject(), module);
+            ProgramParametersUtil.checkWorkingDirectoryExist(this, project, module);
         }
 
         if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
             throw new RuntimeConfigurationException("No interpreter path given.");
         }
 
-        File interpreterFile = new File(interpreterPath);
-        if (!interpreterFile.isFile() || !interpreterFile.canRead()) {
-            throw new RuntimeConfigurationException("Interpreter path is invalid or not readable.");
+        if (useProjectInterpreter) {
+            BashProjectSettings settings = BashProjectSettings.storedSettings(project);
+            String interpreter = settings.getProjectInterpreter();
+            if (interpreter.isEmpty()) {
+                throw new RuntimeConfigurationException("No project interpreter configured");
+            }
+
+            Path path = Paths.get(interpreter);
+            if (!Files.isRegularFile(path) || !Files.isReadable(path)) {
+                throw new RuntimeConfigurationException("Project interpreter path is invalid or not readable.");
+            }
+        } else {
+            Path interpreterFile = Paths.get(interpreterPath);
+            if (!Files.isRegularFile(interpreterFile) || !Files.isReadable(interpreterFile)) {
+                throw new RuntimeConfigurationException("Interpreter path is invalid or not readable.");
+            }
         }
 
         if (StringUtil.isEmptyOrSpaces(scriptName)) {
@@ -124,7 +152,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Override
     public String suggestedName() {
-        String name = (new File(scriptName)).getName();
+        String name = (Paths.get(scriptName)).getFileName().toString();
 
         int ind = name.lastIndexOf('.');
         if (ind != -1) {
@@ -147,6 +175,11 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         interpreterPath = JDOMExternalizerUtil.readField(element, "INTERPRETER_PATH");
         workingDirectory = JDOMExternalizerUtil.readField(element, "WORKING_DIRECTORY");
 
+        String useProjectInterpreterValue = JDOMExternalizerUtil.readField(element, "USE_PROJECT_INTERPRETER");
+        if (useProjectInterpreterValue != null) {
+            useProjectInterpreter = Boolean.parseBoolean(useProjectInterpreterValue);
+        }
+
         String parentEnvValue = JDOMExternalizerUtil.readField(element, "PARENT_ENVS");
         if (parentEnvValue != null) {
             setPassParentEnvs(Boolean.parseBoolean(parentEnvValue));
@@ -164,6 +197,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         // common config
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_OPTIONS", interpreterOptions);
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_PATH", interpreterPath);
+        JDOMExternalizerUtil.writeField(element, "USE_PROJECT_INTERPRETER", Boolean.toString(useProjectInterpreter));
         JDOMExternalizerUtil.writeField(element, "WORKING_DIRECTORY", workingDirectory);
         JDOMExternalizerUtil.writeField(element, "PARENT_ENVS", Boolean.toString(isPassParentEnvs()));
 
@@ -210,10 +244,5 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     public void setScriptName(String scriptName) {
         this.scriptName = scriptName;
-    }
-
-    @Nullable
-    public GlobalSearchScope getSearchScope() {
-        return GlobalSearchScope.allScope(getProject());
     }
 }

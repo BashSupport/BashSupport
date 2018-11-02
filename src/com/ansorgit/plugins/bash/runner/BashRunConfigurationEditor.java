@@ -26,20 +26,19 @@ class BashRunConfigurationEditor extends SettingsEditor<BashRunConfiguration> {
     private BashConfigForm form;
 
     BashRunConfigurationEditor(Module module) {
-        this.form = new BashConfigForm();
-        this.form.setModuleContext(module);
+        this.form = new BashConfigForm(module);
     }
 
     @Override
     protected void resetEditorFrom(BashRunConfiguration runConfiguration) {
         form.reset(runConfiguration);
-        form.resetBash(runConfiguration);
+        form.resetFormTo(runConfiguration);
     }
 
     @Override
     protected void applyEditorTo(BashRunConfiguration runConfiguration) throws ConfigurationException {
         form.applyTo(runConfiguration);
-        form.applyBashTo(runConfiguration);
+        form.applySettingsTo(runConfiguration);
     }
 
     @Override
