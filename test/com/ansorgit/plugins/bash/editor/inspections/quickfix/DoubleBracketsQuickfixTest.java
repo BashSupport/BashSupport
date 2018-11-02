@@ -15,71 +15,16 @@
 
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.BashLightQuickfixParametrizedTest;
 import com.ansorgit.plugins.bash.editor.inspections.inspections.UseExtendedTestCommandInspection;
-import com.google.common.collect.Lists;
-import com.intellij.codeInsight.daemon.quickFix.LightQuickFixParameterizedTestCase;
-import com.intellij.codeInspection.InspectionEP;
-import com.intellij.codeInspection.InspectionProfileEntry;
-import com.intellij.codeInspection.LocalInspectionEP;
-import com.intellij.openapi.application.ApplicationInfo;
-import com.intellij.openapi.extensions.Extensions;
-import com.intellij.util.containers.ContainerUtil;
-import junit.framework.AssertionFailedError;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class DoubleBracketsQuickfixTest extends LightQuickFixParameterizedTestCase {
-    @Override
-    protected void doSingleTest(String fileSuffix, String testDataPath) {
-        enableInspectionTools(UseExtendedTestCommandInspection.class);
-        try {
-            super.doSingleTest(fileSuffix, testDataPath);
-        } catch (AssertionFailedError e) {
-            // ignore in 163.x
-            // for unknown reasons 163.x sets the file to read-only before executing the test case
-            // this seems like a bug
-            if (ApplicationInfo.getInstance().getBuild().getBaselineVersion() != 163) {
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    protected boolean isRunInWriteAction() {
-        return true;
-    }
-
-    @NotNull
-    @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath();
+public class DoubleBracketsQuickfixTest extends BashLightQuickfixParametrizedTest {
+    public DoubleBracketsQuickfixTest() {
+        super(UseExtendedTestCommandInspection.class);
     }
 
     @Override
     protected String getBasePath() {
         return "/quickfixes/doubleBracketsQuickfix";
-    }
-
-    protected void enableInspectionTools(@NotNull Class<?>... classes) {
-        final List<InspectionEP> eps = ContainerUtil.newArrayList();
-        ContainerUtil.addAll(eps, Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION));
-        ContainerUtil.addAll(eps, Extensions.getExtensions(InspectionEP.GLOBAL_INSPECTION));
-
-        ArrayList<InspectionProfileEntry> tools = Lists.newArrayList();
-        next:
-        for (Class<?> c : classes) {
-            for (InspectionEP ep : eps) {
-                if (c.getName().equals(ep.implementationClass)) {
-                    tools.add(ep.instantiateTool());
-                    continue next;
-                }
-            }
-            throw new IllegalArgumentException("Unable to find extension point for " + c.getName());
-        }
-
-        enableInspectionTools(tools.toArray(new InspectionProfileEntry[0]));
     }
 }

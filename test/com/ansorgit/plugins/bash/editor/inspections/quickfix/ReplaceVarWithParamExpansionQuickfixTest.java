@@ -1,35 +1,26 @@
+/*
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ansorgit.plugins.bash.editor.inspections.quickfix;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
+import com.ansorgit.plugins.bash.BashLightQuickfixParametrizedTest;
 import com.ansorgit.plugins.bash.editor.inspections.inspections.SimpleVarUsageInspection;
-import com.intellij.codeInsight.daemon.quickFix.LightQuickFixParameterizedTestCase;
-import com.intellij.codeInspection.InspectionEP;
-import com.intellij.codeInspection.InspectionProfileEntry;
-import com.intellij.codeInspection.LocalInspectionEP;
-import com.intellij.openapi.extensions.Extensions;
-import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class ReplaceVarWithParamExpansionQuickfixTest extends LightQuickFixParameterizedTestCase {
-
-    @Override
-    protected void doSingleTest(String fileSuffix, String testDataPath) {
-        enableInspectionTools(SimpleVarUsageInspection.class);
-
-        super.doSingleTest(fileSuffix, testDataPath);
-    }
-
-    @Override
-    protected boolean isRunInWriteAction() {
-        return true;
-    }
-
-    @NotNull
-    @Override
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath();
+public class ReplaceVarWithParamExpansionQuickfixTest extends BashLightQuickfixParametrizedTest {
+    public ReplaceVarWithParamExpansionQuickfixTest() {
+        super(SimpleVarUsageInspection.class);
     }
 
     @Override
@@ -37,25 +28,4 @@ public class ReplaceVarWithParamExpansionQuickfixTest extends LightQuickFixParam
         return "/quickfixes/replaceVarWithParamExpansionQuickfix";
     }
 
-    //copied from 162.x intellij-community branch to stay compatible
-    protected void enableInspectionTools(@NotNull Class<?>... classes) {
-        final InspectionProfileEntry[] tools = new InspectionProfileEntry[classes.length];
-
-        final List<InspectionEP> eps = ContainerUtil.newArrayList();
-        ContainerUtil.addAll(eps, Extensions.getExtensions(LocalInspectionEP.LOCAL_INSPECTION));
-        ContainerUtil.addAll(eps, Extensions.getExtensions(InspectionEP.GLOBAL_INSPECTION));
-
-        next:
-        for (int i = 0; i < classes.length; i++) {
-            for (InspectionEP ep : eps) {
-                if (classes[i].getName().equals(ep.implementationClass)) {
-                    tools[i] = ep.instantiateTool();
-                    continue next;
-                }
-            }
-            throw new IllegalArgumentException("Unable to find extension point for " + classes[i].getName());
-        }
-
-        enableInspectionTools(tools);
-    }
 }
