@@ -1,3 +1,7 @@
+#### 2018-11-02:
+  - [#478](https://github.com/BashSupport/BashSupport/issues/478): New setting for project wide interpreter path
+  - [#487](https://github.com/BashSupport/BashSupport/issues/487): Use native path for shell script and working directory for new Bash run configurations
+
 #### 2018-10-25:
  - [#521](https://github.com/BashSupport/BashSupport/issues/521): control+j does not offer for loop solutions (contributed by t0r0X)
 
