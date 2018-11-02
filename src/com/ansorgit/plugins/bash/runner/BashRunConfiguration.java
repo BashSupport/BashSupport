@@ -123,10 +123,6 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
             ProgramParametersUtil.checkWorkingDirectoryExist(this, project, module);
         }
 
-        if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
-            throw new RuntimeConfigurationException("No interpreter path given.");
-        }
-
         if (useProjectInterpreter) {
             BashProjectSettings settings = BashProjectSettings.storedSettings(project);
             String interpreter = settings.getProjectInterpreter();
@@ -139,6 +135,10 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
                 throw new RuntimeConfigurationException("Project interpreter path is invalid or not readable.");
             }
         } else {
+            if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
+                throw new RuntimeConfigurationException("No interpreter path given.");
+            }
+
             Path interpreterFile = Paths.get(interpreterPath);
             if (!Files.isRegularFile(interpreterFile) || !Files.isReadable(interpreterFile)) {
                 throw new RuntimeConfigurationException("Interpreter path is invalid or not readable.");
