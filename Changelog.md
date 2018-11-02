@@ -2,6 +2,7 @@
  - [#611](https://github.com/BashSupport/BashSupport/issues/611): Work around "class BashIcons not found" exception which is (probably) caused by a bug in IntelliJ
  - [#478](https://github.com/BashSupport/BashSupport/issues/478): New setting for project wide interpreter path
  - [#487](https://github.com/BashSupport/BashSupport/issues/487): Use native path for shell script and working directory for new Bash run configurations
+ - Version 1.7.0
 
 #### 2018-10-25:
  - [PR#614](https://github.com/BashSupport/BashSupport/pull/614): Extension and refactoring of live templates (contributed by t0r0X)
