@@ -17,6 +17,9 @@ package com.ansorgit.plugins.bash.lang.lexer;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.util.IntStack;
+import com.intellij.psi.tree.IElementType;
+
+import java.io.IOException;
 
 final class _BashLexer extends _BashLexerBase implements BashLexerDef {
     private final IntStack lastStates = new IntStack(25);
@@ -39,6 +42,17 @@ final class _BashLexer extends _BashLexerBase implements BashLexerDef {
         super(in);
 
         this.isBash4 = BashVersion.Bash_v4.equals(version);
+    }
+
+
+    @Override
+    public IElementType advance() throws IOException {
+        try {
+            return super.advance();
+        } catch (Error e) {
+            // provide the current file as context when a "couldn't match input" lexer error occurs
+            throw new Error("Error lexing Bash file:\n" + getBuffer(), e);
+        }
     }
 
     @Override
