@@ -55,6 +55,11 @@ import com.intellij.psi.tree.IElementType;
             backToPreviousState();
         }
     }
+
+    // return the complete buffer
+    protected CharSequence getBuffer() {
+        return zzBuffer;
+    }
 %}
 
 /***** Custom user code *****/

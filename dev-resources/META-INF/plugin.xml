@@ -24,7 +24,7 @@
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 181.x or later -->
+    <!-- Requires IDEA 145.x or later -->
     <idea-version since-build="145.0" until-build="183.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
@@ -40,7 +40,10 @@
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
-    Supports syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.
+    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br><br>
+    Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
+    <br>
+    There's no future for BashSupport without strong support from the community!
     </html>]]></description>
 
     <application-components>

@@ -10,42 +10,42 @@
  - [#521](https://github.com/BashSupport/BashSupport/issues/521): control+j does not offer for loop solutions (contributed by t0r0X)
 
 #### 2018-09-27:
- - \#572: False-positive unresolved variables using names matching prefix parameter expansion (contributed by nosovae-dev)
+ - [#572](https://github.com/BashSupport/BashSupport/issues/572): False-positive unresolved variables using names matching prefix parameter expansion (contributed by nosovae-dev)
 
 #### 2018-09-27:
- - \#599: Values passed to "export -f" were not resolved to the function definition
+ - [#599](https://github.com/BashSupport/BashSupport/issues/599): Values passed to "export -f" were not resolved to the function definition
 
 #### 2018-09-27:
- - \#526: Documentation wasn't shown when the caret was positioned at the end of a command
+ - [#526](https://github.com/BashSupport/BashSupport/issues/526): Documentation wasn't shown when the caret was positioned at the end of a command
 
 #### 2018-09-10:
- - \#400 Heredoc after command & is not parsed (contributed by nosovae-dev)
+ - [#400](https://github.com/BashSupport/BashSupport/issues/400) Heredoc after command & is not parsed (contributed by nosovae-dev)
 
 #### 2018-09-08:
- - \#477 Support for .bashrc (or custom file extensions)
- - \#568 variable incorrectly flagged as read-only (contributed by nosovae-dev)
+ - [#477](https://github.com/BashSupport/BashSupport/issues/477) Support for .bashrc (or custom file extensions)
+ - [#568](https://github.com/BashSupport/BashSupport/issues/568) variable incorrectly flagged as read-only (contributed by nosovae-dev)
 
 #### 2018-09-05:
- - \#318: Codefolding support (contributed by nosovae-dev)
- - \#546: Color schemes: "Inherit values from" has no effect when checked (contributed by nosovae-dev)
- - \#519: local -a arrays not recognized (contributed by nosovae-dev)
+ - [#318](https://github.com/BashSupport/BashSupport/issues/318): Codefolding support (contributed by nosovae-dev)
+ - [#546](https://github.com/BashSupport/BashSupport/issues/546): Color schemes: "Inherit values from" has no effect when checked (contributed by nosovae-dev)
+ - [#519](https://github.com/BashSupport/BashSupport/issues/519): local -a arrays not recognized (contributed by nosovae-dev)
  - variables declared by local -r are now treated as read-only (contributed by nosovae-dev)
 
 #### 2018-09-04:
- - \#518: printf -v "${var}" flagged as Error
+ - [#518](https://github.com/BashSupport/BashSupport/issues/518): printf -v "${var}" flagged as Error
 
 #### 2018-08-30:
- - \#540: Tilde (~) not resolved correctly in file paths
+ - [#540](https://github.com/BashSupport/BashSupport/issues/540): Tilde (~) not resolved correctly in file paths
 
 #### 2018-08-29:
- - \#522 Not a valid identifier in shell script with Bash functions with dash (contributed by nosovae-dev)
+ - [#522](https://github.com/BashSupport/BashSupport/issues/522) Not a valid identifier in shell script with Bash functions with dash (contributed by nosovae-dev)
 
 #### 2018-08-27:
  - Add action to create a report on the currently detected file type
 
 #### 2018-08-25:
  - fix to improve handling of local variables in functions
- - \#566: Fix slow startup of the IDE when BashSupport is installed
+ - [#566](https://github.com/BashSupport/BashSupport/issues/566): Fix slow startup of the IDE when BashSupport is installed
  - Enhancement: show path next to path command completion items
 
 #### 2018-08-14:
@@ -58,109 +58,109 @@
  - Add kotlin language for development plugin (contributed by nosovae-dev)
 
 #### 2018-07-25:
- - \#558: Enable execute button of Bash run configuration even when IntelliJ is indexing
- - \#551: Add default value TERM=xterm-256color when running a Bash script if there's not value defined in the run configuration
- - \#545: Don't parse "in" in "read in" as keyword, but as variable name
- - \#482: Make new Bash files executable for the current user by default
+ - [#558](https://github.com/BashSupport/BashSupport/issues/558): Enable execute button of Bash run configuration even when IntelliJ is indexing
+ - [#551](https://github.com/BashSupport/BashSupport/issues/551): Add default value TERM=xterm-256color when running a Bash script if there's not value defined in the run configuration
+ - [#545](https://github.com/BashSupport/BashSupport/issues/545): Don't parse "in" in "read in" as keyword, but as variable name
+ - [#482](https://github.com/BashSupport/BashSupport/issues/482): Make new Bash files executable for the current user by default
 
 #### 2018-07-24:
  - Feature: Add inspection to check, whether function name is in lower camel case (contribued by dheid)
  - Feature: Add inspection and quickfix to detect double brackets (contribued by dheid)
 
 #### 2018-03-07:
- - \#515: Not a valid identifier in shell script (dynamic variable names with export command)
+ - [#515](https://github.com/BashSupport/BashSupport/issues/515): Not a valid identifier in shell script (dynamic variable names with export command)
  - Release 1.6.13
 
 #### 2018-03-06:
- - \#328: Using ${#var} produces incorrect warning "Array use of non-array variable"
- - \#517: Incorrect warning "Array use of non-array variable"
+ - [#328](https://github.com/BashSupport/BashSupport/issues/328): Using ${#var} produces incorrect warning "Array use of non-array variable"
+ - [#517](https://github.com/BashSupport/BashSupport/issues/517): Incorrect warning "Array use of non-array variable"
 
 #### 2018-02-02:
- - \#505: Fixed "Lexer could not match input" error for redirect after here string
- - \#508: Argument values of the mapfile/readarray built-in were parsed as variable names
- - \#511: Pull request by contributor vn971.
- - \#512: Arguments ${10} and up flagged as errors when using curly brackets
+ - [#505](https://github.com/BashSupport/BashSupport/issues/505): Fixed "Lexer could not match input" error for redirect after here string
+ - [#508](https://github.com/BashSupport/BashSupport/issues/508): Argument values of the mapfile/readarray built-in were parsed as variable names
+ - [#511](https://github.com/BashSupport/BashSupport/issues/511): Pull request by contributor vn971.
+ - [#512](https://github.com/BashSupport/BashSupport/issues/512): Arguments ${10} and up flagged as errors when using curly brackets
 
 #### 2017-09-02:
- - \#457: Unresolved Variable Warning on Linebreak
- - \#460: Parse commands separated by |&
- - \#462: Unexpected Token w/ declare and some other constructs
- - \#465: BashShebang NPE
- - \#467: Deadlock in BashSupport
- - \#468: Functions assumed to have curly brace body
- - \#469: Support variables defined by `printf -v`
- - \#473: Support heredocs where the end marker is followed by a backtick
- - \#474: Support semicolon after command which starts a heredoc
+ - [#457](https://github.com/BashSupport/BashSupport/issues/457): Unresolved Variable Warning on Linebreak
+ - [#460](https://github.com/BashSupport/BashSupport/issues/460): Parse commands separated by |&
+ - [#462](https://github.com/BashSupport/BashSupport/issues/462): Unexpected Token w/ declare and some other constructs
+ - [#465](https://github.com/BashSupport/BashSupport/issues/465): BashShebang NPE
+ - [#467](https://github.com/BashSupport/BashSupport/issues/467): Deadlock in BashSupport
+ - [#468](https://github.com/BashSupport/BashSupport/issues/468): Functions assumed to have curly brace body
+ - [#469](https://github.com/BashSupport/BashSupport/issues/469): Support variables defined by `printf -v`
+ - [#473](https://github.com/BashSupport/BashSupport/issues/473): Support heredocs where the end marker is followed by a backtick
+ - [#474](https://github.com/BashSupport/BashSupport/issues/474): Support semicolon after command which starts a heredoc
  - Release 1.6.12
 
 #### 2017-08-29:
- - \#459: Fixed formatting of redirects with process substitutions
+ - [#459](https://github.com/BashSupport/BashSupport/issues/459): Fixed formatting of redirects with process substitutions
 
 #### 2017-07-27:
- - \#394: Renaming $1 shows 'Renaming unknown type $1' in the dialog
- - \#401: Parameter expansion parsing error
- - \#404: Using array variable without quotes generates a warning "Simple use of array variable"
- - \#411: NPE in OSUtil.findBestExecutable
- - \#412: Syntax Errors on valid code involving regular expression
- - \#433: BashCommandManipulator: Cannot modify a read-only file
- - \#444: Formatter removes space after empty string variable assignment
- - \#452: Concurrent modification in BashVarDefImpl
- - \#453: A weird light blue background is seen over my code area
- - \#454: Using "mapfile" results in "Array use of non-array variables"
- - \#456: NPE in BashVarDefImpl
+ - [#394](https://github.com/BashSupport/BashSupport/issues/394): Renaming $1 shows 'Renaming unknown type $1' in the dialog
+ - [#401](https://github.com/BashSupport/BashSupport/issues/401): Parameter expansion parsing error
+ - [#404](https://github.com/BashSupport/BashSupport/issues/404): Using array variable without quotes generates a warning "Simple use of array variable"
+ - [#411](https://github.com/BashSupport/BashSupport/issues/411): NPE in OSUtil.findBestExecutable
+ - [#412](https://github.com/BashSupport/BashSupport/issues/412): Syntax Errors on valid code involving regular expression
+ - [#433](https://github.com/BashSupport/BashSupport/issues/433): BashCommandManipulator: Cannot modify a read-only file
+ - [#444](https://github.com/BashSupport/BashSupport/issues/444): Formatter removes space after empty string variable assignment
+ - [#452](https://github.com/BashSupport/BashSupport/issues/452): Concurrent modification in BashVarDefImpl
+ - [#453](https://github.com/BashSupport/BashSupport/issues/453): A weird light blue background is seen over my code area
+ - [#454](https://github.com/BashSupport/BashSupport/issues/454): Using "mapfile" results in "Array use of non-array variables"
+ - [#456](https://github.com/BashSupport/BashSupport/issues/456): NPE in BashVarDefImpl
  - Release 1.6.12
 
 #### 2017-07-13:
- - \#451: Fix stub exceptions triggered by BashSupport while looking for include files
-  - \#450 If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.
- - \#449: Don't warn on variable identifiers declared in an eval block
+ - [#451](https://github.com/BashSupport/BashSupport/issues/451): Fix stub exceptions triggered by BashSupport while looking for include files
+  - [#450](https://github.com/BashSupport/BashSupport/issues/450) If a script has an exit call on toplevel we assume that all following lines contain non-bash/binary data. The content after the exit command will be highlighed as binary data. Before an exception was thrown and IDEA had to be restarted.
+ - [#449](https://github.com/BashSupport/BashSupport/issues/449): Don't warn on variable identifiers declared in an eval block
 
 #### 2017-06-17:
  - Removed "Build" step from default Bash run configuration
 
 #### 2017-05-02:
- - \#432: Unexpected token on correct line with here-string
- - \#427: Wrong autoformatting for wrapped heredoc
+ - [#432](https://github.com/BashSupport/BashSupport/issues/432): Unexpected token on correct line with here-string
+ - [#427](https://github.com/BashSupport/BashSupport/issues/427): Wrong autoformatting for wrapped heredoc
  - Released 1.6.9
 
 #### 2017-04-29:
- - \#418: Fix to parsed structure of variable assignment lists
+ - [#418](https://github.com/BashSupport/BashSupport/issues/418): Fix to parsed structure of variable assignment lists
 
 #### 2017-04-26:
- - \#426: Fixed parsing of arithmetic operators "^", "^^", "," ",,"
- - \#426: (Very) basic support to parse patterns in arithmetic expressions
- - \#424: Error displaying the folding elements in the HERE-document when there are variables in the text
- - \#431: The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
+ - [#426](https://github.com/BashSupport/BashSupport/issues/426): Fixed parsing of arithmetic operators "^", "^^", "," ",,"
+ - [#426](https://github.com/BashSupport/BashSupport/issues/426): (Very) basic support to parse patterns in arithmetic expressions
+ - [#424](https://github.com/BashSupport/BashSupport/issues/424): Error displaying the folding elements in the HERE-document when there are variables in the text
+ - [#431](https://github.com/BashSupport/BashSupport/issues/431): The arithmetic bitwise assignments |= &= and ^= are now correctly parsed.
  - Released 1.6.8
 
 #### 2017-04-11:
- - \#420: Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
- - \#419: Parsing error with double-pipe in subshell contained in list parenthesis
+ - [#420](https://github.com/BashSupport/BashSupport/issues/420): Assignment chains in arithmetic expressions have to static replacement values (an exception was thrown for $((a=1,b=2,c=3)), for example)
+ - [#419](https://github.com/BashSupport/BashSupport/issues/419): Parsing error with double-pipe in subshell contained in list parenthesis
 
 #### 2017-04-02:
- - \#413: Fix variable and function resolving in files which are outside of a module content root
- - \#409: Jump to function def does not work in language injected string literals
- - \#408: All variables in injected language chunks are flagged as unresolved
+ - [#413](https://github.com/BashSupport/BashSupport/issues/413): Fix variable and function resolving in files which are outside of a module content root
+ - [#409](https://github.com/BashSupport/BashSupport/issues/409): Jump to function def does not work in language injected string literals
+ - [#408](https://github.com/BashSupport/BashSupport/issues/408): All variables in injected language chunks are flagged as unresolved
 
 #### 2017-03-30:
- - \#358: Remove the maximum nesting level while parsing comamnds.
+ - [#358](https://github.com/BashSupport/BashSupport/issues/358): Remove the maximum nesting level while parsing comamnds.
  - Release 1.6.6 (eap)
 
 #### 2017-01-07:
- - \#398: Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.
- - \#399: Potential fix for java.lang.NoClassDefFoundError: com/ansorgit/plugins/bash/util/BashIcons
+ - [#398](https://github.com/BashSupport/BashSupport/issues/398): Error updating LexerEditorHighlighter, resulted in many error while working in a Bash script.
+ - [#399](https://github.com/BashSupport/BashSupport/issues/399): Potential fix for java.lang.NoClassDefFoundError: com/ansorgit/plugins/bash/util/BashIcons
  - Release 1.6.5
 
 #### 2017-01-03:
- - \#395: Hotfix to make BashSupport work again with scripts containing errors
- - \#396: Check for working directory only if the module is valid
- - \#397: Tokens after a here string <<< start were not always detected properly
+ - [#395](https://github.com/BashSupport/BashSupport/issues/395): Hotfix to make BashSupport work again with scripts containing errors
+ - [#396](https://github.com/BashSupport/BashSupport/issues/396): Check for working directory only if the module is valid
+ - [#397](https://github.com/BashSupport/BashSupport/issues/397): Tokens after a here string <<< start were not always detected properly
 
 #### 2016-12-31:
  - Prevent to pass empty elements to highlighting annotations
  - Fix a division by zero exception
  - Disable inline renaming if the context and the actual definition are in different files.
- - \#245: No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
+ - [#245](https://github.com/BashSupport/BashSupport/issues/245): No possibly incorrect warnings about unused parameters if shift is used in the function inside of a loop.
  - Release 1.6.1
  - Improved parsing to be more error resistant, functions and commands which contain faulty code will now be recognized more often
  - Handle line continuations in case pattern lists
@@ -168,77 +168,77 @@
  - Release 1.6.2
 
 #### 2016-12-30:
- - \#391: New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
- - \#388: Reformatting heredocs changes content
- - \#361: Added support for the mapfile and readarray Bash builtin comamnds
- - \#357: Added a potential fix for the problem
- - \#350: Redirection in eval statement is flagged as error
- - \#392: Formatted changes code in eval strings and redirect tokens
- - \#393: Update JFlex to the latest version
- - \#349: Support unicode characters in the script, warn about invalid identifiers which included illegal characters
+ - [#391](https://github.com/BashSupport/BashSupport/issues/391): New inspection to highlighting unresolved, but globally registered variables to have a separate highlighting level and inspection description.
+ - [#388](https://github.com/BashSupport/BashSupport/issues/388): Reformatting heredocs changes content
+ - [#361](https://github.com/BashSupport/BashSupport/issues/361): Added support for the mapfile and readarray Bash builtin comamnds
+ - [#357](https://github.com/BashSupport/BashSupport/issues/357): Added a potential fix for the problem
+ - [#350](https://github.com/BashSupport/BashSupport/issues/350): Redirection in eval statement is flagged as error
+ - [#392](https://github.com/BashSupport/BashSupport/issues/392): Formatted changes code in eval strings and redirect tokens
+ - [#393](https://github.com/BashSupport/BashSupport/issues/393): Update JFlex to the latest version
+ - [#349](https://github.com/BashSupport/BashSupport/issues/349): Support unicode characters in the script, warn about invalid identifiers which included illegal characters
 
 #### 2016-12-29:
- - \#351: Added debug message for further diagnosis
+ - [#351](https://github.com/BashSupport/BashSupport/issues/351): Added debug message for further diagnosis
  - Added support for the ## parameter expansion operator
- - \#367: Fixed parsing of [[ $(< $1) ]] expression
- - \#367: Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
- - \#383: Handle division by zero in arithmetic expressions and show a warning in the code
- - \#368: Added debugging messages for arithmetic expressions
+ - [#367](https://github.com/BashSupport/BashSupport/issues/367): Fixed parsing of [[ $(< $1) ]] expression
+ - [#367](https://github.com/BashSupport/BashSupport/issues/367): Fixed parsing of here-strings, e.g. "tr [:lower:] [:upper:] <<< [abc]"
+ - [#383](https://github.com/BashSupport/BashSupport/issues/383): Handle division by zero in arithmetic expressions and show a warning in the code
+ - [#368](https://github.com/BashSupport/BashSupport/issues/368): Added debugging messages for arithmetic expressions
  - Release 1.6.0
 
 #### 2016-12-28:
- - \#377: NPE in UnregisterGlobalVariableQuickfix
- - \#379: Undo "Register Global Variable" doesn't work
- - \#388: References for files are now searched in the module content scope and not in the module scope.
- - \#389: Files with line continuations were not parsed properly and may break the whole project
+ - [#377](https://github.com/BashSupport/BashSupport/issues/377): NPE in UnregisterGlobalVariableQuickfix
+ - [#379](https://github.com/BashSupport/BashSupport/issues/379): Undo "Register Global Variable" doesn't work
+ - [#388](https://github.com/BashSupport/BashSupport/issues/388): References for files are now searched in the module content scope and not in the module scope.
+ - [#389](https://github.com/BashSupport/BashSupport/issues/389): Files with line continuations were not parsed properly and may break the whole project
  - Start of 1.6.x version
 
 #### 2016-05-26:
- - \#310: The parsed now accepts more deeply nested command lists
- - \#329: "Unexpected Token" Error For Associative Array
- - \#333: Marked support for escapes in evaluated code as experimental. A proper fix needs major work on the lexer framework and is currently not fully supported. There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.
- - \#343: Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "
+ - [#310](https://github.com/BashSupport/BashSupport/issues/310): The parsed now accepts more deeply nested command lists
+ - [#329](https://github.com/BashSupport/BashSupport/issues/329): "Unexpected Token" Error For Associative Array
+ - [#333](https://github.com/BashSupport/BashSupport/issues/333): Marked support for escapes in evaluated code as experimental. A proper fix needs major work on the lexer framework and is currently not fully supported. There is a new experimental setting in the BashSupport settings dialog. Use it at your own risk.
+ - [#343](https://github.com/BashSupport/BashSupport/issues/343): Exception "isExpectingEvaluatingHeredoc called on an empty marker stack "
  - Parsing for arithmetic expression in evaluating heredocs
 
 #### 2016-05-22:
- - \#341: Exception "The inString stack should not be empty"
- - \#342: Exception "Index out of range: -1" at beginning of file
+ - [#341](https://github.com/BashSupport/BashSupport/issues/341): Exception "The inString stack should not be empty"
+ - [#342](https://github.com/BashSupport/BashSupport/issues/342): Exception "Index out of range: -1" at beginning of file
  - Released 1.5.7
 
 #### 2016-05-18:
- - \#339: Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)
- - \#340: isExpectingEvaluatingHeredoc called on an empty marker stack
+ - [#339](https://github.com/BashSupport/BashSupport/issues/339): Update failed for AnAction with ID=ExternalJavaDoc (ClassCastException)
+ - [#340](https://github.com/BashSupport/BashSupport/issues/340): isExpectingEvaluatingHeredoc called on an empty marker stack
 
 #### 2016-05-18:
  - Released 1.5.6
 
 #### 2016-05-17:
- - \#331: NPE in HereDoc parsing
- - \#332: NPE in enter processor
- - \#332: ClassCastExceptions in ManpageDocSourc
- - \#334: Potential fix for the lexing state errors
+ - [#331](https://github.com/BashSupport/BashSupport/issues/331): NPE in HereDoc parsing
+ - [#332](https://github.com/BashSupport/BashSupport/issues/332): NPE in enter processor
+ - [#332](https://github.com/BashSupport/BashSupport/issues/332): ClassCastExceptions in ManpageDocSourc
+ - [#334](https://github.com/BashSupport/BashSupport/issues/334): Potential fix for the lexing state errors
 
 #### 2016-05-16:
- - \#330: Variable declarations in eval code now accepts variables on the left side of an assignment
+ - [#330](https://github.com/BashSupport/BashSupport/issues/330): Variable declarations in eval code now accepts variables on the left side of an assignment
 
 #### 2016-04-22:
- - \#320: Array use in arithmetic expressions wasn't working as expected
+ - [#320](https://github.com/BashSupport/BashSupport/issues/320): Array use in arithmetic expressions wasn't working as expected
 
 #### 2016-04-16:
- - \#321: Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
+ - [#321](https://github.com/BashSupport/BashSupport/issues/321): Handle leading tabs before heredoc end markers in heredocs started with the marker <<-
 
 #### 2016-04-19:
- - \#324 Error reporting component is broken
+ - [#324](https://github.com/BashSupport/BashSupport/issues/324) Error reporting component is broken
  - Switched the exception error reporting to use https.
 
 #### 2016-04-22:
- - \#327: Heredoc parser doesn't recognize \$( or \${ construction
+ - [#327](https://github.com/BashSupport/BashSupport/issues/327): Heredoc parser doesn't recognize \$( or \${ construction
 
 #### 2016-04-24:
- - \#89: Function expands incorrectly when defined above another function
+ - [#89](https://github.com/BashSupport/BashSupport/issues/89): Function expands incorrectly when defined above another function
 
 #### 2016-03-31:
- - \#310: Workaround for deeply nested structures
+ - [#310](https://github.com/BashSupport/BashSupport/issues/310): Workaround for deeply nested structures
 
 #### 2016-03-12:
  - Removed Bash facet, it wasn't used any more. Also, facets are unavailable on the minor platform products.
@@ -246,7 +246,7 @@
  - Configured copyright plugin
 
 #### 2016-02-23:
- - \#125: Array element gives "Unexpected token"
+ - [#125](https://github.com/BashSupport/BashSupport/issues/125): Array element gives "Unexpected token"
 
 #### 2016-02-23:
  - Release 1.5.5
@@ -255,35 +255,35 @@
  - No keyword and live-template autocompletion in command arguments
  - Performance fixes for less latency in the editor
  - Variables and functions can now be resolved in scratch files again
- - \#306: Index access during dumb mode
- - \#306: Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
+ - [#306](https://github.com/BashSupport/BashSupport/issues/306): Index access during dumb mode
+ - [#306](https://github.com/BashSupport/BashSupport/issues/306): Could not initialize class nu.studer.idea.errorreporting.PluginErrorReportSubmitterBundle
 
 #### 2016-02-20:
- - \#313: More gentle parsing for empty command lists for: for, while, until, if, select.
+ - [#313](https://github.com/BashSupport/BashSupport/issues/313): More gentle parsing for empty command lists for: for, while, until, if, select.
 
 #### 2016-02-20:
- - \#312: Newlines are not accepted in parameter expansions
+ - [#312](https://github.com/BashSupport/BashSupport/issues/312): Newlines are not accepted in parameter expansions
 
 #### 2016-02-20:
- - \#297: File includes with directories or / in the path reference are not working as expected
+ - [#297](https://github.com/BashSupport/BashSupport/issues/297): File includes with directories or / in the path reference are not working as expected
 
 #### 2016-02-01:
- - \#300: Variables are not recognized in case
+ - [#300](https://github.com/BashSupport/BashSupport/issues/300): Variables are not recognized in case
 
 #### 2016-02-01:
- - \#303: Multiline lists not recognised
+ - [#303](https://github.com/BashSupport/BashSupport/issues/303): Multiline lists not recognised
 
 #### 2016-02-01:
- - \#308: Grouping in test commands not properly parsed
+ - [#308](https://github.com/BashSupport/BashSupport/issues/308): Grouping in test commands not properly parsed
 
 #### 2016-01-06:
- - \#299: ClassNotFound exception in PHPStorm
+ - [#299](https://github.com/BashSupport/BashSupport/issues/299): ClassNotFound exception in PHPStorm
 
 #### 2015-12-20
- - \#286: Eval parsing of code not inside a string
+ - [#286](https://github.com/BashSupport/BashSupport/issues/286): Eval parsing of code not inside a string
 
 #### 2015-12-15
- - \#263: Warning for modifications of variables re-defined as readonly
+ - [#263](https://github.com/BashSupport/BashSupport/issues/263): Warning for modifications of variables re-defined as readonly
 
 #### 2015-12-11
  - Up to 35x faster file highlighting
@@ -291,67 +291,67 @@
  - Composed commands (if,while,do,case,...) may be the body of a function, i.e. without curly brackets
 
 #### 2015-11-04
- - \#290: Inspections have no descriptions
- - \#289: Quickdoc lookup not working for keywords
- - \#288: Documentation lookup not working for functions
- - \#283: Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
+ - [#290](https://github.com/BashSupport/BashSupport/issues/290): Inspections have no descriptions
+ - [#289](https://github.com/BashSupport/BashSupport/issues/289): Quickdoc lookup not working for keywords
+ - [#288](https://github.com/BashSupport/BashSupport/issues/288): Documentation lookup not working for functions
+ - [#283](https://github.com/BashSupport/BashSupport/issues/283): Highlighting of built-in commands: added missing highlighting of "source", "trap", "let", "coproc" and "mapfile"
  - Released 1.5.2
 
 #### 2015-10-19
- - \#282: Improved file type guessing for files without an extension
+ - [#282](https://github.com/BashSupport/BashSupport/issues/282): Improved file type guessing for files without an extension
 
 #### 2015-10-19
- - \#280: Unnecessary error if there is no module available for a run configuration
+ - [#280](https://github.com/BashSupport/BashSupport/issues/280): Unnecessary error if there is no module available for a run configuration
 
 #### 2015-10-06
  - Released 1.5.1
 
 #### 2015-10-05
- - \#274: Spellchecking support in single-quotes strings, double-quotes strings and heredoc content
+ - [#274](https://github.com/BashSupport/BashSupport/issues/274): Spellchecking support in single-quotes strings, double-quotes strings and heredoc content
 
 #### 2015-09-16
- - \#273: An exception was thrown if the Bash settings were opened by the welcome screen
+ - [#273](https://github.com/BashSupport/BashSupport/issues/273): An exception was thrown if the Bash settings were opened by the welcome screen
 
 #### 2015-08-19
- - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
- - \#270: Escape handling in heredoc content
+ - [#270](https://github.com/BashSupport/BashSupport/issues/270): Incorrect parsing and 'Unresolved variable' report for heredocs
+ - [#270](https://github.com/BashSupport/BashSupport/issues/270): Escape handling in heredoc content
 
 #### 2015-08-14
- - \#90: Language injection into unevaluated heredoc content, single and double quoted strings
+ - [#90](https://github.com/BashSupport/BashSupport/issues/90): Language injection into unevaluated heredoc content, single and double quoted strings
 
 #### 2015-08-13
- - \#206: NPE in ProgramParametersConfigurator
- - \#266: Valid parameter expansion ${#} marked as an error
- - \#271: Empty subshell rejected as invalid
- - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
- - \#228 Support for the trap command.
+ - [#206](https://github.com/BashSupport/BashSupport/issues/206): NPE in ProgramParametersConfigurator
+ - [#266](https://github.com/BashSupport/BashSupport/issues/266): Valid parameter expansion ${#} marked as an error
+ - [#271](https://github.com/BashSupport/BashSupport/issues/271): Empty subshell rejected as invalid
+ - [#270](https://github.com/BashSupport/BashSupport/issues/270): Incorrect parsing and 'Unresolved variable' report for heredocs
+ - [#228](https://github.com/BashSupport/BashSupport/issues/228) Support for the trap command.
 
 #### 2015-08-11
- - \#265: Digit $ is invalid with base 10
+ - [#265](https://github.com/BashSupport/BashSupport/issues/265): Digit $ is invalid with base 10
 
 #### 2015-07-18
- - \#237: BashSupport not saving globals entered into "Registered global variables" settings
+ - [#237](https://github.com/BashSupport/BashSupport/issues/237): BashSupport not saving globals entered into "Registered global variables" settings
  - Heredoc parsing improvement: The processing is more robust, more correct and should be faster, too.
 
 #### 2015-07-12
- - \#246: Minor Single Quote Escaping Issue
+ - [#246](https://github.com/BashSupport/BashSupport/issues/246): Minor Single Quote Escaping Issue
 
 #### 2015-07-07
- - \#201: Cannot parse logical not in arithmetic expressions
- - \#238: Replace with evaluated expansion" works incorrectly
+ - [#201](https://github.com/BashSupport/BashSupport/issues/201): Cannot parse logical not in arithmetic expressions
+ - [#238](https://github.com/BashSupport/BashSupport/issues/238): Replace with evaluated expansion" works incorrectly
 
 #### 2015-09-16
- - \#273: An exception was thrown if the Bash settings were opened by the welcome screen
+ - [#273](https://github.com/BashSupport/BashSupport/issues/273): An exception was thrown if the Bash settings were opened by the welcome screen
 
 #### 2015-08-19
- - \#270: Incorrect parsing and 'Unresolved variable' report for heredocs
- - \#270: Escape handling in heredoc content
+ - [#270](https://github.com/BashSupport/BashSupport/issues/270): Incorrect parsing and 'Unresolved variable' report for heredocs
+ - [#270](https://github.com/BashSupport/BashSupport/issues/270): Escape handling in heredoc content
 
 #### 2015-07-06
  - Bash code passed to eval in single quotes ('') is now parsed, too
 
 #### 2015-07-04
- - \#243: Single line case statement parse error
+ - [#243](https://github.com/BashSupport/BashSupport/issues/243): Single line case statement parse error
 
 #### 2015-07-02
  - Files usages in strings are now processed during a file rename if the option is enabled.
@@ -365,7 +365,7 @@
 #### 2015-06-14
  - Fixed renaming of filenames in unevaluated strings, e.g. 'file.bash'
  - New Bash files are now created from a template. If you want to customize the default script you can modify the template "Bash Script" in the IntelliJ settings.
- - \#223: Update failed for AnAction with ID=Bash.NewBashScript: Already disposed
+ - [#223](https://github.com/BashSupport/BashSupport/issues/223): Update failed for AnAction with ID=Bash.NewBashScript: Already disposed
 
 #### 2015-06-11
  - Fixed renaming of Bash files, IntelliJ had a feature for all files to turn off search for references. This is now disabled for Bash files. References are always changed if a Bash file is renamed.
@@ -383,8 +383,8 @@
 
 #### 2015-03-04
  - Version 1.4.0
- - \#193: Variables in arithmetic base expressions were not supported
- - \#194: $(( 8\#9 )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.
+ - [#193](https://github.com/BashSupport/BashSupport/issues/193): Variables in arithmetic base expressions were not supported
+ - [#194](https://github.com/BashSupport/BashSupport/issues/194): $(( 8[#9](https://github.com/BashSupport/BashSupport/issues/9) )) threw an exception about an invalid base 8 for the value 9. A warning is now displayed in the editor instead.
 
 #### 2015-03-03
  - Fixed the "Run before" steps of a Bash run configuration
@@ -403,22 +403,22 @@
  - Added live template context for Bash files
  - Added basic Bash live templates: if, ife, ifee, while, until, case, cap, cap2, cap3
  - Possible fix for a stack overflow in the parser (not reproducible here, though)
- - \#190: Fixed UOE error in the "register as global variable" quickfix
- - \#179: Fixed NPE in FileInclusionManager
- - \#152: Guard to prevent endless recursions
+ - [#190](https://github.com/BashSupport/BashSupport/issues/190): Fixed UOE error in the "register as global variable" quickfix
+ - [#179](https://github.com/BashSupport/BashSupport/issues/179): Fixed NPE in FileInclusionManager
+ - [#152](https://github.com/BashSupport/BashSupport/issues/152): Guard to prevent endless recursions
  - Parser performance improvement
 
 #### 2015-02-27
- - \#192: Fixed NPE in highlighting of arithmetic expressions
- - \#170: Keywords like "fi", "if", "while", "done" were not offered in the list of autocompletion suggestions
+ - [#192](https://github.com/BashSupport/BashSupport/issues/192): Fixed NPE in highlighting of arithmetic expressions
+ - [#170](https://github.com/BashSupport/BashSupport/issues/170): Keywords like "fi", "if", "while", "done" were not offered in the list of autocompletion suggestions
  - Fixed autocompletion at the end of a string, e.g. "$a<caret>". The string end marker was replaced if tab was pressed.
  - Fixed autocompletion with open strings, e.g. $a<caret>\necho "x". The command in the next line was removed if tab was pressed.
  - Fixed autocompletion in curly brackets, e.g. ${<caret>}. The right curly bracket was removed if tab was pressed.
  - Fixed missing autocompletion of global variables and built-in commands inside of parameter expansions
 
 #### 2015-02-13
- - \#184: Single quoted associative array keys parsing error
- - \#186: Erroneous warning "Simple use of array variable" when iterating through array
+ - [#184](https://github.com/BashSupport/BashSupport/issues/184): Single quoted associative array keys parsing error
+ - [#186](https://github.com/BashSupport/BashSupport/issues/186): Erroneous warning "Simple use of array variable" when iterating through array
 
 #### 2015-02-08
  - NPE fix for FileInclusionManager
@@ -474,7 +474,7 @@
  - Major work on the run configuration: Ansi colors supported, reuse of default components, bugs fixed
 
 #### 2014-11-25
- - \#166: Support for ToDo-Strings in Bash comments
+ - [#166](https://github.com/BashSupport/BashSupport/issues/166): Support for ToDo-Strings in Bash comments
 
 #### 2014-11-13
  - Fixed QuickFix implementations to not reference PSI element, reduces memory consumption
@@ -516,7 +516,7 @@
  - Small improvement to file type checking for files without extensions
 
 #### 2013-12-07
- - Bug \#116: Fixed value expansions with a string prefix. "a"{1,2} is now properly expanded to 'a1 a2'.
+ - Bug [#116](https://github.com/BashSupport/BashSupport/issues/116): Fixed value expansions with a string prefix. "a"{1,2} is now properly expanded to 'a1 a2'.
 
 #### 2013-12-02
  - 1.1beta20 for IDEA 13
@@ -708,8 +708,8 @@
  - Version 0.9.22
 
 #### 2011-03-31
- - \#47: Lexer fixes to parse ${_a}
- - \#46: Default value with parentheses not parsed correctly
+ - [#47](https://github.com/BashSupport/BashSupport/issues/47): Lexer fixes to parse ${_a}
+ - [#46](https://github.com/BashSupport/BashSupport/issues/46): Default value with parentheses not parsed correctly
 
 #### 2011-03-29
  - Find usages enabled on function definitions
@@ -739,7 +739,7 @@
 
 #### 2011-02-18
  - Ctrl+B on file references (e.g. in include command) is supported now
- - Issue \#35: Math calculations using square brackets not supported
+ - Issue [#35](https://github.com/BashSupport/BashSupport/issues/35): Math calculations using square brackets not supported
 
 #### 2011-02-15
   - Improved autocompletion
@@ -760,12 +760,12 @@
  - Support for include files and contained elements (find references, rename, go to defintion, ...)
 
 #### 2011-01-28
- - Issue \#32: Length-function not supported: Expected a command
+ - Issue [#32](https://github.com/BashSupport/BashSupport/issues/32): Length-function not supported: Expected a command
 
 #### 2011-01-26
- - Issue \#34: Unresolved variable in string definition
- - Issue \#35: Math calculations using square brackets not supported
- - Issue \#36: Incorrect inspection of unused parameter when using $* inside function
+ - Issue [#34](https://github.com/BashSupport/BashSupport/issues/34): Unresolved variable in string definition
+ - Issue [#35](https://github.com/BashSupport/BashSupport/issues/35): Math calculations using square brackets not supported
+ - Issue [#36](https://github.com/BashSupport/BashSupport/issues/36): Incorrect inspection of unused parameter when using $* inside function
 
 #### 2010-12-29
  - More inspection test cases

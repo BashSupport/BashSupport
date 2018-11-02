@@ -25,11 +25,17 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Detects single brackets and recommends to use double brackets
+ * @author dheid
  */
 public class UseExtendedTestCommandInspection extends LocalInspectionTool {
 
-    static class ExtendedTestCommandVisitor extends BashVisitor {
+    @NotNull
+    @Override
+    public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
+        return new ExtendedTestCommandVisitor(isOnTheFly, holder);
+    }
 
+    static class ExtendedTestCommandVisitor extends BashVisitor {
         private static final String DESCRIPTION = "Replace with double brackets";
 
         private final boolean onTheFly;
@@ -47,11 +53,5 @@ public class UseExtendedTestCommandInspection extends LocalInspectionTool {
                 holder.registerProblem(conditionalCommand, DESCRIPTION, quickfix);
             }
         }
-    }
-
-    @NotNull
-    @Override
-    public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly) {
-        return new ExtendedTestCommandVisitor(isOnTheFly, holder);
     }
 }
