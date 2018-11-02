@@ -1,3 +1,6 @@
+#### 2018-11-02:
+ - [#611](https://github.com/BashSupport/BashSupport/issues/611): Work around "class BashIcons not found" exception which is (probably) caused by a bug in IntelliJ
+
 #### 2018-10-25:
  - [#521](https://github.com/BashSupport/BashSupport/issues/521): control+j does not offer for loop solutions (contributed by t0r0X)
 
