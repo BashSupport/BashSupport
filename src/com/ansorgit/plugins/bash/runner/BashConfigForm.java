@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.runner;
 import com.intellij.execution.ui.CommonProgramParametersPanel;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -26,7 +25,6 @@ import com.intellij.ui.MacroAwareTextBrowseFolderListener;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.util.ui.UIUtil;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,15 +39,6 @@ public class BashConfigForm extends CommonProgramParametersPanel {
 
     private LabeledComponent<JComponent> scriptNameComponent;
     private TextFieldWithBrowseButton scriptNameField;
-
-    public BashConfigForm(@Nullable Module module) {
-        super(false); // no early init
-
-        if (module != null) {
-            setModuleContext(module);
-        }
-        init();
-    }
 
     @Override
     public void setAnchor(JComponent anchor) {

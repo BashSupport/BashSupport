@@ -26,7 +26,8 @@ class BashRunConfigurationEditor extends SettingsEditor<BashRunConfiguration> {
     private BashConfigForm form;
 
     BashRunConfigurationEditor(Module module) {
-        this.form = new BashConfigForm(module);
+        this.form = new BashConfigForm();
+        this.form.setModuleContext(module);
     }
 
     @Override
