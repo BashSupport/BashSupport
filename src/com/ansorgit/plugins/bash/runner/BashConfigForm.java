@@ -45,7 +45,9 @@ public class BashConfigForm extends CommonProgramParametersPanel {
     public BashConfigForm(@Nullable Module module) {
         super(false); // no early init
 
-        setModuleContext(module);
+        if (module != null) {
+            setModuleContext(module);
+        }
         init();
     }
 
