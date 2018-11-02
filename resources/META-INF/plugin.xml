@@ -24,7 +24,7 @@
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 145.x to IDEA 182.x -->
+    <!-- Requires IDEA 145.x or later -->
     <idea-version since-build="145.0" until-build="183.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
@@ -34,14 +34,14 @@
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
-    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
-    Do you like it? Give it a star at [GitHub](https://github.com/BashSupport/BashSupport). Rate it at [plugin.jetbrains.com](https://plugins.jetbrains.com/plugin/4230-bashsupport).
+    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br><br>
+    Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
     There's no future for BashSupport without strong support from the community!
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
-        A big thank you to the contributors: <b>dheid</b>, <b>nosovae-dev</b>, <b>t0r0X</b>.<br>
+        A special thank to <a href="https://github.com/dheid">@dheid</a>, <a href="https://github.com/nosovae-dev">@nosovae-dev</a>, <a href="https://github.com/t0r0X">@t0r0X</a>.<br>
         <b>Changes in version 1.7.0:</b>
         <ul>
              <li>Feature: New icons (contributed by nosovae-dev)</li>
