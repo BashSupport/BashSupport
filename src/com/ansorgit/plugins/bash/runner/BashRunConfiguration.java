@@ -62,7 +62,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         return getAllModules();
     }
 
-    @Override
+    //@Override //removed in 183.x
     public boolean isCompileBeforeLaunchAddedByDefault() {
         return false;
     }
