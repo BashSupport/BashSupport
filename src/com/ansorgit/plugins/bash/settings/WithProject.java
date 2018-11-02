@@ -13,24 +13,20 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.runner;
+package com.ansorgit.plugins.bash.settings;
 
-import com.intellij.execution.CommonProgramRunConfigurationParameters;
+import com.intellij.openapi.project.Project;
 
-public interface BashRunConfigurationParams extends CommonProgramRunConfigurationParameters {
-    boolean isUseProjectInterpreter();
+/**
+ * Workaround limitations of the IntelliJ-generated forms. "initComponents()" is called before the constructor, thus
+ * we need to use a super-class to provide a non-null value of the project.
+ *
+ * @author jansorg
+ */
+class WithProject {
+    protected final Project project;
 
-    void setUseProjectInterpreter(boolean useProjectInterpreter);
-
-    String getInterpreterPath();
-
-    void setInterpreterPath(String interpreterPath);
-
-    String getInterpreterOptions();
-
-    void setInterpreterOptions(String options);
-
-    String getScriptName();
-
-    void setScriptName(String scriptName);
+    public WithProject(Project project) {
+        this.project = project;
+    }
 }

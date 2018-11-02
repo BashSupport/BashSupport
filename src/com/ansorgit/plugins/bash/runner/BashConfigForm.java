@@ -18,10 +18,13 @@ package com.ansorgit.plugins.bash.runner;
 import com.intellij.execution.ui.CommonProgramParametersPanel;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.MacroAwareTextBrowseFolderListener;
 import com.intellij.ui.RawCommandLineEditor;
+import com.intellij.ui.components.JBCheckBox;
+import com.intellij.util.ui.UIUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,54 +34,81 @@ public class BashConfigForm extends CommonProgramParametersPanel {
     private LabeledComponent<JComponent> interpreterPathComponent;
     private TextFieldWithBrowseButton interpreterPathField;
 
+    private JBCheckBox projectInterpreterCheckbox;
+    private LabeledComponent<JBCheckBox> projectInterpreterLabeled;
+
     private LabeledComponent<JComponent> scriptNameComponent;
     private TextFieldWithBrowseButton scriptNameField;
 
-    public BashConfigForm() {
+    @Override
+    public void setAnchor(JComponent anchor) {
+        super.setAnchor(anchor);
+        projectInterpreterCheckbox.setAnchor(anchor);
+        interpreterParametersComponent.setAnchor(anchor);
+        interpreterPathComponent.setAnchor(anchor);
+        scriptNameComponent.setAnchor(anchor);
+    }
+
+    @Override
+    protected void setupAnchor() {
+        super.setupAnchor();
+        myAnchor = UIUtil.mergeComponentsWithAnchor(this, projectInterpreterLabeled, interpreterParametersComponent, interpreterPathComponent, scriptNameComponent);
     }
 
     protected void initOwnComponents() {
-        interpreterParametersComponent = LabeledComponent.create(new RawCommandLineEditor(), "Interpreter options");
-        interpreterParametersComponent.setLabelLocation(BorderLayout.WEST);
+        Project project = getProject();
 
         FileChooserDescriptor chooseInterpreterDescriptor = FileChooserDescriptorFactory.createSingleLocalFileDescriptor();
-        chooseInterpreterDescriptor.setTitle("Choose interpreter...");
+        chooseInterpreterDescriptor.setTitle("Choose Interpreter...");
 
         interpreterPathField = new TextFieldWithBrowseButton();
-        interpreterPathField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(chooseInterpreterDescriptor, getProject()));
+        interpreterPathField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(chooseInterpreterDescriptor, project));
+
         interpreterPathComponent = LabeledComponent.create(createComponentWithMacroBrowse(interpreterPathField), "Interpreter path:");
         interpreterPathComponent.setLabelLocation(BorderLayout.WEST);
 
+        projectInterpreterCheckbox = new JBCheckBox();
+        projectInterpreterCheckbox.setToolTipText("If enabled then the interpreter path configured in the project settings will be used instead of a custom location.");
+        projectInterpreterCheckbox.addChangeListener(e -> {
+            boolean selected = projectInterpreterCheckbox.isSelected();
+            UIUtil.setEnabled(interpreterPathComponent, !selected, true);
+        });
+        projectInterpreterLabeled = LabeledComponent.create(projectInterpreterCheckbox, "Use project interpreter");
+        projectInterpreterLabeled.setLabelLocation(BorderLayout.WEST);
 
-        FileChooserDescriptor chooseScriptDescriptor = FileChooserDescriptorFactory.createSingleLocalFileDescriptor();
+        interpreterParametersComponent = LabeledComponent.create(new RawCommandLineEditor(), "Interpreter options");
+        interpreterParametersComponent.setLabelLocation(BorderLayout.WEST);
+
         scriptNameField = new TextFieldWithBrowseButton();
-        scriptNameField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(chooseScriptDescriptor, getProject()));
+        scriptNameField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(FileChooserDescriptorFactory.createSingleLocalFileDescriptor(), project));
 
         scriptNameComponent = LabeledComponent.create(createComponentWithMacroBrowse(scriptNameField), "Script:");
         scriptNameComponent.setLabelLocation(BorderLayout.WEST);
     }
-
 
     @Override
     protected void addComponents() {
         initOwnComponents();
 
         add(scriptNameComponent);
+        add(projectInterpreterLabeled);
         add(interpreterPathComponent);
         add(interpreterParametersComponent);
 
         super.addComponents();
     }
 
-    public void resetBash(BashRunConfiguration configuration) {
-        interpreterParametersComponent.getComponent().setText(configuration.getInterpreterOptions());
+    public void resetFormTo(BashRunConfiguration configuration) {
+        projectInterpreterCheckbox.setSelected(configuration.isUseProjectInterpreter());
         interpreterPathField.setText(configuration.getInterpreterPath());
+        interpreterParametersComponent.getComponent().setText(configuration.getInterpreterOptions());
         scriptNameField.setText(configuration.getScriptName());
     }
 
-    public void applyBashTo(BashRunConfiguration configuration) {
-        configuration.setInterpreterOptions(interpreterParametersComponent.getComponent().getText());
+    public void applySettingsTo(BashRunConfiguration configuration) {
+        configuration.setUseProjectInterpreter(projectInterpreterCheckbox.isSelected());
         configuration.setInterpreterPath(interpreterPathField.getText());
+        configuration.setInterpreterOptions(interpreterParametersComponent.getComponent().getText());
         configuration.setScriptName(scriptNameField.getText());
     }
 }

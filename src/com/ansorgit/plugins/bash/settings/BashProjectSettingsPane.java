@@ -16,6 +16,10 @@
 package com.ansorgit.plugins.bash.settings;
 
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -28,7 +32,9 @@ import java.util.*;
 /**
  * @author jansorg
  */
-public class BashProjectSettingsPane implements Disposable {
+public class BashProjectSettingsPane extends WithProject implements Disposable {
+    JCheckBox useTerminalPlugin;
+    JCheckBox validateWithCurrentEnv;
     private JPanel settingsPane;
     private JTextArea globalVarList;
     private JCheckBox globalVarAutocompletion;
@@ -39,8 +45,11 @@ public class BashProjectSettingsPane implements Disposable {
     private JCheckBox autocompletePathCommands;
     private JCheckBox globalFunctionVarDefs;
     private JCheckBox enableEvalEscapesCheckbox;
-    JCheckBox useTerminalPlugin;
-    JCheckBox validateWithCurrentEnv;
+    TextFieldWithBrowseButton interpreterPath;
+
+    public BashProjectSettingsPane(Project project) {
+        super(project);
+    }
 
     @SuppressWarnings("BoundFieldAssignment")
     public void dispose() {
@@ -68,6 +77,8 @@ public class BashProjectSettingsPane implements Disposable {
         globalFunctionVarDefs.setSelected(settings.isGlobalFunctionVarDefs());
         validateWithCurrentEnv.setSelected(settings.isValidateWithCurrentEnv());
 
+        interpreterPath.setText(settings.getProjectInterpreter());
+
         //experimental
         useTerminalPlugin.setSelected(settings.isUseTerminalPlugin());
     }
@@ -84,6 +95,8 @@ public class BashProjectSettingsPane implements Disposable {
         settings.setGlobalFunctionVarDefs(globalFunctionVarDefs.isSelected());
         settings.setValidateWithCurrentEnv(validateWithCurrentEnv.isSelected());
 
+        settings.setProjectInterpreter(interpreterPath.getText());
+
         //experimental
         settings.setUseTerminalPlugin(useTerminalPlugin.isSelected());
     }
@@ -99,7 +112,8 @@ public class BashProjectSettingsPane implements Disposable {
                 autocompletePathCommands.isSelected() != settings.isAutocompletePathCommands() ||
                 globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs() ||
                 useTerminalPlugin.isSelected() != settings.isUseTerminalPlugin() ||
-                validateWithCurrentEnv.isSelected() != settings.isValidateWithCurrentEnv();
+                validateWithCurrentEnv.isSelected() != settings.isValidateWithCurrentEnv() ||
+                !interpreterPath.getText().equals(settings.getProjectInterpreter());
     }
 
     public JPanel getPanel() {
@@ -119,6 +133,11 @@ public class BashProjectSettingsPane implements Disposable {
     }
 
     private void createUIComponents() {
+        FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleLocalFileDescriptor();
+        descriptor.setTitle("Chooser Bash Interpreter...");
+
+        this.interpreterPath = new TextFieldWithBrowseButton(null, this);
+        this.interpreterPath.addBrowseFolderListener("Choose Bash Interpreter...", null, project, descriptor);
     }
 
     {
@@ -136,12 +155,13 @@ public class BashProjectSettingsPane implements Disposable {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
+        createUIComponents();
         settingsPane = new JPanel();
-        settingsPane.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
+        settingsPane.setLayout(new GridLayoutManager(6, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel1.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
-        settingsPane.add(panel1, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        settingsPane.add(panel1, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel1.setBorder(BorderFactory.createTitledBorder("Variables"));
         final JLabel label1 = new JLabel();
         label1.setText("Registered global variables (one variable per line):");
@@ -175,7 +195,7 @@ public class BashProjectSettingsPane implements Disposable {
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel3.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
-        settingsPane.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        settingsPane.add(panel3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder("Autocompletion"));
         autocompleteInternalVars = new JCheckBox();
         autocompleteInternalVars.setText("Show built-in variables ($PWD, $PATH, ...)");
@@ -191,7 +211,7 @@ public class BashProjectSettingsPane implements Disposable {
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(6, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel4.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
-        settingsPane.add(panel4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        settingsPane.add(panel4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel4.setBorder(BorderFactory.createTitledBorder("Experimental features - use at your own risk!"));
         enableFormatterCheckbox = new JCheckBox();
         enableFormatterCheckbox.setText("Enable formatter");
@@ -208,13 +228,22 @@ public class BashProjectSettingsPane implements Disposable {
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel5.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
-        settingsPane.add(panel5, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        settingsPane.add(panel5, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel5.setBorder(BorderFactory.createTitledBorder("Validation"));
         validateWithCurrentEnv = new JCheckBox();
         validateWithCurrentEnv.setText("Validate scripts with your current environment");
         panel5.add(validateWithCurrentEnv, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         panel5.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JPanel panel6 = new JPanel();
+        panel6.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel6.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
+        settingsPane.add(panel6, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        panel6.setBorder(BorderFactory.createTitledBorder("Bash interpreter"));
+        panel6.add(interpreterPath, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setText("Default interpreter:");
+        panel6.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, 1, null, null, null, 0, false));
     }
 
     /**
