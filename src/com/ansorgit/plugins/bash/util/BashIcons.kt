@@ -15,6 +15,7 @@
 
 package com.ansorgit.plugins.bash.util
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.util.IconLoader
 import com.intellij.util.PlatformIcons
 import javax.swing.Icon
@@ -25,6 +26,8 @@ import javax.swing.Icon
  * @author jansorg
  */
 object BashIcons {
+    private val LOG = Logger.getInstance("#bash.icons")
+
     @JvmField
     val BASH_FILE_ICON = load("/icons/fileTypes/BashFileIcon.png")
 
@@ -58,6 +61,7 @@ object BashIcons {
             val url = BashIcons::class.java.getResource(resourcePath)
             IconLoader.findIcon(url, true)
         } catch (e: Exception) {
+            LOG.warn("Error while loading icon $resourcePath", e)
             null
         }
 
