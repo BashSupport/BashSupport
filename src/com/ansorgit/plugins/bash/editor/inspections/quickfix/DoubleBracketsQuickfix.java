@@ -1,5 +1,4 @@
 /*
-/*
  * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +32,44 @@ import java.util.regex.Pattern;
  * Replaces a test command [ ... ] with the extended test command [[ ... ]].
  */
 public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsiElement {
+    public DoubleBracketsQuickfix(BashConditionalCommand conditionalCommand) {
+        super(conditionalCommand);
+    }
+
+    @NotNull
+    public String getText() {
+        return "Replace with double brackets";
+    }
+
+    @NotNull
+    @Override
+    public String getFamilyName() {
+        return BashInspections.FAMILY_NAME;
+    }
+
+    @Override
+    public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        Document document = file.getViewProvider().getDocument();
+        return document != null && document.isWritable();
+    }
+
+    @Override
+    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        BashConditionalCommand conditionalCommand = (BashConditionalCommand) startElement;
+        String command = conditionalCommand.getCommandText();
+        PsiElement replacement = useDoubleBrackets(project, command);
+        startElement.replace(replacement);
+    }
+
+    private static PsiElement useDoubleBrackets(Project project, String command) {
+        String newCommand = "[[" + command + "]]";
+        for (Replacement replacement : Replacement.values()) {
+            newCommand = replacement.apply(newCommand);
+        }
+
+        PsiFile dummyBashFile = BashPsiElementFactory.createDummyBashFile(project, newCommand);
+        return dummyBashFile.getFirstChild();
+    }
 
     private enum Replacement {
         AND("-a", "&&"),
@@ -54,42 +91,4 @@ public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsi
             return regex.matcher(input).replaceAll(replacement);
         }
     }
-
-    public DoubleBracketsQuickfix(BashConditionalCommand conditionalCommand) {
-        super(conditionalCommand);
-    }
-
-    @NotNull
-    public String getText() {
-        return "Replace with double brackets";
-    }
-
-    @NotNull
-    @Override
-    public String getFamilyName() {
-        return BashInspections.FAMILY_NAME;
-    }
-
-    @Override
-    public void invoke(@NotNull Project project, @NotNull PsiFile file, Editor editor, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
-
-        Document document = file.getViewProvider().getDocument();
-        if (document != null && document.isWritable()) {
-            BashConditionalCommand conditionalCommand = (BashConditionalCommand) startElement;
-            String command = conditionalCommand.getCommandText();
-            PsiElement replacement = useDoubleBrackets(project, command);
-            startElement.replace(replacement);
-        }
-
-    }
-
-    private static PsiElement useDoubleBrackets(Project project, String command) {
-        String newCommand = "[[" + command + "]]";
-        for (Replacement replacement : Replacement.values()) {
-            newCommand = replacement.apply(newCommand);
-        }
-        PsiFile dummyBashFile = BashPsiElementFactory.createDummyBashFile(project, newCommand);
-        return dummyBashFile.getFirstChild();
-    }
-
 }
