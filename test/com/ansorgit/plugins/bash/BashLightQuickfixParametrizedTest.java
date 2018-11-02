@@ -31,16 +31,15 @@ import java.util.List;
  * @author jansorg
  */
 public abstract class BashLightQuickfixParametrizedTest extends LightQuickFixParameterizedTestCase {
-    private final Class<?>[] inspections;
+    private final Class<?>[] inspectionsClasses;
 
-    @SafeVarargs
-    public BashLightQuickfixParametrizedTest(Class<? extends InspectionProfileEntry>... inspections) {
-        this.inspections = inspections;
+    public BashLightQuickfixParametrizedTest(Class<?>... inspectionsClasses) {
+        this.inspectionsClasses = inspectionsClasses;
     }
 
     @Override
     protected void doSingleTest(String fileSuffix, String testDataPath) {
-        enableInspectionTools(inspections);
+        enableInspectionTools(inspectionsClasses);
 
         try {
             super.doSingleTest(fileSuffix, testDataPath);

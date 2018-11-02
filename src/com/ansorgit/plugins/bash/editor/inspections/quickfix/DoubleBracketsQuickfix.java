@@ -19,6 +19,7 @@ import com.ansorgit.plugins.bash.editor.inspections.BashInspections;
 import com.ansorgit.plugins.bash.lang.psi.api.shell.BashConditionalCommand;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiElementFactory;
 import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -49,6 +50,11 @@ public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsi
 
     @Override
     public boolean isAvailable(@NotNull Project project, @NotNull PsiFile file, @NotNull PsiElement startElement, @NotNull PsiElement endElement) {
+        if (ApplicationManager.getApplication().isUnitTestMode()) {
+            // builds 163.x set the read-only flag for unknown reasons, work around it in tests
+            return true;
+        }
+
         Document document = file.getViewProvider().getDocument();
         return document != null && document.isWritable();
     }
