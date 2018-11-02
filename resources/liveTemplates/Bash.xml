@@ -1,46 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templateSet group="Bash">
-    <template name="if" value="if $test$; then&#10;    $END$&#10;fi" description="if statement" toReformat="false"
-              toShortenFQNames="false">
-        <variable name="test" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
-    <template name="ife" value="if $test$; then&#10;    $cmd$&#10;else &#10;    $END$&#10;fi"
-              description="if-else statement" toReformat="false" toShortenFQNames="false">
-        <variable name="test" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
-        <variable name="cmd" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
-    <template name="while" value="while $test$; do&#10;    $END$&#10;done" description="while-loop" toReformat="false"
-              toShortenFQNames="false">
-        <variable name="test" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
-    <template name="until" value="until $test$; do&#10;    $END$;&#10;done" description="until-loop" toReformat="false"
-              toShortenFQNames="false">
-        <variable name="test" expression="" defaultValue="" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
-    <template name="she" value="#!$ENV$ $BASH$" description="shebang line" toReformat="false" toShortenFQNames="false">
-        <variable name="ENV" expression="" defaultValue="&quot;/usr/bin/env&quot;" alwaysStopAt="false"/>
-        <variable name="BASH" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
-        <context>
-            <option name="Bash" value="true"/>
-            <option name="OTHER" value="false"/>
-        </context>
-    </template>
     <template name="cas" value="case $value$ in&#10;$pattern$)&#10;  $END$ ;;&#10;esac" description="Case statement"
               toReformat="false" toShortenFQNames="false">
         <variable name="value" expression="" defaultValue="&quot;$x&quot;" alwaysStopAt="true"/>
@@ -76,34 +35,92 @@
             <option name="OTHER" value="false"/>
         </context>
     </template>
-    <template name="ifee"
-              value="if $test$; then&#10;    $cmd$&#10;elif $test2$; then&#10;    $cmd2$    &#10;else &#10;    $cmd3$&#10;fi"
-              description="if-elsif-else statement" toReformat="false" toShortenFQNames="false">
-        <variable name="test" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
-        <variable name="cmd" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
-        <variable name="test2" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
-        <variable name="cmd2" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
-        <variable name="cmd3" expression="" defaultValue="echo" alwaysStopAt="true"/>
+    <template name="func" value="function $FUNCNAME$() {&#10;    $END$$SELECTION$&#10;}" description="Function template"
+              toReformat="true" toShortenFQNames="false">
+        <variable name="FUNCNAME" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
         </context>
     </template>
-	<template name="for-each-in" value="for $LOOPVAR$ in $LOOPITEMS$ ; do&#10;    $END$$SELECTION$&#10;done&#10;" description="&quot;For each in set&quot; loop" toReformat="true" toShortenFQNames="false">
-		<variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPITEMS" expression="" defaultValue="&quot;item1 item2 item3&quot;" alwaysStopAt="true"/>
-		<context>
-			<option name="Bash" value="true"/>
+    <template name="if" value="if $TEST$; then&#10;    $END$$SELECTION$&#10;fi" description="if statement" toReformat="true"
+              toShortenFQNames="false">
+        <variable name="TEST" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
-		</context>
-	</template>
-	<template name="for-index" value="for (( $LOOPVAR$ = $LOOPSTART$; $LOOPVAR$ &lt; $LOOPLIMIT$; ++$LOOPVAR$ )); do&#10;    $END$$SELECTION$&#10;done&#10;" description="C-style &quot;for&quot; loop" toReformat="true" toShortenFQNames="false">
-		<variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPSTART" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true"/>
-		<variable name="LOOPLIMIT" expression="" defaultValue="&quot;${LOOP_LIMIT}&quot;" alwaysStopAt="true"/>
-		<context>
-			<option name="Bash" value="true"/>
+        </context>
+    </template>
+    <template name="ife" value="if $TEST$; then&#10;    $END$$SELECTION$&#10;else&#10;    $CMD$&#10;fi"
+              description="if-else statement" toReformat="true" toShortenFQNames="false">
+        <variable name="TEST" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
+        <variable name="CMD" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
             <option name="OTHER" value="false"/>
-		</context>
-	</template>
+        </context>
+    </template>
+    <template name="ifee"
+              value="if $TEST$; then&#10;    $END$$SELECTION$&#10;elif $TEST2$; then&#10;    $CMD2$&#10;else&#10;    $CMD3$&#10;fi"
+              description="if-elsif-else statement" toReformat="true" toShortenFQNames="false">
+        <variable name="TEST" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
+        <variable name="TEST2" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
+        <variable name="CMD2" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
+        <variable name="CMD3" expression="" defaultValue="&quot;echo&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="for-each-in" value="for $LOOPVAR$ in $LOOPITEMS$ ; do&#10;    $END$$SELECTION$&#10;done&#10;"
+              description="&quot;For each in set&quot; loop" toReformat="true" toShortenFQNames="false">
+        <variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPITEMS" expression="" defaultValue="&quot;item1 item2 item3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="for-index"
+              value="for (( $LOOPVAR$ = $LOOPSTART$; $LOOPVAR$ &lt; $LOOPLIMIT$; ++$LOOPVAR$ )); do&#10;    $END$$SELECTION$&#10;done&#10;"
+              description="C-style &quot;for&quot; loop" toReformat="true" toShortenFQNames="false">
+        <variable name="LOOPVAR" expression="" defaultValue="&quot;VAR&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPSTART" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true"/>
+        <variable name="LOOPLIMIT" expression="" defaultValue="&quot;${LOOP_LIMIT}&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="she" value="#!$ENV$ $BASH$&#10;$END$" description="shebang line" toReformat="false" toShortenFQNames="false">
+        <variable name="ENV" expression="" defaultValue="&quot;/usr/bin/env&quot;" alwaysStopAt="false"/>
+        <variable name="BASH" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="shebin" value="#!/bin/$SHELL$&#10;$END$" description="shebang line /bin" toReformat="false" toShortenFQNames="false">
+        <variable name="SHELL" expression="enum(&quot;bash&quot;,&quot;sh&quot;)" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="until" value="until $TEST$; do&#10;    $END$$SELECTION$&#10;done" description="until-loop" toReformat="true"
+              toShortenFQNames="false">
+        <variable name="TEST" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
+    <template name="while" value="while $TEST$; do&#10;    $END$$SELECTION$&#10;done" description="while-loop" toReformat="true"
+              toShortenFQNames="false">
+        <variable name="TEST" expression="" defaultValue="&quot;test&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="Bash" value="true"/>
+            <option name="OTHER" value="false"/>
+        </context>
+    </template>
 </templateSet>

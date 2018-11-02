@@ -4,6 +4,9 @@
  - [#487](https://github.com/BashSupport/BashSupport/issues/487): Use native path for shell script and working directory for new Bash run configurations
 
 #### 2018-10-25:
+ - [PR#614](https://github.com/BashSupport/BashSupport/pull/614): Extension and refactoring of live templates (contributed by t0r0X)
+
+#### 2018-10-25:
  - [#521](https://github.com/BashSupport/BashSupport/issues/521): control+j does not offer for loop solutions (contributed by t0r0X)
 
 #### 2018-09-27:
