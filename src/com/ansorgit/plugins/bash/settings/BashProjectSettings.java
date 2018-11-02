@@ -45,6 +45,9 @@ public class BashProjectSettings implements Serializable {
 
     private boolean useTerminalPlugin = false;
 
+    @NotNull
+    private String projectInterpreter = "";
+
     public static BashProjectSettings storedSettings(@NotNull Project project) {
         BashProjectSettingsComponent component = project.getComponent(BashProjectSettingsComponent.class);
         if (component == null) {
@@ -152,6 +155,15 @@ public class BashProjectSettings implements Serializable {
 
     public void setValidateWithCurrentEnv(boolean validateWithCurrentEnv) {
         this.validateWithCurrentEnv = validateWithCurrentEnv;
+    }
+
+    @NotNull
+    public String getProjectInterpreter() {
+        return projectInterpreter;
+    }
+
+    public void setProjectInterpreter(@NotNull String projectInterpreter) {
+        this.projectInterpreter = projectInterpreter;
     }
 }
 

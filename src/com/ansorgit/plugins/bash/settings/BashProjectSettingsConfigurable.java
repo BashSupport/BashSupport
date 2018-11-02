@@ -50,7 +50,7 @@ public class BashProjectSettingsConfigurable implements Configurable {
 
     public JComponent createComponent() {
         if (settingsPanel == null) {
-            settingsPanel = new BashProjectSettingsPane();
+            settingsPanel = new BashProjectSettingsPane(project);
         }
 
         return settingsPanel.getPanel();
