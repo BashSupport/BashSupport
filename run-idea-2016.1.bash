@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gradle runIde
+bash ./gradlew runIde
