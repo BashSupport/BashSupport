@@ -73,17 +73,21 @@ public class BashRunConfigProducer extends RunConfigurationProducer<BashRunConfi
             configuration.setModule(module);
         }
 
-        //check the location given by the actual Bash file
-        BashFile bashFile = (BashFile) psiFile;
-        BashShebang shebang = bashFile.findShebang();
+        // check the location given by the shebang line
+        // do this only if the project interpreter isn't used because we don't want to add the options
+        // because it would mess up the execution when the project interpreter was used.
+        // options might be added by a shebang like "/usr/bin/env bash".
+        // also, we don't want to override the defaults of the template run configuration
+        if (!configuration.isUseProjectInterpreter() && configuration.getInterpreterPath().isEmpty()) {
+            BashFile bashFile = (BashFile) psiFile;
+            BashShebang shebang = bashFile.findShebang();
+            if (shebang != null) {
+                String shebandShell = shebang.shellCommand(false);
 
-        if (shebang != null) {
-            String shebandShell = shebang.shellCommand(false);
-
-            if ((BashInterpreterDetection.instance().isSuitable(shebandShell))) {
-                configuration.setInterpreterPath(shebandShell);
-
-                configuration.setInterpreterOptions(shebang.shellCommandParams());
+                if ((BashInterpreterDetection.instance().isSuitable(shebandShell))) {
+                    configuration.setInterpreterPath(shebandShell);
+                    configuration.setInterpreterOptions(shebang.shellCommandParams());
+                }
             }
         }
 
