@@ -20,6 +20,7 @@ import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.lang.StringUtils
 import java.io.File
 import java.nio.file.Files
+import java.nio.file.InvalidPathException
 import java.nio.file.Paths
 import java.util.*
 
@@ -46,12 +47,21 @@ class BashPathCompletionService() {
             val paths = System.getenv("PATH")
             if (paths != null) {
                 for (e in StringUtils.split(paths, File.pathSeparatorChar)) {
-                    val path = Paths.get(e)
-                    if (Files.isDirectory(path)) {
-                        Files.find(path, 1, { file, _ -> Files.isExecutable(file) && Files.isRegularFile(file) }, emptyArray()).forEach {
-                            val filename = it.fileName.toString()
-                            result.put(filename, CompletionItem(filename, it.toString()))
+                    val trimmed = e.trim('"', File.pathSeparatorChar)
+                    if (trimmed.isEmpty()) {
+                        continue
+                    }
+
+                    try {
+                        val path = Paths.get(trimmed)
+                        if (Files.isDirectory(path)) {
+                            Files.find(path, 1, { file, _ -> Files.isExecutable(file) && Files.isRegularFile(file) }, emptyArray()).forEach {
+                                val filename = it.fileName.toString()
+                                result.put(filename, CompletionItem(filename, it.toString()))
+                            }
                         }
+                    } catch (ex: InvalidPathException) {
+                        LOG.warn("Invalid path detected in \$PATH element $e", ex)
                     }
                 }
             }
