@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -34,14 +34,20 @@
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
-    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br><br>
+    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
-    There's no future for BashSupport without strong support from the community!
+    There's no future of BashSupport without strong support from the community!
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
         A special thank to <a href="https://github.com/dheid">@dheid</a>, <a href="https://github.com/nosovae-dev">@nosovae-dev</a>, <a href="https://github.com/t0r0X">@t0r0X</a>.<br>
+        <b>Changes in version 1.7.1:</b>
+        <ul>
+            <li>Handle errors parsing elements of $PATH</li>
+            <li>Fix handling of interpreter path when creating new run configurations</li>
+        </ul><br>
+
         <b>Changes in version 1.7.0:</b>
         <ul>
              <li>Feature: New icons (contributed by nosovae-dev)</li>
