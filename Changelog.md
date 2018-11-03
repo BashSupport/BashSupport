@@ -1,3 +1,8 @@
+#### 2018-11-03:
+ - Handle errors parsing elements of $PATH
+ - Fix handling of interpreter path when creating new run configurations
+ - Version 1.7.1
+
 #### 2018-11-02:
  - [#611](https://github.com/BashSupport/BashSupport/issues/611): Work around "class BashIcons not found" exception which is (probably) caused by a bug in IntelliJ
  - [#478](https://github.com/BashSupport/BashSupport/issues/478): New setting for project wide interpreter path
