@@ -42,6 +42,11 @@
     <change-notes><![CDATA[
         <html>
         A special thank to <a href="https://github.com/dheid">@dheid</a>, <a href="https://github.com/nosovae-dev">@nosovae-dev</a>, <a href="https://github.com/t0r0X">@t0r0X</a>.<br>
+        <b>Changes in version 1.7.2:</b>
+        <ul>
+            <li>#622: Fix wrong size of script icons</li>
+        </ul><br>
+
         <b>Changes in version 1.7.1:</b>
         <ul>
             <li>Handle errors parsing elements of $PATH</li>

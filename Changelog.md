@@ -2,6 +2,8 @@
  - Handle errors parsing elements of $PATH
  - Fix handling of interpreter path when creating new run configurations
  - Version 1.7.1
+ - [#622](https://github.com/BashSupport/BashSupport/issues/622): Fix wrong size of script icons
+ - Version 1.7.2
 
 #### 2018-11-02:
  - [#611](https://github.com/BashSupport/BashSupport/issues/611): Work around "class BashIcons not found" exception which is (probably) caused by a bug in IntelliJ
