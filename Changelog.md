@@ -1,4 +1,5 @@
 #### 2018-11-07:
+ - [#624](https://github.com/BashSupport/BashSupport/issues/624): Don't enable the project interpreter by default to keep run configurations created by 1.6.13 and earlier working. BashSupport tries to keep run configs modified by 1.7.0-1.7.2 working.
  - [#625](https://github.com/BashSupport/BashSupport/issues/625): java.nio.file.AccessDeniedException at startup
 
 #### 2018-11-03:

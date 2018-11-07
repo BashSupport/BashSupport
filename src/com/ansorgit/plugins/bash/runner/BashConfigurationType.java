@@ -66,9 +66,7 @@ public class BashConfigurationType extends ConfigurationTypeBase implements Poss
         @NotNull
         @Override
         public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
-            BashRunConfiguration configuration = new BashRunConfiguration("", new RunConfigurationModule(project), this);
-            configuration.setUseProjectInterpreter(true);
-            return configuration;
+            return new BashRunConfiguration("", new RunConfigurationModule(project), this);
         }
     }
 }
