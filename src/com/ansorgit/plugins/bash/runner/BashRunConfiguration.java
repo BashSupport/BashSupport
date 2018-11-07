@@ -52,7 +52,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
-    private boolean useProjectInterpreter = true;
+    private boolean useProjectInterpreter = false;
     private String scriptName;
     private String programsParameters;
 

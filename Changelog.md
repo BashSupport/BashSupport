@@ -1,3 +1,6 @@
+#### 2018-11-07:
+ - [#624](https://github.com/BashSupport/BashSupport/issues/624): Don't enable the project interpreter by default to keep old run configs working
+
 #### 2018-11-03:
  - Handle errors parsing elements of $PATH
  - Fix handling of interpreter path when creating new run configurations
