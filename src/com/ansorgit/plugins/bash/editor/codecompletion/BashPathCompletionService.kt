@@ -61,14 +61,15 @@ class BashPathCompletionService() {
                             Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray()).use { _files ->
                                 _files.forEach {
                                     try {
+                                        val fileName = it.fileName.toString()
+
                                         val isExecutable = when {
-                                            SystemInfoRt.isWindows -> it.endsWith(".exe") || it.endsWith(".bat")
+                                            SystemInfoRt.isWindows -> fileName.endsWith(".exe") || fileName.endsWith(".bat")
                                             else -> true
                                         }
 
                                         if (isExecutable) {
-                                            val file = it.fileName
-                                            result.put(file.toString(), CompletionItem(file.toString(), it.toString()))
+                                            result.put(fileName, CompletionItem(fileName, it.toString()))
                                         }
                                     } catch (e: FileSystemException) {
                                         if (LOG.isDebugEnabled) {
