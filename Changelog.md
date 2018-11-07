@@ -2,6 +2,8 @@
  - [#627](https://github.com/BashSupport/BashSupport/issues/627): Fix exception when folding builder was called when indexing
  - [#624](https://github.com/BashSupport/BashSupport/issues/624): Don't enable the project interpreter by default to keep run configurations created by 1.6.13 and earlier working. BashSupport tries to keep run configs modified by 1.7.0-1.7.2 working.
  - [#625](https://github.com/BashSupport/BashSupport/issues/625): java.nio.file.AccessDeniedException at startup
+ - Don't show files in command completion which don't match *.exe or *.bat
+ - Version 1.7.3
 
 #### 2018-11-03:
  - Handle errors parsing elements of $PATH
