@@ -17,9 +17,11 @@ package com.ansorgit.plugins.bash.editor.codecompletion
 
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.util.SystemInfoRt
 import org.apache.commons.lang.StringUtils
 import java.io.File
 import java.io.IOException
+import java.nio.file.FileSystemException
 import java.nio.file.Files
 import java.nio.file.InvalidPathException
 import java.nio.file.Paths
@@ -56,11 +58,24 @@ class BashPathCompletionService() {
                     try {
                         val path = Paths.get(trimmed)
                         if (Files.isDirectory(path)) {
-                            val files = Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray())
-                            files.use {
-                                it.forEach {
-                                    val filename = it.fileName.toString()
-                                    result.put(filename, CompletionItem(filename, it.toString()))
+                            Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray()).use { _files ->
+                                _files.forEach {
+                                    try {
+                                        val fileName = it.fileName.toString()
+
+                                        val isExecutable = when {
+                                            SystemInfoRt.isWindows -> fileName.endsWith(".exe") || fileName.endsWith(".bat")
+                                            else -> true
+                                        }
+
+                                        if (isExecutable) {
+                                            result.put(fileName, CompletionItem(fileName, it.toString()))
+                                        }
+                                    } catch (e: FileSystemException) {
+                                        if (LOG.isDebugEnabled) {
+                                            LOG.debug("error accessing file $it")
+                                        }
+                                    }
                                 }
                             }
                         }
