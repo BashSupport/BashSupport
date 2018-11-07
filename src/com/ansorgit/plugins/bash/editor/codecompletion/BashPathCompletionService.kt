@@ -19,6 +19,7 @@ import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.lang.StringUtils
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.InvalidPathException
 import java.nio.file.Paths
@@ -55,13 +56,19 @@ class BashPathCompletionService() {
                     try {
                         val path = Paths.get(trimmed)
                         if (Files.isDirectory(path)) {
-                            Files.find(path, 1, { file, _ -> Files.isExecutable(file) && Files.isRegularFile(file) }, emptyArray()).forEach {
-                                val filename = it.fileName.toString()
-                                result.put(filename, CompletionItem(filename, it.toString()))
+                            val files = Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray())
+                            files.use {
+                                it.forEach {
+                                    val filename = it.fileName.toString()
+                                    result.put(filename, CompletionItem(filename, it.toString()))
+                                }
                             }
                         }
-                    } catch (ex: InvalidPathException) {
-                        LOG.warn("Invalid path detected in \$PATH element $e", ex)
+                    } catch (ex: Exception) {
+                        when (ex) {
+                            is InvalidPathException, is IOException, is SecurityException -> LOG.warn("Invalid path detected in \$PATH element $e", ex)
+                            else -> throw ex
+                        }
                     }
                 }
             }

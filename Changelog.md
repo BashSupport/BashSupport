@@ -1,3 +1,6 @@
+#### 2018-11-07:
+ - [#625](https://github.com/BashSupport/BashSupport/issues/625): java.nio.file.AccessDeniedException at startup
+
 #### 2018-11-03:
  - Handle errors parsing elements of $PATH
  - Fix handling of interpreter path when creating new run configurations
