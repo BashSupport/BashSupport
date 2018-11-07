@@ -1,3 +1,6 @@
+#### 2018-11-07:
+ - [#627](https://github.com/BashSupport/BashSupport/issues/627): Fix exception when folding builder was called when indexing
+
 #### 2018-11-03:
  - Handle errors parsing elements of $PATH
  - Fix handling of interpreter path when creating new run configurations

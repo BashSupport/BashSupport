@@ -12,6 +12,7 @@ import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.DumbService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.TokenSet
 import com.intellij.util.containers.ContainerUtil.newArrayList
@@ -65,6 +66,10 @@ class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
+        if (DumbService.isDumb(root.project)) {
+            return emptyArray()
+        }
+
         val descriptors = newArrayList<FoldingDescriptor>()
         BashPsiUtils.visitRecursively(root, object : BashVisitor() {
             override fun visitVarUse(bashVar: BashVar) {
