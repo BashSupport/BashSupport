@@ -34,6 +34,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
     private String interpreterOptions = "";
     private String workingDirectory = "";
     private String interpreterPath = "";
-    private boolean useProjectInterpreter = true;
+    private boolean useProjectInterpreter = false;
     private String scriptName;
     private String programsParameters;
 
@@ -175,9 +176,18 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         interpreterPath = JDOMExternalizerUtil.readField(element, "INTERPRETER_PATH");
         workingDirectory = JDOMExternalizerUtil.readField(element, "WORKING_DIRECTORY");
 
-        String useProjectInterpreterValue = JDOMExternalizerUtil.readField(element, "USE_PROJECT_INTERPRETER");
+        // 1.7.0 to 1.7.2 broke the run configs by defaulting to useProjectInterpreter, using field USE_PROJECT_INTERPRETER
+        // we try to workaround for config saved by these versions by using another field and a smart fallback
+        String useProjectInterpreterValue = JDOMExternalizerUtil.readField(element, "PROJECT_INTERPRETER");
+        String oldUseProjectInterpreterValue = JDOMExternalizerUtil.readField(element, "USE_PROJECT_INTERPRETER");
         if (useProjectInterpreterValue != null) {
             useProjectInterpreter = Boolean.parseBoolean(useProjectInterpreterValue);
+        } else if (StringUtils.isEmpty(interpreterPath) && oldUseProjectInterpreterValue != null) {
+            // only use old "use project interpreter" setting when there's no interpreter in the run config and a configured project interpreter
+            Project project = getProject();
+            if (!BashProjectSettings.storedSettings(project).getProjectInterpreter().isEmpty()) {
+                useProjectInterpreter = Boolean.parseBoolean(oldUseProjectInterpreterValue);
+            }
         }
 
         String parentEnvValue = JDOMExternalizerUtil.readField(element, "PARENT_ENVS");
@@ -197,7 +207,7 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
         // common config
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_OPTIONS", interpreterOptions);
         JDOMExternalizerUtil.writeField(element, "INTERPRETER_PATH", interpreterPath);
-        JDOMExternalizerUtil.writeField(element, "USE_PROJECT_INTERPRETER", Boolean.toString(useProjectInterpreter));
+        JDOMExternalizerUtil.writeField(element, "PROJECT_INTERPRETER", Boolean.toString(useProjectInterpreter));
         JDOMExternalizerUtil.writeField(element, "WORKING_DIRECTORY", workingDirectory);
         JDOMExternalizerUtil.writeField(element, "PARENT_ENVS", Boolean.toString(isPassParentEnvs()));
 
