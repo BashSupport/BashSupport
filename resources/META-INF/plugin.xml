@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.1</version>
+    <version>1.7.3</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -48,6 +48,7 @@
             <li>#624: Don't enable the project interpreter by default to keep run configurations created by 1.6.13 and earlier working. BashSupport tries to keep run configs modified by 1.7.0-1.7.2 working.</li>
             <li>#625: java.nio.file.AccessDeniedException at startup</li>
             <li>#627: Fix exception when code folding was called when indexing</li>
+            <li>Don't show files in command completion which don't match *.exe or *.bat</li>
         </ul><br>
 
         <b>Changes in version 1.7.2:</b>
