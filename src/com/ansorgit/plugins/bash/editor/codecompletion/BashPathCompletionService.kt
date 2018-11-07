@@ -19,6 +19,7 @@ import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.lang.StringUtils
 import java.io.File
+import java.nio.file.AccessDeniedException
 import java.nio.file.Files
 import java.nio.file.InvalidPathException
 import java.nio.file.Paths
@@ -62,6 +63,8 @@ class BashPathCompletionService() {
                         }
                     } catch (ex: InvalidPathException) {
                         LOG.warn("Invalid path detected in \$PATH element $e", ex)
+                    } catch (ex: AccessDeniedException) {
+                        LOG.debug("Access denied for \$PATH element $e", ex)
                     }
                 }
             }
