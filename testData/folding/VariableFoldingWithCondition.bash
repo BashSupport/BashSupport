@@ -24,6 +24,6 @@ while getopts :pndth option ; <fold text='do...done'>do
 	esac
 done</fold>
 
-if [ $daily -eq 1 ] ; then
+if [ $daily -eq 1 ] ; <fold text='then...fi'>then
     say "Hi!"
-fi
+fi</fold>

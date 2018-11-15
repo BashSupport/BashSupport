@@ -17,13 +17,13 @@ function lookup_nearby()
 <fold text='{...}'>{
 	PARENT=".."
 	for (( i = 0; <fold text=''>i</fold> < 5; <fold text=''>i</fold>++ )); <fold text='do...done'>do
-		while IFS=  read -r -d $'\0'; do
+		while IFS=  read -r -d $'\0'; <fold text='do...done'>do
 		pathes+=("$REPLY")
-		done < <(find <fold text='..'>$PARENT</fold> -maxdepth 3 -type d -name "xxx" -print0)
+		done</fold> < <(find <fold text='..'>$PARENT</fold> -maxdepth 3 -type d -name "xxx" -print0)
 		PARENT+="/.."
 		purge_pathes
-		if [ ${#pathes[@]} -ne 0 ]; then
+		if [ ${#pathes[@]} -ne 0 ]; <fold text='then...fi'>then
 			break
-		fi
+		fi</fold>
 	done</fold>
 }</fold>
