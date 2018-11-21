@@ -40,7 +40,7 @@ import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
 
-    private static final TokenSet foldableTokens = TokenSet.create(GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT, GROUP_ELEMENT, LOGICAL_BLOCK_ELEMENT);
+    private static final TokenSet foldableTokens = TokenSet.create(GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT, GROUP_ELEMENT, LOGICAL_BLOCK_ELEMENT, SUBSHELL_COMMAND);
     private static final TokenSet startLogicalBlockTokens = TokenSet.create(THEN_KEYWORD, DO_KEYWORD);
     private static final TokenSet endLogicalBlockTokens = TokenSet.create(FI_KEYWORD, DONE_KEYWORD);
 
@@ -63,6 +63,10 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
 
         if (type == HEREDOC_CONTENT_ELEMENT) {
             return "...";
+        }
+
+        if (type == SUBSHELL_COMMAND) {
+            return "(...)";
         }
 
         if (isThenFiBlock(node)) {

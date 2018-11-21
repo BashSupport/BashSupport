@@ -30,6 +30,10 @@ public class BashFoldingTest extends LightPlatformCodeInsightFixtureTestCase {
         doTest();
     }
 
+    public void testSubshell() {
+        doTest();
+    }
+
     @NotNull
     public String getBasePath() {
         return BashTestUtils.getBasePath() + "/folding/";
