@@ -1,5 +1,6 @@
 #### 2018-12-15:
   - [#636](https://github.com/BashSupport/BashSupport/issues/636) handle parse errors in interpreter paths in run configurations
+  - [#645](https://github.com/BashSupport/BashSupport/issues/645) fix NPE in keyword handling
 
 #### 2018-11-07:
  - [#627](https://github.com/BashSupport/BashSupport/issues/627): Fix exception when folding builder was called when indexing
