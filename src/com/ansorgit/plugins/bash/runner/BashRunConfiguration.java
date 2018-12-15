@@ -166,13 +166,17 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Override
     public String suggestedName() {
-        String name = (Paths.get(scriptName)).getFileName().toString();
+        try {
+            String name = (Paths.get(scriptName)).getFileName().toString();
 
-        int ind = name.lastIndexOf('.');
-        if (ind != -1) {
-            return name.substring(0, ind);
+            int ind = name.lastIndexOf('.');
+            if (ind != -1) {
+                return name.substring(0, ind);
+            }
+            return name;
+        } catch (InvalidPathException e) {
+            return null;
         }
-        return name;
     }
 
     @Override

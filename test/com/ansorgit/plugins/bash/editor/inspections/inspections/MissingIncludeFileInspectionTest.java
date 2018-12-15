@@ -60,4 +60,9 @@ public class MissingIncludeFileInspectionTest extends AbstractInspectionTestCase
     public void testIncludeDirectory() {
         doTest("missingIncludeFileInspection/includeDirectory", new MissingIncludeFileInspection());
     }
+
+    @Test
+    public void testInvalidIncludePath() {
+        doTest("missingIncludeFileInspection/invalidIncludePath", new MissingIncludeFileInspection());
+    }
 }
