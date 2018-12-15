@@ -16,10 +16,8 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.RunConfiguration;
-import com.intellij.execution.configurations.RunConfigurationModule;
-import com.intellij.execution.configurations.UnknownRunConfiguration;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
+import com.intellij.execution.configurations.*;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -41,5 +39,55 @@ public class BashRunConfigurationTest extends LightBashCodeInsightFixtureTestCas
         });
 
         Assert.assertFalse("The make step must not be enabled by default", config.isCompileBeforeLaunchAddedByDefault());
+    }
+
+    @Test
+    public void testInvalidInterpreterPath() throws Exception {
+        //dummy setup
+        BashRunConfiguration config = new BashRunConfiguration("Bash", new RunConfigurationModule(getProject()), BashConfigurationType.getInstance().getConfigurationFactories()[0]);
+        config.setUseProjectInterpreter(false);
+        config.setInterpreterPath("\"C:\\Program Files\\Git\\bin\\sh.exe\" -login -i");
+
+        // must not throw an error about the invalid path
+        try {
+            config.checkConfiguration();
+            Assert.fail("expected warning about invalid interpreter path");
+        } catch (RuntimeConfigurationWarning e) {
+            //expectd
+        }
+    }
+
+    @Test
+    public void testInvalidProjectInterpreterPath() throws Exception {
+        //dummy setup
+        BashRunConfiguration config = new BashRunConfiguration("Bash", new RunConfigurationModule(getProject()), BashConfigurationType.getInstance().getConfigurationFactories()[0]);
+        config.setUseProjectInterpreter(true);
+
+        BashProjectSettings.storedSettings(getProject()).setProjectInterpreter("invalid path");
+
+        // must not throw an error about the invalid path
+        try {
+            config.checkConfiguration();
+            Assert.fail("expected warning about invalid project interpreter path");
+        } catch (RuntimeConfigurationWarning e) {
+            //expectd
+        }
+    }
+
+    @Test
+    public void testNoProjectInterpreter() throws Exception {
+        //dummy setup
+        BashRunConfiguration config = new BashRunConfiguration("Bash", new RunConfigurationModule(getProject()), BashConfigurationType.getInstance().getConfigurationFactories()[0]);
+        config.setUseProjectInterpreter(true);
+
+        BashProjectSettings.storedSettings(getProject()).setProjectInterpreter("");
+
+        // must not throw an error about the invalid path
+        try {
+            config.checkConfiguration();
+            Assert.fail("expected warning about missing project interpreter path");
+        } catch (RuntimeConfigurationError e) {
+            //expectd
+        }
     }
 }

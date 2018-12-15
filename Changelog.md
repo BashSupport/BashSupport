@@ -1,5 +1,6 @@
 #### 2018-12-15:
  - [#634](https://github.com/BashSupport/BashSupport/issues/634): Handle invalid paths in include file inspection
+ - [#636](https://github.com/BashSupport/BashSupport/issues/636) handle parse errors in interpreter paths in run configurations
 
 #### 2018-11-07:
  - [#627](https://github.com/BashSupport/BashSupport/issues/627): Fix exception when folding builder was called when indexing
