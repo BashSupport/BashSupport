@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -153,13 +154,17 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
 
     @Override
     public String suggestedName() {
-        String name = (Paths.get(scriptName)).getFileName().toString();
+        try {
+            String name = (Paths.get(scriptName)).getFileName().toString();
 
-        int ind = name.lastIndexOf('.');
-        if (ind != -1) {
-            return name.substring(0, ind);
+            int ind = name.lastIndexOf('.');
+            if (ind != -1) {
+                return name.substring(0, ind);
+            }
+            return name;
+        } catch (InvalidPathException e) {
+            return null;
         }
-        return name;
     }
 
     @Override
