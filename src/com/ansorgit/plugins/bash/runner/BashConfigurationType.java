@@ -52,7 +52,7 @@ public class BashConfigurationType extends ConfigurationTypeBase implements Poss
         return true;
     }
 
-    private static class BashConfigurationFactory extends ConfigurationFactoryEx {
+    public static class BashConfigurationFactory extends ConfigurationFactoryEx {
         BashConfigurationFactory(BashConfigurationType configurationType) {
             super(configurationType);
         }

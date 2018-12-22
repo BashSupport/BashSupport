@@ -1,3 +1,8 @@
+#### 2018-12-15:
+ - [#645](https://github.com/BashSupport/BashSupport/issues/645): fix NPE in keyword handling
+ - [#634](https://github.com/BashSupport/BashSupport/issues/634): Handle invalid paths in include file inspection
+ - [#636](https://github.com/BashSupport/BashSupport/issues/636): handle parse errors in interpreter paths in run configurations
+
 #### 2018-11-13:
  - [#588](https://github.com/BashSupport/BashSupport/issues/588): Code folding for function's body (contributed by nosovae-dev)
 

@@ -113,7 +113,3 @@ task addPsiViewer {
     }
 }
 prepareSandbox.finalizedBy addPsiViewer
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.8'
-}

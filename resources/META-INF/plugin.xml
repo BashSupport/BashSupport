@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.3</version>
+    <version>1.7.4</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -41,7 +41,13 @@
 
     <change-notes><![CDATA[
         <html>
-        A special thank to <a href="https://github.com/dheid">@dheid</a>, <a href="https://github.com/nosovae-dev">@nosovae-dev</a>, <a href="https://github.com/t0r0X">@t0r0X</a>.<br>
+        <b>Changes in version 1.7.4:</b>
+        <ul>
+         <li>#634: Handle invalid paths in include file inspection</li>
+         <li>#636: handle parse errors in interpreter paths in run configurations</li>
+         <li>#645: fix NPE in keyword handling</li>
+        </ul><br>
+
         <b>Changes in version 1.7.3:</b>
         <ul>
             <li>Versions 1.7.0 to 1.7.2 enabled the new project interpreter by default. This was breaking old run configurations. This version now disabled the project interpreter by default and tries to keep run configurations created with 1.7.x working. We're sorry for any inconvenience which was caused by this.</li>
