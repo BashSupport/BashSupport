@@ -41,6 +41,11 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.7.5 (eap channel):</b>
+        <ul>
+         <li>#660: Add support for EAP 191.x builds </li>
+        </ul><br>
+
         <b>Changes in version 1.7.4:</b>
         <ul>
          <li>#634: Handle invalid paths in include file inspection</li>
