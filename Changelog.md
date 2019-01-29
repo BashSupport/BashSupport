@@ -5,6 +5,9 @@
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
  - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
 
+#### 2019-01-29:
+ - [#664](https://github.com/BashSupport/BashSupport/issues/664): fix 'replace with double brackets' quick fix (contributed by bjansen)
+
 #### 2018-12-15:
  - [#645](https://github.com/BashSupport/BashSupport/issues/645): fix NPE in keyword handling
  - [#634](https://github.com/BashSupport/BashSupport/issues/634): Handle invalid paths in include file inspection
