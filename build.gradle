@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.3.12"
+    id "org.jetbrains.intellij" version "0.4.2"
 }
 
 repositories {
@@ -96,9 +96,21 @@ allprojects {
             ]
         }
     }
-    
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    // during tests gradle-intellij seems to use the same classpath for the IDE and the plugin
+    // we're still using Kotlin 1.2.x, but 191.x is using Kotlin 1.3.x
+    // these different version are causing runtime issues during "gradle test" due to incompatible library versions
+    // we're working around this by marking our kotlin library as compileOnle, i.e. provided at runtime
+    // the better fix is to not bundle our custom version of Kotlin, but right now we're still supporting 145.x with
+    // a very old version of Kotlin.
+    if (ideaBranch == "191" || ideaVersion.startsWith("191")) {
+        dependencies {
+            compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        }
+    } else {
+        dependencies {
+            compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        }
     }
 }
 
