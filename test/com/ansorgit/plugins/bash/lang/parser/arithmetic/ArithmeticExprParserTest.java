@@ -84,4 +84,12 @@ public class ArithmeticExprParserTest extends MockPsiTest {
         //x ^= 123
         mockTest(exprParser, DOLLAR, EXPR_ARITH, WORD, ARITH_ASS_BIT_XOR, ARITH_NUMBER, _EXPR_ARITH);
     }
+
+    @Test
+    public void testIssue657() throws Exception {
+        // 1024 >> 1
+        mockTest(exprParser, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_SHIFT_RIGHT, ARITH_NUMBER, _EXPR_ARITH);
+        // 1024 << 1
+        mockTest(exprParser, DOLLAR, EXPR_ARITH, ARITH_NUMBER, ARITH_SHIFT_LEFT, ARITH_NUMBER, _EXPR_ARITH);
+    }
 }
