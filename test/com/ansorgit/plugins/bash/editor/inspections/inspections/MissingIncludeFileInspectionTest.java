@@ -41,7 +41,7 @@ public class MissingIncludeFileInspectionTest extends AbstractInspectionTestCase
             return;
         }
 
-        BashProjectSettings settings = BashProjectSettings.storedSettings(myProject);
+        BashProjectSettings settings = BashProjectSettings.storedSettings(getProject());
         boolean old = settings.isValidateWithCurrentEnv();
         try {
             settings.setValidateWithCurrentEnv(false);
