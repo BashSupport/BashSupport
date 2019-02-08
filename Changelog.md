@@ -1,5 +1,6 @@
 #### 2019-02-08:
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
+ - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
 
 #### 2018-12-15:
  - [#645](https://github.com/BashSupport/BashSupport/issues/645): fix NPE in keyword handling
