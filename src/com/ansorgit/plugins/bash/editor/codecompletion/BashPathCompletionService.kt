@@ -37,7 +37,7 @@ class BashPathCompletionService() {
         private val LOG = Logger.getInstance("#bash.completion")
 
         @JvmStatic
-        fun getInstance() = ServiceManager.getService(BashPathCompletionService::class.java)
+        fun getInstance() = ServiceManager.getService(BashPathCompletionService::class.java)!!
     }
 
     data class CompletionItem(val filename: String, val path: String)
@@ -81,8 +81,9 @@ class BashPathCompletionService() {
                         }
                     } catch (ex: Exception) {
                         when (ex) {
-                            is InvalidPathException, is IOException, is SecurityException -> LOG.warn("Invalid path detected in \$PATH element $e", ex)
-                            else -> throw ex
+                            is InvalidPathException, is IOException, is SecurityException -> LOG.debug("Invalid path detected in \$PATH element $e", ex)
+                            is FileSystemException -> LOG.debug("Ignoring filesystem exception in \$PATH element $e", ex)
+                            else -> LOG.error("Exception while scanning \$PATH for command names", ex)
                         }
                     }
                 }
