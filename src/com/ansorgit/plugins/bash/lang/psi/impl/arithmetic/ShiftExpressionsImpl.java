@@ -32,9 +32,11 @@ public class ShiftExpressionsImpl extends AbstractExpression implements ShiftExp
     @Nullable
     @Override
     protected Long compute(long currentValue, IElementType operator, Long nextExpressionValue) {
-        if (operator == BashTokenTypes.SHIFT_RIGHT) {
+        if (operator == BashTokenTypes.ARITH_SHIFT_RIGHT) {
             return currentValue >> nextExpressionValue;
-        } else if (operator == BashTokenTypes.ARITH_SHIFT_LEFT) {
+        }
+
+        if (operator == BashTokenTypes.ARITH_SHIFT_LEFT) {
             return currentValue << nextExpressionValue;
         }
 

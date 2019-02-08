@@ -1,0 +1,16 @@
+FILE
+  [PSI] Simple command
+    [PSI] BashGenericCommand
+      [PSI] bash combined word
+        [PSI] BashComposedVar
+          PsiElement([Bash] $)('$')
+          [PSI] Arithmetic command
+            PsiElement([Bash] (()('((')
+            [PSI] Bash var def
+              PsiElement([Bash] word)('a')
+            PsiWhiteSpace(' ')
+            PsiElement([Bash] <<= arithmetic)('<<=')
+            PsiWhiteSpace(' ')
+            [PSI] ArithSimpleExpr
+              PsiElement([Bash] number)('1')
+            PsiElement([Bash] )))('))')

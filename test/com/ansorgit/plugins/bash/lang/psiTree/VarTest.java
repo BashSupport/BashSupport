@@ -21,33 +21,38 @@ import org.junit.Test;
 public class VarTest extends AbstractBashPsiTreeTest {
     @Test
     public void testVar() throws Exception {
-        assertPsiTree("$foo", "var/var.txt");
+        assertPsiTree("$foo", "var.txt");
     }
 
     @Test
     public void testPrintfVar() throws Exception {
-        assertPsiTree("printf -v foo 'test'", "var/printfVar.txt");
+        assertPsiTree("printf -v foo 'test'", "printfVar.txt");
     }
 
     @Test
     public void testPrintfInterpolationStringVar() throws Exception {
-        assertPsiTree("printf -v \"${foo}\" 'test'", "var/printfInterpolationStringVar.txt");
+        assertPsiTree("printf -v \"${foo}\" 'test'", "printfInterpolationStringVar.txt");
     }
 
     @Test
     public void testPrintfStringVar() throws Exception {
-        assertPsiTree("printf -v \"foo\" 'test'", "var/printfStringVar.txt");
+        assertPsiTree("printf -v \"foo\" 'test'", "printfStringVar.txt");
     }
 
     @Test
     public void testPrintfString2Var() throws Exception {
-        assertPsiTree("printf -v \'foo\' 'test'", "var/printfString2Var.txt");
+        assertPsiTree("printf -v \'foo\' 'test'", "printfString2Var.txt");
     }
 
     @Test
     public void testPrintfVarConcatenated() throws Exception {
         // bash treats "foo""bar" as a single variable name "foobar", we can't support that at the moment
         // BashSupport must not parse this into two separate variable definitions
-        assertPsiTree("printf -v \"foo\"\"bar\" 'test'", "var/printfStringConcatenated.txt");
+        assertPsiTree("printf -v \"foo\"\"bar\" 'test'", "printfStringConcatenated.txt");
+    }
+
+    @Override
+    protected String getBasePath() {
+        return "psiTree/var";
     }
 }

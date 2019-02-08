@@ -18,19 +18,31 @@ package com.ansorgit.plugins.bash.lang.psiTree;
 import com.ansorgit.plugins.bash.lang.AbstractBashPsiTreeTest;
 import org.junit.Test;
 
-public class VarDefTest extends AbstractBashPsiTreeTest {
-    @Test
-    public void testVarDef() throws Exception {
-        assertPsiTree("foo=bar", "varDef.txt");
-    }
+import java.io.IOException;
 
-    @Test
-    public void testParseAssignmentList() throws Exception {
-        assertPsiTree("foo=(${foo[@]%% (*})", "assignmentList.txt");
-    }
-
+public class ArithmeticExprTest extends AbstractBashPsiTreeTest {
     @Override
     protected String getBasePath() {
-        return "psiTree/varDef";
+        return "psiTree/arithmetic";
+    }
+
+    @Test
+    public void testShiftLeft() throws Exception {
+        assertPsiTree("$((1024 << 1))", "shiftLeft.txt");
+    }
+
+    @Test
+    public void testShiftLeftAssignment() throws Exception {
+        assertPsiTree("$((a <<= 1))", "shiftLeftAssignment.txt");
+    }
+
+    @Test
+    public void testShiftRight() throws IOException {
+        assertPsiTree("$((1024 >> 1))", "shiftRight.txt");
+    }
+
+    @Test
+    public void testShiftRightAssignment() throws IOException {
+        assertPsiTree("$((a >>= 1))", "shiftRightAssignment.txt");
     }
 }

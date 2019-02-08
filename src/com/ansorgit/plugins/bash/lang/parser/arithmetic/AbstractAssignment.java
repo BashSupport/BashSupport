@@ -24,9 +24,10 @@ import com.intellij.psi.tree.TokenSet;
  * @author jansorg
  */
 class AbstractAssignment implements ArithmeticParsingFunction {
+    private static final TokenSet acceptedWords = TokenSet.create(WORD, ASSIGNMENT_WORD);
+
     private final ArithmeticParsingFunction next;
     private final TokenSet acceptedEqualTokens;
-    private TokenSet acceptedWords = TokenSet.create(WORD, ASSIGNMENT_WORD);
 
     public AbstractAssignment(ArithmeticParsingFunction next, TokenSet acceptedEqualTokens) {
         this.next = next;
