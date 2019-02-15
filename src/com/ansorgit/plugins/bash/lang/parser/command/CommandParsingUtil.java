@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.parser.command;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -69,6 +70,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         return ok;
     }
 
+    // fixme optimize var parsing
     public static boolean isAssignment(final BashPsiBuilder builder, Mode mode, boolean acceptArrayVars) {
         final IElementType tokenType = builder.getTokenType();
 
@@ -77,13 +79,13 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 return (acceptArrayVars && ParserUtil.hasNextTokens(builder, false, ASSIGNMENT_WORD, LEFT_SQUARE))
                         || ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder);
+                        || Parsing.var.isValid(builder); //fixme optimize
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
                         || ParserUtil.isWordToken(tokenType)
                         || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder);
+                        || Parsing.var.isValid(builder); //fixme optimize
 
             default:
                 return tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ));
@@ -157,18 +159,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             case LaxAssignmentMode:
                 if (builder.getTokenType() == ASSIGNMENT_WORD) {
                     builder.advanceLexer();
-                } else if (Parsing.var.isValid(builder)) {
-                    assignment.drop();
+                } else {
+                    OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                    if (varResult.isValid()) {
+                        assignment.drop();
 
-                    if (!Parsing.var.parse(builder)) {
+                        if (!varResult.isParsedSuccessfully()) {
+                            return false;
+                        }
+
+                        //dummy marker because we must not mark a dynamic variable name (as in 'export $a=42)'
+                        assignment = new NullMarker();
+                    } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY, null)) {
+                        assignment.drop();
                         return false;
                     }
-
-                    //dummy marker because we must not mark a dynamic variable name (as in 'export $a=42)'
-                    assignment = new NullMarker();
-                } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY, null)) {
-                    assignment.drop();
-                    return false;
                 }
                 break;
 

@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.lang.parser.misc;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -52,7 +53,7 @@ public class WordParsing implements ParsingTool {
         boolean isWord = Parsing.braceExpansionParsing.isValid(builder)
                 || isComposedString(tokenType)
                 || BashTokenTypes.stringLiterals.contains(tokenType)
-                || Parsing.var.isValid(builder)
+                || Parsing.var.isValid(builder)//fixme optimize
                 || Parsing.shellCommand.backtickParser.isValid(builder)
                 || Parsing.shellCommand.conditionalExpressionParser.isValid(builder)
                 || Parsing.processSubstitutionParsing.isValid(builder)
@@ -165,35 +166,38 @@ public class WordParsing implements ParsingTool {
             } else if (accept.contains(nextToken) || stringLiterals.contains(nextToken)) {
                 builder.advanceLexer();
                 processedTokens++;
-            } else if (Parsing.var.isValid(builder)) {
-                isOk = Parsing.var.parse(builder);
-                processedTokens++;
-            } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
-                isOk = Parsing.shellCommand.backtickParser.parse(builder);
-                processedTokens++;
-            } else if (Parsing.shellCommand.conditionalExpressionParser.isValid(builder)) {
-                isOk = Parsing.shellCommand.conditionalExpressionParser.parse(builder);
-                processedTokens++;
-            } else if (Parsing.shellCommand.historyExpansionParser.isValid(builder)) {
-                isOk = Parsing.shellCommand.historyExpansionParser.parse(builder);
-                processedTokens++;
-            } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
-                isOk = Parsing.processSubstitutionParsing.parse(builder);
-                processedTokens++;
-            } else if (nextToken == LEFT_CURLY || nextToken == RIGHT_CURLY) {
-                //fixme, is this proper parsing?
-                //parsing token stream which is not a expansion but has curly brackets
-                builder.advanceLexer();
-                processedTokens++;
-            } else if (nextToken == DOLLAR || nextToken == EQ) {
-                builder.advanceLexer();
-                processedTokens++;
-            } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
-                //either a single ! token with following whitespace or at the end of the file
-                builder.advanceLexer();
-                processedTokens++;
-            } else { //either whitespace or unknown token
-                break;
+            } else {
+                OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                if (varResult.isValid()) {
+                    isOk = varResult.isParsedSuccessfully();
+                    processedTokens++;
+                } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
+                    isOk = Parsing.shellCommand.backtickParser.parse(builder);
+                    processedTokens++;
+                } else if (Parsing.shellCommand.conditionalExpressionParser.isValid(builder)) {
+                    isOk = Parsing.shellCommand.conditionalExpressionParser.parse(builder);
+                    processedTokens++;
+                } else if (Parsing.shellCommand.historyExpansionParser.isValid(builder)) {
+                    isOk = Parsing.shellCommand.historyExpansionParser.parse(builder);
+                    processedTokens++;
+                } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
+                    isOk = Parsing.processSubstitutionParsing.parse(builder);
+                    processedTokens++;
+                } else if (nextToken == LEFT_CURLY || nextToken == RIGHT_CURLY) {
+                    //fixme, is this proper parsing?
+                    //parsing token stream which is not a expansion but has curly brackets
+                    builder.advanceLexer();
+                    processedTokens++;
+                } else if (nextToken == DOLLAR || nextToken == EQ) {
+                    builder.advanceLexer();
+                    processedTokens++;
+                } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
+                    //either a single ! token with following whitespace or at the end of the file
+                    builder.advanceLexer();
+                    processedTokens++;
+                } else { //either whitespace or unknown token
+                    break;
+                }
             }
 
             firstStep = false;
@@ -227,10 +231,13 @@ public class WordParsing implements ParsingTool {
             if (builder.getTokenType() == STRING_CONTENT) {
                 builder.advanceLexer();
                 ok = true;
-            } else if (Parsing.var.isValid(builder)) {
-                ok = Parsing.var.parse(builder);
-            } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
-                ok = Parsing.shellCommand.backtickParser.parse(builder);
+            } else {
+                OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                if (varResult.isValid()) {
+                    ok = varResult.isParsedSuccessfully();
+                } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
+                    ok = Parsing.shellCommand.backtickParser.parse(builder);
+                }
             }
 
             if (!ok) {

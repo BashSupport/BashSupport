@@ -15,7 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,28 +24,34 @@ import java.util.List;
  * parsing function which understands the token sequence. If no such function can be found
  * false is returned.
  * <br>
+ *
  * @author jansorg
  */
 public abstract class ParsingChain implements ParsingFunction {
-    private final List<ParsingFunction> parsingFunctions = new LinkedList<ParsingFunction>();
+    private final List<ParsingFunction> parsingFunctions = new ArrayList<>();
 
     protected final void addParsingFunction(ParsingFunction f) {
         parsingFunctions.add(f);
     }
 
     public boolean isValid(BashPsiBuilder builder) {
-        if (builder.eof()) return false;
+        if (builder.eof()) {
+            return false;
+        }
 
         for (ParsingFunction f : parsingFunctions) {
-            if (f.isValid(builder))
+            if (f.isValid(builder)) {
                 return true;
+            }
         }
 
         return false;
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (builder.eof()) return false;
+        if (builder.eof()) {
+            return false;
+        }
 
         for (ParsingFunction f : parsingFunctions) {
             if (f.isValid(builder)) {
@@ -54,5 +60,24 @@ public abstract class ParsingChain implements ParsingFunction {
         }
 
         return false;
+    }
+
+    public OptionalParseResult parseIfValid(BashPsiBuilder builder) {
+        if (!builder.eof()) {
+            for (ParsingFunction f : parsingFunctions) {
+                if (f instanceof ParsingChain) {
+                    OptionalParseResult result = ((ParsingChain) f).parseIfValid(builder);
+                    if (result.isValid()) {
+                        return result;
+                    }
+                } else if (f.isValid(builder)) {
+                    return f.parse(builder)
+                            ? OptionalParseResult.Ok
+                            : OptionalParseResult.ParseError;
+                }
+            }
+        }
+
+        return OptionalParseResult.Invalid;
     }
 }

@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.parser.variable;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
@@ -55,8 +56,8 @@ public class ComposedVariableParsing implements ParsingFunction {
         boolean ok;
         if (Parsing.parameterExpansionParsing.isValid(builder)) {
             ok = Parsing.parameterExpansionParsing.parse(builder);
-        } else if (Parsing.shellCommand.arithmeticParser.isValid(builder)) {
-            ok = Parsing.shellCommand.arithmeticParser.parse(builder);
+        } else if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
+            ok = ShellCommandParsing.arithmeticParser.parse(builder);
         } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
             ok = Parsing.shellCommand.subshellParser.parse(builder);
         } else {

@@ -78,7 +78,6 @@ public class CaseParsingFunction implements ParsingFunction {
             test the next set of patterns after completing execution of the current
             action, rather than terminating the command.
         */
-        log.assertTrue(isValid(builder));
         final PsiBuilder.Marker caseCommand = builder.mark();
 
         builder.advanceLexer(); //after the "case"

@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.command;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -26,44 +27,6 @@ import com.intellij.psi.tree.IElementType;
  * @author jansorg
  */
 public class PipelineParsing implements ParsingTool {
-    private enum ParseState {
-        OK_PIPELINE,
-        OK_NO_PIPELINE,
-        ERROR,
-    }
-
-    private enum TimespecState {
-        Ok, NotAvailable, Error
-    }
-
-    public boolean isPipelineCommand(BashPsiBuilder builder) {
-        return isPipelineCommandNoRollback(builder);
-    }
-
-    private boolean isPipelineCommandNoRollback(BashPsiBuilder builder) {
-        if (isPipeline(builder)) {
-            return true;
-        }
-
-        final IElementType firstToken = ParserUtil.getTokenAndAdvance(builder);
-        final IElementType secondToken = builder.getTokenType();
-
-        if ((firstToken == TIME_KEYWORD && secondToken == BANG_TOKEN) || (firstToken == BANG_TOKEN && secondToken == TIME_KEYWORD)) {
-            builder.advanceLexer();
-            return isPipeline(builder);
-        }
-
-        if (firstToken == TIME_KEYWORD) {
-            return Parsing.list.isListTerminator(secondToken) || isPipeline(builder);
-        }
-
-        return firstToken == BANG_TOKEN && isPipeline(builder);
-    }
-
-    boolean isPipeline(BashPsiBuilder builder) {
-        return Parsing.command.isValid(builder);
-    }
-
     /*
     pipeline_command:
            pipeline
@@ -77,68 +40,6 @@ public class PipelineParsing implements ParsingTool {
     pipeline:	command2 ('|' newline_list command2)*
        ;
     */
-    public boolean parsePipelineCommand(BashPsiBuilder builder) {
-        PsiBuilder.Marker pipelineCommandMarker = builder.mark();
-
-        boolean hasBang = false;
-
-        final IElementType firstToken = builder.getTokenType();
-        if (firstToken == BANG_TOKEN) { //the bang is optional
-            builder.advanceLexer();
-            hasBang = true;
-        }
-
-        TimespecState timespecStatee = parseOptionalTimespec(builder);
-        if (timespecStatee.equals(TimespecState.Error)) {
-            pipelineCommandMarker.drop();
-            return false;
-        }
-
-        if (!hasBang && builder.getTokenType() == BANG_TOKEN) {
-            builder.advanceLexer(); //read the bang token we found
-            hasBang = true;
-
-            if (timespecStatee.equals(TimespecState.NotAvailable)) {
-                timespecStatee = parseOptionalTimespec(builder);
-            }
-        }
-
-        if (Parsing.list.isListTerminator(builder.getTokenType())) {
-            //an empty command is only allowed if it is a time command spec without arguments
-
-            if (!hasBang && timespecStatee.equals(TimespecState.Ok)) {
-                //an empty timespec is only valid if no bang token was used
-                builder.advanceLexer();
-                pipelineCommandMarker.drop();
-
-                return true;
-            } else {
-                builder.error("Expected a command.");
-                pipelineCommandMarker.drop();
-                builder.advanceLexer();
-
-                return false;
-            }
-        }
-
-        ParseState parseState = parsePipeline(builder);
-        switch (parseState) {
-            case OK_PIPELINE:
-                pipelineCommandMarker.done(PIPELINE_COMMAND);
-                return true;
-            case OK_NO_PIPELINE:
-                pipelineCommandMarker.drop();
-                return true;
-            case ERROR:
-                pipelineCommandMarker.drop();
-                builder.error("Expected a command.");
-                return false;
-            default:
-                pipelineCommandMarker.drop();
-                throw new IllegalStateException("Unexpected ParseState value" + parseState);
-        }
-    }
-
     private TimespecState parseOptionalTimespec(BashPsiBuilder builder) {
         boolean hasTimespec = builder.getTokenType() == TIME_KEYWORD;
         if (hasTimespec && !parseTimespecPart(builder)) {
@@ -146,6 +47,74 @@ public class PipelineParsing implements ParsingTool {
         }
 
         return hasTimespec ? TimespecState.Ok : TimespecState.NotAvailable;
+    }
+
+    public OptionalParseResult parsePipelineCommand(BashPsiBuilder builder, boolean errorOnMissingCommand) {
+        if (builder.eof() || Parsing.list.isListTerminator(builder.getTokenType())) {
+            return OptionalParseResult.Invalid;
+        }
+
+        PsiBuilder.Marker pipelineCommandMarker = builder.mark();
+
+        final IElementType firstToken = builder.getTokenType();
+        boolean hasBang = firstToken == BANG_TOKEN;
+        if (hasBang) { //the bang is optional
+            builder.advanceLexer();
+        }
+
+        TimespecState timespecState = parseOptionalTimespec(builder);
+        if (timespecState.equals(TimespecState.Error)) {
+            pipelineCommandMarker.drop();
+            return OptionalParseResult.ParseError;
+        }
+
+        if (!hasBang && builder.getTokenType() == BANG_TOKEN) {
+            builder.advanceLexer(); //read the bang token we found
+            hasBang = true;
+
+            if (timespecState.equals(TimespecState.NotAvailable)) {
+                timespecState = parseOptionalTimespec(builder);
+            }
+        }
+
+        if (Parsing.list.isListTerminator(builder.getTokenType())) {
+            //an empty command is only allowed if it is a time command spec without arguments
+
+            if (!hasBang && timespecState.equals(TimespecState.Ok)) {
+                //an empty timespec is only valid if no bang token was used
+                builder.advanceLexer();
+                pipelineCommandMarker.drop();
+
+                return OptionalParseResult.Ok;
+            } else {
+                if (errorOnMissingCommand) {
+                    builder.error("Expected a command.");
+                }
+                pipelineCommandMarker.drop();
+                builder.advanceLexer();
+
+                return OptionalParseResult.ParseError;
+            }
+        }
+
+        ParseState parseState = parsePipeline(builder);
+        switch (parseState) {
+            case OK_PIPELINE:
+                pipelineCommandMarker.done(PIPELINE_COMMAND);
+                return OptionalParseResult.Ok;
+            case OK_NO_PIPELINE:
+                pipelineCommandMarker.drop();
+                return OptionalParseResult.Ok;
+            case ERROR:
+                pipelineCommandMarker.drop();
+                if (errorOnMissingCommand) {
+                    builder.error("Expected a command.");
+                }
+                return OptionalParseResult.ParseError;
+            default:
+                pipelineCommandMarker.drop();
+                throw new IllegalStateException("Unexpected ParseState value" + parseState);
+        }
     }
 
     /**
@@ -195,6 +164,16 @@ public class PipelineParsing implements ParsingTool {
 
         time.done(TIME_COMMAND);
         return true;
+    }
+
+    private enum ParseState {
+        OK_PIPELINE,
+        OK_NO_PIPELINE,
+        ERROR,
+    }
+
+    private enum TimespecState {
+        Ok, NotAvailable, Error
     }
 
 }

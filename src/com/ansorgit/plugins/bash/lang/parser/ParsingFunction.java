@@ -32,6 +32,10 @@ public interface ParsingFunction extends BashTokenTypes, BashElementTypes {
      */
     boolean isValid(BashPsiBuilder builder);
 
+    default boolean isInvalid(BashPsiBuilder builder) {
+        return !isValid(builder);
+    }
+
     /**
      * Parse the next few tokens. If the next tokens could not be parsed false is returned.
      *

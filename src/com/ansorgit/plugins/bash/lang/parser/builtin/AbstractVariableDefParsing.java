@@ -81,10 +81,6 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (!isValid(builder)) {
-            return false;
-        }
-
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
         if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {

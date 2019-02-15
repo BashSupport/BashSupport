@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -194,7 +195,8 @@ public final class ListParsing implements ParsingTool {
     }
 
     private boolean parseList1Element(BashPsiBuilder builder, boolean errorOnMissingCommand) {
-        if (!Parsing.pipeline.isPipelineCommand(builder)) {
+        OptionalParseResult result = Parsing.pipeline.parsePipelineCommand(builder, errorOnMissingCommand);
+        if (!result.isValid()) {
             if (errorOnMissingCommand) {
                 builder.error("Expected a command");
             }
@@ -202,7 +204,7 @@ public final class ListParsing implements ParsingTool {
             return false;
         }
 
-        return Parsing.pipeline.parsePipelineCommand(builder);
+        return result.isParsedSuccessfully();
     }
 
     /**
@@ -230,16 +232,19 @@ public final class ListParsing implements ParsingTool {
                         builder.advanceLexer();
                     } else if (builder.getTokenType() == HEREDOC_CONTENT) {
                         ParserUtil.markTokenAndAdvance(builder, HEREDOC_CONTENT_ELEMENT);
-                    } else if (Parsing.var.isValid(builder)) {
-                        if (!Parsing.var.parse(builder)) {
-                            break;
-                        }
-                    } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
-                        if (!Parsing.shellCommand.subshellParser.parse(builder)) {
-                            break;
-                        }
                     } else {
-                        break;
+                        OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                        if (varResult.isValid()) {
+                            if (!varResult.isParsedSuccessfully()) {
+                                break;
+                            }
+                        } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
+                            if (!Parsing.shellCommand.subshellParser.parse(builder)) {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
                     }
                 }
 
@@ -296,7 +301,7 @@ public final class ListParsing implements ParsingTool {
 
         //optional & or ; at the end
         final IElementType tokenType = builder.getTokenType();
-        if (tokenType != null && (tokenType == AMP || tokenType == SEMI)) {
+        if (tokenType == AMP || tokenType == SEMI) {
             builder.advanceLexer();
         }
 

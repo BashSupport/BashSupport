@@ -38,8 +38,6 @@ public class TrapCommandParsingFunction implements ParsingFunction {
 
     @Override
     public boolean parse(BashPsiBuilder builder) {
-        assert isValid(builder);
-
         PsiBuilder.Marker marker = builder.mark();
 
         //trap keyword

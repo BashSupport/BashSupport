@@ -27,7 +27,7 @@ public class PiplelineParsingTest extends MockPsiTest {
     private final MockFunction testPipeline = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return Parsing.pipeline.parsePipelineCommand(psi);
+            return Parsing.pipeline.parsePipelineCommand(psi, true).isParsedSuccessfully();
         }
     };
 

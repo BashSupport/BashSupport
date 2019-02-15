@@ -15,10 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.paramExpansion;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
@@ -105,7 +102,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
         if (!validFirstTokens.contains(firstToken) && !ParserUtil.isWordToken(firstToken)) {
-            if (!builder.isEvalMode() || !Parsing.var.isValid(builder)) {
+            if (!builder.isEvalMode() || Parsing.var.isInvalid(builder)) {
                 builder.error("Expected a valid parameter expansion token.");
                 firstElementMarker.drop();
 
@@ -117,11 +114,15 @@ public class ParameterExpansionParsing implements ParsingFunction {
         //the first element is a word token, now check if it is a var use or var def token
 
         //eat the first token
-        if (builder.isEvalMode() && Parsing.var.isValid(builder)) {
-            boolean ok = Parsing.var.parse(builder);
-            if (!ok) {
-                firstElementMarker.drop();
-                return false;
+        if (builder.isEvalMode()) {
+            OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+            if (varResult.isValid()) {
+                if (!varResult.isParsedSuccessfully()) {
+                    firstElementMarker.drop();
+                    return false;
+                }
+            } else {
+                builder.advanceLexer();
             }
         } else {
             builder.advanceLexer();
@@ -218,8 +219,9 @@ public class ParameterExpansionParsing implements ParsingFunction {
             }
 
             while (readFurther && isValid && builder.getTokenType() != RIGHT_CURLY) {
-                if (Parsing.var.isValid(builder)) {
-                    isValid = Parsing.var.parse(builder);
+                OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                if (varResult.isValid()) {
+                    isValid = varResult.isParsedSuccessfully();
                 } else if (Parsing.word.isComposedString(builder.getTokenType())) {
                     isValid = Parsing.word.parseComposedString(builder);
                 } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {

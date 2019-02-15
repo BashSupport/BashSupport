@@ -25,7 +25,7 @@ import com.intellij.lang.PsiBuilder;
  * @author jansorg
  */
 class PreIncrementExpr implements ArithmeticParsingFunction {
-    private ArithmeticParsingFunction next;
+    private final ArithmeticParsingFunction next;
 
     PreIncrementExpr(ArithmeticParsingFunction next) {
         this.next = next;
