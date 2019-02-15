@@ -37,13 +37,7 @@ public class PipelineParsing implements ParsingTool {
     }
 
     public boolean isPipelineCommand(BashPsiBuilder builder) {
-        final PsiBuilder.Marker start = builder.mark();
-
-        boolean result = isPipelineCommandNoRollback(builder);
-
-        start.rollbackTo();
-
-        return result;
+        return isPipelineCommandNoRollback(builder);
     }
 
     private boolean isPipelineCommandNoRollback(BashPsiBuilder builder) {
