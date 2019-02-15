@@ -35,7 +35,6 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         return tokenType == WORD || tokenType == ASSIGNMENT_WORD
                 || arithLiterals.contains(tokenType)
                 || arithmeticAdditionOps.contains(builder.getTokenType())
-                || Parsing.var.isValid(builder) // fixme optimize?
                 || Parsing.word.isWordToken(builder)
                 || Parsing.word.isComposedString(tokenType)
                 || ShellCommandParsing.arithmeticParser.isValid(builder);
@@ -135,7 +134,6 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
         // fixme optimize
         return tokenType == WORD
                 || arithLiterals.contains(tokenType)
-                || Parsing.var.isValid(builder) //fixme optimize
                 || Parsing.word.isWordToken(builder)
                 || Parsing.word.isComposedString(tokenType)
                 || ShellCommandParsing.arithmeticParser.isValid(builder);

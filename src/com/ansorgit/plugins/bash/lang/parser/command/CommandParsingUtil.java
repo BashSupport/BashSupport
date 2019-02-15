@@ -78,14 +78,12 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             case SimpleMode:
                 return (acceptArrayVars && ParserUtil.hasNextTokens(builder, false, ASSIGNMENT_WORD, LEFT_SQUARE))
                         || ParserUtil.isWordToken(tokenType)
-                        || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder); //fixme optimize
+                        || Parsing.word.isWordToken(builder);
 
             case LaxAssignmentMode:
                 return tokenType == ASSIGNMENT_WORD
                         || ParserUtil.isWordToken(tokenType)
-                        || Parsing.word.isWordToken(builder)
-                        || Parsing.var.isValid(builder); //fixme optimize
+                        || Parsing.word.isWordToken(builder); //fixme optimize
 
             default:
                 return tokenType == ASSIGNMENT_WORD || (builder.isEvalMode() && ParserUtil.hasNextTokens(builder, false, VARIABLE, EQ));
