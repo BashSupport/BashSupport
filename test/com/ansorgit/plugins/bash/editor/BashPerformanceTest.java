@@ -56,12 +56,6 @@ public class BashPerformanceTest extends LightBashCodeInsightFixtureTestCase {
                     myFixture.type("echo \"hello world\"\n");
                     myFixture.type("pri");
                     myFixture.complete(CompletionType.BASIC);
-
-//                    System.out.println(ParsingChain.isValidCalls);
-                    System.out.println("isValid: "+ParsingChain.validCalls);
-                    System.out.println("isInvalid: " + ParsingChain.invalidCalls);
-
-                    System.out.println("parse:" + ParsingChain.parseCalls);
                 }
             }
         }).usesAllCPUCores().attempts(1).assertTiming();
