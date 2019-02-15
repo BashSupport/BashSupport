@@ -1,3 +1,6 @@
+#### 2019-02-15:
+ - [#677](https://github.com/BashSupport/BashSupport/issues/677): Exception in idea.log of the latest CLion EAP
+
 #### 2019-02-08:
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
  - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
