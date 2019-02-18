@@ -30,10 +30,13 @@ import com.intellij.psi.tree.IElementType;
  * @author jansorg
  */
 public class FunctionDefParsingFunction implements ParsingFunction {
-    public boolean isValid(BashPsiBuilder builder) {
-        return builder.getTokenType() == BashTokenTypes.FUNCTION_KEYWORD
-                || ParserUtil.hasNextTokens(builder, false, BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN);
+    // tokens which start a function definition
+    private static final IElementType[] FUNCTION_DEF_TOKENLIST = {BashTokenTypes.WORD, BashTokenTypes.LEFT_PAREN, BashTokenTypes.RIGHT_PAREN};
 
+    public boolean isValid(BashPsiBuilder builder) {
+        IElementType current = builder.getTokenType();
+        return current == BashTokenTypes.FUNCTION_KEYWORD
+                || current == WORD && ParserUtil.hasNextTokens(builder, false, FUNCTION_DEF_TOKENLIST);
     }
 
     public boolean parse(BashPsiBuilder builder) {
