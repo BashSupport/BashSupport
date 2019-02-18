@@ -69,31 +69,22 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             return "(...)";
         }
 
-        if (isThenFiBlock(node)) {
+        if (isFoldableBlock(node, THEN_KEYWORD)) {
             return "then...fi";
         }
 
-        if (isDoDoneBlock(node)) {
+        if (isFoldableBlock(node, DO_KEYWORD)) {
             return "do...done";
         }
 
         return "{...}";
     }
 
-    private boolean isThenFiBlock(ASTNode node) {
+    private boolean isFoldableBlock(ASTNode node, IElementType keyword) {
         if (node.getElementType() == LOGICAL_BLOCK_ELEMENT) {
             final PsiElement prev = PsiTreeUtil.prevVisibleLeaf(node.getPsi());
             return prev != null
-                    && prev.getNode().getElementType() == THEN_KEYWORD;
-        }
-        return false;
-    }
-
-    private boolean isDoDoneBlock(ASTNode node) {
-        if (node.getElementType() == LOGICAL_BLOCK_ELEMENT) {
-            final PsiElement prev = PsiTreeUtil.prevVisibleLeaf(node.getPsi());
-            return prev != null
-                    && prev.getNode().getElementType() == DO_KEYWORD;
+                    && prev.getNode().getElementType() == keyword;
         }
         return false;
     }

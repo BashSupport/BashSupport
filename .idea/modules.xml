@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BashSupport.iml" filepath="$PROJECT_DIR$/BashSupport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BashSupport_main.iml" filepath="$PROJECT_DIR$/.idea/modules/BashSupport_main.iml" group="BashSupport" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BashSupport_test.iml" filepath="$PROJECT_DIR$/.idea/modules/BashSupport_test.iml" group="BashSupport" />
     </modules>
   </component>
 </project>
