@@ -43,13 +43,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author jansorg
  */
 public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
     private final Object stateLock = new Object();
+    private final FunctionDefPresentation presentation = new FunctionDefPresentation(this);
     private volatile BashBlock body;
     private volatile boolean computedBody = false;
     private volatile List<BashPsiElement> referencedParameters;
@@ -186,19 +189,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     @Override
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
-            public String getPresentableText() {
-                return getName() + "()";
-            }
-
-            public String getLocationString() {
-                return null;
-            }
-
-            public Icon getIcon(boolean open) {
-                return null;
-            }
-        };
+        return presentation;
     }
 
     public PsiElement getNameIdentifier() {
@@ -221,5 +212,25 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
         }
 
         return BashResolveUtil.processContainerDeclarations(this, processor, state, lastParent, place);
+    }
+
+    private static class FunctionDefPresentation implements ItemPresentation {
+        private final BashFunctionDef function;
+
+        FunctionDefPresentation(BashFunctionDefImpl functionDef) {
+            this.function = functionDef;
+        }
+
+        public String getPresentableText() {
+            return function.getName() + "()";
+        }
+
+        public String getLocationString() {
+            return null;
+        }
+
+        public Icon getIcon(boolean open) {
+            return null;
+        }
     }
 }
