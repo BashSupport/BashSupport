@@ -322,6 +322,6 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
         Project project = getProject();
         PsiFile file = getContainingFile();
 
-        return DumbService.isDumb(project) || BashResolveUtil.isScratchFile(file) || !BashResolveUtil.isIndexedFile(project, file.getVirtualFile());
+        return DumbService.isDumb(project) || BashResolveUtil.isScratchFile(file) || BashResolveUtil.isNotIndexedFile(project, file.getVirtualFile());
     }
 }
