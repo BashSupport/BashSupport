@@ -141,6 +141,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 boolean isSpecialReference = ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
+                //fixme optimize this
                 boolean isValidReference = ParserUtil.checkAndRollback(builder, psiBuilder -> ShellCommandParsing.arithmeticParser.parse(psiBuilder, LEFT_SQUARE, RIGHT_SQUARE));
 
                 if (isSpecialReference || isValidReference) {

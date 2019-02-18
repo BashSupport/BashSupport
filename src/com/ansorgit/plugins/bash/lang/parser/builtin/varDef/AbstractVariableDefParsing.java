@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
@@ -33,8 +33,8 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author jansorg
  */
-abstract class AbstractVariableDefParsing implements ParsingFunction {
-    private static final TokenSet EQ_SET = TokenSet.create(EQ);
+abstract class AbstractVariableDefParsing implements BashTokenTypes {
+    private static final TokenSet EQ_SET = TokenSet.create(BashTokenTypes.EQ);
 
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
@@ -64,40 +64,22 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
     }
 
-    public final boolean isValid(BashPsiBuilder builder) {
-        // use parseIfValid instead, this implementation is called very often and the optimized parsing should be used
-        throw new UnsupportedOperationException("use parseIfValid");
+    String getCommandName() {
+        return commandName;
     }
 
-    @Override
-    public boolean parse(BashPsiBuilder builder) {
-        return parseIfValid(builder).isParsedSuccessfully();
-    }
-
-    @Override
-    public OptionalParseResult parseIfValid(BashPsiBuilder builder) {
-        final PsiBuilder.Marker cmdMarker = builder.mark();
-
+    OptionalParseResult parseIfValid(BashPsiBuilder builder) {
         if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
             boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
             if (!ok) {
-                cmdMarker.drop();
-                return OptionalParseResult.Invalid;
+                throw new IllegalStateException("Unexpected state");
             }
-        }
-
-        String currentTokenText = builder.getTokenText();
-        boolean isValid = LanguageBuiltins.isInternalCommand(currentTokenText, builder.isBash4()) && commandName.equals(currentTokenText);
-        if (!isValid) {
-            cmdMarker.rollbackTo();
-            return OptionalParseResult.Invalid;
         }
 
         ParserUtil.markTokenAndAdvance(builder, commandElementType);
 
         // now read until we reach the first assignment
         if (!readOptions(builder)) {
-            cmdMarker.drop();
             return OptionalParseResult.ParseError;
         }
 
@@ -105,10 +87,8 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
                 || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode, acceptArrayVars);
 
         if (ok) {
-            cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
             return OptionalParseResult.Ok;
         } else {
-            cmdMarker.drop();
             return OptionalParseResult.ParseError;
         }
     }

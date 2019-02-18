@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;

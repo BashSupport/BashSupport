@@ -13,19 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Syntax: local [option] name[=value]  ...
+ * Syntax: declare [-afFirtx] [-p] [name[=value] ...]
  * <br>
- * Makes the assignments available to the reference detection.
+ * Parses the declare command. It makes the assignments available to the reference detection.
  * <br>
  * @author jansorg
  */
-class LocalCommand extends AbstractVariableDefParsing implements ParsingTool {
-    public LocalCommand() {
-        super(true, GENERIC_COMMAND_ELEMENT, "local", true, false);
+class DeclareCommand extends AbstractVariableDefParsing implements ParsingTool {
+    DeclareCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "declare", true, false);
     }
 }

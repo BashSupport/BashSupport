@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
+
+import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * readarray is an alias for mapfile
- *
+ * Syntax: readonly [-af] [name[=value] ...] or readonly -p
+ * <br>
+ * Makes the assignments available to the reference detection.
+ * <br>
  * @author jansorg
  */
-class ReadarrayCommand extends MapfileCommand {
-    ReadarrayCommand() {
-        super("readarray");
+class ReadonlyCommand extends AbstractVariableDefParsing implements ParsingTool {
+    ReadonlyCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "readonly", true, false);
     }
 }

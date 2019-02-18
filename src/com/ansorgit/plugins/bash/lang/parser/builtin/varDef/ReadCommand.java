@@ -13,19 +13,15 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
-
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 /**
- * Syntax: readonly [-af] [name[=value] ...] or readonly -p
- * <br>
- * Makes the assignments available to the reference detection.
+ * Implements the read command.
  * <br>
  * @author jansorg
  */
-class ReadonlyCommand extends AbstractVariableDefParsing implements ParsingTool {
-    ReadonlyCommand() {
-        super(true, GENERIC_COMMAND_ELEMENT, "readonly", true, false);
+class ReadCommand extends AbstractReadCommand {
+    ReadCommand() {
+        super("read");
     }
 }

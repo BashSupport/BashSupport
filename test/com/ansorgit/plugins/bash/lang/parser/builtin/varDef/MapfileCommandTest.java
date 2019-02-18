@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.builtin.varDef.MapfileCommand;
 import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class MapfileCommandTest extends MockPsiTest {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             MapfileCommand d = new MapfileCommand("mapfile");
-            return d.parse(psi);
+            return d.parseIfValid(psi).isParsedSuccessfully();
         }
     };
 

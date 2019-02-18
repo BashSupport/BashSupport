@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
+import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 
 /**
@@ -23,7 +24,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
  */
 abstract class AbstractReadCommand extends AbstractVariableDefParsing {
     AbstractReadCommand(String command) {
-        super(true, GENERIC_COMMAND_ELEMENT, command, false, true);
+        super(true, BashElementTypes.GENERIC_COMMAND_ELEMENT, command, false, true);
     }
 
     /**

@@ -13,41 +13,46 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
-import com.ansorgit.plugins.bash.lang.BashVersion;
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.google.common.collect.Lists;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author jansorg
  */
-public class ReadarrayCommandTest extends MockPsiTest {
-    MockFunction parsingFunction = new MockFunction() {
+public class LocalCommandTest extends MockPsiTest {
+
+    private final MockFunction fileParser = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            ReadarrayCommand d = new ReadarrayCommand();
-            return d.parse(psi);
+            return Parsing.file.parseFile(psi);
         }
     };
 
     @Test
-    public void testParse() {
-        //readarray a
-        mockTest(BashVersion.Bash_v4, parsingFunction, 2, Lists.newArrayList("readarray"), WORD, WORD);
-        //readarray -td '' a
-        mockTest(BashVersion.Bash_v4, parsingFunction, 5, Lists.newArrayList("readarray", "-td", " ", "''", "a"), WORD, WORD, WHITESPACE, WORD, WORD);
+    public void testBuiltin() {
+        LanguageBuiltins.varDefCommands.contains("local");
     }
 
     @Test
-    public void testBuiltin() {
-        Assert.assertTrue(LanguageBuiltins.varDefCommands.contains("readarray"));
-        Assert.assertTrue(LanguageBuiltins.varDefCommands.contains("readarray"));
+    public void testParsing() {
+        //   local local1=1
+        mockTest(fileParser, Lists.newArrayList("local", " ", "local1"),
+                WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
+    }
 
-        Assert.assertFalse(LanguageBuiltins.commands.contains("readarray"));
+    @Test
+    public void testParsingEmbedded() {
+        //function a() {
+        //   local local1=1
+        //}
+        mockTest(fileParser, Lists.newArrayList("function", "a", "(", ")", "{", "\n", "local", " ", "local1"),
+                FUNCTION_KEYWORD, WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
+                WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, LINE_FEED, RIGHT_CURLY);
     }
 }

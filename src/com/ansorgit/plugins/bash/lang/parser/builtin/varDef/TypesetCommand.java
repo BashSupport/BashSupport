@@ -13,19 +13,20 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Syntax: declare [-afFirtx] [-p] [name[=value] ...]
+ * Syntax:typeset [-afFirtx] [-p] name[=value] ...
+ * Typeset is an obsolete command
  * <br>
- * Parses the declare command. It makes the assignments available to the reference detection.
+ * Parses the typeset command. It makes the assignments available to the reference detection.
  * <br>
  * @author jansorg
  */
-class DeclareCommand extends AbstractVariableDefParsing implements ParsingTool {
-    DeclareCommand() {
-        super(true, GENERIC_COMMAND_ELEMENT, "declare", true, false);
+class TypesetCommand extends AbstractVariableDefParsing implements ParsingTool {
+    TypesetCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "typeset", true, false);
     }
 }
