@@ -386,21 +386,19 @@ public final class BashPsiUtils {
         boolean sameFile = definitionFile.equals(referenceFile);
 
         if (sameFile) {
-            if (!isValidGlobalOffset(referenceToDefCandidate, variableDefinition)) {
+            return isValidGlobalOffset(referenceToDefCandidate, variableDefinition);
+        }
+
+        //we need to find the include command and check the offset
+        //the include command must fullfil the same condition as the normal variable definition above:
+        //either var use and definition are both in functions or it the use is invalid
+
+        List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceFile, definitionFile);
+
+        //currently we only support global include commands
+        for (BashCommand includeCommand : includeCommands) {
+            if (!isValidGlobalOffset(referenceToDefCandidate, includeCommand)) {
                 return false;
-            }
-        } else {
-            //we need to find the include command and check the offset
-            //the include command must fullfil the same condition as the normal variable definition above:
-            //either var use and definition are both in functions or it the use is invalid
-
-            List<BashIncludeCommand> includeCommands = findIncludeCommands(referenceFile, definitionFile);
-
-            //currently we only support global include commands
-            for (BashCommand includeCommand : includeCommands) {
-                if (!isValidGlobalOffset(referenceToDefCandidate, includeCommand)) {
-                    return false;
-                }
             }
         }
 
@@ -630,7 +628,7 @@ public final class BashPsiUtils {
         ASTNode child = getDeepestEquivalent(psi.getNode());
         PsiElement childPsi = child.getPsi();
 
-        return childPsi != null && childType.isInstance(childPsi);
+        return childType.isInstance(childPsi);
     }
 
     public static boolean isInEvalBlock(PsiElement element) {

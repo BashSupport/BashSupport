@@ -56,7 +56,7 @@ public class DuplicateFunctionDefInspection extends LocalInspectionTool {
                         List<PsiElement> results = p.getResults() != null ? Lists.newArrayList(p.getResults()) : Lists.<PsiElement>newArrayList();
                         results.remove(functionDef);
 
-                        if (results.size() > 0) {
+                        if (!results.isEmpty()) {
                             //find the result which has the lowest textOffset in the file
                             PsiElement firstFunctionDef = results.get(0);
                             for (PsiElement e : results) {
