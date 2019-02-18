@@ -1,3 +1,6 @@
+#### 2019-02-18:
+ - Disable variable folding by default, it's too slow for large files. Use the project settings to enable folding of variable values.
+
 #### 2019-02-08:
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
  - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
