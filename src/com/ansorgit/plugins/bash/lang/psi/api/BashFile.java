@@ -20,6 +20,8 @@ import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * @author jansorg
  */
@@ -30,13 +32,14 @@ public interface BashFile extends PsiFile, BashPsiElement {
 
     /**
      * Returns the shebang line of the current file if one exists.
+     *
      * @return
      */
     @Nullable
     BashShebang findShebang();
 
     /**
-     * @return
+     * @return A list of all function definitions, sorted by start offset.
      */
-    BashFunctionDef[] functionDefinitions();
+    List<BashFunctionDef> allFunctionDefinitions();
 }
