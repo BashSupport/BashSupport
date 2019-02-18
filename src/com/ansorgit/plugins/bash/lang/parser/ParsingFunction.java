@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 /**
  * A parsing function provides a common interface to parse a single aspect of the grammar.
  * <br>
+ *
  * @author jansorg
  */
 public interface ParsingFunction extends BashTokenTypes, BashElementTypes {
@@ -43,4 +44,23 @@ public interface ParsingFunction extends BashTokenTypes, BashElementTypes {
      * @return True if the sequence of tokens was understood by the parser. False if it was invalid.
      */
     boolean parse(BashPsiBuilder builder);
+
+    /**
+     * parseIfValid is a shortcut for a call to isValid follwed by a parse call. This
+     * allows optimization of heavily used parts of the parse if these parts
+     * call isValid and parse in this order.
+     * If isValid() is doing almost the same as parse() followed by a rollback, then parseIfValid might
+     * help to speed this up.
+     *
+     * @param builder The provider of the tokens
+     * @return An enum which is either Invalid, ParseError or Ok to signal the result of this call.
+     */
+    default OptionalParseResult parseIfValid(BashPsiBuilder builder) {
+        if (isValid(builder)) {
+            return parse(builder)
+                    ? OptionalParseResult.Ok
+                    : OptionalParseResult.ParseError;
+        }
+        return OptionalParseResult.Invalid;
+    }
 }

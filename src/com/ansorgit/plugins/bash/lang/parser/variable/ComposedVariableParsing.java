@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.variable;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
@@ -54,15 +55,22 @@ public class ComposedVariableParsing implements ParsingFunction {
 
         //check if a subshell of command group is following
         boolean ok;
-        if (Parsing.parameterExpansionParsing.isValid(builder)) {
-            ok = Parsing.parameterExpansionParsing.parse(builder);
-        } else if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
-            ok = ShellCommandParsing.arithmeticParser.parse(builder);
-        } else if (Parsing.shellCommand.subshellParser.isValid(builder)) {
-            ok = Parsing.shellCommand.subshellParser.parse(builder);
+        OptionalParseResult result = Parsing.parameterExpansionParsing.parseIfValid(builder);
+        if (result.isValid()) {
+            ok = result.isParsedSuccessfully();
         } else {
-            ParserUtil.error(varMarker, "parser.unexpected.token");
-            return false;
+            result = ShellCommandParsing.arithmeticParser.parseIfValid(builder);
+            if (result.isValid()) {
+                ok = result.isParsedSuccessfully();
+            } else {
+                result = Parsing.shellCommand.subshellParser.parseIfValid(builder);
+                if (result.isValid()) {
+                    ok = result.isParsedSuccessfully();
+                } else {
+                    ParserUtil.error(varMarker, "parser.unexpected.token");
+                    return false;
+                }
+            }
         }
 
         if (ok) {

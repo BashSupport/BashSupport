@@ -15,10 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
@@ -96,20 +93,24 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
     }
 
     private boolean readEvaluatedBeforeCode(BashPsiBuilder builder) {
-        if (Parsing.shellCommand.subshellParser.isValid(builder)) {
-            return Parsing.shellCommand.subshellParser.parse(builder);
+        OptionalParseResult result = Parsing.shellCommand.subshellParser.parseIfValid(builder);
+        if (result.isValid()) {
+            return result.isParsedSuccessfully();
         }
 
-        if (Parsing.shellCommand.backtickParser.isValid(builder)) {
-            return Parsing.shellCommand.backtickParser.parse(builder);
+        result = Parsing.shellCommand.backtickParser.parseIfValid(builder);
+        if (result.isValid()) {
+            return result.isParsedSuccessfully();
         }
 
-        if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
-            return ShellCommandParsing.arithmeticParser.parse(builder);
+        result = ShellCommandParsing.arithmeticParser.parseIfValid(builder);
+        if (result.isValid()) {
+            return result.isParsedSuccessfully();
         }
 
-        if (Parsing.shellCommand.conditionalCommandParser.isValid(builder)) {
-            return Parsing.shellCommand.conditionalCommandParser.parse(builder);
+        result = Parsing.shellCommand.conditionalCommandParser.parseIfValid(builder);
+        if (result.isValid()) {
+            return result.isParsedSuccessfully();
         }
 
         return false;

@@ -125,7 +125,8 @@ public class PipelineParsing implements ParsingTool {
      * @return True if no errors occured
      */
     private ParseState parsePipeline(BashPsiBuilder builder) {
-        if (!Parsing.command.parse(builder)) {
+        OptionalParseResult result = Parsing.command.parseIfValid(builder);
+        if (!result.isParsedSuccessfully()) {
             return ParseState.ERROR;
         }
 
@@ -134,15 +135,14 @@ public class PipelineParsing implements ParsingTool {
             return ParseState.OK_NO_PIPELINE;
         }
 
-        boolean result = true;
-        while (result && pipeTokens.contains(builder.getTokenType())) {
+        while (result.isParsedSuccessfully() && pipeTokens.contains(builder.getTokenType())) {
             builder.advanceLexer(); //eat the pipe token
             builder.readOptionalNewlines();
 
-            result = Parsing.command.parse(builder);
+            result = Parsing.command.parseIfValid(builder);
         }
 
-        if (!result) {
+        if (!result.isParsedSuccessfully()) {
             return ParseState.ERROR;
         }
 

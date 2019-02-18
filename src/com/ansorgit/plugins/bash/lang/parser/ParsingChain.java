@@ -49,32 +49,18 @@ public abstract class ParsingChain implements ParsingFunction {
     }
 
     public boolean parse(BashPsiBuilder builder) {
-        if (builder.eof()) {
-            return false;
-        }
-
-        for (ParsingFunction f : parsingFunctions) {
-            if (f.isValid(builder)) {
-                return f.parse(builder);
-            }
-        }
-
-        return false;
+        return parseIfValid(builder).isParsedSuccessfully();
     }
 
     public OptionalParseResult parseIfValid(BashPsiBuilder builder) {
-        if (!builder.eof()) {
-            for (ParsingFunction f : parsingFunctions) {
-                if (f instanceof ParsingChain) {
-                    OptionalParseResult result = ((ParsingChain) f).parseIfValid(builder);
-                    if (result.isValid()) {
-                        return result;
-                    }
-                } else if (f.isValid(builder)) {
-                    return f.parse(builder)
-                            ? OptionalParseResult.Ok
-                            : OptionalParseResult.ParseError;
-                }
+        if (builder.eof()) {
+            return OptionalParseResult.Invalid;
+        }
+
+        for (ParsingFunction f : parsingFunctions) {
+            OptionalParseResult parseResult = f.parseIfValid(builder);
+            if (parseResult.isValid()) {
+                return parseResult;
             }
         }
 

@@ -105,11 +105,14 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                             ok = Parsing.word.parseComposedString(builder);
                         } else if (Parsing.word.isWordToken(builder)) {
                             ok = Parsing.word.parseWord(builder);
-                        } else if (ShellCommandParsing.arithmeticParser.isValid(builder)) {
-                            ok = ShellCommandParsing.arithmeticParser.parse(builder);
                         } else {
-                            ok = false;
-                            break;
+                            OptionalParseResult result = ShellCommandParsing.arithmeticParser.parseIfValid(builder);
+                            if (result.isValid()) {
+                                ok = result.isParsedSuccessfully();
+                            } else {
+                                ok = false;
+                                break;
+                            }
                         }
                     }
 
