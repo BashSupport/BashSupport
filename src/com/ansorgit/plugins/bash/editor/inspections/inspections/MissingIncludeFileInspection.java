@@ -29,6 +29,7 @@ import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -89,14 +90,18 @@ public class MissingIncludeFileInspection extends LocalInspectionTool {
             filename = BashFiles.replaceHomePlaceholders(filename);
 
             //check if it's an existing absolute file
-            Path path = Paths.get(filename);
-            boolean absoluteAndExists = path.isAbsolute() && Files.exists(path);
+            try {
+                Path path = Paths.get(filename);
+                boolean absoluteAndExists = path.isAbsolute() && Files.exists(path);
 
-            if (!absoluteAndExists) {
-                holder.registerProblem(fileReference, String.format("The file '%s' does not exist.", filename));
-            } else if (Files.isDirectory(path)) {
-                //print an error message if the given path is a directory
-                holder.registerProblem(fileReference, "Unable to include a directory.");
+                if (!absoluteAndExists) {
+                    holder.registerProblem(fileReference, String.format("The file '%s' does not exist.", filename));
+                } else if (Files.isDirectory(path)) {
+                    //print an error message if the given path is a directory
+                    holder.registerProblem(fileReference, "Unable to include a directory.");
+                }
+            } catch (InvalidPathException e) {
+                holder.registerProblem(fileReference, String.format("Unable to parse file reference '%s'", filename));
             }
         }
     }

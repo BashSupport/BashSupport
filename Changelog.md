@@ -1,3 +1,12 @@
+#### 2019-02-08:
+ - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
+ - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
+
+#### 2018-12-15:
+ - [#645](https://github.com/BashSupport/BashSupport/issues/645): fix NPE in keyword handling
+ - [#634](https://github.com/BashSupport/BashSupport/issues/634): Handle invalid paths in include file inspection
+ - [#636](https://github.com/BashSupport/BashSupport/issues/636): handle parse errors in interpreter paths in run configurations
+
 #### 2018-11-13:
  - [#588](https://github.com/BashSupport/BashSupport/issues/588): Code folding for function's body (contributed by nosovae-dev)
 

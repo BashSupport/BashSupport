@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -128,38 +129,54 @@ public class BashRunConfiguration extends AbstractRunConfiguration implements Ba
             BashProjectSettings settings = BashProjectSettings.storedSettings(project);
             String interpreter = settings.getProjectInterpreter();
             if (interpreter.isEmpty()) {
-                throw new RuntimeConfigurationException("No project interpreter configured");
+                throw new RuntimeConfigurationError("No project interpreter configured");
             }
 
-            Path path = Paths.get(interpreter);
-            if (!Files.isRegularFile(path) || !Files.isReadable(path)) {
-                throw new RuntimeConfigurationException("Project interpreter path is invalid or not readable.");
+            Path path;
+            try {
+                path = Paths.get(interpreter);
+            } catch (InvalidPathException e) {
+                path = null;
+            }
+            if (path == null || !Files.isRegularFile(path) || !Files.isReadable(path)) {
+                throw new RuntimeConfigurationWarning("Project interpreter path is invalid or not readable.");
             }
         } else {
             if (StringUtil.isEmptyOrSpaces(interpreterPath)) {
                 throw new RuntimeConfigurationException("No interpreter path given.");
             }
 
-            Path interpreterFile = Paths.get(interpreterPath);
-            if (!Files.isRegularFile(interpreterFile) || !Files.isReadable(interpreterFile)) {
-                throw new RuntimeConfigurationException("Interpreter path is invalid or not readable.");
+            Path interpreterFile;
+            try {
+                interpreterFile = Paths.get(interpreterPath);
+            } catch (InvalidPathException e) {
+                interpreterFile = null;
+                // don't warn on interpreter paths we can't handle, e.g.
+                //      "C:\Program Files\Git\bin\sh.exe" -login -i
+            }
+            if (interpreterFile == null || !Files.isRegularFile(interpreterFile) || !Files.isReadable(interpreterFile)) {
+                throw new RuntimeConfigurationWarning("Interpreter path is invalid or not readable.");
             }
         }
 
         if (StringUtil.isEmptyOrSpaces(scriptName)) {
-            throw new RuntimeConfigurationException("Script name not given.");
+            throw new RuntimeConfigurationError("Script name not given.");
         }
     }
 
     @Override
     public String suggestedName() {
-        String name = (Paths.get(scriptName)).getFileName().toString();
+        try {
+            String name = (Paths.get(scriptName)).getFileName().toString();
 
-        int ind = name.lastIndexOf('.');
-        if (ind != -1) {
-            return name.substring(0, ind);
+            int ind = name.lastIndexOf('.');
+            if (ind != -1) {
+                return name.substring(0, ind);
+            }
+            return name;
+        } catch (InvalidPathException e) {
+            return null;
         }
-        return name;
     }
 
     @Override

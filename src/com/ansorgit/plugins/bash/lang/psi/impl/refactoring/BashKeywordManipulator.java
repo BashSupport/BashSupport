@@ -42,6 +42,9 @@ public class BashKeywordManipulator implements ElementManipulator<BashKeyword> {
     @Override
     public TextRange getRangeInElement(@NotNull BashKeyword element) {
         PsiElement keywordElement = element.keywordElement();
+        if (keywordElement == null) {
+            return TextRange.create(0, element.getTextLength());
+        }
 
         return TextRange.create(0, keywordElement.getTextLength());
     }

@@ -11,5 +11,17 @@
         <line>4</line>
         <description>Replace '123*123' with the evaluated result of '15129'</description>
     </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>5</line>
+        <description>Replace '1024 &gt;&gt; 1' with the evaluated result of '512'</description>
+    </problem>
+
+    <problem>
+        <file>A.bash</file>
+        <line>6</line>
+        <description>Replace '1024 &lt;&lt; 1' with the evaluated result of '2048'</description>
+    </problem>
 </problems>
 
