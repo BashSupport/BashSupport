@@ -7,10 +7,10 @@ function a() <fold text='{...}'>{
 }</fold>
 
 function b() <fold text='{...}'>{
-    if test; then
+    if test; <fold text='then...fi'>then
         Y="def value"
         test <fold text='def value'>$Y</fold>
-    fi
+    fi</fold>
 }</fold>
 
 function reportDebug <fold text='{...}'>{

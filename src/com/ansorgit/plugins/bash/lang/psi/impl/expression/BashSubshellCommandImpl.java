@@ -43,4 +43,9 @@ public class BashSubshellCommandImpl extends BashCompositeElement implements Bas
         String text = getText();
         return text.substring(1, text.length() - 1); //getText doesn't include the $
     }
+
+    @Override
+    public boolean isCommandGroup() {
+        return false;
+    }
 }
