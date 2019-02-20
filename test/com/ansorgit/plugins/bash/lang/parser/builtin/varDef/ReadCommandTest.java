@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author jansorg
  */
 public class ReadCommandTest extends MockPsiTest {
-    private MockFunction parserFunction = new MockFunction() {
+    private final MockFunction parserFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             ReadCommand d = new ReadCommand();

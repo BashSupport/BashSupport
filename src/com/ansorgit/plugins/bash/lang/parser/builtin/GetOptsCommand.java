@@ -57,7 +57,7 @@ public class GetOptsCommand implements ParsingFunction {
         }
 
         //the second argument is the variable name, i.e. the defined variable
-        boolean varDefRead = CommandParsingUtil.readAssignment(builder, CommandParsingUtil.Mode.SimpleMode, true, false);
+        boolean varDefRead = CommandParsingUtil.readAssignmentIfValid(builder, CommandParsingUtil.Mode.SimpleMode, true, false).isParsedSuccessfully();
         if (!varDefRead) {
             cmdMarker.drop();
             builder.error("Expected getops variable name");

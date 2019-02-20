@@ -15,9 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
@@ -69,12 +67,9 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
     }
 
     OptionalParseResult parseIfValid(BashPsiBuilder builder) {
-        //fixme
-        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
-            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
-            if (!ok) {
-                throw new IllegalStateException("Unexpected state");
-            }
+        OptionalParseResult result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
+        if (acceptFrontVarDef && result.isValid() && !result.isParsedSuccessfully()) {
+            throw new IllegalStateException("Unexpected state");
         }
 
         ParserUtil.markTokenAndAdvance(builder, commandElementType);
@@ -84,15 +79,11 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
             return OptionalParseResult.ParseError;
         }
 
-        //fixme
-        boolean ok = !CommandParsingUtil.isAssignmentOrRedirect(builder, parsingMode, acceptArrayVars)
-                || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode, acceptArrayVars);
-
-        if (ok) {
+        result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, true, parsingMode, acceptArrayVars);
+        if (!result.isValid() || result.isParsedSuccessfully()) {
             return OptionalParseResult.Ok;
-        } else {
-            return OptionalParseResult.ParseError;
         }
+        return OptionalParseResult.ParseError;
     }
 
     private boolean readOptions(BashPsiBuilder builder) {

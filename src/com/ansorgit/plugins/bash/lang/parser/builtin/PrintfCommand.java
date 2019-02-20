@@ -19,7 +19,6 @@ import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * Syntax: printf: printf [-v var] Format [Argumente]
@@ -40,13 +39,10 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read local-cmd vars
-        //fixme
-        if (CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false)) {
-            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, false);
-            if (!ok) {
-                cmdMarker.drop();
-                return false;
-            }
+        OptionalParseResult result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        if (result.isValid() && !result.isParsedSuccessfully()) {
+            cmdMarker.drop();
+            return false;
         }
 
         //cmd word

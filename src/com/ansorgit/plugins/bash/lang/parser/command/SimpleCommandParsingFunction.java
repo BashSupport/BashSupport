@@ -41,7 +41,7 @@ class SimpleCommandParsingFunction implements ParsingFunction {
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read assignments and redirects
-        final boolean hasAssignmentOrRedirect = CommandParsingUtil.readAssignmentsAndRedirects(builder, true, CommandParsingUtil.Mode.StrictAssignmentMode, true);
+        final boolean hasAssignmentOrRedirect = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, true, CommandParsingUtil.Mode.StrictAssignmentMode, true).isParsedSuccessfully();
 
         final boolean hasCommand = parseCommandWord(builder);
         if (hasCommand) {
