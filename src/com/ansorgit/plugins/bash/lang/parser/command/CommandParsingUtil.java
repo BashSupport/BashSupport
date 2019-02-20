@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
+import com.ansorgit.plugins.bash.lang.parser.misc.RedirectionParsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.ansorgit.plugins.bash.util.NullMarker;
@@ -55,12 +56,13 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         boolean ok = true;
 
         while (!builder.eof() && ok) {
-            if (Parsing.redirection.isRedirect(builder, true)) {
-                ok = Parsing.redirection.parseList(builder, false, true);
+            RedirectionParsing.RedirectParseResult result = Parsing.redirection.parseListIfValid(builder, true);
+            if (result != RedirectionParsing.RedirectParseResult.NO_REDIRECT) {
+                ok = result != RedirectionParsing.RedirectParseResult.PARSING_FAILED;
             } else {
-                OptionalParseResult result = Parsing.word.parseWordIfValid(builder, true);
-                if (result.isValid()) {
-                    ok = result.isParsedSuccessfully();
+                OptionalParseResult parseResult = Parsing.word.parseWordIfValid(builder, true);
+                if (parseResult.isValid()) {
+                    ok = parseResult.isParsedSuccessfully();
                 } else if (validExtraTokens.contains(builder.getTokenType())) {
                     builder.advanceLexer();
                     ok = true;
@@ -96,6 +98,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
     public static boolean readOptionalAssignmentOrRedirects(BashPsiBuilder builder, Mode asssignmentMode, boolean markAsVarDef, boolean acceptArrayVars) {
         boolean ok = true;
 
+        //fixme
         while (ok && isAssignmentOrRedirect(builder, asssignmentMode, acceptArrayVars)) {
             ok = readAssignmentsAndRedirects(builder, markAsVarDef, asssignmentMode, acceptArrayVars);
         }
@@ -122,12 +125,21 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         do {
             if (isAssignment(builder, mode, acceptArrayVars)) {
                 ok = readAssignment(builder, mode, markAsVarDef, acceptArrayVars);
-            } else if (Parsing.redirection.isRedirect(builder, true)) {
-                ok = Parsing.redirection.parseSingleRedirect(builder, true);
-            } else if (mode == Mode.LaxAssignmentMode && Parsing.word.isWordToken(builder)) {
-                ok = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
             } else {
-                break;
+                RedirectionParsing.RedirectParseResult result = Parsing.redirection.parseSingleRedirectIfValid(builder, true);
+                if (result != RedirectionParsing.RedirectParseResult.NO_REDIRECT) {
+                    if (result == RedirectionParsing.RedirectParseResult.INVALID_REDIRECT) {
+                        builder.error("Invalid redirect");
+//                        if (builder.getTokenType() != LINE_FEED) {
+//                            builder.advanceLexer();
+//                        }
+                    }
+                    ok = result == RedirectionParsing.RedirectParseResult.OK || result == RedirectionParsing.RedirectParseResult.INVALID_REDIRECT;
+                } else if (mode == Mode.LaxAssignmentMode && Parsing.word.isWordToken(builder)) {
+                    ok = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
+                } else {
+                    break;
+                }
             }
         } while (ok && !builder.eof());
 

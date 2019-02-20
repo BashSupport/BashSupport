@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Marker which does nothing
  */
-public class NullMarker implements PsiBuilder.Marker {
+public final class NullMarker implements PsiBuilder.Marker {
     private static final PsiBuilder.Marker instance = new NullMarker();
 
     private NullMarker() {

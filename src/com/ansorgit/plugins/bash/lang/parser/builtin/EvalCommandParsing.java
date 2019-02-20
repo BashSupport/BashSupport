@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.parser.*;
+import com.ansorgit.plugins.bash.lang.parser.misc.RedirectionParsing;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
@@ -57,9 +58,10 @@ class EvalCommandParsing implements ParsingFunction, ParsingTool {
             //advance to the next non-whitespace token before reading an eval block
             builder.getTokenType();
 
-            if (Parsing.redirection.isRedirect(builder, false)) {
+            RedirectionParsing.RedirectParseResult result = Parsing.redirection.parseSingleRedirectIfValid(builder, false);
+            if (result != RedirectionParsing.RedirectParseResult.NO_REDIRECT) {
                 //redirects must not be marked as code to be evaluated, so we avoid the marker block below
-                if (!Parsing.redirection.parseSingleRedirect(builder, false)) {
+                if (result != RedirectionParsing.RedirectParseResult.OK) {
                     break;
                 }
 

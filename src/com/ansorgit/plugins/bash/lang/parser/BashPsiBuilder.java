@@ -24,7 +24,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.containers.LimitedPool;
 import com.intellij.util.containers.Stack;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -43,24 +42,9 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
 
     private static final Logger log = Logger.getInstance("#bash.BashPsiBuilder");
 
-    private final Stack<Boolean> errorsStatusStack = new Stack<Boolean>();
+    private final Stack<Boolean> errorsStatusStack = new Stack<>();
     private final BashTokenRemapper tokenRemapper;
     private final BashVersion bashVersion;
-
-    //reuse markers in the pool, the PsiBuilder allocates a lot of marker. Markers can be cleaned fairly simply so we will reuse them
-    //the original PsiBUilderImpl does it in a similar way
-    private final LimitedPool<BashPsiMarker> markerPool = new LimitedPool<BashPsiMarker>(750, new LimitedPool.ObjectFactory<BashPsiMarker>() {
-        @NotNull
-        @Override
-        public BashPsiMarker create() {
-            return new BashPsiMarker();
-        }
-
-        @Override
-        public void cleanup(@NotNull final BashPsiMarker startMarker) {
-            startMarker.clean();
-        }
-    });
     private final BackquoteData backquoteData = new BackquoteData();
     private final ParsingStateData parsingStateData = new ParsingStateData();
     private final Project project;
@@ -141,6 +125,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
 
     /**
      * Reads a list of line feed tokens.
+     *
      * @param maxNewlines
      * @param allowSurroundingWhitespace If {@code true}, then whitespace tokens will be visible, i.e. in that case line feeds surrounded by whitespace won't be accepted
      * @return
@@ -188,7 +173,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
      * Each call to this method has to be followed by a call to leaveLastErrorLevel() .
      *
      * @param enableErrors True if error reporting shoudl be switched on.
-     *               False if no errors should be added to the resulting tree.
+     *                     False if no errors should be added to the resulting tree.
      */
     public void enterNewErrorLevel(boolean enableErrors) {
         errorsStatusStack.push(enableErrors);
@@ -231,11 +216,7 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
     @NotNull
     @Override
     public Marker mark() {
-        BashPsiMarker marker = markerPool.alloc();
-        marker.psiBuilder = this;
-        marker.original = myDelegate.mark();
-
-        return marker;
+        return new BashPsiMarker(this, myDelegate.mark());
     }
 
     /**
@@ -247,10 +228,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         return errorsStatusStack.isEmpty() || errorsStatusStack.peek();
     }
 
-    private void recycle(BashPsiMarker marker) {
-        markerPool.recycle(marker);
-    }
-
     /**
      * An enhanced marker which takes care of error reporting.
      *
@@ -260,7 +237,9 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         BashPsiBuilder psiBuilder;
         Marker original;
 
-        public BashPsiMarker() {
+        public BashPsiMarker(BashPsiBuilder psiBuilder, Marker original) {
+            this.psiBuilder = psiBuilder;
+            this.original = original;
         }
 
         @Override
@@ -270,7 +249,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
             Marker before = beforeCandidate instanceof BashPsiMarker ? ((BashPsiMarker) beforeCandidate).original : beforeCandidate;
 
             original.doneBefore(type, before);
-            psiBuilder.recycle(this);
         }
 
         @Override
@@ -289,37 +267,27 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
         @Override
         public void drop() {
             original.drop();
-
-            psiBuilder.recycle(this);
         }
 
 
         @Override
         public void done(@NotNull IElementType type) {
             original.done(type);
-
-            psiBuilder.recycle(this);
         }
 
         @Override
         public void doneBefore(@NotNull IElementType type, @NotNull Marker before, String errorMessage) {
             original.doneBefore(type, before, errorMessage);
-
-            psiBuilder.recycle(this);
         }
 
         @Override
         public void errorBefore(String message, @NotNull Marker marker) {
             original.errorBefore(message, marker);
-
-            psiBuilder.recycle(this);
         }
 
         @Override
         public void rollbackTo() {
             original.rollbackTo();
-
-            psiBuilder.recycle(this);
         }
 
         public void clean() {
@@ -329,8 +297,6 @@ public final class BashPsiBuilder extends PsiBuilderAdapter implements PsiBuilde
 
         public void collapse(@NotNull IElementType iElementType) {
             original.collapse(iElementType);
-
-            psiBuilder.recycle(this);
         }
 
         public Marker precede() {

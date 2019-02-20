@@ -47,14 +47,11 @@ public class BacktickParsingFunction implements ParsingFunction {
 
         builder.getBackquoteData().enterBackquote();
         try {
-            final boolean empty = builder.getTokenType() == BashTokenTypes.BACKQUOTE;
-
             //parse compound list
-            if (!empty) {
-                if (!Parsing.list.parseCompoundList(builder, true, false)) {
-                    ParserUtil.error(backquote, "parser.shell.expectedCommands");
-                    return false;
-                }
+            final boolean empty = builder.getTokenType() == BashTokenTypes.BACKQUOTE;
+            if (!empty && !Parsing.list.parseCompoundList(builder, true, false)) {
+                ParserUtil.error(backquote, "parser.shell.expectedCommands");
+                return false;
             }
 
             //get and check end token

@@ -59,7 +59,7 @@ public class CommandParsingTest extends MockPsiTest {
     @Test
     public void testParseSimpleCommand2() {
         //echo $a
-        mockTest(simpleCommandTest, WORD, VARIABLE);
+//        mockTest(simpleCommandTest, WORD, VARIABLE);
         //tr [:echo:]
         mockTest(simpleCommandTest, WORD, LEFT_SQUARE, WORD);
         //echo $
@@ -182,7 +182,8 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(functionDefTest,
                 WORD, LEFT_PAREN, RIGHT_PAREN, LEFT_CURLY, LINE_FEED,
                 IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, WORD, SEMI, FI_KEYWORD, LINE_FEED,
-                IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, WORD, SEMI, FI_KEYWORD, LINE_FEED,
+//                IF_KEYWORD, WORD, SEMI, THEN_KEYWORD, WORD, SEMI, FI_KEYWORD, LINE_FEED,
+//                WORD, LINE_FEED,
                 RIGHT_CURLY);
     }
 

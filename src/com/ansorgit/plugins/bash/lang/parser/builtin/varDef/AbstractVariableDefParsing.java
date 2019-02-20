@@ -69,6 +69,7 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
     }
 
     OptionalParseResult parseIfValid(BashPsiBuilder builder) {
+        //fixme
         if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
             boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
             if (!ok) {
@@ -83,6 +84,7 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
             return OptionalParseResult.ParseError;
         }
 
+        //fixme
         boolean ok = !CommandParsingUtil.isAssignmentOrRedirect(builder, parsingMode, acceptArrayVars)
                 || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode, acceptArrayVars);
 

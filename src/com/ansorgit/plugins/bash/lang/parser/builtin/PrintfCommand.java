@@ -40,6 +40,7 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read local-cmd vars
+        //fixme
         if (CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false)) {
             boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, false);
             if (!ok) {

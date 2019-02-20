@@ -69,6 +69,7 @@ public class BuiltinVarCommandParser implements ParsingFunction {
 
         //fixme read assignment and redirects, but return an error if the command isn't supporting it
 
+        //fixme
         if (CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, true)) {
             boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, true);
             if (!ok) {
