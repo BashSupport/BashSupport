@@ -22,7 +22,8 @@ import com.intellij.testFramework.PlatformTestUtil;
 /**
  * @author jansorg
  */
-public class BashFoldingBuilderPerformanceTest extends LightBashCodeInsightFixtureTestCase {
+//ignored, CI is too slow
+public abstract class BashFoldingBuilderPerformanceTest extends LightBashCodeInsightFixtureTestCase {
     public void testFolding() {
         myFixture.configureByFile("functions_issue96.bash");
         myFixture.getEditor().getCaretModel().moveToOffset(myFixture.getEditor().getDocument().getTextLength());
