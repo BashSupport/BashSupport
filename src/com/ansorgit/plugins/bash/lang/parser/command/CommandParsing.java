@@ -27,7 +27,6 @@ import com.ansorgit.plugins.bash.lang.parser.builtin.varDef.BuiltinVarCommandPar
  * @author jansorg
  */
 public class CommandParsing extends ParsingChain implements ParsingTool {
-    public final SimpleCommandParsingFunction simpleCommandParser = new SimpleCommandParsingFunction();
 
     public CommandParsing() {
         /* The grammar:
@@ -41,6 +40,6 @@ public class CommandParsing extends ParsingChain implements ParsingTool {
         addParsingFunction(new FunctionDefParsingFunction());
         addParsingFunction(new BuiltinVarCommandParser());
         addParsingFunction(new BuiltinCommandParser());
-        addParsingFunction(simpleCommandParser); //has to be last
+        addParsingFunction(new SimpleCommandParsingFunction()); //has to be last
     }
 }

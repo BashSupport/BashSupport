@@ -16,10 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.google.common.collect.Sets;
@@ -58,8 +55,8 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
 
         //parse the file reference
         PsiBuilder.Marker fileMarker = builder.mark();
-        boolean wordResult = Parsing.word.parseWord(builder, false);
-        if (!wordResult) {
+        OptionalParseResult wordResult = Parsing.word.parseWordIfValid(builder, false);
+        if (!wordResult.isParsedSuccessfully()) {
             fileMarker.drop();
             commandMarker.drop();
             builder.error("Expected file name");
@@ -68,9 +65,7 @@ class IncludeCommand implements ParsingFunction, ParsingTool {
 
         fileMarker.done(FILE_REFERENCE);
 
-        while (Parsing.word.isWordToken(builder)) {
-            Parsing.word.parseWord(builder);
-        }
+        Parsing.word.parseWordListIfValid(builder, false, false);
 
         //optional parameters
         //fixme the include command takes optional args which are passed on as positional parameters

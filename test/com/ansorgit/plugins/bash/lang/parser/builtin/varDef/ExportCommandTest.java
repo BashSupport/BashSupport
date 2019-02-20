@@ -48,7 +48,7 @@ public class ExportCommandTest extends MockPsiTest {
         @Override
         public boolean postCheck(MockPsiBuilder mockBuilder) {
             List<Pair<MockPsiBuilder.MockMarker, IElementType>> markers = mockBuilder.getDoneMarkers();
-            if (markers.size() == 0) {
+            if (markers.isEmpty()) {
                 return false;
             }
 

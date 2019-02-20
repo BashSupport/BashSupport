@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.util;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.WhitespacesAndCommentsBinder;
 import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,43 +27,40 @@ import org.jetbrains.annotations.Nullable;
 public class NullMarker implements PsiBuilder.Marker {
     private static final PsiBuilder.Marker instance = new NullMarker();
 
+    private NullMarker() {
+    }
+
     public static PsiBuilder.Marker get() {
         return instance;
     }
 
+    @NotNull
     public PsiBuilder.Marker precede() {
-        return null;
+        return this;
     }
 
     public void drop() {
-
     }
 
     public void rollbackTo() {
-
     }
 
-    public void done(IElementType iElementType) {
-
+    public void done(@NotNull IElementType iElementType) {
     }
 
-    public void collapse(IElementType iElementType) {
-
+    public void collapse(@NotNull IElementType iElementType) {
     }
 
-    public void doneBefore(IElementType iElementType, PsiBuilder.Marker marker) {
-
+    public void doneBefore(@NotNull IElementType iElementType, @NotNull PsiBuilder.Marker marker) {
     }
 
-    public void doneBefore(IElementType iElementType, PsiBuilder.Marker marker, String s) {
-
+    public void doneBefore(@NotNull IElementType iElementType, @NotNull PsiBuilder.Marker marker, String s) {
     }
 
     public void error(String s) {
-
     }
 
-    public void errorBefore(String s, PsiBuilder.Marker marker) {
+    public void errorBefore(String s, @NotNull PsiBuilder.Marker marker) {
     }
 
     public void setCustomEdgeTokenBinders(@Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder, @Nullable WhitespacesAndCommentsBinder whitespacesAndCommentsBinder1) {

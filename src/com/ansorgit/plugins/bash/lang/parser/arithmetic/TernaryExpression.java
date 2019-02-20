@@ -25,7 +25,7 @@ import com.intellij.lang.PsiBuilder;
  * @author jansorg
  */
 class TernaryExpression implements ArithmeticParsingFunction {
-    private ArithmeticParsingFunction next;
+    private final ArithmeticParsingFunction next;
 
     TernaryExpression(ArithmeticParsingFunction next) {
         this.next = next;

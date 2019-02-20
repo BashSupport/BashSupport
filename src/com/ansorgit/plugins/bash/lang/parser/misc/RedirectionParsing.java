@@ -149,7 +149,7 @@ public class RedirectionParsing implements ParsingTool {
         }
 
         //read optional white space before the actual redirection target
-        boolean ok = Parsing.word.parseWord(builder);
+        boolean ok = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
         if (ok) {
             marker.done(REDIRECT_ELEMENT);
         } else {

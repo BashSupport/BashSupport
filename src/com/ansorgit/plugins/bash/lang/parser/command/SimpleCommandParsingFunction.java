@@ -16,9 +16,9 @@
 package com.ansorgit.plugins.bash.lang.parser.command;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 
 /**
@@ -28,10 +28,16 @@ import com.intellij.lang.PsiBuilder;
  */
 class SimpleCommandParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
-        return isSimpleCommandElement(builder);
+        throw new UnsupportedOperationException("call parseIfValid() instead");
     }
 
+    @Override
     public boolean parse(BashPsiBuilder builder) {
+        return parseIfValid(builder).isParsedSuccessfully();
+    }
+
+    @Override
+    public OptionalParseResult parseIfValid(BashPsiBuilder builder) {
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read assignments and redirects
@@ -40,20 +46,18 @@ class SimpleCommandParsingFunction implements ParsingFunction {
         final boolean hasCommand = parseCommandWord(builder);
         if (hasCommand) {
             //read the params and redirects
-            boolean paramsAreFine = CommandParsingUtil.readCommandParams(builder);
-            if (!paramsAreFine) {
+            boolean parsedParams = CommandParsingUtil.readCommandParams(builder);
+            if (!parsedParams) {
                 cmdMarker.drop();
-                return false;
+                return OptionalParseResult.ParseError;
             }
         } else if (!hasAssignmentOrRedirect) {
-            ParserUtil.error(builder, "parser.command.expected.command");
             cmdMarker.drop();
-            return false;
+            return OptionalParseResult.Invalid;
         }
 
         cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
-
-        return true;
+        return OptionalParseResult.Ok;
     }
 
     /**
@@ -64,31 +68,14 @@ class SimpleCommandParsingFunction implements ParsingFunction {
      * @return True if the command has been parsed successfully.
      */
     private boolean parseCommandWord(BashPsiBuilder builder) {
-        boolean isWord = Parsing.word.isWordToken(builder);
-        if (!isWord) {
-            return false;
-        }
-
         final PsiBuilder.Marker cmdMarker = builder.mark();
 
-        if (!Parsing.word.parseWord(builder)) {
+        if (!Parsing.word.parseWordIfValid(builder, false).isParsedSuccessfully()) {
             cmdMarker.drop();
             return false;
         }
 
         cmdMarker.done(GENERIC_COMMAND_ELEMENT);
-
         return true;
     }
-
-
-    private boolean isSimpleCommandElement(BashPsiBuilder builder) {
-        //   simple_command_element 	:	word | assignment_word | redirection;
-        return Parsing.word.isWordToken(builder)
-                || Parsing.redirection.isRedirect(builder, true)
-                || Parsing.braceExpansionParsing.isValid(builder)
-                //fixme check the array var use
-                || CommandParsingUtil.isAssignment(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false);
-    }
-
 }

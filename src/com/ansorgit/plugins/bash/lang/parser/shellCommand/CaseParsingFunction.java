@@ -82,7 +82,7 @@ public class CaseParsingFunction implements ParsingFunction {
 
         builder.advanceLexer(); //after the "case"
 
-        if (!Parsing.word.parseWord(builder, false, TokenSet.EMPTY, TokenSet.EMPTY, Collections.singleton("in"))) {
+        if (!Parsing.word.parseWordIfValid(builder, false, TokenSet.EMPTY, TokenSet.EMPTY, Collections.singleton("in")).isParsedSuccessfully()) {
             caseCommand.drop();
             ParserUtil.error(builder, "parser.unexpected.token");
             return false;
@@ -219,7 +219,7 @@ public class CaseParsingFunction implements ParsingFunction {
 
         final PsiBuilder.Marker pattern = builder.mark();
 
-        final boolean wordParsed = Parsing.word.parseWord(builder);
+        final boolean wordParsed = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
         if (!wordParsed) {
             pattern.drop();
             return false;
@@ -229,7 +229,7 @@ public class CaseParsingFunction implements ParsingFunction {
         while (builder.getTokenType() == PIPE) {
             builder.advanceLexer();
 
-            final boolean myWordParsed = Parsing.word.parseWord(builder);
+            final boolean myWordParsed = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
             if (!myWordParsed) {
                 pattern.drop();
                 return false;

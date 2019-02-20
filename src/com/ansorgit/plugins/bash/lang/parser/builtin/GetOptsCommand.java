@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
@@ -64,15 +65,13 @@ public class GetOptsCommand implements ParsingFunction {
         }
 
         //now read all remaining arguments in the command, these are the arguments parsed by getopts
-        if (Parsing.word.isWordToken(builder)) {
-            if (!Parsing.word.parseWordList(builder, false, false)) {
-                cmdMarker.drop();
-                return false;
-            }
+        OptionalParseResult result = Parsing.word.parseWordListIfValid(builder, false, false);
+        if (result.isValid() && !result.isParsedSuccessfully()) {
+            cmdMarker.drop();
+            return false;
         }
 
         cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
-
         return true;
     }
 }

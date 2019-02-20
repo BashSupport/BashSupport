@@ -1,7 +1,9 @@
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.ansorgit.plugins.bash.lang.parser.BashParser;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.FileParsing;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
 import org.junit.Test;
@@ -14,6 +16,13 @@ public class IncludeCommandTest extends MockPsiTest {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             return new IncludeCommand().parse(psi);
+        }
+    };
+
+    MockFunction fileParsingFunction = new MockFunction() {
+        @Override
+        public boolean apply(BashPsiBuilder psi) {
+            return new FileParsing().parseFile(psi);
         }
     };
 
@@ -47,8 +56,9 @@ public class IncludeCommandTest extends MockPsiTest {
         //source "a" abc def
         mockTest(parserFunction, Lists.newArrayList("source"), WORD, STRING_BEGIN, STRING_CONTENT, STRING_END, WORD, WORD);
 
-        //source=x
-        mockTest(parserFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
+        //source=x is not a valid source statement, but a valid assignment
+        mockTestError(BashVersion.Bash_v4, parserFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
+        mockTest(fileParsingFunction, Lists.newArrayList("source"), WORD, EQ, WORD);
     }
 
     @Test

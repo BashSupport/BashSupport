@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.parser.misc;
 
-import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
@@ -31,47 +30,22 @@ import java.util.Set;
 /**
  * Parsing of tokens which can be understood as word tokens, e.g. WORD, variables, subshell commands, etc.
  * <br>
+ *
  * @author jansorg
  */
 public class WordParsing implements ParsingTool {
-    private static final TokenSet singleDollarFollowups = TokenSet.create(STRING_END, WHITESPACE, LINE_FEED);
+    private static final TokenSet singleDollarFollowups = TokenSet.create(STRING_END, WHITESPACE, LINE_FEED, SEMI);
 
-    /**
-     * Checks whether the next tokens might belong to a word token.
-     * The upcoming tokens are not remapped.
-     *
-     * @param builder Provides the tokens.
-     * @return True if the next token is a word token.
-     */
-    public boolean isWordToken(final BashPsiBuilder builder) {
-        return isWordToken(builder, false);
-    }
-
-    public boolean isWordToken(final BashPsiBuilder builder, final boolean enableRemapping) {
-        final IElementType tokenType = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
-
-        boolean isWord = Parsing.braceExpansionParsing.isValid(builder)
-                || isComposedString(tokenType)
-                || BashTokenTypes.stringLiterals.contains(tokenType)
-                || Parsing.var.isValid(builder)//fixme optimize
-                || Parsing.shellCommand.backtickParser.isValid(builder)
-                || Parsing.shellCommand.conditionalExpressionParser.isValid(builder)
-                || Parsing.processSubstitutionParsing.isValid(builder)
-                || Parsing.shellCommand.historyExpansionParser.isValid(builder)
-                || tokenType == LEFT_CURLY;
-
-        if (isWord) {
-            return true;
+    //fixme update callers! optimize
+    public boolean isWordToken(BashPsiBuilder builder) {
+        if (builder.eof()) {
+            return false;
         }
 
-        if (tokenType == DOLLAR) {
-            IElementType next = builder.rawLookup(1);
-            return next == null || singleDollarFollowups.contains(next);
-        }
-
-        //accept single Bang tokens as word
-        return tokenType == BANG_TOKEN && ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1));
-
+        PsiBuilder.Marker mark = builder.mark();
+        boolean valid = parseWordIfValid(builder).isValid();
+        mark.rollbackTo();
+        return valid;
     }
 
     public boolean isComposedString(IElementType tokenType) {
@@ -108,12 +82,12 @@ public class WordParsing implements ParsingTool {
         return end == null || end == WHITESPACE || end == LINE_FEED;
     }
 
-    public boolean parseWord(BashPsiBuilder builder) {
-        return parseWord(builder, false);
+    public OptionalParseResult parseWordIfValid(BashPsiBuilder builder) {
+        return parseWordIfValid(builder, false);
     }
 
-    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping) {
-        return parseWord(builder, enableRemapping, TokenSet.EMPTY, TokenSet.EMPTY, null);
+    public OptionalParseResult parseWordIfValid(BashPsiBuilder builder, boolean enableRemapping) {
+        return parseWordIfValid(builder, enableRemapping, TokenSet.EMPTY, TokenSet.EMPTY, null);
     }
 
     /**
@@ -129,9 +103,13 @@ public class WordParsing implements ParsingTool {
      * @param reject          The tokens to reject. The tokens compared to this set are not yet remapped.
      * @param accept          Additional tokens which are accepted
      * @param rejectTexts
-     * @return True if a valid word could be read.
+     * @return The parse result
      */
-    public boolean parseWord(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable Set<String> rejectTexts) {
+    public OptionalParseResult parseWordIfValid(BashPsiBuilder builder, boolean enableRemapping, TokenSet reject, TokenSet accept, @Nullable Set<String> rejectTexts) {
+        if (builder.eof()) {
+            return OptionalParseResult.Invalid;
+        }
+
         int processedTokens = 0;
         int parsedStringParts = 0;
         boolean firstStep = true;
@@ -157,8 +135,9 @@ public class WordParsing implements ParsingTool {
 
             final IElementType nextToken = enableRemapping ? builder.getRemappingTokenType() : builder.getTokenType();
 
-            if (Parsing.braceExpansionParsing.isValid(builder)) {
-                isOk = Parsing.braceExpansionParsing.parse(builder);
+            OptionalParseResult result = Parsing.braceExpansionParsing.parseIfValid(builder);
+            if (result.isValid()) {
+                isOk = result.isParsedSuccessfully();
                 processedTokens++;
             } else if (nextToken == STRING_BEGIN) {
                 isOk = parseComposedString(builder);
@@ -167,9 +146,9 @@ public class WordParsing implements ParsingTool {
                 builder.advanceLexer();
                 processedTokens++;
             } else {
-                OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
-                if (varResult.isValid()) {
-                    isOk = varResult.isParsedSuccessfully();
+                result = Parsing.var.parseIfValid(builder);
+                if (result.isValid()) {
+                    isOk = result.isParsedSuccessfully();
                     processedTokens++;
                 } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {
                     isOk = Parsing.shellCommand.backtickParser.parse(builder);
@@ -183,18 +162,31 @@ public class WordParsing implements ParsingTool {
                 } else if (Parsing.processSubstitutionParsing.isValid(builder)) {
                     isOk = Parsing.processSubstitutionParsing.parse(builder);
                     processedTokens++;
-                } else if (nextToken == LEFT_CURLY || nextToken == RIGHT_CURLY) {
+                } else if (nextToken == LEFT_CURLY || !firstStep && nextToken == RIGHT_CURLY) {
                     //fixme, is this proper parsing?
-                    //parsing token stream which is not a expansion but has curly brackets
+                    //parsing token stream which is not an expansion but has curly brackets
                     builder.advanceLexer();
                     processedTokens++;
-                } else if (nextToken == DOLLAR || nextToken == EQ) {
+                } else if (nextToken == DOLLAR) {
+                    IElementType followup = builder.rawLookup(1);
+                    if (followup == null || singleDollarFollowups.contains(followup)) {
+                        builder.advanceLexer();
+                        processedTokens++;
+                    } else {
+                        break;
+                    }
+                } else if (!firstStep && nextToken == EQ) {
                     builder.advanceLexer();
                     processedTokens++;
-                } else if (nextToken == BANG_TOKEN && (ParserUtil.isWhitespaceOrLineFeed(builder.rawLookup(1)) || builder.rawLookup(1) == null)) {
-                    //either a single ! token with following whitespace or at the end of the file
-                    builder.advanceLexer();
-                    processedTokens++;
+                } else if (nextToken == BANG_TOKEN) {
+                    IElementType followup = builder.rawLookup(1);
+                    if ((followup == null || ParserUtil.isWhitespaceOrLineFeed(followup))) {
+                        //either a single ! token with following whitespace or at the end of the file
+                        builder.advanceLexer();
+                        processedTokens++;
+                    } else {
+                        break;
+                    }
                 } else { //either whitespace or unknown token
                     break;
                 }
@@ -204,9 +196,14 @@ public class WordParsing implements ParsingTool {
         }
 
         //either parsing failed or nothing has been found to parse
-        if (!isOk || (processedTokens == 0 && parsedStringParts == 0)) {
+        if (processedTokens == 0 && parsedStringParts == 0) {
             marker.drop();
-            return false;
+            return OptionalParseResult.Invalid;
+        }
+
+        if (!isOk) {
+            marker.drop();
+            return OptionalParseResult.ParseError;
         }
 
         //a single string should not be parsed as a combined word element
@@ -216,7 +213,7 @@ public class WordParsing implements ParsingTool {
             marker.done(PARSED_WORD_ELEMENT);
         }
 
-        return true;
+        return OptionalParseResult.Ok;
     }
 
     public boolean parseComposedString(BashPsiBuilder builder) {
@@ -256,25 +253,28 @@ public class WordParsing implements ParsingTool {
         return true;
     }
 
-    public boolean parseWordList(BashPsiBuilder builder, boolean readListTerminator, boolean enableRemapping) {
-        if (!isWordToken(builder, enableRemapping)) {
-            //ParserUtil.error(builder, "parser.unexpected.token");
-            return false;
+    public OptionalParseResult parseWordListIfValid(BashPsiBuilder builder, boolean readListTerminator, boolean enableRemapping) {
+        if (builder.eof()) {
+            return OptionalParseResult.Invalid;
         }
 
-        while (!builder.eof() && isWordToken(builder, enableRemapping)) {
-            parseWord(builder, enableRemapping);
+        while (!builder.eof()) {
+            OptionalParseResult result = parseWordIfValid(builder, enableRemapping);
+            if (result == OptionalParseResult.Invalid) {
+                break;
+            }
+            if (!result.isParsedSuccessfully()) {
+                return OptionalParseResult.ParseError;
+            }
         }
 
         if (readListTerminator) {
             if (!Parsing.list.isListTerminator(builder.getTokenType())) {
-                //ParserUtil.error(builder, "parser.unexpected.token");
-                return false;
+                return OptionalParseResult.ParseError;
             }
-
             builder.advanceLexer(); //after the list terminator
         }
 
-        return true;
+        return OptionalParseResult.Ok;
     }
 }

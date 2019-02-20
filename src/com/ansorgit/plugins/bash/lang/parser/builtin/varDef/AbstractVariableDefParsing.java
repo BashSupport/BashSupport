@@ -94,10 +94,11 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
     }
 
     private boolean readOptions(BashPsiBuilder builder) {
+        // fixme optimize this for less isWordToken use
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             String argName = builder.getTokenText();
 
-            boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
+            boolean ok = Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null).isParsedSuccessfully();
             if (!ok) {
                 return false;
             }
@@ -114,7 +115,7 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
     }
 
     protected boolean parseArgumentValue(String argName, BashPsiBuilder builder) {
-        return Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
+        return Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null).isParsedSuccessfully();
     }
 
     boolean argumentValueExpected(String name) {
@@ -134,12 +135,10 @@ abstract class AbstractVariableDefParsing implements BashTokenTypes {
             return true;
         }
 
-        if (Parsing.word.isWordToken(builder)) {
-            if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null)) {
-                start.rollbackTo();
-
-                return false;
-            }
+        OptionalParseResult result = Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null);
+        if (result.isValid() && !result.isParsedSuccessfully()) {
+            start.rollbackTo();
+            return false;
         }
 
         //EQ or whitespace expected

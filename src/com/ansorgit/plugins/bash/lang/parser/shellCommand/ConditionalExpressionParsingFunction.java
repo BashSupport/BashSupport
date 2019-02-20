@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -68,10 +69,13 @@ public class ConditionalExpressionParsingFunction implements ParsingFunction {
         while (!isEndToken(tokenType) && success) {
             if (ParserUtil.isWordToken(tokenType)) {
                 builder.advanceLexer();
-            } else if (Parsing.word.isWordToken(builder, true)) {
-                success = Parsing.word.parseWord(builder, true, conditionalRejects, TokenSet.EMPTY, null);
             } else {
-                success = ConditionalParsingUtil.readTestExpression(builder, conditionalRejects);
+                OptionalParseResult result = Parsing.word.parseWordIfValid(builder, true, conditionalRejects, TokenSet.EMPTY, null);
+                if (result.isValid()) {
+                    success = result.isParsedSuccessfully();
+                } else {
+                    success = ConditionalParsingUtil.readTestExpression(builder, conditionalRejects);
+                }
             }
 
             tokenType = builder.getTokenType();

@@ -49,6 +49,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
             PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
     private static final TokenSet validFirstTokens = TokenSet.create(DOLLAR, PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_STAR);
+    private static final TokenSet TOKEN_SET_CURLY_RIGHT = TokenSet.create(RIGHT_CURLY);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
@@ -180,9 +181,10 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
                 PsiBuilder.Marker replacementValueMarker = builder.mark();
                 while (builder.getTokenType() != RIGHT_CURLY && wordIsOk && !builder.eof()) {
-                    if (Parsing.word.isWordToken(builder)) {
+                    OptionalParseResult result = Parsing.word.parseWordIfValid(builder, false, TOKEN_SET_CURLY_RIGHT, TokenSet.EMPTY, null);
+                    if (result.isValid()) {
                         //we have to accept variables, substitutions, etc. as well as substitution value
-                        wordIsOk = Parsing.word.parseWord(builder, false, TokenSet.create(RIGHT_CURLY), TokenSet.EMPTY, null);
+                        wordIsOk = result.isParsedSuccessfully();
                     } else {
                         builder.advanceLexer();
                     }

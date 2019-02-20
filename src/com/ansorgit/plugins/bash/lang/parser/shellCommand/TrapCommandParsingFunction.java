@@ -16,10 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 
@@ -103,8 +100,11 @@ public class TrapCommandParsingFunction implements ParsingFunction {
             }
         }
 
-        if (success && Parsing.word.isWordToken(builder)) {
-            success = Parsing.word.parseWordList(builder, false, true);
+        if (success) {
+            OptionalParseResult result = Parsing.word.parseWordListIfValid(builder, false, true);
+            if (result.isValid()) {
+                success = result.isParsedSuccessfully();
+            }
         }
 
         if (success) {

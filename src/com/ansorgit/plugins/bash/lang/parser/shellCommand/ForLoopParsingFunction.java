@@ -90,7 +90,7 @@ public class ForLoopParsingFunction implements ParsingFunction {
             //parse the optional word list
             if (builder.getTokenType() == SEMI) {
                 builder.advanceLexer();
-            } else if (!Parsing.word.parseWordList(builder, true, false)) {
+            } else if (!Parsing.word.parseWordListIfValid(builder, true, false).isParsedSuccessfully()) {//fixme validate
                 forLoop.drop();//fixme
                 return false;
             }

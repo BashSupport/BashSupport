@@ -218,7 +218,6 @@ public class CommandParsingTest extends MockPsiTest {
         mockTest(simpleCommandTest, ASSIGNMENT_WORD, LEFT_SQUARE, VARIABLE, RIGHT_SQUARE, EQ, VARIABLE);
     }
 
-
     @Test
     public void testEchoWithUmlauts() throws Exception {
         mockTest(simpleCommandTest, Lists.newArrayList("echo", " ", "äöü"), WORD, WHITESPACE, WORD);

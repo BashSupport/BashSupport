@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.editor.codefolding;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDoc;
+import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -31,14 +32,19 @@ import org.junit.Test;
 public class BashFoldingBuilderTest extends LightBashCodeInsightFixtureTestCase {
     @Test
     public void testVariablesFolding() {
-        String fileContent = "TMP_DIR=tmpDir\nDECOMPILED_SRC_DIR=\"$TMP_DIR/../../data/decompiled_src\"";
-        PsiFile psiFile = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, fileContent);
+        try {
+            BashProjectSettings.storedSettings(getProject()).setVariableFolding(true);
+            String fileContent = "TMP_DIR=tmpDir\nDECOMPILED_SRC_DIR=\"$TMP_DIR/../../data/decompiled_src\"";
+            PsiFile psiFile = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, fileContent);
 
-        BashVariableFoldingBuilder builder = new BashVariableFoldingBuilder();
-        FoldingDescriptor[] regions = builder.buildFoldRegions(psiFile.getNode(), myFixture.getDocument(psiFile));
+            BashVariableFoldingBuilder builder = new BashVariableFoldingBuilder();
+            FoldingDescriptor[] regions = builder.buildFoldRegions(psiFile.getNode(), myFixture.getDocument(psiFile));
 
-        Assert.assertEquals(1, regions.length);
-        Assert.assertEquals("(35,43)", regions[0].getRange().toString());
+            Assert.assertEquals(1, regions.length);
+            Assert.assertEquals("(35,43)", regions[0].getRange().toString());
+        } finally {
+            BashProjectSettings.storedSettings(getProject()).setVariableFolding(true);
+        }
     }
 
     @Test

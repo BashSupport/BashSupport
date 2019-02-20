@@ -27,6 +27,7 @@ import com.intellij.psi.tree.IElementType;
 /**
  * Parsing of a simple arithmetic expressions.
  * <br>
+ *
  * @author jansorg
  */
 class SimpleArithmeticExpr implements ArithmeticParsingFunction {
@@ -62,20 +63,23 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                     IElementType nextToken = builder.getTokenType(true);
                     if (nextToken == BashTokenTypes.ARITH_NUMBER) {
                         builder.advanceLexer();
-                    } else if (Parsing.word.isWordToken(builder)) {
-                        ok = Parsing.word.parseWord(builder);
-                        if (!ok) {
-                            break;
-                        }
                     } else {
-                        varResult = Parsing.var.parseIfValid(builder);
-                        if (varResult.isValid()) {
-                            ok = varResult.isParsedSuccessfully();
+                        OptionalParseResult result = Parsing.word.parseWordIfValid(builder);
+                        if (result.isValid()) {
+                            ok = result.isParsedSuccessfully();
                             if (!ok) {
                                 break;
                             }
                         } else {
-                            break;
+                            varResult = Parsing.var.parseIfValid(builder);
+                            if (varResult.isValid()) {
+                                ok = varResult.isParsedSuccessfully();
+                                if (!ok) {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
                         }
                     }
                 } while (true);
@@ -103,15 +107,18 @@ class SimpleArithmeticExpr implements ArithmeticParsingFunction {
                             ok = varResult.isParsedSuccessfully();
                         } else if (Parsing.word.isComposedString(tokenType)) {
                             ok = Parsing.word.parseComposedString(builder);
-                        } else if (Parsing.word.isWordToken(builder)) {
-                            ok = Parsing.word.parseWord(builder);
                         } else {
-                            OptionalParseResult result = ShellCommandParsing.arithmeticParser.parseIfValid(builder);
+                            OptionalParseResult result = Parsing.word.parseWordIfValid(builder);
                             if (result.isValid()) {
                                 ok = result.isParsedSuccessfully();
                             } else {
-                                ok = false;
-                                break;
+                                result = ShellCommandParsing.arithmeticParser.parseIfValid(builder);
+                                if (result.isValid()) {
+                                    ok = result.isParsedSuccessfully();
+                                } else {
+                                    ok = false;
+                                    break;
+                                }
                             }
                         }
                     }

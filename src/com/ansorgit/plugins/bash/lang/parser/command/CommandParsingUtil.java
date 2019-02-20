@@ -57,13 +57,16 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
         while (!builder.eof() && ok) {
             if (Parsing.redirection.isRedirect(builder, true)) {
                 ok = Parsing.redirection.parseList(builder, false, true);
-            } else if (Parsing.word.isWordToken(builder, true)) {
-                ok = Parsing.word.parseWord(builder, true);
-            } else if (validExtraTokens.contains(builder.getTokenType())) {
-                builder.advanceLexer();
-                ok = true;
             } else {
-                break;
+                OptionalParseResult result = Parsing.word.parseWordIfValid(builder, true);
+                if (result.isValid()) {
+                    ok = result.isParsedSuccessfully();
+                } else if (validExtraTokens.contains(builder.getTokenType())) {
+                    builder.advanceLexer();
+                    ok = true;
+                } else {
+                    break;
+                }
             }
         }
 
@@ -122,7 +125,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
             } else if (Parsing.redirection.isRedirect(builder, true)) {
                 ok = Parsing.redirection.parseSingleRedirect(builder, true);
             } else if (mode == Mode.LaxAssignmentMode && Parsing.word.isWordToken(builder)) {
-                ok = Parsing.word.parseWord(builder);
+                ok = Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
             } else {
                 break;
             }
@@ -148,7 +151,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 if (acceptArrayVars && builder.getTokenType() == ASSIGNMENT_WORD) {
                     break;
                 }
-                if (!Parsing.word.parseWord(builder)) {
+                if (!Parsing.word.parseWordIfValid(builder).isParsedSuccessfully()) {
                     assignment.drop();
                     return false;
                 }
@@ -167,8 +170,8 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                         }
 
                         //dummy marker because we must not mark a dynamic variable name (as in 'export $a=42)'
-                        assignment = new NullMarker();
-                    } else if (!Parsing.word.parseWord(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY, null)) {
+                        assignment = NullMarker.get();
+                    } else if (!Parsing.word.parseWordIfValid(builder, false, BashTokenTypes.EQ_SET, TokenSet.EMPTY, null).isParsedSuccessfully()) {
                         assignment.drop();
                         return false;
                     }
@@ -247,7 +250,7 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 final IElementType token = builder.getTokenType(true);
                 final boolean isEndToken = assignmentSeparators.contains(token);
                 if (token != null && !isEndToken) {
-                    if (!Parsing.word.parseWord(builder, true, TokenSet.EMPTY, validWordTokens, null)) {
+                    if (!Parsing.word.parseWordIfValid(builder, true, TokenSet.EMPTY, validWordTokens, null).isParsedSuccessfully()) {
                         ParserUtil.error(builder, "parser.unexpected.token");
                         assignment.drop();
                         return false;
@@ -311,10 +314,9 @@ public class CommandParsingUtil implements BashTokenTypes, BashElementTypes {
                 //continued below
             }
 
-            if (Parsing.word.isWordToken(builder)) {
-                final boolean ok = Parsing.word.parseWord(builder, true);
-
-                if (!ok) {
+            OptionalParseResult result = Parsing.word.parseWordIfValid(builder, true);
+            if (result.isValid()) {
+                if (!result.isParsedSuccessfully()) {
                     marker.drop();
                     return false;
                 }
