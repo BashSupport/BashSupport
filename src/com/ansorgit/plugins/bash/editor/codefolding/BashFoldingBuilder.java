@@ -23,11 +23,15 @@ import com.intellij.lang.folding.FoldingBuilder;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
 /**
  * Code folding builder for the Bash language.
@@ -36,8 +40,10 @@ import java.util.List;
  */
 public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
 
-    private static final TokenSet foldableTokens = TokenSet.create(GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT, GROUP_ELEMENT);
-    
+    private static final TokenSet foldableTokens = TokenSet.create(GROUP_COMMAND, CASE_PATTERN_LIST_ELEMENT, GROUP_ELEMENT, LOGICAL_BLOCK_ELEMENT, SUBSHELL_COMMAND);
+    private static final TokenSet startLogicalBlockTokens = TokenSet.create(THEN_KEYWORD, DO_KEYWORD);
+    private static final TokenSet endLogicalBlockTokens = TokenSet.create(FI_KEYWORD, DONE_KEYWORD);
+
     @NotNull
     public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode node, @NotNull Document document) {
         List<FoldingDescriptor> descriptors = Lists.newArrayList();
@@ -47,6 +53,7 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
         return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
     }
 
+    @Override
     public String getPlaceholderText(@NotNull ASTNode node) {
         final IElementType type = node.getElementType();
 
@@ -58,7 +65,28 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
             return "...";
         }
 
+        if (type == SUBSHELL_COMMAND) {
+            return "(...)";
+        }
+
+        if (isFoldableBlock(node, THEN_KEYWORD)) {
+            return "then...fi";
+        }
+
+        if (isFoldableBlock(node, DO_KEYWORD)) {
+            return "do...done";
+        }
+
         return "{...}";
+    }
+
+    private boolean isFoldableBlock(ASTNode node, IElementType keyword) {
+        if (node.getElementType() == LOGICAL_BLOCK_ELEMENT) {
+            final PsiElement prev = PsiTreeUtil.prevVisibleLeaf(node.getPsi());
+            return prev != null
+                    && prev.getNode().getElementType() == keyword;
+        }
+        return false;
     }
 
     public boolean isCollapsedByDefault(@NotNull ASTNode node) {
@@ -101,9 +129,32 @@ public class BashFoldingBuilder implements FoldingBuilder, BashElementTypes {
                     return TextRange.create(startOffset, next.getStartOffset() - 1);
                 }
             }
+        } else if (node.getElementType() == LOGICAL_BLOCK_ELEMENT) {
+
+            //walk to the last content element before the close marker
+            int startOffset = getStartOffset(node);
+
+            //walk to the last content element before the close marker
+            for (ASTNode next = node.getTreeNext(); next != null; next = next.getTreeNext()) {
+                IElementType elementType = next.getElementType();
+                if (endLogicalBlockTokens.contains(elementType)) {
+                    return TextRange.create(startOffset, next.getTextRange().getEndOffset());
+                }
+            }
+
         }
 
         return node.getTextRange();
+    }
+
+    private static int getStartOffset(ASTNode node) {
+        for (ASTNode prev = node.getTreePrev(); prev != null; prev = prev.getTreePrev()) {
+            IElementType elementType = prev.getElementType();
+            if (startLogicalBlockTokens.contains(elementType)) {
+                return prev.getStartOffset();
+            }
+        }
+        return node.getStartOffset();
     }
 
     private static boolean mayContainFoldBlocks(ASTNode node) {

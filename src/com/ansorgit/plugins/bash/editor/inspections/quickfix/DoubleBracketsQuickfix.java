@@ -78,8 +78,8 @@ public class DoubleBracketsQuickfix extends LocalQuickFixAndIntentionActionOnPsi
     }
 
     private enum Replacement {
-        AND("-a", "&&"),
-        OR("-o", "||"),
+        AND("(?<!\\S)-a(?!\\S)", "&&"),
+        OR("(?<!\\S)-o(?!\\S)", "||"),
         LESS_THAN("\\\\<", "<"),
         MORE_THAN("\\\\>", ">"),
         LEFT_PARANTHESIS("\\\\\\(", "("),

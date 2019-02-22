@@ -35,7 +35,9 @@ public class BashCompletionContributor extends CompletionContributor {
     private final static TokenSet endTokens = TokenSet.create(BashTokenTypes.STRING_END, BashTokenTypes.RIGHT_CURLY);
     private final static TokenSet wordTokens = TokenSet.create(BashTokenTypes.WORD);
 
-    public BashCompletionContributor(BashPathCompletionService completionService) {
+    public BashCompletionContributor() {
+        BashPathCompletionService completionService = BashPathCompletionService.getInstance();
+
         new VariableNameCompletionProvider().addTo(this);
         new CommandNameCompletionProvider(completionService).addTo(this);
         new AbsolutePathCompletionProvider().addTo(this);

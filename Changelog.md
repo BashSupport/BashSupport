@@ -1,14 +1,23 @@
 #### 2019-02-18:
- - Disable variable folding by default, it's too slow for large files. Use the project settings to enable folding of variable values.
+ - [#655](https://github.com/BashSupport/BashSupport/issues/655): Improve performance of parsing and reference resolving
+
+#### 2019-02-15:
+ - [#677](https://github.com/BashSupport/BashSupport/issues/677): Exception in idea.log of the latest CLion EAP
 
 #### 2019-02-08:
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
  - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
 
+#### 2019-01-29:
+ - [#664](https://github.com/BashSupport/BashSupport/issues/664): fix 'replace with double brackets' quick fix (contributed by bjansen)
+
 #### 2018-12-15:
  - [#645](https://github.com/BashSupport/BashSupport/issues/645): fix NPE in keyword handling
  - [#634](https://github.com/BashSupport/BashSupport/issues/634): Handle invalid paths in include file inspection
  - [#636](https://github.com/BashSupport/BashSupport/issues/636): handle parse errors in interpreter paths in run configurations
+
+#### 2018-11-13:
+ - [#588](https://github.com/BashSupport/BashSupport/issues/588): Code folding for function's body (contributed by nosovae-dev)
 
 #### 2018-11-07:
  - [#627](https://github.com/BashSupport/BashSupport/issues/627): Fix exception when folding builder was called when indexing
