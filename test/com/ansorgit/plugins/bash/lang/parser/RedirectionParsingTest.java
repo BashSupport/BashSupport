@@ -95,14 +95,14 @@ public class RedirectionParsingTest extends MockPsiTest {
 
     @Test
     public void testProcessSubstitution() {
-//        // < <(true)
-//        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
-//        // > >(true)
-//        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
-//        // < <(true && false)
-//        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
-//        // > >(true && false)
-//        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+        // < <(true)
+        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+        // > >(true)
+        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+        // < <(true && false)
+        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+        // > >(true && false)
+        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
 
         // < < (true)
         mockTestSuccessWithErrors(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);
