@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -37,8 +38,9 @@ public final class ConditionalParsingUtil {
         boolean ok = true;
 
         while (ok && !endTokens.contains(builder.getTokenType())) {
-            if (Parsing.word.isWordToken(builder)) {
-                ok = Parsing.word.parseWord(builder);
+            OptionalParseResult result = Parsing.word.parseWordIfValid(builder);
+            if (result.isValid()) {
+                ok = result.isParsedSuccessfully();
             } else if (builder.getTokenType() == BashTokenTypes.COND_OP_NOT) {
                 builder.advanceLexer();
                 ok = readTestExpression(builder, endTokens);

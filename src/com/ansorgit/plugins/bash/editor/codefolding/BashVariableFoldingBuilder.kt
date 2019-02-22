@@ -7,6 +7,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarDefImpl
 import com.ansorgit.plugins.bash.lang.psi.stubs.elements.BashVarElementType
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil
+import com.ansorgit.plugins.bash.settings.BashProjectSettings
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
@@ -66,7 +67,7 @@ class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
-        if (DumbService.isDumb(root.project)) {
+        if (DumbService.isDumb(root.project) || !BashProjectSettings.storedSettings(root.project).isVariableFolding) {
             return emptyArray()
         }
 

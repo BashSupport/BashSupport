@@ -1,3 +1,6 @@
+#### 2019-02-18:
+ - [#655](https://github.com/BashSupport/BashSupport/issues/655): Improve performance of parsing and reference resolving
+
 #### 2019-02-15:
  - [#677](https://github.com/BashSupport/BashSupport/issues/677): Exception in idea.log of the latest CLion EAP
 

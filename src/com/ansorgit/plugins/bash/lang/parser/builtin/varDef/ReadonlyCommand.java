@@ -13,17 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.psi.stubs.index;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
+
+import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Configures the versions of the available Bash indexes.
+ * Syntax: readonly [-af] [name[=value] ...] or readonly -p
+ * <br>
+ * Makes the assignments available to the reference detection.
+ * <br>
+ * @author jansorg
  */
-public final class BashIndexVersion {
-    private static final int BASE = 56;
-    public static final int CACHES_VERSION = BASE + 9;
-    public static final int STUB_INDEX_VERSION = BASE + 31;
-    public static final int ID_INDEX_VERSION = BASE + 19;
-
-    private BashIndexVersion() {
+class ReadonlyCommand extends AbstractVariableDefParsing implements ParsingTool {
+    ReadonlyCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "readonly", true, false);
     }
 }

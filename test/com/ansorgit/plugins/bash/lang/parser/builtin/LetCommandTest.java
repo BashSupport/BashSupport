@@ -18,16 +18,10 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.MockPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
 import com.google.common.collect.Lists;
-import com.intellij.openapi.util.Pair;
-import com.intellij.psi.tree.IElementType;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  * @author jansorg

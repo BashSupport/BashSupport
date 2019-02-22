@@ -13,20 +13,15 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
-
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 /**
- * Syntax:typeset [-afFirtx] [-p] name[=value] ...
- * Typeset is an obsolete command
- * <br>
- * Parses the typeset command. It makes the assignments available to the reference detection.
- * <br>
+ * readarray is an alias for mapfile
+ *
  * @author jansorg
  */
-class TypesetCommand extends AbstractVariableDefParsing implements ParsingTool {
-    TypesetCommand() {
-        super(true, GENERIC_COMMAND_ELEMENT, "typeset", true, false);
+class ReadarrayCommand extends MapfileCommand {
+    ReadarrayCommand() {
+        super("readarray");
     }
 }

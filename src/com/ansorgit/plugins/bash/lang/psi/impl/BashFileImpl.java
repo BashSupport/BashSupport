@@ -16,13 +16,11 @@
 package com.ansorgit.plugins.bash.lang.psi.impl;
 
 import com.ansorgit.plugins.bash.file.BashFileType;
-import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFileStub;
-import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashFunctionDefStub;
 import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -35,10 +33,18 @@ import com.intellij.psi.search.SearchScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * PSI implementation for a Bash file.
  */
 public class BashFileImpl extends PsiFileBase implements BashFile {
+    private final Object cacheLock = new Object();
+    // guarded by cacheLock
+    private volatile List<BashFunctionDef> cachedFunctions;
+
     public BashFileImpl(FileViewProvider viewProvider) {
         super(viewProvider, BashFileType.BASH_LANGUAGE);
     }
@@ -64,14 +70,28 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         return findChildByClass(BashShebang.class);
     }
 
+    @Override
+    public List<BashFunctionDef> allFunctionDefinitions() {
+        if (cachedFunctions == null) {
+            synchronized (cacheLock) {
+                if (cachedFunctions == null) {
+                    cachedFunctions = new ArrayList<>();
+                    collectNestedFunctionDefinitions(this, cachedFunctions);
 
-    public BashFunctionDef[] functionDefinitions() {
-        BashFileStub stub = getStub();
-        if (stub != null) {
-            return stub.getChildrenByType(BashElementTypes.FUNCTION_DEF_COMMAND, BashFunctionDefStub.ARRAY_FACTORY);
+                    cachedFunctions.sort(Comparator.comparingInt(PsiElement::getTextOffset));
+                }
+            }
         }
 
-        return findChildrenByClass(BashFunctionDef.class);
+        return cachedFunctions;
+    }
+
+    @Override
+    public void clearCaches() {
+        synchronized (cacheLock) {
+            cachedFunctions = null;
+        }
+        super.clearCaches();
     }
 
     @Override
@@ -91,6 +111,16 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
             ((BashVisitor) visitor).visitFile(this);
         } else {
             visitor.visitFile(this);
+        }
+    }
+
+    private static void collectNestedFunctionDefinitions(PsiElement parent, List<BashFunctionDef> target) {
+        for (PsiElement e = parent.getFirstChild(); e != null; e = e.getNextSibling()) {
+            if (e instanceof BashFunctionDef) {
+                target.add((BashFunctionDef) e);
+            }
+
+            collectNestedFunctionDefinitions(e, target);
         }
     }
 }

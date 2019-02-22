@@ -1,13 +1,10 @@
 /*
- * Copyright 2010 Joachim Ansorg, mail@ansorg-it.com
- * File: DeclareCommandTest.java, Class: DeclareCommandTest
- * Last modified: 2010-04-20
+ * Copyright (c) Joachim Ansorg, mail@ansorg-it.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,11 +13,12 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.builtin.varDef.DeclareCommand;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -32,7 +30,7 @@ public class DeclareCommandTest extends MockPsiTest {
         @Override
         public boolean apply(BashPsiBuilder psi) {
             DeclareCommand d = new DeclareCommand();
-            return d.parse(psi);
+            return d.parseIfValid(psi).isParsedSuccessfully();
         }
     };
 

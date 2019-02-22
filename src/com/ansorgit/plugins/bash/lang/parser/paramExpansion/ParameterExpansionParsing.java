@@ -15,10 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser.paramExpansion;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.BashSmartMarker;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.misc.ShellCommandParsing;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
@@ -52,6 +49,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
             PARAM_EXPANSION_OP_COLON_QMARK, PARAM_EXPANSION_OP_COLON_PLUS);
 
     private static final TokenSet validFirstTokens = TokenSet.create(DOLLAR, PARAM_EXPANSION_OP_AT, PARAM_EXPANSION_OP_STAR);
+    private static final TokenSet TOKEN_SET_CURLY_RIGHT = TokenSet.create(RIGHT_CURLY);
 
     public boolean isValid(BashPsiBuilder builder) {
         return builder.getTokenType() == LEFT_CURLY;
@@ -105,7 +103,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
         BashSmartMarker firstElementMarker = new BashSmartMarker(builder.mark());
 
         if (!validFirstTokens.contains(firstToken) && !ParserUtil.isWordToken(firstToken)) {
-            if (!builder.isEvalMode() || !Parsing.var.isValid(builder)) {
+            if (!builder.isEvalMode() || Parsing.var.isInvalid(builder)) {
                 builder.error("Expected a valid parameter expansion token.");
                 firstElementMarker.drop();
 
@@ -117,11 +115,15 @@ public class ParameterExpansionParsing implements ParsingFunction {
         //the first element is a word token, now check if it is a var use or var def token
 
         //eat the first token
-        if (builder.isEvalMode() && Parsing.var.isValid(builder)) {
-            boolean ok = Parsing.var.parse(builder);
-            if (!ok) {
-                firstElementMarker.drop();
-                return false;
+        if (builder.isEvalMode()) {
+            OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+            if (varResult.isValid()) {
+                if (!varResult.isParsedSuccessfully()) {
+                    firstElementMarker.drop();
+                    return false;
+                }
+            } else {
+                builder.advanceLexer();
             }
         } else {
             builder.advanceLexer();
@@ -140,6 +142,7 @@ public class ParameterExpansionParsing implements ParsingFunction {
                 boolean isSpecialReference = ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_AT, RIGHT_SQUARE)
                         || ParserUtil.hasNextTokens(builder, false, LEFT_SQUARE, PARAM_EXPANSION_OP_STAR, RIGHT_SQUARE);
 
+                //fixme optimize this
                 boolean isValidReference = ParserUtil.checkAndRollback(builder, psiBuilder -> ShellCommandParsing.arithmeticParser.parse(psiBuilder, LEFT_SQUARE, RIGHT_SQUARE));
 
                 if (isSpecialReference || isValidReference) {
@@ -178,9 +181,10 @@ public class ParameterExpansionParsing implements ParsingFunction {
 
                 PsiBuilder.Marker replacementValueMarker = builder.mark();
                 while (builder.getTokenType() != RIGHT_CURLY && wordIsOk && !builder.eof()) {
-                    if (Parsing.word.isWordToken(builder)) {
+                    OptionalParseResult result = Parsing.word.parseWordIfValid(builder, false, TOKEN_SET_CURLY_RIGHT, TokenSet.EMPTY, null);
+                    if (result.isValid()) {
                         //we have to accept variables, substitutions, etc. as well as substitution value
-                        wordIsOk = Parsing.word.parseWord(builder, false, TokenSet.create(RIGHT_CURLY), TokenSet.EMPTY, null);
+                        wordIsOk = result.isParsedSuccessfully();
                     } else {
                         builder.advanceLexer();
                     }
@@ -218,8 +222,9 @@ public class ParameterExpansionParsing implements ParsingFunction {
             }
 
             while (readFurther && isValid && builder.getTokenType() != RIGHT_CURLY) {
-                if (Parsing.var.isValid(builder)) {
-                    isValid = Parsing.var.parse(builder);
+                OptionalParseResult varResult = Parsing.var.parseIfValid(builder);
+                if (varResult.isValid()) {
+                    isValid = varResult.isParsedSuccessfully();
                 } else if (Parsing.word.isComposedString(builder.getTokenType())) {
                     isValid = Parsing.word.parseComposedString(builder);
                 } else if (Parsing.shellCommand.backtickParser.isValid(builder)) {

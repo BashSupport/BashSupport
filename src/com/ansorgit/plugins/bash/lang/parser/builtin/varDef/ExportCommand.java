@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
@@ -54,7 +54,8 @@ class ExportCommand extends AbstractVariableDefParsing implements ParsingTool {
     private boolean parseFunctionName(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
         PsiBuilder.Marker markerInner = builder.mark();
-        if (Parsing.word.parseWord(builder)) {
+
+        if (Parsing.word.parseWordIfValid(builder).isParsedSuccessfully()) {
             markerInner.done(GENERIC_COMMAND_ELEMENT);
             marker.done(SIMPLE_COMMAND_ELEMENT);
             return true;

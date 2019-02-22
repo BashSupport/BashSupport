@@ -37,7 +37,6 @@ public class BraceExpansionParsing implements ParsingFunction {
      * @return
      */
     public boolean isValid(BashPsiBuilder builder) {
-        //full parsing is expensive, try be smarter than dumb ;)
         //check if there is a curly bracket in the next tokens, if not then its not a brace expansion
         if (!ParserUtil.containsTokenInLookahead(builder, LEFT_CURLY, 10, false)) {
             return false;
@@ -57,7 +56,7 @@ public class BraceExpansionParsing implements ParsingFunction {
     }
 
     private boolean doParse(BashPsiBuilder builder, boolean checkMode) {
-        PsiBuilder.Marker marker = checkMode ? new NullMarker() : builder.mark();
+        PsiBuilder.Marker marker = checkMode ? NullMarker.get() : builder.mark();
 
         //read in the prefix
         while (true) {

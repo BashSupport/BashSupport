@@ -16,18 +16,19 @@
 package com.ansorgit.plugins.bash.lang.parser;
 
 import com.ansorgit.plugins.bash.lang.BashVersion;
+import com.ansorgit.plugins.bash.lang.parser.misc.RedirectionParsing;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * @author jansorg
  */
 public class RedirectionParsingTest extends MockPsiTest {
-    private MockFunction redirectionTest = new MockFunction() {
+    private final MockFunction redirectionTest = new MockFunction() {
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.redirection.parseList(builder, false, true);
+            RedirectionParsing.RedirectParseResult result = Parsing.redirection.parseRequiredListIfValid(builder, true);
+            return result == RedirectionParsing.RedirectParseResult.OK || result == RedirectionParsing.RedirectParseResult.INVALID_REDIRECT;
         }
     };
 
@@ -94,14 +95,14 @@ public class RedirectionParsingTest extends MockPsiTest {
 
     @Test
     public void testProcessSubstitution() {
-        // < <(true)
-        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
-        // > >(true)
-        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
-        // < <(true && false)
-        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
-        // > >(true && false)
-        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+//        // < <(true)
+//        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+//        // > >(true)
+//        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, RIGHT_PAREN);
+//        // < <(true && false)
+//        mockTest(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
+//        // > >(true && false)
+//        mockTest(redirectionTest, GREATER_THAN, WHITESPACE, GREATER_THAN, LEFT_PAREN, WORD, WHITESPACE, AND_AND, WORD, RIGHT_PAREN);
 
         // < < (true)
         mockTestSuccessWithErrors(redirectionTest, LESS_THAN, WHITESPACE, LESS_THAN, WHITESPACE, LEFT_PAREN, WORD, RIGHT_PAREN);

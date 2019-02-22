@@ -15,10 +15,7 @@
 
 package com.ansorgit.plugins.bash.lang.psi.util;
 
-import com.ansorgit.plugins.bash.lang.psi.api.BashConditionalBlock;
-import com.ansorgit.plugins.bash.lang.psi.api.BashFileReference;
-import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
+import com.ansorgit.plugins.bash.lang.psi.api.*;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.loops.BashLoop;
@@ -31,6 +28,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
+import com.intellij.injected.editor.VirtualFileWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -42,6 +40,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +150,7 @@ public final class BashResolveUtil {
         GlobalSearchScope fileScope = GlobalSearchScope.fileScope(psiFile);
 
         Collection<BashVarDef> varDefs;
-        if (dumbMode || isScratchFile(virtualFile) || !isIndexedFile(project, virtualFile)) {
+        if (dumbMode || isScratchFile(virtualFile) || isNotIndexedFile(project, virtualFile)) {
             varDefs = PsiTreeUtil.collectElementsOfType(psiFile, BashVarDef.class);
         } else {
             varDefs = StubIndex.getElements(BashVarDefIndex.KEY, varName, project, fileScope, BashVarDef.class);
@@ -182,22 +181,13 @@ public final class BashResolveUtil {
         return processor.getBestResult(false, bashVar);
     }
 
-    public static boolean isIndexedFile(Project project, @Nullable VirtualFile virtualFile) {
-        boolean isVirtualFileWindow;
-        try {
-            Class<?> fileWindow = BashResolveUtil.class.getClassLoader().loadClass("com.intellij.injected.editor.VirtualFileWindow");
-            isVirtualFileWindow = fileWindow.isInstance(virtualFile);
-        } catch (ClassNotFoundException ignored) {
-            //probably a version where that class is not yet present (145.x - 162.x)
-            isVirtualFileWindow = false;
-        }
-
-        return virtualFile != null
-                && !isVirtualFileWindow
-                && FileIndexFacade.getInstance(project).isInContent(virtualFile);
+    public static boolean isNotIndexedFile(@NonNls Project project, @Nullable VirtualFile virtualFile) {
+        return virtualFile == null
+                || virtualFile instanceof VirtualFileWindow
+                || !FileIndexFacade.getInstance(project).isInContent(virtualFile);
     }
 
-    public static boolean processContainerDeclarations(PsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
+    public static boolean processContainerDeclarations(BashPsiElement thisElement, @NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         if (thisElement == lastParent) {
             return true;
         }

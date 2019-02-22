@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
+
+import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 
 /**
- * Implements the read command.
+ * Syntax: local [option] name[=value]  ...
+ * <br>
+ * Makes the assignments available to the reference detection.
  * <br>
  * @author jansorg
  */
-class ReadCommand extends AbstractReadCommand {
-    ReadCommand() {
-        super("read");
+class LocalCommand extends AbstractVariableDefParsing implements ParsingTool {
+    public LocalCommand() {
+        super(true, GENERIC_COMMAND_ELEMENT, "local", true, false);
     }
 }

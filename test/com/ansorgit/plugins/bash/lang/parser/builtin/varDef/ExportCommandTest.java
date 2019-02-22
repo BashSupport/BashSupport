@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
 import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiBuilder;
 import com.ansorgit.plugins.bash.lang.parser.MockPsiTest;
+import com.ansorgit.plugins.bash.lang.parser.builtin.varDef.ExportCommand;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
@@ -34,20 +35,20 @@ public class ExportCommandTest extends MockPsiTest {
     MockFunction parserFunction = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return new ExportCommand().parse(psi);
+            return new ExportCommand().parseIfValid(psi).isParsedSuccessfully();
         }
     };
 
     MockFunction parserFunctionWithMarker = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder psi) {
-            return new ExportCommand().parse(psi);
+            return new ExportCommand().parseIfValid(psi).isParsedSuccessfully();
         }
 
         @Override
         public boolean postCheck(MockPsiBuilder mockBuilder) {
             List<Pair<MockPsiBuilder.MockMarker, IElementType>> markers = mockBuilder.getDoneMarkers();
-            if (markers.size() == 0) {
+            if (markers.isEmpty()) {
                 return false;
             }
 

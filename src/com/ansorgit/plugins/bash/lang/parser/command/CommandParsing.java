@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.parser.command;
 import com.ansorgit.plugins.bash.lang.parser.ParsingChain;
 import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.builtin.BuiltinCommandParser;
+import com.ansorgit.plugins.bash.lang.parser.builtin.varDef.BuiltinVarCommandParser;
 
 /**
  * The parsing of commands. A command is either a simple command, a shell command or a function
@@ -26,7 +27,6 @@ import com.ansorgit.plugins.bash.lang.parser.builtin.BuiltinCommandParser;
  * @author jansorg
  */
 public class CommandParsing extends ParsingChain implements ParsingTool {
-    public final SimpleCommandParsingFunction simpleCommandParser = new SimpleCommandParsingFunction();
 
     public CommandParsing() {
         /* The grammar:
@@ -38,7 +38,8 @@ public class CommandParsing extends ParsingChain implements ParsingTool {
          */
         addParsingFunction(new ShellCommandDelegator());
         addParsingFunction(new FunctionDefParsingFunction());
+        addParsingFunction(new BuiltinVarCommandParser());
         addParsingFunction(new BuiltinCommandParser());
-        addParsingFunction(simpleCommandParser); //has to be last
+        addParsingFunction(new SimpleCommandParsingFunction()); //has to be last
     }
 }

@@ -16,6 +16,7 @@
 package com.ansorgit.plugins.bash.lang.parser.shellCommand;
 
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
@@ -64,8 +65,8 @@ public class SelectParsingFunction implements ParsingFunction {
                 ParserUtil.error(builder, "parser.unexpected.token");
                 ParserUtil.readEmptyListFollowedBy(builder, DO_KEYWORD);
             } else {
-                boolean parsed = Parsing.word.parseWordList(builder, true, false); //include the terminator
-                if (!parsed) {
+                OptionalParseResult result = Parsing.word.parseWordListIfValid(builder, true, false); //include the terminator
+                if (result.isValid() && !result.isParsedSuccessfully()) {
                     selectCommand.drop();
                     return false;
                 }

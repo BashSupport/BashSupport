@@ -45,7 +45,8 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
     private JCheckBox autocompletePathCommands;
     private JCheckBox globalFunctionVarDefs;
     private JCheckBox enableEvalEscapesCheckbox;
-    TextFieldWithBrowseButton interpreterPath;
+    private TextFieldWithBrowseButton interpreterPath;
+    private JCheckBox enableVariableFolding;
 
     public BashProjectSettingsPane(Project project) {
         super(project);
@@ -63,6 +64,7 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
         this.globalFunctionVarDefs = null;
         this.enableEvalEscapesCheckbox = null;
         this.validateWithCurrentEnv = null;
+        this.enableVariableFolding = null;
     }
 
     public void setData(BashProjectSettings settings) {
@@ -81,6 +83,7 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
 
         //experimental
         useTerminalPlugin.setSelected(settings.isUseTerminalPlugin());
+        enableVariableFolding.setSelected(settings.isVariableFolding());
     }
 
     public void storeSettings(BashProjectSettings settings) {
@@ -99,6 +102,7 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
 
         //experimental
         settings.setUseTerminalPlugin(useTerminalPlugin.isSelected());
+        settings.setVariableFolding(enableVariableFolding.isSelected());
     }
 
     public boolean isModified(BashProjectSettings settings) {
@@ -113,7 +117,8 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
                 globalFunctionVarDefs.isSelected() != settings.isGlobalFunctionVarDefs() ||
                 useTerminalPlugin.isSelected() != settings.isUseTerminalPlugin() ||
                 validateWithCurrentEnv.isSelected() != settings.isValidateWithCurrentEnv() ||
-                !interpreterPath.getText().equals(settings.getProjectInterpreter());
+                !interpreterPath.getText().equals(settings.getProjectInterpreter()) ||
+                enableVariableFolding.isSelected() != settings.isVariableFolding();
     }
 
     public JPanel getPanel() {
@@ -209,7 +214,7 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
         autocompletePathCommands.setText("Show commands in $PATH");
         panel3.add(autocompletePathCommands, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridLayoutManager(6, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel4.setLayout(new GridLayoutManager(7, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel4.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
         settingsPane.add(panel4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         panel4.setBorder(BorderFactory.createTitledBorder("Experimental features - use at your own risk!"));
@@ -217,7 +222,7 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
         enableFormatterCheckbox.setText("Enable formatter");
         panel4.add(enableFormatterCheckbox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
-        panel4.add(spacer2, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel4.add(spacer2, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         enableEvalEscapesCheckbox = new JCheckBox();
         enableEvalEscapesCheckbox.setText("Support escaped values in 'eval'-code");
         panel4.add(enableEvalEscapesCheckbox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -225,6 +230,9 @@ public class BashProjectSettingsPane extends WithProject implements Disposable {
         useTerminalPlugin.setText("Use Terminal Plugin to run Bash scripts");
         useTerminalPlugin.setToolTipText("Uses JetBrains's Terminal plugin to run Bash scripts. The plugin has to be enabled.");
         panel4.add(useTerminalPlugin, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        enableVariableFolding = new JCheckBox();
+        enableVariableFolding.setText("Enable folding of variable values (slow for large files)");
+        panel4.add(enableVariableFolding, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel5.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");

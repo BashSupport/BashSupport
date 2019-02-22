@@ -24,14 +24,6 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingChain;
  */
 public class BuiltinCommandParser extends ParsingChain {
     public BuiltinCommandParser() {
-        addParsingFunction(new ExportCommand());
-        addParsingFunction(new ReadonlyCommand());
-        addParsingFunction(new DeclareCommand());
-        addParsingFunction(new MapfileCommand());
-        addParsingFunction(new ReadarrayCommand());
-        addParsingFunction(new TypesetCommand());
-        addParsingFunction(new ReadCommand());
-        addParsingFunction(new LocalCommand());
         addParsingFunction(new IncludeCommand());
         addParsingFunction(new GetOptsCommand());
         addParsingFunction(new EvalCommandParsing());

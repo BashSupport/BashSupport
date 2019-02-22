@@ -19,10 +19,9 @@ import com.ansorgit.plugins.bash.lang.psi.api.ResolveProcessor;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Function reference to be used in dumb mode and in scratch files. It resolves without index access.
@@ -42,12 +41,13 @@ class DumbFunctionReference extends AbstractFunctionReference {
             return null;
         }
 
-        ResolveProcessor processor = new BashFunctionProcessor(referencedName);
 
-        //in dumb mode the current is the only one searched for function definitions
-        Collection<BashFunctionDef> functionDefs = PsiTreeUtil.collectElementsOfType(cmd.getContainingFile(), BashFunctionDef.class);
+        // in dumb mode the current is the only one searched for function definitions
+        List<BashFunctionDef> functionDefs = cmd.getContainingFile().allFunctionDefinitions();
 
         ResolveState initial = ResolveState.initial();
+
+        ResolveProcessor processor = new BashFunctionProcessor(referencedName);
         for (BashFunctionDef functionDef : functionDefs) {
             processor.execute(functionDef, initial);
         }

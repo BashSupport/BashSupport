@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser.builtin.varDef;
 
-import com.ansorgit.plugins.bash.lang.LanguageBuiltins;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
+import com.ansorgit.plugins.bash.lang.parser.OptionalParseResult;
 import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
+import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -31,8 +31,8 @@ import com.intellij.psi.tree.TokenSet;
  *
  * @author jansorg
  */
-abstract class AbstractVariableDefParsing implements ParsingFunction {
-    private static final TokenSet EQ_SET = TokenSet.create(EQ);
+abstract class AbstractVariableDefParsing implements BashTokenTypes {
+    private static final TokenSet EQ_SET = TokenSet.create(BashTokenTypes.EQ);
 
     private final boolean acceptFrontVarDef;
     private final IElementType commandElementType;
@@ -62,66 +62,36 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
         }
     }
 
-    public final boolean isValid(BashPsiBuilder builder) {
-        PsiBuilder.Marker start = builder.mark();
-
-        // if accepted, read in command local var defs
-        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
-            if (!CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
-                start.rollbackTo();
-                return false;
-            }
-        }
-
-        String currentTokenText = builder.getTokenText();
-
-        start.rollbackTo();
-
-        return LanguageBuiltins.isInternalCommand(currentTokenText, builder.isBash4()) && commandName.equals(currentTokenText);
+    String getCommandName() {
+        return commandName;
     }
 
-    public boolean parse(BashPsiBuilder builder) {
-        if (!isValid(builder)) {
-            return false;
+    OptionalParseResult parseIfValid(BashPsiBuilder builder) {
+        OptionalParseResult result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
+        if (acceptFrontVarDef && result.isValid() && !result.isParsedSuccessfully()) {
+            throw new IllegalStateException("Unexpected state");
         }
 
-        final PsiBuilder.Marker cmdMarker = builder.mark();
+        ParserUtil.markTokenAndAdvance(builder, commandElementType);
 
-        if (acceptFrontVarDef && CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars)) {
-            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, acceptArrayVars);
-            if (!ok) {
-                cmdMarker.drop();
-                return false;
-            }
-        }
-
-        final PsiBuilder.Marker cmdWordMarker = builder.mark();
-        builder.advanceLexer(); //after the command name
-        cmdWordMarker.done(commandElementType); //fixme check this for validity
-
-        //now read until we reach the first assignment
+        // now read until we reach the first assignment
         if (!readOptions(builder)) {
-            cmdMarker.drop();
-            return false;
+            return OptionalParseResult.ParseError;
         }
 
-        boolean ok = !CommandParsingUtil.isAssignmentOrRedirect(builder, parsingMode, acceptArrayVars)
-                || CommandParsingUtil.readAssignmentsAndRedirects(builder, true, parsingMode, acceptArrayVars);
-
-        if (ok) {
-            cmdMarker.done(SIMPLE_COMMAND_ELEMENT);
-            return true;
-        } else {
-            cmdMarker.drop();
-            return false;
+        result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, true, parsingMode, acceptArrayVars);
+        if (!result.isValid() || result.isParsedSuccessfully()) {
+            return OptionalParseResult.Ok;
         }
+        return OptionalParseResult.ParseError;
     }
 
     private boolean readOptions(BashPsiBuilder builder) {
+        // fixme optimize this for less isWordToken use
         while (Parsing.word.isWordToken(builder) && !isAssignment(builder)) {
             String argName = builder.getTokenText();
 
-            boolean ok = Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
+            boolean ok = Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null).isParsedSuccessfully();
             if (!ok) {
                 return false;
             }
@@ -138,7 +108,7 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
     }
 
     protected boolean parseArgumentValue(String argName, BashPsiBuilder builder) {
-        return Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null);
+        return Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null).isParsedSuccessfully();
     }
 
     boolean argumentValueExpected(String name) {
@@ -158,12 +128,10 @@ abstract class AbstractVariableDefParsing implements ParsingFunction {
             return true;
         }
 
-        if (Parsing.word.isWordToken(builder)) {
-            if (!Parsing.word.parseWord(builder, false, EQ_SET, TokenSet.EMPTY, null)) {
-                start.rollbackTo();
-
-                return false;
-            }
+        OptionalParseResult result = Parsing.word.parseWordIfValid(builder, false, EQ_SET, TokenSet.EMPTY, null);
+        if (result.isValid() && !result.isParsedSuccessfully()) {
+            start.rollbackTo();
+            return false;
         }
 
         //EQ or whitespace expected

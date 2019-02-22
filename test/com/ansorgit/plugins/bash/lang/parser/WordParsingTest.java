@@ -27,7 +27,7 @@ public class WordParsingTest extends MockPsiTest {
     private MockFunction wordTestParser = new MockFunction() {
         @Override
         public boolean apply(BashPsiBuilder builder) {
-            return Parsing.word.parseWord(builder);
+            return Parsing.word.parseWordIfValid(builder).isParsedSuccessfully();
         }
     };
 

@@ -22,17 +22,15 @@ import com.ansorgit.plugins.bash.lang.parser.Parsing;
 import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
 /**
  * Parsing function for backtic / backquote calls.
  * <br>
+ *
  * @author jansorg
  */
 public class BacktickParsingFunction implements ParsingFunction {
-    private static final Logger log = Logger.getInstance("#bash.BackquoteParsing");
-
     public boolean isValid(BashPsiBuilder builder) {
         return !builder.getBackquoteData().isInBackquote() && builder.getTokenType() == BashTokenTypes.BACKQUOTE;
     }
@@ -47,14 +45,11 @@ public class BacktickParsingFunction implements ParsingFunction {
 
         builder.getBackquoteData().enterBackquote();
         try {
-            final boolean empty = builder.getTokenType() == BashTokenTypes.BACKQUOTE;
-
             //parse compound list
-            if (!empty) {
-                if (!Parsing.list.parseCompoundList(builder, true, false)) {
-                    ParserUtil.error(backquote, "parser.shell.expectedCommands");
-                    return false;
-                }
+            final boolean empty = builder.getTokenType() == BashTokenTypes.BACKQUOTE;
+            if (!empty && !Parsing.list.parseCompoundList(builder, true, false)) {
+                ParserUtil.error(backquote, "parser.shell.expectedCommands");
+                return false;
             }
 
             //get and check end token

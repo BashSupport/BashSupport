@@ -15,14 +15,10 @@
 
 package com.ansorgit.plugins.bash.lang.parser.builtin;
 
-import com.ansorgit.plugins.bash.lang.parser.BashPsiBuilder;
-import com.ansorgit.plugins.bash.lang.parser.Parsing;
-import com.ansorgit.plugins.bash.lang.parser.ParsingFunction;
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+import com.ansorgit.plugins.bash.lang.parser.*;
 import com.ansorgit.plugins.bash.lang.parser.command.CommandParsingUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * Syntax: printf: printf [-v var] Format [Argumente]
@@ -43,12 +39,10 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
         PsiBuilder.Marker cmdMarker = builder.mark();
 
         //read local-cmd vars
-        if (CommandParsingUtil.isAssignmentOrRedirect(builder, CommandParsingUtil.Mode.StrictAssignmentMode, false)) {
-            boolean ok = CommandParsingUtil.readAssignmentsAndRedirects(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, false);
-            if (!ok) {
-                cmdMarker.drop();
-                return false;
-            }
+        OptionalParseResult result = CommandParsingUtil.readAssignmentsAndRedirectsIfValid(builder, false, CommandParsingUtil.Mode.StrictAssignmentMode, false);
+        if (result.isValid() && !result.isParsedSuccessfully()) {
+            cmdMarker.drop();
+            return false;
         }
 
         //cmd word
@@ -88,8 +82,9 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
             return parseSimpleWord(builder);
         }
 
-        if (Parsing.word.isWordToken(builder)) {
-            return Parsing.word.parseWord(builder);
+        OptionalParseResult result = Parsing.word.parseWordIfValid(builder);
+        if (result.isValid()) {
+            return result.isParsedSuccessfully();
         }
 
         return false;
@@ -97,7 +92,8 @@ class PrintfCommand implements ParsingFunction, ParsingTool {
 
     private boolean parseSimpleWord(BashPsiBuilder builder) {
         PsiBuilder.Marker marker = builder.mark();
-        if (Parsing.word.parseWord(builder)) {
+
+        if (Parsing.word.parseWordIfValid(builder).isParsedSuccessfully()) {
             marker.done(VAR_DEF_ELEMENT);
             return true;
         }

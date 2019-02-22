@@ -58,7 +58,9 @@ class AbstractRepeatedExpr implements ArithmeticParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         if (prefixOperator && operators.contains(builder.getTokenType(checkWhitespace))) {
             return true;
-        } else if (expressionParser.isValid(builder)) {
+        }
+
+        if (expressionParser.isValid(builder)) {
             return true;
         }
 

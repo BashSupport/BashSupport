@@ -45,6 +45,8 @@ public class BashProjectSettings implements Serializable {
 
     private boolean useTerminalPlugin = false;
 
+    private boolean variableFolding = false;
+
     @NotNull
     private String projectInterpreter = "";
 
@@ -164,6 +166,14 @@ public class BashProjectSettings implements Serializable {
 
     public void setProjectInterpreter(@NotNull String projectInterpreter) {
         this.projectInterpreter = projectInterpreter;
+    }
+
+    public boolean isVariableFolding() {
+        return variableFolding;
+    }
+
+    public void setVariableFolding(boolean variableFolding) {
+        this.variableFolding = variableFolding;
     }
 }
 

@@ -42,8 +42,6 @@ public class SubshellParsingFunction implements ParsingFunction {
             subshell:       '(' compound_list ')'
          */
 
-        log.assertTrue(isValid(builder));
-
         final PsiBuilder.Marker subshell = builder.mark();
 
         builder.advanceLexer(); //after the start

@@ -13,19 +13,18 @@
  * limitations under the License.
  */
 
-package com.ansorgit.plugins.bash.lang.parser.builtin;
+package com.ansorgit.plugins.bash.lang.parser;
 
-import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
+public enum OptionalParseResult {
+    Invalid,
+    ParseError,
+    Ok;
 
-/**
- * Syntax: declare [-afFirtx] [-p] [name[=value] ...]
- * <br>
- * Parses the declare command. It makes the assignments available to the reference detection.
- * <br>
- * @author jansorg
- */
-class DeclareCommand extends AbstractVariableDefParsing implements ParsingTool {
-    DeclareCommand() {
-        super(true, GENERIC_COMMAND_ELEMENT, "declare", true, false);
+    public boolean isValid() {
+        return this != Invalid;
+    }
+
+    public boolean isParsedSuccessfully(){
+        return this == Ok;
     }
 }
