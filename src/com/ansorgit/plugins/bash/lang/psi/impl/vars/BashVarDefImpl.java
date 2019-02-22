@@ -139,7 +139,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         // - using an array assignment a=(one two)
         // - using declare -a
         // - using typeset -a
-        // - using mapfile
+        // - using mapfile/readarray
         // - using read -a
         // - using local -a
 
@@ -156,6 +156,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             BashCommand command = (BashCommand) parentElement;
 
             return "mapfile".equals(command.getReferencedCommandName())
+                    || "readarray".equals(command.getReferencedCommandName())
                     || isCommandWithParameter(command, commandsWithArrayOption, typeArrayDeclarationParams);
         }
 

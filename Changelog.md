@@ -8,6 +8,9 @@
  - [#657](https://github.com/BashSupport/BashSupport/issues/657): Exception when the arithmetic operator >> was used
  - [#671](https://github.com/BashSupport/BashSupport/issues/671): Ignore/log exception while scanning $PATH, e.g. while a system update is active.
 
+#### 2019-02-07:
+ - [PR#668](https://github.com/BashSupport/BashSupport/pull/668): Support `readarray` as alias of `mapfile` (contributed by niknetniko)
+
 #### 2019-01-29:
  - [#664](https://github.com/BashSupport/BashSupport/issues/664): fix 'replace with double brackets' quick fix (contributed by bjansen)
 

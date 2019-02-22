@@ -57,6 +57,11 @@ public class ArrayUseOfSimpleVarInspectionTest extends AbstractInspectionTestCas
     }
 
     @Test
+    public void testReadarrayArray() throws Exception {
+        doTest("arrayUseOfSimpleVarInspection/readarrayArray", new SimpleArrayUseInspection());
+    }
+
+    @Test
     public void testArrayParam() throws Exception {
         doTest("arrayUseOfSimpleVarInspection/arrayParam", new SimpleArrayUseInspection());
     }
