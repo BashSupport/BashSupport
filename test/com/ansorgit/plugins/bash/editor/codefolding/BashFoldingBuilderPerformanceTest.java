@@ -37,7 +37,7 @@ public abstract class BashFoldingBuilderPerformanceTest extends LightBashCodeIns
 
                 System.out.printf("Cycle duration: %d\n", System.currentTimeMillis() - start);
             }
-        }).cpuBound().assertTiming();
+        }).usesAllCPUCores().assertTiming();
     }
 
     @Override

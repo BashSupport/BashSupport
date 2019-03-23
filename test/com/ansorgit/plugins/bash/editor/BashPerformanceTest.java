@@ -58,7 +58,7 @@ public abstract class BashPerformanceTest extends LightBashCodeInsightFixtureTes
 
                 System.out.println("Cycle duration: " + (System.currentTimeMillis() - innerStart));
             }
-        }).cpuBound().attempts(1).assertTiming();
+        }).usesAllCPUCores().attempts(1).assertTiming();
 
         System.out.println("Complete duration: " + (System.currentTimeMillis() - start));
     }
