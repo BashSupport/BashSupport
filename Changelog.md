@@ -1,3 +1,6 @@
+#### 2019-03-23:
+ - Version 1.7.6
+
 #### 2019-02-18:
  - [#655](https://github.com/BashSupport/BashSupport/issues/655): Improve performance of parsing and reference resolving. Disable the folding of variable values by default as this is too slow for large files. You can enable this in the settings if you want to keep this behavior.
 
