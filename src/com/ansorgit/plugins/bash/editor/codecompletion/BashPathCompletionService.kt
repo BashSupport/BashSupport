@@ -58,8 +58,9 @@ class BashPathCompletionService() {
                     try {
                         val path = Paths.get(trimmed)
                         if (Files.isDirectory(path)) {
-                            Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray()).use { _files ->
-                                _files.forEach {
+                            val files = Files.find(path, 1, { f, attr -> attr.isRegularFile && Files.isExecutable(f) }, emptyArray())
+                            try {
+                                files.forEach {
                                     try {
                                         val fileName = it.fileName.toString()
 
@@ -77,6 +78,8 @@ class BashPathCompletionService() {
                                         }
                                     }
                                 }
+                            } finally {
+                                files.close()
                             }
                         }
                     } catch (ex: Exception) {
