@@ -1,4 +1,5 @@
 #### 2019-03-23:
+  - We're not bundling Kotlin anymore due to several incompatilities with the version bundled with the SDK
  - Version 1.7.6
 
 #### 2019-02-18:

@@ -1,6 +1,8 @@
 buildscript {
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        // this is the version included in the earlies SDK we're supporting
+        // this is IJ 145.x, which includes Kotlin 1.0.3
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.7"
     }
 }
 
@@ -27,6 +29,15 @@ allprojects {
     plugins.withType(JavaPlugin) {
         test {
             systemProperty "NO_FS_ROOTS_ACCESS_CHECK", "true"
+        }
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            apiVersion = 1.0
+            languageVersion = 1.0
+            noStdlib = true
+            noReflect = true
         }
     }
 
@@ -94,22 +105,6 @@ allprojects {
                 org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
                 org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
             ]
-        }
-    }
-
-    // during tests gradle-intellij seems to use the same classpath for the IDE and the plugin
-    // we're still using Kotlin 1.2.x, but 191.x is using Kotlin 1.3.x
-    // these different version are causing runtime issues during "gradle test" due to incompatible library versions
-    // we're working around this by marking our kotlin library as compileOnle, i.e. provided at runtime
-    // the better fix is to not bundle our custom version of Kotlin, but right now we're still supporting 145.x with
-    // a very old version of Kotlin.
-    if (ideaBranch == "191" || ideaVersion.startsWith("191")) {
-        dependencies {
-            compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-        }
-    } else {
-        dependencies {
-            compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
         }
     }
 }
