@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -41,6 +41,16 @@
 
     <change-notes><![CDATA[
         <html>
+        <b>Changes in version 1.7.6:</b>
+        <ul>
+         <li>#677: Exception in idea.log of the latest CLion EAP</li>
+         <li>#671: Ignore/log exception while scanning $PATH, e.g. while a system update is active.</li>
+         <li>#668: Support `readarray` as alias of `mapfile` (contributed by niknetniko)</li>
+         <li>#664: fix 'replace with double brackets' quick fix (contributed by bjansen)</li>
+         <li>#657: Exception when the arithmetic operator &gt;&gt; was used</li>
+         <li>#655: Improve performance of parsing and reference resolving. Disable the folding of variable values by default as this is too slow for large files. You can enable this in the settings if you want to keep this behavior.</li>
+        </ul><br>
+
         <b>Changes in version 1.7.5 (eap channel):</b>
         <ul>
          <li>#660: Add support for EAP 191.x builds </li>
