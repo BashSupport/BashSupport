@@ -1,3 +1,7 @@
+#### 2019-03-27:
+  - #687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.
+  - Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.
+
 #### 2019-03-23:
   - We're not bundling Kotlin anymore due to several incompatilities with the version bundled with the SDK
   - Version 1.7.6

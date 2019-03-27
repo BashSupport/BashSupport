@@ -18,7 +18,6 @@ package com.ansorgit.plugins.bash.editor.annotator;
 import com.ansorgit.plugins.bash.editor.highlighting.BashSyntaxHighlighter;
 import com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes;
 import com.ansorgit.plugins.bash.lang.parser.BashElementTypes;
-import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashBackquote;
 import com.ansorgit.plugins.bash.lang.psi.api.BashFunctionDefName;
 import com.ansorgit.plugins.bash.lang.psi.api.BashString;
@@ -66,9 +65,7 @@ public class BashAnnotator implements Annotator {
             TokenSet.create(BashElementTypes.VAR_ELEMENT));
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
-        if (element instanceof BashBackquote) {
-            annotateBackquote((BashBackquote) element, annotationHolder);
-        } else if (element instanceof BashHereDoc) {
+        if (element instanceof BashHereDoc) {
             annotateHereDoc((BashHereDoc) element, annotationHolder);
         } else if (element instanceof BashHereDocStartMarker) {
             annotateHereDocStart(element, annotationHolder);
@@ -86,8 +83,6 @@ public class BashAnnotator implements Annotator {
             annotateWord(element, annotationHolder);
         } else if (element instanceof BashString) {
             annotateString(element, annotationHolder);
-        } else if (element instanceof BashSubshellCommand) {
-            annotateSubshell(element, annotationHolder);
         } else if (element instanceof IncrementExpression) {
             annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
         } else if (element instanceof BashFunctionDefName) {
@@ -232,37 +227,6 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-
-    /**
-     * Annotates the static text in an backquote command with the backquote formatting
-     *
-     * @param element
-     * @param holder
-     */
-    private void annotateBackquote(BashBackquote element, final AnnotationHolder holder) {
-        final BashVisitor wordVisitor = new BashVisitor() {
-            @Override
-            public void visitCombinedWord(BashWord word) {
-                PsiElement firstChild = word.getFirstChild();
-                if (firstChild != null && firstChild.getNode().getElementType() == BashTokenTypes.WORD && !word.isWrapped()) {
-                    holder.createInfoAnnotation(word.getTextRange(), null).setTextAttributes(BashSyntaxHighlighter.BACKQUOTE);
-                }
-            }
-        };
-
-        element.acceptChildren(new BashVisitor() {
-            @Override
-            public void visitGenericCommand(BashCommand bashCommand) {
-                bashCommand.acceptChildren(wordVisitor);
-            }
-
-            @Override
-            public void visitInternalCommand(BashCommand bashCommand) {
-                bashCommand.acceptChildren(wordVisitor);
-            }
-        });
-    }
-
     private void annotateHereDoc(BashHereDoc element, AnnotationHolder annotationHolder) {
         final Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
         annotation.setTextAttributes(BashSyntaxHighlighter.HERE_DOC);
@@ -303,10 +267,5 @@ public class BashAnnotator implements Annotator {
         if (!BashIdentifierUtil.isValidVariableName(varName) && !BashPsiUtils.isInEvalBlock(var)) {
             annotationHolder.createErrorAnnotation(var.getReference().getRangeInElement().shiftRight(var.getTextOffset()), String.format("'%s': not a valid identifier", varName));
         }
-    }
-
-    private void annotateSubshell(PsiElement element, AnnotationHolder holder) {
-        final Annotation annotation = holder.createInfoAnnotation(element, null);
-        annotation.setTextAttributes(BashSyntaxHighlighter.SUBSHELL_COMMAND);
     }
 }
