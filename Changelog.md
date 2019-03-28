@@ -1,3 +1,6 @@
+#### 2019-03-28:
+ - [#486](https://github.com/BashSupport/BashSupport/issues/486): Highlighting of composed variables within strings. Not all of the configured highlighting was applied inside of strings. Now string highlighting does not override the highlighting of contained elements. The Kotlin plugin is handling this in the same way.
+
 #### 2019-03-23:
   - We're not bundling Kotlin anymore due to several incompatilities with the version bundled with the SDK
   - Version 1.7.6
