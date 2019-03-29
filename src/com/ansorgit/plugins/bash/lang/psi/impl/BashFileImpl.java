@@ -75,10 +75,11 @@ public class BashFileImpl extends PsiFileBase implements BashFile {
         if (cachedFunctions == null) {
             synchronized (cacheLock) {
                 if (cachedFunctions == null) {
-                    cachedFunctions = new ArrayList<>();
-                    collectNestedFunctionDefinitions(this, cachedFunctions);
+                    List<BashFunctionDef> functions = new ArrayList<>();
+                    collectNestedFunctionDefinitions(this, functions);
+                    functions.sort(Comparator.comparingInt(PsiElement::getTextOffset));
 
-                    cachedFunctions.sort(Comparator.comparingInt(PsiElement::getTextOffset));
+                    cachedFunctions = functions;
                 }
             }
         }
