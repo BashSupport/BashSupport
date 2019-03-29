@@ -1,6 +1,7 @@
 #### 2019-03-29:
  - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
   - Version 1.7.7
+  - #658: Fix broken highlighting of heredocs.
 
 #### 2019-03-23:
   - We're not bundling Kotlin anymore due to several incompatilities with the version bundled with the SDK

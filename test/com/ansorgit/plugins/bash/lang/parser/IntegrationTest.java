@@ -673,4 +673,10 @@ public class IntegrationTest extends MockPsiTest {
         //echo $-
         //mockTest(fileParsingTest, WORD, WHITESPACE, DOLLAR, );
     }
+
+    @Test
+    public void testIncompleteHeredoc(){
+        // #658: <<\nX
+        mockTestSuccessWithErrors(fileParsingTest, HEREDOC_MARKER_TAG, LINE_FEED, WORD);
+    }
 }

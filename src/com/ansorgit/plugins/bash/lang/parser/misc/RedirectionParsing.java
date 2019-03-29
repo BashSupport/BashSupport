@@ -32,10 +32,6 @@ public class RedirectionParsing implements ParsingTool {
             GREATER_THAN, LESS_THAN
     );
 
-    private static final TokenSet heredocStarters = TokenSet.create(
-            HEREDOC_MARKER_TAG
-    );
-
     //fixme profile and improve, if necessary. This implementation is not very smart at the moment.
     //fixme optimize this for performance
     public boolean isRedirect(BashPsiBuilder builder, boolean allowHeredocs) {
@@ -141,8 +137,16 @@ public class RedirectionParsing implements ParsingTool {
         //eat second token
         builder.advanceLexer();
 
-        if (allowHeredoc && heredocStarters.contains(secondToken)) {
+        if (allowHeredoc && secondToken == HEREDOC_MARKER_TAG) {
             marker.drop();
+
+            if (builder.getTokenType() == LINE_FEED) {
+                // missing start tag
+                builder.error("missing heredoc start tag");
+                builder.advanceLexer();
+                return RedirectParseResult.OK;
+            }
+
             if (builder.getTokenType() != HEREDOC_MARKER_START) {
                 return RedirectParseResult.PARSING_FAILED;
             }
