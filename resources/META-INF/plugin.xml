@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.6</version>
+    <version>1.7.7</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -40,6 +40,12 @@
     </html>]]></description>
 
     <change-notes><![CDATA[
+        <html>
+        <b>Changes in version 1.7.7:</b>
+        <ul>
+         <li>#694: Fix ConcurrentModificationException</li>
+        </ul><br>
+
         <html>
         <b>Changes in version 1.7.6:</b>
         <ul>
