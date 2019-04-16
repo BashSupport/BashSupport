@@ -225,6 +225,7 @@
         <applicationService serviceImplementation="com.ansorgit.plugins.bash.editor.codecompletion.BashPathCompletionService" />
         <completion.contributor language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.codecompletion.BashCompletionContributor"/>
 
+        <indexPatternBuilder implementation="com.ansorgit.plugins.bash.lang.psi.BashIndexPatternBuilder" />
         <idIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashIdIndexer" />
         <todoIndexer filetype="Bash" implementationClass="com.ansorgit.plugins.bash.lang.psi.BashTodoIndexer" />
 

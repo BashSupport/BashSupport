@@ -1,3 +1,6 @@
+#### 2019-04-16:
+ - [#656](https://github.com/BashSupport/BashSupport/issues/656): Fix multiline highlighting of todo/fixme comments
+
 #### 2019-03-29:
  - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
   - Version 1.7.7
