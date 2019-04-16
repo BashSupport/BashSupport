@@ -33,12 +33,12 @@ import java.util.Collection;
 public class BashFixmeHighlighterTest extends LightBashCodeInsightFixtureTestCase {
     @Test
     public void testComment() {
-//        PsiFile file = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, "# fixme: a\n#  b");
-//        Query<IndexPatternOccurrence> result = IndexPatternSearch.search(file, TodoIndexPatternProvider.getInstance(), true);
-//        Collection<IndexPatternOccurrence> matches = result.findAll();
-//        Assert.assertEquals(1, matches.size());
-//
-//        IndexPatternOccurrence first = matches.iterator().next();
-//        Assert.assertEquals("A multiline comment must be detected as a single occurence with one additional text range", 1, first.getAdditionalTextRanges().size());
+        PsiFile file = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, "# fixme: a\n#  b");
+        Query<IndexPatternOccurrence> result = IndexPatternSearch.search(file, TodoIndexPatternProvider.getInstance(), true);
+        Collection<IndexPatternOccurrence> matches = result.findAll();
+        Assert.assertEquals(1, matches.size());
+
+        IndexPatternOccurrence first = matches.iterator().next();
+        Assert.assertEquals("A multiline comment must be detected as a single occurence with one additional text range", 1, first.getAdditionalTextRanges().size());
     }
 }
