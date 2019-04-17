@@ -246,6 +246,7 @@
         <spellchecker.support implementationClass="com.ansorgit.plugins.bash.editor.BashSpellCheckingSupport" language="Bash" />
 
         <enterHandlerDelegate implementation="com.ansorgit.plugins.bash.editor.BashUnmatchedBraceEnterProcessor" order="FIRST" id="BashUnmatchedBrace" />
+        <enterHandlerDelegate implementation="com.ansorgit.plugins.bash.editor.EnterInStringLiteralHandler" />
 
         <!-- Repl-->
         <projectConfigurable groupId="language" instance="com.ansorgit.plugins.bash.settings.BashProjectSettingsConfigurable" id="BashSupport" key="settings.project.groupTitle" bundle="com.ansorgit.plugins.bash.bash" />
