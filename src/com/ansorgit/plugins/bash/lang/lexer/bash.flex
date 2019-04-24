@@ -109,8 +109,8 @@ IntegerLiteral = [0] | ([1-9][0-9]*)
 HexIntegerLiteral = "0x" [0-9a-fA-F]+
 OctalIntegerLiteral = "0" [0-7]+
 
-CaseFirst={EscapedChar} | [^|\"'$)(# \n\r\f\t\f]
-CaseAfter={EscapedChar} | [^|\"'$`)( \n\r\f\t\f;]
+CaseFirst={EscapedChar} | {Pattern} | [^|\"'$)(# \n\r\f\t\f]
+CaseAfter={EscapedChar} | {Pattern} | [^|\"'$`)( \n\r\f\t\f;]
 CasePattern = {CaseFirst} ({LineContinuation}? {CaseAfter})*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"

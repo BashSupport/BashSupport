@@ -1487,6 +1487,15 @@ public class BashLexerTest {
         testTokenization("if ! mv -v !(src|*.sh) ${dir}; then echo; fi", IF_KEYWORD,
                 WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, SEMI,
                 WHITESPACE, THEN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
+
+        testTokenization("case x in\n\t.+(a|b)) echo;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
+                WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+
+        testTokenization("case x in\n\t@(a|b)|!(a)|.+(a|b)) echo;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED, WHITESPACE,
+                WORD, PIPE, WORD, PIPE, WORD, RIGHT_PAREN,
+                WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
     }
 
     @Test
