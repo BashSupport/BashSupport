@@ -147,7 +147,11 @@ public abstract class MockPsiTest implements BashTokenTypes {
     }
 
     public void mockTestFail(BashVersion version, MockFunction f, IElementType... elements) {
-        MockPsiBuilder mockPsiBuilder = builderFor(Collections.<String>emptyList(), elements);
+        mockTestFail(version, f, Collections.emptyList(), elements);
+    }
+
+    public void mockTestFail(BashVersion version, MockFunction f, List<String> textTokens, IElementType... elements) {
+        MockPsiBuilder mockPsiBuilder = builderFor(textTokens, elements);
         BashPsiBuilder bashPsiBuilder = new BashPsiBuilder(null, mockPsiBuilder, version);
 
         boolean ok = f.apply(bashPsiBuilder);

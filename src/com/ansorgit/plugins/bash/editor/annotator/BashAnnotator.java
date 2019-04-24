@@ -47,6 +47,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,11 +99,15 @@ public class BashAnnotator implements Annotator {
             annotateBinaryData((BashBinaryDataElement) element, annotationHolder);
         }
 
-        hightlightRemappedTokens(element, annotationHolder);
+        highlightKeywordTokens(element, annotationHolder);
     }
 
-    private void hightlightRemappedTokens(PsiElement element, AnnotationHolder annotationHolder) {
-        if (element.getNode().getElementType() == BashTokenTypes.IN_KEYWORD_REMAPPED) {
+    private void highlightKeywordTokens(PsiElement element, AnnotationHolder annotationHolder) {
+        IElementType elementType = element.getNode().getElementType();
+        boolean isKeyword = elementType == BashTokenTypes.IN_KEYWORD_REMAPPED
+                || elementType == BashTokenTypes.WORD && "!".equals(element.getText());
+
+        if (isKeyword) {
             Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.KEYWORD);
         }

@@ -1,5 +1,8 @@
+#### 2019-04-24:
+  - [#458](https://github.com/BashSupport/BashSupport/issues/458): Support shopt -s extglob syntax
+
 #### 2019-03-29:
- - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
+  - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
   - Version 1.7.7
 
 #### 2019-03-23:

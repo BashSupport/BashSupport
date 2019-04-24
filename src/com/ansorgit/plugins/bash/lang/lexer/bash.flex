@@ -93,6 +93,11 @@ AssignListWordFirst = [[\p{Letter}]||[0-9_/@?.*:&%\^+~,;-]] | {EscapedChar} | {L
 AssignListWordAfter =  {AssignListWordFirst} | [$#!]
 AssignListWord = {AssignListWordFirst}{AssignListWordAfter}*
 
+// https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html
+// okay for now to accept syntax which is using extglob patterns
+// long-term this could be replaced with a custom token type and proper parsing of patterns
+// patterns can be nested like @(@(a|b), !(c|d)), for example. This isn't handled well atm.
+Pattern = ([*?] | ([?*+@!] "(" [^)]* ")" ) | ([?*+@!] ("[" | "[[") [^]]* ("]" | "]]") ))+
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [[\p{Letter}]||[_]] [[\p{Letter}]||[0-9_]]*
@@ -385,7 +390,6 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 /* keywords and expressions */
   "case"                        { setInCaseBody(false); goToState(S_CASE); return CASE_KEYWORD; }
 
-  "!"                           { return BANG_TOKEN; }
   "do"                          { return DO_KEYWORD; }
   "done"                        { return DONE_KEYWORD; }
   "elif"                        { return ELIF_KEYWORD; }
@@ -834,9 +838,12 @@ goToState(X_STRINGMODE); return STRING_BEGIN; }
     {IntegerLiteral}            { return INTEGER_LITERAL; }
 }
 
-<YYINITIAL, S_CASE, S_TEST, S_TEST_COMMAND, S_SUBSHELL, S_BACKQUOTE> {
-  {Word}                       { return WORD; }
-  {WordAfter}+                 { return WORD; }
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+  <S_TEST, S_TEST_COMMAND> {
+    {Word}                     { return WORD; }
+    {WordAfter}+               { return WORD; }
+  }
+  {Pattern}                    { return WORD; }
 }
 
 /** END */

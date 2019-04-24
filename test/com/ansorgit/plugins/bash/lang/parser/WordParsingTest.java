@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -38,7 +39,7 @@ public class WordParsingTest extends MockPsiTest {
 
     @Test
     public void testSingleBangToken() throws Exception {
-        mockTest(wordTestParser, BANG_TOKEN);
+        mockTest(wordTestParser, Lists.newArrayList("!"), WORD);
     }
 
     @Test

@@ -178,7 +178,7 @@ public class WordParsing implements ParsingTool {
                 } else if (!firstStep && nextToken == EQ) {
                     builder.advanceLexer();
                     processedTokens++;
-                } else if (nextToken == BANG_TOKEN) {
+                } else if (nextToken == WORD && "!".equals(builder.getTokenText())) {
                     IElementType followup = builder.rawLookup(1);
                     if ((followup == null || ParserUtil.isWhitespaceOrLineFeed(followup))) {
                         //either a single ! token with following whitespace or at the end of the file
