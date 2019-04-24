@@ -97,7 +97,9 @@ AssignListWord = {AssignListWordFirst}{AssignListWordAfter}*
 // okay for now to accept syntax which is using extglob patterns
 // long-term this could be replaced with a custom token type and proper parsing of patterns
 // patterns can be nested like @(@(a|b), !(c|d)), for example. This isn't handled well atm.
-Pattern = ([*?] | ([?*+@!] "(" [^)]* ")" ) | ([?*+@!] ("[" | "[[") [^]]* ("]" | "]]") ))+
+PatternSimple = [*?]
+PatternExt = ([?*+@!] "(" [^)]+ ")" ) | ([?*+@!] ("[" | "[[") [^]]+ ("]" | "]]") )
+Pattern = ({PatternSimple} | {PatternExt})+
 Word = {WordFirst}{WordAfter}*
 ArithWord = {ArithWordFirst}{ArithWordAfter}*
 AssignmentWord = [[\p{Letter}]||[_]] [[\p{Letter}]||[0-9_]]*
@@ -714,6 +716,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   {EscapedChar}                 { setParamExpansionWord(true); return WORD; }
   {IntegerLiteral}              { setParamExpansionWord(true); return WORD; }
   {ParamExpansionWord}          { setParamExpansionWord(true); return WORD; }
+  {PatternExt}+                 { setParamExpansionWord(true); return WORD; }
 }
 
 <S_PARAM_EXPANSION_PATTERN> {
