@@ -50,7 +50,8 @@ times
 trap 
 true                               
 type
-typeset 
+typeset
+ulimit
 umask 
 unset 
 variables 
