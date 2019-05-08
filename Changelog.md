@@ -1,5 +1,5 @@
 #### 2019-05-04:
- - Add internal documentation for ulimit command
+ - Add internal documentation for ulimit command (contributed by dzieciolowski)
 
 #### 2019-03-29:
  - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
