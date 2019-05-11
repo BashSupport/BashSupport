@@ -30,8 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.conditionalOperators;
-import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.redirectionSet;
+import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
 /**
  * Defines bash token highlighting and formatting.
@@ -92,7 +91,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TokenSet lineCommentSet = TokenSet.create(BashTokenTypes.COMMENT);
     private static final TokenSet shebangSet = TokenSet.create(BashTokenTypes.SHEBANG);
     private static final TokenSet backquoteSet = TokenSet.create(BashTokenTypes.BACKQUOTE);
-
+    private static final TokenSet stringTokens = TokenSet.create(STRING_BEGIN, STRING_CONTENT, STRING_END);
 
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
 
@@ -108,6 +107,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
         fillMap(attributes1, shebangSet, SHEBANG_COMMENT);
 
+        fillMap(attributes1, stringTokens, STRING);
         fillMap(attributes1, STRING2, BashTokenTypes.STRING2);
 
         fillMap(attributes1, VAR_USE, BashTokenTypes.VARIABLE);
