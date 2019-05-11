@@ -81,8 +81,6 @@ public class BashAnnotator implements Annotator {
             annotateIdentifier((BashVar) element, annotationHolder);
         } else if (element instanceof BashWord) {
             annotateWord(element, annotationHolder);
-        } else if (element instanceof BashString) {
-            annotateString(element, annotationHolder);
         } else if (element instanceof IncrementExpression) {
             annotateArithmeticIncrement((IncrementExpression) element, annotationHolder);
         } else if (element instanceof BashFunctionDefName) {
@@ -166,19 +164,11 @@ public class BashAnnotator implements Annotator {
         }
     }
 
-    private void annotateString(PsiElement bashString, final AnnotationHolder holder) {
-        final Annotation annotation = holder.createInfoAnnotation(TextRange.from(bashString.getTextOffset(), bashString.getTextLength()), null);
-        annotation.setTextAttributes(BashSyntaxHighlighter.STRING);
-
-        highlightVariables(bashString, holder);
-    }
-
     private void highlightVariables(PsiElement containerElement, final AnnotationHolder holder) {
         new PsiRecursiveElementVisitor() {
             @Override
             public void visitElement(PsiElement element) {
                 if (element instanceof BashVar) {
-                    //containedVars.add((BashVar) containerElement);
                     Annotation infoAnnotation = holder.createInfoAnnotation(element, null);
                     infoAnnotation.setTextAttributes(BashSyntaxHighlighter.VAR_USE);
                 }
