@@ -30,8 +30,7 @@ public class HistoryExpansionParsingFunction implements ParsingFunction {
     public boolean isValid(BashPsiBuilder builder) {
         IElementType token = builder.rawLookup(1);
         return token != null
-                && builder.getTokenType() == WORD
-                && "!".equals(builder.getTokenText())
+                && ParserUtil.isWord(builder, "!")
                 && !ParserUtil.isWhitespaceOrLineFeed(token);
     }
 

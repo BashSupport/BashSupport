@@ -22,7 +22,6 @@ import com.ansorgit.plugins.bash.lang.parser.ParsingTool;
 import com.ansorgit.plugins.bash.lang.parser.util.ParserUtil;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author jansorg
@@ -57,7 +56,7 @@ public class PipelineParsing implements ParsingTool {
 
         PsiBuilder.Marker pipelineCommandMarker = builder.mark();
 
-        boolean hasBang = isWord(builder, "!");
+        boolean hasBang = ParserUtil.isWord(builder, "!");
         if (hasBang) { //the bang is optional
             builder.advanceLexer();
         }
@@ -68,7 +67,7 @@ public class PipelineParsing implements ParsingTool {
             return OptionalParseResult.ParseError;
         }
 
-        if (!hasBang && isWord(builder, "!")) {
+        if (!hasBang && ParserUtil.isWord(builder, "!")) {
             builder.advanceLexer(); //read the bang token we found
             hasBang = true;
 
@@ -164,10 +163,6 @@ public class PipelineParsing implements ParsingTool {
 
         time.done(TIME_COMMAND);
         return true;
-    }
-
-    private static boolean isWord(@NotNull BashPsiBuilder builder, String text) {
-        return builder.getTokenType() == WORD && text.equals(builder.getTokenText());
     }
 
     private enum ParseState {
