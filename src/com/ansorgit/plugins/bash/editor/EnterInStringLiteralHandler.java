@@ -54,7 +54,7 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
 
         int offset = caretOffset.get();
         PsiElement psi = file.findElementAt(offset);
-        if (psi == null || psi.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
+        if (psi == null || psi.getNode() == null || psi.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
             // do not add a line continuation at end of line
             return Result.Continue;
         }
