@@ -37,6 +37,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBinaryDataElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -102,8 +103,13 @@ public class BashAnnotator implements Annotator {
         highlightKeywordTokens(element, annotationHolder);
     }
 
-    private void highlightKeywordTokens(PsiElement element, AnnotationHolder annotationHolder) {
-        IElementType elementType = element.getNode().getElementType();
+    private void highlightKeywordTokens(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
+        ASTNode node = element.getNode();
+        if (node == null) {
+            return;
+        }
+
+        IElementType elementType = node.getElementType();
         boolean isKeyword = elementType == BashTokenTypes.IN_KEYWORD_REMAPPED
                 || elementType == BashTokenTypes.WORD && "!".equals(element.getText());
 
