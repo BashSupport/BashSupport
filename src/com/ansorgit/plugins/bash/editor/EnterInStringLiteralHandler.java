@@ -74,9 +74,10 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
     }
 
     private PsiElement findWrappingContext(PsiElement start) {
-        if (start instanceof LeafPsiElement || start instanceof BashVar) {
-            return findWrappingContext(start.getParent());
+        PsiElement result = start;
+        while (result instanceof LeafPsiElement || result instanceof BashVar) {
+            result = result.getParent();
         }
-        return start;
+        return result;
     }
 }
