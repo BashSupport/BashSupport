@@ -48,6 +48,10 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
             return Result.Continue;
         }
 
+        // as advised in the JavaDoc of
+        // com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegate.preprocessEnter
+        PsiDocumentManager.getInstance(file.getProject()).commitDocument(editor.getDocument());
+
         int offset = caretOffset.get();
         PsiElement psi = file.findElementAt(offset);
         if (psi == null || psi.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
@@ -63,10 +67,6 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
 
         if (offset >= psi.getTextOffset() && psi.getNode().getElementType() != BashTokenTypes.LINE_FEED) {
             EditorModificationUtil.insertStringAtCaret(editor, "\\\n");
-
-            PsiDocumentManager mgr = PsiDocumentManager.getInstance(file.getProject());
-            mgr.commitDocument(editor.getDocument());
-
             return Result.Stop;
         }
 
