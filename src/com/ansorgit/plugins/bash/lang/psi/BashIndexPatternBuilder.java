@@ -30,9 +30,6 @@ import org.jetbrains.annotations.Nullable;
  * @author jansorg
  */
 public class BashIndexPatternBuilder implements IndexPatternBuilder {
-    public BashIndexPatternBuilder() {
-    }
-
     @Nullable
     @Override
     public Lexer getIndexingLexer(@NotNull PsiFile file) {
