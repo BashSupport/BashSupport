@@ -1412,11 +1412,6 @@ public class BashLexerTest {
     }
 
     @Test
-    public void testIssue118() {
-        testTokenization("${x%.@(a|b)}", DOLLAR, LEFT_CURLY, WORD, PARAM_EXPANSION_OP_PERCENT, PARAM_EXPANSION_OP_DOT, WORD, RIGHT_CURLY);
-    }
-
-    @Test
     public void testIssue358() {
         //the problem with #398 was, that the lexer had a bad rule to leave unmatched characters and not return BAD_CHARACTER for all states at the end
         testTokenization("b & << EOF\n" +
