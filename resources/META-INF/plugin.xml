@@ -41,12 +41,15 @@
 
     <change-notes><![CDATA[
         <html>
+        <ul>
+         <li>Add internal documentation for ulimit command</li>
+        </ul><br>
+
         <b>Changes in version 1.7.7:</b>
         <ul>
          <li>#694: Fix ConcurrentModificationException</li>
         </ul><br>
 
-        <html>
         <b>Changes in version 1.7.6:</b>
         <ul>
          <li>#677: Exception in idea.log of the latest CLion EAP</li>

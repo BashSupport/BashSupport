@@ -49,6 +49,11 @@ public class BashSyntaxHighlighterTest extends AbstractBashSyntaxHighlighterTest
         doHighlightingTest();
     }
 
+    @Test
+    public void testStringVariables() {
+        doHighlightingTest();
+    }
+
     @Test //fixme
     public void _testLexerHighlighting() {
         //keywords

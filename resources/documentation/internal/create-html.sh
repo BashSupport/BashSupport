@@ -56,6 +56,7 @@ trap
 true
 type
 typeset
+ulimit
 umask
 unset
 until
