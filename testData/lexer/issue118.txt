@@ -1,0 +1,7 @@
+[Bash] $ ('$')
+[Bash] { ('{')
+[Bash] word ('x')
+[Bash] Parameter expansion operator '%' ('%')
+[Bash] Parameter expansion operator '.' ('.')
+[Bash] word ('@(a|b)')
+[Bash] } ('}')

@@ -36,6 +36,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBinaryDataElement;
 import com.ansorgit.plugins.bash.lang.psi.util.BashIdentifierUtil;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -46,6 +47,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,11 +93,20 @@ public class BashAnnotator implements Annotator {
             annotateBinaryData((BashBinaryDataElement) element, annotationHolder);
         }
 
-        hightlightRemappedTokens(element, annotationHolder);
+        highlightKeywordTokens(element, annotationHolder);
     }
 
-    private void hightlightRemappedTokens(PsiElement element, AnnotationHolder annotationHolder) {
-        if (element.getNode().getElementType() == BashTokenTypes.IN_KEYWORD_REMAPPED) {
+    private void highlightKeywordTokens(@NotNull PsiElement element, @NotNull AnnotationHolder annotationHolder) {
+        ASTNode node = element.getNode();
+        if (node == null) {
+            return;
+        }
+
+        IElementType elementType = node.getElementType();
+        boolean isKeyword = elementType == BashTokenTypes.IN_KEYWORD_REMAPPED
+                || elementType == BashTokenTypes.WORD && "!".equals(element.getText());
+
+        if (isKeyword) {
             Annotation annotation = annotationHolder.createInfoAnnotation(element, null);
             annotation.setTextAttributes(BashSyntaxHighlighter.KEYWORD);
         }

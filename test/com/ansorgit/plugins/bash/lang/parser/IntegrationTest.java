@@ -673,4 +673,18 @@ public class IntegrationTest extends MockPsiTest {
         //echo $-
         //mockTest(fileParsingTest, WORD, WHITESPACE, DOLLAR, );
     }
+
+    @Test
+    public void testIssue458() {
+        // mv -v !(src|*.sh) ${dir}
+        mockTest(fileParsingTest,
+                Lists.newArrayList("mv", " ", "-v", " ", "!"),
+                WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+
+        // if ! mv -v !(src|*.sh) ${dir}; then echo; fi
+        mockTest(fileParsingTest,
+                Lists.newArrayList("if", "!", "mv", "-v", "!"),
+                IF_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY,
+                SEMI, THEN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
+    }
 }
