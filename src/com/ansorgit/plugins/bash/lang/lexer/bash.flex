@@ -110,6 +110,9 @@ CasePattern = {CaseFirst} ({LineContinuation}? {CaseAfter})*
 
 Filedescriptor = "&" {IntegerLiteral} | "&-"
 
+HeredocMarker = {EscapedChar} | [^ \t\n\r\f;&|]
+HeredocMarkerQuoted = {EscapedChar} | [^\"]
+
 /************* STATES ************/
 /* If in a conditional expression */
 %state S_TEST
@@ -190,9 +193,10 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {WhiteSpaceLineCont}+        { return WHITESPACE; }
     {LineContinuation}+          { return WHITESPACE; }
 
-      ("$"? "'" [^\']+ "'")+
-    | ("$"? \" [^\"]+ \")+
-    | [^ \t\n\r\f;&|]+ {
+      {HeredocMarker}+
+    | ( "'" {SingleCharacter}+    "'")+
+    | ("$'" {UnescapedCharacter}+ "'")+
+    | (\" {HeredocMarkerQuoted}+ \")+  {
         heredocState().pushMarker(zzCurrentPos, yytext(), yystate() == X_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
         goToState(S_HEREDOC_EXPECTED);
