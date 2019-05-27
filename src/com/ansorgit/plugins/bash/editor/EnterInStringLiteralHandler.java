@@ -31,6 +31,7 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,10 +75,7 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
     }
 
     private PsiElement findWrappingContext(PsiElement start) {
-        PsiElement result = start;
-        while (result instanceof LeafPsiElement || result instanceof BashVar) {
-            result = result.getParent();
-        }
-        return result;
+        PsiElement parent = PsiTreeUtil.skipParentsOfType(start, LeafPsiElement.class, BashVar.class);
+        return parent != null ? parent : start;
     }
 }
