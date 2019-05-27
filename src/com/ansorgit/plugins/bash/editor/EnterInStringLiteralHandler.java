@@ -49,20 +49,28 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
             return Result.Continue;
         }
 
-        // as advised in the JavaDoc of
-        // com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegate.preprocessEnter
-        PsiDocumentManager.getInstance(file.getProject()).commitDocument(editor.getDocument());
 
         int offset = caretOffset.get();
-        PsiElement psi = file.findElementAt(offset);
-        if (psi == null || psi.getNode() == null || psi.getNode().getElementType() == BashTokenTypes.LINE_FEED) {
-            // do not add a line continuation at end of line
+
+        // don't wrap at EOL or EOF
+        CharSequence content = editor.getDocument().getCharsSequence();
+        if (offset >= content.length() || content.charAt(offset) == '\n') {
             return Result.Continue;
         }
 
-        boolean isWrapping = Boolean.TRUE.equals(DataManager.getInstance().loadFromDataContext(dataContext, AutoHardWrapHandler.AUTO_WRAP_LINE_IN_PROGRESS_KEY));
-        boolean inString = findWrappingContext(psi) instanceof BashString;
-        if (!inString && !isWrapping) {
+        if (PsiDocumentManager.getInstance(file.getProject()).isUncommited(editor.getDocument())) {
+            // return early if PSI is not up-to-date to avoid blocking the editor
+            // this might result in line-continuations not being inserted while editing
+            return Result.Continue;
+        }
+
+        PsiElement psi = file.findElementAt(offset);
+        if (psi == null || psi.getNode() == null) {
+            return Result.Continue;
+        }
+
+        boolean isUserTyping = !Boolean.TRUE.equals(DataManager.getInstance().loadFromDataContext(dataContext, AutoHardWrapHandler.AUTO_WRAP_LINE_IN_PROGRESS_KEY));
+        if (isUserTyping && !isInString(psi)) {
             return Result.Continue;
         }
 
@@ -74,8 +82,11 @@ public class EnterInStringLiteralHandler extends EnterHandlerDelegateAdapter {
         return Result.Continue;
     }
 
-    private PsiElement findWrappingContext(PsiElement start) {
+    private boolean isInString(PsiElement start) {
         PsiElement parent = PsiTreeUtil.skipParentsOfType(start, LeafPsiElement.class, BashVar.class);
-        return parent != null ? parent : start;
+        if (parent != null) {
+            return parent instanceof BashString;
+        }
+        return start instanceof BashString;
     }
 }
