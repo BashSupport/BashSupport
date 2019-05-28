@@ -22,6 +22,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
 import java.util.function.Predicate;
@@ -350,5 +351,14 @@ public class ParserUtil {
         }
 
         return false;
+    }
+
+    /**
+     * @param builder The PSI builder
+     * @param text The string to match against the token text
+     * @return {@code true} if the current token is a WORD and its token text is matching the given parameter value.
+     */
+    public static boolean isWord(@NotNull BashPsiBuilder builder, @NotNull String text) {
+        return builder.getTokenType() == BashTokenTypes.WORD && text.equals(builder.getTokenText());
     }
 }
