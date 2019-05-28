@@ -20,7 +20,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.7</version>
+    <version>1.7.9</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -29,7 +29,7 @@
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
-    <depends optional="true">org.intellij.intelliLang</depends>
+    <depends optional="true" config-file="bashsupport-intellilang.xml">org.intellij.intelliLang</depends>
     <depends optional="true" config-file="bashsupport-terminal.xml">org.jetbrains.plugins.terminal</depends>
 
     <description><![CDATA[<html>
@@ -41,8 +41,13 @@
 
     <change-notes><![CDATA[
         <html>
+
+        <b>Changes in version 1.7.8:</b>
         <ul>
-         <li>Add internal documentation for ulimit command</li>
+          <li>Add internal documentation for ulimit command (contributed by dzieciolowski)</li>
+          <li>#458: Support shopt -s extglob syntax</li>
+          <li>#687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.</li>
+          <li>Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.</li>
         </ul><br>
 
         <b>Changes in version 1.7.7:</b>
