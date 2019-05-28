@@ -40,6 +40,13 @@
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
+
+    <br>
+    <b>Important notice:</b> JetBrains is now bundling basic Shell script support with 2019.2 EAP.
+    <em>If you want to continue to use BashSupport, then you have to disable the plugin "Shell".</em>
+    <br>I will soon inform about BashSupport's future.
+    <br><br>
+
     Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br><br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
     <br>

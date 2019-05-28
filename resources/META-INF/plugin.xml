@@ -35,7 +35,8 @@
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
     <br>
-    <b>Important notice:</b>: JetBrains is now bundling basic Shell script support with 2019.2 EAP. <em>If you still want to use BashSupport, then you have to disable the plugin "Shell".</em>
+    <b>Important notice:</b> JetBrains is now bundling basic Shell script support with 2019.2 EAP.
+    <em>If you want to continue to use BashSupport, then you have to disable the plugin "Shell".</em>
     <br>I will soon inform about BashSupport's future.
     <br><br>
 
@@ -51,6 +52,7 @@
         <ul>
           <li>Support 2019.2 EAP</li>
           <li>Add internal documentation for ulimit command (contributed by dzieciolowski)</li>
+          <li>#458: Support shopt -s extglob syntax</li>
           <li>#687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.</li>
           <li>Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.</li>
         </ul><br>
