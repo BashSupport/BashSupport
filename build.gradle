@@ -62,7 +62,7 @@ allprojects {
 
         patchPluginXml {
             sinceBuild '145.0'
-            untilBuild '191.*'
+            untilBuild '192.*'
         }
     }
 

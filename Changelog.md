@@ -1,3 +1,7 @@
+#### 2019-05-28:
+ - Add compatibility with 2019.2 EAP
+ - Version 1.7.8
+
 #### 2019-05-04:
  - Add internal documentation for ulimit command (contributed by dzieciolowski)
 
