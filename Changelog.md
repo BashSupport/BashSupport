@@ -1,3 +1,7 @@
+#### 2019-05-28:
+ - Version 1.7.8
+ - Version 1.7.9
+
 #### 2019-05-04:
  - Add internal documentation for ulimit command (contributed by dzieciolowski)
 
