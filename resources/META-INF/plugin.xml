@@ -20,12 +20,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.9</version>
+    <version>1.7.10.192</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 145.x or later -->
-    <idea-version since-build="145.0" until-build="191.*"/>
+    <!-- Requires IDEA 192.x or later -->
+    <idea-version since-build="192.0" until-build="192.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -37,10 +37,25 @@
     Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
     There's no future of BashSupport without strong support from the community!
+    <br><br>
+    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <b>Make sure to disable one of them.</b>
+    <br><br>BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
+    <br><br>News about BashSupport's future will be announced soon.
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
+
+        <b>Changes in version 1.7.10:</b>
+        <ul>
+          <li>Support IntelliJ 2019.2 EAP</li>
+          <li>Change fallback configuration of heredoc and backtick highlighting to avoid an exception when the Shell plugin is enabled</li>
+        </ul><br>
+
+        <b>Changes in version 1.7.9:</b>
+        <ul>
+          <li>Maintenance release on the EAP channel</li>
+        </ul><br>
 
         <b>Changes in version 1.7.8:</b>
         <ul>

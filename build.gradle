@@ -61,8 +61,8 @@ allprojects {
         downloadSources Boolean.valueOf(sources)
 
         patchPluginXml {
-            sinceBuild '145.0'
-            untilBuild '191.*'
+            sinceBuild '192.0'
+            untilBuild '192.*'
         }
     }
 
