@@ -57,7 +57,7 @@ allprojects {
         version ideaVersion
         type "IC"
         pluginName 'BashSupport'
-        plugins 'IntelliLang', 'terminal'
+        plugins 'IntelliLang', 'terminal', 'sh'
         downloadSources Boolean.valueOf(sources)
 
         patchPluginXml {

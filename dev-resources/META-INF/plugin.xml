@@ -31,6 +31,7 @@
     <depends>com.intellij.modules.lang</depends>
     <!-- This is necessary to force IntelliJ to load the IntelliLang plugin to let the injection tests pass-->
     <depends>org.intellij.intelliLang</depends>
+    <depends>com.jetbrains.sh</depends>
 
     <!-- Dependency on the Terminal plugin, this is an optional dependency in the production plugin.xml file -->
     <depends>org.jetbrains.plugins.terminal</depends>

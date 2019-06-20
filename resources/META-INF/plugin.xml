@@ -31,6 +31,7 @@
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="bashsupport-intellilang.xml">org.intellij.intelliLang</depends>
     <depends optional="true" config-file="bashsupport-terminal.xml">org.jetbrains.plugins.terminal</depends>
+    <depends optional="true" config-file="bashsupport-shell.xml">com.jetbrains.sh</depends>
 
     <description><![CDATA[<html>
     Bash language support for the IntelliJ platform.<br/>
