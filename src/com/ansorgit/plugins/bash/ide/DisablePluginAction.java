@@ -41,8 +41,8 @@ class DisablePluginAction extends AnAction {
     private final Notification notification;
     private final String pluginId;
 
-    DisablePluginAction(@NotNull String name, @NotNull String pluginId, @NotNull Notification notification) {
-        super("Disable " + name);
+    DisablePluginAction(@NotNull String label, @NotNull String pluginId, @NotNull Notification notification) {
+        super(label);
         this.notification = notification;
         this.pluginId = pluginId;
     }

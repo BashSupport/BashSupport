@@ -32,7 +32,7 @@ class PluginCompatibilityNotification extends Notification implements Notificati
                         "<br><br>You shouldn't use BashSupport and Shell simultaneously. <b>Make sure to disable one of them.</b>",
                 NotificationType.INFORMATION, null);
 
-        addAction(new DisablePluginAction("JetBrains Shell", PluginManagerUtil.SHELL_ID, this));
-        addAction(new DisablePluginAction("BashSupport", PluginManagerUtil.BASHSUPPORT_ID, this));
+        addAction(new DisablePluginAction("Use BashSupport", PluginManagerUtil.SHELL_ID, this));
+        addAction(new DisablePluginAction("Use Shell Support", PluginManagerUtil.BASHSUPPORT_ID, this));
     }
 }
