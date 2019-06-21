@@ -687,4 +687,10 @@ public class IntegrationTest extends MockPsiTest {
                 IF_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY,
                 SEMI, THEN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
     }
+
+    @Test
+    public void testIncompleteHeredoc(){
+        // #658: <<\nX
+        mockTestSuccessWithErrors(fileParsingTest, HEREDOC_MARKER_TAG, LINE_FEED, WORD);
+    }
 }

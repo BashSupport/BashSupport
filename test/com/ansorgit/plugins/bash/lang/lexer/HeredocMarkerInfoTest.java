@@ -11,7 +11,7 @@ public class HeredocMarkerInfoTest {
         HeredocLexingState state = new HeredocLexingState();
         Assert.assertTrue(state.isEmpty());
 
-        state.pushMarker("NAME", false);
+        state.pushMarker(0, "NAME", false);
         Assert.assertFalse(state.isEmpty());
         state.popMarker("NAME");
 
@@ -22,11 +22,11 @@ public class HeredocMarkerInfoTest {
     public void testTabs() throws Exception {
         HeredocLexingState state = new HeredocLexingState();
 
-        state.pushMarker("NAME", false);
+        state.pushMarker(0, "NAME", false);
         Assert.assertFalse(state.isIgnoringTabs());
         state.popMarker("NAME");
 
-        state.pushMarker("NAME", true);
+        state.pushMarker(0, "NAME", true);
         Assert.assertTrue(state.isIgnoringTabs());
         state.popMarker("NAME");
 
@@ -37,7 +37,7 @@ public class HeredocMarkerInfoTest {
     public void testMarkerMatching() throws Exception {
         HeredocLexingState state = new HeredocLexingState();
 
-        state.pushMarker("NAME", false);
+        state.pushMarker(0, "NAME", false);
         Assert.assertTrue(state.isNextMarker("NAME"));
         Assert.assertFalse(state.isNextMarker("\tNAME"));
     }
@@ -46,7 +46,7 @@ public class HeredocMarkerInfoTest {
     public void testMarkerMatchingIngoredTabs() throws Exception {
         HeredocLexingState state = new HeredocLexingState();
 
-        state.pushMarker("NAME", true);
+        state.pushMarker(0, "NAME", true);
         Assert.assertTrue(state.isNextMarker("NAME"));
         Assert.assertTrue(state.isNextMarker("\tNAME"));
     }

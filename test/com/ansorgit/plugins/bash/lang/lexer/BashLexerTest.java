@@ -1538,6 +1538,12 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue658() {
+        testTokenization("<<EOF\necho\nEOF", HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+        testTokenization("<<\necho\nEOF", HEREDOC_MARKER_TAG, LINE_FEED, WORD, LINE_FEED, WORD);
+    }
+
+    @Test
     public void testIssue682() {
         testTokenization("cat > file <<-EOF ||\n" +
                 "EOF\n" +
