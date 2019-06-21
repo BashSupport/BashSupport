@@ -63,7 +63,7 @@ class DisablePluginAction extends AnAction {
         List<IdeaPluginDescriptor> deps = findPluginsWithHardDependencyOn(descriptor);
         if (!deps.isEmpty()) {
             String message = deps.size() == 1
-                    ? String.format("Plugin %s depends on %s. Would you really like to disable it?", deps.get(0).getName(), descriptor.getName())
+                    ? String.format("Plugin %s depends on %s. Would you really like to disable %s?", deps.get(0).getName(), descriptor.getName(), descriptor.getName())
                     : String.format("%d plugins depend on %s. Would you really like to disable it?", deps.size(), descriptor.getName());
 
             if (Messages.showYesNoDialog(project, message, "Disable Dependency", Messages.getQuestionIcon()) == Messages.NO) {
