@@ -1,3 +1,6 @@
+#### 2019-06-21:
+ - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
+
 #### 2019-05-28:
  - Version 1.7.8
  - Version 1.7.9
