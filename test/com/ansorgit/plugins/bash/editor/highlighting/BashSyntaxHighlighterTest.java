@@ -49,12 +49,16 @@ public class BashSyntaxHighlighterTest extends AbstractBashSyntaxHighlighterTest
         doHighlightingTest();
     }
 
+    @Test
+    public void testStringVariables() {
+        doHighlightingTest();
+    }
+
     @Test //fixme
     public void _testLexerHighlighting() {
         //keywords
         doLexerHighlightingTest("for", BashTokenTypes.FOR_KEYWORD);
         doLexerHighlightingTest("while", BashTokenTypes.WHILE_KEYWORD);
-        doLexerHighlightingTest("!", BashTokenTypes.BANG_TOKEN);
         doLexerHighlightingTest("then", BashTokenTypes.THEN_KEYWORD);
         doLexerHighlightingTest("$", BashTokenTypes.DOLLAR);
         doLexerHighlightingTest("done", BashTokenTypes.DONE_KEYWORD);

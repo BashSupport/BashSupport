@@ -18,6 +18,7 @@
 
 package com.ansorgit.plugins.bash.lang.parser;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -46,18 +47,18 @@ public class PiplelineParsingTest extends MockPsiTest {
     @Test
     public void testParsePipelineCommand3() {
         //! time echo a
-        mockTest(testPipeline, BANG_TOKEN, TIME_KEYWORD, WORD, WORD);
+        mockTest(testPipeline, Lists.newArrayList("!"), WORD, TIME_KEYWORD, WORD, WORD);
     }
 
     @Test
     public void testParsePipelineCommand4() {
         //! time echo a | echo b
-        mockTest(testPipeline, BANG_TOKEN, TIME_KEYWORD, WORD, WORD, PIPE, WORD, WORD);
+        mockTest(testPipeline, Lists.newArrayList("!"), WORD, TIME_KEYWORD, WORD, WORD, PIPE, WORD, WORD);
     }
 
     @Test
     public void testParseBashV4() {
         //! time echo a |& cat -
-        mockTest(testPipeline, BANG_TOKEN, TIME_KEYWORD, WORD, WORD, PIPE_AMP, WORD, WORD);
+        mockTest(testPipeline, Lists.newArrayList("!"), WORD, TIME_KEYWORD, WORD, WORD, PIPE_AMP, WORD, WORD);
     }
 }

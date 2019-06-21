@@ -1,7 +1,24 @@
+#### 2019-05-28:
+ - Version 1.7.8
+ - Version 1.7.9
+
+#### 2019-05-04:
+ - Add internal documentation for ulimit command (contributed by dzieciolowski)
+
+#### 2019-04-24:
+  - [#458](https://github.com/BashSupport/BashSupport/issues/458): Support shopt -s extglob syntax
+
+#### 2019-03-27:
+  - #687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.
+  - Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.
+
 #### 2019-03-29:
- - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
+  - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
   - Version 1.7.7
   - #658: Fix broken highlighting of heredocs.
+
+#### 2019-03-28:
+ - [#486](https://github.com/BashSupport/BashSupport/issues/486): Highlighting of composed variables within strings. Not all of the configured highlighting was applied inside of strings. Now string highlighting does not override the highlighting of contained elements. The Kotlin plugin is handling this in the same way.
 
 #### 2019-03-23:
   - We're not bundling Kotlin anymore due to several incompatilities with the version bundled with the SDK
