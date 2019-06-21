@@ -1,4 +1,5 @@
 #### 2019-06-21:
+ - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
  - [#656](https://github.com/BashSupport/BashSupport/issues/656): Fix multiline highlighting of todo/fixme comments
 
 #### 2019-05-28:
