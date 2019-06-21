@@ -21,7 +21,7 @@ version = "${new File('pluginVersion.txt').getText('UTF-8')}"
 allprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
-    
+
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
@@ -47,7 +47,10 @@ allprojects {
             resources.srcDir 'resources'
         }
         test {
-            java.srcDir 'test'
+            java.srcDir "test"
+            if (ideaBranch != null && ideaBranch.toInteger() >= 183) {
+                java.srcDirs += "test-183"
+            }
             resources.srcDir 'testResources'
         }
     }
