@@ -54,6 +54,10 @@
         <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
         </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.ide.ShellEditorMessageComponent</implementation-class>
+        </component>
     </project-components>
 
     <!-- Plugin's module components -->
