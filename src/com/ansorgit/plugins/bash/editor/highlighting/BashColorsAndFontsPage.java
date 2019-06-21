@@ -60,6 +60,8 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
                     new AttributesDescriptor("String '...'", BashSyntaxHighlighter.STRING2),
                     new AttributesDescriptor("Number", BashSyntaxHighlighter.NUMBER),
 
+                    new AttributesDescriptor("Backquotes `...`", BashSyntaxHighlighter.BACKQUOTE),
+
                     new AttributesDescriptor("Command redirection", BashSyntaxHighlighter.REDIRECTION),
                     new AttributesDescriptor("Conditional operator", BashSyntaxHighlighter.CONDITIONAL),
 
@@ -68,8 +70,6 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
                     new AttributesDescriptor("Function call", BashSyntaxHighlighter.FUNCTION_CALL),
                     new AttributesDescriptor("Bash internal command", BashSyntaxHighlighter.INTERNAL_COMMAND),
                     new AttributesDescriptor("External command", BashSyntaxHighlighter.EXTERNAL_COMMAND),
-                    new AttributesDescriptor("Subshell command", BashSyntaxHighlighter.SUBSHELL_COMMAND),
-                    new AttributesDescriptor("Backquote command `...`", BashSyntaxHighlighter.BACKQUOTE),
 
                     new AttributesDescriptor("Variable declaration, e.g. a=1", BashSyntaxHighlighter.VAR_DEF),
 
@@ -136,7 +136,6 @@ public class BashColorsAndFontsPage implements ColorSettingsPage {
 
         tags.put("internalCmd", BashSyntaxHighlighter.INTERNAL_COMMAND);
         tags.put("externalCmd", BashSyntaxHighlighter.EXTERNAL_COMMAND);
-        tags.put("subshellCmd", BashSyntaxHighlighter.SUBSHELL_COMMAND);
 
         tags.put("functionDef", BashSyntaxHighlighter.FUNCTION_DEF_NAME);
         tags.put("functionCall", BashSyntaxHighlighter.FUNCTION_CALL);
