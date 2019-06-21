@@ -56,8 +56,7 @@ public class PipelineParsing implements ParsingTool {
 
         PsiBuilder.Marker pipelineCommandMarker = builder.mark();
 
-        final IElementType firstToken = builder.getTokenType();
-        boolean hasBang = firstToken == BANG_TOKEN;
+        boolean hasBang = ParserUtil.isWord(builder, "!");
         if (hasBang) { //the bang is optional
             builder.advanceLexer();
         }
@@ -68,7 +67,7 @@ public class PipelineParsing implements ParsingTool {
             return OptionalParseResult.ParseError;
         }
 
-        if (!hasBang && builder.getTokenType() == BANG_TOKEN) {
+        if (!hasBang && ParserUtil.isWord(builder, "!")) {
             builder.advanceLexer(); //read the bang token we found
             hasBang = true;
 

@@ -126,6 +126,14 @@ public class CaseParsingFunctionTest extends MockPsiTest {
     }
 
     @Test
+    public void testIssue118() throws Exception {
+        // "case x in\n\t.+(a|b)) echo;; esac"
+        mockTest(caseTest, Lists.newArrayList("case", "", "a", "", "in"),
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
+                WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+    }
+
+    @Test
     public void testCaseError1() {
         //case a in ;; esac
         mockTestError(BashVersion.Bash_v4, caseTest, true, false, Lists.newArrayList("case", "a", "in"),

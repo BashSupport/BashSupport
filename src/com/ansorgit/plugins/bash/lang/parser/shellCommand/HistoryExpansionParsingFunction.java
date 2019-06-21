@@ -29,10 +29,12 @@ public class HistoryExpansionParsingFunction implements ParsingFunction {
     @Override
     public boolean isValid(BashPsiBuilder builder) {
         IElementType token = builder.rawLookup(1);
-        return token != null && builder.getTokenType() == BANG_TOKEN && !ParserUtil.isWhitespaceOrLineFeed(token);
+        return token != null
+                && ParserUtil.isWord(builder, "!")
+                && !ParserUtil.isWhitespaceOrLineFeed(token);
     }
 
-    private final TokenSet accepted = TokenSet.create(WORD, WORD, ARITH_NUMBER, BANG_TOKEN, DOLLAR);
+    private final TokenSet accepted = TokenSet.create(WORD, ARITH_NUMBER, DOLLAR);
 
     @Override
     public boolean parse(BashPsiBuilder builder) {
