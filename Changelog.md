@@ -1,6 +1,7 @@
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
  - [#662](https://github.com/BashSupport/BashSupport/issues/662): Enter handler to insert a line continuation in Bash files
+ - [#658](https://github.com/BashSupport/BashSupport/issues/658): Fix broken highlighting of heredocs.
  - [#656](https://github.com/BashSupport/BashSupport/issues/656): Fix multiline highlighting of todo/fixme comments
 
 #### 2019-05-28:
@@ -20,7 +21,6 @@
 #### 2019-03-29:
   - [#694](https://github.com/BashSupport/BashSupport/issues/694): Fix concurrent modification exception
   - Version 1.7.7
-  - #658: Fix broken highlighting of heredocs.
 
 #### 2019-03-28:
  - [#486](https://github.com/BashSupport/BashSupport/issues/486): Highlighting of composed variables within strings. Not all of the configured highlighting was applied inside of strings. Now string highlighting does not override the highlighting of contained elements. The Kotlin plugin is handling this in the same way.
