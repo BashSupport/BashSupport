@@ -574,7 +574,7 @@ public class BashLexerTest {
         testTokenization(": > a", WORD, WHITESPACE, GREATER_THAN, WHITESPACE, WORD);
         testTokenization("^", WORD);
         testTokenization("$!", VARIABLE);
-        testTokenization("!", BANG_TOKEN);
+        testTokenization("!", WORD);
         testTokenization("+m", WORD);
         testTokenization("\\#", WORD);
         testTokenization("a,b", WORD);
@@ -1482,6 +1482,23 @@ public class BashLexerTest {
     }
 
     @Test
+    public void testIssue458() {
+        testTokenization("mv -v !(src|*.sh) ${dir}", WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY);
+        testTokenization("if ! mv -v !(src|*.sh) ${dir}; then echo; fi", IF_KEYWORD,
+                WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, SEMI,
+                WHITESPACE, THEN_KEYWORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD);
+
+        testTokenization("case x in\n\t.+(a|b)) echo;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED,
+                WHITESPACE, WORD, RIGHT_PAREN, WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+
+        testTokenization("case x in\n\t@(a|b)|!(a)|.+(a|b)) echo;; esac",
+                CASE_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, LINE_FEED, WHITESPACE,
+                WORD, PIPE, WORD, PIPE, WORD, RIGHT_PAREN,
+                WHITESPACE, WORD, CASE_END, WHITESPACE, ESAC_KEYWORD);
+    }
+
+    @Test
     public void testIssue469() {
         testTokenization(BashVersion.Bash_v3, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE, AMP, WHITESPACE, WORD, WHITESPACE, WORD);
         testTokenization(BashVersion.Bash_v4, "(a) |& a b", LEFT_PAREN, WORD, RIGHT_PAREN, WHITESPACE, PIPE_AMP, WHITESPACE, WORD, WHITESPACE, WORD);
@@ -1514,7 +1531,7 @@ public class BashLexerTest {
 
         testTokenization("foo() {\nif ! grep $1 <<< ${2} > /dev/null; then echo Boom; fi\n}",
                 WORD, LEFT_PAREN, RIGHT_PAREN, WHITESPACE, LEFT_CURLY,
-                LINE_FEED, IF_KEYWORD, WHITESPACE, BANG_TOKEN, WHITESPACE, WORD, WHITESPACE, VARIABLE, WHITESPACE,
+                LINE_FEED, IF_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, WHITESPACE, VARIABLE, WHITESPACE,
                 REDIRECT_HERE_STRING, WHITESPACE, DOLLAR, LEFT_CURLY, WORD, RIGHT_CURLY, WHITESPACE,
                 GREATER_THAN, WHITESPACE, WORD, SEMI, WHITESPACE,
                 THEN_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD, LINE_FEED, RIGHT_CURLY);

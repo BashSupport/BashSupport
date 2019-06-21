@@ -30,8 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.conditionalOperators;
-import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.redirectionSet;
+import static com.ansorgit.plugins.bash.lang.lexer.BashTokenTypes.*;
 
 /**
  * Defines bash token highlighting and formatting.
@@ -54,6 +53,8 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     public static final TextAttributesKey STRING2 = TextAttributesKey.createTextAttributesKey("BASH.STRING2", DefaultLanguageHighlighterColors.STRING);
 
+    public static final TextAttributesKey BACKQUOTE = TextAttributesKey.createTextAttributesKey("BASH.BACKQUOTE", DefaultLanguageHighlighterColors.KEYWORD);
+
     //psi highlighting
     public static final TextAttributesKey BINARY_DATA = TextAttributesKey.createTextAttributesKey("BASH.BINARY_DATA");
 
@@ -65,9 +66,6 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
     public static final TextAttributesKey EXTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.EXTERNAL_COMMAND", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey INTERNAL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.INTERNAL_COMMAND", EXTERNAL_COMMAND);
-    public static final TextAttributesKey SUBSHELL_COMMAND = TextAttributesKey.createTextAttributesKey("BASH.SUBSHELL_COMMAND", EXTERNAL_COMMAND);
-    //also used in the lexer highlighting
-    public static final TextAttributesKey BACKQUOTE = TextAttributesKey.createTextAttributesKey("BASH.BACKQUOTE", SUBSHELL_COMMAND);
 
     public static final TextAttributesKey FUNCTION_DEF_NAME = TextAttributesKey.createTextAttributesKey("BASH.FUNCTION_DEF_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
     public static final TextAttributesKey FUNCTION_CALL = TextAttributesKey.createTextAttributesKey("BASH.FUNCTION_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
@@ -92,7 +90,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TokenSet lineCommentSet = TokenSet.create(BashTokenTypes.COMMENT);
     private static final TokenSet shebangSet = TokenSet.create(BashTokenTypes.SHEBANG);
     private static final TokenSet backquoteSet = TokenSet.create(BashTokenTypes.BACKQUOTE);
-
+    private static final TokenSet stringTokens = TokenSet.create(STRING_BEGIN, STRING_CONTENT, STRING_END);
 
     private static final TokenSet badCharacterSet = TokenSet.create(BashTokenTypes.BAD_CHARACTER);
 
@@ -108,6 +106,7 @@ public class BashSyntaxHighlighter extends SyntaxHighlighterBase {
 
         fillMap(attributes1, shebangSet, SHEBANG_COMMENT);
 
+        fillMap(attributes1, stringTokens, STRING);
         fillMap(attributes1, STRING2, BashTokenTypes.STRING2);
 
         fillMap(attributes1, VAR_USE, BashTokenTypes.VARIABLE);

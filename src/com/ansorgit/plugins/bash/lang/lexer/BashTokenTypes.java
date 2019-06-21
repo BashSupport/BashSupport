@@ -55,7 +55,6 @@ public interface BashTokenTypes {
     TokenSet commentTokens = TokenSet.create(COMMENT);
 
     // bash reserved keywords, in alphabetic order
-    IElementType BANG_TOKEN = new BashElementType("!"); //!
     IElementType CASE_KEYWORD = new BashElementType("case"); //case
     IElementType DO_KEYWORD = new BashElementType("do"); //do
     IElementType DONE_KEYWORD = new BashElementType("done"); //done
@@ -90,7 +89,7 @@ public interface BashTokenTypes {
     IElementType EXPR_CONDITIONAL = new BashElementType("[ (left conditional)");//"[ "
     IElementType _EXPR_CONDITIONAL = new BashElementType(" ] (right conditional)");//" ]"
 
-    TokenSet keywords = TokenSet.create(BANG_TOKEN, CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
+    TokenSet keywords = TokenSet.create(CASE_KEYWORD, DO_KEYWORD, DONE_KEYWORD,
             ELIF_KEYWORD, ELSE_KEYWORD, ESAC_KEYWORD, FI_KEYWORD, FOR_KEYWORD, FUNCTION_KEYWORD,
             IF_KEYWORD, IN_KEYWORD_REMAPPED, SELECT_KEYWORD, THEN_KEYWORD, UNTIL_KEYWORD, WHILE_KEYWORD,
             TIME_KEYWORD, BRACKET_KEYWORD, _BRACKET_KEYWORD,
@@ -269,7 +268,7 @@ public interface BashTokenTypes {
     IElementType COND_OP_EQ_EQ = new BashElementType("cond_op ==");
     IElementType COND_OP_REGEX = new BashElementType("cond_op =~");
     IElementType COND_OP_NOT = new BashElementType("cond_op !");
-    TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, BANG_TOKEN, COND_OP_EQ_EQ, COND_OP_REGEX);
+    TokenSet conditionalOperators = TokenSet.create(COND_OP, OR_OR, AND_AND, COND_OP_EQ_EQ, COND_OP_REGEX);
 
     //redirects
     IElementType REDIRECT_HERE_STRING = new BashElementType("<<<");
