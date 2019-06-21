@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash.ide;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.impl.NotificationFullContent;
 
@@ -25,8 +26,8 @@ import com.intellij.notification.impl.NotificationFullContent;
  */
 class PluginCompatibilityNotification extends Notification implements NotificationFullContent {
 
-    PluginCompatibilityNotification() {
-        super("BashSupport", BashIcons.BASH_FILE_ICON, "Plugin incompatibility detected", null,
+    PluginCompatibilityNotification(NotificationGroup group) {
+        super(group.getDisplayId(), BashIcons.BASH_FILE_ICON, "Plugin incompatibility detected", null,
                 "JetBrains is bundling a new Shell plugin with 2019.2." +
                         "<br><em>BashSupport</em> supports more advanced features. <em>Shell</em> is more robust and providing better integration of basic functionality." +
                         "<br><br>You shouldn't use BashSupport and Shell simultaneously. <b>Make sure to disable one of them.</b>",
