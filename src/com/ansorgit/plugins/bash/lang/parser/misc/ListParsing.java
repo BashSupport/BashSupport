@@ -132,6 +132,7 @@ public final class ListParsing implements ParsingTool {
 
             if (next == AND_AND || next == OR_OR) {
                 builder.advanceLexer();
+                parseOptionalHeredocContent(builder);
                 builder.readOptionalNewlines();
 
                 success = parseList1Element(builder, true);

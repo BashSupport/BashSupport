@@ -199,4 +199,15 @@ public class HereDocParsingTest extends MockPsiTest {
         mockTest(hereDoc, Lists.newArrayList("cat", "<<", "EOF", "&", "\n", "X", "EOF"),
                 WORD, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, AMP, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
     }
+
+    @Test
+    public void testIssue682() {
+        // cat > file <<-EOF ||
+        // EOF
+        // echo failed
+        mockTest(hereDoc, Lists.newArrayList("cat", ">", "file", "<<-", "EOF", "||", "\n", "EOF", "echo", "failed"),
+                WORD, WHITESPACE, GREATER_THAN, WHITESPACE, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, OR_OR, LINE_FEED,
+                HEREDOC_MARKER_IGNORING_TABS_END, LINE_FEED,
+                WORD, WHITESPACE, WORD);
+    }
 }
