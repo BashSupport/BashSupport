@@ -1,3 +1,10 @@
+#### 2019-07-04:
+ - A notification is displayed for 192.x and later if both BashSupport and JetBrains Shell are enabled at the same time. It allows to disable one of the plugins.
+ - Version 1.7.11
+
+#### 2019-06-15:
+ - Version 1.7.10
+
 #### 2019-05-28:
  - Version 1.7.8
  - Version 1.7.9
