@@ -1,7 +1,0 @@
-<idea-plugin>
-    <project-components>
-        <component>
-            <implementation-class>com.ansorgit.plugins.bash.ide.ShellEditorMessageComponent</implementation-class>
-        </component>
-    </project-components>
-</idea-plugin>

@@ -43,7 +43,7 @@ allprojects {
 
     sourceSets {
         main {
-            java.srcDirs = ['src', 'src-sh']
+            java.srcDirs = ['src']
             resources.srcDir 'resources'
         }
         test {
@@ -98,15 +98,9 @@ allprojects {
     // test logging configuration, shows test progress and messages to standard error
     // see https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/logging/TestLogEvent.html
     test {
-        // we have a problem when compiling for 192:
-        // - we depend on the JetBrains Shell plugin 'sh' to display the notification about conflicting plugins.
-        //   But the dependency on Shell breaks our tests, because Shell provides additional completions, etc.
-        // - removing the dependency for test breaks compilation as we're referencing classes from Shell
-        // Therefore we have to modify the Java srcDirs and the plugin dependencies to make this work.
-        sourceSets.main.java.srcDirs = ['src']
         // 192.x has the Java functionality in a plugin now.
         // Our tests are using code of this package, but the plugin itself must not depend on the Java plugin.
-        intellij.plugins = ['IntelliLang', 'terminal', 'java']
+        intellij.plugins += 'java'
         testLogging {
             events = [
                 org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
