@@ -1,7 +1,5 @@
 <!--
   ~ Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
-  ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2013-05-12
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +18,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.10.192</version>
+    <version>1.7.11.192</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
