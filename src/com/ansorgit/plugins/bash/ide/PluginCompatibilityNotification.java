@@ -28,10 +28,10 @@ class PluginCompatibilityNotification extends Notification implements Notificati
 
     PluginCompatibilityNotification(NotificationGroup group) {
         super(group.getDisplayId(), BashIcons.BASH_FILE_ICON, "Conflicting plugins detected", null,
-                "You have two plugins installed:<ul style=\"margin-left:20px;list-style:circle;\">" +
-                        "<li>The new JetBrains Shell plugin is bundled with IntelliJ IDEA 2019.2 and later. The plugin is very robust and provides better integration with basic functionality.</li>" +
-                        "<li>BashSupport is not as light-weight and robust but offers more features.</li>" +
-                        "</ul>Select one of the plugins to continue.",
+                "You have two plugins installed:<br>" +
+                        "–&nbsp;The new JetBrains Shell plugin is bundled with IntelliJ IDEA 2019.2 and later. The plugin is very robust and provides better integration with basic functionality.<br>" +
+                        "–&nbsp;BashSupport is not as light-weight and robust but offers more features.<br><br>" +
+                        "<b>Select one of the plugins to continue.</b>",
                 NotificationType.INFORMATION, null);
 
         addAction(new DisablePluginAction("Use Shell Support", PluginManagerUtil.BASHSUPPORT_ID, this));
