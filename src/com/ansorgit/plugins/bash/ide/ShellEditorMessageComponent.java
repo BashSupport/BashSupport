@@ -27,7 +27,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.NotNullLazyValue;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.sh.ShFileType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -61,7 +60,7 @@ public class ShellEditorMessageComponent implements ProjectComponent, FileEditor
 
     @Override
     public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-        if (!ShFileType.INSTANCE.equals(file.getFileType())) {
+        if (!"Shell Script".equals(file.getFileType().getName())) {
             return;
         }
 
