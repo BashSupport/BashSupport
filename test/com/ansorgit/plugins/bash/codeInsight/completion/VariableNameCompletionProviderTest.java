@@ -116,6 +116,13 @@ public class VariableNameCompletionProviderTest extends AbstractCompletionTest {
     }
 
     @Test
+    public void testIncludedVariablesEmpty() throws Exception {
+        configureByTestName(getBasePath() + "/include.bash");
+
+        checkItems("myVarIsOk", "myVarIsOk2", "includedVarHasOtherPrefix", "myIncludedVarIsOk", "myIncludedVarIsOk2");
+    }
+
+    @Test
     public void testDollarCompletion() throws Exception {
         configureByTestName();
 

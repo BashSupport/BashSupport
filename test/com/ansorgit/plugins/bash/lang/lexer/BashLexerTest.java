@@ -1537,6 +1537,26 @@ public class BashLexerTest {
                 THEN_KEYWORD, WHITESPACE, WORD, WHITESPACE, WORD, SEMI, WHITESPACE, FI_KEYWORD, LINE_FEED, RIGHT_CURLY);
     }
 
+    @Test
+    public void testIssue658() {
+        testTokenization("<<EOF\necho\nEOF", HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, LINE_FEED, HEREDOC_CONTENT, HEREDOC_MARKER_END);
+        testTokenization("<<\necho\nEOF", HEREDOC_MARKER_TAG, LINE_FEED, WORD, LINE_FEED, WORD);
+    }
+
+    @Test
+    public void testIssue682() {
+        testTokenization("cat > file <<-EOF ||\n" +
+                        "EOF\n" +
+                        "echo failed", WORD, WHITESPACE, GREATER_THAN, WHITESPACE, WORD, WHITESPACE, HEREDOC_MARKER_TAG, HEREDOC_MARKER_START, WHITESPACE, OR_OR, LINE_FEED,
+                HEREDOC_MARKER_IGNORING_TABS_END, LINE_FEED,
+                WORD, WHITESPACE, WORD);
+    }
+
+    @Test
+    public void testIssue696() {
+        testTokenization("`\necho #comment\n`", BACKQUOTE, LINE_FEED, WORD, WHITESPACE, COMMENT, LINE_FEED, BACKQUOTE);
+    }
+
     private void testNoErrors(String code) {
         BashLexer lexer = new BashLexer(BashVersion.Bash_v4);
         lexer.start(code);

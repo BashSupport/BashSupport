@@ -18,6 +18,7 @@ package com.ansorgit.plugins.bash.lang.lexer;
 import com.ansorgit.plugins.bash.lang.util.HeredocSharedImpl;
 import com.google.common.collect.Lists;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -50,8 +51,17 @@ final class HeredocLexingState {
         return !expectedHeredocs.isEmpty() && expectedHeredocs.peekFirst().ignoreLeadingTabs;
     }
 
-    void pushMarker(CharSequence marker, boolean ignoreTabs) {
-        expectedHeredocs.add(new HeredocMarkerInfo(marker, ignoreTabs));
+    void removeMarker(long offset) {
+        // remove existing markers at the same offset
+        expectedHeredocs.removeIf(info -> info.offset == offset);
+    }
+
+    void pushMarker(long offset, CharSequence marker, boolean ignoreTabs) {
+        if (offset >= 0) {
+            // if there already is a marker at the same offset, then we're overriding it instead of adding a new marker
+            removeMarker(offset);
+        }
+        expectedHeredocs.add(new HeredocMarkerInfo(offset, marker, ignoreTabs));
     }
 
     void popMarker(CharSequence marker) {
@@ -66,10 +76,12 @@ final class HeredocLexingState {
         final boolean ignoreLeadingTabs;
         final boolean evaluating;
         final CharSequence markerName;
+        private final long offset;
 
-        HeredocMarkerInfo(CharSequence markerText, boolean ignoreLeadingTabs) {
+        HeredocMarkerInfo(long offset, CharSequence markerText, boolean ignoreLeadingTabs) {
             String markerTextString = markerText.toString();
 
+            this.offset = offset;
             this.markerName = HeredocSharedImpl.cleanMarker(markerTextString, ignoreLeadingTabs);
             this.evaluating = HeredocSharedImpl.isEvaluatingMarker(markerTextString);
             this.ignoreLeadingTabs = ignoreLeadingTabs;
@@ -81,13 +93,21 @@ final class HeredocLexingState {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             HeredocMarkerInfo that = (HeredocMarkerInfo) o;
 
-            if (ignoreLeadingTabs != that.ignoreLeadingTabs) return false;
-            if (evaluating != that.evaluating) return false;
+            if (ignoreLeadingTabs != that.ignoreLeadingTabs) {
+                return false;
+            }
+            if (evaluating != that.evaluating) {
+                return false;
+            }
             return markerName != null ? markerName.equals(that.markerName) : that.markerName == null;
 
         }
@@ -98,6 +118,14 @@ final class HeredocLexingState {
             result = 31 * result + (evaluating ? 1 : 0);
             result = 31 * result + (markerName != null ? markerName.hashCode() : 0);
             return result;
+        }
+
+        @Override
+        public String toString() {
+            return "HeredocMarkerInfo{" +
+                    "offset=" + offset +
+                    ", markerName=" + markerName +
+                    '}';
         }
     }
 }

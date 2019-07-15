@@ -25,6 +25,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.command.BashGenericCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashIncludeCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashSubshellCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
+import com.ansorgit.plugins.bash.lang.psi.api.loops.BashFor;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.word.BashWord;
 import com.ansorgit.plugins.bash.lang.psi.eval.BashEvalBlock;
@@ -636,6 +637,11 @@ public final class BashPsiUtils {
     }
 
     private static boolean isValidContainer(PsiElement element) {
+        if (element instanceof BashFor) {
+            // variables defined in a for loop are also visiable afterwards
+            return false;
+        }
+
         return element instanceof BashBlock || element instanceof BashFunctionDef || element instanceof BashFile;
     }
 

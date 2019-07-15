@@ -19,8 +19,10 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,17 +36,44 @@ public class BashVarVariantsProcessor extends BashAbstractProcessor implements B
     private final List<BashVarDef> variables = Lists.newLinkedList();
     private final Set<String> variableNames = Sets.newHashSet();
     private final PsiElement startElement;
+    private final boolean allowSameFile;
+    private final boolean allowOtherFiles;
+    private final PsiFile startFile;
 
-    public BashVarVariantsProcessor(PsiElement startElement) {
+    /**
+     * @param startElement
+     * @param allowSameFile   if ${@code true}, then results which are in the same file as startElement are kept
+     * @param allowOtherFiles if ${@code true}, then results which are not in the same file as startElement are kept
+     */
+    public BashVarVariantsProcessor(PsiElement startElement, boolean allowSameFile, boolean allowOtherFiles) {
         super(false);
 
         this.startElement = startElement;
+        this.allowSameFile = allowSameFile;
+        this.allowOtherFiles = allowOtherFiles;
+
+        this.startFile = startElement.getContainingFile();
     }
 
     public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
+        ProgressManager.checkCanceled();
+
+        if (startFile != null) {
+            PsiFile file = psiElement.getContainingFile();
+            if (!allowSameFile && startFile.isEquivalentTo(file)) {
+                return true;
+            }
+            if (!allowOtherFiles && !startFile.isEquivalentTo(file)) {
+                return true;
+            }
+        }
+
         if (psiElement instanceof BashVarDef) {
-            final BashVarDef varDef = (BashVarDef) psiElement;
-            if (varDef.isStaticAssignmentWord() && !varDef.isCommandLocal() && !variableNames.contains(varDef.getName()) && BashVarUtils.isInDefinedScope(startElement, varDef)) {
+            BashVarDef varDef = (BashVarDef) psiElement;
+            if (varDef.isStaticAssignmentWord()
+                    && !varDef.isCommandLocal()
+                    && !variableNames.contains(varDef.getName())
+                    && BashVarUtils.isInDefinedScope(startElement, varDef)) {
                 variables.add(varDef);
                 variableNames.add(varDef.getName());
             }

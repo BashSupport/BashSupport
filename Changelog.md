@@ -1,6 +1,18 @@
+#### 2019-07-15:
+ - [#696](https://github.com/BashSupport/BashSupport/issues/696): Highlight comments in backtick commands
+ - [#735](https://github.com/BashSupport/BashSupport/issues/735): Variables which were first declared in a loop were not properly resolved, renamed, and highlighted
+ - [#753](https://github.com/BashSupport/BashSupport/issues/753): Fix NPE in BashRunConfiguration.suggestedName()
+ - [#758](https://github.com/BashSupport/BashSupport/issues/758): Completions often showing "Invalid" as label
+
 #### 2019-07-04:
  - A notification is displayed for 192.x and later if both BashSupport and JetBrains Shell are enabled at the same time. It allows to disable one of the plugins.
  - Version 1.7.11
+
+#### 2019-06-21:
+ - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
+ - [#662](https://github.com/BashSupport/BashSupport/issues/662): Enter handler to insert a line continuation in Bash files
+ - [#658](https://github.com/BashSupport/BashSupport/issues/658): Fix broken highlighting of heredocs.
+ - [#656](https://github.com/BashSupport/BashSupport/issues/656): Fix multiline highlighting of todo/fixme comments
 
 #### 2019-06-15:
  - Version 1.7.10

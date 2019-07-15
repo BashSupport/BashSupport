@@ -69,7 +69,8 @@ public abstract class _BashLexerBase implements BashLexerDef {
   public static final int X_HEREDOC_MARKER = 36;
   public static final int X_HEREDOC_MARKER_IGNORE_TABS = 38;
   public static final int X_HEREDOC = 40;
-  public static final int X_HERE_STRING = 42;
+  public static final int S_HEREDOC_EXPECTED = 42;
+  public static final int X_HERE_STRING = 44;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -80,7 +81,7 @@ public abstract class _BashLexerBase implements BashLexerDef {
   private static final int ZZ_LEXSTATE[] = { 
      0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7,  7, 
      8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 
-    16, 16, 17, 17, 18, 18, 18, 18, 19, 19, 20, 20
+    16, 16, 17, 17, 18, 18, 18, 18, 19, 19,  0,  0, 20, 20
   };
 
   /** 
@@ -436,7 +437,7 @@ public abstract class _BashLexerBase implements BashLexerDef {
     "\2\233\1\217\1\220\1\233\1\246\1\247\1\250\3\251"+
     "\1\252\45\251\1\253\24\251\1\253\2\251\51\30\1\253"+
     "\24\30\1\254\2\30\51\255\1\253\27\255\1\30\1\31"+
-    "\1\32\1\33\1\34\1\42\1\36\1\37\1\40\1\41"+
+    "\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\41"+
     "\2\42\1\43\2\42\1\43\1\44\1\45\2\46\1\47"+
     "\1\50\1\51\1\30\1\53\1\42\1\54\3\43\1\44"+
     "\1\55\1\56\1\57\1\34\1\60\1\61\1\43\1\62"+
@@ -1340,7 +1341,9 @@ public abstract class _BashLexerBase implements BashLexerDef {
             { if (yystate() == X_HERE_STRING) {
                                                 closeHereStringIfAvailable();
                                                 return LINE_FEED;
-                                            } else if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(X_HEREDOC)) {
+                                            }
+
+                                            if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(X_HEREDOC)) {
                                                 backToPreviousState();
                                                 return LINE_FEED;
                                             }
@@ -1690,14 +1693,15 @@ goToState(X_STRINGMODE); return STRING_BEGIN;
             }
           case 262: break;
           case 79: 
-            { heredocState().pushMarker(yytext(), yystate() == X_HEREDOC_MARKER_IGNORE_TABS);
+            { heredocState().pushMarker(zzCurrentPos, yytext(), yystate() == X_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
+        goToState(S_HEREDOC_EXPECTED);
 
         return HEREDOC_MARKER_START;
             }
           case 263: break;
           case 80: 
-            { return LINE_FEED;
+            { heredocState().removeMarker(zzCurrentPos); backToPreviousState(); return LINE_FEED;
             }
           case 264: break;
           case 81: 
@@ -1714,6 +1718,9 @@ goToState(X_STRINGMODE); return STRING_BEGIN;
 
                 heredocState().popMarker(markerText);
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 if (dropLastChar) {
                     yypushback(1);
@@ -1727,7 +1734,7 @@ goToState(X_STRINGMODE); return STRING_BEGIN;
           case 265: break;
           case 82: 
             { if (!heredocState().isEmpty()) {
-                                        return HEREDOC_LINE;
+                                    return HEREDOC_LINE;
                                   }
                                   return LINE_FEED;
             }
@@ -1742,6 +1749,9 @@ goToState(X_STRINGMODE); return STRING_BEGIN;
 
                 heredocState().popMarker(yytext());
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
          }
@@ -2056,6 +2066,9 @@ goToState(X_STRINGMODE); return STRING_BEGIN;
 
                 heredocState().popMarker(yytext());
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }

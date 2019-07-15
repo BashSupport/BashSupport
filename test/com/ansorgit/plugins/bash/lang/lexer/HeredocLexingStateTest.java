@@ -38,7 +38,7 @@ public class HeredocLexingStateTest {
     public void testStateChange() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushMarker("a", false);
+        s.pushMarker(0, "a", false);
         Assert.assertTrue(s.isNextMarker("a"));
         Assert.assertFalse(s.isNextMarker("x"));
 
@@ -52,11 +52,11 @@ public class HeredocLexingStateTest {
     public void testEvaluatingHeredoc() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushMarker("\"a\"", false);
+        s.pushMarker(0, "\"a\"", false);
         Assert.assertFalse(s.isExpectingEvaluatingHeredoc());
         s.popMarker("a");
 
-        s.pushMarker("a", false);
+        s.pushMarker(0, "a", false);
         Assert.assertTrue(s.isExpectingEvaluatingHeredoc());
         s.popMarker("a");
     }
@@ -65,8 +65,8 @@ public class HeredocLexingStateTest {
     public void testInvalidStateChange() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushMarker("a", false);
-        s.pushMarker("b", false);
+        s.pushMarker(0, "a", false);
+        s.pushMarker(0, "b", false);
 
         s.popMarker("x");
     }
@@ -75,8 +75,8 @@ public class HeredocLexingStateTest {
     public void testInvalidStateWrongOrder() throws Exception {
         HeredocLexingState s = new HeredocLexingState();
 
-        s.pushMarker("a", false);
-        s.pushMarker("b", false);
+        s.pushMarker(0, "a", false);
+        s.pushMarker(0, "b", false);
 
         s.popMarker("b");
         s.popMarker("a");

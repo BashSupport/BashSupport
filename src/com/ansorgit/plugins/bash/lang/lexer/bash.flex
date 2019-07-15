@@ -175,27 +175,34 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 %xstate X_HEREDOC_MARKER
 %xstate X_HEREDOC_MARKER_IGNORE_TABS
 %xstate X_HEREDOC
+// this state is used to keep the lexer in a non-zero state when heredoc markers were found
+// if used as a highlighting lexer incremental lexing is used when in a zero state
+// heredoc lexing is stateful and is thus not compatible with the zero state
+%state S_HEREDOC_EXPECTED
 
 /* To match here-strings */
 %xstate X_HERE_STRING
 
 %%
 /***************************** INITIAL STAATE ************************************/
-<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST> {
+<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_HEREDOC_EXPECTED, S_BACKQUOTE> {
   {Shebang}                     { return SHEBANG; }
   {Comment}                     { return COMMENT; }
 }
 
 <X_HEREDOC_MARKER, X_HEREDOC_MARKER_IGNORE_TABS> {
+    // a line-feed after a heredoc marker indicates a missing start marker tag,
+    // the lexer must not remain in the heredoc marker state
+    {LineTerminator}             { heredocState().removeMarker(zzCurrentPos); backToPreviousState(); return LINE_FEED; }
     {WhiteSpaceLineCont}+        { return WHITESPACE; }
     {LineContinuation}+          { return WHITESPACE; }
-    {LineTerminator}             { return LINE_FEED; }
 
       ("$"? "'" [^\']+ "'")+
     | ("$"? \" [^\"]+ \")+
     | [^ \t\n\r\f;&|]+ {
-        heredocState().pushMarker(yytext(), yystate() == X_HEREDOC_MARKER_IGNORE_TABS);
+        heredocState().pushMarker(zzCurrentPos, yytext(), yystate() == X_HEREDOC_MARKER_IGNORE_TABS);
         backToPreviousState();
+        goToState(S_HEREDOC_EXPECTED);
 
         return HEREDOC_MARKER_START;
     }
@@ -205,7 +212,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 <X_HEREDOC> {
     {LineTerminator}+           { if (!heredocState().isEmpty()) {
-                                        return HEREDOC_LINE;
+                                    return HEREDOC_LINE;
                                   }
                                   return LINE_FEED;
                                 }
@@ -219,6 +226,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                 heredocState().popMarker(yytext());
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
             }
@@ -242,6 +252,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                 heredocState().popMarker(markerText);
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 if (dropLastChar) {
                     yypushback(1);
@@ -259,6 +272,9 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
                 heredocState().popMarker(yytext());
                 popStates(X_HEREDOC);
+                if (heredocState().isEmpty() && yystate() == S_HEREDOC_EXPECTED) {
+                    backToPreviousState();
+                }
 
                 return ignoreTabs ? HEREDOC_MARKER_IGNORING_TABS_END : HEREDOC_MARKER_END;
          }
@@ -269,7 +285,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     .                            { return BAD_CHARACTER; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
   "[ ]"                         { yypushback(1); goToState(S_TEST); setEmptyConditionalCommand(true); return EXPR_CONDITIONAL; }
   "[ "                          { goToState(S_TEST); setEmptyConditionalCommand(false); return EXPR_CONDITIONAL; }
 
@@ -309,7 +325,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {WhiteSpace}            { if (isInHereStringContent()) { leaveHereStringContent(); backToPreviousState(); } return WHITESPACE; }
 }
 
-<YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_CASE> {
+<YYINITIAL, S_BACKQUOTE, S_DOLLAR_PREFIXED, S_TEST, S_CASE, S_HEREDOC_EXPECTED> {
     //this is not lexed in state S_SUBSHELL, because BashSupport treats ((((x)))) as subshell>arithmetic and not as subshell>subshell>arithmetic
     //this is different to the official Bash interpreter
     //currently it's too much effort to rewrite the lexer and parser for this feature
@@ -327,7 +343,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     }
 }
 
-<YYINITIAL, S_CASE> {
+<YYINITIAL, S_CASE, S_HEREDOC_EXPECTED> {
     ")"                     { return RIGHT_PAREN; }
 }
 <S_SUBSHELL> {
@@ -357,7 +373,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 
-<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
    /* The long followed-by match is necessary to have at least the same length as to global Word rule to make sure this rules matches */
    {AssignmentWord} / "[" {ArithExpr} "]"
                                       { goToState(S_ARRAY); return ASSIGNMENT_WORD; }
@@ -366,7 +382,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
    {AssignmentWord} / "="|"+="        { return ASSIGNMENT_WORD; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
     <S_ARITH, S_ARITH_SQUARE_MODE> {
        "="                                { return EQ; }
    }
@@ -388,7 +404,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   ","                             { return COMMA; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
 /* keywords and expressions */
   "case"                        { setInCaseBody(false); goToState(S_CASE); return CASE_KEYWORD; }
 
@@ -631,7 +647,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
   [^\"]                       { return STRING_DATA; }
 }
 
-<YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE> {
+<YYINITIAL, S_BACKQUOTE, S_SUBSHELL, S_CASE, S_HEREDOC_EXPECTED> {
   /* Bash 4 */
     "&>>"                         { if (isBash4()) {
                                         return REDIRECT_AMP_GREATER_GREATER;
@@ -747,7 +763,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 }
 
 /** Match in all except of string */
-<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, X_STRINGMODE> {
+<YYINITIAL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, X_STRINGMODE, S_HEREDOC_EXPECTED> {
     /*
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
      if we match repeated whtiespace!
@@ -756,7 +772,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
     {LineContinuation}+          { return LINE_CONTINUATION; }
 }
 
-<YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE> {
+<YYINITIAL, S_TEST, S_TEST_COMMAND, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_PARAM_EXPANSION, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
     <X_HERE_STRING> {
         {StringStart}                 { stringParsingState().enterString(); if (yystate() == X_HERE_STRING && !isInHereStringContent()) enterHereStringContent();
 goToState(X_STRINGMODE); return STRING_BEGIN; }
@@ -769,7 +785,9 @@ goToState(X_STRINGMODE); return STRING_BEGIN; }
                                             if (yystate() == X_HERE_STRING) {
                                                 closeHereStringIfAvailable();
                                                 return LINE_FEED;
-                                            } else if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(X_HEREDOC)) {
+                                            }
+
+                                            if ((yystate() == S_PARAM_EXPANSION || yystate() == S_SUBSHELL || yystate() == S_ARITH || yystate() == S_ARITH_SQUARE_MODE) && isInState(X_HEREDOC)) {
                                                 backToPreviousState();
                                                 return LINE_FEED;
                                             }
@@ -828,7 +846,7 @@ goToState(X_STRINGMODE); return STRING_BEGIN; }
     "\\"                          { return BACKSLASH; }
 }
 
-<YYINITIAL, X_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, X_STRINGMODE, X_HERE_STRING> {
+<YYINITIAL, X_HEREDOC, S_PARAM_EXPANSION, S_TEST, S_TEST_COMMAND, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ARITH, S_ARITH_SQUARE_MODE, S_ARITH_ARRAY_MODE, S_ARRAY, S_ASSIGNMENT_LIST, S_BACKQUOTE, X_STRINGMODE, X_HERE_STRING, S_HEREDOC_EXPECTED> {
     "${"                        { if (yystate() == X_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; goToState(S_PARAM_EXPANSION); yypushback(1); return DOLLAR; }
     "}"                         { if (yystate() == X_HEREDOC && !heredocState().isExpectingEvaluatingHeredoc()) return HEREDOC_LINE; return RIGHT_CURLY; }
 }
@@ -837,11 +855,11 @@ goToState(X_STRINGMODE); return STRING_BEGIN; }
   {CasePattern}                 { return WORD; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_ARRAY, S_HEREDOC_EXPECTED> {
     {IntegerLiteral}            { return INTEGER_LITERAL; }
 }
 
-<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE> {
+<YYINITIAL, S_CASE, S_SUBSHELL, S_BACKQUOTE, S_HEREDOC_EXPECTED> {
   <S_TEST, S_TEST_COMMAND> {
     {Word}                     { return WORD; }
     {WordAfter}+               { return WORD; }
