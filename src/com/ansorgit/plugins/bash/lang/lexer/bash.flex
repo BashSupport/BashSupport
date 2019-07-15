@@ -185,7 +185,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
 
 %%
 /***************************** INITIAL STAATE ************************************/
-<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_HEREDOC_EXPECTED> {
+<YYINITIAL, S_CASE, S_CASE_PATTERN, S_SUBSHELL, S_ASSIGNMENT_LIST, S_HEREDOC_EXPECTED, S_BACKQUOTE> {
   {Shebang}                     { return SHEBANG; }
   {Comment}                     { return COMMENT; }
 }
