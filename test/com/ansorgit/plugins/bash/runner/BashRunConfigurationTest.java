@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.file.Paths;
+
 /**
  * @author jansorg
  */
@@ -89,5 +91,20 @@ public class BashRunConfigurationTest extends LightBashCodeInsightFixtureTestCas
         } catch (RuntimeConfigurationError e) {
             //expectd
         }
+    }
+
+    @Test
+    public void testSuggestedName() throws Exception {
+        BashRunConfiguration config = new BashRunConfiguration("Bash", new RunConfigurationModule(getProject()), BashConfigurationType.getInstance().getConfigurationFactories()[0]);
+        Assert.assertNull(config.suggestedName());
+
+        config.setScriptName("");
+        Assert.assertNull(config.suggestedName());
+
+        config.setScriptName("test.bash");
+        Assert.assertEquals("test", config.suggestedName());
+
+        config.setScriptName(Paths.get("parent", "test.bash").toString());
+        Assert.assertEquals("test", config.suggestedName());
     }
 }
