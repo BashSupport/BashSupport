@@ -1,3 +1,6 @@
+#### 2019-07-15:
+ - [#696](https://github.com/BashSupport/BashSupport/issues/696): Highlight comments in backtick commands
+
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
  - [#662](https://github.com/BashSupport/BashSupport/issues/662): Enter handler to insert a line continuation in Bash files
