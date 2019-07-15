@@ -50,12 +50,10 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
     @Override
     protected void addBashCompletions(String currentText, CompletionParameters parameters, ProcessingContext context, CompletionResultSet result) {
         PsiElement element = parameters.getPosition();
-        PsiElement original = parameters.getOriginalPosition();
 
-        BashVar varElement = PsiTreeUtil.getContextOfType(original, BashVar.class, false);
+        BashVar varElement = PsiTreeUtil.getContextOfType(element, BashVar.class, false);
         boolean dollarPrefix = currentText != null && currentText.startsWith("$");
         boolean insideExpansion = element.getParent() != null && element.getParent().getParent() instanceof BashParameterExpansion;
-
         if (varElement == null && !dollarPrefix && !insideExpansion) {
             return;
         }
@@ -63,16 +61,24 @@ class VariableNameCompletionProvider extends AbstractBashCompletionProvider {
         int invocationCount = parameters.getInvocationCount();
         int resultLength = 0;
 
-        // fixme Currently we only look into the current file if no original element is given,
-        // fixme better: we should collect locals and the included vars from the original file
+        PsiElement original = parameters.getOriginalPosition();
+        BashVar varElementOriginal = original != null ? PsiTreeUtil.getContextOfType(original, BashVar.class, false) : null;
 
         if (varElement != null) {
-            resultLength += addCollectedVariables(original, result, new BashVarVariantsProcessor(varElement));
-        } else {
-            //not in a variable element, but collect all known variable names at this offset in the current file
-            PsiElement lookupElement = original != null ? original : element;
+            // only keep vars of included files when starting in the original file
+            PsiElement originalRef = varElementOriginal != null ? varElementOriginal : original;
+            if (originalRef != null) {
+                resultLength += addCollectedVariables(original, result, new BashVarVariantsProcessor(originalRef, false, true));
+            }
 
-            resultLength += addCollectedVariables(lookupElement, result, new BashVarVariantsProcessor(lookupElement));
+            // only keep vars of the dummy file when starting in the dummy file
+            resultLength += addCollectedVariables(element, result, new BashVarVariantsProcessor(varElement, true, false));
+        } else {
+            // not in a variable element, but collect all known variable names at this offset in the current file
+            if (original != null) {
+                resultLength += addCollectedVariables(original, result, new BashVarVariantsProcessor(original, false, true));
+            }
+            resultLength += addCollectedVariables(element, result, new BashVarVariantsProcessor(element, false, true));
         }
 
         if (currentText != null && (dollarPrefix || insideExpansion) && (invocationCount >= 2 || resultLength == 0)) {
