@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.SystemInfoRt
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -87,6 +88,10 @@ class BashDocumentationProvider : AbstractDocumentationProvider() {
      */
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
         for (source in sourceList) {
+            if (ProgressManager.getInstance().hasProgressIndicator()) {
+                ProgressManager.checkCanceled()
+            }
+
             val doc = source.documentation(element, originalElement)
             if (StringUtils.stripToNull(doc) != null) {
                 return doc
