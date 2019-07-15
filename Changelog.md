@@ -3,6 +3,7 @@
  - [#735](https://github.com/BashSupport/BashSupport/issues/735): Variables which were first declared in a loop were not properly resolved, renamed, and highlighted
  - [#753](https://github.com/BashSupport/BashSupport/issues/753): Fix NPE in BashRunConfiguration.suggestedName()
  - [#758](https://github.com/BashSupport/BashSupport/issues/758): Completions often showing "Invalid" as label
+ - [#761](https://github.com/BashSupport/BashSupport/issues/761): IOException while scanning path
 
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
