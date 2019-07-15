@@ -38,34 +38,36 @@ public class BashVarUtils {
         if (definition.isFunctionScopeLocal()) {
             //the reference is a local variable, check if the candidate is in its scope
             return PsiTreeUtil.isAncestor(definition.findFunctionScope(), referenceElement, false);
-        } else if (referenceElement instanceof BashVarDef && ((BashVarDef) referenceElement).isFunctionScopeLocal()) {
+        }
+
+        if (referenceElement instanceof BashVarDef && ((BashVarDef) referenceElement).isFunctionScopeLocal()) {
             //the candidate is a local definition, check if we are in the
             //fixme check this
             return PsiTreeUtil.isAncestor(definition.findFunctionScope(), referenceElement, false);
-        } else {
-            //we need to check the offset of top-level elements
-            if (referenceElement instanceof BashVar) {
-                BashVar var = (BashVar) referenceElement;
-                BashVarDef referencingDefinition = (BashVarDef) var.getReference().resolve();
+        }
 
-                if (referencingDefinition != null && referencingDefinition.isFunctionScopeLocal()) {
-                    return isInDefinedScope(referencingDefinition, definition);
-                }
-            }
+        //we need to check the offset of top-level elements
+        if (referenceElement instanceof BashVar) {
+            BashVar var = (BashVar) referenceElement;
+            BashVarDef referencingDefinition = (BashVarDef) var.getReference().resolve();
 
-            //make sure that the reference is not a self-reference
-            if (BashPsiUtils.hasContext(referenceElement, definition)) {
-                return false;
-            }
-
-            //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
-            //this check is only valid if both are in the same file
-            if (!BashPsiUtils.isValidReferenceScope(referenceElement, definition)) {
-                return false;
+            if (referencingDefinition != null && referencingDefinition.isFunctionScopeLocal()) {
+                return isInDefinedScope(referencingDefinition, definition);
             }
         }
 
-        //none is a local variable
+        //make sure that the reference is not a self-reference
+        if (BashPsiUtils.hasContext(referenceElement, definition)) {
+            return false;
+        }
+
+        //variableDefinition may be otherwise valid but may be defined after the variable, i.e. it's invalid
+        //this check is only valid if both are in the same file
+        if (!BashPsiUtils.isValidReferenceScope(referenceElement, definition)) {
+            return false;
+        }
+
+        // not a local variable
         return true;
     }
 }
