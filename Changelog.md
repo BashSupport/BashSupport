@@ -1,5 +1,7 @@
 #### 2019-07-15:
  - [#696](https://github.com/BashSupport/BashSupport/issues/696): Highlight comments in backtick commands
+ - [#735](https://github.com/BashSupport/BashSupport/issues/735): Variables which were first declared in a loop were not properly resolved, renamed, and highlighted
+ - [#753](https://github.com/BashSupport/BashSupport/issues/753): Fix NPE in BashRunConfiguration.suggestedName()
 
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands

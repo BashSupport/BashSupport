@@ -212,6 +212,13 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         assertIsInvalidVarDef();
     }
 
+
+    @Test
+    public void testIssue735_ForLoopDefResolve() throws Exception {
+        BashVarDef def = assertIsValidVarDef();
+        Assert.assertEquals("This must resolve to the for loop definition", 4, def.getTextOffset());
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/resolve/varDef/";
     }
