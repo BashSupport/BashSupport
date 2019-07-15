@@ -21,6 +21,7 @@ import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.loops.BashLoop;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
+import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarProcessor;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
@@ -99,10 +100,15 @@ public final class BashResolveUtil {
             return;
         }
 
+        // PsiFile referenceFile = reference.getContainingFile();
         for (BashVarDef candidate : StubIndex.getElements(BashVarDefIndex.KEY, varName, project, filesScope, BashVarDef.class)) {
-            //only variables which have the same original definition should be processed
-            //e.g. local variables won't be processed this way if a global variable is given to this method
-            if (referenceDefinition.isEquivalentTo(candidate) || referenceDefinition.isEquivalentTo(candidate.getReference().resolve())) {
+            // only variables which have the same original definition should be processed
+            // e.g. local variables won't be processed this way if a global variable is given to this method
+            // we can't compare definition if the candidate is in an included file
+            // included files can be valid on their own, but will be interpreted in the context of the includer
+            if (referenceDefinition.isEquivalentTo(candidate)
+                    // referenceFile != null && !referenceFile.isEquivalentTo(candidate.getContainingFile()) //fixme see notes above
+                    || referenceDefinition.isEquivalentTo(candidate.getReference().resolve())) {
                 Boolean walkOn = varDefProcessor.apply(candidate);
                 if (walkOn == null || !walkOn) {
                     return;
@@ -170,7 +176,13 @@ public final class BashResolveUtil {
 
                     //either one of var or include command is in a function or the var is used after the include command
                     if (varIsInFunction || includeIsInFunction || (BashPsiUtils.getFileTextOffset(bashVar) > BashPsiUtils.getFileTextEndOffset(command))) {
-                        command.processDeclarations(processor, resolveState, command, bashVar);
+                        try {
+                            resolveState = resolveState.put(Keys.resolvingIncludeCommand, command);
+
+                            command.processDeclarations(processor, resolveState, command, bashVar);
+                        } finally {
+                            resolveState = resolveState.put(Keys.resolvingIncludeCommand, null);
+                        }
                     }
                 }
             }

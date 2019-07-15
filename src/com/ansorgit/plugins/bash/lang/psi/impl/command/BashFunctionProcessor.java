@@ -48,7 +48,7 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
             BashFunctionDef funcDef = (BashFunctionDef) element;
 
             if (symboleName.equals(funcDef.getName())) {
-                storeResult(element, BashPsiUtils.blockNestingLevel(funcDef));
+                storeResult(element, BashPsiUtils.blockNestingLevel(funcDef), null);
                 return ignoreExecuteResult;
             }
         }

@@ -41,7 +41,7 @@ class BashHereDocMarkerProcessor extends BashAbstractProcessor {
     public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
         boolean isValid = otherEndsType.isInstance(element) && referencedName.equals(((BashHereDocMarker) element).getMarkerText());
         if (isValid) {
-            storeResult(element, 100);
+            storeResult(element, 100, null);
             return false;
         }
 

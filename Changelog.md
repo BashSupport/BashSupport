@@ -4,6 +4,7 @@
  - [#753](https://github.com/BashSupport/BashSupport/issues/753): Fix NPE in BashRunConfiguration.suggestedName()
  - [#758](https://github.com/BashSupport/BashSupport/issues/758): Completions often showing "Invalid" as label
  - [#761](https://github.com/BashSupport/BashSupport/issues/761): IOException while scanning path
+ - [#764](https://github.com/BashSupport/BashSupport/issues/764): Variables declared in included files were not always properly resolved. Side-effect of the fix is that changes to the read-only state made in included files is not always highlighted by the inspection.
 
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
