@@ -64,13 +64,13 @@ public class NewBashFileActionTest extends BashCodeInsightFixtureTestCase {
 
         // failing with 192.x, https://youtrack.jetbrains.com/issue/IDEA-217432
         // for unknown reasons JetBrains Shell is handling *.sh nicely, but BashSupport is never assinged to it
-        // assertTrue("Expected a newly created bash file", result instanceof BashFile);
+         assertTrue("Expected a newly created bash file", result instanceof BashFile);
 
-        // VirtualFile vFile = result.getVirtualFile();
-        // File ioFile = VfsUtilCore.virtualToIoFile(vFile);
-        // assertTrue("Expected that the new file is executable", ioFile.canExecute());
+         VirtualFile vFile = result.getContainingFile().getVirtualFile();
+         File ioFile = VfsUtilCore.virtualToIoFile(vFile);
+         assertTrue("Expected that the new file is executable", ioFile.canExecute());
 
-        // Assert.assertEquals("Expected default bash file template content", "#!/usr/bin/env bash", result.getText());
+         Assert.assertEquals("Expected default bash file template content", "#!/usr/bin/env bash", result.getText());
     }
 
     @Test
