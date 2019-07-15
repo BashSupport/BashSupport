@@ -21,6 +21,7 @@ import com.intellij.openapi.util.SystemInfoRt
 import org.apache.commons.lang.StringUtils
 import java.io.File
 import java.io.IOException
+import java.io.UncheckedIOException
 import java.nio.file.FileSystemException
 import java.nio.file.Files
 import java.nio.file.InvalidPathException
@@ -76,6 +77,10 @@ class BashPathCompletionService() {
                                         if (LOG.isDebugEnabled) {
                                             LOG.debug("error accessing file $it")
                                         }
+                                    } catch (e: UncheckedIOException) {
+                                        if (LOG.isDebugEnabled) {
+                                            LOG.debug("error accessing file $it")
+                                        }
                                     }
                                 }
                             } finally {
@@ -84,7 +89,7 @@ class BashPathCompletionService() {
                         }
                     } catch (ex: Exception) {
                         when (ex) {
-                            is InvalidPathException, is IOException, is SecurityException -> LOG.debug("Invalid path detected in \$PATH element $e", ex)
+                            is InvalidPathException, is IOException, is UncheckedIOException, is SecurityException -> LOG.debug("Invalid path detected in \$PATH element $e", ex)
                             is FileSystemException -> LOG.debug("Ignoring filesystem exception in \$PATH element $e", ex)
                             else -> LOG.error("Exception while scanning \$PATH for command names", ex)
                         }

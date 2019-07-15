@@ -3,6 +3,7 @@
  - [#735](https://github.com/BashSupport/BashSupport/issues/735): Variables which were first declared in a loop were not properly resolved, renamed, and highlighted
  - [#753](https://github.com/BashSupport/BashSupport/issues/753): Fix NPE in BashRunConfiguration.suggestedName()
  - [#758](https://github.com/BashSupport/BashSupport/issues/758): Completions often showing "Invalid" as label
+ - [#761](https://github.com/BashSupport/BashSupport/issues/761): IOException while scanning path
 
 #### 2019-07-04:
  - A notification is displayed for 192.x and later if both BashSupport and JetBrains Shell are enabled at the same time. It allows to disable one of the plugins.
