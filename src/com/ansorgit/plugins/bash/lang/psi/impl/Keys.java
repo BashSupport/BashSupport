@@ -32,4 +32,7 @@ public interface Keys {
      * Defines whether the resolving of global identifiers should be done recursivly or flat on file level (happens after walking up to the toplevel)
      */
     Key<Boolean> FILE_WALK_GO_DEEP = Key.create("BASH_FILE_WALK_DEEP");
+
+    // set if a definition is searched and currently the definition linked by an include command are used
+    Key<PsiElement> resolvingIncludeCommand = Key.create("BASH_RESOLVING_INCLUDE");
 }

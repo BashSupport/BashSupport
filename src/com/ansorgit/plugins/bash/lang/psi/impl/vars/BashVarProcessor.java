@@ -90,7 +90,10 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
             ignoreGlobals = ignoreGlobals || (isValid && checkLocalness && localVarDef);
 
             if (isValid) {
-                storeResult(varDef, BashPsiUtils.blockNestingLevel(varDef));
+                PsiElement includeCommand = resolveState.get(resolvingIncludeCommand);
+                PsiElement varDefAnchor = includeCommand != null ? includeCommand : varDef;
+
+                storeResult(varDef, BashPsiUtils.blockNestingLevel(varDefAnchor), includeCommand);
 
                 if (!localVarDef) {
                     globalVariables.add(varDef);

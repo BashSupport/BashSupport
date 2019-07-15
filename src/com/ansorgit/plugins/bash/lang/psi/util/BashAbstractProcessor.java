@@ -35,8 +35,9 @@ import java.util.Collections;
  * @author jansorg
  */
 public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiScopeProcessor, ResolveProcessor {
-    private Multimap<Integer, PsiElement> results;
     private final boolean preferNeigbourhood;
+    private Multimap<Integer, PsiElement> results;
+    private Multimap<PsiElement, PsiElement> includeCommands;
 
     protected BashAbstractProcessor(boolean preferNeighbourhood) {
         this.preferNeigbourhood = preferNeighbourhood;
@@ -67,12 +68,18 @@ public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiSc
         }
     }
 
-    protected final void storeResult(PsiElement element, Integer rating) {
+    protected final void storeResult(PsiElement element, Integer rating, PsiElement includeCommand) {
         if (results == null) {
             results = LinkedListMultimap.create();
         }
-
         results.put(rating, element);
+
+        if (includeCommand != null) {
+            if (includeCommands == null) {
+                includeCommands = LinkedListMultimap.create();
+            }
+            includeCommands.put(element, includeCommand);
+        }
     }
 
     /**
@@ -128,7 +135,18 @@ public abstract class BashAbstractProcessor implements BashScopeProcessor, PsiSc
                     }
                 }
 
-                if (textOffset < smallestOffset) {
+                // comparing the offset is only meaningful within the same file
+                // for definitions in included files we need to compare against the offset of the include command
+                Collection<PsiElement> includeCommands = this.includeCommands != null ? this.includeCommands.get(e) : Collections.emptyList();
+                if (!includeCommands.isEmpty()) {
+                    for (PsiElement includeCommand : includeCommands) {
+                        int includeOffset = includeCommand.getTextOffset();
+                        if (includeOffset < smallestOffset) {
+                            smallestOffset = includeOffset;
+                            bestElement = e;
+                        }
+                    }
+                } else if (textOffset < smallestOffset) {
                     smallestOffset = textOffset;
                     bestElement = e;
                 }
