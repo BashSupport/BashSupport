@@ -29,6 +29,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
 import com.intellij.injected.editor.VirtualFileWindow;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -100,15 +101,9 @@ public final class BashResolveUtil {
             return;
         }
 
-        Project project = reference.getProject();
-        GlobalSearchScope filesScope = varDefSearchScope(reference, true);
-        PsiElement referenceDefinition = reference.getReference().resolve();
-        if (referenceDefinition == null) {
-            return;
-        }
-
         BashVarProcessor processor = new BashVarProcessor(reference, varName, true, false, true);
         resolve(reference, false, processor);
+
         Collection<PsiElement> results = processor.getResults();
         if (results != null) {
             for (PsiElement result : results) {
@@ -119,12 +114,7 @@ public final class BashResolveUtil {
         }
     }
 
-
-    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode) {
-        return resolve(bashVar, leaveInjectionHosts, dumbMode, false);
-    }
-
-    public static PsiElement resolve(BashVar bashVar, boolean leaveInjectionHosts, boolean dumbMode, boolean preferNeighborhood) {
+    public static PsiElement resolve(BashVar bashVar, boolean dumbMode, boolean preferNeighborhood) {
         if (bashVar == null || !bashVar.isPhysical()) {
             return null;
         }
@@ -165,6 +155,8 @@ public final class BashResolveUtil {
         }
 
         for (BashVarDef varDef : varDefs) {
+            ProgressManager.checkCanceled();
+
             processor.execute(varDef, resolveState);
         }
 
@@ -174,6 +166,8 @@ public final class BashResolveUtil {
                 boolean varIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(bashVar) != null;
 
                 for (BashIncludeCommand command : includeCommands) {
+                    ProgressManager.checkCanceled();
+
                     boolean includeIsInFunction = BashPsiUtils.findNextVarDefFunctionDefScope(command) != null;
 
                     //either one of var or include command is in a function or the var is used after the include command
@@ -283,6 +277,8 @@ public final class BashResolveUtil {
 
         Collection<BashVarDef> allDefs = StubIndex.getElements(BashVarDefIndex.KEY, bashVar.getReferenceName(), bashVar.getProject(), GlobalSearchScope.fileScope(psiFile), BashVarDef.class);
         for (BashVarDef candidateDef : allDefs) {
+            ProgressManager.checkCanceled();
+
             // skip var defs which are not in our own def scope
             BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(candidateDef);
             if (varScope != null && !varScope.isEquivalentTo(scope)) {

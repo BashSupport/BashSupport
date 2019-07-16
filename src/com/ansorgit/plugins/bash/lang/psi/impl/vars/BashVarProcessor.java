@@ -23,6 +23,7 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -60,6 +61,8 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
     }
 
     public boolean execute(@NotNull PsiElement psiElement, @NotNull ResolveState resolveState) {
+        ProgressManager.checkCanceled();
+
         if (psiElement instanceof BashVarDef) {
             BashVarDef varDef = (BashVarDef) psiElement;
 

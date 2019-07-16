@@ -35,6 +35,6 @@ final class SmartVarDefReference extends AbstractVarDefReference {
             return null;
         }
 
-        return BashResolveUtil.resolve(bashVarDef, true, false);
+        return BashResolveUtil.resolve(bashVarDef, false, false);
     }
 }

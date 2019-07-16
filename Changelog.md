@@ -5,6 +5,7 @@
  - [#758](https://github.com/BashSupport/BashSupport/issues/758): Completions often showing "Invalid" as label
  - [#761](https://github.com/BashSupport/BashSupport/issues/761): IOException while scanning path
  - [#764](https://github.com/BashSupport/BashSupport/issues/764): Variables declared in included files were not always properly resolved.
+ - Fix exception about IndexPatternBuilder incorrect Bash comment ranges
 
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
