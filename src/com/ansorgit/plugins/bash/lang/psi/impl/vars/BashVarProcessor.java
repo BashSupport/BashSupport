@@ -22,50 +22,39 @@ import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Key;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
  * @author jansorg
  */
 public class BashVarProcessor extends BashAbstractProcessor implements Keys {
-    private final boolean leaveInjectionHost;
-    private BashVar startElement;
+    private final BashVar startElement;
     private final BashFunctionDef startElementScope;
-    private boolean checkLocalness;
-    private String varName;
+    private final boolean collectAllDefinitions;
+    private final boolean checkLocalness;
+    private final String varName;
     private boolean ignoreGlobals;
-    private boolean functionVarDefsAreGlobal;
-    private int startElementTextOffset;
-    private Set<PsiElement> globalVariables = Sets.newLinkedHashSet();
+    private final boolean functionVarDefsAreGlobal;
+    private final int startElementTextOffset;
+    private final Set<PsiElement> globalVariables = Sets.newLinkedHashSet();
 
-    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness) {
-        this(startElement, variableName, checkLocalness, true);
-    }
-
-    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts) {
-        this(startElement, variableName, checkLocalness, leaveInjectionHosts, false);
-    }
-
-    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean leaveInjectionHosts, boolean preferNeighbourhood) {
+    public BashVarProcessor(BashVar startElement, String variableName, boolean checkLocalness, boolean preferNeighbourhood, boolean collectAllDefinitions) {
         super(preferNeighbourhood);
 
         this.startElement = startElement;
         this.checkLocalness = checkLocalness;
         this.varName = variableName;
         this.startElementScope = BashPsiUtils.findNextVarDefFunctionDefScope(startElement);
+        this.collectAllDefinitions = collectAllDefinitions;
 
         this.ignoreGlobals = false;
-        this.leaveInjectionHost = leaveInjectionHosts;
         this.functionVarDefsAreGlobal = BashProjectSettings.storedSettings(startElement.getProject()).isGlobalFunctionVarDefs();
         this.startElementTextOffset = BashPsiUtils.getFileTextOffset(startElement);
     }
@@ -79,27 +68,27 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
                 return true;
             }
 
-            //we have the same name, so it's a possible hit
-            //now check the scope
+            PsiElement includeCommand = resolveState.get(resolvingIncludeCommand);
+
+            // we have the same name, so it's a possible hit -> now check the scope
             boolean localVarDef = varDef.isFunctionScopeLocal();
             boolean isValid = checkLocalness && localVarDef
-                    ? isValidLocalDefinition(varDef, resolveState)
+                    ? isValidLocalDefinition(varDef)
                     : isValidDefinition(varDef, resolveState);
 
-            //if we found a valid local variable definition we must ignore all (otherwise matching) global variable definitions
+            // if we found a valid local variable definition we must ignore all (otherwise matching) global variable definitions
             ignoreGlobals = ignoreGlobals || (isValid && checkLocalness && localVarDef);
 
             if (isValid) {
-                PsiElement includeCommand = resolveState.get(resolvingIncludeCommand);
-                PsiElement varDefAnchor = includeCommand != null ? includeCommand : varDef;
+                PsiElement defAnchor = includeCommand != null ? includeCommand : varDef;
 
-                storeResult(varDef, BashPsiUtils.blockNestingLevel(varDefAnchor), includeCommand);
+                storeResult(varDef, BashPsiUtils.blockNestingLevel(defAnchor), includeCommand);
 
                 if (!localVarDef) {
                     globalVariables.add(varDef);
                 }
 
-                return false;
+                return collectAllDefinitions;
             }
         }
 
@@ -131,7 +120,7 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         //  - if startElement and varDef share a scope which different from the PsiFile -> valid if the startElement is inside of a function def
         //this check is only valid if both elements are in the same file
 
-        boolean sameFiles = BashPsiUtils.findFileContext(startElement).equals(BashPsiUtils.findFileContext(varDef));
+        boolean sameFiles = BashPsiUtils.findFileContext(startElement).isEquivalentTo(BashPsiUtils.findFileContext(varDef));
         if (sameFiles) {
             int textOffsetVarDef = BashPsiUtils.getFileTextOffset(varDef);
             if (startElementTextOffset >= textOffsetVarDef) {
@@ -157,26 +146,18 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
                 return PsiTreeUtil.isAncestor(varDefScope, startElementScope, true);
             }
         } else {
-            //working on a definition in an included file (maybe even over several include-steps)
-            Multimap<VirtualFile, PsiElement> includedFiles = resolveState.get(visitedIncludeFiles);
-
-            VirtualFile varDefFile = BashPsiUtils.findFileContext(varDef).getVirtualFile();
-            Collection<PsiElement> includeCommands = includedFiles != null ? includedFiles.get(varDefFile) : null;
-            if (includeCommands == null || includeCommands.isEmpty()) {
-                return false;
-            }
-
-            PsiElement includeCommand = includeCommands.iterator().next();
+            // this is the command in the original file which starts the chain of inclusions
+            PsiElement includeCommand = resolveState.get(resolvingIncludeCommand);
             BashFunctionDef includeCommandScope = BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand);
 
-            //now check the offset of the include command
-            int startOffset = BashPsiUtils.getFileTextOffset(startElement);
-            int endOffset = BashPsiUtils.getFileTextOffset(includeCommand);
-            if (startOffset >= endOffset) {
+            // now check the offset of the include command
+            int definitionOffset = BashPsiUtils.getFileTextOffset(startElement);
+            int includeCommandOffset = BashPsiUtils.getFileTextOffset(includeCommand);
+            if (definitionOffset >= includeCommandOffset) {
                 return isDefinitionOffsetValid(includeCommandScope);
             }
 
-            //the include command comes AFTER the start element
+            // the include command comes AFTER the start element
             if (includeCommandScope == null) {
                 return BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand) != null;
             }
@@ -208,10 +189,9 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
      * Also, the checked variable definition has to appear before the start element.
      *
      * @param varDef       The variable definition in question
-     * @param resolveState
      * @return True if varDef is a valid local definition for startElement
      */
-    protected boolean isValidLocalDefinition(BashVarDef varDef, ResolveState resolveState) {
+    protected boolean isValidLocalDefinition(BashVarDef varDef) {
         boolean validScope = PsiTreeUtil.isAncestor(BashPsiUtils.findEnclosingBlock(varDef), startElement, false);
 
         //fixme: this is not entirely true, think of a function with a var redefinition of a local variable of the inner functions

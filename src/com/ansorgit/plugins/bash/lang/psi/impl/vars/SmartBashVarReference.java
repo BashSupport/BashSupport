@@ -42,5 +42,4 @@ class SmartBashVarReference extends AbstractBashVarReference {
     public PsiElement resolveInner() {
         return BashResolveUtil.resolve(bashVar, true, false, preferNeighborhood);
     }
-
 }

@@ -25,7 +25,6 @@ import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.impl.vars.BashVarProcessor;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashIncludeCommandIndex;
 import com.ansorgit.plugins.bash.lang.psi.stubs.index.BashVarDefIndex;
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.ide.scratch.ScratchFileService;
@@ -48,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 public final class BashResolveUtil {
     private BashResolveUtil() {
@@ -87,7 +87,14 @@ public final class BashResolveUtil {
     }
 
 
-    public static void walkVariableDefinitions(@NotNull BashVar reference, @NotNull Function<BashVarDef, Boolean> varDefProcessor) {
+    /**
+     * Iterate all variable definitions which apply to the given variable.
+     * This includes redeclarations and the original definition it resolves to.
+     *
+     * @param reference       The variable to use as starting point
+     * @param resultProcessor The function called with each of the located definitions
+     */
+    public static void walkVariableDefinitions(@NotNull BashVar reference, @NotNull Function<BashVarDef, Boolean> resultProcessor) {
         String varName = reference.getName();
         if (StringUtils.isBlank(varName)) {
             return;
@@ -100,18 +107,13 @@ public final class BashResolveUtil {
             return;
         }
 
-        // PsiFile referenceFile = reference.getContainingFile();
-        for (BashVarDef candidate : StubIndex.getElements(BashVarDefIndex.KEY, varName, project, filesScope, BashVarDef.class)) {
-            // only variables which have the same original definition should be processed
-            // e.g. local variables won't be processed this way if a global variable is given to this method
-            // we can't compare definition if the candidate is in an included file
-            // included files can be valid on their own, but will be interpreted in the context of the includer
-            if (referenceDefinition.isEquivalentTo(candidate)
-                    // referenceFile != null && !referenceFile.isEquivalentTo(candidate.getContainingFile()) //fixme see notes above
-                    || referenceDefinition.isEquivalentTo(candidate.getReference().resolve())) {
-                Boolean walkOn = varDefProcessor.apply(candidate);
-                if (walkOn == null || !walkOn) {
-                    return;
+        BashVarProcessor processor = new BashVarProcessor(reference, varName, true, false, true);
+        resolve(reference, false, processor);
+        Collection<PsiElement> results = processor.getResults();
+        if (results != null) {
+            for (PsiElement result : results) {
+                if (result instanceof BashVarDef) {
+                    resultProcessor.apply((BashVarDef) result);
                 }
             }
         }
@@ -132,7 +134,7 @@ public final class BashResolveUtil {
             return null;
         }
 
-        return resolve(bashVar, dumbMode, new BashVarProcessor(bashVar, varName, true, leaveInjectionHosts, preferNeighborhood));
+        return resolve(bashVar, dumbMode, new BashVarProcessor(bashVar, varName, true, preferNeighborhood, false));
     }
 
     public static PsiElement resolve(BashVar bashVar, boolean dumbMode, ResolveProcessor processor) {

@@ -26,8 +26,10 @@ import java.util.Set;
  * @author jansorg
  */
 public interface Keys {
-    Key<Multimap<VirtualFile, PsiElement>> visitedIncludeFiles = new Key<Multimap<VirtualFile, PsiElement>>("visitedIncludeFiles");
+    Key<Multimap<VirtualFile, PsiElement>> visitedIncludeFiles = new Key<>("visitedIncludeFiles");
+
     Key<Set<PsiElement>> VISITED_SCOPES_KEY = Key.create("BASH_SCOPES_VISITED");
+
     /**
      * Defines whether the resolving of global identifiers should be done recursivly or flat on file level (happens after walking up to the toplevel)
      */
