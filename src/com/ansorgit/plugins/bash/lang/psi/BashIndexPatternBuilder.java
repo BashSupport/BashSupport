@@ -50,7 +50,7 @@ public class BashIndexPatternBuilder implements IndexPatternBuilder {
 
     @Override
     public int getCommentStartDelta(IElementType tokenType) {
-        return tokenType == BashTokenTypes.COMMENT ? 2 : 0;
+        return tokenType == BashTokenTypes.COMMENT ? 1 : 0;
     }
 
     @Override

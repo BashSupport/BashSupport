@@ -377,6 +377,16 @@ public class VarResolveTestCase extends AbstractResolveTest {
         Assert.assertEquals("The variable must resolve to the earliest definition, i.e. the one in the for loop", 4, varDef.getTextOffset());
     }
 
+    @Test
+    public void testIssue764() throws Exception {
+        PsiReference ref = configure();
+        addFile("Issue764_included.bash");
+
+        PsiElement varDef = ref.resolve();
+        Assert.assertNotNull(varDef);
+        Assert.assertEquals("The variable must resolve to the included file", "Issue764_included.bash", varDef.getContainingFile().getName());
+    }
+
     protected String getTestDataPath() {
         return BashTestUtils.getBasePath() + "/psi/resolve/var/";
     }

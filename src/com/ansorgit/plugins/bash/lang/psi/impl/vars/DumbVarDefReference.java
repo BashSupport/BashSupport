@@ -34,7 +34,7 @@ class DumbVarDefReference extends AbstractVarDefReference {
             return null;
         }
 
-        return BashResolveUtil.resolve(bashVarDef, true, true);
+        return BashResolveUtil.resolve(bashVarDef, true, false);
 
     }
 }

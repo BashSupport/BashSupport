@@ -40,7 +40,6 @@ class SmartBashVarReference extends AbstractBashVarReference {
     @Nullable
     @Override
     public PsiElement resolveInner() {
-        return BashResolveUtil.resolve(bashVar, true, false, preferNeighborhood);
+        return BashResolveUtil.resolve(bashVar, false, preferNeighborhood);
     }
-
 }
