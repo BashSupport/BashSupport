@@ -26,10 +26,15 @@ import java.util.Set;
  * @author jansorg
  */
 public interface Keys {
-    Key<Multimap<VirtualFile, PsiElement>> visitedIncludeFiles = new Key<Multimap<VirtualFile, PsiElement>>("visitedIncludeFiles");
+    Key<Multimap<VirtualFile, PsiElement>> visitedIncludeFiles = new Key<>("visitedIncludeFiles");
+
     Key<Set<PsiElement>> VISITED_SCOPES_KEY = Key.create("BASH_SCOPES_VISITED");
+
     /**
      * Defines whether the resolving of global identifiers should be done recursivly or flat on file level (happens after walking up to the toplevel)
      */
     Key<Boolean> FILE_WALK_GO_DEEP = Key.create("BASH_FILE_WALK_DEEP");
+
+    // set if a definition is searched and currently the definition linked by an include command are used
+    Key<PsiElement> resolvingIncludeCommand = Key.create("BASH_RESOLVING_INCLUDE");
 }

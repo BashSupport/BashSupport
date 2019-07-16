@@ -20,6 +20,7 @@ import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.util.BashAbstractProcessor;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -44,11 +45,13 @@ public class BashFunctionProcessor extends BashAbstractProcessor {
     }
 
     public boolean execute(@NotNull PsiElement element, @NotNull ResolveState resolveState) {
+        ProgressManager.checkCanceled();
+
         if (element instanceof BashFunctionDef) {
             BashFunctionDef funcDef = (BashFunctionDef) element;
 
             if (symboleName.equals(funcDef.getName())) {
-                storeResult(element, BashPsiUtils.blockNestingLevel(funcDef));
+                storeResult(element, BashPsiUtils.blockNestingLevel(funcDef), null);
                 return ignoreExecuteResult;
             }
         }

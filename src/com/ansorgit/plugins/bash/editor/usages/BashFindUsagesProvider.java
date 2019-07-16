@@ -79,7 +79,7 @@ public class BashFindUsagesProvider implements FindUsagesProvider, BashTokenType
             return "command";
         }
 
-        if (element instanceof BashVarDef || element instanceof BashVar) {
+        if (element instanceof BashVar) {
             return "variable";
         }
 

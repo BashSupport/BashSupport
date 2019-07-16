@@ -112,11 +112,7 @@ public class BashIncludeCommandImpl extends AbstractBashCommand<BashIncludeComma
 
         Multimap<VirtualFile, PsiElement> visitedFiles = state.get(visitedIncludeFiles);
         if (visitedFiles == null) {
-            visitedFiles = Multimaps.newListMultimap(Maps.<VirtualFile, Collection<PsiElement>>newHashMap(), new Supplier<List<PsiElement>>() {
-                public List<PsiElement> get() {
-                    return Lists.newLinkedList();
-                }
-            });
+            visitedFiles = Multimaps.newListMultimap(Maps.newHashMap(), Lists::newLinkedList);
         }
 
         visitedFiles.put(containingFile.getVirtualFile(), null);

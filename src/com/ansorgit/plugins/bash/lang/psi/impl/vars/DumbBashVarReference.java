@@ -39,6 +39,6 @@ class DumbBashVarReference extends AbstractBashVarReference {
     @Nullable
     @Override
     public PsiElement resolveInner() {
-        return BashResolveUtil.resolve(bashVar, true, true, preferNeighborhood);
+        return BashResolveUtil.resolve(bashVar, true, preferNeighborhood);
     }
 }
