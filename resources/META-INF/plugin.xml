@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin url="https://www.plugin-dev.com/project/bashsupport/">
+<idea-plugin url="https://www.bashsupport.com/">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
@@ -37,19 +37,20 @@
     Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
     <br><br>
-    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <b>Make sure to disable one of them.</b>
-    <br><br>BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
-    <br><br>Visit <a href="https://www.bashsupport.com" target="_blank">bashsupport.com</a> to learn about BashSupport's future.
+    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <em>Make sure to disable one of them.</em>
+    BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
+
+    <br><br>
+    <b>BashSupport's future:</b> Visit <a href="http://www.bashsupport.com/blog/bashsupport-future/" target="_blank">bashsupport.com</a> to learn more about BashSupport's future.
     In short:
     <ul>
-        <li><em>Thanks for being part of BashSupport!</em> It's 10 years old now and the most popular community plugin. I know that it's far from perfect - thanks for using it nevertheless!</li>
-        <li>BashSupport is NOT going commercial like other popular plugins. It will remain free and open-source.</li>
-        <li>JetBrain's Shell plugin is likely to become the new default for Shell developers. This means that there's no future for BashSupport here.</li>
-        <li>BashSupport will be available for the upcoming versions of JetBrains IDEs. Development will be limited to maintenance and fixes for serious issues.</li>
-        <li>Most likely there will be a new, paid <em>BashSupport Pro</em> plugin to add missing functionality on top of the JetBrains plugin, e.g. a debugger.</li>
+        <li>BashSupport will remain available, free, and open-source.</li>
+        <li><em>Thanks for being part of BashSupport!</em> It's 10 years old now and the most popular community plugin. It's far from perfect - thanks for using it nevertheless!</li>
+        <li>BashSupport is NOT going commercial like other popular plugins.</li>
+        <li>JetBrain's Shell plugin is likely to become the new default for developers of shell scripts. This means that there's no future for BashSupport here.</li>
+        <li>Development will be limited to maintenance and fixes for serious issues.</li>
+        <li>Most likely there will be a new, paid <em>BashSupport Pro</em> plugin in the future. It will add missing functionality on top of the JetBrains plugin.</li>
     </ul>
-    The current state will be made maintained, no new development will occur. JetBrain's Shell plugin will be
-    the new default
     </html>]]></description>
 
     <change-notes><![CDATA[
