@@ -24,7 +24,7 @@
   - [#458](https://github.com/BashSupport/BashSupport/issues/458): Support shopt -s extglob syntax
 
 #### 2019-03-27:
-  - #687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.
+  - [#687](https://github.com/BashSupport/BashSupport/issues/687): compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.
   - Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.
 
 #### 2019-03-29:
