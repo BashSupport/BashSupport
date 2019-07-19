@@ -48,7 +48,7 @@ allprojects {
         }
         test {
             java.srcDir "test"
-            if (ideaBranch != null && ideaBranch.toInteger() >= 183) {
+            if (ideaBranch != null && ideaBranch != "" && ideaBranch.toInteger() >= 183) {
                 java.srcDirs += "test-183"
             }
             resources.srcDir 'testResources'
