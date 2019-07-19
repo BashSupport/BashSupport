@@ -1,3 +1,6 @@
+#### 2019-07-19:
+ - Version 1.7.12
+
 #### 2019-07-15:
  - [#696](https://github.com/BashSupport/BashSupport/issues/696): Highlight comments in backtick commands
  - [#735](https://github.com/BashSupport/BashSupport/issues/735): Variables which were first declared in a loop were not properly resolved, renamed, and highlighted
