@@ -18,8 +18,10 @@ package com.ansorgit.plugins.bash.editor;
 import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
 import com.ansorgit.plugins.bash.file.BashFileType;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +33,17 @@ public class EnterInStringLiteralHandlerTest extends LightBashCodeInsightFixture
     @Before
     protected void setUp() throws Exception {
         super.setUp();
-        CodeStyleSettingsManager.getInstance(getProject()).getTemporarySettings().WRAP_ON_TYPING = CommonCodeStyleSettings.WrapOnTyping.WRAP.intValue;
+        CodeStyleSettings temp = CodeStyleSettingsManager.getInstance(getProject()).getCurrentSettings().clone();
+        temp.WRAP_ON_TYPING = CommonCodeStyleSettings.WrapOnTyping.WRAP.intValue;
+        CodeStyleSettingsManager.getInstance(myFixture.getProject()).setTemporarySettings(temp);
+    }
+
+    @Override
+    @After
+    protected void tearDown() throws Exception {
+        CodeStyleSettingsManager.getInstance(getProject()).dropTemporarySettings();
+
+        super.tearDown();
     }
 
     @Test
