@@ -13,12 +13,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin url="https://www.plugin-dev.com/project/bashsupport/">
+<idea-plugin url="https://www.bashsupport.com/">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.11.192</version>
+    <version>1.7.12.192</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -34,15 +34,40 @@
     Bash language support for the IntelliJ platform.<br/>
     Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
-    There's no future of BashSupport without strong support from the community!
     <br><br>
-    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <b>Make sure to disable one of them.</b>
-    <br><br>BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
-    <br><br>News about BashSupport's future will be announced soon.
+    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <em>Make sure to disable one of them.</em>
+    BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
+
+    <br><br>
+    <b>BashSupport's future:</b> Visit <a href="https://www.bashsupport.com/news/bashsupport-future/" target="_blank">bashsupport.com</a> to learn more about this.
+    In short:
+    <ul>
+        <li>BashSupport will remain available, free, and open-source.</li>
+        <li><em>Thanks for being part of BashSupport!</em> It's more than 10 years now and the most popular community plugin. It's far from perfect - thanks for using it nevertheless!</li>
+        <li>JetBrain's Shell plugin is likely to become the new default for developers of shell scripts. This means that there's no future for BashSupport here.</li>
+        <li>Development will be limited to maintenance and fixes for serious issues.</li>
+        <li>Most likely there will be a new, paid <em>BashSupport Pro</em> plugin in the future. It will add missing functionality on top of the JetBrains plugin.</li>
+    </ul>
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
+
+        <b>Changes in version 1.7.12:</b>
+        <p>This fixes a few annoying issues and also adds a few improvements to the editor</p>
+        <ul>
+          <li>#758: Completions were often showing "Invalid" as label after typing in the editor</li>
+          <li>#656: Fix multiline highlighting of todo/fixme comments</li>
+          <li>#662: Enter handler to insert a line continuation in Bash files</li>
+          <li>#764: Variables declared in included files were not always properly resolved.</li>
+          <li>#735: Variables which were first declared in a loop were not properly resolved, renamed, and highlighted</li>
+          <li>#696: Highlight comments in backtick commands</li>
+          <li>#658: Fix broken highlighting of heredocs.</li>
+          <li>#682: Parse heredocs in pipeline commands</li>
+          <li>#753: Fix NPE in BashRunConfiguration.suggestedName()</li>
+          <li>#761: IOException while scanning path</li>
+          <li>Fix exception about IndexPatternBuilder incorrect Bash comment ranges</li>
+        </ul><br>
 
         <b>Changes in version 1.7.11:</b>
         <ul>
@@ -187,7 +212,7 @@
                text="Bash REPL" description="Bash" popup="false">
 
             <action id="Bash.AddReplAction"
-                    class="com.ansorgit.plugins.bash.actions.AddReplAction" text="Add new Bash console"
+                    class="com.ansorgit.plugins.bash.actions.AddReplAction" text="Add New Bash Console"
                     description="Open a new Bash console window">
             </action>
 
