@@ -524,7 +524,7 @@ public final class BashPsiUtils {
      * @param element The element to work on
      * @return The start text offset in the physical PsiFile, injected virtual PsiFiles are not used for text offset calculation
      */
-    public static int getFileTextOffset(PsiElement element) {
+    public static int getFileTextOffset(@NotNull PsiElement element) {
         int offset = element.getTextOffset();
         if (isInjectedElement(element)) {
             //fixme languageManager is probably expensive
@@ -539,7 +539,7 @@ public final class BashPsiUtils {
         return offset;
     }
 
-    public static int getFileTextEndOffset(PsiElement element) {
+    public static int getFileTextEndOffset(@NotNull PsiElement element) {
         return getFileTextOffset(element) + element.getTextLength();
     }
 

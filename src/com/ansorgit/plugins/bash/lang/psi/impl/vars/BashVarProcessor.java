@@ -151,6 +151,10 @@ public class BashVarProcessor extends BashAbstractProcessor implements Keys {
         } else {
             // this is the command in the original file which starts the chain of inclusions
             PsiElement includeCommand = resolveState.get(resolvingIncludeCommand);
+            if (includeCommand == null) {
+                return false;
+            }
+
             BashFunctionDef includeCommandScope = BashPsiUtils.findNextVarDefFunctionDefScope(includeCommand);
 
             // now check the offset of the include command
