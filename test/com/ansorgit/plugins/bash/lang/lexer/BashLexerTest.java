@@ -232,7 +232,7 @@ public class BashLexerTest {
 
         testTokenization("\f", WHITESPACE);
 
-        testTokenization(" \\\n ", WHITESPACE, LINE_CONTINUATION, WHITESPACE);
+        testTokenization(" \\\n ", WHITESPACE, WHITESPACE);
     }
 
     @Test
@@ -1555,6 +1555,15 @@ public class BashLexerTest {
     @Test
     public void testIssue696() {
         testTokenization("`\necho #comment\n`", BACKQUOTE, LINE_FEED, WORD, WHITESPACE, COMMENT, LINE_FEED, BACKQUOTE);
+    }
+
+    @Test
+    public void testIssue771() {
+        testTokenization("A B", WORD, WHITESPACE, WORD);
+        testTokenization("A \\\nB", WORD, WHITESPACE, WORD);
+        testTokenization("A=A \\\nB=B", ASSIGNMENT_WORD, EQ, WORD, WHITESPACE, ASSIGNMENT_WORD, EQ, WORD);
+        testTokenization("A\\\nB", WORD);
+        testTokenization("A=1 \\\nB=1", ASSIGNMENT_WORD, EQ, INTEGER_LITERAL, WHITESPACE, ASSIGNMENT_WORD, EQ, INTEGER_LITERAL);
     }
 
     private void testNoErrors(String code) {
