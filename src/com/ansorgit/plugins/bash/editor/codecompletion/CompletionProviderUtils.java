@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 final class CompletionProviderUtils {
     private static final Icon fileIcon = IconLoader.getIcon("/fileTypes/text.png");
-    private static final Icon dirIcon = PlatformIcons.DIRECTORY_CLOSED_ICON;
+    private static final Icon dirIcon = PlatformIcons.FOLDER_ICON;
 
     private CompletionProviderUtils() {
     }

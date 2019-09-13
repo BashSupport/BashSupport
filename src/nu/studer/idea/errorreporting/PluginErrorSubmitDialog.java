@@ -27,8 +27,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-//import com.intellij.util.net.HTTPProxySettingsDialog;
-
 /**
  * This class defines the error submission dialog which allows the user to enter error details. It looks very similar to the built-in IDEA error
  * submission dialog.

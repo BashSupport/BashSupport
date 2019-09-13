@@ -16,7 +16,6 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.BeforeRunTask;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
