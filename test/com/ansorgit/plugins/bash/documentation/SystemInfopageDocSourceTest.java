@@ -30,7 +30,7 @@ import java.io.IOException;
 public class SystemInfopageDocSourceTest {
     @Test
     public void testInfoPageCall() throws IOException {
-        if (!SystemInfoRt.isWindows) {
+        if (!SystemInfoRt.isWindows && !"true".equals(System.getenv("CI"))) {
             SystemInfopageDocSource source = new SystemInfopageDocSource();
             String bashInfoPage = source.loadPlainTextInfoPage("bash");
 
@@ -49,7 +49,7 @@ public class SystemInfopageDocSourceTest {
 
     @Test
     public void testInfoFileExists() throws IOException {
-        if (!SystemInfoRt.isWindows) {
+        if (!SystemInfoRt.isWindows && !"true".equals(System.getenv("CI"))) {
             SystemInfopageDocSource source = new SystemInfopageDocSource();
             Assert.assertTrue(source.infoFileExists("info"));
             Assert.assertFalse(source.infoFileExists("thisCommandDoesNotExist"));
