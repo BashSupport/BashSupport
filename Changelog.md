@@ -1,5 +1,9 @@
+#### 2019-09-13:
+ - Support 2019.3 EAP
+ - Version 1.7.13
+
 #### 2019-08-09:
- - [#771](https://github.com/BashSupport/BashSupport/issues/771): Why there is orange color in the first few line?
+ - [#771](https://github.com/BashSupport/BashSupport/issues/771): Line continuations not properly highlighted and parsed
 
 #### 2019-07-19:
  - Version 1.7.12
