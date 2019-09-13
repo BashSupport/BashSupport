@@ -23,7 +23,7 @@
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
     <!-- Requires IDEA 192.x or later -->
-    <idea-version since-build="192.0" until-build="192.*"/>
+    <idea-version since-build="192.0" until-build="193.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>

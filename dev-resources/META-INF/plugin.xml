@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<idea-plugin url="https://www.ansorg-it.com/project/bashsupport/">
+<idea-plugin url="https://www.bashsupport.com/">
     <resource-bundle>com.ansorgit.plugins.bash.bash</resource-bundle>
 
     <name>BashSupport</name>
@@ -22,8 +22,8 @@
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 192.2 or later -->
-    <idea-version since-build="192.0" until-build="192.*"/>
+    <!-- Requires IDEA 192.x or later -->
+    <idea-version since-build="192.0" until-build="193.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
