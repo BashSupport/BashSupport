@@ -768,7 +768,7 @@ Filedescriptor = "&" {IntegerLiteral} | "&-"
      Do NOT match for Whitespace+ , we have some whitespace sensitive tokens like " ]]" which won't match
      if we match repeated whtiespace!
     */
-    {WhiteSpace}                 { return WHITESPACE; }
+    {WhiteSpaceLineCont}         { return WHITESPACE; }
     {LineContinuation}+          { return LINE_CONTINUATION; }
 }
 

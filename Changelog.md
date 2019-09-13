@@ -1,3 +1,6 @@
+#### 2019-08-09:
+ - [#771](https://github.com/BashSupport/BashSupport/issues/771): Why there is orange color in the first few line?
+
 #### 2019-07-19:
  - Version 1.7.12
 
