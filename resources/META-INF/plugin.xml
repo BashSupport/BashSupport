@@ -55,6 +55,12 @@
     <change-notes><![CDATA[
         <html>
 
+        <b>Changes in version 1.7.13:</b>
+        <ul>
+          <li>Support for 2019.3 EAP</li>
+          <li>#771: Line continuations not properly highlighted and parsed</li>
+        </ul><br>
+
         <b>Changes in version 1.7.12:</b>
         <p>This fixes a few annoying issues and also adds a few improvements to the editor</p>
         <ul>
