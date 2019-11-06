@@ -1,3 +1,6 @@
+#### 2019-11-06:
+ - Fix a potential memory leak in an inspection
+ 
 #### 2019-09-13:
  - Support 2019.3 EAP
  - Version 1.7.13
