@@ -20,24 +20,38 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashShebang;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.SmartPointerManager;
+import com.intellij.psi.SmartPsiElementPointer;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 public class RegisterShebangCommandQuickfix extends AbstractBashQuickfix {
     private final FixShebangInspection inspection;
-    private final BashShebang shebang; //fixme!
+    private final SmartPsiElementPointer<BashShebang> shebang;
 
     public RegisterShebangCommandQuickfix(FixShebangInspection fixShebangInspection, BashShebang shebang) {
         this.inspection = fixShebangInspection;
-        this.shebang = shebang;
+
+        Project project = shebang.getProject();
+        this.shebang = SmartPointerManager.getInstance(project).createSmartPsiElementPointer(shebang);
+    }
+
+    @Override
+    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
+        return shebang != null && super.isAvailable(project, editor, file);
     }
 
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        inspection.registerShebangCommand(shebang.shellCommand(true));
+        BashShebang element = shebang.getElement();
+        if (element == null) {
+            return;
+        }
+
+        inspection.registerShebangCommand(element.shellCommand(true));
 
         //trigger a change to remove this inspection
-        shebang.updateCommand(shebang.shellCommand(false), null);
+        element.updateCommand(element.shellCommand(false), null);
     }
 
     @NotNull

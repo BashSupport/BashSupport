@@ -25,6 +25,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  *
  * @author <a href="mailto:intellij@studer.nu">Etienne Studer</a>, May 30, 2006
  */
+@SuppressWarnings("ComponentNotRegistered")
 public class TriggerExceptionAction extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         throw new RuntimeException("I'm an artificial exception!");
