@@ -18,7 +18,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.12.192</version>
+    <version>1.7.14.192</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -35,7 +35,7 @@
     Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
     Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
     <br><br>
-    <b>News for users of 2019.2:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <em>Make sure to disable one of them.</em>
+    <b>News for users of 2019.2 and later:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <em>Make sure to disable one of them.</em>
     BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
 
     <br><br>
@@ -46,12 +46,18 @@
         <li><em>Thanks for being part of BashSupport!</em> It's more than 10 years now and the most popular community plugin. It's far from perfect - thanks for using it nevertheless!</li>
         <li>JetBrain's Shell plugin is likely to become the new default for developers of shell scripts. This means that there's no future for BashSupport here.</li>
         <li>Development will be limited to maintenance and fixes for serious issues.</li>
-        <li>Most likely there will be a new, paid <em>BashSupport Pro</em> plugin in the future. It will add missing functionality on top of the JetBrains plugin.</li>
+        <li>There will be a new, paid <a href="https://www.bashsupport.com/news/bashsupport-pro-update/" target="_blank"><em>BashSupport Pro</em></a> plugin (<a href="https://www.bashsupport.com/news/bashsupport-pro-update/" target="_blank">read more</a>)</li>
     </ul>
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
+
+        <b>Changes in version 1.7.14:</b>
+        <ul>
+          <li>Compatibility fixes for 2019.3</li>
+          <li>Fix a potential memory leak in an inspection</li>
+        </ul><br>
 
         <b>Changes in version 1.7.13:</b>
         <ul>
