@@ -4,8 +4,8 @@ import org.junit.Test;
 
 public class FunctionResolveFileIncludeTestCase extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "functionResolve/";
+    protected String getBasePath() {
+        return "psi/fileInclude/functionResolve/";
     }
 
     @Test

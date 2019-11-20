@@ -18,29 +18,17 @@
 
 package com.ansorgit.plugins.bash.lang.psi.fileInclude;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.resolve.AbstractResolveTest;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import org.junit.Assert;
 
-import java.io.File;
-
 public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/fileInclude/";
-    }
-
     protected PsiElement checkWithIncludeFile(String fileName, boolean assertDefInInclude) throws Exception {
-        File tempDirectory = createTempDirectory();
+        PsiFile includeFile = addFile(fileName);
 
-        VirtualFile tempLocation = LocalFileSystem.getInstance().findFileByPath(tempDirectory.getPath().replace(File.separatorChar, '/'));
-        PsiFile includeFile = addFile(fileName, tempLocation);
-
-        PsiReference reference = configure(tempLocation);
+        PsiReference reference = configure();
         Assert.assertNotNull(reference);
 
         //the reference has to resolve to the definition in the included file
@@ -61,7 +49,7 @@ public abstract class AbstractFileIncludeTest extends AbstractResolveTest {
         PsiReference reference = configure();
         Assert.assertNotNull(reference);
 
-        PsiFile includeFile = addFile(includeFilePath, myFile.getVirtualFile().getParent());
+        PsiFile includeFile = addFile(includeFilePath);
         Assert.assertNotNull(includeFile);
 
         //the reference has to resolve to the definition in the included file

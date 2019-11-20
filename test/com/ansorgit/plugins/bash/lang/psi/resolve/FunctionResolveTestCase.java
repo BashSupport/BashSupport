@@ -125,7 +125,8 @@ public class FunctionResolveTestCase extends AbstractResolveTest {
         checkFunctionReference();
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/resolve/function/";
+    @Override
+    protected String getBasePath() {
+        return "/psi/resolve/function/";
     }
 }

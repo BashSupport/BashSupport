@@ -19,45 +19,78 @@
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
 import com.ansorgit.plugins.bash.BashTestUtils;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
+import com.ansorgit.plugins.bash.LightBashCodeInsightFixtureTestCase;
+import com.ansorgit.plugins.bash.file.BashFileType;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
-import com.intellij.testFramework.ResolveTestCase;
 import com.intellij.testFramework.TestDataFile;
+import junit.framework.AssertionFailedError;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
+import java.io.IOException;
 
-public abstract class AbstractResolveTest extends ResolveTestCase {
+public abstract class AbstractResolveTest extends LightBashCodeInsightFixtureTestCase {
+    protected Project myProject;
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/resolve/resolving/";
+    @Override
+    public void tearDown() throws Exception {
+        myProject = null;
+        super.tearDown();
     }
 
-    protected PsiReference configure() throws Exception {
-        return configure(null);
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        myProject = myFixture.getProject();
     }
 
-    protected PsiReference configure(@Nullable VirtualFile parentDir) throws Exception {
-        return configureByFile(getTestName(false) + ".bash", parentDir);
+    @Override
+    protected String getBasePath() {
+        return "/psi/resolve/resolving/";
+    }
+
+    @Nullable
+    protected PsiReference configure() {
+        String testName = getTestName(false) + ".bash";
+        String data = loadTestDataFile(testName);
+        int offset = data.indexOf("<ref>");
+        if (offset == -1) {
+            throw new IllegalStateException("<ref> marker not found");
+        }
+
+        String content = data.replaceFirst("<ref>", "");
+        PsiFile file = myFixture.configureByText(BashFileType.BASH_FILE_TYPE, content);
+        PsiReference reference = file.getViewProvider().findReferenceAt(offset);
+        if (reference == null) {
+            throw new AssertionFailedError("no reference found in " + testName + " at offset " + offset);
+        }
+        return reference;
     }
 
     protected PsiFile addFile(@TestDataFile @NonNls String filePath) throws Exception {
-        return addFile(filePath, myFile != null ? myFile.getVirtualFile().getParent() : null);
+        VirtualFile file = myFixture.copyFileToProject(filePath);
+
+        // save and restore previously opened file
+        PsiFile current = myFixture.getFile();
+
+        myFixture.configureFromExistingVirtualFile(file);
+
+        PsiFile newFile = myFixture.getFile();
+        if (current != null) {
+            myFixture.openFileInEditor(current.getVirtualFile());
+        }
+
+        return newFile;
     }
 
-    protected PsiFile addFile(@TestDataFile @NonNls String filePath, @Nullable VirtualFile parentDir) throws Exception {
-        final String fullPath = getTestDataPath() + filePath;
-
-        final VirtualFile vFile = LocalFileSystem.getInstance().findFileByPath(fullPath.replace(File.separatorChar, '/'));
-        assertNotNull("file " + filePath + " not found", vFile);
-
-        String fileText = StringUtil.convertLineSeparators(VfsUtil.loadText(vFile));
-
-        return createFile(myModule, parentDir, vFile.getName(), fileText);
+    public String loadTestDataFile(@TestDataFile String path) {
+        try {
+            return BashTestUtils.loadTestCaseFile(this, path);
+        } catch (IOException e) {
+            throw new RuntimeException("file not found: " + path);
+        }
     }
 }

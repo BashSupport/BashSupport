@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
@@ -219,7 +218,8 @@ public class VarDefResolveTestCase extends AbstractResolveTest {
         Assert.assertEquals("This must resolve to the for loop definition", 4, def.getTextOffset());
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/resolve/varDef/";
+    @Override
+    protected String getBasePath() {
+        return "/psi/resolve/varDef/";
     }
 }
