@@ -1,3 +1,7 @@
+#### 2019-11-20:
+ - Fixes for 2019.3
+ - Version 1.7.14
+
 #### 2019-11-06:
  - Fix a potential memory leak in an inspection
  
