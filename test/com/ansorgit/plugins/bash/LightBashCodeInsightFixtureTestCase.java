@@ -17,6 +17,7 @@ package com.ansorgit.plugins.bash;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiElement;
 import com.intellij.testFramework.TestDataFile;
+import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.NonNls;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class LightBashCodeInsightFixtureTestCase extends LightPlatformCodeInsightFixtureTestCase implements BashTestCase {
+public abstract class LightBashCodeInsightFixtureTestCase extends BasePlatformTestCase implements BashTestCase {
 
     protected PsiElement configurePsiAtCaret() {
         return configurePsiAtCaret(getTestName(true) + ".bash");
@@ -58,9 +59,5 @@ public abstract class LightBashCodeInsightFixtureTestCase extends LightPlatformC
         }
 
         return BashTestUtils.getBasePath() + (basePath.startsWith(File.separator) ? "" : File.separator) + basePath;
-    }
-
-    public String loadTestDataFile(@TestDataFile String path) throws IOException {
-        return BashTestUtils.loadTestCaseFile(this, path);
     }
 }

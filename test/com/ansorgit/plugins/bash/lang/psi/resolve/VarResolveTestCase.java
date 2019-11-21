@@ -15,7 +15,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVar;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
@@ -387,7 +386,8 @@ public class VarResolveTestCase extends AbstractResolveTest {
         Assert.assertEquals("The variable must resolve to the included file", "Issue764_included.bash", varDef.getContainingFile().getName());
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/resolve/var/";
+    @Override
+    protected String getBasePath() {
+        return "/psi/resolve/var/";
     }
 }
