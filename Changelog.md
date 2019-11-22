@@ -1,3 +1,7 @@
+#### 2019-11-22:
+ - Really apply compatibility fixes for 2019.3
+ - Version 1.7.15
+
 #### 2019-11-20:
  - Fixes for 2019.3
  - Version 1.7.14

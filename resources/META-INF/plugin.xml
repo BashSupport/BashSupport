@@ -18,7 +18,7 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.14.192</version>
+    <version>1.7.15.192</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
@@ -52,6 +52,11 @@
 
     <change-notes><![CDATA[
         <html>
+
+        <b>Changes in version 1.7.15:</b>
+        <ul>
+          <li>Compatibility fixes for 2019.3</li>
+        </ul><br>
 
         <b>Changes in version 1.7.14:</b>
         <ul>

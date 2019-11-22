@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * FileTypeDetector implementation which can detect a Bash file by content. Only files without an extensions are checked.
@@ -37,24 +36,12 @@ import java.util.Set;
  */
 public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
     private static final List<String> VALID_SHEBANGS = Lists.newArrayList();
-    private static final Set<BashFileType> BASH_FILE_TYPES = Collections.singleton(BashFileType.BASH_FILE_TYPE);
+    private static final Collection<BashFileType> BASH_FILE_TYPES = Collections.singletonList(BashFileType.BASH_FILE_TYPE);
 
     static {
         for (String location : BashInterpreterDetection.POSSIBLE_LOCATIONS) {
             VALID_SHEBANGS.add("#!" + location);
         }
-    }
-
-    @Nullable
-    @Override
-    public FileType detect(@NotNull VirtualFile file, @NotNull ByteSequence firstBytes, @Nullable CharSequence textContent) {
-        return detect(file, textContent);
-    }
-
-    @Nullable
-    @Override
-    public Collection<? extends FileType> getDetectedFileTypes() {
-        return BASH_FILE_TYPES;
     }
 
     @Nullable
@@ -76,8 +63,20 @@ public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
         return null;
     }
 
+    @Nullable
+    @Override
+    public FileType detect(@NotNull VirtualFile file, @NotNull ByteSequence firstBytes, @Nullable CharSequence textContent) {
+        return detect(file, textContent);
+    }
+
+    @Nullable
+    // disabled, to compile with 192.x: @Override
+    public Collection<? extends FileType> getDetectedFileTypes() {
+        return BASH_FILE_TYPES;
+    }
+
     @Override
     public int getVersion() {
-        return 1;
+        return 2;
     }
 }
