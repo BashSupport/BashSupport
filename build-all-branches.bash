@@ -2,7 +2,7 @@
 set -e
 test -f "$HOME/.jdk8" && . $HOME/.jdk8
 
-for v in "193.5233.57-EAP-SNAPSHOT" "192.5728.12-EAP-SNAPSHOT"; do
+for v in "201.5616.10-EAP-SNAPSHOT" "2019.3.3" "2019.2.3"; do
     echo "## Building with version $v..."
     _JAVA_OPTIONS="" JAVA_OPTS="" gradle -Dbash.skipUrls="true" -PideaVersion="$v" -PideaBranch="192" clean build
 

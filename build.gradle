@@ -7,7 +7,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.4.13"
+    id "org.jetbrains.intellij" version "0.4.16"
 }
 
 repositories {
@@ -16,7 +16,7 @@ repositories {
     mavenCentral()
 }
 
-version = "${new File('pluginVersion.txt').getText('UTF-8')}"
+version = "${new File("${project.rootDir}/pluginVersion.txt").getText('UTF-8')}"
 
 allprojects {
     apply plugin: 'java'
@@ -65,7 +65,7 @@ allprojects {
 
         patchPluginXml {
             sinceBuild '192.0'
-            untilBuild '193.*'
+            untilBuild '201.*'
         }
     }
 

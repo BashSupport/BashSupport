@@ -16,9 +16,7 @@
 package com.ansorgit.plugins.bash.ide;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationGroup;
-import com.intellij.notification.NotificationType;
+import com.intellij.notification.*;
 import com.intellij.notification.impl.NotificationFullContent;
 
 /**
@@ -27,12 +25,13 @@ import com.intellij.notification.impl.NotificationFullContent;
 class PluginCompatibilityNotification extends Notification implements NotificationFullContent {
 
     PluginCompatibilityNotification(NotificationGroup group) {
-        super(group.getDisplayId(), BashIcons.BASH_FILE_ICON, "Conflicting plugins detected", null,
+        super(group.getDisplayId(), BashIcons.BASH_FILE_ICON, "BashSupport: Conflicting plugins", null,
                 "You have two plugins installed:<br>" +
-                        "–&nbsp;The new JetBrains Shell plugin is bundled with IntelliJ IDEA 2019.2 and later. The plugin is very robust and provides better integration with basic functionality.<br>" +
-                        "–&nbsp;BashSupport is not as light-weight and robust but offers more features.<br><br>" +
-                        "<b>Select one of the plugins to continue.</b>",
-                NotificationType.INFORMATION, null);
+                        "–&nbsp;The JetBrains Shell plugin is bundled with IntelliJ IDEA 2019.2 and later. It's very robust and provides better integration with basic functionality.<br>" +
+                        "–&nbsp;BashSupport is not as light-weight and robust but offers more features.<br>" +
+                        "–&nbsp;<a href=\"https://www.bashsupport.com/plugin-comparison/\">Open a comparision</a><br><br>" +
+                        "<em>Select one of the plugins to continue.</em>",
+                NotificationType.INFORMATION, new NotificationListener.UrlOpeningListener(false));
 
         addAction(new DisablePluginAction("Use Shell Support", PluginManagerUtil.BASHSUPPORT_ID, this));
         addAction(new DisablePluginAction("Use BashSupport", PluginManagerUtil.SHELL_ID, this));
