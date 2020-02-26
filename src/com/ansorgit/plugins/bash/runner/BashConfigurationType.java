@@ -67,5 +67,11 @@ public class BashConfigurationType extends ConfigurationTypeBase implements Poss
         public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
             return new BashRunConfiguration("", new RunConfigurationModule(project), this);
         }
+
+        @NotNull
+        @Override
+        public String getId() {
+            return getType().getDisplayName();
+        }
     }
 }
