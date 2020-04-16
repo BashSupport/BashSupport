@@ -2,9 +2,9 @@
 set -e
 test -f "$HOME/.jdk8" && . $HOME/.jdk8
 
-for v in "201.5616.10-EAP-SNAPSHOT" "2019.3.3" "2019.2.3"; do
+for v in "2020.1"; do
     echo "## Building with version $v..."
-    _JAVA_OPTIONS="" JAVA_OPTS="" gradle -Dbash.skipUrls="true" -PideaVersion="$v" -PideaBranch="192" clean build
+    _JAVA_OPTIONS="" JAVA_OPTS="" gradle -Dbash.skipUrls="true" -PideaVersion="$v" -PideaBranch="201" clean build
 
     status=$?
     if [[ $status -ne 0 ]]; then
