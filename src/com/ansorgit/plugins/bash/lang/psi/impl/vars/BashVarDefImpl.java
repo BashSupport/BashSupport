@@ -67,8 +67,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     private static final Set<String> typeArrayDeclarationParams = Collections.singleton("-a");
     private static final Set<String> typeReadOnlyParams = Collections.singleton("-r");
 
-    private final BashReference reference = new SmartVarDefReference(this);
-    private final BashReference dumbReference = new DumbVarDefReference(this);
+    private volatile BashReference reference = new SmartVarDefReference(this);
+    private volatile BashReference dumbReference = new DumbVarDefReference(this);
 
     private final Object stateLock = new Object();
     private volatile Boolean cachedFunctionScopeLocal;
@@ -94,6 +94,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
             this.name = null;
             this.assignmentWord = null;
             this.nameTextRange = null;
+
+            reference = new SmartVarDefReference(this);
+            dumbReference = new DumbVarDefReference(this);
         }
     }
 
@@ -304,7 +307,10 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @NotNull
     @Override
     public BashReference getReference() {
-        return DumbService.isDumb(getProject()) ? dumbReference : reference;
+        boolean dumb = DumbService.isDumb(getProject());
+        synchronized (stateLock) {
+            return dumb ? dumbReference : reference;
+        }
     }
 
     @Nullable

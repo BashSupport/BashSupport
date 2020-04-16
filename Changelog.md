@@ -1,3 +1,7 @@
+#### 2020-04-16
+ - 2020.1: A possible fix for exception `Non-idempotent computation`
+ - Version 1.7.17
+
 #### 2020-02-26
  - Compatibility with 2020.1 eap
  - Added a link to a comparision of Shell and BashSupport to the notification about conflicting plugins

@@ -7,7 +7,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.4.16"
+    id "org.jetbrains.intellij" version "0.4.18"
 }
 
 repositories {
@@ -64,7 +64,7 @@ allprojects {
         downloadSources Boolean.valueOf(sources)
 
         patchPluginXml {
-            sinceBuild '192.0'
+            sinceBuild '201.0'
             untilBuild '201.*'
         }
     }
