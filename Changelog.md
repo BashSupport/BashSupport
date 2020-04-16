@@ -1,3 +1,6 @@
+#### 2020-04-16:
+ - [#792](https://github.com/BashSupport/BashSupport/issues/792): Added NO_SPACING formatting for variable concatenation using += operator (contributed by schilli91)
+ 
 #### 2019-11-20:
  - Fixes for 2019.3
  - Version 1.7.14
