@@ -237,6 +237,19 @@ public abstract class BashSpacingProcessorBasic implements BashElementTypes, Bas
             return NO_SPACING;
         }
 
+        // var concatenations
+        if (leftType == ASSIGNMENT_WORD && rightType == ADD_EQ){
+            return NO_SPACING;
+        }
+
+        if (leftType == ADD_EQ && leftNode.getTreePrev() != null && leftNode.getTreePrev().getElementType() == ASSIGNMENT_WORD) {
+            //only if the assignment is not in "A= cmd"
+            if (rightPsi instanceof BashGenericCommand) {
+                return COMMON_SPACING;
+            }
+            return NO_SPACING;
+        }
+
         //generic commands and function calls
         if ((leftPsi instanceof BashCommand || leftPsi instanceof BashBlock) && ";".equals(rightNode.getText())) {
             return NO_SPACING;
