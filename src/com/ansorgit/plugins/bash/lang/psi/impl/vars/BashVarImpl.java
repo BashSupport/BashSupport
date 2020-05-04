@@ -32,13 +32,14 @@ import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.math.NumberUtils;
@@ -49,17 +50,6 @@ import org.jetbrains.annotations.NotNull;
  * @author jansorg
  */
 public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements BashVar, BashVarUse, StubBasedPsiElement<BashVarStub> {
-    private volatile BashReference varReference = new SmartBashVarReference(this);
-    private volatile BashReference dumbVarReference = new DumbBashVarReference(this);
-
-    private volatile BashReference varNeighborhoodReference = new SmartBashVarReference(this, true);
-    private volatile BashReference dumbVarNeighborhoodReference = new DumbBashVarReference(this, true);
-
-    private final Object stateLock = new Object();
-    private volatile int prefixLength = -1;
-    private volatile String referencedName;
-    private volatile TextRange nameTextRange;
-
     public BashVarImpl(final ASTNode astNode) {
         super(astNode, "Bash-var");
     }
@@ -69,52 +59,42 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.prefixLength = -1;
-            this.referencedName = null;
-            this.nameTextRange = null;
-
-            varReference = new SmartBashVarReference(this);
-            dumbVarReference = new DumbBashVarReference(this);
-
-            varNeighborhoodReference = new SmartBashVarReference(this, true);
-            dumbVarNeighborhoodReference = new DumbBashVarReference(this, true);
-        }
-    }
-
-    @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitVarUse(this);
-        } else {
+            ((BashVisitor)visitor).visitVarUse(this);
+        }
+        else {
             visitor.visitElement(this);
         }
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState state,
+                                       PsiElement lastParent,
+                                       @NotNull PsiElement place) {
         return processor.execute(this, state);
+    }
+
+    @Override
+    public BashReference getReference() {
+        PsiReference[] references = getReferences();
+        if (references.length == 1 && references[0] instanceof BashReference) {
+            return (BashReference)references[0];
+        }
+        return null;
     }
 
     @NotNull
     @Override
-    public BashReference getReference() {
-        boolean dumb = DumbService.isDumb(getProject());
-        synchronized (stateLock) {
-            return dumb ? dumbVarReference : varReference;
-        }
+    public PsiReference[] getReferences() {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(this);
     }
 
     @NotNull
     @Override
     public BashReference getNeighborhoodReference() {
-        boolean dumb = DumbService.isDumb(getProject());
-        synchronized (stateLock) {
-            return dumb ? dumbVarNeighborhoodReference : varNeighborhoodReference;
-        }
+        return DumbService.isDumb(getProject()) ? new DumbBashVarReference(this, true) : new SmartBashVarReference(this, true);
     }
 
     @Override
@@ -142,20 +122,17 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     public String getReferenceName() {
-        BashVarStub stub = getStub();
-        if (stub != null) {
-            return stub.getName();
-        }
-
-        if (referencedName == null) {
-            synchronized (stateLock) {
-                if (referencedName == null) {
-                    referencedName = getNameTextRange().substring(getText());
-                }
+        return CachedValuesManager.getCachedValue(this, () -> {
+            String name;
+            BashVarStub stub = getStub();
+            if (stub != null) {
+                name = stub.getName();
             }
-        }
-
-        return referencedName;
+            else {
+                name = getNameTextRange().substring(getText());
+            }
+            return CachedValueProvider.Result.create(name, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     /**
@@ -165,21 +142,19 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
      */
     @Override
     public int getPrefixLength() {
-        BashVarStub stub = getStub();
-        if (stub != null) {
-            return stub.getPrefixLength();
-        }
-
-        if (prefixLength == -1) {
-            synchronized (stateLock) {
-                if (prefixLength == -1) {
-                    String text = getText();
-                    prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
-                }
+        return CachedValuesManager.getCachedValue(this, () -> {
+            int prefixLength;
+            BashVarStub stub = getStub();
+            if (stub != null) {
+                prefixLength = stub.getPrefixLength();
             }
-        }
+            else {
+                String text = getText();
+                prefixLength = text.startsWith("\\$") ? 2 : (text.startsWith("$") ? 1 : 0);
+            }
 
-        return prefixLength;
+            return CachedValueProvider.Result.create(prefixLength, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public boolean isBuiltinVar() {
@@ -220,7 +195,9 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
 
         ASTNode prev = getNode().getTreePrev();
 
-        if (prev != null && (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH || prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
+        if (prev != null &&
+            (prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH ||
+             prev.getElementType() == BashTokenTypes.PARAM_EXPANSION_OP_HASH_HASH)) {
             return true;
         }
 
@@ -240,14 +217,6 @@ public class BashVarImpl extends BashBaseStubElementImpl<BashVarStub> implements
     }
 
     protected TextRange getNameTextRange() {
-        if (nameTextRange == null) {
-            synchronized (stateLock) {
-                if (nameTextRange == null) {
-                    nameTextRange = TextRange.create(getPrefixLength(), getTextLength());
-                }
-            }
-        }
-
-        return nameTextRange;
+        return TextRange.create(getPrefixLength(), getTextLength());
     }
 }

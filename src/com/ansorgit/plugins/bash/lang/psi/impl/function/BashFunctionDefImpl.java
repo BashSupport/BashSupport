@@ -35,6 +35,9 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
@@ -50,13 +53,10 @@ import java.util.Set;
 /**
  * @author jansorg
  */
-public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub> implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
-    private final Object stateLock = new Object();
+public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDefStub>
+    implements BashFunctionDef, StubBasedPsiElement<BashFunctionDefStub> {
+
     private final FunctionDefPresentation presentation = new FunctionDefPresentation(this);
-    private volatile BashBlock body;
-    private volatile boolean computedBody = false;
-    private volatile List<BashPsiElement> referencedParameters;
-    private volatile Set<String> localScopeVariables;
 
     public BashFunctionDefImpl(ASTNode astNode) {
         super(astNode, "bash function()");
@@ -64,18 +64,6 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     public BashFunctionDefImpl(@NotNull BashFunctionDefStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType, null);
-    }
-
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.computedBody = false;
-            this.body = null;
-            this.referencedParameters = null;
-            this.localScopeVariables = null;
-        }
     }
 
     public PsiElement setName(@NotNull @NonNls String name) throws IncorrectOperationException {
@@ -102,16 +90,7 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     }
 
     public BashBlock functionBody() {
-        if (!computedBody) {
-            synchronized (stateLock) {
-                if (!computedBody) {
-                    body = findChildByClass(BashBlock.class);
-                    computedBody = true;
-                }
-            }
-        }
-
-        return body;
+        return findChildByClass(BashBlock.class);
     }
 
     public BashFunctionDefName getNameSymbol() {
@@ -125,45 +104,35 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
 
     @NotNull
     public List<BashPsiElement> findReferencedParameters() {
-        if (referencedParameters == null) {
-            synchronized (stateLock) {
-                if (referencedParameters == null) {
-                    //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
-                    List<BashPsiElement> newReferencedParameters = Lists.newLinkedList();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            //call the visitor to find all uses of the parameter variables, take care no to collect parameters used in inner functions
+            List<BashPsiElement> newReferencedParameters = Lists.newLinkedList();
 
-                    for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
-                        if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
-                            newReferencedParameters.add(var);
-                        }
-                    }
-
-                    referencedParameters = newReferencedParameters;
+            for (BashVar var : PsiTreeUtil.collectElementsOfType(this, BashVar.class)) {
+                if (var.isParameterReference() && this.equals(BashPsiUtils.findParent(var, BashFunctionDef.class, BashFunctionDef.class))) {
+                    newReferencedParameters.add(var);
                 }
             }
-        }
 
-        return referencedParameters;
+            return CachedValueProvider.Result.create(newReferencedParameters, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @NotNull
     @Override
     public Set<String> findLocalScopeVariables() {
-        if (localScopeVariables == null) {
-            synchronized (stateLock) {
-                if (localScopeVariables == null) {
-                    localScopeVariables = Sets.newLinkedHashSetWithExpectedSize(10);
+        return CachedValuesManager.getCachedValue(this, () -> {
+            Set<String> localScopeVariables = Sets.newLinkedHashSetWithExpectedSize(10);
 
-                    Collection<BashVarDef> varDefs = PsiTreeUtil.findChildrenOfType(this, BashVarDef.class);
-                    for (BashVarDef varDef : varDefs) {
-                        if (varDef.isLocalVarDef() && this.isEquivalentTo(BashPsiUtils.findNextVarDefFunctionDefScope(varDef))) {
-                            localScopeVariables.add(varDef.getReferenceName());
-                        }
-                    }
+            Collection<BashVarDef> varDefs = PsiTreeUtil.findChildrenOfType(this, BashVarDef.class);
+            for (BashVarDef varDef : varDefs) {
+                if (varDef.isLocalVarDef() && this.isEquivalentTo(BashPsiUtils.findNextVarDefFunctionDefScope(varDef))) {
+                    localScopeVariables.add(varDef.getReferenceName());
                 }
             }
-        }
 
-        return localScopeVariables;
+            return CachedValueProvider.Result.create(localScopeVariables, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public String getDefinedName() {
@@ -199,14 +168,18 @@ public class BashFunctionDefImpl extends BashBaseStubElementImpl<BashFunctionDef
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitFunctionDef(this);
-        } else {
+            ((BashVisitor)visitor).visitFunctionDef(this);
+        }
+        else {
             visitor.visitElement(this);
         }
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState state,
+                                       PsiElement lastParent,
+                                       @NotNull PsiElement place) {
         if (lastParent != null && lastParent.equals(functionBody())) {
             return processor.execute(this, state);
         }

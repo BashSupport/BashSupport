@@ -39,7 +39,7 @@ import java.util.Set;
  *
  * @author jansorg
  */
-class SmartFunctionReference extends AbstractFunctionReference {
+public class SmartFunctionReference extends AbstractFunctionReference {
 
     public SmartFunctionReference(AbstractBashCommand<?> cmd) {
         super(cmd);

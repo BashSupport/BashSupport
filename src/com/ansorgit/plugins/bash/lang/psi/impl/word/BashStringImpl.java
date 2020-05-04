@@ -28,6 +28,9 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -37,45 +40,26 @@ import org.jetbrains.annotations.NotNull;
  * @author jansorg
  */
 public class BashStringImpl extends BashBaseElement implements BashString, BashCharSequence, PsiLanguageInjectionHost {
-    private final Object stateLock = new Object();
-    private volatile TextRange contentRange;
-    private volatile Boolean isWrapped;
 
     public BashStringImpl(ASTNode node) {
         super(node, "Bash string");
     }
 
     @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.contentRange = null;
-            this.isWrapped = null;
-        }
-    }
-
-    @Override
     public boolean isWrapped() {
-        if (isWrapped == null) {
-            synchronized (stateLock) {
-                if (isWrapped == null) {
-                    boolean newIsWrapped = false;
+        return CachedValuesManager.getCachedValue(this, () -> {
+            boolean newIsWrapped = false;
 
-                    if (getTextLength() >= 2) {
-                        ASTNode node = getNode();
-                        IElementType firstType = node.getFirstChildNode().getElementType();
-                        IElementType lastType = node.getLastChildNode().getElementType();
+            if (getTextLength() >= 2) {
+                ASTNode node = getNode();
+                IElementType firstType = node.getFirstChildNode().getElementType();
+                IElementType lastType = node.getLastChildNode().getElementType();
 
-                        newIsWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
-                    }
-
-                    isWrapped = newIsWrapped;
-                }
+                newIsWrapped = firstType == BashTokenTypes.STRING_BEGIN && lastType == BashTokenTypes.STRING_END;
             }
-        }
 
-        return isWrapped;
+            return CachedValueProvider.Result.create(newIsWrapped, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Override
@@ -98,33 +82,28 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
 
     @NotNull
     public TextRange getTextContentRange() {
-        if (contentRange == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (contentRange == null) {
-                    ASTNode node = getNode();
-                    ASTNode firstChild = node.getFirstChildNode();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            ASTNode node = getNode();
+            ASTNode firstChild = node.getFirstChildNode();
 
-                    TextRange newContentRange;
-                    if (firstChild != null && firstChild.getText().equals("$\"")) {
-                        newContentRange = TextRange.from(2, getTextLength() - 3);
-                    } else {
-                        newContentRange = TextRange.from(1, getTextLength() - 2);
-                    }
-
-                    contentRange = newContentRange;
-                }
+            TextRange contentRange;
+            if (firstChild != null && firstChild.getText().equals("$\"")) {
+                contentRange = TextRange.from(2, getTextLength() - 3);
             }
-        }
+            else {
+                contentRange = TextRange.from(1, getTextLength() - 2);
+            }
 
-        return contentRange;
+            return CachedValueProvider.Result.create(contentRange, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitString(this);
-        } else {
+            ((BashVisitor)visitor).visitString(this);
+        }
+        else {
             visitor.visitElement(this);
         }
     }
@@ -135,18 +114,15 @@ public class BashStringImpl extends BashBaseElement implements BashString, BashC
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState state,
+                                       PsiElement lastParent,
+                                       @NotNull PsiElement place) {
         if (!processor.execute(this, state)) {
             return false;
         }
 
-        boolean walkOn = isStatic() || BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
-
-        /*if (walkOn && isValidHost()) {
-            walkOn = InjectionUtils.walkInjection(this, processor, state, lastParent, place, true);
-        } */
-
-        return walkOn;
+        return isStatic() || BashElementSharedImpl.walkDefinitionScope(this, processor, state, lastParent, place);
     }
 
     @Override

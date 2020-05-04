@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author jansorg
  */
-class DumbFunctionReference extends AbstractFunctionReference {
+public class DumbFunctionReference extends AbstractFunctionReference {
     public DumbFunctionReference(AbstractBashCommand<?> cmd) {
         super(cmd);
     }

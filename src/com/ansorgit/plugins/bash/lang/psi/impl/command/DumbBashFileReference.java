@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author jansorg
  */
-class DumbBashFileReference extends AbstractBashFileReference {
+public class DumbBashFileReference extends AbstractBashFileReference {
     public DumbBashFileReference(AbstractBashCommand<?> cmd) {
         super(cmd);
     }

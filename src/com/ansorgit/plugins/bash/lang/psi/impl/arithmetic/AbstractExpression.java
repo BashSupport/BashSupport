@@ -24,6 +24,9 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,9 +45,6 @@ import java.util.List;
 public abstract class AbstractExpression extends BashBaseElement implements ArithmeticExpression {
     private final Type type;
 
-    private final Object stateLock = new Object();
-    private volatile Boolean isStatic = null;
-
     public AbstractExpression(final ASTNode astNode, final String name, Type type) {
         super(astNode, name);
         this.type = type;
@@ -53,39 +53,24 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitArithmeticExpression(this);
-        } else {
+            ((BashVisitor)visitor).visitArithmeticExpression(this);
+        }
+        else {
             visitor.visitElement(this);
         }
     }
 
     public boolean isStatic() {
-        if (isStatic == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (isStatic == null) {
-                    Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            Iterator<ArithmeticExpression> iterator = subexpressions().iterator();
 
-                    boolean allStatic = iterator.hasNext();
-                    while (allStatic && iterator.hasNext()) {
-                        allStatic = iterator.next().isStatic();
-                    }
-
-                    isStatic = allStatic;
-                }
+            boolean allStatic = iterator.hasNext();
+            while (allStatic && iterator.hasNext()) {
+                allStatic = iterator.next().isStatic();
             }
-        }
 
-        return isStatic;
-    }
-
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.isStatic = null;
-        }
+            return CachedValueProvider.Result.create(allStatic, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     //fixme cache this?
@@ -150,7 +135,7 @@ public abstract class AbstractExpression extends BashBaseElement implements Arit
     public ArithmeticExpression findParentExpression() {
         PsiElement context = getParent();
         if (context instanceof ArithmeticExpression) {
-            return (ArithmeticExpression) context;
+            return (ArithmeticExpression)context;
         }
 
         return null;

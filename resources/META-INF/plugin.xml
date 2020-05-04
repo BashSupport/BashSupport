@@ -213,6 +213,9 @@
 
         <lang.tokenSeparatorGenerator language="Bash" implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
 
+        <!-- references -->
+        <psi.referenceContributor language="Bash" implementation="com.ansorgit.plugins.bash.lang.psi.BashReferenceContributor"/>
+
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand"

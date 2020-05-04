@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author jansorg
  */
-class SmartBashFileReference extends AbstractBashFileReference {
+public class SmartBashFileReference extends AbstractBashFileReference {
 
     public SmartBashFileReference(AbstractBashCommand<?> cmd) {
         super(cmd);

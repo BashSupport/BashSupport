@@ -24,8 +24,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author jansorg
  */
-class SmartBashVarReference extends AbstractBashVarReference {
-
+public class SmartBashVarReference extends AbstractBashVarReference {
     private final boolean preferNeighborhood;
 
     public SmartBashVarReference(BashVarImpl bashVar) {

@@ -21,7 +21,6 @@ import com.ansorgit.plugins.bash.lang.psi.BashVisitor;
 import com.ansorgit.plugins.bash.lang.psi.api.BashCharSequence;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.BashReference;
-import com.ansorgit.plugins.bash.lang.psi.api.BashString;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashAssignmentList;
@@ -38,12 +37,15 @@ import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
@@ -59,23 +61,14 @@ import static com.ansorgit.plugins.bash.lang.LanguageBuiltins.*;
 /**
  * @author jansorg
  */
-public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
+public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub>
+    implements BashVarDef, BashVar, StubBasedPsiElement<BashVarDefStub> {
     private static final TokenSet accepted = TokenSet.create(BashTokenTypes.WORD, BashTokenTypes.ASSIGNMENT_WORD);
     private static final Set<String> commandsWithReadonlyOption = Sets.newHashSet("declare", "typeset", "local");
     private static final Set<String> commandsWithArrayOption = Sets.newHashSet("declare", "typeset", "read", "local");
     private static final Set<String> localVarDefCommands = commandsWithArrayOption; // Sets.newHashSet("declare", "typeset");
     private static final Set<String> typeArrayDeclarationParams = Collections.singleton("-a");
     private static final Set<String> typeReadOnlyParams = Collections.singleton("-r");
-
-    private volatile BashReference reference = new SmartVarDefReference(this);
-    private volatile BashReference dumbReference = new DumbVarDefReference(this);
-
-    private final Object stateLock = new Object();
-    private volatile Boolean cachedFunctionScopeLocal;
-    private volatile String name;
-    private volatile PsiElement assignmentWord;
-
-    private volatile TextRange nameTextRange;
 
     public BashVarDefImpl(ASTNode astNode) {
         super(astNode, "Bash var def");
@@ -85,46 +78,27 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         super(stub, nodeType, "Bash var def");
     }
 
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.cachedFunctionScopeLocal = null;
-            this.name = null;
-            this.assignmentWord = null;
-            this.nameTextRange = null;
-
-            reference = new SmartVarDefReference(this);
-            dumbReference = new DumbVarDefReference(this);
-        }
-    }
-
     public String getName() {
-        BashVarDefStub stub = getStub();
-        if (stub != null) {
-            return stub.getName();
-        }
+        return CachedValuesManager.getCachedValue(this, () -> {
+            BashVarDefStub stub = getStub();
 
-        if (name == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (name == null) {
-                    PsiElement element = findAssignmentWord();
+            String newName;
+            if (stub != null) {
+                newName = stub.getName();
+            }
+            else {
+                PsiElement element = findAssignmentWord();
 
-                    String newName;
-                    if (element instanceof BashCharSequence) {
-                        newName = ((BashCharSequence) element).getUnwrappedCharSequence();
-                    } else {
-                        newName = element.getText();
-                    }
-
-                    name = newName;
+                if (element instanceof BashCharSequence) {
+                    newName = ((BashCharSequence)element).getUnwrappedCharSequence();
+                }
+                else {
+                    newName = element.getText();
                 }
             }
-        }
 
-        return name;
+            return CachedValueProvider.Result.create(newName, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public PsiElement setName(@NotNull @NonNls String newName) throws IncorrectOperationException {
@@ -156,11 +130,11 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         //check for declare -a or typeset -a
         PsiElement parentElement = getParent();
         if (parentElement instanceof BashCommand) {
-            BashCommand command = (BashCommand) parentElement;
+            BashCommand command = (BashCommand)parentElement;
 
             return "mapfile".equals(command.getReferencedCommandName())
-                    || "readarray".equals(command.getReferencedCommandName())
-                    || isCommandWithParameter(command, commandsWithArrayOption, typeArrayDeclarationParams);
+                   || "readarray".equals(command.getReferencedCommandName())
+                   || isCommandWithParameter(command, commandsWithArrayOption, typeArrayDeclarationParams);
         }
 
         return false;
@@ -173,31 +147,25 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
      */
     @NotNull
     public PsiElement findAssignmentWord() {
-        if (assignmentWord == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (assignmentWord == null) {
-                    PsiElement element = findChildByType(accepted);
+        return CachedValuesManager.getCachedValue(this, () -> {
+            PsiElement element = findChildByType(accepted);
 
-                    PsiElement newAssignmentWord;
-                    if (element != null) {
-                        newAssignmentWord = element;
-                    } else {
-                        //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
-                        //a parsed var
-                        PsiElement firstChild = getFirstChild();
-                        ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
-
-                        ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
-                        newAssignmentWord = (node != null) ? node.getPsi() : firstChild;
-                    }
-
-                    assignmentWord = newAssignmentWord;
-                }
+            PsiElement newAssignmentWord;
+            if (element != null) {
+                newAssignmentWord = element;
             }
-        }
+            else {
+                //if null we probably represent a single var without assignment, i.e. the var node is nested inside of
+                //a parsed var
+                PsiElement firstChild = getFirstChild();
+                ASTNode childNode = firstChild != null ? firstChild.getNode() : null;
 
-        return assignmentWord;
+                ASTNode node = childNode != null ? childNode.findChildByType(accepted) : null;
+                newAssignmentWord = (node != null) ? node.getPsi() : firstChild;
+            }
+
+            return CachedValueProvider.Result.create(newAssignmentWord, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Nullable
@@ -207,49 +175,42 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public boolean isFunctionScopeLocal() {
-        if (cachedFunctionScopeLocal == null) {
-            boolean newCachedFunctionScopeLocal = doIsFunctionScopeLocal();
-
-            synchronized (stateLock) {
-                cachedFunctionScopeLocal = newCachedFunctionScopeLocal;
+        return CachedValuesManager.getCachedValue(this, () -> {
+            boolean result;
+            if (isLocalVarDef()) {
+                result = true;
             }
-        }
+            else {
+                result = false;
 
-        return cachedFunctionScopeLocal;
-    }
+                //Although this variable has no direct local command,
+                //it's still possible that an earlier usage of the local command declared this
+                //variable as function local
+                //
+                //Solve this by using stubs and index and without a processor to prevent SOE in other processors using this function
+                //filter all variable definitions which are included in the broadest function scope, all others are out of scope
+                //then iterate and break if there is one def which is local and which occurs before this element
+                //fixme handle injected code in functions
+                BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(this);
+                while (scope != null) {
+                    if (scope.findLocalScopeVariables().contains(getReferenceName())) {
+                        result = true;
+                        break;
+                    }
 
-    private boolean doIsFunctionScopeLocal() {
-        if (isLocalVarDef()) {
-            return true;
-        }
-
-        //Although this variable has no direct local command,
-        //it's still possible that an earlier usage of the local command declared this
-        //variable as function local
-        //
-        //Solve this by using stubs and index and without a processor to prevent SOE in other processors using this function
-        //filter all variable definitions which are included in the broadest function scope, all others are out of scope
-        //then iterate and break if there is one def which is local and which occurs before this element
-
-        //fixme handle injected code in functions
-
-        BashFunctionDef scope = BashPsiUtils.findNextVarDefFunctionDefScope(this);
-        while (scope != null) {
-            if (scope.findLocalScopeVariables().contains(getReferenceName())) {
-                return true;
+                    scope = BashPsiUtils.findNextVarDefFunctionDefScope(PsiTreeUtil.getStubOrPsiParent(scope));
+                }
             }
 
-            scope = BashPsiUtils.findNextVarDefFunctionDefScope(PsiTreeUtil.getStubOrPsiParent(scope));
-        }
-
-        return false;
+            return CachedValueProvider.Result.create(result, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public boolean isLocalVarDef() {
         //check if the command is a local-var defining command, e.g. local
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
-            final BashCommand parentCmd = (BashCommand) context;
+            final BashCommand parentCmd = (BashCommand)context;
             String commandName = parentCmd.getReferencedCommandName();
 
             //declared by "local"
@@ -257,10 +218,8 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
                 return true;
             }
 
-            //declared by either delcare or typeset in a function block
-            if (localVarDefCommands.contains(commandName) && BashPsiUtils.findNextVarDefFunctionDefScope(context) != null) {
-                return true;
-            }
+            //declared by either declare or typeset in a function block
+            return localVarDefCommands.contains(commandName) && BashPsiUtils.findNextVarDefFunctionDefScope(context) != null;
         }
 
         return false;
@@ -273,7 +232,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public boolean isCommandLocal() {
         final PsiElement context = getContext();
         if (context instanceof BashCommand) {
-            final BashCommand parentCmd = (BashCommand) context;
+            final BashCommand parentCmd = (BashCommand)context;
             return !parentCmd.isPureAssignment() && !parentCmd.isVarDefCommand();
         }
 
@@ -304,13 +263,20 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
         return this;
     }
 
+    @Override
+    @Nullable
+    public BashReference getReference() {
+        PsiReference[] references = getReferences();
+        if (references.length == 1 && references[0] instanceof BashReference) {
+            return (BashReference)references[0];
+        }
+        return null;
+    }
+
     @NotNull
     @Override
-    public BashReference getReference() {
-        boolean dumb = DumbService.isDumb(getProject());
-        synchronized (stateLock) {
-            return dumb ? dumbReference : reference;
-        }
+    public PsiReference[] getReferences() {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(this);
     }
 
     @Nullable
@@ -333,7 +299,7 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public boolean isStaticAssignmentWord() {
         PsiElement word = findAssignmentWord();
         if (word instanceof BashCharSequence) {
-            return ((BashCharSequence) word).isStatic();
+            return ((BashCharSequence)word).isStatic();
         }
 
         return true;
@@ -346,8 +312,9 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            ((BashVisitor) visitor).visitVarDef(this);
-        } else {
+            ((BashVisitor)visitor).visitVarDef(this);
+        }
+        else {
             visitor.visitElement(this);
         }
     }
@@ -374,39 +341,32 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     }
 
     public TextRange getAssignmentNameTextRange() {
-        if (nameTextRange == null) {
-            synchronized (stateLock) {
-                if (nameTextRange == null) {
-                    PsiElement wordElement = findAssignmentWord();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            PsiElement wordElement = findAssignmentWord();
 
-                    TextRange newNameTextRange;
-                    if (wordElement instanceof BashCharSequence) {
-                        newNameTextRange = ((BashCharSequence) wordElement).getTextContentRange();
-                    } else {
-                        newNameTextRange = TextRange.from(0, wordElement.getTextLength());
-                    }
-
-                    nameTextRange = newNameTextRange;
-                }
+            TextRange newNameTextRange;
+            if (wordElement instanceof BashCharSequence) {
+                newNameTextRange = ((BashCharSequence)wordElement).getTextContentRange();
             }
-        }
+            else {
+                newNameTextRange = TextRange.from(0, wordElement.getTextLength());
+            }
 
-        return nameTextRange;
+            return CachedValueProvider.Result.create(newNameTextRange, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public boolean isReadonly() {
         PsiElement context = getParent();
         if (context instanceof BashCommand) {
-            BashCommand command = (BashCommand) context;
+            BashCommand command = (BashCommand)context;
 
             if (command.isInternalCommand() && LanguageBuiltins.readonlyVarDefCommands.contains(command.getReferencedCommandName())) {
                 return true;
             }
 
             //check for declare -r or typeset -r
-            if (isCommandWithParameter(command, commandsWithReadonlyOption, typeReadOnlyParams)) {
-                return true;
-            }
+            return isCommandWithParameter(command, commandsWithReadonlyOption, typeReadOnlyParams);
         }
 
         return false;
@@ -434,5 +394,4 @@ public class BashVarDefImpl extends BashBaseStubElementImpl<BashVarDefStub> impl
     public List<PsiComment> findAttachedComment() {
         return BashPsiUtils.findDocumentationElementComments(this);
     }
-
 }

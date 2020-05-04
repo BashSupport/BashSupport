@@ -23,22 +23,24 @@ import com.ansorgit.plugins.bash.lang.psi.api.BashFile;
 import com.ansorgit.plugins.bash.lang.psi.api.BashPsiElement;
 import com.ansorgit.plugins.bash.lang.psi.api.command.BashCommand;
 import com.ansorgit.plugins.bash.lang.psi.api.expression.BashRedirectList;
+import com.ansorgit.plugins.bash.lang.psi.api.function.BashFunctionDef;
 import com.ansorgit.plugins.bash.lang.psi.api.vars.BashVarDef;
 import com.ansorgit.plugins.bash.lang.psi.impl.BashBaseStubElementImpl;
 import com.ansorgit.plugins.bash.lang.psi.impl.Keys;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStub;
 import com.ansorgit.plugins.bash.lang.psi.stubs.api.BashCommandStubBase;
-import com.ansorgit.plugins.bash.lang.psi.util.BashPsiUtils;
-import com.ansorgit.plugins.bash.lang.psi.util.BashResolveUtil;
 import com.ansorgit.plugins.bash.settings.BashProjectSettings;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.project.DumbService;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,20 +49,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBaseStubElementImpl<T> implements BashCommand, Keys {
-    private final PsiReference functionReference = new SmartFunctionReference(this);
-    private final PsiReference dumbFunctionReference = new DumbFunctionReference(this);
-
-    private final PsiReference bashFileReference = new SmartBashFileReference(this);
-    private final PsiReference dumbBashFileReference = new DumbBashFileReference(this);
-
-    private final Object stateLock = new Object();
-    private volatile boolean hasReferencedCommandName = false;
-    private volatile String referencedCommandName;
-    private volatile Boolean isInternalCommandBash3;
-    private volatile Boolean isInternalCommandBash4;
-    private volatile List<BashPsiElement> parameters;
-    private volatile ASTNode genericCommandElement;
-
     public AbstractBashCommand(ASTNode astNode, String name) {
         super(astNode, name);
     }
@@ -73,21 +61,7 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public BashFile getContainingFile() {
-        return (BashFile) super.getContainingFile();
-    }
-
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.genericCommandElement = null;
-            this.hasReferencedCommandName = false;
-            this.referencedCommandName = null;
-            this.isInternalCommandBash3 = null;
-            this.isInternalCommandBash4 = null;
-            this.parameters = null;
-        }
+        return (BashFile)super.getContainingFile();
     }
 
     public boolean isGenericCommand() {
@@ -100,11 +74,17 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     public boolean isFunctionCall() {
-        if (isSlowResolveRequired()) {
-            return isGenericCommand() && dumbFunctionReference.resolve() != null;
+        if (!isGenericCommand()) {
+            return false;
         }
 
-        return isGenericCommand() && functionReference.resolve() != null;
+        for (PsiReference reference : getReferences()) {
+            PsiElement target = reference.resolve();
+            if (target instanceof BashFunctionDef) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -114,26 +94,15 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
             return stub.isInternalCommand(bash4);
         }
 
-        if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (isInternalCommandBash3 == null || isInternalCommandBash4 == null) {
-                    boolean isBash3 = false;
-                    boolean isBash4 = false;
-
-                    if (isGenericCommand()) {
-                        String commandText = getReferencedCommandName();
-                        isBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
-                        isBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
-                    }
-
-                    isInternalCommandBash3 = isBash3;
-                    isInternalCommandBash4 = isBash4;
-                }
-            }
+        boolean isBash3 = false;
+        boolean isBash4 = false;
+        if (isGenericCommand()) {
+            String commandText = getReferencedCommandName();
+            isBash3 = LanguageBuiltins.isInternalCommand(commandText, false);
+            isBash4 = LanguageBuiltins.isInternalCommand(commandText, true);
         }
 
-        return bash4 ? isInternalCommandBash4 : isInternalCommandBash3;
+        return bash4 ? isBash4 : isBash3;
     }
 
     public boolean isInternalCommand() {
@@ -151,11 +120,13 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean isBashScriptCall() {
-        if (isSlowResolveRequired()) {
-            return dumbBashFileReference.resolve() != null;
+        for (PsiReference reference : getReferences()) {
+            PsiElement target = reference.resolve();
+            if (target instanceof PsiFile) {
+                return true;
+            }
         }
-
-        return bashFileReference.resolve() != null;
+        return false;
     }
 
     public boolean isPureAssignment() {
@@ -165,8 +136,8 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     public boolean isVarDefCommand() {
         return isInternalCommand()
-                && (LanguageBuiltins.varDefCommands.contains(getReferencedCommandName())
-                || LanguageBuiltins.localVarDefCommands.contains(getReferencedCommandName()));
+               && (LanguageBuiltins.varDefCommands.contains(getReferencedCommandName())
+                   || LanguageBuiltins.localVarDefCommands.contains(getReferencedCommandName()));
     }
 
     public boolean hasAssignments() {
@@ -181,47 +152,32 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Nullable
     private ASTNode commandElementNode() {
-        if (genericCommandElement == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (genericCommandElement == null) {
-                    genericCommandElement = getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
-                }
-            }
-        }
-
-        return genericCommandElement;
+        return getNode().findChildByType(BashElementTypes.GENERIC_COMMAND_ELEMENT);
     }
 
     public List<BashPsiElement> parameters() {
-        if (parameters == null) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (parameters == null) {
-                    PsiElement cmd = commandElement();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            PsiElement cmd = commandElement();
 
-                    List<BashPsiElement> newParameters;
-                    if (cmd == null) {
-                        newParameters = Collections.emptyList();
-                    } else {
-                        newParameters = Lists.newLinkedList();
+            List<BashPsiElement> newParameters;
+            if (cmd == null) {
+                newParameters = Collections.emptyList();
+            }
+            else {
+                newParameters = Lists.newLinkedList();
 
-                        PsiElement nextSibling = cmd.getNextSibling();
-                        while (nextSibling != null) {
-                            if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
-                                newParameters.add((BashPsiElement) nextSibling);
-                            }
-
-                            nextSibling = nextSibling.getNextSibling();
-                        }
+                PsiElement nextSibling = cmd.getNextSibling();
+                while (nextSibling != null) {
+                    if (nextSibling instanceof BashPsiElement && !(nextSibling instanceof BashRedirectList)) {
+                        newParameters.add((BashPsiElement)nextSibling);
                     }
 
-                    parameters = newParameters;
+                    nextSibling = nextSibling.getNextSibling();
                 }
             }
-        }
 
-        return parameters;
+            return CachedValueProvider.Result.create(newParameters, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     public BashVarDef[] assignments() {
@@ -229,42 +185,39 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     }
 
     @Override
+    @Nullable
     public PsiReference getReference() {
-        boolean slowFallback = isSlowResolveRequired();
-
-        if (isFunctionCall()) {
-            return slowFallback ? dumbFunctionReference : functionReference;
+        // this is pretty bad, but not fixable without removing isFunctionCall(), etc. and the features (e.g. highlighting) based on that
+        for (PsiReference reference : getReferences()) {
+            PsiElement target = reference.resolve();
+            if (target != null) {
+                return reference;
+            }
         }
+        return null;
+    }
 
-        if (isInternalCommand()) {
-            //a reference is required for QuickDoc support, camMavigate avoids the "Go to definition" nvaigation
-            return BashPsiUtils.selfReference(this);
-        }
-
-        return slowFallback ? dumbBashFileReference : bashFileReference;
+    @NotNull
+    @Override
+    public PsiReference[] getReferences() {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(this);
     }
 
     @Nullable
     public String getReferencedCommandName() {
-        T stub = getStub();
-        if (stub instanceof BashCommandStub) {
-            return ((BashCommandStub) stub).getBashCommandName();
-        }
+        return CachedValuesManager.getCachedValue(this, () -> {
+            String name;
 
-        if (!hasReferencedCommandName) {
-            //no other lock is used in the callees, it's safe to synchronize around the whole calculation
-            synchronized (stateLock) {
-                if (!hasReferencedCommandName) {
-                    ASTNode command = commandElementNode();
-                    String newCommandName = command != null ? command.getText() : null;
-
-                    hasReferencedCommandName = true;
-                    referencedCommandName = newCommandName;
-                }
+            T stub = getStub();
+            if (stub instanceof BashCommandStub) {
+                name = ((BashCommandStub)stub).getBashCommandName();
             }
-        }
-
-        return referencedCommandName;
+            else {
+                ASTNode command = commandElementNode();
+                name = command != null ? command.getText() : null;
+            }
+            return CachedValueProvider.Result.create(name, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Override
@@ -275,13 +228,15 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
     @Override
     public void accept(@NotNull PsiElementVisitor visitor) {
         if (visitor instanceof BashVisitor) {
-            BashVisitor v = (BashVisitor) visitor;
+            BashVisitor v = (BashVisitor)visitor;
             if (isInternalCommand()) {
                 v.visitInternalCommand(this);
-            } else {
+            }
+            else {
                 v.visitGenericCommand(this);
             }
-        } else {
+        }
+        else {
             visitor.visitElement(this);
         }
     }
@@ -307,21 +262,11 @@ public class AbstractBashCommand<T extends BashCommandStubBase> extends BashBase
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState
-            state, PsiElement lastParent, @NotNull PsiElement place) {
+        state, PsiElement lastParent, @NotNull PsiElement place) {
         return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
     }
 
     public boolean isIncludeCommand() {
         return false;
-    }
-
-    /**
-     * @return returns whether the file containing this command is indexed or whether a slow fallback is required to resolve the references contained in the file.
-     */
-    private boolean isSlowResolveRequired() {
-        Project project = getProject();
-        PsiFile file = getContainingFile();
-
-        return DumbService.isDumb(project) || BashResolveUtil.isScratchFile(file) || BashResolveUtil.isNotIndexedFile(project, file.getVirtualFile());
     }
 }
