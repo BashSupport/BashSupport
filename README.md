@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/jansorg/BashSupport.svg?branch=idea-162.x)](https://travis-ci.org/jansorg/BashSupport)
 
-**2018 project status: The BashSupport project will only receive fixes for major problems**
+**2020 project status: BashSupport has been retired. Please refer to [this page](https://plugins.jetbrains.com/plugin/4230-bashsupport) and [bashsupport.com](https://www.bashsupport.com/news/bashsupport-pro-1.3/) for the reasons. This repository has been archived.**
+
+2018 project status: The BashSupport project will only receive fixes for major problems
 
 *BashSupport is fully developed in my spare time since 2009. I'm unable to provide full support for BashSupport and will concentrate on fixes for major problems.*
 
@@ -87,9 +89,3 @@ String parsing is quite adventureous in Bash. Strings can contain subshells whic
 
 ## Bash PSI
 The Bash PSI definition is in com.ansorgit.plugins.bash.lang.psi . The entry point is the class BashPsiCreator, which is used to map a AST node to a newly created PSI node.
-
-# Tools
-I'm using Yourkit to locate and fix performance issues of BashSupport. YourKit, LLC kindly provided a
-free open-source license of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp).
-
-![YourKit Java Profiler Logo](yklogo.png "YourKit Java Profiler Logo")
