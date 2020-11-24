@@ -82,7 +82,8 @@ public final class BashTestUtils {
 
     @NotNull
     public static String loadTestCaseFile(BashTestCase testCase, @TestDataFile String path) throws IOException {
-        return FileUtil.loadFile(new File(testCase.getTestDataPath(), path.replace('/', File.separatorChar)), "UTF-8");
+        File file = new File(testCase.getTestDataPath(), path.replace('/', File.separatorChar));
+        return FileUtil.loadFile(file, "UTF-8");
     }
 
     public static void assertPsiTreeByFile(BashTestCase testCase, PsiFile psiFile, String filePath) throws IOException {

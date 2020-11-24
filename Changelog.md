@@ -1,6 +1,15 @@
 #### 2020-04-16:
  - [#792](https://github.com/BashSupport/BashSupport/issues/792): Added NO_SPACING formatting for variable concatenation using += operator (contributed by schilli91)
  
+ #### 2020-02-26
+ - Compatibility with 2020.1 eap
+ - Added a link to a comparision of Shell and BashSupport to the notification about conflicting plugins
+ - Version 1.7.16
+
+#### 2019-11-22:
+ - Really apply compatibility fixes for 2019.3
+ - Version 1.7.15
+
 #### 2019-11-20:
  - Fixes for 2019.3
  - Version 1.7.14

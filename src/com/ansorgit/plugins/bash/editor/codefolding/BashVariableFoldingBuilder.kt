@@ -71,7 +71,7 @@ class BashVariableFoldingBuilder : FoldingBuilderEx(), DumbAware {
             return emptyArray()
         }
 
-        val descriptors = newArrayList<FoldingDescriptor>()
+        val descriptors = ArrayList<FoldingDescriptor>()
         BashPsiUtils.visitRecursively(root, object : BashVisitor() {
             override fun visitVarUse(bashVar: BashVar) {
                 if (BashResolveUtil.hasStaticVarDefPath(bashVar)) {

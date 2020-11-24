@@ -24,6 +24,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -31,6 +32,7 @@ import java.util.Set;
 
 /**
  */
+@Ignore
 public class InternalCommandDocumentationTest extends LightBashCodeInsightFixtureTestCase {
 
     @Test
