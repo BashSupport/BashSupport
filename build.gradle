@@ -1,13 +1,13 @@
 buildscript {
     dependencies {
-        // this is the version included in the earlies SDK we're supporting
-        // this is IJ 145.x, which includes Kotlin 1.0.3
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.7"
+        // this is the version included in the SDK we're supporting
+        // this is IJ 192.x, which includes Kotlin 1.3.31
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.31"
     }
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.4.8"
+    id "org.jetbrains.intellij" version "0.4.18"
 }
 
 repositories {
@@ -16,7 +16,7 @@ repositories {
     mavenCentral()
 }
 
-version = "${new File('pluginVersion.txt').getText('UTF-8')}"
+version = "${new File("${project.rootDir}/pluginVersion.txt").getText('UTF-8')}"
 
 allprojects {
     apply plugin: 'java'
@@ -34,8 +34,8 @@ allprojects {
 
     compileKotlin {
         kotlinOptions {
-            apiVersion = 1.0
-            languageVersion = 1.0
+            apiVersion = 1.3
+            languageVersion = 1.3
             noStdlib = true
             noReflect = true
         }
@@ -43,7 +43,7 @@ allprojects {
 
     sourceSets {
         main {
-            java.srcDirs 'src'
+            java.srcDirs = ['src']
             resources.srcDir 'resources'
         }
         test {
@@ -60,12 +60,12 @@ allprojects {
         version ideaVersion
         type "IC"
         pluginName 'BashSupport'
-        plugins 'IntelliLang', 'terminal'
+        plugins = ['IntelliLang', 'terminal']
         downloadSources Boolean.valueOf(sources)
 
         patchPluginXml {
-            sinceBuild '145.0'
-            untilBuild '191.*'
+            sinceBuild '201.0'
+            untilBuild '201.*'
         }
     }
 
@@ -77,14 +77,13 @@ allprojects {
 
     apply plugin: 'jacoco'
     jacoco {
-        toolVersion = "0.7.9"
+        toolVersion = "0.8.5"
         reportsDir = file("$buildDir/reports/coverage")
     }
     test {
         finalizedBy jacocoTestReport
         jacoco {
             enabled true
-            append false
             includes ["com.ansorgit.*"]
         }
     }
@@ -101,6 +100,9 @@ allprojects {
     // test logging configuration, shows test progress and messages to standard error
     // see https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/logging/TestLogEvent.html
     test {
+        // 192.x has the Java functionality in a plugin now.
+        // Our tests are using code of this package, but the plugin itself must not depend on the Java plugin.
+        intellij.plugins += 'java'
         testLogging {
             events = [
                 org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,

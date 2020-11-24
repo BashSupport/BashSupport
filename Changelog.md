@@ -1,6 +1,17 @@
-#### 2020-04-16:
+#### 2020-04-16
+ - 2020.1: A possible fix for exception `Non-idempotent computation`
  - [#792](https://github.com/BashSupport/BashSupport/issues/792): Added NO_SPACING formatting for variable concatenation using += operator (contributed by schilli91)
+ - Version 1.7.17
  
+#### 2020-02-26
+ - Compatibility with 2020.1 eap
+ - Added a link to a comparision of Shell and BashSupport to the notification about conflicting plugins
+ - Version 1.7.16
+
+#### 2019-11-22:
+ - Really apply compatibility fixes for 2019.3
+ - Version 1.7.15
+
 #### 2019-11-20:
  - Fixes for 2019.3
  - Version 1.7.14
@@ -27,11 +38,18 @@
  - [#764](https://github.com/BashSupport/BashSupport/issues/764): Variables declared in included files were not always properly resolved.
  - Fix exception about IndexPatternBuilder incorrect Bash comment ranges
 
+#### 2019-07-04:
+ - A notification is displayed for 192.x and later if both BashSupport and JetBrains Shell are enabled at the same time. It allows to disable one of the plugins.
+ - Version 1.7.11
+
 #### 2019-06-21:
  - [#682](https://github.com/BashSupport/BashSupport/issues/682): Parse heredocs in pipeline commands
  - [#662](https://github.com/BashSupport/BashSupport/issues/662): Enter handler to insert a line continuation in Bash files
  - [#658](https://github.com/BashSupport/BashSupport/issues/658): Fix broken highlighting of heredocs.
  - [#656](https://github.com/BashSupport/BashSupport/issues/656): Fix multiline highlighting of todo/fixme comments
+
+#### 2019-06-15:
+ - Version 1.7.10
 
 #### 2019-05-28:
  - Version 1.7.8

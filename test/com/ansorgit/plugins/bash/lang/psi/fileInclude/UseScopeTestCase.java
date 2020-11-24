@@ -13,8 +13,8 @@ import org.junit.Test;
  */
 public class UseScopeTestCase extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "useScope/";
+    protected String getBasePath() {
+        return "psi/fileInclude/useScope/";
     }
 
     @Test
@@ -34,7 +34,7 @@ public class UseScopeTestCase extends AbstractFileIncludeTest {
         Assert.assertTrue("The use scope must contain the original file itself.", useScope.contains(included.getVirtualFile()));
 
         //must contain the file which contains the include statement
-        Assert.assertTrue("The use scope must contain the files which include the source file.", useScope.contains(myFile.getVirtualFile()));
+        Assert.assertTrue("The use scope must contain the files which include the source file.", useScope.contains(myFixture.getFile().getVirtualFile()));
 
         //must not contain the file which does not include the inspected file
         Assert.assertFalse("The use scope must not contain any other file.", useScope.contains(notIncluded.getVirtualFile()));

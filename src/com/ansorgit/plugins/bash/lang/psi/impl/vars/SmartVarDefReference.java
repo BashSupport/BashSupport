@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author jansorg
  */
-final class SmartVarDefReference extends AbstractVarDefReference {
+public final class SmartVarDefReference extends AbstractVarDefReference {
 
     public SmartVarDefReference(BashVarDefImpl bashVarDef) {
         super(bashVarDef);

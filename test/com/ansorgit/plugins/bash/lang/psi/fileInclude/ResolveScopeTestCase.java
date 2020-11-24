@@ -12,8 +12,8 @@ import org.junit.Test;
  */
 public class ResolveScopeTestCase extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "resolveScope/";
+    protected String getBasePath() {
+        return "psi/fileInclude/resolveScope/";
     }
 
     @Test
@@ -35,11 +35,11 @@ public class ResolveScopeTestCase extends AbstractFileIncludeTest {
             Assert.assertFalse("The variable must not be defined in the include file.", defIsInIncludeFile);
         }
 
-        Assert.assertFalse("Resolve returned invalid containing file.", def.getContainingFile().equals(myFile));
+        Assert.assertFalse("Resolve returned invalid containing file.", def.getContainingFile().equals(myFixture.getFile()));
 
         //the search scope must contain all the included files but nothing else
         GlobalSearchScope resolveScope = reference.getElement().getResolveScope();
-        Assert.assertTrue("A file must be in its own resolve scope", resolveScope.contains(myFile.getVirtualFile()));
+        Assert.assertTrue("A file must be in its own resolve scope", resolveScope.contains(myFixture.getFile().getVirtualFile()));
         Assert.assertTrue("An included file must be in the resolve scope", resolveScope.contains(def.getContainingFile().getVirtualFile()));
 
         //must not be included
@@ -72,7 +72,7 @@ public class ResolveScopeTestCase extends AbstractFileIncludeTest {
         Assert.assertTrue("The variable must be defined in the include file.", defIsInIncludeFile);
 
         GlobalSearchScope resolveScope = reference.getElement().getResolveScope();
-        Assert.assertTrue("A file must be in its own resolve scope", resolveScope.contains(myFile.getVirtualFile()));
+        Assert.assertTrue("A file must be in its own resolve scope", resolveScope.contains(myFixture.getFile().getVirtualFile()));
 
         Assert.assertTrue("The variable must be resolved to the definition in 'include2.bash'", include2File.equals(varDef.getContainingFile()));
 

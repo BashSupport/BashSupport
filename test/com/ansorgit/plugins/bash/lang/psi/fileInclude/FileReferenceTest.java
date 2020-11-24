@@ -10,8 +10,8 @@ import org.junit.Test;
  */
 public class FileReferenceTest extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "fileReference/";
+    protected String getBasePath() {
+        return "psi/fileInclude/fileReference/";
     }
 
     @Test

@@ -11,8 +11,8 @@ import org.junit.Test;
  */
 public class VarResolveFileIncludeTestCase extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "varResolve/";
+    protected String getBasePath() {
+        return "psi/fileInclude/varResolve/";
     }
 
     @Test

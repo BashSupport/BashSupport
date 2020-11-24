@@ -24,6 +24,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,17 +36,12 @@ import java.util.List;
  */
 public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
     private static final List<String> VALID_SHEBANGS = Lists.newArrayList();
+    private static final Collection<BashFileType> BASH_FILE_TYPES = Collections.singletonList(BashFileType.BASH_FILE_TYPE);
 
     static {
         for (String location : BashInterpreterDetection.POSSIBLE_LOCATIONS) {
             VALID_SHEBANGS.add("#!" + location);
         }
-    }
-
-    @Nullable
-    @Override
-    public FileType detect(@NotNull VirtualFile file, @NotNull ByteSequence firstBytes, @Nullable CharSequence textContent) {
-        return detect(file, textContent);
     }
 
     @Nullable
@@ -66,8 +63,20 @@ public class BashFileTypeDetector implements FileTypeRegistry.FileTypeDetector {
         return null;
     }
 
+    @Nullable
+    @Override
+    public FileType detect(@NotNull VirtualFile file, @NotNull ByteSequence firstBytes, @Nullable CharSequence textContent) {
+        return detect(file, textContent);
+    }
+
+    @Nullable
+    // disabled, to compile with 192.x: @Override
+    public Collection<? extends FileType> getDetectedFileTypes() {
+        return BASH_FILE_TYPES;
+    }
+
     @Override
     public int getVersion() {
-        return 1;
+        return 2;
     }
 }

@@ -38,16 +38,13 @@ abstract class AbstractBashVarReference extends CachingReference implements Bash
         this.bashVar = bashVar;
     }
 
+    @NotNull
     @Override
     public PsiElement getElement() {
         return bashVar;
     }
 
-    @Override
-    public boolean isReferenceTo(PsiElement element) {
-        return super.isReferenceTo(element);
-    }
-
+    @NotNull
     @Override
     public TextRange getRangeInElement() {
         return bashVar.getNameTextRange();
@@ -59,7 +56,7 @@ abstract class AbstractBashVarReference extends CachingReference implements Bash
         return bashVar.getReferenceName();
     }
 
-    public PsiElement handleElementRename(String newName) throws IncorrectOperationException {
+    public PsiElement handleElementRename(@NotNull String newName) throws IncorrectOperationException {
         if (!BashIdentifierUtil.isValidNewVariableName(newName)) {
             throw new IncorrectOperationException("Invalid variable name");
         }

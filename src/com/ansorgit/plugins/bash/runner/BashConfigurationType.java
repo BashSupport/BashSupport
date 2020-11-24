@@ -16,7 +16,6 @@
 package com.ansorgit.plugins.bash.runner;
 
 import com.ansorgit.plugins.bash.util.BashIcons;
-import com.ansorgit.plugins.bash.util.BashInterpreterDetection;
 import com.intellij.execution.BeforeRunTask;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.execution.configuration.ConfigurationFactoryEx;
@@ -67,6 +66,12 @@ public class BashConfigurationType extends ConfigurationTypeBase implements Poss
         @Override
         public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
             return new BashRunConfiguration("", new RunConfigurationModule(project), this);
+        }
+
+        @NotNull
+        @Override
+        public String getId() {
+            return getType().getDisplayName();
         }
     }
 }

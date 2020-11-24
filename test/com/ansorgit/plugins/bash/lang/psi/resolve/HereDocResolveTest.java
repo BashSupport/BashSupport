@@ -18,7 +18,6 @@
 
 package com.ansorgit.plugins.bash.lang.psi.resolve;
 
-import com.ansorgit.plugins.bash.BashTestUtils;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocEndMarker;
 import com.ansorgit.plugins.bash.lang.psi.api.heredoc.BashHereDocStartMarker;
 import com.intellij.psi.PsiReference;
@@ -73,7 +72,8 @@ public class HereDocResolveTest extends AbstractResolveTest {
         Assert.assertTrue(startMarker.resolve() instanceof BashHereDocEndMarker);
     }
 
-    protected String getTestDataPath() {
-        return BashTestUtils.getBasePath() + "/psi/resolve/hereDoc/";
+    @Override
+    protected String getBasePath() {
+        return "/psi/resolve/hereDoc/";
     }
 }

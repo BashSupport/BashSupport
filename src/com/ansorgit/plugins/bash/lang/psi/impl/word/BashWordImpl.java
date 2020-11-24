@@ -29,28 +29,16 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import org.jetbrains.annotations.NotNull;
 
 public class BashWordImpl extends BashBaseElement implements BashWord, PsiLanguageInjectionHost {
     private final static TokenSet nonWrappableChilds = TokenSet.create(BashElementTypes.STRING_ELEMENT, BashTokenTypes.STRING2, BashTokenTypes.WORD);
 
-    private final Object stateLock = new Object();
-    private volatile Boolean isWrapped;
-    private volatile boolean singleChildParentComputed = false;
-    private volatile boolean singleChildParent;
-
     public BashWordImpl(final ASTNode astNode) {
         super(astNode, "bash combined word");
-    }
-
-    @Override
-    public void subtreeChanged() {
-        super.subtreeChanged();
-
-        synchronized (stateLock) {
-            this.isWrapped = null;
-            this.singleChildParentComputed = false;
-        }
     }
 
     @Override
@@ -78,39 +66,26 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     }
 
     private boolean isSingleChildParent() {
-        if (!singleChildParentComputed) {
-            synchronized (stateLock) {
-                if (!singleChildParentComputed) {
-                    singleChildParent = BashPsiUtils.isSingleChildParent(this);
-                    singleChildParentComputed = true;
-                }
-            }
-        }
-
-        return singleChildParent;
+        return CachedValuesManager.getCachedValue(this, () -> {
+            boolean singleChildParent = BashPsiUtils.isSingleChildParent(this);
+            return CachedValueProvider.Result.create(singleChildParent, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Override
     public boolean isWrapped() {
-        if (isWrapped == null) {
-            synchronized (stateLock) {
-                if (isWrapped == null) {
-                    boolean newIsWrapped = false;
-                    if (getTextLength() >= 2) {
-                        ASTNode firstChildNode = getNode().getFirstChildNode();
-                        if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
-                            String text = firstChildNode.getText();
+        return CachedValuesManager.getCachedValue(this, () -> {
+            boolean newIsWrapped = false;
+            if (getTextLength() >= 2) {
+                ASTNode firstChildNode = getNode().getFirstChildNode();
+                if (firstChildNode != null && firstChildNode.getTextLength() >= 2) {
+                    String text = firstChildNode.getText();
 
-                            newIsWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
-                        }
-                    }
-
-                    isWrapped = newIsWrapped;
+                    newIsWrapped = (text.startsWith("$'") || text.startsWith("'")) && text.endsWith("'");
                 }
             }
-        }
-
-        return isWrapped;
+            return CachedValueProvider.Result.create(newIsWrapped, PsiModificationTracker.MODIFICATION_COUNT);
+        });
     }
 
     @Override
@@ -183,10 +158,10 @@ public class BashWordImpl extends BashBaseElement implements BashWord, PsiLangua
     public LiteralTextEscaper<? extends PsiLanguageInjectionHost> createLiteralTextEscaper() {
         //$' prefix -> c-escape codes are interpreted before the injected document is parsed
         if (getText().startsWith("$'")) {
-            return new BashEnhancedLiteralTextEscaper<BashWordImpl>(this);
+            return new BashEnhancedLiteralTextEscaper<>(this);
         }
 
         //no $' prefix -> no escape handling
-        return new BashIdentityStringLiteralEscaper<BashWordImpl>(this);
+        return new BashIdentityStringLiteralEscaper<>(this);
     }
 }

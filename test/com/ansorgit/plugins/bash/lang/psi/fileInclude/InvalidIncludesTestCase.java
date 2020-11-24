@@ -14,8 +14,8 @@ import java.util.Set;
  */
 public class InvalidIncludesTestCase extends AbstractFileIncludeTest {
     @Override
-    protected String getTestDataPath() {
-        return super.getTestDataPath() + "invalidIncludes/";
+    protected String getBasePath() {
+        return "psi/fileInclude/invalidIncludes/";
     }
 
     @Test

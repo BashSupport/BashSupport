@@ -16,9 +16,6 @@
 package com.ansorgit.plugins.bash.util;
 
 import com.intellij.openapi.util.SystemInfo;
-import com.intellij.testFramework.TestRunnerUtil;
-import com.intellij.testIntegration.TestIntegrationUtils;
-import org.codehaus.groovy.vmplugin.v5.JUnit4Utils;
 import org.junit.Assert;
 import org.junit.Test;
 

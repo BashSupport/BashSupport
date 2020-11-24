@@ -1,7 +1,5 @@
 <!--
   ~ Copyright 2013 Joachim Ansorg, mail@ansorg-it.com
-  ~ File: plugin.xml, Class: plugin.xml
-  ~ Last modified: 2013-05-12
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,12 +18,12 @@
 
     <name>BashSupport</name>
     <category>Custom Languages</category>
-    <version>1.7.14.145</version>
+    <version>1.7.18.201</version>
 
     <vendor url="https://www.plugin-dev.com/" email="mail@plugin-dev.com">Joachim Ansorg</vendor>
 
-    <!-- Requires IDEA 145.x or later -->
-    <idea-version since-build="145.0" until-build="191.*"/>
+    <!-- Requires IDEA 2020.1 -->
+    <idea-version since-build="201.0" until-build="201.*"/>
 
     <!-- Mark the plugin as compatible with RubyMine and other products based on the IntelliJ platform -->
     <depends>com.intellij.modules.lang</depends>
@@ -33,43 +31,38 @@
     <depends optional="true" config-file="bashsupport-terminal.xml">org.jetbrains.plugins.terminal</depends>
 
     <description><![CDATA[<html>
-    Bash language support for the IntelliJ platform.<br/>
-    Supports run configurations, syntax highlighting, rename refactoring, documentation lookup, inspections, quickfixes and much more.<br>
-    Do you like it? Give it a star at <a href="https://github.com/BashSupport/BashSupport">GitHub</a>. Rate it at <a href="https://plugins.jetbrains.com/plugin/4230-bashsupport">plugins.jetbrains.com</a>.
-    <br><br>
-    <b>News for users of 2019.2 and later:</b> JetBrains is bundling a new <a href="https://blog.jetbrains.com/idea/2019/06/intellij-idea-2019-2-eap2-shell-script-support-improved-code-duplicates-detection-services-tool-window-and-more/">Shell plugin</a> with 2019.2. You shouldn't use BashSupport and Shell simultaneously. <em>Make sure to disable one of them.</em>
-    BashSupport supports more advanced features.<br>Shell is more robust and providing better integration of basic functionality.
+    Bash language support for the IntelliJ platform.<br>
+    Supports run configurations, syntax highlighting, rename, documentation lookup, inspections, quickfixes and more.<br><br>
+    Do you like it?<br>Please consider to get <a href="https://plugins.jetbrains.com/plugin/13841-bashsupport-pro/pricing#edition=personal" target="_blank">a license for BashSupport Pro</a>.
+    <br><a href="https://www.bashsupport.com/pro/" target="_blank">BashSupport Pro</a> adds advanced features like a debugger, a bats-core test runner and more.
 
-    <br><br>
-    <b>BashSupport's future:</b> Visit <a href="https://www.bashsupport.com/news/bashsupport-future/" target="_blank">bashsupport.com</a> to learn more about this.
-    In short:
-    <ul>
-        <li>BashSupport will remain available, free, and open-source.</li>
-        <li><em>Thanks for being part of BashSupport!</em> It's more than 10 years now and the most popular community plugin. It's far from perfect - thanks for using it nevertheless!</li>
-        <li>JetBrain's Shell plugin is likely to become the new default for developers of shell scripts. This means that there's no future for BashSupport here.</li>
-        <li>Development will be limited to maintenance and fixes for serious issues.</li>
-        <li>There will be a new, paid <a href="https://www.bashsupport.com/news/bashsupport-pro-update/" target="_blank"><em>BashSupport Pro</em></a> plugin (<a href="https://www.bashsupport.com/news/bashsupport-pro-update/" target="_blank">read more</a>)</li>
-    </ul>
+    <br><br><a href="https://www.bashsupport.com/news/bashsupport-future/" target="_blank">Read about the future of BashSupport</a>.
     </html>]]></description>
 
     <change-notes><![CDATA[
         <html>
 
-        <b>Changes in version 1.7.14:</b>
+        <b>Changes in version 1.7.18:</b>
+        <ul>
+          <li>2020.1: Hopefully the final fix for exception "Non-idempotent computation"</li>
+        </ul><br>
+
+        <b>Changes in version 1.7.17:</b>
+        <ul>
+          <li>2020.1: A possible fix for exception "Non-idempotent computation"</li>
+        </ul><br>
+
+        <b>Changes in version 1.7.16:</b>
+        <ul>
+          <li>Compatibility with 2020.1 eap</li>
+          <li>Added a <a href="https://www.bashsupport.com/plugin-comparison/" target="_blank">link to open a comparison</a> to the notification about conflicting plugins</li>
+        </ul><br>
+
+        <b>Previous changes of version 1.7.x:</b>
         <ul>
           <li>Compatibility fixes for 2019.3</li>
           <li>Fix a potential memory leak in an inspection</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.13:</b>
-        <ul>
-          <li>Support for 2019.3 EAP</li>
           <li>#771: Line continuations not properly highlighted and parsed</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.12:</b>
-        <p>This fixes a few annoying issues and also adds a few improvements to the editor</p>
-        <ul>
           <li>#758: Completions were often showing "Invalid" as label after typing in the editor</li>
           <li>#656: Fix multiline highlighting of todo/fixme comments</li>
           <li>#662: Enter handler to insert a line continuation in Bash files</li>
@@ -81,65 +74,33 @@
           <li>#753: Fix NPE in BashRunConfiguration.suggestedName()</li>
           <li>#761: IOException while scanning path</li>
           <li>Fix exception about IndexPatternBuilder incorrect Bash comment ranges</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.8:</b>
-        <ul>
+          <li>A notification is displayed for 192.x and later if both BashSupport and JetBrains Shell are enabled at the same time. It allows to disable one of the plugins.</li>
+          <li>Support IntelliJ 2019.2 EAP</li>
+          <li>Change fallback configuration of heredoc and backtick highlighting to avoid an exception when the Shell plugin is enabled</li>
+          <li>Maintenance release on the EAP channel</li>
           <li>Add internal documentation for ulimit command (contributed by dzieciolowski)</li>
           <li>#458: Support shopt -s extglob syntax</li>
           <li>#687: compound command () incorrectly highlighted. Removed highlighting of subshells, highlighting of contained elements must not be overridden. For example, comments inside of subshells must still be displayed as comments.</li>
           <li>Removed override of highlighting inside of backticks `echo hello $world`. Now elements inside of backticks are highlighted as in subshell and group commands. Previously multi-line backticks weren't properly shown, for example.</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.7:</b>
-        <ul>
          <li>#694: Fix ConcurrentModificationException</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.6:</b>
-        <ul>
          <li>#677: Exception in idea.log of the latest CLion EAP</li>
          <li>#671: Ignore/log exception while scanning $PATH, e.g. while a system update is active.</li>
          <li>#668: Support `readarray` as alias of `mapfile` (contributed by niknetniko)</li>
          <li>#664: fix 'replace with double brackets' quick fix (contributed by bjansen)</li>
          <li>#657: Exception when the arithmetic operator &gt;&gt; was used</li>
          <li>#655: Improve performance of parsing and reference resolving. Disable the folding of variable values by default as this is too slow for large files. You can enable this in the settings if you want to keep this behavior.</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.5 (eap channel):</b>
-        <ul>
          <li>#660: Add support for EAP 191.x builds </li>
-        </ul><br>
-
-        <b>Changes in version 1.7.4:</b>
-        <ul>
          <li>#634: Handle invalid paths in include file inspection</li>
          <li>#636: handle parse errors in interpreter paths in run configurations</li>
          <li>#645: fix NPE in keyword handling</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.3:</b>
-        <ul>
             <li>Versions 1.7.0 to 1.7.2 enabled the new project interpreter by default. This was breaking old run configurations. This version now disabled the project interpreter by default and tries to keep run configurations created with 1.7.x working. We're sorry for any inconvenience which was caused by this.</li>
             <li>#624: Don't enable the project interpreter by default to keep run configurations created by 1.6.13 and earlier working. BashSupport tries to keep run configs modified by 1.7.0-1.7.2 working.</li>
             <li>#625: java.nio.file.AccessDeniedException at startup</li>
             <li>#627: Fix exception when code folding was called when indexing</li>
             <li>Don't show files in command completion which don't match *.exe or *.bat</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.2:</b>
-        <ul>
             <li>#622: Fix wrong size of script icons</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.1:</b>
-        <ul>
             <li>Handle errors parsing elements of $PATH</li>
             <li>Fix handling of interpreter path when creating new run configurations</li>
-        </ul><br>
-
-        <b>Changes in version 1.7.0:</b>
-        <ul>
              <li>Feature: New icons (contributed by nosovae-dev)</li>
              <li>Feature: Show path next to path command completion items</li>
              <li>Feature: Add folding for variables (contributed by nosovae-dev)</li>
@@ -185,6 +146,10 @@
     <project-components>
         <component>
             <implementation-class>com.ansorgit.plugins.bash.settings.BashProjectSettingsComponent</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>com.ansorgit.plugins.bash.ide.ShellEditorMessageComponent</implementation-class>
         </component>
     </project-components>
 
@@ -252,6 +217,9 @@
         <lang.formatter language="Bash" implementationClass="com.ansorgit.plugins.bash.editor.formatting.BashFormattingModelBuilder"/>
 
         <lang.tokenSeparatorGenerator language="Bash" implementationClass="com.ansorgit.plugins.bash.refactoring.BashTokenSeparatorGenerator"/>
+
+        <!-- references -->
+        <psi.referenceContributor language="Bash" implementation="com.ansorgit.plugins.bash.lang.psi.BashReferenceContributor"/>
 
         <lang.elementManipulator forClass="com.ansorgit.plugins.bash.lang.psi.api.BashFileReference"
                                  implementationClass="com.ansorgit.plugins.bash.lang.psi.impl.refactoring.BashFileReferenceManipulator" />

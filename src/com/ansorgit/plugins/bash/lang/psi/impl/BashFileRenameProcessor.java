@@ -39,8 +39,9 @@ import java.util.Collection;
  * @author jansorg
  */
 public class BashFileRenameProcessor extends RenamePsiFileProcessor {
+    @NotNull
     @Override
-    public RenameDialog createRenameDialog(Project project, PsiElement element, PsiElement nameSuggestionContext, Editor editor) {
+    public RenameDialog createRenameDialog(@NotNull Project project, @NotNull PsiElement element, PsiElement nameSuggestionContext, Editor editor) {
         return new BashFileRenameDialog(project, element, nameSuggestionContext, editor);
     }
 
@@ -52,11 +53,12 @@ public class BashFileRenameProcessor extends RenamePsiFileProcessor {
      */
     @NotNull
     @Override
-    public Collection<PsiReference> findReferences(PsiElement element) {
-        //fixme fix the custom scope
+    public Collection<PsiReference> findReferences(@NotNull PsiElement element, @NotNull SearchScope searchScope, boolean searchInCommentsAndStrings) {
+        // fixme fix the custom scope
+        // fixme searchInCommentsAndStrings
         SearchScope scope = (element instanceof BashPsiElement)
                 ? BashElementSharedImpl.getElementUseScope((BashPsiElement) element, element.getProject())
-                : GlobalSearchScope.projectScope(element.getProject());
+                : searchScope;
 
         Query<PsiReference> search = ReferencesSearch.search(element, scope);
         return search.findAll();
@@ -71,7 +73,7 @@ public class BashFileRenameProcessor extends RenamePsiFileProcessor {
         public BashFileRenameDialog(Project project, PsiElement element, PsiElement nameSuggestionContext, Editor editor) {
             super(project, element, nameSuggestionContext, editor);
 
-            setTitle("Rename Bash file");
+            setTitle("Rename Bash File");
         }
     }
 }
